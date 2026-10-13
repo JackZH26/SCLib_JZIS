@@ -48,7 +48,7 @@ def extraction_schema() -> dict:
     return value
 
 
-def provider_schema() -> dict:
+def provider_schema(model_schema=None) -> dict:
     """Strict transport subset; omitted science constraints run after generation."""
 
     def convert(value):
@@ -91,7 +91,7 @@ def provider_schema() -> dict:
             out["additionalProperties"] = False
         return out
 
-    return convert(extraction_schema())
+    return convert(model_schema if model_schema is not None else extraction_schema())
 
 
 def schema_errors(value, *, model_output=False):
@@ -161,9 +161,16 @@ def parse_json(text: str) -> dict:
             result[key] = value
         return result
 
+    def finite_float(raw):
+        value = float(raw)
+        if not math.isfinite(value):
+            raise CandidateError(["nonfinite_json"])
+        return value
+
     try:
         return json.loads(
             text,
+            parse_float=finite_float,
             object_pairs_hook=pairs,
             parse_constant=lambda _: (_ for _ in ()).throw(CandidateError(["nonfinite_json"])),
         )
@@ -190,6 +197,7 @@ def evidences(value):
 
 def source_number_spans(raw: str) -> list[tuple[float, int, int]]:
     """Read explicit decimal/scientific notation; never evaluate source code."""
+    raw = raw.replace("−", "-")  # One code point: source offsets stay unchanged.
     number = r"[-+]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][-+]?\d+)?"
     values, remaining = [], list(raw)
     exponent = r"(?:\^\s*\{?([-+]?\d+)\}?|([⁻⁺]?[⁰¹²³⁴⁵⁶⁷⁸⁹]+))"
@@ -308,19 +316,25 @@ def validate_candidate(value: dict, blocks: list[dict], *, model_output=False) -
     for link in value["unresolved_links"]:
         if any(local_id not in ids for local_id in link["candidate_local_ids"]):
             errors.append("unresolved_link_unknown_local_id")
-    for row in value["results"]:
-        for node, fields in (
-            (row["subject"], ("name_raw", "formula_raw")),
-            (row["sample"], ("label_raw", "form_raw", "preparation_raw")),
-            (row["series_point"], ("series_label_raw", "point_label_raw", "replicate_label_raw")),
-            (row["event"], ("method_raw", "calculation_settings_raw", "cited_source_raw")),
+    for row_index, row in enumerate(value["results"]):
+        for node_name, node, fields in (
+            ("subject", row["subject"], ("name_raw", "formula_raw")),
+            ("sample", row["sample"], ("label_raw", "form_raw", "preparation_raw")),
+            (
+                "series_point",
+                row["series_point"],
+                ("series_label_raw", "point_label_raw", "replicate_label_raw"),
+            ),
+            ("event", row["event"], ("method_raw", "calculation_settings_raw", "cited_source_raw")),
         ):
             if node:
                 quotes = "\n".join(e["quote"] for e in node["evidence"])
-                if any(
-                    node.get(field) is not None and node[field] not in quotes for field in fields
-                ):
-                    errors.append("raw_subject_sample_series_or_method_not_in_evidence")
+                for field in fields:
+                    if node.get(field) is not None and node[field] not in quotes:
+                        errors.append(
+                            f"raw_subject_sample_series_or_method_not_in_evidence:"
+                            f"results/{row_index}/{node_name}/{field}"
+                        )
         targets = {b["block_id"] for b in blocks if b.get("block_role") == "target"}
         anchors = row["outcome_evidence"] + [
             e for p in row["properties"] for e in p["evidence"] if e["role"] == "value"
@@ -353,6 +367,27 @@ def validate_candidate(value: dict, blocks: list[dict], *, model_output=False) -
                 if key.endswith("_raw")
             ):
                 errors.append("raw_qualifier_not_in_evidence")
+            criterion = item.get("qualifiers", {}).get("tc_definition")
+            criterion_patterns = {
+                "onset": r"\bonset\b|起始",
+                "zero_resistance": r"\bzero\b|\b(?:resistance|resistivity)\s*(?:=|is|of)\s*0|零电阻",
+                "midpoint": r"\bmid(?:point|[- ]point)\b|\b50\s*%|中点",
+                "diamagnetic": r"diamagnet|抗磁",
+                "heat_capacity": r"heat\s+capacity|specific\s+heat|比热|热容",
+            }
+            if (
+                key == "tc"
+                and criterion in criterion_patterns
+                and not re.search(criterion_patterns[criterion], joined, re.IGNORECASE)
+            ):
+                errors.append("tc_criterion_without_explicit_evidence")
+            if (
+                is_condition
+                and item["status"] == "explicit_ambient"
+                and not re.search(r"\bambient\b|\batmospheric\b|常压", joined, re.IGNORECASE)
+                and not (quantity and quantity.get("value") == 0)
+            ):
+                errors.append("ambient_without_explicit_pressure_evidence")
             if quantity is not None:
                 numbers = [
                     quantity[k] for k in ("value", "lower", "upper") if quantity[k] is not None
@@ -379,6 +414,8 @@ def validate_candidate(value: dict, blocks: list[dict], *, model_output=False) -
                 joined = " ".join(e["quote"] for e in item["evidence"])
                 if quantity["raw_text"] not in joined:
                     errors.append("raw_quantity_not_in_evidence")
+                if quantity.get("uncertainty_raw") and quantity["uncertainty_raw"] not in joined:
+                    errors.append("raw_uncertainty_not_in_evidence")
                 unit = quantity["raw_unit"]
                 if (
                     unit

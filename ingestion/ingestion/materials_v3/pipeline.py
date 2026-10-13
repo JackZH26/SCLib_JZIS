@@ -8,6 +8,8 @@ from pathlib import Path
 
 from .blocks import block_inputs, coverage, make_blocks, verify_document
 from .contract import CandidateError, digest, occurrence_key, parse_json, schema, validate_candidate
+from .wire import VERSION as WIRE_VERSION
+from .wire import validate_response, wire_schema
 from .ledger import Ledger
 from .prompt import VERSION as PROMPT_VERSION
 from .prompt import messages
@@ -78,6 +80,8 @@ class Pipeline:
             "provider": asdict(self.provider.config),
             "prompt_version": PROMPT_VERSION,
             "schema_sha256": digest(schema()),
+            "model_contract_version": WIRE_VERSION,
+            "model_contract_sha256": digest(wire_schema()),
             "normalizer_version": NORMALIZER_VERSION,
             "implementation_sha256": implementation_hash(),
             "budget": asdict(self.budget),
@@ -100,8 +104,28 @@ class Pipeline:
             a["receipt"].get("wall_call_seconds", a["receipt"].get("seconds", 0))
             for a in self.ledger.attempts(key)
         )
-        terminal, results, all_blocks = {}, [], []
+        terminal, results, all_blocks, input_frames = {}, [], [], {}
         resource_failure = None
+
+        def framed_result(result, block, inputs):
+            result.update(
+                block_id=block["block_id"],
+                input_blocks=inputs,
+                occurrences=[occurrence_key(r, inputs) for r in result["candidate"]["results"]],
+            )
+            return result
+
+        def retain_partial(text, block, inputs):
+            if not text:
+                return None
+            try:
+                result, row_errors = validate_response(parse_json(text), inputs)
+            except CandidateError:
+                return None
+            if row_errors and result["candidate"]["results"]:
+                result["errors"] = row_errors
+                return framed_result(result, block, inputs)
+            return None
 
         def error_receipt(exc, call_started):
             return {
@@ -135,6 +159,8 @@ class Pipeline:
         def process(block, depth=0):
             nonlocal resource_failure
             all_blocks.append(block)
+            inputs = block_inputs(block, document)
+            input_frames[block["block_id"]] = inputs
             cached = self.ledger.cached_block(key, block)
             if cached:
                 status, value = cached
@@ -144,10 +170,12 @@ class Pipeline:
                         process(child, depth + 1)
                 elif status in {"validated", "empty"}:
                     results.append(value)
+                elif status == "validation_failed" and value.get("partial"):
+                    validate_candidate(value["candidate"], inputs, model_output=True)
+                    results.append(value)
                 elif status == "resource_exhausted":
                     resource_failure = value["error"]
                 return
-            inputs = block_inputs(block, document)
             history = [a for a in self.ledger.attempts(key) if a["block_id"] == block["block_id"]]
             if history and history[-1]["status"] in {"output_limit", "resource_exhausted"}:
                 last = history[-1]
@@ -175,13 +203,16 @@ class Pipeline:
                 # Crash after attempt fsync but before block fsync: replay validation,
                 # not a second provider request for the same successful response.
                 value = parse_json(valid["receipt"]["text"])
-                result = validate_candidate(value, inputs, model_output=True)
-                result.update(
-                    block_id=block["block_id"],
-                    input_blocks=inputs,
-                    occurrences=[occurrence_key(r, inputs) for r in value["results"]],
+                result, replay_errors = validate_response(value, inputs)
+                if replay_errors:
+                    raise CandidateError(replay_errors)
+                framed_result(result, block, inputs)
+                candidate = result["candidate"]
+                status = (
+                    "validated"
+                    if candidate["results"] or candidate["unresolved_links"]
+                    else "empty"
                 )
-                status = "validated" if value["results"] or value["unresolved_links"] else "empty"
                 results.append(result)
                 self.ledger.put_block(key, fence, block, status, result)
                 terminal[block["block_id"]] = status
@@ -194,7 +225,12 @@ class Pipeline:
                     )
                     break
                 if repairs > self.budget.syntax_repairs:
-                    status, result = "validation_failed", {"errors": errors}
+                    status, result = (
+                        "validation_failed",
+                        retain_partial(previous, block, inputs) or {"errors": errors},
+                    )
+                    if result.get("partial"):
+                        results.append(result)
                     break
                 if attempts > self.budget.infrastructure_retries:
                     status, result = "provider_failed", {"error": history[-1]["receipt"]["error"]}
@@ -212,16 +248,24 @@ class Pipeline:
                 )
                 call_started = time.monotonic()
                 try:
-                    response = self.provider.generate(
-                        messages(inputs, repair_errors=errors, previous=previous)
-                    )
-                    receipt = asdict(response)
+                    prompt_messages = messages(inputs, repair_errors=errors, previous=previous)
+                    provenance = {
+                        "input_frame_sha256": digest(inputs),
+                        "prompt_sha256": digest(prompt_messages),
+                        "model_contract_version": WIRE_VERSION,
+                        "input_blocks": inputs,
+                        "messages": prompt_messages,
+                    }
+                    response = self.provider.generate(prompt_messages)
+                    receipt = {**asdict(response), **provenance}
                     receipt["wall_call_seconds"] = time.monotonic() - call_started
                     syntax_valid = False
                     try:
                         value = parse_json(response.text)
                         syntax_valid = True
-                        result = validate_candidate(value, inputs, model_output=True)
+                        result, row_errors = validate_response(value, inputs)
+                        if row_errors:
+                            raise CandidateError(row_errors)
                     except CandidateError as exc:
                         self.ledger.record_attempt(
                             key,
@@ -236,7 +280,13 @@ class Pipeline:
                             },
                         )
                         if repairs >= self.budget.syntax_repairs:
-                            status, result = "validation_failed", {"errors": exc.errors}
+                            status, result = (
+                                "validation_failed",
+                                retain_partial(response.text, block, inputs)
+                                or {"errors": exc.errors},
+                            )
+                            if result.get("partial"):
+                                results.append(result)
                             break
                         repairs += 1
                         errors, previous = exc.errors, response.text
@@ -248,13 +298,12 @@ class Pipeline:
                         "validated",
                         {**receipt, "repair": repairs, "raw_json_syntax_valid": True},
                     )
-                    result.update(
-                        block_id=block["block_id"],
-                        input_blocks=inputs,
-                        occurrences=[occurrence_key(r, inputs) for r in value["results"]],
-                    )
+                    framed_result(result, block, inputs)
+                    candidate = result["candidate"]
                     status = (
-                        "validated" if value["results"] or value["unresolved_links"] else "empty"
+                        "validated"
+                        if candidate["results"] or candidate["unresolved_links"]
+                        else "empty"
                     )
                     results.append(result)
                     break
@@ -264,7 +313,7 @@ class Pipeline:
                         fence,
                         block["block_id"],
                         "output_limit",
-                        error_receipt(exc, call_started),
+                        {**error_receipt(exc, call_started), **provenance},
                     )
                     if split(block, depth):
                         return
@@ -276,7 +325,7 @@ class Pipeline:
                         fence,
                         block["block_id"],
                         "resource_exhausted",
-                        error_receipt(exc, call_started),
+                        {**error_receipt(exc, call_started), **provenance},
                     )
                     resource_failure = str(exc)
                     status, result = "resource_exhausted", {"error": str(exc)}
@@ -287,7 +336,7 @@ class Pipeline:
                         fence,
                         block["block_id"],
                         "provider_failed",
-                        error_receipt(exc, call_started),
+                        {**error_receipt(exc, call_started), **provenance},
                     )
                     if attempts >= self.budget.infrastructure_retries:
                         status, result = "provider_failed", {"error": str(exc)}
@@ -307,6 +356,7 @@ class Pipeline:
             "input_sha256": document["manifest_sha256"],
             "source_sha256": document["source_sha256"],
             "blocks": all_blocks,
+            "input_frames": input_frames,
             "terminal": terminal,
             "results": results,
             "coverage": coverage(document, all_blocks, terminal),

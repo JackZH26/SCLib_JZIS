@@ -10,6 +10,7 @@ from urllib.parse import urlsplit
 import httpx
 
 from .contract import digest, provider_schema
+from .wire import wire_schema
 from .runtime import model_pin
 
 _MODEL_PIN = model_pin()
@@ -159,7 +160,7 @@ class HTTPProvider:
                         "type": "json_schema",
                         "name": "materials_ner_v3",
                         "strict": True,
-                        "schema": provider_schema(),
+                        "schema": provider_schema(wire_schema()),
                     }
                 },
             }
@@ -256,7 +257,7 @@ class HTTPProvider:
                         system_instruction=messages[0]["content"],
                         max_output_tokens=self.config.max_output_tokens,
                         response_mime_type="application/json",
-                        response_json_schema=provider_schema(),
+                        response_json_schema=provider_schema(wire_schema()),
                         **generation_options,
                     ),
                 )

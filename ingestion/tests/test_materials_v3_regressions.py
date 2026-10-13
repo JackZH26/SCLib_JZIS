@@ -65,6 +65,8 @@ def test_two_points_in_one_sentence_have_distinct_source_occurrences():
     two["conditions"][0]["quantity"] = quantity("170 GPa", 170, "GPa")
     two["series_point"]["point_label_raw"] = "170 GPa"
     assert occurrence_key(one, [block]) != occurrence_key(two, [block])
+    for row in (one, two):
+        row["properties"][0]["qualifiers"]["tc_definition"] = "unknown"
     value["results"].append(two)
     run = result_run(value, block)
     out = assemble_reports([run], {f"{block['source_sha256']}:LaH10": "mat:synthetic"})
@@ -461,7 +463,9 @@ def test_model_prompt_rejects_the_empty_grounding_arrays_seen_in_actual_9b_outpu
     from jsonschema import Draft202012Validator
     from ingestion.materials_v3.prompt import messages
 
-    value, block = fixture()
+    from test_materials_v3_wire import compact_fixture
+
+    value, block = compact_fixture()
     advertised = json.loads(messages([block])[1]["content"])["output_schema"]
     Draft202012Validator.check_schema(advertised)
     value["results"][0]["subject"]["evidence"] = []
@@ -579,8 +583,9 @@ def test_table_cell_anchor_distinguishes_identical_values_without_mutating_sourc
         "quote_start_span_id": span["id"],
     }
     assert bind_evidence(proof, {"b-table": block})["char_start"] == text.rindex("150 GPa")
-    visible = json.loads(messages([block])[1]["content"])["source_blocks"][0]["text"]
-    assert f"[{span['id']}]150 GPa" in visible and block["text"] == text
+    visible = json.loads(messages([block])[1]["content"])["source_groups"][0]["text"]
+    assert "[R1]150 GPa" in visible and "[R2]150 GPa" in visible
+    assert block["text"] == text
 
 
 def test_quote_may_cross_a_later_marker_but_must_be_original_verbatim_text():
@@ -633,7 +638,9 @@ def test_reported_value_missing_names_the_item_and_does_not_silently_drop_it(nod
     with pytest.raises(CandidateError) as error:
         validate_candidate(value, [block])
     assert f"schema:{path}:oneOf" in error.value.errors
-    assert f"reported_value_missing:{path}:omit_item_if_source_reports_no_value" in error.value.errors
+    assert (
+        f"reported_value_missing:{path}:omit_item_if_source_reports_no_value" in error.value.errors
+    )
     assert value == original
     if node == "condition":
         row["conditions"].pop()

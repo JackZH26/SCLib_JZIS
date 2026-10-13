@@ -244,6 +244,7 @@ def test_non_detection_with_sourced_upper_bound():
     row["series_point"] = None
     row["properties"] = [row["properties"][0]]
     row["properties"][0]["quantity"] = quantity("<2 K", None, "K", "lt", upper=2)
+    row["properties"][0]["qualifiers"]["tc_definition"] = "unknown"
     validate_candidate(value, [block])
 
 
