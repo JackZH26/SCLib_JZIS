@@ -103,6 +103,20 @@ def schema_errors(value, *, model_output=False):
                 if key not in error.instance:
                     yield f"schema:{'/'.join(map(str, [*error.absolute_path, key]))}:required"
             return
+        if (
+            error.validator == "oneOf"
+            and isinstance(error.instance, dict)
+            and error.instance.get("status") == "reported"
+            and {"quantity", "qualitative"} <= error.instance.keys()
+        ):
+            path = "/".join(map(str, error.absolute_path))
+            yield f"schema:{path}:oneOf"
+            supplied = sum(error.instance[key] is not None for key in ("quantity", "qualitative"))
+            if supplied == 0:
+                yield f"reported_value_missing:{path}:omit_item_if_source_reports_no_value"
+            elif supplied == 2:
+                yield f"reported_value_has_two_representations:{path}:keep_quantity_or_qualitative"
+            return
         if error.validator == "anyOf" and error.context:
             relevant = [
                 child

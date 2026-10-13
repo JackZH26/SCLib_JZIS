@@ -616,6 +616,41 @@ def test_new_model_output_requires_span_ids_while_historical_quotes_remain_valid
     assert "schema:results/0/subject/evidence/0/quote_start_span_id:required" in error.value.errors
 
 
+@pytest.mark.parametrize("node", ["condition", "property"])
+def test_reported_value_missing_names_the_item_and_does_not_silently_drop_it(node):
+    value, block = fixture()
+    row = value["results"][0]
+    if node == "condition":
+        item = deepcopy(row["conditions"][0])
+        item.update(key="measurement_current", quantity=None, qualitative=None)
+        row["conditions"].append(item)
+        path = "results/0/conditions/1"
+    else:
+        item = row["properties"][0]
+        item.update(quantity=None, qualitative=None)
+        path = "results/0/properties/0"
+    original = deepcopy(value)
+    with pytest.raises(CandidateError) as error:
+        validate_candidate(value, [block])
+    assert f"schema:{path}:oneOf" in error.value.errors
+    assert f"reported_value_missing:{path}:omit_item_if_source_reports_no_value" in error.value.errors
+    assert value == original
+    if node == "condition":
+        row["conditions"].pop()
+        validate_candidate(value, [block])
+
+
+def test_reported_value_with_two_representations_is_rejected_with_specific_feedback():
+    value, block = fixture()
+    value["results"][0]["conditions"][0]["qualitative"] = {"raw_text": "150 GPa"}
+    with pytest.raises(CandidateError) as error:
+        validate_candidate(value, [block])
+    assert (
+        "reported_value_has_two_representations:results/0/conditions/0:keep_quantity_or_qualitative"
+        in error.value.errors
+    )
+
+
 @pytest.mark.parametrize("model,modern", [("gemini-3.5-flash", True), ("gemini-2.5-flash", False)])
 @pytest.mark.parametrize("input_tokens,exceeded", [(12, False), (12288, False), (12289, True)])
 def test_gemini_reads_existing_project_setting_and_uses_model_specific_thinking(
