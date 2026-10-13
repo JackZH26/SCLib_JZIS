@@ -78,3 +78,9 @@ Mini 实机确认 M4 Pro/48 GiB；该节点任务已安装 `87a71c0e…` 的固�
 当前论文NER=0、Gemini合成generation调用=5、人工gold=0、科学接纳=0。已取得50-work公开paper projection基线；Materials汇总页快照、人工可补性分母和实测补全率仍未取得。计算补全的适用输入/方法见[审查规范](pilot/materials-ner-50.review-guide.v1.md)；大规模DFT/DFPT不是此次NER替代试验。下文及旧私有最终交付包中的旧35B/零云调用状态作为历史保留，本轮新收据分别绑定新配置。
 
 质量门槛保持：core precision≥98%、recall≥95%、每族recall≥90%、数值单位≥99%、证据支持≥98%、locator100%、origin/source-role macro F1≥98%、扩展字段≥90%、严重错误0；本地分别对两个云模型的paired95%下界≥−2pp。空分母/缺gold/缺runtime均未验收。50篇通过后仍需200–300篇扩大盲测，不能直接外推全部SCLib论文。
+
+## 2026-10-13 重复引用定位与真实文献诊断
+
+5180版本/prompt3.0.4实机合成输出已通过JSON和字段结构，仍因150 GPa在原文重复而引用无法唯一定位。随后已实际诊断development的MgB2论文arxiv:1602.03211：3次真实生成，0可接纳候选，资源/共享锁/清理正常；角色enum、缺失结果字段和证据问题保留。该诊断不是完成论文或质量通过，10篇batch尚未放行。
+
+3.0.5增加程序稳定生成的句子/表行起点标记；模型用quote_start_span_id选择引用起点所在片段，程序只在该片段内找起点，并核原始未修改正文的完整verbatim quote。标记仅存在于prompt，文档和hash不改变；历史无span的引用沿用全block唯一匹配，同片段仍重复、未知ID、位置矛盾及把新增标记当原文都会拒绝。缺失required字段直接给出字段名，并明示series证据role=relation。为了容纳定位标记，三个provider共同初始分块上限降为3000tokens；源准备时209个旧计划块不是当前运行分母。105项NER测试通过；当前331完整初始prompt均符合16k预算，[当前预检](pilot/materials-ner-qwen3.5-9b-tokenizer.preflight.v4.json)不代表推理或质量通过。初次细粒度/5000分块预检21块超限已保留为失败；未提升上下文或资源预算。新版实际smoke/真实文献复验和科学验收待后续记录。

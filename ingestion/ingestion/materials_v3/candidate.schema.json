@@ -42,6 +42,10 @@
           "type": "string",
           "minLength": 1
         },
+        "quote_start_span_id": {
+          "type": ["string", "null"],
+          "description": "ID of the source marker before the beginning of this quote; optional for historical evidence."
+        },
         "role": {
           "enum": [
             "subject",

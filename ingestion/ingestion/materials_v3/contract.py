@@ -13,6 +13,7 @@ from pathlib import Path
 
 from jsonschema import Draft202012Validator
 
+from .locators import source_spans
 from .registry import normalize_quantity
 
 
@@ -91,6 +92,11 @@ def schema_errors(value, *, model_output=False):
     """Expose the failed field inside a nullable object rather than only anyOf."""
 
     def details(error):
+        if error.validator == "required" and isinstance(error.instance, dict):
+            for key in error.validator_value:
+                if key not in error.instance:
+                    yield f"schema:{'/'.join(map(str, [*error.absolute_path, key]))}:required"
+            return
         if error.validator == "anyOf" and error.context:
             relevant = [
                 child
@@ -205,13 +211,25 @@ def bind_evidence(evidence: dict, blocks: dict) -> dict:
         raise CandidateError(["unknown_evidence_block"])
     quote, body = evidence["quote"], block["text"]
     start, end = evidence.get("char_start"), evidence.get("char_end")
+    span_id = evidence.get("quote_start_span_id")
+    scope = None
+    if span_id is not None:
+        scope = next((s for s in source_spans(block) if s["id"] == span_id), None)
+        if scope is None:
+            raise CandidateError(["unknown_evidence_start_span"])
     if start is None and end is None:
-        matches = [m.start() for m in re.finditer(re.escape(quote), body)]
+        matches = [
+            m.start()
+            for m in re.finditer(re.escape(quote), body)
+            if scope is None or scope["start"] <= m.start() < scope["end"]
+        ]
         if len(matches) != 1:
             raise CandidateError(["quote_missing_or_ambiguous_offset"])
         start, end = matches[0], matches[0] + len(quote)
     if type(start) is not int or type(end) is not int or end <= start or body[start:end] != quote:
         raise CandidateError(["quote_offset_mismatch"])
+    if scope is not None and not scope["start"] <= start < scope["end"]:
+        raise CandidateError(["quote_offset_outside_source_span"])
     if evidence.get("table_id") and evidence["table_id"] != block.get("table_id"):
         raise CandidateError(["table_locator_mismatch"])
     source_start, source_end = (

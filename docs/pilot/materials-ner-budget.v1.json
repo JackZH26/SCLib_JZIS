@@ -1,5 +1,5 @@
 {
-  "max_tokens_per_block": 5000,
+  "max_tokens_per_block": 3000,
   "paper_seconds": 3600,
   "max_attempts_per_paper": 120,
   "infrastructure_retries": 2,

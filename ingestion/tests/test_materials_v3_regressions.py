@@ -494,6 +494,116 @@ def test_nullable_series_repair_names_the_invalid_condition_key_instead_of_only_
     assert "schema:results/0/series_point:type" not in error.value.errors
 
 
+def test_repeated_pressure_in_loading_and_unloading_has_distinct_explicit_source_anchors():
+    from ingestion.materials_v3.contract import bind_evidence
+    from ingestion.materials_v3.locators import source_spans
+
+    text = "Loading at 150 GPa gives Tc 240 K. Unloading at 150 GPa gives Tc 236 K."
+    block = {"block_id": "b-paths", "text": text, "source_sha256": "a" * 64, "source_start": 1000}
+    spans = source_spans(block)
+    one, two = [
+        bind_evidence(
+            {
+                "block_id": block["block_id"],
+                "quote": "150 GPa",
+                "role": "condition",
+                "quote_start_span_id": span["id"],
+            },
+            {block["block_id"]: block},
+        )
+        for span in spans
+    ]
+    assert one["source_start"] == 1000 + text.index("150 GPa")
+    assert two["source_start"] == 1000 + text.rindex("150 GPa")
+    assert one["source_start"] != two["source_start"]
+    with pytest.raises(CandidateError, match="ambiguous"):
+        bind_evidence(
+            {"block_id": "b-paths", "quote": "150 GPa", "role": "condition"}, {"b-paths": block}
+        )
+
+
+def test_anchor_does_not_choose_between_two_matches_inside_the_same_source_span():
+    from ingestion.materials_v3.contract import bind_evidence
+
+    block = {
+        "block_id": "b-repeat",
+        "text": "150 GPa and 150 GPa in the same clause.",
+        "source_sha256": "a" * 64,
+    }
+    with pytest.raises(CandidateError, match="ambiguous"):
+        bind_evidence(
+            {
+                "block_id": "b-repeat",
+                "quote": "150 GPa",
+                "role": "condition",
+                "quote_start_span_id": "S0",
+            },
+            {"b-repeat": block},
+        )
+
+
+def test_unknown_anchor_and_contradictory_historical_offset_are_rejected():
+    from ingestion.materials_v3.contract import bind_evidence
+
+    text = "150 GPa here. 150 GPa there."
+    block = {"block_id": "b-scope", "text": text, "source_sha256": "a" * 64}
+    proof = {
+        "block_id": "b-scope",
+        "quote": "150 GPa",
+        "role": "condition",
+        "quote_start_span_id": "S99",
+    }
+    with pytest.raises(CandidateError, match="unknown_evidence_start_span"):
+        bind_evidence(proof, {"b-scope": block})
+    proof.update(quote_start_span_id="S1", char_start=0, char_end=7)
+    with pytest.raises(CandidateError, match="outside_source_span"):
+        bind_evidence(proof, {"b-scope": block})
+
+
+def test_table_cell_anchor_distinguishes_identical_values_without_mutating_source():
+    from ingestion.materials_v3.contract import bind_evidence
+    from ingestion.materials_v3.locators import source_spans
+    from ingestion.materials_v3.prompt import messages
+
+    text = "Pressure\tTc\n150 GPa\t240 K\n150 GPa\t236 K"
+    block = {"block_id": "b-table", "text": text, "kind": "table", "source_sha256": "a" * 64}
+    span = next(s for s in source_spans(block) if s["start"] == text.rindex("150 GPa"))
+    proof = {
+        "block_id": "b-table",
+        "quote": "150 GPa",
+        "role": "condition",
+        "quote_start_span_id": span["id"],
+    }
+    assert bind_evidence(proof, {"b-table": block})["char_start"] == text.rindex("150 GPa")
+    visible = json.loads(messages([block])[1]["content"])["source_blocks"][0]["text"]
+    assert f"[{span['id']}]150 GPa" in visible and block["text"] == text
+
+
+def test_quote_may_cross_a_later_marker_but_must_be_original_verbatim_text():
+    from ingestion.materials_v3.contract import bind_evidence
+
+    text = "See Ref. 9 for this result."
+    block = {"block_id": "b-cross", "text": text, "source_sha256": "a" * 64}
+    proof = {
+        "block_id": "b-cross",
+        "quote": "Ref. 9",
+        "role": "relation",
+        "quote_start_span_id": "S0",
+    }
+    assert bind_evidence(proof, {"b-cross": block})["char_start"] == text.index("Ref.")
+    proof["quote"] = "Ref. [S1]9"
+    with pytest.raises(CandidateError, match="quote_missing"):
+        bind_evidence(proof, {"b-cross": block})
+
+
+def test_missing_result_fields_are_named_for_the_real_paper_repair():
+    value, block = fixture()
+    value["results"][0].pop("outcome_evidence")
+    with pytest.raises(CandidateError) as error:
+        validate_candidate(value, [block])
+    assert "schema:results/0/outcome_evidence:required" in error.value.errors
+
+
 @pytest.mark.parametrize("model,modern", [("gemini-3.5-flash", True), ("gemini-2.5-flash", False)])
 @pytest.mark.parametrize("input_tokens,exceeded", [(12, False), (12288, False), (12289, True)])
 def test_gemini_reads_existing_project_setting_and_uses_model_specific_thinking(

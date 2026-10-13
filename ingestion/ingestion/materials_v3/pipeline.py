@@ -30,7 +30,7 @@ def implementation_hash():
 
 @dataclass(frozen=True)
 class Budget:
-    max_tokens_per_block: int = 5000
+    max_tokens_per_block: int = 3000
     paper_seconds: int = 3600
     max_attempts_per_paper: int = 120
     infrastructure_retries: int = 2
