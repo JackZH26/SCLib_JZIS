@@ -386,6 +386,77 @@ def test_openai_observed_context_budget_is_enforced_and_retains_the_paid_respons
     assert result.metadata["actual_model"] == "gpt-6.1-sol"
 
 
+def test_usage_keeps_paid_context_rejection_but_excludes_pre_generation_rejection():
+    from ingestion.materials_v3.statistics import run_statistics
+
+    run = {
+        "terminal": {"b-paid": "output_limit", "b-prefill": "output_limit"},
+        "attempts": [
+            {
+                "sequence": 1,
+                "status": "output_limit",
+                "receipt": {
+                    "finish_reason": "input_limit",
+                    "text": "{}",
+                    "input_tokens": 12514,
+                    "output_tokens": 3068,
+                    "reasoning_tokens": 12,
+                    "cached_tokens": 200,
+                    "wall_call_seconds": 17,
+                    "metadata": {"generation_attempted": True},
+                },
+            },
+            {
+                "sequence": 1,
+                "status": "output_limit",
+                "receipt": {
+                    "finish_reason": "input_limit",
+                    "text": "",
+                    "input_tokens": 14000,
+                    "output_tokens": 0,
+                    "wall_call_seconds": 0.1,
+                    "metadata": {"generation_attempted": False},
+                },
+            },
+        ],
+    }
+    measured = run_statistics(run)
+    assert measured["attempts"] == 2 and measured["generation_attempts"] == 1
+    assert measured["known_tokens"] == {
+        "input_tokens": 12514,
+        "output_tokens": 3068,
+        "reasoning_tokens": 12,
+        "cached_tokens": 200,
+    }
+    assert measured["first_response_json"] == {"valid": 1, "denominator": 1, "rate": 1}
+    assert measured["provider_call_seconds"] == 17.1 and measured["length_failures"] == 2
+    assert measured["cost_usd"] is None
+
+
+def test_usage_preserves_legacy_receipts_when_generation_flag_is_absent():
+    from ingestion.materials_v3.statistics import run_statistics
+
+    run = {
+        "terminal": {"b-old": "validated"},
+        "attempts": [
+            {
+                "sequence": 1,
+                "status": "output_limit",
+                "receipt": {"finish_reason": "input_limit", "text": "", "input_tokens": 14000},
+            },
+            {
+                "sequence": 1,
+                "status": "validated",
+                "receipt": {"text": "{}", "input_tokens": 100, "output_tokens": 2},
+            },
+        ],
+    }
+    measured = run_statistics(run)
+    assert measured["generation_attempts"] == 1
+    assert measured["known_tokens"]["input_tokens"] == 100
+    assert measured["attempts_missing_token_usage"] == 0
+
+
 @pytest.mark.parametrize("model,modern", [("gemini-3.5-flash", True), ("gemini-2.5-flash", False)])
 @pytest.mark.parametrize("input_tokens,exceeded", [(12, False), (12288, False), (12289, True)])
 def test_gemini_reads_existing_project_setting_and_uses_model_specific_thinking(

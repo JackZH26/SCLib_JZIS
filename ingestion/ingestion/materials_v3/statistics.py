@@ -5,7 +5,16 @@ from .contract import CandidateError, parse_json
 
 def run_statistics(run):
     attempts = run["attempts"]
-    generation = [a for a in attempts if a["receipt"].get("finish_reason") != "input_limit"]
+    # Input limits can reject before generation or after a paid response.
+    # Keep those responses in usage totals; retain the legacy fallback only
+    # for receipts written before generation_attempted was recorded.
+    generation = [
+        a
+        for a in attempts
+        if a["receipt"]
+        .get("metadata", {})
+        .get("generation_attempted", a["receipt"].get("finish_reason") != "input_limit")
+    ]
     first = [a for a in generation if a["sequence"] == 1 and "text" in a["receipt"]]
     valid = 0
     for attempt in first:
