@@ -232,3 +232,31 @@ def test_mention_cues_do_not_call_arpes_temperature_a_tc():
     cues = tc_mentions([{"block_id": "b", "block_role": "target", "text": text}])
     assert [r["raw_mention"] for r in cues] == ["Tc(11B)=37.5 K", "Tc(10B)=38.5 K"]
     assert all(r["status"] == "lexical_source_cue_not_gold" for r in cues)
+
+
+def test_unused_representation_slots_are_program_supplied_nulls():
+    value, block = compact_fixture()
+    for item in value["results"][0]["conditions"] + value["results"][0]["properties"]:
+        item.pop("qualitative")
+    result, errors = validate_response(value, [block])
+    assert not errors and not result["partial"]
+    row = result["candidate"]["results"][0]
+    assert all(i["qualitative"] is None for i in row["conditions"] + row["properties"])
+    # A historical wire response is replayed without pretending its protocol changed.
+    value["schema_version"] = "materials-ner-wire/1.0"
+    replay, errors = validate_response(value, [block])
+    assert not errors and replay["transport"]["schema_version"] == "materials-ner-wire/1.0"
+
+
+@pytest.mark.parametrize("mode", ["missing_both", "supplied_both"])
+def test_optional_slots_do_not_allow_reported_items_without_one_representation(mode):
+    value, block = compact_fixture()
+    item = value["results"][0]["properties"][0]
+    if mode == "missing_both":
+        item.pop("quantity")
+        item.pop("qualitative")
+    else:
+        item["qualitative"] = {"raw_text": "onset", "value_raw": "onset"}
+    result, errors = validate_response(value, [block])
+    assert errors and not result["candidate"]["results"]
+    assert any("reported_value_" in e for e in errors)

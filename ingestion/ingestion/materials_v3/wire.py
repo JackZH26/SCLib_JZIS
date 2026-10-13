@@ -12,7 +12,7 @@ from jsonschema import Draft202012Validator
 from .contract import CandidateError, digest, schema, validate_candidate
 from .locators import source_spans
 
-VERSION = "materials-ner-wire/1.0"
+VERSION = "materials-ner-wire/1.1"
 
 
 @lru_cache(maxsize=1)
@@ -64,6 +64,16 @@ def wire_schema():
         "event": ["event_kind", "knowledge_origin", "source_role", "evidence"],
     }.items():
         defs[name]["required"] = required
+    # Unused representation slots are storage details. Supplying neither or both
+    # for a reported item still fails the full representation gate after expansion.
+    for name in ("condition", "property"):
+        defs[name]["required"] = [
+            k for k in defs[name]["required"] if k not in {"quantity", "qualitative"}
+        ]
+    defs["qualifiers"]["items"]["properties"]["value"]["description"] = (
+        "tc_definition must be onset, zero_resistance, midpoint, diamagnetic, "
+        "heat_capacity, other or unknown. Keys ending _raw copy literal source text."
+    )
     # Storage constraints referencing the former representations run after expansion.
     for name in ("condition", "property", "result"):
         defs[name].pop("allOf", None)
@@ -124,6 +134,9 @@ def expand_row(row, refs):
             if node["ref"] not in refs:
                 raise CandidateError([f"unknown_source_reference:{node['ref']}"])
             return {**deepcopy(refs[node["ref"]]), "role": node["role"]}
+        if "status" in node and ("key" in node or "property_key" in node):
+            node.setdefault("quantity", None)
+            node.setdefault("qualitative", None)
         if "numbers" in node:
             numbers = node.pop("numbers")
             interval = node["relation"] == "interval"
@@ -167,10 +180,16 @@ def validate_response(value, blocks):
     entire row. Cross-row unresolved links keep the response atomic on failure.
     A partial response never becomes complete-source or scientific acceptance.
     """
-    is_wire = value.get("schema_version") == VERSION if isinstance(value, dict) else False
+    is_wire = (
+        value.get("schema_version") in {VERSION, "materials-ner-wire/1.0"}
+        if isinstance(value, dict)
+        else False
+    )
     original = deepcopy(value)
     _, refs = source_catalog(blocks)
-    model_schema = wire_schema() if is_wire else None
+    model_schema = deepcopy(wire_schema()) if is_wire else None
+    if is_wire:
+        model_schema["properties"]["schema_version"] = {"const": value["schema_version"]}
     if is_wire:
         root = deepcopy(model_schema)
         root["properties"]["results"]["items"] = {}
