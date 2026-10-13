@@ -1624,6 +1624,12 @@ from models.research_schema_v2 import register as _register_research_v2  # noqa:
 
 RESEARCH_V2_TABLES = _register_research_v2(Base.metadata)
 
+from models.materials_v3 import extend_current_metadata as _extend_materials_v3  # noqa: E402
+from models.materials_v3 import register as _register_materials_v3  # noqa: E402
+
+_extend_materials_v3(Base.metadata)
+MATERIALS_V3_TABLES = _register_materials_v3(Base.metadata)
+
 # Forward-only current metadata additions; the 0045 registrar stays immutable.
 from models.claim_integrity import register as _register_claim_integrity  # noqa: E402
 

@@ -1,0 +1,814 @@
+"""Cross-point, evidence, queue and batch failures discovered during pilot development."""
+
+import json
+from copy import deepcopy
+
+import pytest
+
+from test_materials_v3 import FakeProvider, document, fixture, quantity
+from ingestion.materials_v3.assembly import assemble_reports
+from ingestion.materials_v3.batch import run_batch
+from ingestion.materials_v3.blocks import block_inputs, make_blocks, parse_source
+from ingestion.materials_v3.comparison import atomic_claims
+from ingestion.materials_v3.contract import (
+    CandidateError,
+    digest,
+    occurrence_key,
+    schema,
+    source_numbers,
+    validate_candidate,
+)
+from ingestion.materials_v3.ledger import Ledger, LeaseError
+from ingestion.materials_v3.pipeline import Budget, Pipeline
+from ingestion.materials_v3.providers import ResourceLimit
+from ingestion.materials_v3.registry import normalize_quantity
+from ingestion.materials_v3.runtime import admission
+
+
+def result_run(value, block):
+    validated = validate_candidate(value, [block])
+    validated.update(
+        block_id=block["block_id"],
+        input_blocks=[block],
+        occurrences=[occurrence_key(r, [block]) for r in value["results"]],
+    )
+    return {
+        "work_id": "synthetic:work",
+        "paper_id": "synthetic:paper",
+        "source_sha256": block["source_sha256"],
+        "job_key": "synthetic:job",
+        "blocks": [block],
+        "results": [validated],
+        "coverage": {"machine_text_complete": True},
+    }
+
+
+def test_summary_keeps_onset_240_distinct_from_zero_232():
+    value, block = fixture()
+    run = result_run(value, block)
+    out = assemble_reports([run], {f"{block['source_sha256']}:LaH10": "mat:synthetic"})
+    selected = out["materials"]["mat:synthetic"]["selected_result"]
+    assert selected["quantity"]["value"] == 240 and selected["criterion"] == "onset"
+    claims = atomic_claims(run)
+    assert [c["quantity"]["value"] for c in claims] == [240, 232]
+
+
+def test_two_points_in_one_sentence_have_distinct_source_occurrences():
+    value, block = fixture(
+        "LaH10 sample S1 pressure scan at 150 GPa loading: Tc 240 K and at 170 GPa Tc 250 K."
+    )
+    one, two = value["results"][0], deepcopy(value["results"][0])
+    one["properties"] = [one["properties"][0]]
+    two["local_id"] = "r2"
+    two["properties"] = [two["properties"][0]]
+    two["properties"][0]["quantity"] = quantity("250 K", 250)
+    two["conditions"][0]["quantity"] = quantity("170 GPa", 170, "GPa")
+    two["series_point"]["point_label_raw"] = "170 GPa"
+    assert occurrence_key(one, [block]) != occurrence_key(two, [block])
+    for row in (one, two):
+        row["properties"][0]["qualifiers"]["tc_definition"] = "unknown"
+    value["results"].append(two)
+    run = result_run(value, block)
+    out = assemble_reports([run], {f"{block['source_sha256']}:LaH10": "mat:synthetic"})
+    assert out["materials"]["mat:synthetic"]["support_counts"]["result_points"] == 2
+
+
+@pytest.mark.parametrize(
+    "mutate",
+    [
+        lambda row: row["event"].update(method_raw="Invented instrument"),
+        lambda row: row["sample"].update(form_raw="Invented epitaxial film"),
+        lambda row: row["series_point"].update(series_label_raw="Invented series"),
+        lambda row: row["subject"].update(name_raw="Invented material"),
+    ],
+)
+def test_raw_identity_and_method_need_their_own_source_quotes(mutate):
+    value, block = fixture()
+    mutate(value["results"][0])
+    with pytest.raises(CandidateError, match="not_in_evidence"):
+        validate_candidate(value, [block])
+
+
+def test_unit_cannot_be_invented_even_when_the_number_is_present():
+    value, block = fixture()
+    value["results"][0]["properties"][0]["quantity"]["raw_unit"] = "mK"
+    with pytest.raises(CandidateError, match="raw_unit_not_in_evidence"):
+        validate_candidate(value, [block])
+
+
+@pytest.mark.parametrize(
+    "raw,expected",
+    [("5 × 10^5 A/cm²", 500000), ("1.2 × 10⁻³", 0.0012), ("150-170 GPa", 170), ("2.5e-2", 0.025)],
+)
+def test_source_scientific_notation_is_read_without_evaluation(raw, expected):
+    assert expected in source_numbers(raw)
+
+
+def test_unit_conversion_overflow_is_unresolved():
+    q = normalize_quantity("critical_current_density", quantity("1e308 MA/cm2", 1e308, "MA/cm2"))
+    assert q["status"] == "unresolved" and q["value"] is None
+
+
+def test_dimensionless_definition_does_not_supply_missing_temperature_units():
+    q = normalize_quantity("coulomb_mu_star", quantity("0.1", 0.1, None))
+    assert q["status"] == "normalized" and q["unit"] == "1"
+    assert normalize_quantity("tc", quantity("240", 240, None))["status"] == "unresolved"
+
+
+def test_long_table_fragments_receive_exact_beginning_and_ending_context(tmp_path):
+    table = (
+        "<table><tr><th>Pressure GPa</th><th>Tc K</th></tr>"
+        + "".join(f"<tr><td>{i}</td><td>{i + 100}</td></tr>" for i in range(300))
+        + "<tfoot>All Tc values are resistive onset.</tfoot></table>"
+    )
+    path = tmp_path / "table.html"
+    path.write_text(table)
+    doc = parse_source(path, source_id="synthetic:table")
+    blocks = make_blocks(doc, max_tokens=128)
+    inputs = block_inputs(blocks[len(blocks) // 2], doc)
+    assert any("Pressure GPa" in b["text"] for b in inputs[1:])
+    assert any("resistive onset" in b["text"] for b in inputs[1:])
+    source = "\n".join(r["text"] for r in doc["records"])
+    assert all(source[b["source_start"] : b["source_end"]] == b["text"] for b in inputs)
+
+
+def test_context_only_result_is_rejected():
+    value, block = fixture()
+    context = {**block, "block_role": "context"}
+    target = {
+        **block,
+        "block_id": "b-other",
+        "text": "No result in this target.",
+        "block_role": "target",
+    }
+    with pytest.raises(CandidateError, match="context_only"):
+        validate_candidate(value, [target, context])
+
+
+def test_independent_connection_reclaim_fences_all_old_writes(tmp_path):
+    path = tmp_path / "ledger.sqlite"
+    first, second = Ledger(path), Ledger(path)
+    first.enqueue("j", "c", "i")
+    old = first.claim("j", now=1, lease_seconds=1)
+    current = second.claim("j", lease_seconds=60)
+    for call in (
+        lambda: first.heartbeat("j", old),
+        lambda: first.record_attempt("j", old, "b", "validated", {}),
+        lambda: first.put_block("j", old, {"block_id": "b"}, "empty", {}),
+    ):
+        with pytest.raises(LeaseError, match="stale"):
+            call()
+    second.complete("j", current, {"coverage": {"machine_text_complete": True}})
+    first.close()
+    second.close()
+
+
+def test_resource_failure_is_not_retried_as_transport_failure(tmp_path):
+    class Exhausted(FakeProvider):
+        def generate(self, messages):
+            self.calls += 1
+            raise ResourceLimit("synthetic_memory_limit")
+
+    provider, ledger = Exhausted(), Ledger(tmp_path / "ledger.sqlite")
+    out = Pipeline(provider, ledger, budget=Budget(max_tokens_per_block=128)).run(
+        document(tmp_path, "No target claim. " * 1000), paper_id="p", work_id="w"
+    )
+    assert provider.calls == 1 and not out["coverage"]["machine_text_complete"]
+    assert out["attempts"][0]["status"] == "resource_exhausted"
+    assert len(out["blocks"]) > 1 and set(out["terminal"].values()) == {"resource_exhausted"}
+    ledger.close()
+
+
+def test_unfrozen_blind_batch_fails_before_loading_or_generating(tmp_path):
+    provider, ledger = FakeProvider(), Ledger(tmp_path / "ledger.sqlite")
+    with pytest.raises(ValueError, match="frozen_manifest"):
+        run_batch(
+            {"papers": []},
+            provider,
+            ledger,
+            split="blind_test",
+            load_document=lambda p: None,
+            publish=lambda p, r: None,
+        )
+    assert provider.calls == 0
+    ledger.close()
+
+
+def test_batch_reuses_provider_and_checkpoints_two_distinct_sources(tmp_path):
+    provider, ledger = FakeProvider(), Ledger(tmp_path / "ledger.sqlite")
+    docs = [document(tmp_path, text="No target claim. " + str(i)) for i in range(2)]
+    papers = [
+        {
+            "paper_id": str(i),
+            "work_id": "w" + str(i),
+            "split": "development",
+            "main_text_sha256": d["source_sha256"],
+            "content_manifest_sha256": d["manifest_sha256"],
+        }
+        for i, d in enumerate(docs)
+    ]
+    manifest = {"papers": papers, "manifest_sha256": "synthetic-unfrozen-development"}
+    args = dict(
+        split="development",
+        load_document=lambda p: docs[int(p["paper_id"])],
+        publish=lambda p, r: r["job_key"],
+    )
+    one = run_batch(manifest, provider, ledger, **args)
+    two = run_batch(manifest, provider, ledger, **args)
+    assert one == two and len(one["outputs"]) == provider.calls == 2
+    ledger.close()
+
+
+def test_mini_admission_uses_new_9b_profile_without_relaxing_old_35b_profile():
+    base = {
+        "supported": True,
+        "total_memory_bytes": 48 * 1024**3,
+        "reclaimable_memory_estimate_bytes": 26 * 1024**3,
+    }
+    admission(base)
+    with pytest.raises(ValueError, match="headroom"):
+        admission({**base, "reclaimable_memory_estimate_bytes": 19 * 1024**3})
+    with pytest.raises(ValueError, match="headroom"):
+        admission(base, budget_gib=32, headroom_gib=12, expected_peak_gib=24)
+    admission(
+        {**base, "reclaimable_memory_estimate_bytes": 38 * 1024**3},
+        budget_gib=32,
+        headroom_gib=12,
+        expected_peak_gib=24,
+    )
+
+
+def test_documented_and_packaged_schemas_are_identical():
+    from pathlib import Path
+
+    root = Path(__file__).resolve().parents[2]
+    documented = json.loads(
+        (root / "docs/schemas/materials-ner-candidate-v3.0.schema.json").read_bytes()
+    )
+    assert digest(documented) == digest(schema())
+
+
+def test_equation_layout_tables_pack_as_text_and_nested_data_tables_stay_atomic(tmp_path):
+    path = tmp_path / "paper.html"
+    path.write_text(
+        '<p>Introduction.</p><table class="ltx_equation"><tr><td><math alttext="T_c=240 K">ignore</math></td></tr></table>'
+        '<p>Methods.</p><table class="ltx_tabular"><tr><th>P GPa</th><td><table><tr><td>150</td></tr></table></td></tr><tfoot>onset</tfoot></table><p>Conclusion.</p>'
+    )
+    doc = parse_source(path, source_id="synthetic:equation")
+    tables = [r for r in doc["records"] if r["kind"] == "table"]
+    assert len(tables) == 1 and all(t in tables[0]["text"] for t in ("P GPa", "150", "onset"))
+    blocks = make_blocks(doc)
+    assert len(blocks) == 3 and "T_c=240 K" in blocks[0]["text"] and "Methods." in blocks[0]["text"]
+
+
+def test_scientific_coefficient_and_exponent_are_not_quantity_witnesses():
+    assert source_numbers("1.2 × 10^-3") == [0.0012]
+    assert source_numbers("5 \\times 10^{5} A/cm²") == [500000]
+    assert source_numbers("1.2 × 1000") == [1.2, 1000]
+
+
+def test_condition_order_and_unit_spellings_do_not_change_semantic_scoring():
+    value, block = fixture(
+        "LaH10 sample S1 pressure scan at 150 GPa (1500 kbar) loading under 10 T: onset Tc 240 K; zero Tc 232 K."
+    )
+    field = deepcopy(value["results"][0]["conditions"][0])
+    field.update(key="magnetic_field", quantity=quantity("10 T", 10, "T"))
+    value["results"][0]["conditions"].append(field)
+    changed = deepcopy(value)
+    changed["results"][0]["conditions"][0]["quantity"] = quantity("1500 kbar", 1500, "kbar")
+    changed["results"][0]["conditions"].reverse()
+    assert atomic_claims(result_run(value, block)) == atomic_claims(result_run(changed, block))
+
+
+def test_openai_length_failure_retains_raw_text_and_all_usage(monkeypatch):
+    import httpx
+    from ingestion.materials_v3.providers import HTTPProvider, OutputLimit, ProviderConfig
+
+    monkeypatch.setenv("OPENAI_API_KEY", "synthetic-test-key")
+    body = {
+        "id": "synthetic-response",
+        "status": "incomplete",
+        "incomplete_details": {"reason": "max_output_tokens"},
+        "output": [
+            {"type": "message", "content": [{"type": "output_text", "text": '{"results":['}]}
+        ],
+        "usage": {
+            "input_tokens": 100,
+            "output_tokens": 4096,
+            "output_tokens_details": {"reasoning_tokens": 12},
+            "input_tokens_details": {"cached_tokens": 20},
+        },
+    }
+    with httpx.Client(
+        transport=httpx.MockTransport(lambda _: httpx.Response(200, json=body))
+    ) as client:
+        provider = HTTPProvider(ProviderConfig("openai", "gpt-6.1-sol"), client=client)
+        with pytest.raises(OutputLimit) as error:
+            provider.generate([])
+    receipt = error.value.receipt
+    assert (
+        receipt.text,
+        receipt.input_tokens,
+        receipt.output_tokens,
+        receipt.reasoning_tokens,
+        receipt.cached_tokens,
+    ) == ('{"results":[', 100, 4096, 12, 20)
+    assert receipt.finish_reason == "length"
+
+
+@pytest.mark.parametrize("finish", ["stop", "length"])
+def test_mlx_uses_terminal_metadata_and_preserves_truncated_receipt(monkeypatch, finish):
+    import sys
+    from types import SimpleNamespace
+    from ingestion.materials_v3.providers import MLXProvider, OutputLimit, Response
+
+    core = SimpleNamespace(get_peak_memory=lambda: 1234)
+
+    def stream(*args, **kwargs):
+        assert kwargs["prefill_step_size"] == 512
+        kwargs["prompt_progress_callback"](0, 3)
+        yield SimpleNamespace(text="{", generation_tokens=1, finish_reason=None)
+        yield SimpleNamespace(text="}", generation_tokens=2, finish_reason=finish)
+
+    for name, module in {
+        "mlx": SimpleNamespace(core=core),
+        "mlx.core": core,
+        "mlx_lm": SimpleNamespace(stream_generate=stream),
+        "mlx_lm.sample_utils": SimpleNamespace(make_sampler=lambda **_: None),
+    }.items():
+        monkeypatch.setitem(sys.modules, name, module)
+    provider = MLXProvider.__new__(MLXProvider)
+    provider.config = FakeProvider.config.__class__(
+        **{**FakeProvider.config.__dict__, "max_output_tokens": 2}
+    )
+    provider.model, provider.guard = None, lambda: None
+    provider.tokenizer = SimpleNamespace(
+        apply_chat_template=lambda *args, **kwargs: "prompt", encode=lambda _: [1, 2, 3]
+    )
+    if finish == "length":
+        with pytest.raises(OutputLimit) as error:
+            provider.generate([])
+        receipt = error.value.receipt
+    else:
+        receipt = provider.generate([])
+    assert isinstance(receipt, Response) and receipt.text == "{}" and receipt.output_tokens == 2
+    assert receipt.finish_reason == finish
+
+
+@pytest.mark.parametrize("input_tokens,exceeded", [(12288, False), (12289, True)])
+def test_openai_observed_context_budget_is_enforced_and_retains_the_paid_response(
+    monkeypatch, input_tokens, exceeded
+):
+    import httpx
+    from ingestion.materials_v3.providers import HTTPProvider, OutputLimit, ProviderConfig
+
+    monkeypatch.setenv("OPENAI_API_KEY", "synthetic-test-key")
+    body = {
+        "id": "synthetic-response",
+        "model": "gpt-6.1-sol",
+        "status": "completed",
+        "output": [{"type": "message", "content": [{"type": "output_text", "text": "{}"}]}],
+        "usage": {"input_tokens": input_tokens, "output_tokens": 2},
+    }
+    with httpx.Client(
+        transport=httpx.MockTransport(lambda _: httpx.Response(200, json=body))
+    ) as client:
+        provider = HTTPProvider(ProviderConfig("openai", "gpt-6.1-sol"), client=client)
+        if exceeded:
+            with pytest.raises(
+                OutputLimit, match="observed_input_context_budget_exceeded"
+            ) as error:
+                provider.generate([])
+            result = error.value.receipt
+            assert result.finish_reason == "input_limit" and result.metadata["generation_attempted"]
+        else:
+            result = provider.generate([])
+            assert result.metadata["input_context_budget_verified"] is True
+    assert result.text == "{}" and result.input_tokens == input_tokens
+    assert result.metadata["actual_model"] == "gpt-6.1-sol"
+
+
+def test_usage_keeps_paid_context_rejection_but_excludes_pre_generation_rejection():
+    from ingestion.materials_v3.statistics import run_statistics
+
+    run = {
+        "terminal": {"b-paid": "output_limit", "b-prefill": "output_limit"},
+        "attempts": [
+            {
+                "sequence": 1,
+                "status": "output_limit",
+                "receipt": {
+                    "finish_reason": "input_limit",
+                    "text": "{}",
+                    "input_tokens": 12514,
+                    "output_tokens": 3068,
+                    "reasoning_tokens": 12,
+                    "cached_tokens": 200,
+                    "wall_call_seconds": 17,
+                    "metadata": {"generation_attempted": True},
+                },
+            },
+            {
+                "sequence": 1,
+                "status": "output_limit",
+                "receipt": {
+                    "finish_reason": "input_limit",
+                    "text": "",
+                    "input_tokens": 14000,
+                    "output_tokens": 0,
+                    "wall_call_seconds": 0.1,
+                    "metadata": {"generation_attempted": False},
+                },
+            },
+        ],
+    }
+    measured = run_statistics(run)
+    assert measured["attempts"] == 2 and measured["generation_attempts"] == 1
+    assert measured["known_tokens"] == {
+        "input_tokens": 12514,
+        "output_tokens": 3068,
+        "reasoning_tokens": 12,
+        "cached_tokens": 200,
+    }
+    assert measured["first_response_json"] == {"valid": 1, "denominator": 1, "rate": 1}
+    assert measured["provider_call_seconds"] == 17.1 and measured["length_failures"] == 2
+    assert measured["cost_usd"] is None
+
+
+def test_usage_preserves_legacy_receipts_when_generation_flag_is_absent():
+    from ingestion.materials_v3.statistics import run_statistics
+
+    run = {
+        "terminal": {"b-old": "validated"},
+        "attempts": [
+            {
+                "sequence": 1,
+                "status": "output_limit",
+                "receipt": {"finish_reason": "input_limit", "text": "", "input_tokens": 14000},
+            },
+            {
+                "sequence": 1,
+                "status": "validated",
+                "receipt": {"text": "{}", "input_tokens": 100, "output_tokens": 2},
+            },
+        ],
+    }
+    measured = run_statistics(run)
+    assert measured["generation_attempts"] == 1
+    assert measured["known_tokens"]["input_tokens"] == 100
+    assert measured["attempts_missing_token_usage"] == 0
+
+
+def test_model_prompt_rejects_the_empty_grounding_arrays_seen_in_actual_9b_output():
+    from jsonschema import Draft202012Validator
+    from ingestion.materials_v3.prompt import messages
+
+    from test_materials_v3_wire import compact_fixture
+
+    value, block = compact_fixture()
+    advertised = json.loads(messages([block])[1]["content"])["output_schema"]
+    Draft202012Validator.check_schema(advertised)
+    value["results"][0]["subject"]["evidence"] = []
+    errors = list(Draft202012Validator(advertised).iter_errors(value))
+    assert any(list(e.absolute_path) == ["results", 0, "subject", "evidence"] for e in errors)
+
+
+def test_model_schema_requires_program_bound_offsets_but_keeps_historical_exact_offsets():
+    from jsonschema import Draft202012Validator
+    from ingestion.materials_v3.contract import extraction_schema
+
+    value, block = fixture()
+    from ingestion.materials_v3.contract import evidences
+
+    for evidence in evidences(value):
+        evidence["quote_start_span_id"] = "S0"
+    proof = value["results"][0]["subject"]["evidence"][0]
+    proof.update(char_start=0, char_end=len(block["text"]))
+    validate_candidate(value, [block])
+    assert list(Draft202012Validator(extraction_schema()).iter_errors(value))
+    with pytest.raises(CandidateError, match="subject/evidence/0/char_start:type"):
+        validate_candidate(value, [block], model_output=True)
+    proof.update(char_start=None, char_end=None)
+    Draft202012Validator(extraction_schema()).validate(value)
+    validate_candidate(value, [block], model_output=True)
+
+
+def test_nullable_series_repair_names_the_invalid_condition_key_instead_of_only_anyof():
+    value, block = fixture()
+    value["results"][0]["series_point"]["scan_variables"] = ["pressure"]
+    with pytest.raises(CandidateError) as error:
+        validate_candidate(value, [block])
+    assert any(
+        e.startswith(
+            "schema:results/0/series_point/scan_variables/0:enum:allowed=measurement_pressure"
+        )
+        for e in error.value.errors
+    )
+    assert "schema:results/0/series_point:type" not in error.value.errors
+
+
+def test_repeated_pressure_in_loading_and_unloading_has_distinct_explicit_source_anchors():
+    from ingestion.materials_v3.contract import bind_evidence
+    from ingestion.materials_v3.locators import source_spans
+
+    text = "Loading at 150 GPa gives Tc 240 K. Unloading at 150 GPa gives Tc 236 K."
+    block = {"block_id": "b-paths", "text": text, "source_sha256": "a" * 64, "source_start": 1000}
+    spans = source_spans(block)
+    one, two = [
+        bind_evidence(
+            {
+                "block_id": block["block_id"],
+                "quote": "150 GPa",
+                "role": "condition",
+                "quote_start_span_id": span["id"],
+            },
+            {block["block_id"]: block},
+        )
+        for span in spans
+    ]
+    assert one["source_start"] == 1000 + text.index("150 GPa")
+    assert two["source_start"] == 1000 + text.rindex("150 GPa")
+    assert one["source_start"] != two["source_start"]
+    with pytest.raises(CandidateError, match="ambiguous"):
+        bind_evidence(
+            {"block_id": "b-paths", "quote": "150 GPa", "role": "condition"}, {"b-paths": block}
+        )
+
+
+def test_anchor_does_not_choose_between_two_matches_inside_the_same_source_span():
+    from ingestion.materials_v3.contract import bind_evidence
+
+    block = {
+        "block_id": "b-repeat",
+        "text": "150 GPa and 150 GPa in the same clause.",
+        "source_sha256": "a" * 64,
+    }
+    with pytest.raises(CandidateError, match="ambiguous"):
+        bind_evidence(
+            {
+                "block_id": "b-repeat",
+                "quote": "150 GPa",
+                "role": "condition",
+                "quote_start_span_id": "S0",
+            },
+            {"b-repeat": block},
+        )
+
+
+def test_unknown_anchor_and_contradictory_historical_offset_are_rejected():
+    from ingestion.materials_v3.contract import bind_evidence
+
+    text = "150 GPa here. 150 GPa there."
+    block = {"block_id": "b-scope", "text": text, "source_sha256": "a" * 64}
+    proof = {
+        "block_id": "b-scope",
+        "quote": "150 GPa",
+        "role": "condition",
+        "quote_start_span_id": "S99",
+    }
+    with pytest.raises(CandidateError, match="unknown_evidence_start_span"):
+        bind_evidence(proof, {"b-scope": block})
+    proof.update(quote_start_span_id="S1", char_start=0, char_end=7)
+    with pytest.raises(CandidateError, match="outside_source_span"):
+        bind_evidence(proof, {"b-scope": block})
+
+
+def test_table_cell_anchor_distinguishes_identical_values_without_mutating_source():
+    from ingestion.materials_v3.contract import bind_evidence
+    from ingestion.materials_v3.locators import source_spans
+    from ingestion.materials_v3.prompt import messages
+
+    text = "Pressure\tTc\n150 GPa\t240 K\n150 GPa\t236 K"
+    block = {"block_id": "b-table", "text": text, "kind": "table", "source_sha256": "a" * 64}
+    span = next(s for s in source_spans(block) if s["start"] == text.rindex("150 GPa"))
+    proof = {
+        "block_id": "b-table",
+        "quote": "150 GPa",
+        "role": "condition",
+        "quote_start_span_id": span["id"],
+    }
+    assert bind_evidence(proof, {"b-table": block})["char_start"] == text.rindex("150 GPa")
+    visible = json.loads(messages([block])[1]["content"])["source_groups"][0]["text"]
+    assert "[R1]150 GPa" in visible and "[R2]150 GPa" in visible
+    assert block["text"] == text
+
+
+def test_quote_may_cross_a_later_marker_but_must_be_original_verbatim_text():
+    from ingestion.materials_v3.contract import bind_evidence
+
+    text = "See Ref. 9 for this result."
+    block = {"block_id": "b-cross", "text": text, "source_sha256": "a" * 64}
+    proof = {
+        "block_id": "b-cross",
+        "quote": "Ref. 9",
+        "role": "relation",
+        "quote_start_span_id": "S0",
+    }
+    assert bind_evidence(proof, {"b-cross": block})["char_start"] == text.index("Ref.")
+    proof["quote"] = "Ref. [S1]9"
+    with pytest.raises(CandidateError, match="quote_missing"):
+        bind_evidence(proof, {"b-cross": block})
+
+
+def test_missing_result_fields_are_named_for_the_real_paper_repair():
+    value, block = fixture()
+    value["results"][0].pop("outcome_evidence")
+    with pytest.raises(CandidateError) as error:
+        validate_candidate(value, [block])
+    assert "schema:results/0/outcome_evidence:required" in error.value.errors
+
+
+def test_new_model_output_requires_span_ids_while_historical_quotes_remain_valid():
+    value, block = fixture()
+    validate_candidate(value, [block])
+    with pytest.raises(CandidateError) as error:
+        validate_candidate(value, [block], model_output=True)
+    assert "schema:results/0/subject/evidence/0/quote_start_span_id:required" in error.value.errors
+
+
+@pytest.mark.parametrize("node", ["condition", "property"])
+def test_reported_value_missing_names_the_item_and_does_not_silently_drop_it(node):
+    value, block = fixture()
+    row = value["results"][0]
+    if node == "condition":
+        item = deepcopy(row["conditions"][0])
+        item.update(key="measurement_current", quantity=None, qualitative=None)
+        row["conditions"].append(item)
+        path = "results/0/conditions/1"
+    else:
+        item = row["properties"][0]
+        item.update(quantity=None, qualitative=None)
+        path = "results/0/properties/0"
+    original = deepcopy(value)
+    with pytest.raises(CandidateError) as error:
+        validate_candidate(value, [block])
+    assert f"schema:{path}:oneOf" in error.value.errors
+    assert (
+        f"reported_value_missing:{path}:omit_item_if_source_reports_no_value" in error.value.errors
+    )
+    assert value == original
+    if node == "condition":
+        row["conditions"].pop()
+        validate_candidate(value, [block])
+
+
+def test_reported_value_with_two_representations_is_rejected_with_specific_feedback():
+    value, block = fixture()
+    value["results"][0]["conditions"][0]["qualitative"] = {"raw_text": "150 GPa"}
+    with pytest.raises(CandidateError) as error:
+        validate_candidate(value, [block])
+    assert (
+        "reported_value_has_two_representations:results/0/conditions/0:keep_quantity_or_qualitative"
+        in error.value.errors
+    )
+
+
+@pytest.mark.parametrize("model,modern", [("gemini-3.5-flash", True), ("gemini-2.5-flash", False)])
+@pytest.mark.parametrize("input_tokens,exceeded", [(12, False), (12288, False), (12289, True)])
+def test_gemini_reads_existing_project_setting_and_uses_model_specific_thinking(
+    monkeypatch, model, modern, input_tokens, exceeded
+):
+    from types import SimpleNamespace
+    from google import genai
+    from ingestion.materials_v3.providers import HTTPProvider, OutputLimit, ProviderConfig
+
+    for key in ("GCP_PROJECT_ID", "GOOGLE_CLOUD_PROJECT"):
+        monkeypatch.delenv(key, raising=False)
+    monkeypatch.setenv("GCP_PROJECT", "synthetic-existing-project")
+    captured = {}
+
+    class Client:
+        def __init__(self, **kwargs):
+            captured.update(kwargs)
+            self.models = self
+
+        def __enter__(self):
+            return self
+
+        def __exit__(self, *args):
+            pass
+
+        def generate_content(self, **kwargs):
+            captured["generation"] = kwargs
+            return SimpleNamespace(
+                text="{}",
+                candidates=[],
+                model_version="synthetic-returned-model",
+                usage_metadata=SimpleNamespace(
+                    prompt_token_count=input_tokens,
+                    candidates_token_count=2,
+                    thoughts_token_count=3,
+                    cached_content_token_count=0,
+                ),
+            )
+
+    monkeypatch.setattr(genai, "Client", Client)
+    provider = HTTPProvider(ProviderConfig("gemini", model))
+    try:
+        input_messages = [{"content": "synthetic system"}, {"content": "synthetic input"}]
+        if exceeded:
+            with pytest.raises(
+                OutputLimit, match="observed_input_context_budget_exceeded"
+            ) as error:
+                provider.generate(input_messages)
+            result = error.value.receipt
+            assert result.finish_reason == "input_limit" and result.metadata["generation_attempted"]
+        else:
+            result = provider.generate(input_messages)
+            assert result.metadata["input_context_budget_verified"] is True
+    finally:
+        provider.client.close()
+    assert captured["project"] == "synthetic-existing-project"
+    config = captured["generation"]["config"]
+    if modern:
+        assert str(config.thinking_config.thinking_level).endswith("LOW")
+        assert config.thinking_config.thinking_budget is None and config.temperature is None
+    else:
+        assert config.thinking_config.thinking_budget == 0 and config.temperature == 0
+    assert result.reasoning_tokens == 3
+    assert result.input_tokens == input_tokens and result.text == "{}"
+    assert result.metadata["actual_model"] == "synthetic-returned-model"
+
+
+def test_model_snapshot_rejects_missing_files_before_loading(tmp_path):
+    from ingestion.materials_v3.providers import MODEL, REVISION
+    from ingestion.materials_v3.runtime import model_pin, verify_model
+
+    pin = model_pin()
+    assert pin["weights_bytes"] == 5950221072
+    manifest = tmp_path / "model-manifest.json"
+    manifest.write_text(
+        json.dumps({"model_id": MODEL, "revision": REVISION, "files": pin["files"][:-1]})
+    )
+    with pytest.raises(ValueError, match="incomplete"):
+        verify_model(tmp_path, manifest, REVISION)
+
+
+def test_correct_value_anchors_ignore_raw_quantity_quote_width():
+    value, block = fixture()
+    changed = deepcopy(value)
+    changed["results"][0]["properties"][0]["quantity"]["raw_text"] = "240"
+    assert (
+        atomic_claims(result_run(value, block))[0]["point"]
+        == atomic_claims(result_run(changed, block))[0]["point"]
+    )
+
+
+@pytest.mark.parametrize("mode,expected", [("empty", 1), ("invalid", 2), ("failure", 3)])
+def test_crash_after_attempt_receipt_preserves_success_and_retry_budget(
+    tmp_path, monkeypatch, mode, expected
+):
+    provider, ledger = FakeProvider(mode), Ledger(tmp_path / "ledger.sqlite")
+    pipeline, doc = Pipeline(provider, ledger), document(tmp_path)
+    original = ledger.put_block
+
+    def crash(*args, **kwargs):
+        raise RuntimeError("synthetic crash between attempt fsync and block fsync")
+
+    monkeypatch.setattr(ledger, "put_block", crash)
+    with pytest.raises(RuntimeError, match="synthetic crash"):
+        pipeline.run(doc, paper_id="p", work_id="w")
+    assert provider.calls == expected
+    monkeypatch.setattr(ledger, "put_block", original)
+    ledger.db.execute("UPDATE jobs SET expires=0 WHERE status='running'")
+    ledger.db.commit()
+    run = pipeline.run(doc, paper_id="p", work_id="w")
+    assert provider.calls == expected and len(run["attempts"]) == expected
+    assert run["coverage"]["machine_text_complete"] is (mode == "empty")
+    ledger.close()
+
+
+@pytest.mark.parametrize("mode", ["length", "resource"])
+def test_crash_after_limit_receipt_does_not_repeat_the_failed_parent(tmp_path, monkeypatch, mode):
+    from ingestion.materials_v3.providers import OutputLimit
+
+    class Limited(FakeProvider):
+        def generate(self, messages):
+            if self.calls == 0:
+                self.calls += 1
+                raise (
+                    OutputLimit("synthetic_length")
+                    if mode == "length"
+                    else ResourceLimit("synthetic_memory")
+                )
+            return super().generate(messages)
+
+    provider, ledger = Limited(), Ledger(tmp_path / "ledger.sqlite")
+    pipeline, doc = Pipeline(provider, ledger), document(tmp_path, "No target claim. " * 100)
+    original = ledger.put_block
+
+    def crash(*args, **kwargs):
+        raise RuntimeError("synthetic crash after limit receipt")
+
+    monkeypatch.setattr(ledger, "put_block", crash)
+    with pytest.raises(RuntimeError, match="synthetic crash"):
+        pipeline.run(doc, paper_id="p", work_id="w")
+    assert provider.calls == 1
+    monkeypatch.setattr(ledger, "put_block", original)
+    ledger.db.execute("UPDATE jobs SET expires=0 WHERE status='running'")
+    ledger.db.commit()
+    run = pipeline.run(doc, paper_id="p", work_id="w")
+    assert provider.calls == (3 if mode == "length" else 1)
+    assert len(run["attempts"]) == provider.calls
+    assert run["coverage"]["machine_text_complete"] is (mode == "length")
+    ledger.close()

@@ -1,0 +1,116 @@
+{
+  "version": "materials-v3-ui-qa/1",
+  "input_kind": "synthetic_fixture_only",
+  "real_extraction_used": false,
+  "states_verified": [
+    "candidate_warning",
+    "work_groups",
+    "onset_vs_zero",
+    "loading_unloading_and_replicates",
+    "negative_outcome_with_minimum_test_temperature",
+    "calculated_interval",
+    "unknown_pressure",
+    "explicit_ambient",
+    "property_origin_and_source_role",
+    "human_readable_page_table_row",
+    "failure_retry",
+    "collapse_abort",
+    "keyboard_horizontal_scroll",
+    "pressure_role_labels",
+    "calculation_and_synthesis_pressures_displayed_separately"
+  ],
+  "viewports": [
+    {
+      "width": 360,
+      "height": 900,
+      "document_width": 360,
+      "table_client_width": 260,
+      "table_scroll_width": 650
+    },
+    {
+      "width": 768,
+      "height": 1000,
+      "document_width": 768,
+      "table_client_width": 636,
+      "table_scroll_width": 650
+    },
+    {
+      "width": 1440,
+      "height": 1000,
+      "document_width": 1440,
+      "table_client_width": 1148,
+      "table_scroll_width": 1148
+    }
+  ],
+  "keyboard_horizontal_scroll_observed_pixels": 19.5,
+  "viewport_override_reset": true,
+  "temporary_tab_closed": true,
+  "temporary_servers_stopped": true,
+  "screenshots": [
+    {
+      "filename": "materials-v3-preview-desktop.jpg",
+      "sha256": "b351a7de8fb0beb67ebc51e9a49e3df15f52f2da0dba7d9aac22e43baa91ddf7"
+    },
+    {
+      "filename": "materials-v3-preview-mobile.jpg",
+      "sha256": "be30830d492ab715c09e452512f8d08ad1a909b319be8471a9f413ce1500df19"
+    },
+    {
+      "filename": "materials-v3-preview-tablet.jpg",
+      "sha256": "6d40ec378b3867f51810d6f22519c6ca735432a03730819fdaee98c680baea51"
+    }
+  ],
+  "final_pressure_role_verification": {
+    "viewports": [
+      {
+        "document_width": 1440,
+        "height": 1000,
+        "tables": [
+          {
+            "client_width": 1148,
+            "scroll_width": 1148
+          },
+          {
+            "client_width": 1148,
+            "scroll_width": 1148
+          }
+        ],
+        "width": 1440
+      },
+      {
+        "document_width": 360,
+        "height": 900,
+        "tables": [
+          {
+            "client_width": 260,
+            "scroll_width": 650
+          },
+          {
+            "client_width": 260,
+            "scroll_width": 650
+          }
+        ],
+        "width": 360
+      },
+      {
+        "document_width": 768,
+        "height": 1000,
+        "tables": [
+          {
+            "client_width": 636,
+            "scroll_width": 650
+          },
+          {
+            "client_width": 636,
+            "scroll_width": 650
+          }
+        ],
+        "width": 768
+      }
+    ],
+    "keyboard_scroll_pixels": 40,
+    "fixture_kind": "synthetic_only",
+    "real_extraction": false
+  },
+  "final_fixture_sha256": "716387035d88d1eb70b576d414af890b92533aef6d2eff149c9dd7290a176602"
+}

@@ -16,5 +16,6 @@ export function legacyDestination(pathname: string): string | null {
 
 export function isPrivatePage(pathname: string): boolean {
   const path = pathname.replace(/^\/sclib(?=\/|$)/, "") || "/";
-  return /^\/(auth|dashboard|login|register|forgot-password|reset-password|verify)(\/|$)/.test(path);
+  return /^\/(auth|dashboard|login|register|forgot-password|reset-password|verify)(\/|$)/.test(path)
+    || /^\/materials\/preview(\/|$)/.test(path);
 }

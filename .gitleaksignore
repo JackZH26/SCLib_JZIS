@@ -533,3 +533,7 @@ f3c7b9f01c7b174e96a55b425b1c9166f337e3cc:frontend/public/research-pilots/discove
 # Discovery research cycle: one static React recipe identifier, not a credential.
 # Review: docs/operations/SECRET_TRIAGE_DISCOVERY_RESEARCH_CYCLE_2026-10-06.md.
 cf3e7ed06ee09d908dcb254a1f2e8aaba4080597:frontend/lib/discovery-research-cycle.ts:generic-api-key:382
+
+# NER tokenizer preflight: verified content digest, not a credential.
+# Review: docs/operations/SECRET_TRIAGE_NER_RECEIPT_2026-10-13.md.
+35919294b89b3b229a2f0704958ec82190966292:docs/pilot/materials-ner-mgb2-forensics-2026-10-13.md:generic-api-key:27

@@ -43,6 +43,7 @@ import { MaterialProviderAvailabilityProvider } from "@/components/MaterialProvi
 import { materialStudyReading } from "@/lib/material-study-reading";
 import { RetainedHc2, RetainedTcCriteria } from "@/components/RetainedRecordScientificFields";
 import { retainedHc2 } from "@/lib/material-retained-record";
+import { MaterialReports } from "@/components/MaterialReports";
 
 export const dynamic = "force-dynamic";
 
@@ -206,6 +207,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
         <Fact label="Catalogue year" value={String(mat.arxiv_year ?? "—")} />
         <Fact label="Source links · not replications" value={materialSourceCountLabel(mat.material_semantics, mat.total_papers)} />
       </section>
+      {catalogueReadEligible && <MaterialReports key={mat.id} materialId={mat.id} />}
       {catalogueReadEligible && (() => {
         const reading = materialStudyReading(mat.id, selectedProperty(mat.property_evidence, "tc_max"));
         return reading ? <aside className="min-w-0 rounded-lg border border-sage-border bg-sage-surface p-4" aria-label="Related paper context">

@@ -64,6 +64,7 @@ const noIndexHeaders = [
 const noIndexPaths = [
   "/auth/:path*",
   "/dashboard/:path*",
+  "/materials/preview/:path*",
   "/forgot-password",
   "/login",
   "/register",

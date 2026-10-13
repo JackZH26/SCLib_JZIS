@@ -490,8 +490,34 @@ class SecurityWorkflowTests(unittest.TestCase):
                     "cf3e7ed06ee09d908dcb254a1f2e8aaba4080597:"
                     "frontend/lib/discovery-research-cycle.ts:generic-api-key:382"
                 ),
+                # Recomputed public NER preflight digest; exact historical line only.
+                (
+                    "35919294b89b3b229a2f0704958ec82190966292:"
+                    "docs/pilot/materials-ner-mgb2-forensics-2026-10-13.md:generic-api-key:27"
+                ),
             } | REVIEWED_FIXTURE_FINGERPRINTS | REVIEWED_SOURCE_DIGEST_FINGERPRINTS | REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS | REVIEWED_AB2H24_DIGEST_FINGERPRINTS | REVIEWED_LAH10_DIGEST_FINGERPRINTS,
         )
+
+    def test_ner_preflight_exception_recomputes_the_historical_public_digest(self) -> None:
+        commit = "35919294b89b3b229a2f0704958ec82190966292"
+        receipt_path = "docs/pilot/materials-ner-qwen3.5-9b-tokenizer.preflight.v7.json"
+        raw = subprocess.check_output(
+            ["git", "show", f"{commit}:{receipt_path}"], cwd=ROOT, timeout=10
+        )
+        receipt = json.loads(raw)
+        claimed = receipt.pop("receipt_sha256")
+        encoded = json.dumps(
+            receipt, ensure_ascii=False, sort_keys=True, separators=(",", ":"), allow_nan=False
+        ).encode()
+        self.assertEqual(claimed, hashlib.sha256(encoded).hexdigest())
+        doc = subprocess.check_output(
+            ["git", "show", f"{commit}:docs/pilot/materials-ner-mgb2-forensics-2026-10-13.md"],
+            cwd=ROOT, timeout=10,
+        ).decode()
+        self.assertIn(claimed, doc.splitlines()[26])
+        self.assertEqual(receipt["blocks"], 331)
+        self.assertEqual(receipt["over_budget_blocks"], 0)
+        self.assertFalse(receipt["model_loaded"])
 
     def test_original_delivery_request_id_exceptions_replay_historical_bytes(self) -> None:
         triage = json.loads((ROOT / "docs/reviews/2026-10-05/calculation-returns/historical-request-id-triage.json").read_text())

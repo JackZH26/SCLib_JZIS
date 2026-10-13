@@ -39,7 +39,7 @@ describe("legacy and canonical website routes", () => {
   });
 
   it("marks current auth and account pages private without redirecting", () => {
-    for (const path of ["/verify", "/auth/callback", "/dashboard/history", "/login"]) {
+    for (const path of ["/verify", "/auth/callback", "/dashboard/history", "/login", "/materials/preview/aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa/m"]) {
       expect(isPrivatePage(path)).toBe(true);
       const response = middleware(new NextRequest(`https://jzis.org${path}`));
       expect(response.headers.has("location")).toBe(false);
