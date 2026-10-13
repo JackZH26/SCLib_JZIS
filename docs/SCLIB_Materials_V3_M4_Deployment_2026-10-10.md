@@ -71,11 +71,13 @@ loading at 150 GPa. Its transition onset was 240 K; zero resistance was
 
 实际 Qwen tokenizer 必须对含 schema、上下文和 chat template 的完整 prompt 计数；共同 `cl100k_base` 只用于分块。CLI 在 input+output 超过 16k 时拒绝当前块并有界拆分，不截断。图像、PDF 旋转文字、表格版面缺口仍需要源审查，不能被 tokenizer 成功消除。
 
-本轮9B的[完整prompt预检](pilot/materials-ner-qwen3.5-9b-tokenizer.preflight.v2.json)使用固定snapshot的真实tokenizer和共用prompt `superconductivity-ner/3.0.3`：209块输入3,114–10,150 tokens，预留4,096输出后0块超16k。计数核对 `encode(formatted_chat)` 与 `BatchEncoding.input_ids`，不能用返回对象的字段数充当tokens。这是CPU分词结果，未加载权重；旧3.0.1/3.0.2预检独立保留。
+本轮9B的[完整prompt预检](pilot/materials-ner-qwen3.5-9b-tokenizer.preflight.v3.json)使用固定snapshot的真实tokenizer和共用prompt `superconductivity-ner/3.0.4`：209块输入3,901–10,937 tokens，预留4,096输出后0块超16k。计数核对 `encode(formatted_chat)` 与 `BatchEncoding.input_ids`，不能用返回对象的字段数充当tokens。这是CPU分词结果，该CPU计数不加载权重；旧3.0.1/3.0.2/3.0.3预检独立保留。
 
 Gemini首个真实合成生成及一次有限修复都出现 `quote_offset_mismatch`。当前prompt让三个provider优先返回唯一的原文quote、将offset设为null，由共用binder定位；重复quote先补邻近原文，不接受猜测位置。3.0.3把失败位置精确到JSON字段路径，仅压缩修复输入中的合法JSON排版，原始输出仍留在ledger；重复键/非有限数值/非法JSON不会被压缩成另一份候选。此改变没有放宽quote校验，也不自动改写已失败输出。prompt更新后要重新生成runtime lock和开发输出；旧版本不能混入最终对照。
 
 云修复试验收到12,514输入tokens，预留4,096输出后超过声明的16,384门槛。HTTP providers现按返回的实际输入token数拒绝接纳这种结果，保留已付费响应/usage并进入有界split，不能冒称生成前已阻止请求。缺token usage标记为未核验。正式冻结前仍需各provider原生计数预检与实际校准；Gemini额外schema元数据会影响计数，不能用Qwen tokenizer证明云预算通过。
+
+2026-10-13 Mini已报告原认证、旧worker停止和共享锁短暂占用成功；此前授权仍有效，无需重复原stop脚本。先以合法拥有共享锁和私有文件访问权限的当前账号执行受监督本机CLI；长期服务账号Metal访问、NER grant/mTLS另行验收。6755版本的实际smoke加载成功且完成2次生成，Metal约5.66GiB，但引用/结构/缺失值语义未通过，不能直接进入10篇批次。3.0.4针对实际失败展示完整科学schema，模型字符offset仅允许null、保留每个显式Tc判据、禁止由缺失推断未测量，anyOf诊断给出字段路径。此修复不放宽引用或数值校验；每次新代码生成新runtime lock、使用新ledger job identity，并保留旧响应与失败。更新版有界复验通过后再运行开发批次。
 
 ## 50 篇分批运行
 
@@ -110,7 +112,7 @@ Gemini首个真实合成生成及一次有限修复都出现 `quote_offset_misma
 
 先 10 开发，再 10 验证；校准后冻结配置，再运行 `blind_test` 或最终 `all`。后两种模式在生成前强制核查 frozen manifest、族/挑战配额、Work、附件和传输范围。正文/附件共用每篇 budget；资源失败会停止本批剩余 capture/work。纸面总数、machine-text complete、end-to-end complete 和科学接纳分别记录。
 
-云模型在协调方运行，Mini 不需要云密钥。OpenAI 固定 `gpt-6.1-sol`、Responses、low reasoning、strict schema、`store=false`；[Gemini candidate](pilot/materials-ner-gemini.candidate.v1.json) 只是当前仓库默认，实际旧部署型号仍须核对。标准环境变量或既有秘密管理提供凭据，不能粘贴到聊天、文档或 Git。记录实际返回 model、tokens、reasoning/cache 与错误；费用未知保持 null，不能把失败当零成本。当前尚无实际云请求。
+云模型在协调方运行，Mini 不需要云密钥。OpenAI 固定 `gpt-6.1-sol`、Responses、low reasoning、strict schema、`store=false`；[Gemini candidate](pilot/materials-ner-gemini.candidate.v1.json) 只是当前仓库默认，实际旧部署型号仍须核对。标准环境变量或既有秘密管理提供凭据，不能粘贴到聊天、文档或 Git。记录实际返回 model、tokens、reasoning/cache 与错误；费用未知保持 null，不能把失败当零成本。当前尚无真实论文云NER结果。
 
 本轮已只读核对VPS2的旧配置为 `gemini-3.5-flash`、项目变量 `GCP_PROJECT`；适配器保留 `GCP_PROJECT_ID` / `GOOGLE_CLOUD_PROJECT` 并兼容该现用变量。Gemini 3使用 `thinking_level`，省略已不推荐的sampling参数；旧版本保持原budget控制。参数依据[Google官方指南](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/guides/gemini-3-5-flash)。VPS2独立ingestion workload identity凭据交换已通过，隔离私有目录共调用5次合成generation：3次LOW、2次MINIMAL，包括两组各一次有限修复；4份保存完整响应的型号均为 `gemini-3.5-flash`，1次输出触顶的调试记录未保存截断response，仅计为不完整失败。全部未通过候选校验/输出门槛，另一次修复的预留上下文门槛也未满足；没有合成通过或论文NER结果。SDK本次为1.73.0，区别于Mini锁定的2.11.0，实际包版本和原始失败分别留档。候选基线仍为LOW，MINIMAL并未验收或替代正式配置。没有恢复生产自动化或写入数据库。OpenAI官方已列出[GPT 6.1 Sol](https://developers.openai.com/api/docs/models/gpt-6.1-sol)及Responses/structured outputs；本机和已核对的VPS2环境未发现OpenAI标准API凭据，账户可用性尚未验证。
 

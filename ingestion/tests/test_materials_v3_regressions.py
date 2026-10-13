@@ -457,6 +457,43 @@ def test_usage_preserves_legacy_receipts_when_generation_flag_is_absent():
     assert measured["attempts_missing_token_usage"] == 0
 
 
+def test_model_prompt_rejects_the_empty_grounding_arrays_seen_in_actual_9b_output():
+    from jsonschema import Draft202012Validator
+    from ingestion.materials_v3.prompt import messages
+
+    value, block = fixture()
+    advertised = json.loads(messages([block])[1]["content"])["output_schema"]
+    Draft202012Validator.check_schema(advertised)
+    value["results"][0]["subject"]["evidence"] = []
+    errors = list(Draft202012Validator(advertised).iter_errors(value))
+    assert any(list(e.absolute_path) == ["results", 0, "subject", "evidence"] for e in errors)
+
+
+def test_model_schema_requires_program_bound_offsets_but_keeps_historical_exact_offsets():
+    from jsonschema import Draft202012Validator
+    from ingestion.materials_v3.contract import extraction_schema
+
+    value, block = fixture()
+    proof = value["results"][0]["subject"]["evidence"][0]
+    proof.update(char_start=0, char_end=len(block["text"]))
+    validate_candidate(value, [block])
+    assert list(Draft202012Validator(extraction_schema()).iter_errors(value))
+    with pytest.raises(CandidateError, match="subject/evidence/0/char_start:type"):
+        validate_candidate(value, [block], model_output=True)
+    proof.update(char_start=None, char_end=None)
+    Draft202012Validator(extraction_schema()).validate(value)
+    validate_candidate(value, [block], model_output=True)
+
+
+def test_nullable_series_repair_names_the_invalid_condition_key_instead_of_only_anyof():
+    value, block = fixture()
+    value["results"][0]["series_point"]["scan_variables"] = ["pressure"]
+    with pytest.raises(CandidateError) as error:
+        validate_candidate(value, [block])
+    assert "schema:results/0/series_point/scan_variables/0:enum" in error.value.errors
+    assert "schema:results/0/series_point:type" not in error.value.errors
+
+
 @pytest.mark.parametrize("model,modern", [("gemini-3.5-flash", True), ("gemini-2.5-flash", False)])
 @pytest.mark.parametrize("input_tokens,exceeded", [(12, False), (12288, False), (12289, True)])
 def test_gemini_reads_existing_project_setting_and_uses_model_specific_thinking(

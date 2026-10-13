@@ -10,6 +10,12 @@ VPS2隔离私有目录用现有ingestion workload identity完成凭据交换，G
 
 已通过只读公开paper API取得50/50候选的现有记录快照，共166个返回材料occurrence。见[字段基线](pilot/materials-ner-50.public-baseline.v1.json)：Tc字段缺键71、压力85、配对151、结构138、λ149、ω_log161。按旧字段的实际名称计数，布尔false与数值0分开；保留来源/occurrence visibility和每次响应SHA。这是当前公开论文projection的字段缺失，不证明原文没有值或缺失均可补，也不是全库Materials页面快照。人工可补性分母及材料汇总页基线仍待完成。
 
+## 2026-10-13 实际模型复验
+
+Mini任务报告原维护认证、旧worker实际停止及共享锁检查通过。6755a4c版本已真正加载固定9B模型并生成2次合成响应（初始+1次修复），输入tokens为2,799/4,386、输出2,392/2,714，provider耗时约126.8秒；Metal最高记录6,076,070,522字节（约5.66GiB）。这证明本机加载和生成可执行，未证明完整论文峰值或抽取质量。两份输出未通过严格校验：材料引用为空、从未提到的Hc2推造explicitly_not_measured、序列字段错误，并有遗漏zero-resistance Tc和猜测offset。失败与原始输出保留，真实论文完成仍为0。
+
+共用prompt更新为3.0.4：向模型提供完整科学约束，传输schema仍为API支持的subset；模型offset只允许null、由唯一原文quote绑定位置。要求各字段引用非空、未提到的属性省略、explicitly_not_measured须有明确原文，保留每个Tc判据和加载路径。nullable对象的修复错误展开到具体字段；历史正确整数locator的存储/回放能力保留。统计修复已使生成后input-limit的付费响应计入tokens，而生成前拒绝仍排除。针对性99项NER测试通过，当前3.0.4的209块真实tokenizer预检为3,901–10,937输入，加4,096预留输出0超限；[新回执](pilot/materials-ner-qwen3.5-9b-tokenizer.preflight.v3.json)仍属于CPU预检。新版本真实smoke、ledger复用、10篇开发、正式50篇三模型及科学验收继续分别记录。
+
 ## 已实现与实际验证
 
 | 部分 | 已实现 | 实际验证与边界 |

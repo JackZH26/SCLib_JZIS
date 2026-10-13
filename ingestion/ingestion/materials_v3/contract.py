@@ -33,6 +33,14 @@ def schema() -> dict:
     return value
 
 
+def extraction_schema() -> dict:
+    """Full model instructions; character positions are bound by the program."""
+    value = deepcopy(schema())
+    for key in ("char_start", "char_end"):
+        value["$defs"]["evidence"]["properties"][key] = {"type": "null"}
+    return value
+
+
 def provider_schema() -> dict:
     """Strict transport subset; omitted science constraints run after generation."""
 
@@ -66,13 +74,48 @@ def provider_schema() -> dict:
             properties = out.get("properties", {})
             originally_required = set(value.get("required", []))
             for key in properties:
-                if key not in originally_required and "enum" not in properties[key]:
+                if (
+                    key not in originally_required
+                    and "enum" not in properties[key]
+                    and properties[key].get("type") != "null"
+                ):
                     properties[key] = {"anyOf": [properties[key], {"type": "null"}]}
             out["required"] = list(properties)
             out["additionalProperties"] = False
         return out
 
-    return convert(deepcopy(schema()))
+    return convert(extraction_schema())
+
+
+def schema_errors(value, *, model_output=False):
+    """Expose the failed field inside a nullable object rather than only anyOf."""
+
+    def details(error):
+        if error.validator == "anyOf" and error.context:
+            relevant = [
+                child
+                for child in error.context
+                if not (
+                    child.validator == "type"
+                    and child.absolute_path == error.absolute_path
+                    and isinstance(error.instance, (dict, list))
+                )
+            ]
+            if relevant:
+                for child in relevant:
+                    yield from details(child)
+                return
+        yield f"schema:{'/'.join(map(str, error.absolute_path))}:{error.validator}"
+
+    return list(
+        dict.fromkeys(
+            message
+            for error in Draft202012Validator(
+                extraction_schema() if model_output else schema()
+            ).iter_errors(value)
+            for message in details(error)
+        )
+    )
 
 
 class CandidateError(ValueError):
@@ -204,11 +247,8 @@ def bound_row_evidence(row: dict, blocks: list[dict]) -> list[dict]:
     return list(unique.values())
 
 
-def validate_candidate(value: dict, blocks: list[dict]) -> dict:
-    errors = [
-        f"schema:{'/'.join(map(str, e.path))}:{e.validator}"
-        for e in Draft202012Validator(schema()).iter_errors(value)
-    ]
+def validate_candidate(value: dict, blocks: list[dict], *, model_output=False) -> dict:
+    errors = schema_errors(value, model_output=model_output)
     if errors:
         raise CandidateError(errors)
     lookup = {b["block_id"]: b for b in blocks}

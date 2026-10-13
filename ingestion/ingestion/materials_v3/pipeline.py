@@ -175,7 +175,7 @@ class Pipeline:
                 # Crash after attempt fsync but before block fsync: replay validation,
                 # not a second provider request for the same successful response.
                 value = parse_json(valid["receipt"]["text"])
-                result = validate_candidate(value, inputs)
+                result = validate_candidate(value, inputs, model_output=True)
                 result.update(
                     block_id=block["block_id"],
                     input_blocks=inputs,
@@ -221,7 +221,7 @@ class Pipeline:
                     try:
                         value = parse_json(response.text)
                         syntax_valid = True
-                        result = validate_candidate(value, inputs)
+                        result = validate_candidate(value, inputs, model_output=True)
                     except CandidateError as exc:
                         self.ledger.record_attempt(
                             key,
