@@ -71,7 +71,7 @@ loading at 150 GPa. Its transition onset was 240 K; zero resistance was
 
 实际 Qwen tokenizer 必须对含 schema、上下文和 chat template 的完整 prompt 计数；共同 `cl100k_base` 只用于分块。CLI 在 input+output 超过 16k 时拒绝当前块并有界拆分，不截断。图像、PDF 旋转文字、表格版面缺口仍需要源审查，不能被 tokenizer 成功消除。
 
-本轮9B的[完整prompt预检](pilot/materials-ner-qwen3.5-9b-tokenizer.preflight.v4.json)使用固定snapshot的真实tokenizer和共用prompt `superconductivity-ner/3.0.5`与共同3000token初始分块：331块输入4,090–11,920 tokens，预留4,096输出后0块超16k。计数核对 `encode(formatted_chat)` 与 `BatchEncoding.input_ids`，不能用返回对象的字段数充当tokens。这是CPU分词结果，该CPU计数不加载权重；旧3.0.1/3.0.2/3.0.3预检独立保留。
+本轮9B的[完整prompt预检](pilot/materials-ner-qwen3.5-9b-tokenizer.preflight.v5.json)使用固定snapshot的真实tokenizer和共用prompt `superconductivity-ner/3.0.6`与共同3000token初始分块：331块输入4,098–11,928 tokens，预留4,096输出后0块超16k。计数核对 `encode(formatted_chat)` 与 `BatchEncoding.input_ids`，不能用返回对象的字段数充当tokens。这是CPU分词结果，该CPU计数不加载权重；旧3.0.1/3.0.2/3.0.3预检独立保留。
 
 Gemini首个真实合成生成及一次有限修复都出现 `quote_offset_mismatch`。当前prompt让三个provider优先返回唯一的原文quote、将offset设为null，由共用binder定位；重复quote先补邻近原文，不接受猜测位置。3.0.3把失败位置精确到JSON字段路径，仅压缩修复输入中的合法JSON排版，原始输出仍留在ledger；重复键/非有限数值/非法JSON不会被压缩成另一份候选。此改变没有放宽quote校验，也不自动改写已失败输出。prompt更新后要重新生成runtime lock和开发输出；旧版本不能混入最终对照。
 
@@ -149,3 +149,5 @@ pilot 每次最多 50 cycles，空队列退出；部署到系统服务须由既�
 ## 当前定位协议 3.0.5
 
 source_blocks.text仅在prompt中插入[S0]/[S1]等程序标记，原始source/document和SHA保持不变。evidence.quote_start_span_id选引用开始的片段，char_start/end仍为null；原文quote不包含新增标记。引用可跨后续片段，但起点在选定片段里必须唯一，整句必须与原始正文精确一致。历史evidence无span仍使用全block唯一定位。此方法可区别重复压力的loading/unloading和表行，不按最近距离猜位置，也不回填未生成的科学事实。新字段在存储schema中可选，打包与文档schema一致，新增运行按新program/schema/prompt/budget身份留档。共同budget文件的max_tokens_per_block现为3000，worker调用必须使用当前budget；初始块和有界split的实际分母由本次run记录。
+
+当前模型schema强制每个evidence的quote_start_span_id为非null字符串；兼容历史存储中的optional/null不等于允许新模型漏填。新模型漏ID会在schema阶段给出必填字段路径，并且仍须在原文中核对quote；不能给ID错误、同片段重复或原文不一致的引用开例外。

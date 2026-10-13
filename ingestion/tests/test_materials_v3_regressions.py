@@ -474,6 +474,10 @@ def test_model_schema_requires_program_bound_offsets_but_keeps_historical_exact_
     from ingestion.materials_v3.contract import extraction_schema
 
     value, block = fixture()
+    from ingestion.materials_v3.contract import evidences
+
+    for evidence in evidences(value):
+        evidence["quote_start_span_id"] = "S0"
     proof = value["results"][0]["subject"]["evidence"][0]
     proof.update(char_start=0, char_end=len(block["text"]))
     validate_candidate(value, [block])
@@ -602,6 +606,14 @@ def test_missing_result_fields_are_named_for_the_real_paper_repair():
     with pytest.raises(CandidateError) as error:
         validate_candidate(value, [block])
     assert "schema:results/0/outcome_evidence:required" in error.value.errors
+
+
+def test_new_model_output_requires_span_ids_while_historical_quotes_remain_valid():
+    value, block = fixture()
+    validate_candidate(value, [block])
+    with pytest.raises(CandidateError) as error:
+        validate_candidate(value, [block], model_output=True)
+    assert "schema:results/0/subject/evidence/0/quote_start_span_id:required" in error.value.errors
 
 
 @pytest.mark.parametrize("model,modern", [("gemini-3.5-flash", True), ("gemini-2.5-flash", False)])

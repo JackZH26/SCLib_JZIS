@@ -39,6 +39,12 @@ def extraction_schema() -> dict:
     value = deepcopy(schema())
     for key in ("char_start", "char_end"):
         value["$defs"]["evidence"]["properties"][key] = {"type": "null"}
+    value["$defs"]["evidence"]["properties"]["quote_start_span_id"] = {
+        "type": "string",
+        "minLength": 1,
+        "description": "Required source marker before the quote beginning, such as S0.",
+    }
+    value["$defs"]["evidence"]["required"].append("quote_start_span_id")
     return value
 
 
