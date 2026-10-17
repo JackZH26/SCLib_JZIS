@@ -1,0 +1,69 @@
+import {expect,test} from "./public-site-fixture";
+import {readFileSync} from "node:fs";
+const catalogue=JSON.parse(readFileSync("content/scwiki/catalogue.json","utf8"));
+test("SCWiki ships complete server-rendered English content and lazy search",async({page,request})=>{
+ const response=await request.get("/scwiki");expect(response.status()).toBe(200);
+ const html=await response.text();for(const a of catalogue.articles)expect(html).toContain(a.title.replaceAll("&","&amp;"));
+ await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
+ expect(await page.locator(".scwiki-article-grid li").count()).toBe(12);
+ const indexRequests:string[]=[];page.on("request",r=>{if(r.url().includes("search-index.json"))indexRequests.push(r.url());});
+ expect(indexRequests).toEqual([]);
+ const input=page.getByRole("searchbox",{name:"Search SCWiki",exact:true});
+ await input.fill("La₃Ni₂O₇");
+ await expect.poll(()=>indexRequests.length).toBe(1);
+ await page.getByLabel("Pressure",{exact:true}).selectOption("ambient");
+ await page.getByLabel("Reported transition at least (K)",{exact:true}).fill("70");
+ await expect(page.getByRole("heading",{name:"No matching evidence"})).toBeVisible();
+ await page.getByLabel("Pressure",{exact:true}).selectOption("high");
+ await expect(page.locator(".scwiki-article-grid")).toContainText("Nickelate superconductors");
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+ await page.getByRole("button",{name:"Clear filters",exact:true}).click();
+ await expect(page.locator(".scwiki-article-grid li")).toHaveCount(12);
+ await page.screenshot({path:"test-results/scwiki-index-390.png",fullPage:true});
+});
+test("all 12 articles have formulas, real citation anchors and HTML/Markdown/JSON consistency",async({page,request})=>{
+ for(const a of catalogue.articles){
+  const response=await page.goto("/scwiki/"+a.slug);expect(response?.status()).toBe(200);
+  await expect(page.getByRole("heading",{name:a.title,exact:true})).toBeVisible();
+  await expect(page.locator("main.scwiki")).toHaveAttribute("data-revision",a.revision);
+  await expect(page.locator(".katex-error")).toHaveCount(0);
+  if(a.body.includes("$$"))expect(await page.locator(".katex").count()).toBeGreaterThan(0);
+  const broken=await page.locator('main.scwiki a[href^="#"]').evaluateAll(links=>links.map(a=>a.getAttribute("href")!.slice(1)).filter(id=>!document.getElementById(id)));
+  expect(broken,a.code+" citation and section anchors").toEqual([]);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  const json=await (await request.get("/api/scwiki/v1/articles/"+a.id)).json();
+  expect(json.article.revision).toBe(a.revision);expect(json.article.materialCases).toEqual(a.materialCases);
+  const md=await request.get("/api/scwiki/v1/articles/"+a.id+"/markdown");
+  expect(await md.text()).toBe(a.markdown);expect(md.headers()["x-scwiki-revision"]).toBe(a.revision);
+  for(const c of a.materialCases)if(c.reportedTemperatureK!==null)await expect(page.locator(".scwiki-reading-body")).toContainText(c.reportedTemperatureK+" K");
+ }
+ await page.goto("/scwiki/s-plus-minus");
+ await page.getByRole("button",{name:"Reject all",exact:true}).click();
+ await page.screenshot({path:"test-results/scwiki-c2-390.png",fullPage:true});
+ await page.setViewportSize({width:1440,height:1000});await page.goto("/scwiki/geometric-superfluid-weight");
+ await page.screenshot({path:"test-results/scwiki-f7-desktop.png",fullPage:true});
+});
+test("SCWiki navigation order, keyboard focus and old docs anchors work",async({page})=>{
+ await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
+ const toggle=page.getByRole("button",{name:"Open navigation"});await toggle.click();
+ const menu=page.getByRole("navigation",{name:"Mobile navigation"});
+ expect((await menu.getByRole("link").allTextContents()).filter(t=>!t.includes("Sign in")).map(t=>t.trim())).toEqual(["Search","SCWiki","Materials","Reported Tc Timeline","Discovery","About JZIS"]);
+ await menu.getByRole("link",{name:"SCWiki",exact:true}).focus();await page.keyboard.press("Escape");await expect(toggle).toBeFocused();
+ await page.goto("/docs#search-the-literature");
+ await expect(page).toHaveURL(/\/scwiki\/using-sclib#search-the-literature$/);
+ await expect(page.locator("h2#search-the-literature")).toBeVisible();
+});
+test("SCWiki retains docs API/data, redirects canonical paths and returns genuine 404/405 responses",async({request})=>{
+ for(const path of ["/docs","/docs/","/sclib/docs","/sclib/docs/"]){
+  const response=await request.get(path+"?source=legacy",{maxRedirects:0});expect(response.status()).toBe(308);
+  const url=new URL(response.headers().location,"http://localhost:3102");expect(url.pathname).toBe("/scwiki");expect(url.search).toBe("?source=legacy");
+ }
+ for(const path of ["/docs/api","/docs/data"])expect((await request.get(path)).status()).toBe(200);
+ const www=await request.get("/sclib/docs/",{headers:{Host:"www.jzis.org"},maxRedirects:0});expect(www.headers().location).toBe("https://jzis.org/scwiki");
+ expect((await request.get("/scwiki/unknown-article")).status()).toBe(404);
+ expect((await request.get("/api/scwiki/v1/articles/scwiki-x999")).status()).toBe(404);
+ expect((await request.post("/api/scwiki/v1/articles")).status()).toBe(405);
+ const sitemap=await (await request.get("/sitemaps/static.xml")).text();
+ for(const a of catalogue.articles){expect(sitemap).toContain("/scwiki/"+a.slug);expect(sitemap).toContain(a.modifiedAt);}
+ expect(sitemap).toContain("/docs/api");expect(sitemap).toContain("/docs/data");expect(sitemap).not.toContain("<loc>https://jzis.org/docs</loc>");
+});

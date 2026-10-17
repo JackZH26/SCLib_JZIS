@@ -3,7 +3,7 @@ import { expect, test } from "./public-site-fixture";
 for (const [path, heading] of [
   ["", "The superconductivity research library"], ["about", "About JZ Institute of Science"],
   ["about/join", "Join & contribute"], ["research", "Superconductivity research"],
-  ["docs", "Resources & documentation"], ["docs/data", "Data & methodology"],
+  ["scwiki", "SCWiki"], ["scwiki/using-sclib", "Using SCLib"], ["docs/data", "Data & methodology"],
 ]) {
   test(`unified page ${path || "home"} is accessible and free of retired product content`, async ({ page }) => {
     await page.goto(path || "/");
@@ -20,8 +20,8 @@ test("root navigation links reach resources and the institution", async ({ page 
   await expect(page.getByRole("searchbox")).toBeVisible();
   await page.getByRole("button", { name: "Open navigation" }).click();
   const menu = page.getByRole("navigation", { name: "Mobile navigation" });
-  await menu.getByRole("link", { name: "Resources", exact: true }).click();
-  await expect(page).toHaveURL(/\/docs$/);
+  await menu.getByRole("link", { name: "SCWiki", exact: true }).click();
+  await expect(page).toHaveURL(/\/scwiki$/);
   await expect(page.getByRole("button", { name: "Open navigation" })).toHaveAttribute("aria-expanded", "false");
   await page.goto("/#about");
   await expect(page).toHaveURL(/\/about$/);
@@ -37,7 +37,7 @@ test("legacy routes preserve query parameters, encoded IDs and private response 
   ] as const) {
     const response = await request.get(path, { maxRedirects: 0 });
     expect(response.status()).toBe(status);
-    expect(new URL(response.headers().location, "http://127.0.0.1:3102").pathname + new URL(response.headers().location, "http://127.0.0.1:3102").search).toBe(expectedPath);
+    expect(new URL(response.headers().location, "http://localhost:3102").pathname + new URL(response.headers().location, "http://localhost:3102").search).toBe(expectedPath);
     if (status === 307) {
       expect(response.headers()["cache-control"]).toContain("no-store");
       expect(response.headers()["referrer-policy"]).toBe("no-referrer");
@@ -82,7 +82,7 @@ test("redesigned search has a visible label and retains the query contract", asy
     expect(route.request().method()).toBe("POST");
     queries.push(route.request().postDataJSON().query);
     await route.fulfill({ status: 200, contentType: "application/json",
-      headers: { "access-control-allow-origin": "http://127.0.0.1:3102", "access-control-allow-credentials": "true" },
+      headers: { "access-control-allow-origin": "http://localhost:3102", "access-control-allow-credentials": "true" },
       body: JSON.stringify({ results: [], query_time_ms: 0 }) });
   });
   await page.goto("/");
@@ -109,7 +109,7 @@ test("keyboard navigation skips the shell and restores focus after menu escape",
   expect(headingBox.y).toBeGreaterThanOrEqual(headerBox.y + headerBox.height);
   const toggle = page.getByRole("button", { name: "Open navigation" });
   await toggle.click();
-  await page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link", { name: "Resources", exact: true }).focus();
+  await page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link", { name: "SCWiki", exact: true }).focus();
   await page.keyboard.press("Escape");
   await expect(toggle).toBeFocused();
   await expect(toggle).toHaveAttribute("aria-expanded", "false");

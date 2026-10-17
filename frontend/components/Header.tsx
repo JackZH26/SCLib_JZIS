@@ -20,10 +20,10 @@ import { me, type User, ApiError } from "@/lib/api";
 
 const NAV = [
   { href: "/search", label: "Search" },
+  { href: "/scwiki", label: "SCWiki" },
   { href: "/materials", label: "Materials" },
   { href: "/timeline", label: "Reported Tc Timeline" },
   { href: "/discovery", label: "Discovery" },
-  { href: "/docs", label: "Resources" },
   { href: "/about", label: "About JZIS" },
 ];
 

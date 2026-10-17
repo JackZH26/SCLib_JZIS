@@ -1,3 +1,4 @@
+import { articles } from "@/lib/scwiki/catalogue";
 import { absoluteUrl, sitemapXml, xmlResponse } from "@/lib/seo";
 
 export const revalidate = 3600;
@@ -13,7 +14,10 @@ export function GET(): Response {
       { loc: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.6 },
       { loc: absoluteUrl("/about/join"), changeFrequency: "monthly", priority: 0.6 },
       { loc: absoluteUrl("/research"), changeFrequency: "monthly", priority: 0.6 },
-      { loc: absoluteUrl("/docs"), changeFrequency: "monthly", priority: 0.6 },
+      { loc: absoluteUrl("/scwiki"), lastModified: articles().map(a => a.modifiedAt).sort().at(-1), changeFrequency: "monthly", priority: 0.7 },
+      { loc: absoluteUrl("/scwiki/using-sclib"), changeFrequency: "monthly", priority: 0.6 },
+      { loc: absoluteUrl("/scwiki/agent-guide"), changeFrequency: "monthly", priority: 0.5 },
+      ...articles().map(a => ({ loc: absoluteUrl("/scwiki/" + a.slug), lastModified: a.modifiedAt, changeFrequency: "monthly" as const, priority: 0.6 })),
       { loc: absoluteUrl("/docs/data"), changeFrequency: "monthly", priority: 0.6 },
       { loc: absoluteUrl("/docs/api"), changeFrequency: "monthly", priority: 0.6 },
       { loc: absoluteUrl("/search"), changeFrequency: "weekly", priority: 0.6 },

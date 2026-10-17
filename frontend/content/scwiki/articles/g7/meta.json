@@ -1,0 +1,346 @@
+{
+  "id": "scwiki-g7",
+  "topicId": "scwiki-topic-g7",
+  "code": "G7",
+  "slug": "spin-liquids-and-superconductivity",
+  "title": "Spin liquids, RVB and superconductivity",
+  "summary": "Distinguish a quantum-spin-liquid candidate, an RVB construction and pressure-induced superconductivity; proximity does not establish a causal pairing path.",
+  "aliases": [
+    "quantum spin liquid",
+    "QSL",
+    "resonating valence bond",
+    "RVB",
+    "kappa BEDT TTF",
+    "organic superconductors",
+    "κ-(BEDT-TTF)₂Cu₂(CN)₃"
+  ],
+  "evidenceTypes": [
+    "hypothesis",
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "D3",
+    "C2",
+    "H2"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-17T12:13:01Z",
+  "review": {
+    "checkedAt": "2026-10-17",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "limitations": [
+      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
+      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
+      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
+      "Historical audit scores and file presence are not evidence that a proposition is correct."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "G_magnetism_interplay/G7_spin_liquid_SC.md",
+    "sha256": "c290c1c28c6e96cc7734f29527752a2a352e46b552acfa7251562dbb9b84ae7f",
+    "sourceId": "file-398c5d564623ddd7"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 28,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 29,
+      "endLine": 119,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 120,
+      "endLine": 171,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 172,
+      "endLine": 219,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 220,
+      "endLine": 260,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 261,
+      "endLine": 300,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 301,
+      "endLine": 339,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 340,
+      "endLine": 383,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 384,
+      "endLine": 453,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    },
+    {
+      "startLine": 454,
+      "endLine": 468,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 469,
+      "endLine": 560,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-g7-correction-1",
+      "description": "The source's categorical QSL taxonomy and BCS-versus-RVB summary are narrowed. Absence of order is not a QSL proof, a generic U(1) spin liquid is not necessarily a Dirac state, and BCS mean-field language does not specify a phonon-only mechanism.",
+      "sourceId": "source-5a6026d6455bf7a0",
+      "scope": "Conceptual editorial correction; no new material-level QSL assignment."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "A_C",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-5a6026d6455bf7a0",
+      "doi": "10.1126/science.235.4793.1196",
+      "title": "The Resonating Valence Bond State in La\n                    2\n                    CuO\n                    4\n                    and Superconductivity",
+      "year": 1987,
+      "url": "https://doi.org/10.1126/science.235.4793.1196",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1126%2Fscience.235.4793.1196",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-9d15cd9236072f5c",
+      "doi": "10.1103/PhysRevLett.91.107001",
+      "title": "Spin Liquid State in an Organic Mott Insulator with a Triangular Lattice",
+      "year": 2003,
+      "url": "https://doi.org/10.1103/PhysRevLett.91.107001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.91.107001",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-0443485ac20d3a8c",
+      "doi": "10.1103/PhysRevLett.95.177001",
+      "title": "Mott Transition from a Spin Liquid to a Fermi Liquid in the Spin-Frustrated Organic Conductor\n                    \n                      κ\n                      −\n                      (\n                      ET\n                      \n                        )\n                        2\n                      \n                      \n                        Cu\n                        2\n                      \n                      (\n                      CN\n                      \n                        )\n                        3\n                      \n                    ",
+      "year": 2005,
+      "url": "https://doi.org/10.1103/PhysRevLett.95.177001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.95.177001",
+        "note": "Abstract confirms the pressure-temperature phase diagram from NMR/resistivity and neighboring metal/superconducting phases; no causal RVB route is established."
+      }
+    },
+    {
+      "id": "source-5e0dcd80e8b64a1b",
+      "doi": "10.1038/s41467-023-37491-z",
+      "title": "Chasing the spin gap through the phase diagram of a frustrated Mott insulator",
+      "year": 2023,
+      "url": "https://doi.org/10.1038/s41467-023-37491-z",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fs41467-023-37491-z",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "κ-(BEDT-TTF)2Cu2(CN)3",
+      "sample": "frustrated organic Mott system under pressure",
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureNote": "source notes describe a few-kelvin superconducting phase; exact criterion not re-extracted",
+      "criterion": "unknown",
+      "pressureRegime": "high",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "pressure-dependent phase diagram",
+      "id": "scwiki-g7-material-1",
+      "sourceId": "source-0443485ac20d3a8c",
+      "reportedTemperatureK": null,
+      "temperatureKind": "unassigned"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-g7-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A quantum spin liquid is a proposed quantum many-body state, not simply a material with no detected magnetic order. Real candidate systems require tests that distinguish persistent quantum behavior from glassiness, valence-bond order, disorder and a measurement window that is not yet cold or slow enough. A claim about fractionalization is stronger than an observation of missing magnetic Bragg peaks.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-9d15cd9236072f5c",
+        "source-5e0dcd80e8b64a1b"
+      ],
+      "conditions": "A lack of observed magnetic order has a finite experimental temperature/time window. Pressure-induced superconductivity in a QSL candidate does not prove fractionalization-mediated pairing.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-g7-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "RVB, or resonating valence bond, provides a family of theoretical constructions using superpositions of spin-singlet configurations. Anderson's cuprate proposal connected this language to doped correlated insulators. It remains a mechanism proposal rather than a proof that an undoped cuprate parent is an experimentally established spin liquid. In particular, the antiferromagnetic parent-state evidence cannot be replaced by a preferred wavefunction picture.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-5a6026d6455bf7a0"
+      ],
+      "conditions": "A lack of observed magnetic order has a finite experimental temperature/time window. Pressure-induced superconductivity in a QSL candidate does not prove fractionalization-mediated pairing.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-g7-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The amplitudes $A_C$, allowed coverings and constraints define the actual variational state. This expression alone does not establish its normalization, topological order or suitability for a particular material. Different parton and gauge constructions can yield different phases; a generic U(1) state should not automatically be called a Dirac state.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-5a6026d6455bf7a0"
+      ],
+      "conditions": "A lack of observed magnetic order has a finite experimental temperature/time window. Pressure-induced superconductivity in a QSL candidate does not prove fractionalization-mediated pairing.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-g7-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Likewise, singlet correlations do not demonstrate superconductivity. A charged coherent condensate, an insulating spin system and a variational pairing amplitude are distinct physical objects. BCS mean-field language can organize pairing beyond a phonon-only interaction, so a simple “BCS versus RVB” dichotomy hides assumptions rather than testing them.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-5a6026d6455bf7a0"
+      ],
+      "conditions": "A lack of observed magnetic order has a finite experimental temperature/time window. Pressure-induced superconductivity in a QSL candidate does not prove fractionalization-mediated pairing.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-g7-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "State the temperature floor, field, time window and probe used to exclude magnetic order or freezing. Compare local magnetic probes with thermodynamics, transport and structural controls. A low-temperature heat-capacity term or a continuum of excitations can be informative, but each has alternative explanations and sample dependencies. Do not use one such feature as a complete topological-state diagnosis.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9d15cd9236072f5c",
+        "source-5e0dcd80e8b64a1b"
+      ],
+      "conditions": "A lack of observed magnetic order has a finite experimental temperature/time window. Pressure-induced superconductivity in a QSL candidate does not prove fractionalization-mediated pairing.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-g7-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "The organic compound kappa-(BEDT-TTF)2Cu2(CN)3 is an important candidate platform. Shimizu and colleagues reported a lack of conventional order to low temperatures, while the pressure work of Kurosaki and colleagues mapped neighboring electronic phases. These are separate observations: the pressure-induced superconducting region does not show that the insulating state's proposed fractionalized excitations are the pairing mediator.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9d15cd9236072f5c",
+        "source-0443485ac20d3a8c"
+      ],
+      "conditions": "A lack of observed magnetic order has a finite experimental temperature/time window. Pressure-induced superconductivity in a QSL candidate does not prove fractionalization-mediated pairing.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-g7-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The candidate interpretation has continuing spin-gap and valence-bond-order questions, explicitly represented by the later source cited here. Pressure changes bandwidth and may change several effective parameters. A neighboring superconductor is therefore evidence of phase-diagram proximity, not a controlled demonstration of a QSL-to-superconductor microscopic route.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-0443485ac20d3a8c",
+        "source-5e0dcd80e8b64a1b"
+      ],
+      "conditions": "A lack of observed magnetic order has a finite experimental temperature/time window. Pressure-induced superconductivity in a QSL candidate does not prove fractionalization-mediated pairing.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-g7-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Frustration is a useful route to suppressing simple order, but it is neither sufficient nor a universal necessary condition for every spin-liquid construction. Different topological labels and proposed excitations must be tied to a specified theoretical state. The pilot removes categorical material assignments and universal heat-capacity exponents from the original overview.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-5a6026d6455bf7a0",
+        "source-5e0dcd80e8b64a1b"
+      ],
+      "conditions": "A lack of observed magnetic order has a finite experimental temperature/time window. Pressure-induced superconductivity in a QSL candidate does not prove fractionalization-mediated pairing.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-g7-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "A testable proposal should predict a controlled change in fractionalization-sensitive and charge-coherence observables across a transition. Preserve negative evidence and disorder diagnostics. The strongest research lead is a mechanism-specific discriminating measurement, not the co-occurrence of superconductivity and a suggestive insulating phase diagram.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-9d15cd9236072f5c",
+        "source-0443485ac20d3a8c"
+      ],
+      "conditions": "A lack of observed magnetic order has a finite experimental temperature/time window. Pressure-induced superconductivity in a QSL candidate does not prove fractionalization-mediated pairing.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    }
+  ]
+}

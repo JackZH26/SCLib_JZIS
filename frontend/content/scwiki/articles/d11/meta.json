@@ -1,0 +1,371 @@
+{
+  "id": "scwiki-d11",
+  "topicId": "scwiki-topic-d11",
+  "code": "D11",
+  "slug": "two-dimensional-interfaces",
+  "title": "Two-dimensional and interface superconductivity",
+  "summary": "Separate pairing, phase coherence and interface tuning. A gap-closing scale, resistance onset and BKT transition are not interchangeable temperatures.",
+  "aliases": [
+    "2D superconductivity",
+    "FeSe STO",
+    "LaAlO3 SrTiO3",
+    "BKT",
+    "interface superconductivity"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory"
+  ],
+  "relatedCodes": [
+    "A1",
+    "B12",
+    "F7"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-17T12:13:01Z",
+  "review": {
+    "checkedAt": "2026-10-17",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "limitations": [
+      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
+      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
+      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
+      "Historical audit scores and file presence are not evidence that a proposition is correct."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D11_2D_interface.md",
+    "sha256": "aa717014b06818c913acc7f367d459f29b34aacf39c9fb7b8572c4d473ffd7e5",
+    "sourceId": "file-7bfa0596230e96df"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 9,
+      "targetSections": [
+        "material-cases"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 10,
+      "endLine": 15,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 16,
+      "endLine": 58,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 59,
+      "endLine": 72,
+      "targetSections": [
+        "material-cases"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 73,
+      "endLine": 128,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 129,
+      "endLine": 140,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 141,
+      "endLine": 157,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 158,
+      "endLine": 170,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    },
+    {
+      "startLine": 171,
+      "endLine": 187,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 188,
+      "endLine": 195,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "J_s",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-ea5d0c80335c450d",
+      "doi": "10.1126/science.1146006",
+      "title": "Superconducting Interfaces Between Insulating Oxides",
+      "year": 2007,
+      "url": "https://doi.org/10.1126/science.1146006",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1126%2Fscience.1146006",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-684b96e9dbb65a64",
+      "doi": "10.1038/nature07293",
+      "title": "High-temperature interface superconductivity between metallic and insulating copper oxides",
+      "year": 2008,
+      "url": "https://doi.org/10.1038/nature07293",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnature07293",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-7fcd7faadf66481b",
+      "doi": "10.1126/science.1178863",
+      "title": "High-Temperature Superconductivity in a Single Copper-Oxygen Plane",
+      "year": 2009,
+      "url": "https://doi.org/10.1126/science.1178863",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1126%2Fscience.1178863",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-a95bcf0cb2681557",
+      "doi": "10.1038/nmat3648",
+      "title": "Phase diagram and electronic indication of high-temperature superconductivity at 65 K in single-layer FeSe films",
+      "year": 2013,
+      "url": "https://doi.org/10.1038/nmat3648",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnmat3648",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-f9fe6e9bc3792dcc",
+      "doi": "10.1038/nature13894",
+      "title": "Interfacial mode coupling as the origin of the enhancement of Tc in FeSe films on SrTiO3",
+      "year": 2014,
+      "url": "https://doi.org/10.1038/nature13894",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnature13894",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-8f81510a80c35e3a",
+      "doi": "10.1103/PhysRevLett.39.1201",
+      "title": "Universal Jump in the Superfluid Density of Two-Dimensional Superfluids",
+      "year": 1977,
+      "url": "https://doi.org/10.1103/PhysRevLett.39.1201",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.39.1201",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "LaAlO3/SrTiO3",
+      "sample": "oxide heterointerface",
+      "recordType": "experiment",
+      "tcK": 0.2,
+      "temperatureNote": "approximate reported transition",
+      "criterion": "unknown",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "interface transport with BKT interpretation",
+      "id": "scwiki-d11-material-1",
+      "sourceId": "source-ea5d0c80335c450d",
+      "reportedTemperatureK": 0.2,
+      "temperatureKind": "transition"
+    },
+    {
+      "formula": "FeSe/SrTiO3",
+      "sample": "single-layer epitaxial film",
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureNote": "65 ± 5 K spectroscopic pairing/gap scale; not a transport Tc",
+      "criterion": "spectroscopic-gap",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "ARPES",
+      "id": "scwiki-d11-material-2",
+      "sourceId": "source-a95bcf0cb2681557",
+      "reportedTemperatureK": 65,
+      "temperatureKind": "spectroscopic-gap"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d11-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Two-dimensional geometry and interface location are different coordinates. A film can have weak out-of-plane electronic dispersion without displaying a clean two-dimensional phase transition. An interface can host a superconducting region even when its two constituents are not superconducting alone. Neither statement identifies one universal mechanism for increasing a critical temperature.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ea5d0c80335c450d",
+        "source-684b96e9dbb65a64"
+      ],
+      "conditions": "Retain thickness, substrate, termination, oxygen, probe and phase-coherence criterion. BKT concerns renormalized two-dimensional stiffness; a spectroscopic gap scale is not zero resistance.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d11-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "An interface may change charge transfer, oxygen defects, strain, orbital structure, phonons and disorder at the same time. Pair formation and macroscopic phase coherence can also occur at different scales. A useful report states whether a temperature comes from a spectral gap, resistive onset, zero resistance, magnetic screening or a BKT analysis.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a95bcf0cb2681557",
+        "source-f9fe6e9bc3792dcc",
+        "source-8f81510a80c35e3a"
+      ],
+      "conditions": "Retain thickness, substrate, termination, oxygen, probe and phase-coherence criterion. BKT concerns renormalized two-dimensional stiffness; a spectroscopic gap scale is not zero resistance.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d11-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Here $J_s$ is the renormalized total phase stiffness immediately below the transition. The normalization and the relevant long-wavelength limit must be stated. The relation does not apply directly to a bare mean-field pairing amplitude, and it does not separately measure a geometric contribution to the total stiffness. Finite size, inhomogeneity and interlayer coupling can modify an experimental comparison.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8f81510a80c35e3a"
+      ],
+      "conditions": "Retain thickness, substrate, termination, oxygen, probe and phase-coherence criterion. BKT concerns renormalized two-dimensional stiffness; a spectroscopic gap scale is not zero resistance.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d11-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "BCS-like amplitude formation and BKT-like phase ordering describe different aspects of a system. Treating them as mutually exclusive microscopic pairing mechanisms would confuse an interaction model with a phase-coherence transition.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8f81510a80c35e3a"
+      ],
+      "conditions": "Retain thickness, substrate, termination, oxygen, probe and phase-coherence criterion. BKT concerns renormalized two-dimensional stiffness; a spectroscopic gap scale is not zero resistance.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d11-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "At LaAlO3/SrTiO3, Reyren and colleagues reported an interface transition around 200 mK with two-dimensional behavior. The source's inferred superconducting thickness is an upper bound, not an exact directly imaged electronic width. Gating can tune an interface phase diagram without proving that carrier density is its only control parameter.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ea5d0c80335c450d"
+      ],
+      "conditions": "Retain thickness, substrate, termination, oxygen, probe and phase-coherence criterion. BKT concerns renormalized two-dimensional stiffness; a spectroscopic gap scale is not zero resistance.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d11-claim-interface-examples-1",
+      "sectionId": "interface-examples",
+      "statement": "Cuprate heterostructures constructed from non-superconducting components demonstrate that an interface can support superconductivity. Gozar and colleagues and the layer-selective work of Logvenov and colleagues constrain where the superconducting response occurs. They establish particular interface states rather than the claim that interlayer coupling is irrelevant to every high-temperature cuprate.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-684b96e9dbb65a64",
+        "source-7fcd7faadf66481b"
+      ],
+      "conditions": "Retain thickness, substrate, termination, oxygen, probe and phase-coherence criterion. BKT concerns renormalized two-dimensional stiffness; a spectroscopic gap scale is not zero resistance.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d11-claim-interface-examples-2",
+      "sectionId": "interface-examples",
+      "statement": "For single-layer FeSe/SrTiO3, a roughly 65 ± 5 K ARPES pairing scale retains its spectroscopic label. Replica-band evidence supports an interface electron-phonon interaction, but does not quantify every contribution to the full pairing kernel. This number cannot satisfy a query requiring zero resistance, even though it is a valid temperature observation.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a95bcf0cb2681557",
+        "source-f9fe6e9bc3792dcc"
+      ],
+      "conditions": "Retain thickness, substrate, termination, oxygen, probe and phase-coherence criterion. BKT concerns renormalized two-dimensional stiffness; a spectroscopic gap scale is not zero resistance.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d11-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A dome-shaped gate dependence does not uniquely identify a quantum critical pairing interaction. Ionic gating also needs electrochemical controls. A superconducting single layer shows that one layer can suffice under the reported conditions, not that dimensionality or interlayer coupling never matters. Interface improvements should not be merged with bulk or transient temperature records.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ea5d0c80335c450d",
+        "source-7fcd7faadf66481b",
+        "source-8f81510a80c35e3a"
+      ],
+      "conditions": "Retain thickness, substrate, termination, oxygen, probe and phase-coherence criterion. BKT concerns renormalized two-dimensional stiffness; a spectroscopic gap scale is not zero resistance.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d11-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Plan controls that separate thickness, interface termination, oxygen, strain and electrostatics. Report sample-to-sample variation alongside the most favorable device. A mechanism becomes more useful when it predicts which independent interface modification should change a gap scale and which should change phase stiffness. Keep those two outcomes separate in both the narrative and structured evidence.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-f9fe6e9bc3792dcc",
+        "source-8f81510a80c35e3a"
+      ],
+      "conditions": "Retain thickness, substrate, termination, oxygen, probe and phase-coherence criterion. BKT concerns renormalized two-dimensional stiffness; a spectroscopic gap scale is not zero resistance.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    }
+  ]
+}

@@ -3,3 +3,9 @@ node_modules
 .git
 .env*.local
 npm-debug.log
+
+# Keep owned browser workspaces and reports out of image contexts.
+tmp
+test-results
+playwright-report
+playwright-results.json

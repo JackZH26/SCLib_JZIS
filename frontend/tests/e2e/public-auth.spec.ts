@@ -2,7 +2,7 @@ import { expect, test } from "./public-site-fixture";
 
 const internalHost = /(?:^|\/\/)(?:api(?::\d+)?|localhost|127\.0\.0\.1)(?:[/:]|$)/i;
 
-test("production auth navigation exposes only public or same-origin links", async ({ page }) => {
+test("production auth navigation exposes only public or same-origin links", async ({ page, baseURL }) => {
   const requests: string[] = [];
   page.on("request", (request) => requests.push(request.url()));
 
@@ -25,10 +25,10 @@ test("production auth navigation exposes only public or same-origin links", asyn
 
   const forbiddenRequests = requests.filter((requestURL) => {
     const url = new URL(requestURL);
+    const allowedOrigin = new URL(baseURL!).origin;
     return (
       url.hostname === "api" ||
-      url.hostname === "localhost" ||
-      (url.hostname === "127.0.0.1" && url.port !== "3102")
+      (["localhost", "127.0.0.1"].includes(url.hostname) && url.origin !== allowedOrigin)
     );
   });
   expect(forbiddenRequests).toEqual([]);

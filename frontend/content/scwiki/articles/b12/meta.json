@@ -1,0 +1,344 @@
+{
+  "id": "scwiki-b12",
+  "topicId": "scwiki-topic-b12",
+  "code": "B12",
+  "slug": "multiband-pairing",
+  "title": "Multiband and multichannel pairing",
+  "summary": "A coupling matrix determines a pairing instability. Multiple bands, interaction channels, transport channels and material phases are different concepts.",
+  "aliases": [
+    "two-band superconductivity",
+    "multichannel superposition",
+    "MgB2",
+    "Eliashberg kernel"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "C2",
+    "D4",
+    "D11"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-17T12:13:01Z",
+  "review": {
+    "checkedAt": "2026-10-17",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "limitations": [
+      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
+      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
+      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
+      "Historical audit scores and file presence are not evidence that a proposition is correct."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "B_mechanisms/B12_multi_channel_superposition.md",
+    "sha256": "f7633eef3b233297e3d3dc010522914b257dc6184c6c03432341c56fe065b2aa",
+    "sourceId": "file-60aaa444e141cdcd"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 9,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 10,
+      "endLine": 15,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 16,
+      "endLine": 30,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 31,
+      "endLine": 43,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 44,
+      "endLine": 58,
+      "targetSections": [
+        "material-cases"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 59,
+      "endLine": 66,
+      "targetSections": [
+        "material-cases"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 67,
+      "endLine": 76,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 77,
+      "endLine": 89,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 90,
+      "endLine": 100,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    },
+    {
+      "startLine": 101,
+      "endLine": 112,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 113,
+      "endLine": 118,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-b12-correction-1",
+      "description": "The source's ASCII cutoff formula is written using a cutoff energy E_c and an explicit k_B, avoiding an unstated frequency-versus-energy convention.",
+      "sourceId": "source-e6ac5c48a0e11fe3",
+      "scope": "Notation and dimensions; no fitted coupling values were introduced."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "E_c",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-e6ac5c48a0e11fe3",
+      "doi": "10.1103/PhysRevLett.3.552",
+      "title": "Bardeen-Cooper-Schrieffer Theory of Superconductivity in the Case of Overlapping Bands",
+      "year": 1959,
+      "url": "https://doi.org/10.1103/PhysRevLett.3.552",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.3.552",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-fade6558e7eafb2b",
+      "doi": "10.1038/35065039",
+      "title": "Superconductivity at 39 K in magnesium diboride",
+      "year": 2001,
+      "url": "https://doi.org/10.1038/35065039",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2F35065039",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-d7ac492f79e0915b",
+      "doi": "10.1038/nature00992",
+      "title": "Open channel structure of MscL and the gating mechanism of mechanosensitive channels",
+      "year": 2002,
+      "url": "https://doi.org/10.1038/nature00992",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnature00992",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-f9fe6e9bc3792dcc",
+      "doi": "10.1038/nature13894",
+      "title": "Interfacial mode coupling as the origin of the enhancement of Tc in FeSe films on SrTiO3",
+      "year": 2014,
+      "url": "https://doi.org/10.1038/nature13894",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnature13894",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "MgB2",
+      "sample": "bulk magnesium diboride",
+      "recordType": "experiment",
+      "tcK": 39,
+      "temperatureNote": "approximate reported transition",
+      "criterion": "unknown",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "discovery report; criterion not re-extracted in this review",
+      "id": "scwiki-b12-material-1",
+      "sourceId": "source-fade6558e7eafb2b",
+      "reportedTemperatureK": 39,
+      "temperatureKind": "transition"
+    },
+    {
+      "formula": "FeSe/SrTiO3",
+      "sample": "single-layer interface",
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureNote": "spectroscopic pairing scale, not assigned a transport Tc",
+      "criterion": "spectroscopic-gap",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "ARPES and replica bands",
+      "id": "scwiki-b12-material-2",
+      "sourceId": "source-f9fe6e9bc3792dcc",
+      "reportedTemperatureK": null,
+      "temperatureKind": "spectroscopic-gap"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-b12-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Multiband pairing concerns how superconducting gaps on distinct bands are coupled. Multichannel pairing concerns different interaction contributions to a Cooper-pair kernel. Neither concept is equivalent to parallel normal-state electrical conductivities, and neither means that two spatially separate superconducting phases form one homogeneous condensate. Keeping these distinctions explicit prevents apparent evidence for several channels from becoming an unsupported mechanism claim.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e6ac5c48a0e11fe3",
+        "source-d7ac492f79e0915b"
+      ],
+      "conditions": "The common-cutoff equation is a weak-coupling illustration in a declared band basis. Real spectra, self-energy, Coulomb terms and interband scattering need an explicit kernel.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-b12-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In this declared approximation, the largest relevant pairing eigenvalue sets the instability. Off-diagonal entries represent interband pair transfer and help constrain relative gap phases. A matrix eigenvalue is not the arithmetic sum of all its entries. The energy cutoff notation here makes the dimensions explicit when converting the original ASCII equation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e6ac5c48a0e11fe3"
+      ],
+      "conditions": "The common-cutoff equation is a weak-coupling illustration in a declared band basis. Real spectra, self-energy, Coulomb terms and interband scattering need an explicit kernel.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-b12-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The full problem can have different frequency spectra, momentum structure, repulsive terms, Coulomb effects and normal self-energy renormalization. Combining a pairing attraction and a mass enhancement into one positive scalar can give a misleading temperature estimate. Interactions can cooperate, compete or favor different gap structures after projection into the pairing channel.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d7ac492f79e0915b"
+      ],
+      "conditions": "The common-cutoff equation is a weak-coupling illustration in a declared band basis. Real spectra, self-energy, Coulomb terms and interband scattering need an explicit kernel.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-b12-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "MgB2 provides a benchmark: the discovery report established a transition near 39 K, and anisotropic first-principles Eliashberg calculations addressed different gaps on sigma and pi bands. Two gaps in this setting do not require two unrelated pairing glues. Quantitative comparison depends on the actual band-resolved calculation and sample, not a coupling budget borrowed from another compound.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-fade6558e7eafb2b",
+        "source-d7ac492f79e0915b"
+      ],
+      "conditions": "The common-cutoff equation is a weak-coupling illustration in a declared band basis. Real spectra, self-energy, Coulomb terms and interband scattering need an explicit kernel.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-b12-claim-material-interpretation-1",
+      "sectionId": "material-interpretation",
+      "statement": "In single-layer FeSe/SrTiO3, replica-band observations support the relevance of an interface electron-phonon interaction. They do not independently extract every spin, interface and plasmon contribution as a set of additive coupling constants. The interface hypothesis must be tested together with charge transfer, the reconstructed electronic structure and phase-coherence limitations.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f9fe6e9bc3792dcc"
+      ],
+      "conditions": "The common-cutoff equation is a weak-coupling illustration in a declared band basis. Real spectra, self-energy, Coulomb terms and interband scattering need an explicit kernel.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-b12-claim-material-interpretation-2",
+      "sectionId": "material-interpretation",
+      "statement": "A high pairing or gap-closing scale measured by ARPES is not automatically a zero-resistance transition. When an interface and intrinsic electronic interactions are both discussed, the useful object is a specified combined kernel with assumptions and uncertainties. This pilot deliberately contains no unsourced table of separate FeSe/SrTiO3 coupling constants.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f9fe6e9bc3792dcc"
+      ],
+      "conditions": "The common-cutoff equation is a weak-coupling illustration in a declared band basis. Real spectra, self-energy, Coulomb terms and interband scattering need an explicit kernel.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-b12-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A common transition temperature is compatible with interband locking, but does not establish beneficial synergy between distinct interactions. Changes in a band structure, density of states or scattering rate can alter the instability without revealing a unique mediator. Cross-material percentages assigned to a plasmon enhancement are not universal physical constants.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e6ac5c48a0e11fe3",
+        "source-d7ac492f79e0915b"
+      ],
+      "conditions": "The common-cutoff equation is a weak-coupling illustration in a declared band basis. Real spectra, self-energy, Coulomb terms and interband scattering need an explicit kernel.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-b12-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "A testable multichannel proposal predicts a gap structure and its response to an independent control parameter. Show what would distinguish cooperation from competition, and check that the same interaction has not been counted twice. The most useful next measurement constrains a specific matrix element or spectral contribution rather than simply adding another possible mechanism to a list.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e6ac5c48a0e11fe3",
+        "source-d7ac492f79e0915b"
+      ],
+      "conditions": "The common-cutoff equation is a weak-coupling illustration in a declared band basis. Real spectra, self-energy, Coulomb terms and interband scattering need an explicit kernel.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    }
+  ]
+}

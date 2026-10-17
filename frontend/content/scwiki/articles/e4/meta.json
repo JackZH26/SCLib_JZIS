@@ -1,0 +1,369 @@
+{
+  "id": "scwiki-e4",
+  "topicId": "scwiki-topic-e4",
+  "code": "E4",
+  "slug": "strain",
+  "title": "Strain tuning: anisotropic control, not hydrostatic pressure",
+  "summary": "Define the mechanical boundary conditions before attributing a superconducting change to strain, especially in epitaxial oxide films.",
+  "aliases": [
+    "epitaxial strain",
+    "uniaxial pressure",
+    "Sr2RuO4",
+    "lattice mismatch",
+    "La3Ni2O7 strain"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory"
+  ],
+  "relatedCodes": [
+    "D5",
+    "D11",
+    "D3"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-17T12:13:01Z",
+  "review": {
+    "checkedAt": "2026-10-17",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "limitations": [
+      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
+      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
+      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
+      "Historical audit scores and file presence are not evidence that a proposition is correct."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "E_tuning_parameters/E4_strain.md",
+    "sha256": "cf37f577788e1dc80462cb7daac3a80d34e9656910b6a6e879440554376b99ab",
+    "sourceId": "file-43619159fa3fc2ed"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 19,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 20,
+      "endLine": 31,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 32,
+      "endLine": 78,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 79,
+      "endLine": 119,
+      "targetSections": [
+        "discovery-implications"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 120,
+      "endLine": 134,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 135,
+      "endLine": 183,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 184,
+      "endLine": 202,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 203,
+      "endLine": 237,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 238,
+      "endLine": 250,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 251,
+      "endLine": 267,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 268,
+      "endLine": 291,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    },
+    {
+      "startLine": 292,
+      "endLine": 303,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 304,
+      "endLine": 331,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    },
+    {
+      "startLine": 332,
+      "endLine": 344,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 345,
+      "endLine": 348,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "a",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "a_0",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\sigma_{ij}=-p\\delta_{ij}",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-363388aa03563c00",
+      "doi": "10.1063/1.4881611",
+      "title": "Piezoelectric-based apparatus for strain tuning",
+      "year": 2014,
+      "url": "https://doi.org/10.1063/1.4881611",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1063%2F1.4881611",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-2c98c9257f2c4d46",
+      "doi": "10.1126/science.1248292",
+      "title": "Strong Increase of\n            T\n            c\n            of Sr\n            2\n            RuO\n            4\n            Under Both Tensile and Compressive Strain",
+      "year": 2014,
+      "url": "https://doi.org/10.1126/science.1248292",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1126%2Fscience.1248292",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-c9a97c501c718b62",
+      "doi": "10.1126/science.aaf9398",
+      "title": "Strong peak in\n                    T\n                    c\n                    of Sr\n                    2\n                    RuO\n                    4\n                    under uniaxial pressure",
+      "year": 2017,
+      "url": "https://doi.org/10.1126/science.aaf9398",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-abstract-scoped-check",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://arxiv.org/abs/1604.06669",
+        "note": "Author abstract reports 3.4 K at approximately 0.6% a-axis compression; individual transition criterion was not re-extracted."
+      }
+    },
+    {
+      "id": "source-4b5b65a5047eb1a9",
+      "doi": "10.1038/s41586-026-10446-2",
+      "title": "Structural modifications in strain-engineered bilayer nickelate thin films",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10446-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fs41586-026-10446-2",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "Sr2RuO4",
+      "sample": "crystal compressed approximately 0.6% along the a-axis",
+      "recordType": "experiment",
+      "tcK": 3.4,
+      "temperatureNote": "author-abstract scale under uniaxial strain; not a universal maximum for all samples",
+      "criterion": "unknown",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "superconducting transition under uniaxial compression",
+      "id": "scwiki-e4-material-1",
+      "sourceId": "source-c9a97c501c718b62",
+      "reportedTemperatureK": 3.4,
+      "temperatureKind": "transition"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-e4-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Strain is a directional deformation relative to a stated reference structure. Epitaxial clamping, uniaxial loading and hydrostatic pressure impose different constraints, so “compressive” does not specify a unique path through a material's phase diagram. A thin film also carries substrate, defect and oxygen-history variables that a bulk pressure experiment does not reproduce automatically.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-363388aa03563c00",
+        "source-2c98c9257f2c4d46"
+      ],
+      "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-e4-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "This article treats the mechanical control and its evidential limits. A changed transition temperature is an observation; the attribution of that change to a particular bond angle, orbital or fluctuation is a further inference. Strain is useful precisely because it can tune selected directions, but the experimental boundary conditions must be retained.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-363388aa03563c00",
+        "source-c9a97c501c718b62"
+      ],
+      "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-e4-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The nominal mismatch is not automatically the measured strain in a partially relaxed film. Dislocations, domains and thickness-dependent relaxation can change the actual lattice parameters. State the reference phase, orientation and measurement temperature rather than assigning one strain percentage from a substrate name.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-363388aa03563c00"
+      ],
+      "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-e4-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In a small-deformation continuum description, the strain tensor is the symmetric displacement gradient. Hydrostatic stress has the form $\\sigma_{ij}=-p\\delta_{ij}$, whereas uniaxial and epitaxial boundary conditions select directions. The resulting strain also depends on the elastic response. Out-of-plane expansion under in-plane compression is therefore not a contradiction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-363388aa03563c00"
+      ],
+      "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-e4-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "In Sr2RuO4, the earlier Hicks study and the later higher-strain Steppke study are distinct experimental steps. The larger transition-temperature peak belongs to the latter; it should not be attributed to the initial apparatus or to the earlier paper without checking the original curve. The pilot preserves an approximate source-reported scale while explicitly leaving an unretrieved criterion unknown.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-2c98c9257f2c4d46",
+        "source-c9a97c501c718b62"
+      ],
+      "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-e4-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A peak in transition temperature near a reconstructed Fermi surface is a constraint on theory, not a determination of every pairing property. Orbital shifts, density-of-states changes and modified correlations can coexist. Inferring a pairing symmetry still requires complementary measurements.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c9a97c501c718b62"
+      ],
+      "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-e4-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "The pinned chapter's 2026 nickelate-film discussion distinguishes nominal and measured mismatch and warns against assuming that in-plane compression requires a shorter c axis. That update has not received a primary-text check here. Its strain percentages and transition values are consequently not promoted into the pilot's quantitative record. Oxygen stoichiometry, interface structure and defects remain possible covariates, not solved nuisance parameters.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-4b5b65a5047eb1a9"
+      ],
+      "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-e4-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Prefer controlled series that change one mechanical coordinate while monitoring oxygen, microstructure and sample geometry. A substrate series alone may change several variables at once. A useful design proposal predicts a trend, a null control and an independent structural or spectroscopic response, rather than stating that more compression must always improve superconductivity.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-363388aa03563c00",
+        "source-c9a97c501c718b62"
+      ],
+      "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    }
+  ]
+}

@@ -1,0 +1,372 @@
+{
+  "id": "scwiki-c2",
+  "topicId": "scwiki-topic-c2",
+  "code": "C2",
+  "slug": "s-plus-minus",
+  "title": "s± pairing: a sign change between Fermi surfaces",
+  "summary": "An A1g state can change sign between bands. Compare theoretical proposals, indirect phase-sensitive evidence and material-specific nodal constraints.",
+  "aliases": [
+    "s±",
+    "s plus minus",
+    "sign-changing s wave",
+    "A1g",
+    "KFe2As2",
+    "BaFe2As2"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "B12",
+    "D4",
+    "D5"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-17T12:17:52Z",
+  "review": {
+    "checkedAt": "2026-10-17",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "limitations": [
+      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
+      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
+      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
+      "Historical audit scores and file presence are not evidence that a proposition is correct."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "C_pairing_symmetry/C2_s_plus_minus.md",
+    "sha256": "34a7c0f17bfeecb4dd5ad370790526b40418d5691f5d5a3d9d1a27f327940d96",
+    "sourceId": "file-a5f1cff63042e1ce"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 9,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 10,
+      "endLine": 15,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 16,
+      "endLine": 30,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 31,
+      "endLine": 46,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes",
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 47,
+      "endLine": 56,
+      "targetSections": [
+        "limits-and-disputes",
+        "corrected-nodal-example"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 57,
+      "endLine": 69,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 70,
+      "endLine": 79,
+      "targetSections": [
+        "sources",
+        "corrected-nodal-example",
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 80,
+      "endLine": 84,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-c2-correction-1",
+      "description": "DOI 10.1103/PhysRevLett.109.087001 concerns KFe2As2, not BaFe2(As1-xPx)2. Reid et al.'s abstract favors d-wave and cannot be used here as evidence for accidental nodes in P-substituted Ba122. The correction register also flags unpublished topic C10.",
+      "sourceId": "source-8a117f38b78526ff",
+      "scope": "Author abstract and DOI identity checked.",
+      "originalSourceLines": [
+        49,
+        76
+      ],
+      "targetSectionId": "corrected-nodal-example"
+    },
+    {
+      "id": "scwiki-c2-correction-2",
+      "description": "Christianson et al., DOI 10.1038/nature07625, concerns K-doped Ba0.6K0.4Fe2As2. The source chapter's Co-doped attribution is not retained.",
+      "sourceId": "source-716c338ddfa726d3",
+      "scope": "Bibliographic title/material identity; no new phase assignment.",
+      "originalSourceLines": [
+        41,
+        74
+      ],
+      "targetSectionId": "experimental-criteria"
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "h",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "e",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-7c2b55d128348e6c",
+      "doi": "10.1103/PhysRevLett.101.057003",
+      "title": "Unconventional Superconductivity with a Sign Reversal in the Order Parameter of\n                    \n                      \n                        LaFeAsO\n                        \n                          1\n                          −\n                          x\n                        \n                      \n                      \n                        F\n                        x\n                      \n                    ",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevLett.101.057003",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.101.057003",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-f80a18149666bd31",
+      "doi": "10.1103/PhysRevLett.101.087004",
+      "title": "Unconventional Pairing Originating from the Disconnected Fermi Surfaces of SuperconductingLaFeAsO1−xFx",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevLett.101.087004",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.101.087004",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-716c338ddfa726d3",
+      "doi": "10.1038/nature07625",
+      "title": "Unconventional superconductivity in Ba0.6K0.4Fe2As2 from inelastic neutron scattering",
+      "year": 2008,
+      "url": "https://doi.org/10.1038/nature07625",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnature07625",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-3ee65ce8fc5080da",
+      "doi": "10.1126/science.1187399",
+      "title": "Unconventional\n            s\n            -Wave Superconductivity in Fe(Se,Te)",
+      "year": 2010,
+      "url": "https://doi.org/10.1126/science.1187399",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1126%2Fscience.1187399",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-8a117f38b78526ff",
+      "doi": "10.1103/PhysRevLett.109.087001",
+      "title": "Universal Heat Conduction in the Iron Arsenide SuperconductorKFe2As2: Evidence of ad-Wave State",
+      "year": 2012,
+      "url": "https://doi.org/10.1103/PhysRevLett.109.087001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-abstract-scoped-check",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://arxiv.org/abs/1201.3376",
+        "note": "Material identity and abstract interpretation checked; KFe2As2, with the authors favoring d-wave."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "KFe2As2",
+      "sample": "iron-arsenide single crystals in Reid et al.",
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureNote": "no comparative Tc assigned",
+      "criterion": "residual-thermal-conductivity",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "thermal conductivity; nodal inference",
+      "id": "scwiki-c2-material-1",
+      "sourceId": "source-8a117f38b78526ff",
+      "reportedTemperatureK": null,
+      "temperatureKind": "unassigned"
+    },
+    {
+      "formula": "Ba0.6K0.4Fe2As2",
+      "sample": "K-doped 122 neutron study",
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureNote": "not a temperature-record entry",
+      "criterion": "spin-resonance",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "inelastic neutron scattering",
+      "id": "scwiki-c2-material-2",
+      "sourceId": "source-716c338ddfa726d3",
+      "reportedTemperatureK": null,
+      "temperatureKind": "unassigned"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-c2-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "The label s± describes a superconducting gap whose sign differs between relevant Fermi-surface sheets. In common iron-based models the state belongs to the fully symmetric A1g representation, while different pockets carry opposite gap signs. A fully open gap therefore does not establish a sign-preserving state. The precise pocket and orbital assignments must come from the actual material rather than a generic two-pocket drawing.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7c2b55d128348e6c",
+        "source-f80a18149666bd31"
+      ],
+      "conditions": "Gap sign is defined relative to Fermi-surface sheets in a material-specific model. Neutron/QPI/thermal probes constrain different quantities and are not interchangeable phase proofs.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-c2-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The labels $h$ and $e$ refer to hole and electron pockets in the model, not to a universal inventory present in every iron-based superconductor. Repulsive interband scattering can favor opposite signs in a linearized pairing equation. Mazin and colleagues and Kuroki and colleagues developed important iron-based proposals, but their predictions depend on the Fermi surface and interaction assumptions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7c2b55d128348e6c",
+        "source-f80a18149666bd31"
+      ],
+      "conditions": "Gap sign is defined relative to Fermi-surface sheets in a material-specific model. Neutron/QPI/thermal probes constrain different quantities and are not interchangeable phase proofs.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-c2-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An A1g gap can also be anisotropic and can develop accidental nodes. This possibility should be distinguished from symmetry-enforced nodes in another representation. Observing nodes alone cannot choose among every candidate, and no one compound determines the gap of an entire family.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7c2b55d128348e6c",
+        "source-f80a18149666bd31"
+      ],
+      "conditions": "Gap sign is defined relative to Fermi-surface sheets in a material-specific model. Neutron/QPI/thermal probes constrain different quantities and are not interchangeable phase proofs.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-c2-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "A neutron resonance can be consistent with a sign-changing coherence factor, but its interpretation depends on the normal-state response and gap structure. Christianson and colleagues studied K-doped Ba0.6K0.4Fe2As2; the pinned chapter's Co-doped attribution is corrected here. Their result provides a material-specific constraint rather than a universal direct phase measurement.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-716c338ddfa726d3"
+      ],
+      "conditions": "Gap sign is defined relative to Fermi-surface sheets in a material-specific model. Neutron/QPI/thermal probes constrain different quantities and are not interchangeable phase proofs.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-c2-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Quasiparticle interference depends on scattering channels, matrix elements, field conditions and a band model. Hanaguri and colleagues' Fe(Se,Te) study is not a measurement on pure bulk FeSe, and its evidence should not be paraphrased as directly photographing a negative gap sign. Complementary phase-sensitive junctions, controlled disorder studies and gap spectroscopy can narrow alternatives.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-3ee65ce8fc5080da"
+      ],
+      "conditions": "Gap sign is defined relative to Fermi-surface sheets in a material-specific model. Neutron/QPI/thermal probes constrain different quantities and are not interchangeable phase proofs.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-c2-claim-corrected-nodal-example-1",
+      "sectionId": "corrected-nodal-example",
+      "statement": "Reid and colleagues' 2012 thermal-conductivity paper, DOI 10.1103/PhysRevLett.109.087001, is about KFe2As2. The authors report residual heat transport consistent with nodes and argue for a d-wave interpretation. It is not a P-substituted Ba122 paper. The previous attribution is corrected in the source mapping and in the register for C2 and C10. No replacement P-Ba122 claim is silently inferred from this DOI.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8a117f38b78526ff"
+      ],
+      "conditions": "Gap sign is defined relative to Fermi-surface sheets in a material-specific model. Neutron/QPI/thermal probes constrain different quantities and are not interchangeable phase proofs.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-c2-claim-corrected-nodal-example-2",
+      "sectionId": "corrected-nodal-example",
+      "statement": "This correction matters physically: a source arguing for symmetry-imposed nodes cannot be repurposed as a demonstration of accidental nodes in another compound. The editorial record preserves the original path and hash so readers can identify what changed.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8a117f38b78526ff"
+      ],
+      "conditions": "Gap sign is defined relative to Fermi-surface sheets in a material-specific model. Neutron/QPI/thermal probes constrain different quantities and are not interchangeable phase proofs.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-c2-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "FeSe, shallow-band systems, strongly hole-doped endpoints and electron-only interfaces can require models different from the original hole-electron-pocket proposal. A candidate s± solution for a nickelate is a theoretical proposal until an appropriate experiment constrains it. Gap magnitude, gap sign, nodes and the microscopic pairing interaction are separate inference steps.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7c2b55d128348e6c",
+        "source-f80a18149666bd31"
+      ],
+      "conditions": "Gap sign is defined relative to Fermi-surface sheets in a material-specific model. Neutron/QPI/thermal probes constrain different quantities and are not interchangeable phase proofs.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-c2-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Specify which sheets are expected to change sign and what observation could reject that assignment. Use measured electronic structure, compare several independent probes and retain sample composition. For agent retrieval, quote the claim together with the named material and source; the sign structure is not an unconditional property of the phrase “iron-based superconductor.”",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-716c338ddfa726d3",
+        "source-3ee65ce8fc5080da",
+        "source-8a117f38b78526ff"
+      ],
+      "conditions": "Gap sign is defined relative to Fermi-surface sheets in a material-specific model. Neutron/QPI/thermal probes constrain different quantities and are not interchangeable phase proofs.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    }
+  ]
+}

@@ -1,0 +1,374 @@
+{
+  "id": "scwiki-h2",
+  "topicId": "scwiki-topic-h2",
+  "code": "H2",
+  "slug": "planckian-dissipation",
+  "title": "Planckian dissipation: definitions and inference",
+  "summary": "A linear resistivity does not by itself measure a Planckian lifetime. Specify the relaxation channel, residual rate, frequency convention and transport model.",
+  "aliases": [
+    "Planckian limit",
+    "T linear resistivity",
+    "scattering time",
+    "Drude",
+    "FeTeSe",
+    "strange metal"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "A1",
+    "D4",
+    "G7"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-17T12:13:01Z",
+  "review": {
+    "checkedAt": "2026-10-17",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "limitations": [
+      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
+      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
+      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
+      "Historical audit scores and file presence are not evidence that a proposition is correct."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "H_anomalous_normal_state/H2_Planckian_limit.md",
+    "sha256": "25c50026c1a52dd82561048516dabc03c0ecee3dba8044d90552cea0fdb59f28",
+    "sourceId": "file-53ac5f5ad318565e"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 9,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 10,
+      "endLine": 15,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 16,
+      "endLine": 33,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 34,
+      "endLine": 56,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 57,
+      "endLine": 89,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 90,
+      "endLine": 105,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 106,
+      "endLine": 117,
+      "targetSections": [
+        "discovery-implications"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 118,
+      "endLine": 132,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 133,
+      "endLine": 144,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    },
+    {
+      "startLine": 145,
+      "endLine": 155,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 156,
+      "endLine": 161,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-h2-correction-1",
+      "description": "The converted formula distinguishes total alpha(T) from a residual-subtracted inelastic slope. A nonzero residual rate cannot be silently included in a temperature-independent Planckian coefficient.",
+      "sourceId": "source-67da95cac5481029",
+      "scope": "Notation and dimensions; no new fitted alpha values."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "k_BT/\\hbar",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\alpha=1",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "n",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "m^\\ast",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "h",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\hbar",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "2\\pi",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-67da95cac5481029",
+      "doi": "10.1103/RevModPhys.94.041002",
+      "title": "Colloquium\n                    : Planckian dissipation in metals",
+      "year": 2022,
+      "url": "https://doi.org/10.1103/RevModPhys.94.041002",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FRevModPhys.94.041002",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-e6d342432f3409ae",
+      "doi": "10.1126/science.1227612",
+      "title": "Similarity of Scattering Rates in Metals Showing\n                    T\n                    -Linear Resistivity",
+      "year": 2013,
+      "url": "https://doi.org/10.1126/science.1227612",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1126%2Fscience.1227612",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-c1ae7869b672a8e8",
+      "doi": "10.1038/s41567-018-0334-2",
+      "title": "Universal T-linear resistivity and Planckian dissipation in overdoped cuprates",
+      "year": 2018,
+      "url": "https://doi.org/10.1038/s41567-018-0334-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fs41567-018-0334-2",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-05b2d5ff6757b5eb",
+      "doi": "10.1038/s41567-026-03266-8",
+      "title": "Planckian scattering and parallel conduction channels in an iron chalcogenide superconductor",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41567-026-03266-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fs41567-026-03266-8",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-8339743a9f1c3239",
+      "doi": "10.1007/JHEP08(2016)106",
+      "title": "A bound on chaos",
+      "year": 2016,
+      "url": "https://doi.org/10.1007/JHEP08(2016)106",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1007%2FJHEP08%282016%29106",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "overdoped cuprates",
+      "sample": "normal-state transport comparison",
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureNote": "normal-state scattering study; no Tc record",
+      "criterion": "transport-scattering-inference",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "resistivity plus Fermi-surface/effective-mass inputs",
+      "id": "scwiki-h2-material-1",
+      "sourceId": "source-c1ae7869b672a8e8",
+      "reportedTemperatureK": null,
+      "temperatureKind": "normal-state"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-h2-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "“Planckian” commonly describes a specified relaxation rate on the scale $k_BT/\\hbar$, with a dimensionless coefficient of order unity. It is not a theorem inferred from a resistivity curve that happens to be linear in temperature. Transport, optical, single-particle, thermalization and quantum-chaos times probe different correlation functions and need not be equal.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-67da95cac5481029"
+      ],
+      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-h2-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "A useful experimental statement names the channel, fitting range and assumptions. It also separates an empirical scale from a proposed universal bound. The phrase “of order one” must not become an exact $\\alpha=1$ assertion without uncertainties and a consistent convention.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-67da95cac5481029",
+        "source-e6d342432f3409ae"
+      ],
+      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-h2-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The second coefficient describes the inelastic slope under this assumption; it is not the first ratio when a residual term is appreciable. This distinction is made explicit in converting the source's ASCII notation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-67da95cac5481029"
+      ],
+      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-h2-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The resistivity slope alone does not supply the carrier density $n$ or transport mass $m^\\ast$. Multiband conduction, changing spectral weight, angular scattering and vertex effects can invalidate this simple inversion. Sheet resistance and bulk resistivity must also use consistent thickness conventions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-67da95cac5481029",
+        "source-e6d342432f3409ae"
+      ],
+      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-h2-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Bruin and colleagues compared inferred rates across metals, while Legros and colleagues examined overdoped cuprates with a per-plane scaling analysis. Those studies provide important constraints within their transport assumptions. They do not measure one exact universal coefficient for every composition and every relaxation channel.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e6d342432f3409ae",
+        "source-c1ae7869b672a8e8"
+      ],
+      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-h2-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A quantum-chaos bound on a Lyapunov exponent is not automatically a charge-transport bound. Matching dimensions is not a proof that the two times are identical. Theoretical relations require their own assumptions about dynamics and correlation functions.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8339743a9f1c3239"
+      ],
+      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-h2-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "The pinned chapter includes a 2026 FeTeSe frequency-domain report and a slow/fast-channel interpretation. That source's detailed sample and fitting claims are not independently re-extracted in this pilot. They are not used to prove a pairing mediator or to validate a separate multichannel theory. A fitted normal-state channel and a superconducting gap are different evidence objects.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-h2-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Use a Planckian-scale observation to formulate a falsifiable normal-state model. Ask which spectral weight, carrier estimate and scattering anisotropy would support or reject the proposed interpretation. Proximity to superconductivity can motivate a mechanism study, but it does not establish that faster scattering raises the critical temperature.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-67da95cac5481029",
+        "source-c1ae7869b672a8e8"
+      ],
+      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    }
+  ]
+}

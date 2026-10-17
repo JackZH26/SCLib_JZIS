@@ -1,0 +1,297 @@
+{
+  "id": "scwiki-f7",
+  "topicId": "scwiki-topic-f7",
+  "code": "F7",
+  "slug": "geometric-superfluid-weight",
+  "title": "Geometric superfluid weight",
+  "summary": "Understand the interband contribution to superconducting current response, its restricted flat-band formulas, and why experiments measure total stiffness.",
+  "aliases": [
+    "quantum metric",
+    "geometric stiffness",
+    "superfluid density",
+    "flat band",
+    "MATBG"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "A2",
+    "D11",
+    "B12"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-17T12:13:01Z",
+  "review": {
+    "checkedAt": "2026-10-17",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "limitations": [
+      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
+      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
+      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
+      "Historical audit scores and file presence are not evidence that a proposition is correct."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "F_quantum_geometry/F7_geometric_superfluid_weight.md",
+    "sha256": "508862da8c0ae9e72348b5b16a254bf1bf1e5838ad56e0d7a56be01b84044576",
+    "sourceId": "file-14b5cbb4ac362085"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 9,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 10,
+      "endLine": 28,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 29,
+      "endLine": 34,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 35,
+      "endLine": 43,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 44,
+      "endLine": 49,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 50,
+      "endLine": 57,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 58,
+      "endLine": 64,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 65,
+      "endLine": 67,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [],
+  "references": [
+    {
+      "id": "source-fdf091e09e7f4a6f",
+      "doi": "10.1038/ncomms9944",
+      "title": "Superfluidity in topologically nontrivial flat bands",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/ncomms9944",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-text-scoped-check",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://www.nature.com/articles/ncomms9944",
+        "note": "Checked the current-response decomposition and restricted isolated-flat-band assumptions; no independent derivation or numerical reproduction."
+      }
+    },
+    {
+      "id": "source-b43340ce5c356e49",
+      "doi": "10.1103/PhysRevLett.117.045303",
+      "title": "Geometric Origin of Superfluidity in the Lieb-Lattice Flat Band",
+      "year": 2016,
+      "url": "https://doi.org/10.1103/PhysRevLett.117.045303",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.117.045303",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-fa7a165c8c344a63",
+      "doi": "10.1103/PhysRevB.95.024515",
+      "title": "Band geometry, Berry curvature, and superfluid weight",
+      "year": 2017,
+      "url": "https://doi.org/10.1103/PhysRevB.95.024515",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevB.95.024515",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-be7282623ca96056",
+      "doi": "10.1038/s41586-024-08494-7",
+      "title": "Superfluid stiffness of magic-angle twisted bilayer graphene",
+      "year": 2025,
+      "url": "https://doi.org/10.1038/s41586-024-08494-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fs41586-024-08494-7",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "twisted bilayer graphene",
+      "sample": "moire superconducting devices",
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureNote": "stiffness study, no comparative Tc assigned",
+      "criterion": "superfluid-stiffness",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "circuit-QED stiffness inference; model-dependent decomposition",
+      "id": "scwiki-f7-material-1",
+      "sourceId": "source-be7282623ca96056",
+      "reportedTemperatureK": null,
+      "temperatureKind": "unassigned"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-f7-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Superfluid weight describes the response of a superconducting system to a phase twist or electromagnetic field in a specified limiting procedure. In multiband systems the current response can include a contribution related to Bloch-state geometry, beyond the conventional dispersion-related part. Peotta and Törmä developed an important flat-band formulation; subsequent work extended the multiband description.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "The schematic metric formula requires a declared multiband mean-field model, normalization and pairing assumptions. Experimental stiffness is total and may be renormalized.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-f7-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The phrase “interband contribution” concerns response matrix elements. It does not require the assertion that every Cooper pair contains one electron from each of two different bands, and it does not mean that an experiment has isolated two separately flowing currents. Definitions of superfluid weight, sheet stiffness and penetration depth can differ by charge, Planck-constant, thickness and normalization factors.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "The schematic metric formula requires a declared multiband mean-field model, normalization and pairing assumptions. Experimental stiffness is total and may be renormalized.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-f7-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The isolated-band and self-consistency assumptions are consequential, especially near small interband gaps or nonuniform order parameters.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "The schematic metric formula requires a declared multiband mean-field model, normalization and pairing assumptions. Experimental stiffness is total and may be renormalized.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-f7-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "State which stiffness convention is measured, its units, dimensionality, thickness and frequency regime. Preserve the order of static and long-wavelength limits. To claim a geometric fraction, compare a justified multiband calculation with a conventional baseline and the measured total response. Measuring a total value larger than one simple estimate motivates further modeling; it is not a model-free subtraction.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-fa7a165c8c344a63",
+        "source-be7282623ca96056"
+      ],
+      "conditions": "The schematic metric formula requires a declared multiband mean-field model, normalization and pairing assumptions. Experimental stiffness is total and may be renormalized.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-f7-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "For a BKT comparison, use the renormalized total phase stiffness in the appropriate sheet-energy convention. A transition temperature can constrain that total without separately measuring the geometric term. The relation between pairing amplitude and phase coherence remains a second issue.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "The schematic metric formula requires a declared multiband mean-field model, normalization and pairing assumptions. Experimental stiffness is total and may be renormalized.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-f7-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Topology can impose a lower bound under particular assumptions, but a nonzero Chern number is not necessary for geometric superfluid weight. A Chern-trivial band can still have a nonzero quantum metric. Lieb-lattice work is a useful model example of finite flat-band superfluid response. The result is theoretical and depends on its interaction and band assumptions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-b43340ce5c356e49"
+      ],
+      "conditions": "The schematic metric formula requires a declared multiband mean-field model, normalization and pairing assumptions. Experimental stiffness is total and may be renormalized.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-f7-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "A positive geometric contribution is not a guarantee that an experimental critical temperature equals a mean-field pairing scale. Disorder, remote-band truncation, self-consistent order-parameter response and phase fluctuations affect quantitative comparisons. The moire experiment cited in the source chapter supplies an important constraint, but this pilot has not reanalyzed its raw data or independently separated a geometric fraction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fa7a165c8c344a63",
+        "source-be7282623ca96056"
+      ],
+      "conditions": "The schematic metric formula requires a declared multiband mean-field model, normalization and pairing assumptions. Experimental stiffness is total and may be renormalized.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-f7-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Use geometry as a calculable constraint rather than an attractive label for a flat band. Report conventional, geometric and total response together, test the band truncation and state which prediction can be checked independently. A large metric does not compensate automatically for poor pairing, unfavorable filling or loss of macroscopic coherence.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "The schematic metric formula requires a declared multiband mean-field model, normalization and pairing assumptions. Experimental stiffness is total and may be renormalized.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    }
+  ]
+}

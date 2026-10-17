@@ -1,0 +1,292 @@
+{
+  "id": "scwiki-a2",
+  "topicId": "scwiki-topic-a2",
+  "code": "A2",
+  "slug": "meissner-effect",
+  "title": "The Meissner effect and magnetic evidence",
+  "summary": "Distinguish equilibrium flux expulsion from shielding, then interpret penetration depth and magnetic volume estimates with their geometric assumptions.",
+  "aliases": [
+    "Meissner Ochsenfeld",
+    "magnetic shielding",
+    "London penetration depth",
+    "diamagnetism"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory"
+  ],
+  "relatedCodes": [
+    "A1",
+    "F7",
+    "D3"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-17T12:13:01Z",
+  "review": {
+    "checkedAt": "2026-10-17",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "limitations": [
+      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
+      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
+      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
+      "Historical audit scores and file presence are not evidence that a proposition is correct."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "A_phenomenology/A2_meissner_effect.md",
+    "sha256": "6f9cc20701142991b8034214d36e80f59cf2a70b125e0e4f85c505b85e6c45f6",
+    "sourceId": "file-95fa6ac71c9a09ec"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 5,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 6,
+      "endLine": 11,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 12,
+      "endLine": 21,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 22,
+      "endLine": 31,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 32,
+      "endLine": 35,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 36,
+      "endLine": 43,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 44,
+      "endLine": 46,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\lambda_L",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\lambda_L^{-2}",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-512705f3e64d88d7",
+      "doi": "10.1007/BF01504252",
+      "title": "Ein neuer Effekt bei Eintritt der Supraleitf�higkeit",
+      "year": 1933,
+      "url": "https://doi.org/10.1007/BF01504252",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1007%2FBF01504252",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-0590b237a1d87de4",
+      "doi": "10.1098/rspa.1935.0048",
+      "title": "The electromagnetic equations of the supraconductor",
+      "year": 1935,
+      "url": "https://doi.org/10.1098/rspa.1935.0048",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1098%2Frspa.1935.0048",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-b7bc48c845a47b53",
+      "doi": "10.1103/PhysRevLett.70.3999",
+      "title": "Precision measurements of the temperature dependence of λ in\n                    \n                      \n                        \n                          \n                            YBa\n                          \n                          \n                            2\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            Cu\n                          \n                          \n                            3\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            O\n                          \n                          \n                            6.95\n                          \n                        \n                      \n                    \n                    : Strong evidence for nodes in the gap function",
+      "year": 1993,
+      "url": "https://doi.org/10.1103/PhysRevLett.70.3999",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.70.3999",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-b96ffab89d45664d",
+      "doi": "10.1038/nature19061",
+      "title": "Dependence of the critical temperature in overdoped copper oxides on superfluid density",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nature19061",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnature19061",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "YBa2Cu3O7-delta",
+      "sample": "cuprate crystal in penetration-depth experiments",
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureNote": "not a temperature-record entry",
+      "criterion": "penetration-depth",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "microwave penetration depth",
+      "id": "scwiki-a2-material-1",
+      "sourceId": "source-b7bc48c845a47b53",
+      "reportedTemperatureK": null,
+      "temperatureKind": "unassigned"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-a2-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "The Meissner effect concerns the magnetic state selected on entering superconductivity. Meissner and Ochsenfeld's historical observation of flux expulsion is conceptually different from merely freezing the field already inside an ideal perfect conductor. Electrical transport and magnetic response therefore answer complementary questions. A sample may screen a changing field while retaining trapped vortices, so the cooling protocol must accompany a magnetization curve.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-512705f3e64d88d7",
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-a2-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Separate zero-field-cooled shielding, field-cooled magnetization and magnetic hysteresis. Strong pinning can make the field-cooled signal small even in a superconducting specimen. Conversely, a large shielding response cannot be read as an exact superconducting volume fraction without considering shape, connectivity and background subtraction. The magnetic inference belongs to the actual sample and protocol, not to a chemical formula in isolation.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-a2-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The penetration depth $\\lambda_L$ describes the decay of magnetic field in the stated limit. In a simple single-component convention, $\\lambda_L^{-2}$ is proportional to superfluid weight. Multiband, anisotropic or non-local electrodynamics requires a more careful response model; the same fitted depth need not represent the same microscopic density across those settings.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-a2-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For an approximately ellipsoidal specimen, the measured susceptibility is altered by a demagnetizing field. The correction depends on the field direction and shape. Quoting a shielding percentage without the underlying convention can produce values that look like a volume fraction but do not have that interpretation. The pilot therefore records the measurement criterion separately from any transition temperature.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-a2-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Low-temperature penetration-depth behavior constrains low-energy quasiparticles. Hardy and colleagues' YBCO microwave work is an important cuprate example, but extracting a gap structure still depends on impurity scattering, surface effects and the electrodynamic limit. A power law by itself does not uniquely identify an irreducible pairing representation.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-b7bc48c845a47b53"
+      ],
+      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-a2-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Geometry, granularity and pinning can separate shielding from equilibrium flux expulsion. A small magnetic signal may reflect a small superconducting region, a difficult geometry or background uncertainty; these possibilities must be evaluated rather than silently choosing one. Likewise, magnetic screening alone does not identify a pairing mediator.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-a2-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Superfluid-density studies of overdoped La2-xSrxCuO4 constrain how the condensate evolves across a controlled sample series. Such correlations are useful but do not automatically determine a microscopic interaction. When comparing stiffness across two- and three-dimensional systems, retain thickness and the electromagnetic normalization. A geometric contribution cannot be obtained merely by relabeling a measured total stiffness.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-b96ffab89d45664d"
+      ],
+      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-a2-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "A persuasive magnetic evidence package documents what field is excluded, which part is trapped and how the susceptibility was corrected. Pair transport and magnetic probes on comparable samples. For thin films, explicitly report whether the inferred quantity is a sheet response or a bulk penetration depth. These distinctions support reproducibility without turning an inversion model into an unqualified material property.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-0590b237a1d87de4",
+        "source-b96ffab89d45664d"
+      ],
+      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    }
+  ]
+}

@@ -1,0 +1,280 @@
+{
+  "id": "scwiki-a1",
+  "topicId": "scwiki-topic-a1",
+  "code": "A1",
+  "slug": "zero-resistance",
+  "title": "Zero resistance: transport evidence and its limits",
+  "summary": "What a zero-resistance measurement establishes, which controls it needs, and why transport alone does not establish bulk superconductivity.",
+  "aliases": [
+    "zero resistivity",
+    "four-probe transport",
+    "Tc zero",
+    "resistive onset"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory"
+  ],
+  "relatedCodes": [
+    "A2",
+    "D11",
+    "H2"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-17T12:13:01Z",
+  "review": {
+    "checkedAt": "2026-10-17",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "limitations": [
+      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
+      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
+      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
+      "Historical audit scores and file presence are not evidence that a proposition is correct."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "A_phenomenology/A1_zero_resistivity.md",
+    "sha256": "8be1b0c5e8c7dcb8c898385914d0a17523befbf3ddc319c6c88950cbaf9fb9ca",
+    "sourceId": "file-ffd22e443a574d7f"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 5,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 6,
+      "endLine": 16,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 17,
+      "endLine": 22,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 23,
+      "endLine": 28,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 29,
+      "endLine": 36,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 37,
+      "endLine": 44,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 45,
+      "endLine": 47,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "V_{\\mathrm{res}}",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "I",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-ba10e800a1246bf6",
+      "doi": "10.1103/PhysRev.108.1175",
+      "title": "Theory of Superconductivity",
+      "year": 1957,
+      "url": "https://doi.org/10.1103/PhysRev.108.1175",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRev.108.1175",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-6b3c996f39226a0a",
+      "doi": "10.1103/PhysRevLett.40.783",
+      "title": "Dissipation in Two-Dimensional Superfluids",
+      "year": 1978,
+      "url": "https://doi.org/10.1103/PhysRevLett.40.783",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.40.783",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-6ee3670220e24ff1",
+      "doi": "10.1038/nature16522",
+      "title": "Possible light-induced superconductivity in K3C60 at high temperature",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nature16522",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnature16522",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-07be806c0002c690",
+      "doi": "10.1038/s41567-020-01148-1",
+      "title": "Evidence for metastable photo-induced superconductivity in K3C60",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41567-020-01148-1",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fs41567-020-01148-1",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "K3C60",
+      "sample": "optically driven fulleride",
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureNote": "no equilibrium Tc assigned",
+      "criterion": "transient-optical-response",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "transient",
+      "probe": "time-resolved optical conductivity",
+      "id": "scwiki-a1-material-1",
+      "sourceId": "source-6ee3670220e24ff1",
+      "reportedTemperatureK": null,
+      "temperatureKind": "transient-response"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-a1-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A reported zero resistance is an operational result: the voltage is below the detection threshold for a specified current and contact geometry. The experiment establishes a bound on resistance rather than a mathematical proof that it is exactly zero. This article concerns electrical transport; magnetic expulsion and thermodynamic anomalies require separate measurements. The superconducting condensate provides the theoretical setting, but a microscopic model does not replace the experimental controls.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-a1-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Record resistance onset, midpoint and zero separately. An onset can identify a small superconducting region, whereas a connected path may determine the zero-resistance result. Neither number alone measures the superconducting volume fraction. Filaments, an interface or a second phase can dominate a four-terminal path even when most of the specimen remains normal. This distinction is central when comparing bulk crystals, films and high-pressure samples.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-a1-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "This expression is a measurement definition, not a universal material law. It assumes a meaningful current path, stable contacts and a noise floor evaluated under the actual acquisition conditions. In a homogeneous specimen, converting resistance to resistivity further requires the sample dimensions. The ideal condensate response is a limiting statement about frequency, temperature, field and current; a finite experiment cannot take every limit simultaneously.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-a1-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "In a two-dimensional system, a resistive tail can reflect phase fluctuations. BKT analysis requires more than a fit to one tail: non-linear current-voltage behavior, finite-size effects and stiffness measurements constrain the interpretation. Halperin-Nelson transport scaling applies in a specified two-dimensional fluctuation regime; it is not a general proof of pairing symmetry.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-6b3c996f39226a0a"
+      ],
+      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-a1-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Light-driven optical signatures must remain in a different evidence category from an equilibrium transport transition. Mitrano and colleagues reported a transient superconducting-like response in driven K3C60. The source chapter itself retains the ambiguity of assigning superconductivity from optics alone. Budden and colleagues investigated a longer-lived driven state with transport observations; those observations do not define an equilibrium zero-resistance critical temperature. This pilot does not promote either optical scale into a bulk temperature ranking.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-6ee3670220e24ff1",
+        "source-07be806c0002c690"
+      ],
+      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-a1-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "A persistent current can be complementary evidence, but its interpretation needs the loop geometry and decay time. A single low-resistance reading cannot supply those quantities. Likewise, magnetic-field suppression supports a superconducting interpretation without uniquely identifying the pairing interaction.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-a1-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Treat zero resistance as one part of an evidence chain. A useful candidate report specifies a measurable threshold, demonstrates repeatability and connects transport to other probes. Preserve negative controls and the possibility of a minority superconducting path. This approach makes a discovery claim more testable while keeping unresolved volume fraction, phase identity and mechanism explicitly open.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-6b3c996f39226a0a"
+      ],
+      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    }
+  ]
+}

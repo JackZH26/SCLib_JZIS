@@ -1,0 +1,444 @@
+{
+  "id": "scwiki-d4",
+  "topicId": "scwiki-topic-d4",
+  "code": "D4",
+  "slug": "iron-based-superconductors",
+  "title": "Iron-based superconductors: families and evidence",
+  "summary": "A multiorbital materials guide that separates parent compounds, doped superconductors, interface spectra and candidate gap structures.",
+  "aliases": [
+    "iron pnictide",
+    "iron chalcogenide",
+    "FeSe",
+    "Ba122",
+    "LaFeAsO",
+    "Hund metal"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory"
+  ],
+  "relatedCodes": [
+    "C2",
+    "B12",
+    "D11"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-17T12:13:01Z",
+  "review": {
+    "checkedAt": "2026-10-17",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "limitations": [
+      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
+      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
+      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
+      "Historical audit scores and file presence are not evidence that a proposition is correct."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D4_iron_based.md",
+    "sha256": "55f48dddf6d9d0890bd6a4b5de30276884799eedfa9af42578bb4b03f42edbc7",
+    "sourceId": "file-6361f0961191b453"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 20,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 21,
+      "endLine": 34,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 35,
+      "endLine": 50,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 51,
+      "endLine": 78,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 79,
+      "endLine": 98,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 99,
+      "endLine": 151,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 152,
+      "endLine": 197,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 198,
+      "endLine": 238,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 239,
+      "endLine": 252,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 253,
+      "endLine": 272,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 273,
+      "endLine": 300,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    },
+    {
+      "startLine": 301,
+      "endLine": 314,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 315,
+      "endLine": 345,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    },
+    {
+      "startLine": 346,
+      "endLine": 373,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 374,
+      "endLine": 378,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta_i(\\mathbf k)",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "x",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\mathrm{BaFe}_{2-x}\\mathrm{Co}_x\\mathrm{As}_2",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "x",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\mathrm{Ba}(\\mathrm{Fe}_{1-x}\\mathrm{Co}_x)_2\\mathrm{As}_2",
+      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-62a72493865c59d7",
+      "doi": "10.1021/ja800073m",
+      "title": "Iron-Based Layered Superconductor La[O\n                    1-\n                    \n                      x\n                    \n                    F\n                    \n                      x\n                    \n                    ]FeAs (\n                    x\n                    = 0.05−0.12) with\n                    T\n                    c\n                    = 26 K",
+      "year": 2008,
+      "url": "https://doi.org/10.1021/ja800073m",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1021%2Fja800073m",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-1a3690e5f1d38f3e",
+      "doi": "10.1103/PhysRevLett.101.107006",
+      "title": "Superconductivity at 38 K in the Iron Arsenide(Ba1−xKx)Fe2As2",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevLett.101.107006",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.101.107006",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-205024adeb431322",
+      "doi": "10.1073/pnas.0807325105",
+      "title": "Superconductivity in the PbO-type structure α-FeSe",
+      "year": 2008,
+      "url": "https://doi.org/10.1073/pnas.0807325105",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1073%2Fpnas.0807325105",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-a631bcd83d23567b",
+      "doi": "10.1038/nmat2491",
+      "title": "Electronic and magnetic phase diagram of β-Fe1.01Se with superconductivity at 36.7 K under pressure",
+      "year": 2009,
+      "url": "https://doi.org/10.1038/nmat2491",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnmat2491",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-716c338ddfa726d3",
+      "doi": "10.1038/nature07625",
+      "title": "Unconventional superconductivity in Ba0.6K0.4Fe2As2 from inelastic neutron scattering",
+      "year": 2008,
+      "url": "https://doi.org/10.1038/nature07625",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnature07625",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    },
+    {
+      "id": "source-7c2b55d128348e6c",
+      "doi": "10.1103/PhysRevLett.101.057003",
+      "title": "Unconventional Superconductivity with a Sign Reversal in the Order Parameter of\n                    \n                      \n                        LaFeAsO\n                        \n                          1\n                          −\n                          x\n                        \n                      \n                      \n                        F\n                        x\n                      \n                    ",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevLett.101.057003",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-17",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.101.057003",
+        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "LaFeAsO1-xFx",
+      "sample": "F-doped 1111 material",
+      "recordType": "experiment",
+      "tcK": 26,
+      "temperatureNote": "approximate reported transition",
+      "criterion": "unknown",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "discovery report",
+      "id": "scwiki-d4-material-1",
+      "sourceId": "source-62a72493865c59d7",
+      "reportedTemperatureK": 26,
+      "temperatureKind": "transition"
+    },
+    {
+      "formula": "Ba1-xKxFe2As2",
+      "sample": "K-doped 122 compound",
+      "recordType": "experiment",
+      "tcK": 38,
+      "temperatureNote": "approximate maximum reported transition",
+      "criterion": "unknown",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "discovery report",
+      "id": "scwiki-d4-material-2",
+      "sourceId": "source-1a3690e5f1d38f3e",
+      "reportedTemperatureK": 38,
+      "temperatureKind": "transition"
+    },
+    {
+      "formula": "Fe1.01Se",
+      "sample": "pressurized beta-Fe1.01Se",
+      "recordType": "experiment",
+      "tcK": 36.7,
+      "temperatureNote": "reported at the specified pressure",
+      "criterion": "unknown",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 8.9,
+        "max": 8.9
+      },
+      "equilibrium": "unknown",
+      "probe": "high-pressure resistance",
+      "id": "scwiki-d4-material-3",
+      "sourceId": "source-a631bcd83d23567b",
+      "reportedTemperatureK": 36.7,
+      "temperatureKind": "transition"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d4-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Iron-based superconductors include Fe-pnictogen and Fe-chalcogen layers in several structural families. Their low-energy electronic structure commonly involves several Fe 3d orbitals. Many parent compounds are metallic with coupled magnetic, structural or nematic order; this is a different starting point from a simple single-band cuprate analogy. Kamihara and colleagues' F-doped 1111 material established the early high-temperature platform.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-62a72493865c59d7"
+      ],
+      "conditions": "Retain the structural family, formula convention, excess Fe, doping and pressure. A parent-phase source is not interchangeable with a doped-superconductivity source.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d4-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Distinguish 1111, 122, 111 and 11 materials, and treat a single-layer interface separately from a bulk crystal. The K-doped 122 superconductor reported by Rotter and colleagues is not the undoped BaFe2As2 parent. The discovery of superconductivity in FeSe likewise does not imply that its excess-Fe content or electronic structure can be ignored.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-1a3690e5f1d38f3e",
+        "source-205024adeb431322"
+      ],
+      "conditions": "Retain the structural family, formula convention, excess Fe, doping and pressure. A parent-phase source is not interchangeable with a doped-superconductivity source.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d4-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A multiband description uses gaps $\\Delta_i(\\mathbf k)$ on a measured set of bands or orbitals. A candidate s± solution has a relative sign between appropriate Fermi-surface sheets. It is a pairing-model result, not a consequence of the material containing iron. Changes in Fermi surfaces, shallow bands or orbital weights can change which candidate is favored.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7c2b55d128348e6c"
+      ],
+      "conditions": "Retain the structural family, formula convention, excess Fe, doping and pressure. A parent-phase source is not interchangeable with a doped-superconductivity source.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d4-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "The Fe1.01Se pressure result is a concrete condition check: the cited report associates 36.7 K with 8.9 GPa, not an unqualified 1-2 GPa result. That value cannot be copied into an ambient-pressure materials entry. Formula and pressure accompany it in the HTML and API record.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a631bcd83d23567b"
+      ],
+      "conditions": "Retain the structural family, formula convention, excess Fe, doping and pressure. A parent-phase source is not interchangeable with a doped-superconductivity source.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d4-claim-evidence-for-gap-structure-1",
+      "sectionId": "evidence-for-gap-structure",
+      "statement": "The superconductivity-induced neutron response of Ba0.6K0.4Fe2As2 constrains sign-changing pairing models. It does not directly determine the gaps of all 1111, 122, FeSe or interface systems. A synthesis should state the measured wave vector, normal-state spectrum and candidate coherence-factor interpretation.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-716c338ddfa726d3",
+        "source-7c2b55d128348e6c"
+      ],
+      "conditions": "Retain the structural family, formula convention, excess Fe, doping and pressure. A parent-phase source is not interchangeable with a doped-superconductivity source.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d4-claim-evidence-for-gap-structure-2",
+      "sectionId": "evidence-for-gap-structure",
+      "statement": "For an interface, replica bands or a high ARPES gap-closing scale must retain their spectroscopic labels. A reconstructed single-layer Fermi surface may differ substantially from the canonical hole-electron-pocket model. This is why the interface article and the multiband article are separate from a bulk-family temperature comparison.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-7c2b55d128348e6c"
+      ],
+      "conditions": "Retain the structural family, formula convention, excess Fe, doping and pressure. A parent-phase source is not interchangeable with a doped-superconductivity source.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d4-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Several orbitals and strong correlations provide useful organizing language, but they do not establish a universal pairing mechanism. Hund-related mass renormalization is not automatically a larger pairing eigenvalue. FeSe, strongly doped endpoints and interface systems are especially important tests of simple family-wide statements. A strong evidence chain for a candidate gap is different from a unique microscopic verdict.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-7c2b55d128348e6c"
+      ],
+      "conditions": "Retain the structural family, formula convention, excess Fe, doping and pressure. A parent-phase source is not interchangeable with a doped-superconductivity source.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d4-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Use controlled changes in structure, composition, strain and disorder to test a specific model. Preserve the distinction between modifying a Fermi surface and identifying the boson that pairs electrons. The most useful database entry is a condition-rich measurement linked to its original compound, not one universal iron-based critical temperature.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-62a72493865c59d7",
+        "source-205024adeb431322",
+        "source-a631bcd83d23567b"
+      ],
+      "conditions": "Retain the structural family, formula convention, excess Fe, doping and pressure. A parent-phase source is not interchangeable with a doped-superconductivity source.",
+      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    }
+  ]
+}

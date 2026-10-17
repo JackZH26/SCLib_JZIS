@@ -49,3 +49,14 @@ test("document language and metadata remain English", () => {
   assert.match(layout, /<html lang="en"/);
   assert.match(layout, /locale:\s*"en_US"/);
 });
+
+
+test("SCWiki authored Markdown and JSON remain English, with scientific symbols preserved", () => {
+  const directory = path.join(root, "content/scwiki");
+  const inspect = folder => readdirSync(folder, { withFileTypes: true }).flatMap(entry => {
+    const file = path.join(folder, entry.name);
+    return entry.isDirectory() ? inspect(file) : /\.(md|json)$/.test(entry.name) ? [file] : [];
+  });
+  const violations = inspect(directory).filter(file => /\p{Script=Han}/u.test(readFileSync(file, "utf8"))).map(file => path.relative(root, file));
+  assert.deepEqual(violations, []);
+});
