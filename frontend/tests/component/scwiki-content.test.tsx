@@ -119,6 +119,23 @@ describe("SCWiki source and scientific-content contracts",()=>{
   const manifest=JSON.parse(readFileSync("content/scwiki/source-manifest.json","utf8"));
   expect(manifest.correctionRegister.find((c:{id:string})=>c.id==="correction-nature00992-mgb2-doi").affectedTopics).toEqual(["A5","B2","B12","B14","C1","D7"]);
  });
+ it("keeps critical-field scales conditional and does not classify model fields as measurements",async()=>{
+  const a=articles().find(a=>a.code==="A6")!;
+  expect(a.materialCases).toEqual([]);
+  expect(a.evidenceTypes).toEqual(["theory","hypothesis"]);
+  expect(a.body).toContain("exists for both type-I and type-II");
+  expect(a.body).toContain("amperes per metre");
+  expect(a.body).toContain("normal-state magnetic response is negligible");
+  expect(a.body).toContain("does not uniquely identify triplet pairing");
+  expect(a.references.find(r=>r.doi==="10.1103/PhysRevLett.9.266")!.verification.scope).toBe("publisher-metadata-only");
+  expect(a.references.find(r=>r.doi==="10.1103/PhysRev.147.295")!.verification.scope).toBe("primary-abstract-scoped-check");
+  expect(a.references.find(r=>r.doi==="10.1103/PhysRev.108.1175")!.id).toBe(articles().find(a=>a.code==="B1")!.references.find(r=>r.doi==="10.1103/PhysRev.108.1175")!.id);
+  expect(searchArticles(searchIndex().entries,"Pauli limit").some(r=>r.id===a.id)).toBe(true);
+  expect(searchArticles(searchIndex().entries,"Hc2",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+  const result=await (await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+  expect(result).toContain("g=2");
+  expect(result).toContain("not full scientific validation");
+ });
  it("disposes all 282 pinned files and keeps unpublished topics out of the catalogue",()=>{
   const m=JSON.parse(readFileSync("content/scwiki/source-manifest.json","utf8"));
   expect(m.commit).toBe("0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf");
