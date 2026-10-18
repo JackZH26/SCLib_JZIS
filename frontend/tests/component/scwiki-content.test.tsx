@@ -1057,3 +1057,21 @@ it("keeps high-field measurement temperatures and internal anomalies out of Tc f
  expect(md).toContain("final definition");expect(md).toContain("10.1038/s41467-026-71899-7");
  expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
 });
+
+it("distinguishes driven base temperatures, equilibrium transitions and optical-method disputes",async()=>{
+ const a=articles().find(a=>a.code==="E6")!;
+ const index=searchIndex().entries;
+ expect(a.materialCases.filter(c=>c.reportedTemperatureK>=100).every(c=>c.tcK===null)).toBe(true);
+ expect(a.materialCases.filter(c=>c.tcK!==null).map(c=>[c.formula,c.tcK])).toEqual([["YBa2Cu3O6.5",50],["K3C60",20]]);
+ expect(searchArticles(index,"K3C60",{tcMin:30}).some(a=>a.code==="E6")).toBe(false);
+ expect(searchArticles(index,"fulleride",{tcMin:100}).some(a=>a.code==="E6")).toBe(false);
+ expect(searchArticles(index,"YBCO",{tcMin:100}).some(a=>a.code==="E6")).toBe(false);
+ expect(searchArticles(index,"YBCO",{tcMin:40,pressure:"ambient"}).some(a=>a.code==="E6")).toBe(true);
+ expect(searchArticles(index,"K3C60",{tcMin:10,pressure:"ambient"}).some(a=>a.code==="E6")).toBe(true);
+ const data=await(await get(["search"],"?q=K3C60&tcMin=100")).json();
+ expect(data.results.some((r:{code:string})=>r.code==="E6")).toBe(false);
+ const response=a.references.find(r=>r.doi==="10.48550/arXiv.2303.10169");expect(response?.publicationStatus).toBe("preprint");
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ for(const phrase of ["static four-terminal","transient two-terminal","50 nT","December 2025","100 K it is positive and linear","10.1103/21g5-x5bj"])expect(md).toContain(phrase);
+ expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
+});

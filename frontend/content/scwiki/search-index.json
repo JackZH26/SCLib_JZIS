@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "67885cd98c5028a5bcfd",
+  "revision": "284a351a36137e449290",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -4040,6 +4040,230 @@
         "10.1063/5.0153345"
       ],
       "text": " Scope\n\nMagnetic field is both a control parameter and a probe of superconductivity. Orbital currents, Zeeman splitting, vortex motion and changes in the magnetic background can produce different boundaries. A resistive onset, loss of zero resistance, heat-capacity anomaly and magnetic transition need not coincide. Retain temperature, crystal orientation, sample history, sweep direction and pulse conditions when comparing field scales.   \n\nThis article uses B in tesla for the field scale; experimental papers often label that axis H while reporting tesla, meaning an applied \\mu0H scale. Converting an applied field to local induction requires the magnetization and demagnetizing geometry. Neither an unusually large upper critical field nor field-induced superconductivity alone identifies a pairing symmetry.   \n\n Mathematical assumptions\n\nFor a weak-coupling singlet reference with Zeeman levels shifted by \\pm g\\muB B/2, zero residual superconducting spin susceptibility and no orbital cost, condensation-energy balance gives BP=\\sqrt{2}\\Delta0/(g\\muB). Using \\Delta0=\\pi e^{-\\gammaE}kBTc and g=2 gives about 1.86\\,Tc tesla when Tc is in kelvin. This is a conditional reference, not a universal upper bound. Spin-orbit coupling, anisotropic spin response and strong coupling change the comparison. Clogston's historical identity is retained; its complete original derivation was not retrieved here.  \n\nA second restricted reference is the dirty, single-band, purely orbital result B{c2}^{\\rm orb}(0)\\simeq0.693\\,Tc|dB{c2}/dT|{Tc}. Gurevich's final paper recovers it when the two diffusivities are equal. Its Eq. (31) defines U(x)=\\psi(1/2+x)-\\psi(1/2), satisfying U(0)=0. The early author v1 prints a plus sign at that location; use the final definition. Unequal diffusivities produce different curves. This check does not validate a full WHH fit with Zeeman and spin-orbit terms, or a multiband fit to a particular material.  \n\nThe Maki parameter compares those reference scales, \\alphaM=\\sqrt{2}B{c2}^{\\rm orb}(0)/BP; it is not by itself an FFLO detection criterion. In a parabolic band with small splitting, the Fermi-wavevector mismatch is \\delta k\\simeq g\\muB B/(\\hbar vF). The inherited expression contains an extra factor of two under the stated Zeeman convention. This kinematic estimate does not solve for the optimum finite-momentum pair wavevector or establish the stability of a Fulde–Ferrell–Larkin–Ovchinnikov state. Disorder, orbital effects, dimensionality and competing orders matter.  \n\n Experimental criteria\n\nPetrovic's discovery report describes zero resistance and full diamagnetic shielding at approximately 2.3 K in CeCoIn5. Its field–temperature paragraph compares specific heat with zero resistance for field along the c-axis. That zero-field transition is distinct from lower-temperature anomalies inside the superconducting phase. \n\nBianchi's selected author-manuscript passages describe heat-pulse and temperature-decay calorimetry, including subtraction of the In/Co nuclear Schottky contribution. Figure 1 uses different vertical quantities in its panels: (C-C{\\rm Sch})/T and C, with a C/T inset. Equal-entropy construction concerns the integral of C/T, not equal areas under an unconverted C curve. At high in-plane fields the report finds a first-order upper boundary and an internal anomaly around 0.3 K. These are not new zero-field transition temperatures. Its final title explicitly says “Possible” FFLO state; calorimetry does not directly measure pair momentum. \n\nThe later Kenzelmann neutron-scattering report finds magnetic order coupled to superconductivity in this high-field region. Its symmetry interpretation suggests a modulated superconducting state, while the observed magnetic order does not alone reconstruct the spatial pair field. This article checked that paper's original abstract, not its complete neutron methods or supplementary analysis. \n\nLewin's UTe2 experiments combine pulsed-field resistance and proximity-detector-oscillator measurements. Typical pulses reached 60 T or, in a different magnet, 73 T; the common measurement temperature was about 0.63 K. The high-field zero-resistance region depends strongly on both field angles. The oscillator frequency is a conductivity-sensitive proxy, and a comparison at 2.09 K without the superconducting feature is a normal-state measurement, not a 2.09 K transition determination. A measured field extent is not necessarily an observed upper critical field. \n\nZambra's April 2026 study measures magnetotropic response at 4 K, where the superconducting phases are suppressed. Its Figure 1 separately reproduces a 300 mK superconducting phase diagram and 1.4 K magnetization from earlier work. These temperatures must not be merged into a claim of superconductivity at 4 K. “Transverse” refers to response perpendicular to the static field, not automatically an off-diagonal susceptibility element. The final article number is 3742, correcting the inherited 3814. \n\n Limits and disputes\n\nMagnetotropic susceptibility, an angular derivative of torque measured through a cantilever frequency shift, probes a different response from longitudinal magnetization. Zambra's long-wavelength result supports an inference of enhanced transverse ferromagnetic fluctuations; it does not measure a complete frequency-dependent pairing interaction. Values below 15 T in one normalized color map were set to zero to suppress amplified noise, rather than demonstrating a physically vanishing susceptibility. Alignment and calibration details remain relevant to comparisons with phase boundaries. \n\nKeep measured phenomena separate from candidate explanations. A heat-capacity anomaly, magnetic Q phase and proposed FFLO modulation are distinct statements. Likewise, the multicomponent triplet model discussed for the UTe2 field-angle halo is an interpretation, not a direct determination of topology. Selected original passages and figures were checked here; remaining final-version comparisons, full supplements, raw-data reproduction and complete scientific acceptance remain open.   \n\n Discovery implications\n\nConstruct a field–temperature–angle map with explicit criteria and uncertainties. Compare transport with thermodynamic or magnetic probes where possible, retain pulsed-field heating and alignment controls, and distinguish re-entrant regions from a simple monotonic critical field. The local equation checks verify declared Zeeman conventions, an orbital asymptote and an illustrative entropy construction. They do not establish a new superconducting phase, fit an experimental boundary or certify a universal pairing mechanism.    \n\n Related topics\n\nCompare , , ,  and ."
+    },
+    {
+      "id": "scwiki-e6",
+      "topicId": "scwiki-topic-e6",
+      "code": "E6",
+      "slug": "light-driven-superconductivity",
+      "title": "Light-driven states: transient evidence and equilibrium limits",
+      "summary": "Compare optical, electrical and magnetic evidence under explicit drive conditions, with depth reconstruction, granularity and detection limits.",
+      "aliases": [
+        "light induced superconductivity",
+        "photoinduced superconductivity",
+        "photodoping",
+        "pump probe",
+        "Floquet",
+        "transient superconductivity",
+        "optical saturation"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "b11887038ca7628f4109",
+      "materialCases": [
+        {
+          "id": "scwiki-e6-material-1",
+          "formula": "La1.675Eu0.2Sr0.125CuO4",
+          "sample": "Fausti stripe-ordered specimen,5ps spectrum",
+          "recordType": "experiment",
+          "reportedTemperatureK": 10,
+          "tcK": null,
+          "temperatureKind": "transient-response",
+          "temperatureNote": "Base temperature for driven optical response, not an equilibrium transition.",
+          "criterion": "transient-optical-coherence",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "transient",
+          "probe": "THz c-axis reflectance",
+          "sourceId": "source-c60f0131e7d25c60",
+          "aliases": [
+            "LESCO",
+            "cuprate",
+            "cuprates"
+          ]
+        },
+        {
+          "id": "scwiki-e6-material-2",
+          "formula": "YBa2Cu3O6.5",
+          "sample": "Hu equilibrium reference",
+          "recordType": "experiment",
+          "reportedTemperatureK": 50,
+          "tcK": 50,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate equilibriumTc; precise operational transition criterion not independently checked.",
+          "criterion": "transition-unspecified",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Equilibrium reference in optical study",
+          "sourceId": "source-e8775e639989b8d6",
+          "aliases": [
+            "YBCO",
+            "cuprate",
+            "cuprates"
+          ]
+        },
+        {
+          "id": "scwiki-e6-material-3",
+          "formula": "YBa2Cu3O6.5",
+          "sample": "Hu narrowband driven measurement",
+          "recordType": "experiment",
+          "reportedTemperatureK": 300,
+          "tcK": null,
+          "temperatureKind": "transient-response",
+          "temperatureNote": "Room-temperature driven response is not a300K equilibriumTc.",
+          "criterion": "transient-interlayer-optical-response",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "transient",
+          "probe": "Narrowband THz optics",
+          "sourceId": "source-e8775e639989b8d6",
+          "aliases": [
+            "YBCO",
+            "cuprate",
+            "cuprates"
+          ]
+        },
+        {
+          "id": "scwiki-e6-material-4",
+          "formula": "K3C60",
+          "sample": "Mitrano equilibrium reference",
+          "recordType": "experiment",
+          "reportedTemperatureK": 20,
+          "tcK": 20,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate equilibrium transition; not the optical-gap energy or a driven measurement temperature.",
+          "criterion": "transition-unspecified",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Equilibrium optical comparison",
+          "sourceId": "source-6ee3670220e24ff1",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
+        },
+        {
+          "id": "scwiki-e6-material-5",
+          "formula": "K3C60",
+          "sample": "Budden extended-pulse experiment",
+          "recordType": "experiment",
+          "reportedTemperatureK": 100,
+          "tcK": null,
+          "temperatureKind": "transient-response",
+          "temperatureNote": "Driven base temperature; contact-calibrated resistance compatible with zero does not establish equilibriumTc100K.",
+          "criterion": "calibrated-transient-two-terminal-resistance",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "transient",
+          "probe": "Electrical transport and optical comparison",
+          "sourceId": "source-07be806c0002c690",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
+        },
+        {
+          "id": "scwiki-e6-material-6",
+          "formula": "K3C60",
+          "sample": "Adelinia25K granular-film voltage response",
+          "recordType": "experiment",
+          "reportedTemperatureK": 25,
+          "tcK": null,
+          "temperatureKind": "transient-response",
+          "temperatureNote": "Model-dependent granular interpretation; base temperature notTc.",
+          "criterion": "time-resolved-voltage-response",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "transient",
+          "probe": "Photoconductive-switch voltmeter",
+          "sourceId": "source-930b28b64275da42",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
+        },
+        {
+          "id": "scwiki-e6-material-7",
+          "formula": "K3C60",
+          "sample": "Adelinia100K linear positive voltage response",
+          "recordType": "experiment",
+          "reportedTemperatureK": 100,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Above80K sign reversal;100Kpositive response linear over measured currents, not a transition.",
+          "criterion": "linear-positive-photovoltage",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "transient",
+          "probe": "Photoconductive-switch voltmeter",
+          "sourceId": "source-930b28b64275da42",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
+        },
+        {
+          "id": "scwiki-e6-material-8",
+          "formula": "YBa2Cu3O6.48",
+          "sample": "Fava magnetic-response measurement",
+          "recordType": "experiment",
+          "reportedTemperatureK": 100,
+          "tcK": null,
+          "temperatureKind": "transient-response",
+          "temperatureNote": "Approximately1ps response with geometry-dependent susceptibility estimate; not equilibriumTc.",
+          "criterion": "transient-magnetic-field-expulsion",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "transient",
+          "probe": "Faraday rotation in nearby GaP",
+          "sourceId": "source-65e69ec93039deb9",
+          "aliases": [
+            "YBCO",
+            "cuprate",
+            "cuprates"
+          ]
+        },
+        {
+          "id": "scwiki-e6-material-9",
+          "formula": "YBa2Cu3O6.48",
+          "sample": "Fava room-temperature magnetic response",
+          "recordType": "experiment",
+          "reportedTemperatureK": 300,
+          "tcK": null,
+          "temperatureKind": "transient-response",
+          "temperatureNote": "Driven300K base temperature with approximately1ps signal, not a persistent equilibrium Meissner transition.",
+          "criterion": "transient-magnetic-field-expulsion",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "transient",
+          "probe": "Faraday rotation in nearby GaP",
+          "sourceId": "source-65e69ec93039deb9",
+          "aliases": [
+            "YBCO",
+            "cuprate",
+            "cuprates"
+          ]
+        }
+      ],
+      "dois": [
+        "10.1126/science.1197294",
+        "10.1038/nmat3963",
+        "10.1038/nature13875",
+        "10.1038/nature16522",
+        "10.1038/s41567-020-01148-1",
+        "10.1038/nphys4024",
+        "10.1103/PhysRevLett.130.146002",
+        "10.48550/arXiv.2303.10169",
+        "10.1038/s41586-024-07635-2",
+        "10.1063/4.0000295",
+        "10.1103/21g5-x5bj"
+      ],
+      "text": " Scope\n\nLight can change carrier populations, excite lattice motion and alter collective electronic response. Persistent photodoping, a transient pump–probe state and a periodically driven model are different protocols. Specify wavelength, polarization, pulse duration, fluence, repetition rate, base temperature and probe delay. A temperature at which a driven response is observed is not automatically an equilibrium superconducting transition temperature.    \n\nThe evidence now extends beyond optical conductivity. Electrical measurements in K3C60, transient magnetic measurements in YBa2Cu3O6.48 and a later sensitivity-limited magnetic experiment on K3C60 ask different questions. Preserve the specimen, geometry and measured observable rather than combining them into one universal light-induced transition.    \n\n Mathematical assumptions\n\nWith the e^{-i\\omega t} convention, a normal Drude response is \\sigma(\\omega)=D/(\\Gamma-i\\omega), where D is the Drude weight and \\Gamma>0 the relaxation rate. Thus \\sigma2=D\\omega/(\\Gamma^2+\\omega^2)\\approx D/\\omega when the measured frequencies greatly exceed \\Gamma, although the DC conductivity D/\\Gamma remains finite. A finite-band inductive trend alone cannot distinguish this limit from a condensate. This elementary counterexample is not a fit to, or refutation of, any particular experiment.  \n\nDepth reconstruction also matters. For Dodge's illustrative saturating profile, \\Delta\\sigma(z)=\\Delta\\sigma{\\rm sat}f e^{-z/\\Lambda}/(1+f e^{-z/\\Lambda}), with f=F/F{\\rm sat}, integration gives sheet photoconductance \\Delta G=\\Delta\\sigma{\\rm sat}\\Lambda\\ln(1+f). The effective thickness grows with fluence even while the surface response saturates. Assuming a fixed exponential profile can therefore bias the inferred surface conductivity. This integral checks the stated profile, not a full electromagnetic inversion; the experimental interpretation is disputed below.  \n\nKennes's minimal quadratic electron–phonon model gives oscillator frequency \\omega(n)=\\omega0\\sqrt{1+2gn} for site occupation n=0,1,2, requiring g>-1/4. At fixed phonon occupation nB, its induced interaction is \\Delta U=(nB+1/2)\\hbar\\omega0[\\sqrt{1+4g}+1-2\\sqrt{1+2g}]. Concavity makes this nonpositive for either sign of stable g, with leading term -(nB+1/2)\\hbar\\omega0g^2. The author manuscript sets Planck's constant to one; it is restored here. This is a model mechanism, not a measured coupling or proof of a stable superconducting phase. \n\n Experimental criteria\n\nFausti studied stripe-ordered La1.675Eu0.2Sr0.125CuO4 at a 10 K base temperature. The reported signal is a transient c-axis plasma edge and optical response interpreted as restored interlayer coherence. Figures 2–3 specify a 16 micrometre pump, approximately 1 mJ/cm² fluence and a 5 ps delay for the transient spectrum. The pump excites roughly 200 nm in depth, while the THz probe samples about 10 micrometres; the transformed-layer reconstruction is essential. A near-infrared plateau observed to 100 ps does not directly measure a many-nanosecond lifetime. \n\nHu's YBa2Cu3O6.5 specimen has an equilibrium transition near 50 K. Its approximately 300 fs, 15 micrometre pump modifies both inter- and intra-bilayer optical response. The effective-medium analysis separates transformed and untransformed regions; screened plasma-edge positions are not the same as fitted unscreened plasma frequencies. Broadband data at 60 K and narrower-band measurements at 100 and 300 K have different information content. Mankowsky's associated structural study combines diffraction with calculations to connect driven distortions with electronic changes; structural response does not uniquely identify pairing.  \n\nMitrano's K3C60 report compares a transient optical response above the roughly 20 K equilibrium transition with the low-temperature spectrum. Its title deliberately says “Possible”. The reported optical-gap fit and enhanced carrier mobility are not a direct DC resistance or magnetic measurement. Temperature, pump–probe delay and model-dependent gap extraction must remain attached to that evidence. \n\nBudden extended the response using longer pulses. Figure 4 compares optical extrapolation with electrical measurements at a 100 K base temperature and about 25 mJ/cm² fluence. The optical and transport pump durations are 200 ps and 75 ps, respectively. The electrical experiment is transient two-terminal transport with contact contributions calibrated from static four-terminal measurements; it is not a direct transient four-terminal measurement. Resistance compatible with zero within that calibration and recovery over tens of nanoseconds strengthen the authors' metastable interpretation without establishing a pump-free equilibrium transition at 100 K. \n\nAdelinia's 2025 thin-film study uses a quasi-DC bias, 300 fs pulses at 7 micrometres and photoconductive switches to resolve voltage dynamics. Granular-film and powder results are not interchangeable. The above-transition voltage response changes sign at 80 K; at 100 K it is positive and linear across the measured current range. Fitted superfluid fractions and weak-link phase-slip dynamics depend on the granular two-fluid model. A 100 K measurement in this paper must not become a 100 K superconducting-transition record. \n\nFava's 2024 YBa2Cu3O6.48 experiment detects a transient magnetic-field enhancement near the excited region's edge using Faraday rotation in a nearby GaP detector. Signals at 100 and 300 K last about 1 ps. The inferred diamagnetic susceptibility of order −0.3 depends on geometry and the magnetic-response model; the paper itself cautions that a quasi-static estimate is not fully justified for this dynamics. This provides a complementary magnetic observable, while remaining distinct from a persistent equilibrium Meissner state. \n\nDe Vecchi's December 2025 K3C60 study reports no statistically significant photo-induced field signal above roughly 50 nT out to 1 ns in its protocol. Its model-based bound is \\chiv>-0.1. The authors explicitly conclude that their resolution does not decide whether Meissner diamagnetism is present or absent. Granularity and a small expected response matter: this null result neither establishes superconductivity nor universally rules it out. \n\n Limits and disputes\n\nDodge and colleagues argue that saturation-dependent excitation depth can create misleading superconducting-like reconstructed spectra. Buzzi and colleagues' March 2023 preprint response disputes that interpretation, arguing that the inductive signature survives their alternative reconstructions. The local profile and Drude checks above do not resolve this dispute. Compare raw reflected fields, depth assumptions, spectral bandwidth and independent transport or magnetic evidence rather than treating a fitted gap as a unique diagnosis.  \n\nLong-lived after a short pulse does not mean thermodynamic equilibrium. Quantify absorbed energy, depth gradients, carrier and lattice temperatures, relaxation and repetition-rate heating. Selective excitation of a phonon does not establish that equilibrium pairing is phonon-mediated. The present review covers selected original passages and figures; full supplements, remaining version comparisons, experimental raw-data reproduction and complete scientific acceptance remain open.    \n\n Discovery implications\n\nUse synchronized optical, electrical and magnetic probes with explicit controls and uncertainty. Report signal duration separately from formation time and instrumental resolution. Keep equilibrium transition records separate from driven base temperatures and model estimates in databases and search filters. Theory should predict observables under the actual drive protocol, including relaxation, rather than equating an attractive model interaction with an experimentally established superconducting phase.    \n\n Related topics\n\nCompare , , ,  and ."
     },
     {
       "id": "scwiki-f7",
