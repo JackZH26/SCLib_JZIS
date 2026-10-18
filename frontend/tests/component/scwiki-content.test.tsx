@@ -1075,3 +1075,21 @@ it("distinguishes driven base temperatures, equilibrium transitions and optical-
  for(const phrase of ["static four-terminal","transient two-terminal","50 nT","December 2025","100 K it is positive and linear","10.1103/21g5-x5bj"])expect(md).toContain(phrase);
  expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
 });
+
+it("keeps irradiation and Shiba spectroscopy temperatures separate from transition records",async()=>{
+ const a=articles().find(a=>a.code==="E7")!;
+ const index=searchIndex().entries;
+ expect(a.materialCases.filter(c=>c.formula==="MnPc/Pb(111)").every(c=>c.tcK===null)).toBe(true);
+ expect(a.materialCases.filter(c=>c.criterion==="irradiation-bath-temperature").every(c=>c.tcK===null)).toBe(true);
+ expect(a.materialCases.find(c=>c.reportedTemperatureK===.08)?.temperatureKind).toBe("measurement");
+ expect(searchArticles(index,"BaRu122",{tcMin:20}).some(a=>a.code==="E7")).toBe(false);
+ expect(searchArticles(index,"BaRu122",{tcMin:17,pressure:"ambient"}).some(a=>a.code==="E7")).toBe(true);
+ expect(searchArticles(index,"BaP122",{tcMin:28,criterion:"tdo-frequency-shift"}).some(a=>a.code==="E7")).toBe(true);
+ expect(searchArticles(index,"BaP122",{tcMin:28,criterion:"zero-resistance"}).some(a=>a.code==="E7")).toBe(false);
+ expect(searchArticles(index,"MnPc",{tcMin:1}).some(a=>a.code==="E7")).toBe(false);
+ const data=await(await get(["search"],"?q=BaRu122&tcMin=20")).json();
+ expect(data.results.some((r:{code:string})=>r.code==="E7")).toBe(false);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ for(const phrase of ["17.85 K","50–100 microelectronvolt","tip-gap bias","20–22 K","not a completed original-text audit","10.7498/aps.21.75"])expect(md).toContain(phrase);
+ expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
+});

@@ -1,0 +1,551 @@
+{
+  "id": "scwiki-e7",
+  "topicId": "scwiki-topic-e7",
+  "code": "E7",
+  "slug": "disorder-and-impurities",
+  "title": "Disorder and impurities: pair breaking, bound states and pinning",
+  "summary": "Separate symmetry-sensitive scattering, impurity spectroscopy and useful vortex pinning, with explicit dose, annealing and temperature criteria.",
+  "aliases": [
+    "disorder",
+    "impurities",
+    "Anderson theorem",
+    "Abrikosov Gorkov",
+    "AG pair breaking",
+    "Yu Shiba Rusinov",
+    "YSR",
+    "electron irradiation",
+    "annealing"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory"
+  ],
+  "relatedCodes": [
+    "C1",
+    "C2",
+    "C3",
+    "E2",
+    "A7",
+    "E5"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T13:12:18.071876+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected original scans by Anderson and Yu; selected results and methods in Prozorov author, Mizukami final and Hatter final papers; bounded AG, YSR and dose calculations.",
+    "limitations": [
+      "Complete scientific acceptance, full supplements and raw-data reanalysis remain open.",
+      "The original AG full text and complete Shiba derivation were not retrieved. Equation checks in the Balatsky review manuscript are separate; comparison with its final version remains open.",
+      "Prozorov author v1 has not been fully compared with the final paper; its exact transition threshold is not established. Mizukami TDO transitions are not relabeled as zero resistance.",
+      "The classical YSR formula does not model quantum Kondo screening or anisotropy and does not establish Majorana states. Irradiation and spectroscopy temperatures are excluded from transition filters."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "E_tuning_parameters/E7_disorder_impurities.md",
+    "sha256": "5bd92b9477df52b8e9a15e246fb56c719f8d5c62b39117f2869a5381eb3a9ba1",
+    "sourceId": "file-76a9595afdf9af5a"
+  },
+  "references": [
+    {
+      "id": "source-8d0e592da8ec9c7b",
+      "doi": "10.1016/0022-3697(59)90036-8",
+      "title": "Theory of dirty superconductors",
+      "year": 1959,
+      "url": "https://doi.org/10.1016/0022-3697(59)90036-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-original-scan-reread",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://physics.umd.edu/courses/Phys798S/anlage/Phys798SAnlageSpring06/Anderson%20TimeReversed%20Pairs%20Paper.pdf",
+        "note": "Original journal pp26 and29 visually re-read: exact time-reversed states, chemical changes/DOS and anisotropy. Complete derivation and localization corrections not independently reviewed."
+      }
+    },
+    {
+      "id": "source-daf8f301de81a726",
+      "doi": null,
+      "title": "Contribution to the theory of superconducting alloys with paramagnetic impurities",
+      "year": 1961,
+      "url": "https://www.itp.ac.ru/en/persons/abrikosov-alexey-alekseevich/",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "historical-bibliographic-anchor-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.itp.ac.ru/en/persons/abrikosov-alexey-alekseevich/",
+        "note": "Soviet Physics JETP12,1243–1253; Russian original39,1781–1796(1960). No DOI asserted. Attempted archive PDFs404; original full text not retrieved. Displayed convention checked separately in Balatsky author manuscript and bounded local calculations."
+      }
+    },
+    {
+      "id": "source-c9bed6791b995641",
+      "doi": "10.7498/aps.21.75",
+      "title": "Bound state in superconductors with paramagnetic impurities",
+      "year": 1965,
+      "url": "https://doi.org/10.7498/aps.21.75",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "original-scan-abstract-and-opening-discussion",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://wulixb.iphy.ac.cn/pdf-content/10.7498/aps.21.75.pdf",
+        "note": "Journal21(1),75–91. Original scan p75 Chinese abstract/opening and p91 English abstract visually read. Local subgap excitation and isolated-impurity scope checked; intervening detailed derivation not reviewed. PDF lacks usable text layer."
+      }
+    },
+    {
+      "id": "source-7383f31da800ca9e",
+      "doi": "10.1143/PTP.40.435",
+      "title": "Classical spins in superconductors",
+      "year": 1968,
+      "url": "https://doi.org/10.1143/PTP.40.435",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-indexed-abstract-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://academic.oup.com/ptp/article/40/3/435/1831894",
+        "note": "Publisher indexed original abstract identifies classical-spin localized subgap states. Full original derivation not retrieved; do not count as complete primary-equation review."
+      }
+    },
+    {
+      "id": "source-3a528aeee1b7cf04",
+      "doi": "10.1103/RevModPhys.78.373",
+      "title": "Impurity-induced states in conventional and unconventional superconductors",
+      "year": 2006,
+      "url": "https://doi.org/10.1103/RevModPhys.78.373",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-equation-conventions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0411318v1",
+        "note": "Authorv1 submitted11November2004; selected sectionsVI andXIV,pp13–14 and40–41 read. p14 Eq6.8–6.15 and p40 Eq14.12–14.13 visually checked. This is a review, not a substitute for the unavailable original AG/Shiba derivations. Final-version comparison remains open."
+      }
+    },
+    {
+      "id": "source-23c62b46f5681d83",
+      "doi": "10.1103/PhysRevX.4.041032",
+      "title": "Effect of electron irradiation on superconductivity in single crystals of Ba(Fe1-xRux)2As2 (x=0.24)",
+      "year": 2014,
+      "url": "https://doi.org/10.1103/PhysRevX.4.041032",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1405.3255v1",
+        "note": "Authorv1 dated13May2014; selectedpp1–4 methods,annealing,Figs1–3 andmultiband discussion read; p3 Figs1–2 visually checked. Tc0 methods17.8K versus transportfigure17.85K retained; exact operational threshold not established. Final APS PDF403; completefinalcomparison/rawdata remain open."
+      }
+    },
+    {
+      "id": "source-c4a5c25b97df43a2",
+      "doi": "10.1038/ncomms6657",
+      "title": "Disorder-induced topological change of the superconducting gap structure in iron pnictides",
+      "year": 2014,
+      "url": "https://doi.org/10.1038/ncomms6657",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-results-methods-and-transition-figure",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/ncomms6657.pdf",
+        "note": "Published28November2014,NatCommun5,5657. Selectedpp3–6 results,Fig2/3captions andmethods read; p3Fig2 visually checked. x=.33–.36,28/29K TDO batches versus30K resistivity crystal,80mK floor and20–22K irradiation preserved. Numerical model, fullsupplement/rawdata not reproduced."
+      }
+    },
+    {
+      "id": "source-54e8e8bbd28f62fd",
+      "doi": "10.1038/ncomms9988",
+      "title": "Magnetic anisotropy in Shiba bound states across a quantum phase transition",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/ncomms9988",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-spectroscopy-and-deconvolution-methods",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/ncomms9988.pdf",
+        "note": "Published25November2015,NatCommun6,8988. Selectedpp2–3 results andp5 methods read,pp3/5 visually checked.1.2K superconducting-tip measurement;50–100microeV widths,400microeV spacing andtip-gap bias explicitly distinguished. Deconvolution Eq1/2 inspected but not reproduced; fullsupplement/rawdata remain open."
+      }
+    },
+    {
+      "id": "source-51c947cf11bea72e",
+      "doi": "10.1038/nmat1156",
+      "title": "Strongly enhanced current densities in superconducting coated conductors of YBa2Cu3O7-x + BaZrO3",
+      "year": 2004,
+      "url": "https://doi.org/10.1038/nmat1156",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0406087v1",
+        "note": "Reused existing A7 scoped check. Selected pp. 2–4: preparation, transport field orientation, in-field/self-field comparison and particle-composition ambiguity. No electric-field criterion extracted; raw curves and micrographs not independently reproduced."
+      }
+    },
+    {
+      "id": "source-7ba854cc57960377",
+      "doi": "10.1103/PhysRevB.67.184515",
+      "title": "Enhancement of the upper critical field by nonmagnetic impurities in dirty two-gap superconductors",
+      "year": 2003,
+      "url": "https://doi.org/10.1103/PhysRevB.67.184515",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-equations-and-author-version-comparison",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://nationalmaglab.org/library/publications/nhmfl_publication-3151.pdf",
+        "note": "Reused existing E5 scoped check. Final journal16May2003; selected pp4–5 equal-diffusivity limit, Eq31 and asymptotes read; p4 visually compared with arXiv0212129v1 p4. Final U(x) has minus; v1 prints plus. Detailed Usadel solution, full curves and experimental fits not reproduced."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-e7-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Disorder is not one adjustable number. Elastic scattering, magnetic pair breaking, local bound states, localization, vortex pinning and poor grain connectivity affect different observables. Record defect chemistry, irradiation particle and energy, dose, temperature, annealing history and sample geometry. A larger residual resistivity does not by itself specify the pair-breaking rate or prove a change of carrier density.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8d0e592da8ec9c7b",
+        "source-23c62b46f5681d83",
+        "source-c4a5c25b97df43a2"
+      ],
+      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
+      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e7-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Anderson's time-reversed-state argument explains the robustness of an isotropic, sign-preserving superconducting state to nonmagnetic elastic scattering under restricted assumptions. The participating states must remain extended and the averaged pairing interaction and density of states must not change substantially. It is not immunity to arbitrary chemical substitution, localization, magnetic scattering or spatial granularity. Constant $T_c$ alone does not uniquely determine pairing symmetry.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8d0e592da8ec9c7b",
+        "source-23c62b46f5681d83"
+      ],
+      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
+      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e7-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In the dilute, uncorrelated, weak magnetic-scattering model for an isotropic singlet state, define the pair-breaking **energy** $\\Gamma$ by $\\ln(T_{c0}/T_c)=\\psi(1/2+\\Gamma/(2\\pi k_BT_c))-\\psi(1/2)$, where $\\psi$ is the digamma function. With $g=\\Gamma/(k_BT_{c0})$ and $t=T_c/T_{c0}$, the initial slope is $dt/dg=-\\pi/4$, and $T_c$ vanishes at $g_c=\\pi e^{-\\gamma_E}/2\\approx0.882$. Rate conventions differ; do not substitute a transport lifetime without deriving its relation to this $\\Gamma$. Local numerical checks compare the equation with independently bounded Matsubara sums. The original AG paper remains a bibliographic anchor, not a completed original-text audit.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-daf8f301de81a726",
+        "source-3a528aeee1b7cf04",
+        "source-23c62b46f5681d83"
+      ],
+      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
+      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e7-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For one classical magnetic scattering channel in a particle–hole-symmetric, isotropic host with a fixed gap, use exchange $J\\mathbf S\\cdot\\mathbf s$, $\\mathbf s=\\boldsymbol\\sigma/2$, and normal density of states per spin $N_0$. Defining $\\alpha=\\pi N_0JS/2$ and potential strength $\\beta=\\pi N_0V$, one signed Yu–Shiba–Rusinov branch is $E/\\Delta=(1+\\beta^2-\\alpha^2)/\\sqrt{(1+\\beta^2-\\alpha^2)^2+4\\alpha^2}$; its particle–hole partner has opposite energy. At $V=0$, this reduces to $(1-\\alpha^2)/(1+\\alpha^2)$. A zero crossing requires $\\alpha^2=1+\\beta^2$ in this model. These conventions and phase-shift checks do not solve quantum Kondo screening, multiple orbital channels or self-consistent gap suppression.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-c9bed6791b995641",
+        "source-7383f31da800ca9e",
+        "source-3a528aeee1b7cf04",
+        "source-54e8e8bbd28f62fd"
+      ],
+      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
+      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e7-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Dose is a separate quantity: an electron charge dose of 1 C/cm² corresponds to approximately $6.24\\times10^{18}$ incident electrons/cm². The 3.4 C/cm² exposure in Prozorov's protocol is about $2.12\\times10^{19}$ electrons/cm². Neither number is the surviving defect concentration; displacement cross sections, recombination and annealing enter that conversion.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-23c62b46f5681d83"
+      ],
+      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
+      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e7-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Prozorov studied Ba(Fe1−xRux)2As2 with WDS composition $x=0.24$ using 2.5 MeV electrons. Irradiation and in-situ resistivity measurements took place near 22 K; the initial superconducting transition is reported as 17.8 K in the methods and 17.85 K in the transport figure. Warming to room temperature between runs partially annealed the damage, by up to about 30%. The same contacts were retained. Increased resistivity and suppressed $T_c$ were compatible with the authors' multiband sign-changing scenario, whose interband/intraband scattering ratio matters. The 22 K irradiation temperature is not $T_c$, and no unverified onset, midpoint or zero-resistance label is assigned here.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-23c62b46f5681d83"
+      ],
+      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
+      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e7-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Mizukami's BaFe2(As1−xPx)2 crystals had $x=0.33$–0.36 and initial transitions of 28, 29 or 30 K. The 28/29 K batches were tracked by tunnel-diode-oscillator frequency shifts; the 30 K crystal also supplied the resistivity series. Following 2.5 MeV irradiation, low-temperature penetration-depth curves evolved from nodal behavior to an activated regime, then back to gapless behavior with further disorder. The authors interpreted that sequence with accidental nodes and sign-changing multiband pairing. Here “topological change” concerns the gap's nodal structure; it does not establish a Majorana-carrying topological superconductor. The 80 mK measurement floor and 20–22 K irradiation bath remain separate from transition records.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c4a5c25b97df43a2"
+      ],
+      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
+      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e7-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Hatter measured manganese phthalocyanine on Pb(111) at 1.2 K with a superconducting Pb tip. The resolved Shiba triplets have 50–100 microelectronvolt widths and separations up to 400 microelectronvolts. The measured conductance includes the tip density of states: near-zero sample excitation energy appears near the tip-gap bias, not necessarily at zero measured bias. The authors numerically deconvolved the spectra and used relative spectral weights to distinguish impurity ground states and magnetic-anisotropy effects. This is local spectroscopy, not a 1.2 K transition measurement or a standalone Majorana demonstration.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-54e8e8bbd28f62fd"
+      ],
+      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
+      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e7-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A suppression curve alone is not a unique symmetry test. Separate changes in pairing interaction, band filling, magnetic moments and defect morphology from elastic scattering; distinguish intra- and interband processes. Gapless superconductivity is also different from destruction of superconducting order. The classical single-impurity formula cannot establish the quantum impurity parity change on its own; spectroscopy, tip calibration, spatial structure and the appropriate many-body model are needed.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c9bed6791b995641",
+        "source-3a528aeee1b7cf04",
+        "source-23c62b46f5681d83",
+        "source-c4a5c25b97df43a2",
+        "source-54e8e8bbd28f62fd"
+      ],
+      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
+      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e7-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Defects can help current transport by pinning vortices while harming other properties. BaZrO3-containing YBCO films illustrate an in-field current improvement that must be evaluated at specified temperature, field and orientation, rather than equated with higher $T_c$. Dirty two-gap theory also permits enhanced orbital upper critical fields under particular diffusivity and coupling conditions. Neither result implies monotonic improvement with damage, a universal type-I to type-II conversion, or an enhanced Pauli limit.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-51c947cf11bea72e",
+        "source-7ba854cc57960377"
+      ],
+      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
+      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e7-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "The present article has selected original-paper and equation checks. The original AG full text and Shiba full derivation have not been read; Yu's original abstract and opening discussion were checked from scans. The detailed AG/YSR equation convention was cross-checked in the Balatsky author manuscript, with final-version comparison still open. Full supplements, raw-data reanalysis and complete scientific acceptance remain unfinished.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-daf8f301de81a726",
+        "source-c9bed6791b995641",
+        "source-7383f31da800ca9e",
+        "source-3a528aeee1b7cf04"
+      ],
+      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
+      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e7-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Use controlled defect series with repeat measurements before irradiation, after irradiation and after annealing. Compare $T_c$, gap spectra, residual resistivity, magnetic response, $H_{c2}$ and $J_c$ under matched conditions. Preserve sample identifiers and probe-specific transition criteria in machine-readable records; never merge irradiation temperatures, spectroscopy temperatures and superconducting transitions into a single temperature ranking.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-23c62b46f5681d83",
+        "source-c4a5c25b97df43a2",
+        "source-54e8e8bbd28f62fd",
+        "source-51c947cf11bea72e"
+      ],
+      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
+      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\ln(1/t)=\\psi(1/2+g/(2\\pi t))-\\psi(1/2)",
+      "check": "Six100000-term Matsubara sums with integral tailbounds independently enclose digamma-root values; smallg slope and criticalg checked."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "E/\\Delta=(1+\\beta^2-\\alpha^2)/\\sqrt{(1+\\beta^2-\\alpha^2)^2+4\\alpha^2}",
+      "check": "15phase-shift comparisons and5pure-exchange T-matrix pole checks; fixedgap classicalsinglechannel only."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-e7-material-1",
+      "formula": "Ba(Fe0.76Ru0.24)2As2",
+      "sample": "Prozorov pristine transport specimen",
+      "recordType": "experiment",
+      "reportedTemperatureK": 17.85,
+      "tcK": 17.85,
+      "temperatureKind": "transition",
+      "temperatureNote": "Figure 2 labels Tc0 = 17.85 K; methods report 17.8 K. Operational onset/midpoint/zero threshold not verified.",
+      "criterion": "transition-unspecified",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Four-probe in-plane resistivity",
+      "sourceId": "source-23c62b46f5681d83",
+      "aliases": [
+        "BaRu122",
+        "iron pnictide",
+        "pnictide"
+      ]
+    },
+    {
+      "id": "scwiki-e7-material-2",
+      "formula": "Ba(Fe0.76Ru0.24)2As2",
+      "sample": "Prozorov irradiation bath",
+      "recordType": "experiment",
+      "reportedTemperatureK": 22,
+      "tcK": null,
+      "temperatureKind": "normal-state",
+      "temperatureNote": "Irradiation temperature, not superconducting transition.",
+      "criterion": "irradiation-bath-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "In-situ four-probe resistivity",
+      "sourceId": "source-23c62b46f5681d83",
+      "aliases": [
+        "BaRu122",
+        "iron pnictide",
+        "pnictide"
+      ]
+    },
+    {
+      "id": "scwiki-e7-material-3",
+      "formula": "BaFe2(As1-xPx)2",
+      "sample": "Mizukami28K pristine batch, x=.33–.36 study range",
+      "recordType": "experiment",
+      "reportedTemperatureK": 28,
+      "tcK": 28,
+      "temperatureKind": "transition",
+      "temperatureNote": "Pristine batch transition; precise frequency-shift endpoint not independently established.",
+      "criterion": "tdo-frequency-shift",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "13MHz tunnel diode oscillator",
+      "sourceId": "source-c4a5c25b97df43a2",
+      "aliases": [
+        "BaP122",
+        "P-substituted Ba122",
+        "iron pnictide",
+        "pnictide"
+      ]
+    },
+    {
+      "id": "scwiki-e7-material-4",
+      "formula": "BaFe2(As1-xPx)2",
+      "sample": "Mizukami29K pristine batch, x=.33–.36 study range",
+      "recordType": "experiment",
+      "reportedTemperatureK": 29,
+      "tcK": 29,
+      "temperatureKind": "transition",
+      "temperatureNote": "Pristine batch transition; not zero-resistance criterion.",
+      "criterion": "tdo-frequency-shift",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "13MHz tunnel diode oscillator",
+      "sourceId": "source-c4a5c25b97df43a2",
+      "aliases": [
+        "BaP122",
+        "P-substituted Ba122",
+        "iron pnictide",
+        "pnictide"
+      ]
+    },
+    {
+      "id": "scwiki-e7-material-5",
+      "formula": "BaFe2(As1-xPx)2",
+      "sample": "Mizukami30A pristine resistivity specimen",
+      "recordType": "experiment",
+      "reportedTemperatureK": 30,
+      "tcK": 30,
+      "temperatureKind": "transition",
+      "temperatureNote": "Figure 2c/d pristine transport transition; exact operational threshold not relabeled.",
+      "criterion": "transition-unspecified",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "van der Pauw resistivity",
+      "sourceId": "source-c4a5c25b97df43a2",
+      "aliases": [
+        "BaP122",
+        "P-substituted Ba122",
+        "iron pnictide",
+        "pnictide"
+      ]
+    },
+    {
+      "id": "scwiki-e7-material-6",
+      "formula": "BaFe2(As1-xPx)2",
+      "sample": "Mizukami dilution-refrigerator measurement floor",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.08,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "80 mK measurement floor, not a transition.",
+      "criterion": "penetration-depth-low-temperature-floor",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "13MHz tunnel diode oscillator",
+      "sourceId": "source-c4a5c25b97df43a2",
+      "aliases": [
+        "BaP122",
+        "P-substituted Ba122",
+        "iron pnictide",
+        "pnictide"
+      ]
+    },
+    {
+      "id": "scwiki-e7-material-7",
+      "formula": "BaFe2(As1-xPx)2",
+      "sample": "Mizukami irradiation bath upper endpoint",
+      "recordType": "experiment",
+      "reportedTemperatureK": 22,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Upper endpoint of the 20–22 K irradiation bath, not a transition.",
+      "criterion": "irradiation-bath-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Electron irradiation at20–22K",
+      "sourceId": "source-c4a5c25b97df43a2",
+      "aliases": [
+        "BaP122",
+        "P-substituted Ba122",
+        "iron pnictide",
+        "pnictide"
+      ]
+    },
+    {
+      "id": "scwiki-e7-material-8",
+      "formula": "MnPc/Pb(111)",
+      "sample": "Hatter superconducting-tip spectroscopy",
+      "recordType": "experiment",
+      "reportedTemperatureK": 1.2,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Base temperature for local excitation spectrum; no transition assigned.",
+      "criterion": "local-shiba-spectroscopy",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Scanning tunneling spectroscopy with Pb tip",
+      "sourceId": "source-54e8e8bbd28f62fd",
+      "aliases": [
+        "manganese phthalocyanine",
+        "MnPc",
+        "Pb",
+        "YSR"
+      ]
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 59,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinnedbytespreserved; expandedwithcontrolledirradiation andtip-convolution evidence; originalaccesslimits andsecondaryreviewequationconventions kept explicit."
+    }
+  ]
+}

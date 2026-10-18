@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "284a351a36137e449290",
+  "revision": "2d430294c422f74915c2",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -4264,6 +4264,219 @@
         "10.1103/21g5-x5bj"
       ],
       "text": " Scope\n\nLight can change carrier populations, excite lattice motion and alter collective electronic response. Persistent photodoping, a transient pump–probe state and a periodically driven model are different protocols. Specify wavelength, polarization, pulse duration, fluence, repetition rate, base temperature and probe delay. A temperature at which a driven response is observed is not automatically an equilibrium superconducting transition temperature.    \n\nThe evidence now extends beyond optical conductivity. Electrical measurements in K3C60, transient magnetic measurements in YBa2Cu3O6.48 and a later sensitivity-limited magnetic experiment on K3C60 ask different questions. Preserve the specimen, geometry and measured observable rather than combining them into one universal light-induced transition.    \n\n Mathematical assumptions\n\nWith the e^{-i\\omega t} convention, a normal Drude response is \\sigma(\\omega)=D/(\\Gamma-i\\omega), where D is the Drude weight and \\Gamma>0 the relaxation rate. Thus \\sigma2=D\\omega/(\\Gamma^2+\\omega^2)\\approx D/\\omega when the measured frequencies greatly exceed \\Gamma, although the DC conductivity D/\\Gamma remains finite. A finite-band inductive trend alone cannot distinguish this limit from a condensate. This elementary counterexample is not a fit to, or refutation of, any particular experiment.  \n\nDepth reconstruction also matters. For Dodge's illustrative saturating profile, \\Delta\\sigma(z)=\\Delta\\sigma{\\rm sat}f e^{-z/\\Lambda}/(1+f e^{-z/\\Lambda}), with f=F/F{\\rm sat}, integration gives sheet photoconductance \\Delta G=\\Delta\\sigma{\\rm sat}\\Lambda\\ln(1+f). The effective thickness grows with fluence even while the surface response saturates. Assuming a fixed exponential profile can therefore bias the inferred surface conductivity. This integral checks the stated profile, not a full electromagnetic inversion; the experimental interpretation is disputed below.  \n\nKennes's minimal quadratic electron–phonon model gives oscillator frequency \\omega(n)=\\omega0\\sqrt{1+2gn} for site occupation n=0,1,2, requiring g>-1/4. At fixed phonon occupation nB, its induced interaction is \\Delta U=(nB+1/2)\\hbar\\omega0[\\sqrt{1+4g}+1-2\\sqrt{1+2g}]. Concavity makes this nonpositive for either sign of stable g, with leading term -(nB+1/2)\\hbar\\omega0g^2. The author manuscript sets Planck's constant to one; it is restored here. This is a model mechanism, not a measured coupling or proof of a stable superconducting phase. \n\n Experimental criteria\n\nFausti studied stripe-ordered La1.675Eu0.2Sr0.125CuO4 at a 10 K base temperature. The reported signal is a transient c-axis plasma edge and optical response interpreted as restored interlayer coherence. Figures 2–3 specify a 16 micrometre pump, approximately 1 mJ/cm² fluence and a 5 ps delay for the transient spectrum. The pump excites roughly 200 nm in depth, while the THz probe samples about 10 micrometres; the transformed-layer reconstruction is essential. A near-infrared plateau observed to 100 ps does not directly measure a many-nanosecond lifetime. \n\nHu's YBa2Cu3O6.5 specimen has an equilibrium transition near 50 K. Its approximately 300 fs, 15 micrometre pump modifies both inter- and intra-bilayer optical response. The effective-medium analysis separates transformed and untransformed regions; screened plasma-edge positions are not the same as fitted unscreened plasma frequencies. Broadband data at 60 K and narrower-band measurements at 100 and 300 K have different information content. Mankowsky's associated structural study combines diffraction with calculations to connect driven distortions with electronic changes; structural response does not uniquely identify pairing.  \n\nMitrano's K3C60 report compares a transient optical response above the roughly 20 K equilibrium transition with the low-temperature spectrum. Its title deliberately says “Possible”. The reported optical-gap fit and enhanced carrier mobility are not a direct DC resistance or magnetic measurement. Temperature, pump–probe delay and model-dependent gap extraction must remain attached to that evidence. \n\nBudden extended the response using longer pulses. Figure 4 compares optical extrapolation with electrical measurements at a 100 K base temperature and about 25 mJ/cm² fluence. The optical and transport pump durations are 200 ps and 75 ps, respectively. The electrical experiment is transient two-terminal transport with contact contributions calibrated from static four-terminal measurements; it is not a direct transient four-terminal measurement. Resistance compatible with zero within that calibration and recovery over tens of nanoseconds strengthen the authors' metastable interpretation without establishing a pump-free equilibrium transition at 100 K. \n\nAdelinia's 2025 thin-film study uses a quasi-DC bias, 300 fs pulses at 7 micrometres and photoconductive switches to resolve voltage dynamics. Granular-film and powder results are not interchangeable. The above-transition voltage response changes sign at 80 K; at 100 K it is positive and linear across the measured current range. Fitted superfluid fractions and weak-link phase-slip dynamics depend on the granular two-fluid model. A 100 K measurement in this paper must not become a 100 K superconducting-transition record. \n\nFava's 2024 YBa2Cu3O6.48 experiment detects a transient magnetic-field enhancement near the excited region's edge using Faraday rotation in a nearby GaP detector. Signals at 100 and 300 K last about 1 ps. The inferred diamagnetic susceptibility of order −0.3 depends on geometry and the magnetic-response model; the paper itself cautions that a quasi-static estimate is not fully justified for this dynamics. This provides a complementary magnetic observable, while remaining distinct from a persistent equilibrium Meissner state. \n\nDe Vecchi's December 2025 K3C60 study reports no statistically significant photo-induced field signal above roughly 50 nT out to 1 ns in its protocol. Its model-based bound is \\chiv>-0.1. The authors explicitly conclude that their resolution does not decide whether Meissner diamagnetism is present or absent. Granularity and a small expected response matter: this null result neither establishes superconductivity nor universally rules it out. \n\n Limits and disputes\n\nDodge and colleagues argue that saturation-dependent excitation depth can create misleading superconducting-like reconstructed spectra. Buzzi and colleagues' March 2023 preprint response disputes that interpretation, arguing that the inductive signature survives their alternative reconstructions. The local profile and Drude checks above do not resolve this dispute. Compare raw reflected fields, depth assumptions, spectral bandwidth and independent transport or magnetic evidence rather than treating a fitted gap as a unique diagnosis.  \n\nLong-lived after a short pulse does not mean thermodynamic equilibrium. Quantify absorbed energy, depth gradients, carrier and lattice temperatures, relaxation and repetition-rate heating. Selective excitation of a phonon does not establish that equilibrium pairing is phonon-mediated. The present review covers selected original passages and figures; full supplements, remaining version comparisons, experimental raw-data reproduction and complete scientific acceptance remain open.    \n\n Discovery implications\n\nUse synchronized optical, electrical and magnetic probes with explicit controls and uncertainty. Report signal duration separately from formation time and instrumental resolution. Keep equilibrium transition records separate from driven base temperatures and model estimates in databases and search filters. Theory should predict observables under the actual drive protocol, including relaxation, rather than equating an attractive model interaction with an experimentally established superconducting phase.    \n\n Related topics\n\nCompare , , ,  and ."
+    },
+    {
+      "id": "scwiki-e7",
+      "topicId": "scwiki-topic-e7",
+      "code": "E7",
+      "slug": "disorder-and-impurities",
+      "title": "Disorder and impurities: pair breaking, bound states and pinning",
+      "summary": "Separate symmetry-sensitive scattering, impurity spectroscopy and useful vortex pinning, with explicit dose, annealing and temperature criteria.",
+      "aliases": [
+        "disorder",
+        "impurities",
+        "Anderson theorem",
+        "Abrikosov Gorkov",
+        "AG pair breaking",
+        "Yu Shiba Rusinov",
+        "YSR",
+        "electron irradiation",
+        "annealing"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "a897dc71ed077768abb9",
+      "materialCases": [
+        {
+          "id": "scwiki-e7-material-1",
+          "formula": "Ba(Fe0.76Ru0.24)2As2",
+          "sample": "Prozorov pristine transport specimen",
+          "recordType": "experiment",
+          "reportedTemperatureK": 17.85,
+          "tcK": 17.85,
+          "temperatureKind": "transition",
+          "temperatureNote": "Figure 2 labels Tc0 = 17.85 K; methods report 17.8 K. Operational onset/midpoint/zero threshold not verified.",
+          "criterion": "transition-unspecified",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Four-probe in-plane resistivity",
+          "sourceId": "source-23c62b46f5681d83",
+          "aliases": [
+            "BaRu122",
+            "iron pnictide",
+            "pnictide"
+          ]
+        },
+        {
+          "id": "scwiki-e7-material-2",
+          "formula": "Ba(Fe0.76Ru0.24)2As2",
+          "sample": "Prozorov irradiation bath",
+          "recordType": "experiment",
+          "reportedTemperatureK": 22,
+          "tcK": null,
+          "temperatureKind": "normal-state",
+          "temperatureNote": "Irradiation temperature, not superconducting transition.",
+          "criterion": "irradiation-bath-temperature",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "In-situ four-probe resistivity",
+          "sourceId": "source-23c62b46f5681d83",
+          "aliases": [
+            "BaRu122",
+            "iron pnictide",
+            "pnictide"
+          ]
+        },
+        {
+          "id": "scwiki-e7-material-3",
+          "formula": "BaFe2(As1-xPx)2",
+          "sample": "Mizukami28K pristine batch, x=.33–.36 study range",
+          "recordType": "experiment",
+          "reportedTemperatureK": 28,
+          "tcK": 28,
+          "temperatureKind": "transition",
+          "temperatureNote": "Pristine batch transition; precise frequency-shift endpoint not independently established.",
+          "criterion": "tdo-frequency-shift",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "13MHz tunnel diode oscillator",
+          "sourceId": "source-c4a5c25b97df43a2",
+          "aliases": [
+            "BaP122",
+            "P-substituted Ba122",
+            "iron pnictide",
+            "pnictide"
+          ]
+        },
+        {
+          "id": "scwiki-e7-material-4",
+          "formula": "BaFe2(As1-xPx)2",
+          "sample": "Mizukami29K pristine batch, x=.33–.36 study range",
+          "recordType": "experiment",
+          "reportedTemperatureK": 29,
+          "tcK": 29,
+          "temperatureKind": "transition",
+          "temperatureNote": "Pristine batch transition; not zero-resistance criterion.",
+          "criterion": "tdo-frequency-shift",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "13MHz tunnel diode oscillator",
+          "sourceId": "source-c4a5c25b97df43a2",
+          "aliases": [
+            "BaP122",
+            "P-substituted Ba122",
+            "iron pnictide",
+            "pnictide"
+          ]
+        },
+        {
+          "id": "scwiki-e7-material-5",
+          "formula": "BaFe2(As1-xPx)2",
+          "sample": "Mizukami30A pristine resistivity specimen",
+          "recordType": "experiment",
+          "reportedTemperatureK": 30,
+          "tcK": 30,
+          "temperatureKind": "transition",
+          "temperatureNote": "Figure 2c/d pristine transport transition; exact operational threshold not relabeled.",
+          "criterion": "transition-unspecified",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "van der Pauw resistivity",
+          "sourceId": "source-c4a5c25b97df43a2",
+          "aliases": [
+            "BaP122",
+            "P-substituted Ba122",
+            "iron pnictide",
+            "pnictide"
+          ]
+        },
+        {
+          "id": "scwiki-e7-material-6",
+          "formula": "BaFe2(As1-xPx)2",
+          "sample": "Mizukami dilution-refrigerator measurement floor",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.08,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "80 mK measurement floor, not a transition.",
+          "criterion": "penetration-depth-low-temperature-floor",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "13MHz tunnel diode oscillator",
+          "sourceId": "source-c4a5c25b97df43a2",
+          "aliases": [
+            "BaP122",
+            "P-substituted Ba122",
+            "iron pnictide",
+            "pnictide"
+          ]
+        },
+        {
+          "id": "scwiki-e7-material-7",
+          "formula": "BaFe2(As1-xPx)2",
+          "sample": "Mizukami irradiation bath upper endpoint",
+          "recordType": "experiment",
+          "reportedTemperatureK": 22,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Upper endpoint of the 20–22 K irradiation bath, not a transition.",
+          "criterion": "irradiation-bath-temperature",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Electron irradiation at20–22K",
+          "sourceId": "source-c4a5c25b97df43a2",
+          "aliases": [
+            "BaP122",
+            "P-substituted Ba122",
+            "iron pnictide",
+            "pnictide"
+          ]
+        },
+        {
+          "id": "scwiki-e7-material-8",
+          "formula": "MnPc/Pb(111)",
+          "sample": "Hatter superconducting-tip spectroscopy",
+          "recordType": "experiment",
+          "reportedTemperatureK": 1.2,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Base temperature for local excitation spectrum; no transition assigned.",
+          "criterion": "local-shiba-spectroscopy",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Scanning tunneling spectroscopy with Pb tip",
+          "sourceId": "source-54e8e8bbd28f62fd",
+          "aliases": [
+            "manganese phthalocyanine",
+            "MnPc",
+            "Pb",
+            "YSR"
+          ]
+        }
+      ],
+      "dois": [
+        "10.1016/0022-3697(59)90036-8",
+        "10.7498/aps.21.75",
+        "10.1143/PTP.40.435",
+        "10.1103/RevModPhys.78.373",
+        "10.1103/PhysRevX.4.041032",
+        "10.1038/ncomms6657",
+        "10.1038/ncomms9988",
+        "10.1038/nmat1156",
+        "10.1103/PhysRevB.67.184515"
+      ],
+      "text": " Scope\n\nDisorder is not one adjustable number. Elastic scattering, magnetic pair breaking, local bound states, localization, vortex pinning and poor grain connectivity affect different observables. Record defect chemistry, irradiation particle and energy, dose, temperature, annealing history and sample geometry. A larger residual resistivity does not by itself specify the pair-breaking rate or prove a change of carrier density.   \n\nAnderson's time-reversed-state argument explains the robustness of an isotropic, sign-preserving superconducting state to nonmagnetic elastic scattering under restricted assumptions. The participating states must remain extended and the averaged pairing interaction and density of states must not change substantially. It is not immunity to arbitrary chemical substitution, localization, magnetic scattering or spatial granularity. Constant Tc alone does not uniquely determine pairing symmetry.  \n\n Mathematical assumptions\n\nIn the dilute, uncorrelated, weak magnetic-scattering model for an isotropic singlet state, define the pair-breaking energy \\Gamma by \\ln(T{c0}/Tc)=\\psi(1/2+\\Gamma/(2\\pi kBTc))-\\psi(1/2), where \\psi is the digamma function. With g=\\Gamma/(kBT{c0}) and t=Tc/T{c0}, the initial slope is dt/dg=-\\pi/4, and Tc vanishes at gc=\\pi e^{-\\gammaE}/2\\approx0.882. Rate conventions differ; do not substitute a transport lifetime without deriving its relation to this \\Gamma. Local numerical checks compare the equation with independently bounded Matsubara sums. The original AG paper remains a bibliographic anchor, not a completed original-text audit.   \n\nFor one classical magnetic scattering channel in a particle–hole-symmetric, isotropic host with a fixed gap, use exchange J\\mathbf S\\cdot\\mathbf s, \\mathbf s=\\boldsymbol\\sigma/2, and normal density of states per spin N0. Defining \\alpha=\\pi N0JS/2 and potential strength \\beta=\\pi N0V, one signed Yu–Shiba–Rusinov branch is E/\\Delta=(1+\\beta^2-\\alpha^2)/\\sqrt{(1+\\beta^2-\\alpha^2)^2+4\\alpha^2}; its particle–hole partner has opposite energy. At V=0, this reduces to (1-\\alpha^2)/(1+\\alpha^2). A zero crossing requires \\alpha^2=1+\\beta^2 in this model. These conventions and phase-shift checks do not solve quantum Kondo screening, multiple orbital channels or self-consistent gap suppression.    \n\nDose is a separate quantity: an electron charge dose of 1 C/cm² corresponds to approximately 6.24\\times10^{18} incident electrons/cm². The 3.4 C/cm² exposure in Prozorov's protocol is about 2.12\\times10^{19} electrons/cm². Neither number is the surviving defect concentration; displacement cross sections, recombination and annealing enter that conversion. \n\n Experimental criteria\n\nProzorov studied Ba(Fe1−xRux)2As2 with WDS composition x=0.24 using 2.5 MeV electrons. Irradiation and in-situ resistivity measurements took place near 22 K; the initial superconducting transition is reported as 17.8 K in the methods and 17.85 K in the transport figure. Warming to room temperature between runs partially annealed the damage, by up to about 30%. The same contacts were retained. Increased resistivity and suppressed Tc were compatible with the authors' multiband sign-changing scenario, whose interband/intraband scattering ratio matters. The 22 K irradiation temperature is not Tc, and no unverified onset, midpoint or zero-resistance label is assigned here. \n\nMizukami's BaFe2(As1−xPx)2 crystals had x=0.33–0.36 and initial transitions of 28, 29 or 30 K. The 28/29 K batches were tracked by tunnel-diode-oscillator frequency shifts; the 30 K crystal also supplied the resistivity series. Following 2.5 MeV irradiation, low-temperature penetration-depth curves evolved from nodal behavior to an activated regime, then back to gapless behavior with further disorder. The authors interpreted that sequence with accidental nodes and sign-changing multiband pairing. Here “topological change” concerns the gap's nodal structure; it does not establish a Majorana-carrying topological superconductor. The 80 mK measurement floor and 20–22 K irradiation bath remain separate from transition records. \n\nHatter measured manganese phthalocyanine on Pb(111) at 1.2 K with a superconducting Pb tip. The resolved Shiba triplets have 50–100 microelectronvolt widths and separations up to 400 microelectronvolts. The measured conductance includes the tip density of states: near-zero sample excitation energy appears near the tip-gap bias, not necessarily at zero measured bias. The authors numerically deconvolved the spectra and used relative spectral weights to distinguish impurity ground states and magnetic-anisotropy effects. This is local spectroscopy, not a 1.2 K transition measurement or a standalone Majorana demonstration. \n\n Limits and disputes\n\nA suppression curve alone is not a unique symmetry test. Separate changes in pairing interaction, band filling, magnetic moments and defect morphology from elastic scattering; distinguish intra- and interband processes. Gapless superconductivity is also different from destruction of superconducting order. The classical single-impurity formula cannot establish the quantum impurity parity change on its own; spectroscopy, tip calibration, spatial structure and the appropriate many-body model are needed.     \n\nDefects can help current transport by pinning vortices while harming other properties. BaZrO3-containing YBCO films illustrate an in-field current improvement that must be evaluated at specified temperature, field and orientation, rather than equated with higher Tc. Dirty two-gap theory also permits enhanced orbital upper critical fields under particular diffusivity and coupling conditions. Neither result implies monotonic improvement with damage, a universal type-I to type-II conversion, or an enhanced Pauli limit.  \n\nThe present article has selected original-paper and equation checks. The original AG full text and Shiba full derivation have not been read; Yu's original abstract and opening discussion were checked from scans. The detailed AG/YSR equation convention was cross-checked in the Balatsky author manuscript, with final-version comparison still open. Full supplements, raw-data reanalysis and complete scientific acceptance remain unfinished.    \n\n Discovery implications\n\nUse controlled defect series with repeat measurements before irradiation, after irradiation and after annealing. Compare Tc, gap spectra, residual resistivity, magnetic response, H{c2} and Jc under matched conditions. Preserve sample identifiers and probe-specific transition criteria in machine-readable records; never merge irradiation temperatures, spectroscopy temperatures and superconducting transitions into a single temperature ranking.    \n\n Related topics\n\nCompare , , ,  and ."
     },
     {
       "id": "scwiki-f7",
