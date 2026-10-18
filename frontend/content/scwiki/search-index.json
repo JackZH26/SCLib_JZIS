@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "87342a4d6ac5e5f38e4f",
+  "revision": "43e9fe276f80246b5270",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -308,6 +308,87 @@
         "10.1038/nmat3887"
       ],
       "text": " Scope\n\nCritical current is a limit defined for a specimen, measurement protocol and operating conditions. Transport measurements use a voltage or electric-field criterion; magnetization measurements infer a current through a model; the depairing current describes loss of stability of a superconducting state within a specified theory. These quantities must not share an unlabeled performance ranking.\n\nBlatter and colleagues explicitly distinguish depinning and depairing current densities in their review abstract. Pinning, thermal fluctuations and vortex motion affect practical current transport. A measured threshold can instead be limited by weak connections or heating; its mechanism requires evidence beyond the value of the current itself. \n\n Mathematical assumptions\n\nFor voltage taps separated by length L, define the mean longitudinal electric-field criterion Ec=Vc/L. Using the same measured Ic, distinguish the nominal superconducting cross-section As from the entire conductor area At:\n\nJc=\\frac{Ic}{As},\\qquad Je=\\frac{Ic}{At}=fJc,\\qquad f=\\frac{As}{At}.\n\nHere Je is an engineering current density for the stated whole-conductor area. Nominal superconducting area does not resolve nonuniform current paths or pores. A different definition of non-copper area, filament area or cable area requires a different label. These identities compare area conventions; they do not correct a damaged conductor or infer intrinsic microscopic current density.\n\nA simple sensitivity calculation illustrates why the criterion matters. If a measured interval is modeled by E=E0(J/J0)^n with positive constant n, changing the criterion by a factor r changes the inferred current by r^{1/n}. For n=20, a tenfold criterion change gives a factor of about 1.122. This is an illustrative power-law calculation, not a measured exponent or a universal transport law.\n\nThe magnetic force density is the vector product \\mathbf F=\\mathbf J\\times\\mathbf B. For current perpendicular to the induction, its magnitude at the threshold becomes Fp=JcB if a static pinning-force balance is the applicable model. In SI units this is N/m³; resistive heating instead has power density \\mathbf E\\cdot\\mathbf J in W/m³. A parallel configuration has no force from this cross product. Replacing B by \\mu0H requires an additional approximation, especially near self-field conditions.\n\nFor an explicit geometry check, take an infinite slab of full thickness 2a, field parallel to its faces, constant Jc and fully developed opposite critical-state branches. Neglect demagnetization, reversible magnetization and creep. Ampere's law gives |dB/dx|=\\mu0Jc. With x measured across the thickness, the ideal branch profiles are B\\pm(x)=\\mu0[Ha\\pm Jc(a-|x|)]. Their spatial averages give\n\nM\\pm=\\pm\\frac{Jca}{2},\\qquad \\Delta M=M+-M-=Jca,\\qquad Jc=\\frac{\\Delta M}{a}.\n\n\\Delta M is the full vertical loop width in A/m; a is the half-thickness in metres. Numerically integrating these stated profiles verifies the factor and dimensions. This is a local derivation under ideal assumptions, not a reanalysis of Bean's original data. Bean's 1962 paper is the historical source; its full text was not available in this check. Do not transfer this slab expression to arbitrary films, cylinders, partial penetration or field-dependent Jc. \n\n Experimental criteria\n\nKeep enough information to reconstruct both the measured threshold and the conversion to a current density. The following is an editorial reporting guide, not a table of certified material records.\n\n| Measurement | Record with the result | Interpretation boundary |\n|---|---|---|\n| Transport | Temperature, field magnitude and orientation, voltage-tap spacing, electric-field criterion, current ramp or pulse duration, duty cycle, area convention | Contact heating, current sharing and voltage offsets can change the inferred threshold |\n| Magnetization | Magnetic moment, volume, dimensions, field history, sweep rate, elapsed time and background subtraction | Conversion to current requires a geometry and critical-state model |\n| Conductor or cable | Superconducting fraction, whole-conductor area, length, strain and thermal stabilization | Layer current density and engineering current density answer different questions |\n| Depairing model | Model, temperature regime, geometry and stability assumptions | A calculated instability is not automatically the measured transport limit |\n\nMacManus-Driscoll and colleagues studied YBCO films grown with BaZrO3 added to the target. Their selected manuscript passages report improved in-field transport at 75.5 K, despite lower transition temperature or self-field current in some samples. The rotated field remained perpendicular to current. This comparison illustrates distinct performance measures, not proof of a different pairing mechanism. No electric-field criterion was extracted here, so no numerical current record is tabulated. \n\nLarbalestier and colleagues' 2014 paper is a primary Bi-2212 round-wire study, not a general engineering review. Its earlier author manuscript distinguishes whole-conductor Je from superconducting-area Jc and compares short specimens with a demonstration coil. This entry uses that distinction without importing a cross-family ranking; the final published dataset and all measurement criteria were not independently re-extracted. \n\n Limits and disputes\n\nAn irreversible magnetic response and the upper critical field are different observables. A loss of measurable hysteresis or a transport threshold need not locate the destruction of superconductivity. Report the criterion, time scale and field history rather than silently equating an irreversibility line with H{c2}. Thermally activated creep is one reason different observation times can yield different apparent current limits. \n\nA fitted pinning-curve exponent or angular peak does not uniquely identify a defect. Compare microscopy, processing controls and temperature/angle dependence. In the checked YBCO manuscript, the detailed composition of the small second-phase particles is not conclusively established; describing every particle as chemically proven BaZrO3 would overstate the evidence. \n\n Discovery implications\n\nSeparate a better transport path, stronger pinning, a larger superconducting fraction and a higher depairing limit as distinct hypotheses. Compare controlled specimens under matched conditions before assigning an improvement to a microscopic mechanism. A gain in current-carrying performance does not by itself demonstrate higher Tc, a new pairing interaction or a new superconducting phase.\n\nPreserve the measured signal, uncertainty and analysis conventions together. If the voltage criterion, geometry or thermal history is unavailable, retain that gap in the record. A useful follow-up is the measurement that discriminates between the competing limits, rather than another unsupported performance ranking.\n\n Related topics\n\nConnect to , , , , and ."
+    },
+    {
+      "id": "scwiki-a8",
+      "topicId": "scwiki-topic-a8",
+      "code": "A8",
+      "slug": "linear-t-resistivity",
+      "title": "Linear-T resistivity: strange-metal evidence and model limits",
+      "summary": "Read linear-temperature transport with its fit window, field and carrier assumptions. Distinguish total resistivity, parallel conduction channels and inferred scattering rates.",
+      "aliases": [
+        "strange metal",
+        "linear temperature resistivity",
+        "T-linear transport",
+        "parallel conduction",
+        "Planckian coefficient"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory",
+        "hypothesis"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "0fac753e9858ef451fb9",
+      "materialCases": [
+        {
+          "id": "scwiki-a8-material-1",
+          "formula": "Bi2Sr2CaCu2O8+delta",
+          "sample": "Legros v1 Bi2212 film; nominal p = 0.23",
+          "recordType": "experiment",
+          "tcK": null,
+          "reportedTemperatureK": null,
+          "temperatureKind": "normal-state",
+          "temperatureNote": "Normal-state transport or fit interval; no equilibrium Tc assigned here",
+          "criterion": "normal-state-transport",
+          "pressureRegime": "unknown",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Six-point transport in pulsed fields; 55 T trace and magnetoresistance-corrected extrapolation distinguished",
+          "sourceId": "source-c1ae7869b672a8e8"
+        },
+        {
+          "id": "scwiki-a8-material-2",
+          "formula": "C",
+          "sample": "Cao gated twisted bilayer graphene; device and filling dependent",
+          "recordType": "experiment",
+          "tcK": null,
+          "reportedTemperatureK": null,
+          "temperatureKind": "normal-state",
+          "temperatureNote": "Normal-state transport or fit interval; no equilibrium Tc assigned here",
+          "criterion": "normal-state-transport",
+          "pressureRegime": "unknown",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Four-probe longitudinal transport; low-temperature SdH carrier parameters used in operational rate estimate",
+          "sourceId": "source-8135909144b6b16b"
+        },
+        {
+          "id": "scwiki-a8-material-3",
+          "formula": "FeTe1-xSex",
+          "sample": "Romero v1 films: x = 0.45 and 0.35; thickness 100 nm",
+          "recordType": "experiment",
+          "tcK": null,
+          "reportedTemperatureK": null,
+          "temperatureKind": "normal-state",
+          "temperatureNote": "Normal-state transport or fit interval; no equilibrium Tc assigned here",
+          "criterion": "normal-state-transport",
+          "pressureRegime": "unknown",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "0.2–3 THz spectroscopy with DC constraint; narrow-channel 20–40 K fit; ordinary-frequency rate",
+          "sourceId": "source-05b2d5ff6757b5eb"
+        }
+      ],
+      "dois": [
+        "10.1103/PhysRevB.41.846",
+        "10.1126/science.1165015",
+        "10.1126/science.1227612",
+        "10.1038/s41567-018-0334-2",
+        "10.1103/PhysRevLett.124.076801",
+        "10.1038/s41567-026-03266-8"
+      ],
+      "text": " Scope\n\nLinear-temperature resistivity describes a measured dependence over a specified range. The fit \\rho(T)=\\rho0+AT needs a sample, current direction, field, temperature interval and residuals. A straight-looking trace is not by itself evidence for a quantum critical point, a universal lifetime or a pairing interaction. This entry treats transport phenomenology; the linked Planckian entry discusses lifetime interpretations.\n\nSeparate a finite-field normal state, the region affected by superconducting fluctuations, and a higher-temperature regime that may have different scattering. Martin and colleagues' Bi-based crystal abstract reports strongly anisotropic transport; an in-plane trend is not an isotropic resistivity law. \n\n Mathematical assumptions\n\nA least-squares slope depends on both the model and the sampled window. For exact synthetic data \\rho=r0+aT+bT^2, equally weighted temperatures symmetric about \\bar T give\n\nA{\\mathrm{fit}}=a+2b\\bar T.\n\nThis follows by inserting the quadratic into \\operatorname{cov}(T,\\rho)/\\operatorname{var}(T). A narrower interval can hide curvature while changing the inferred slope. Independent synthetic fits confirm this counterexample; they are not fits to any material. Experimental model comparison also needs uncertainties, correlations and a justified treatment of residuals.\n\nFor a single isotropic Drude channel with temperature-independent carrier density n and mass m^, an inelastic pole relaxation rate \\gamma=\\alpha kBT/\\hbar gives A=\\alpha m^kB/(ne^2\\hbar). Thus a slope fixes \\alpha only after the carrier parameters and response model are specified. If those parameters change with temperature, differentiating resistivity produces additional terms. This conditional connection underlies the selected Legros analysis. \n\nFor a circular, parabolic two-dimensional band with total degeneracy g, use total sheet density n{2D}=gkF^2/(4\\pi) and kBTF=\\hbar^2kF^2/(2m^). The preceding Drude model then yields\n\nA{\\square}TF=\\frac{\\alpha h}{g e^2}.\n\nThe familiar factor of two corresponds to g=2, not an arbitrary multiband system. A bulk slope converted per conducting plane uses A{\\square}=A/d with the stated effective plane spacing d. Independent occupied-disk and algebra checks cover g=1,2,4; neither degeneracy nor a mass should be transferred between materials without justification.\n\nParallel channels add conductivities. As an independent scalar, zero-field example, let r(T)=r0+aT>0 describe one channel and let \\sigmab\\ge0 be a constant background conductivity in matching units. Then\n\n\\rho{\\mathrm{tot}}=\\frac{r(T)}{1+\\sigmab r(T)},\\qquad\\frac{d\\rho{\\mathrm{tot}}}{dT}=\\frac{a}{[1+\\sigmab r(T)]^2}.\n\nThe total slope is generally temperature dependent even though the first channel's resistance is exactly linear. Nine numerical derivative checks verify this model. It is not a multiband fit; in magnetic field, conductivity tensors must be added before inversion. Adding scattering mechanisms within one channel is a different assumption from adding parallel conductivities.\n\n Experimental criteria\n\nLegros and colleagues' earlier manuscript measures a Bi2212 film with nominal hole doping 0.23 in pulsed fields. Its 55 T trace and magnetoresistance-corrected, extrapolated zero-field curve are distinct datasets. The analysis estimates carrier parameters and geometric uncertainty; the checked passages do not turn its interpretation into a model-independent universal bound. \n\nCao and colleagues measure four-probe transport in gated twisted bilayer graphene. Their linear regime depends on filling and a crossover temperature. The operational scattering coefficient uses density and mass from low-temperature quantum oscillations; those assumptions matter when interpreting higher-temperature transport. The selected passages do not establish one shared microscopic mechanism across material families. \n\nRomero and colleagues' earlier manuscript studies two 100 nm FeTe1-xSex films, x = 0.45 and 0.35, over 0.2–3 THz. Its narrow-channel fits use 20–40 K and report coefficients 3.02 and 2.42 in \\Gamma=\\Gamma0+\\alpha kBT/h. These are channel-specific fit results, not coefficients of the total DC resistivity. \n\nRecord the raw voltage/current or conductivity data, geometry, composition, field direction, fit interval and uncertainty model. Identify excluded transition regions and test alternative fit windows and curvature. A successful fit does not establish that its parameters are uniquely identifiable. Normal-state measurement temperatures remain separate from superconducting transition temperatures in the records below.\n\n Limits and disputes\n\nFrequency conventions can create a factor-of-2\\pi error. For a Drude denominator \\Gamma-i\\nu with ordinary frequency \\nu, the corresponding pole rate is \\gamma=1/\\tau=2\\pi\\Gamma in a denominator \\gamma-i\\omega, where \\omega=2\\pi\\nu. Consequently \\Gamma=\\alpha kBT/h converts to \\gamma=\\alpha kBT/\\hbar. State the denominator and linewidth convention before comparing coefficients. This is a convention check, not a new measurement of a lifetime.\n\nA shared temperature exponent does not identify a unique microscopic interaction. Drude transport, optical fits and single-particle lifetimes measure or infer different quantities. Extrapolating carrier parameters, suppressing superconductivity by field, or neglecting a parallel channel can affect an inferred coefficient. Report these choices alongside any claimed universality rather than treating the fit exponent as a proof.\n\nCooper's LSCO study and Bruin's cross-metal comparison remain bibliographic starting points here. Their complete datasets and numerical conclusions have not been reanalyzed in this entry. Selected manuscript checks above also leave final-version comparison and full uncertainty reproduction open.  \n\n Discovery implications\n\nUse linear-T transport to organize experiments, not to rank superconductors or predict a transition temperature by itself. A stronger comparison holds sample state, probe definition and fitting procedure fixed, then asks whether independent optical, thermodynamic or quantum-oscillation information supports the same parameter interpretation. Retain counterexamples and failed fits; correlation with superconductivity does not identify its cause.\n\n Related topics\n\nContinue with , , , , , and ."
     },
     {
       "id": "scwiki-b1",

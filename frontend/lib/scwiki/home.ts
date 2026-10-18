@@ -9,7 +9,7 @@ export const topicGroups = [
     {code:"B1", label:"BCS theory"}, {code:"B12", label:"Multiband pairing"}, {code:"C2", label:"s± pairing"}, {code:"G7", label:"Spin liquids & RVB"},
   ]},
   {id:"frontiers", title:"Properties & frontiers", description:"Follow the links between superconductivity and its wider physics.", topics:[
-    {code:"F7", label:"Geometric superfluid weight"}, {code:"E4", label:"Strain engineering"}, {code:"H2", label:"Planckian dissipation"},
+    {code:"F7", label:"Geometric superfluid weight"}, {code:"E4", label:"Strain engineering"}, {code:"H2", label:"Planckian dissipation"}, {code:"A8", label:"Linear-T resistivity"},
   ]},
 ] as const;
 

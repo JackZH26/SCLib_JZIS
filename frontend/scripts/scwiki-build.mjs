@@ -48,7 +48,7 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  }
  for(const record of meta.materialCases){
   if(!refIds.has(record.sourceId)||!record.criterion||!record.sample||!record.probe||!record.equilibrium||!record.pressureRegime)fail(folder+" missing material conditions");
-  if(record.temperatureKind==="spectroscopic-gap"&&record.tcK!==null)fail(folder+" spectral scale is not a transition Tc");
+  if(record.temperatureKind!=="transition"&&record.tcK!==null)fail(folder+" non-transition temperature is not a transition Tc");
   if(record.tcK!==null&&(!Number.isFinite(record.tcK)||record.tcK<0))fail(folder+" invalid Tc");
   if(record.recordType!=="experiment"&&record.tcK!==null)fail(folder+" non-experimental Tc cannot enter experimental records");
  }

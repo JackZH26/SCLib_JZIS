@@ -360,3 +360,20 @@ it("separates transport thresholds, uncertainty and driven measurements in expor
  for(const a of articles())for(const r of a.references)expect(statuses).toContain(r.publicationStatus);
  expect(a.references.filter(r=>r.publicationStatus==="technical-report")).toHaveLength(2);
 });
+
+it("keeps A8 normal-state transport and channel fits separate from transition temperatures",async()=>{
+ const a=articles().find(a=>a.code==="A8")!;
+ expect(a.materialCases).toHaveLength(3);
+ for(const m of a.materialCases){expect(m.temperatureKind).toBe("normal-state");expect(m.tcK).toBeNull();}
+ const results=searchArticles(searchIndex().entries,"linear temperature resistivity",{});
+ expect(results.some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"linear temperature resistivity",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const md=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(md).toContain("20–40 K");expect(md).toContain("channel-specific fit results");
+ const materialMd=await(await get(["articles",a.id,"sections","material-cases"],"?format=markdown")).text();
+ expect(materialMd).toContain("ordinary-frequency rate");expect(md).toContain("earlier manuscript passages are version-specific");
+ const theory=a.claims.filter(c=>c.sectionId==="mathematical-assumptions");
+ expect(theory.length).toBeGreaterThan(5);expect(theory.every(c=>c.evidenceType==="theory")).toBe(true);
+ expect(a.body).toContain("g=2");expect(a.body).toContain("2\\pi\\Gamma");
+ expect(a.references.find(r=>r.doi==="10.1126/science.1165015")!.verification.scope).toBe("crossref-metadata-only");
+});

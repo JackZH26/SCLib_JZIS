@@ -70,3 +70,16 @@ test("known source-identity corrections block reintroducing an unrelated DOI",t=
  assert.notEqual(result.status,0);
  assert.match(result.stderr,/known incorrect DOI 10\.1038\/nature00992/);
 });
+
+test("non-transition temperatures cannot become searchable transition records",async t=>{
+ for(const kind of ["normal-state","transient-response","spectroscopic-gap","unassigned"]){
+  await t.test(kind,t=>{
+   const f=inventoryFixture(t),filename=path.join(f.directory,"articles/a1/meta.json");
+   const meta=JSON.parse(readFileSync(filename,"utf8"));
+   Object.assign(meta.materialCases[0],{temperatureKind:kind,tcK:100});
+   writeFileSync(filename,JSON.stringify(meta));
+   const result=f.build();assert.notEqual(result.status,0);
+   assert.match(result.stderr,/non-transition temperature is not a transition Tc/);
+  });
+ }
+});
