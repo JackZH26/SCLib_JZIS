@@ -316,3 +316,18 @@ it.each(["/docs/","/sclib/docs/","/docs"])("keeps exact loopback destination for
  expect(response.status).toBe(308);
  expect(response.headers.get("location")).toBe("http://127.0.0.1:3102/scwiki?q=Fe%2BSe");
 });
+
+it("preserves current criteria, slab geometry and primary engineering source limits in exports",async()=>{
+ const a=articles().find(a=>a.code==="A7")!;
+ expect(a.materialCases).toEqual([]);
+ expect(a.body).toContain("half-thickness in metres");
+ expect(a.body).toContain("full vertical loop width in A/m");
+ expect(a.body).toContain("perpendicular to the induction");
+ expect(a.body).toContain("not a general engineering review");
+ expect(a.references.find(r=>r.doi==="10.1103/PhysRevLett.8.250")?.verification.scope).toBe("publisher-metadata-scoped-check");
+ expect(searchArticles(searchIndex().entries,"depinning").some(r=>r.code==="A7")).toBe(true);
+ expect(searchArticles(searchIndex().entries,"critical current",{tcMin:1}).some(r=>r.code==="A7")).toBe(false);
+ const exported=await (await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(exported).toContain("no creep/demagnetization/reversible background");
+ expect(exported).toContain("Bean original full text was inaccessible");
+});

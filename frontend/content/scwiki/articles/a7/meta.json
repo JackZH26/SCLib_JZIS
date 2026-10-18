@@ -1,0 +1,403 @@
+{
+  "id": "scwiki-a7",
+  "topicId": "scwiki-topic-a7",
+  "code": "A7",
+  "slug": "critical-current",
+  "title": "Critical current: criteria, geometry and pinning",
+  "summary": "Compare transport, magnetization and depairing limits with their field, time scale and area convention. Preserve measurement conditions before comparing conductor performance.",
+  "aliases": [
+    "critical current density",
+    "depinning",
+    "depairing",
+    "engineering current density",
+    "Bean model",
+    "flux creep",
+    "pinning force"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "A6",
+    "A1",
+    "A2",
+    "B1",
+    "A5"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T06:46:01.713672+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Edited pinned A7 chapter, selected engineering author-manuscript passages, publisher identities and vortex-review abstract; independent conditional current/force/slab calculations.",
+    "limitations": [
+      "Selected source checks are not full scientific acceptance or independent experimental replication.",
+      "Bean original full text was inaccessible; the slab formula is a separately derived ideal model. Blatter is abstract-scoped.",
+      "Engineering sources are checked at stated manuscript passages; no complete electric-field criterion or final numerical performance dataset was re-extracted.",
+      "No cross-family current ranking, experimental Tc record or universal depairing value is inferred."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "A_phenomenology/A7_critical_current.md",
+    "sha256": "cddae9252ba1d88a829fbec70ef330b7ccd1b837a61692e8d5c64c82942a833d",
+    "sourceId": "file-7db9a40f7ecc795e"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 5,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Scope retained."
+    },
+    {
+      "startLine": 6,
+      "endLine": 15,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Distinguish measured limits and model-dependent inversion; separate local derivation from unchecked original."
+    },
+    {
+      "startLine": 16,
+      "endLine": 29,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Protocol and area conventions expanded."
+    },
+    {
+      "startLine": 30,
+      "endLine": 35,
+      "targetSections": [
+        "mathematical-assumptions",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Correct scalar force scope; retain time-scale and field-boundary cautions."
+    },
+    {
+      "startLine": 36,
+      "endLine": 45,
+      "targetSections": [
+        "experimental-criteria",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Correct engineering article type; selected primary scope and composition uncertainty."
+    },
+    {
+      "startLine": 46,
+      "endLine": 49,
+      "targetSections": [
+        "discovery-implications"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "No mechanism or universal ranking from current alone."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-39e3e980bd8a0271",
+      "doi": "10.1103/PhysRevLett.8.250",
+      "title": "Magnetization of Hard Superconductors",
+      "year": 1962,
+      "url": "https://doi.org/10.1103/PhysRevLett.8.250",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-metadata-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.8.250",
+        "note": "Publisher identity checked. Original full text inaccessible at attempted PDF endpoint. The explicitly ideal slab calculation is a separate local Ampere-law derivation, not a verified transcription of the original paper."
+      }
+    },
+    {
+      "id": "source-82f53ca35625217d",
+      "doi": "10.1103/RevModPhys.66.1125",
+      "title": "Vortices in high-temperature superconductors",
+      "year": 1994,
+      "url": "https://doi.org/10.1103/RevModPhys.66.1125",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.66.1125",
+        "note": "Publisher abstract distinguishes depinning and depairing currents and discusses thermal fluctuations, pinning and creep. Full review derivations and quantitative phase boundaries were not checked."
+      }
+    },
+    {
+      "id": "source-51c947cf11bea72e",
+      "doi": "10.1038/nmat1156",
+      "title": "Strongly enhanced current densities in superconducting coated conductors of YBa2Cu3O7-x + BaZrO3",
+      "year": 2004,
+      "url": "https://doi.org/10.1038/nmat1156",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0406087v1",
+        "note": "Selected pp. 2–4: preparation, transport field orientation, in-field/self-field comparison and particle-composition ambiguity. No electric-field criterion extracted; raw curves and micrographs not independently reproduced."
+      }
+    },
+    {
+      "id": "source-c1a5f8c50328f68e",
+      "doi": "10.1038/nmat3887",
+      "title": "Isotropic round-wire multifilament cuprate superconductor for generation of magnetic fields above 30 T",
+      "year": 2014,
+      "url": "https://doi.org/10.1038/nmat3887",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-and-publisher-metadata-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1305.1269v1",
+        "note": "Publisher identifies a primary Article published 9 March 2014. Earlier 2013 author manuscript, selected pp. 3–4, distinguishes superconducting/whole-conductor areas and sample lengths. Not a review; final dataset, criterion and manuscript-to-journal changes not fully checked."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-a7-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Critical current is a limit defined for a specimen, measurement protocol and operating conditions. Transport measurements use a voltage or electric-field criterion; magnetization measurements infer a current through a model; the depairing current describes loss of stability of a superconducting state within a specified theory. These quantities must not share an unlabeled performance ranking.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-82f53ca35625217d"
+      ],
+      "conditions": "Editorial reporting/inference guidance; requires a sample-specific source, protocol and uncertainty. No new current or transition-temperature dataset certified.",
+      "verificationScope": "Pinned chapter edited with explicitly limited reference checks."
+    },
+    {
+      "id": "scwiki-a7-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Blatter and colleagues explicitly distinguish depinning and depairing current densities in their review abstract. Pinning, thermal fluctuations and vortex motion affect practical current transport. A measured threshold can instead be limited by weak connections or heating; its mechanism requires evidence beyond the value of the current itself.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-82f53ca35625217d"
+      ],
+      "conditions": "Qualitative vortex/pinning interpretation; not a fitted universal Jc or critical-field boundary.",
+      "verificationScope": "Pinned chapter plus Blatter publisher abstract; full review remains unchecked."
+    },
+    {
+      "id": "scwiki-a7-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For voltage taps separated by length $L$, define the mean longitudinal electric-field criterion $E_c=V_c/L$. Using the same measured $I_c$, distinguish the nominal superconducting cross-section $A_s$ from the entire conductor area $A_t$:",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-39e3e980bd8a0271"
+      ],
+      "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+    },
+    {
+      "id": "scwiki-a7-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$J_c=\\frac{I_c}{A_s},\\qquad J_e=\\frac{I_c}{A_t}=fJ_c,\\qquad f=\\frac{A_s}{A_t}.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-39e3e980bd8a0271"
+      ],
+      "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+    },
+    {
+      "id": "scwiki-a7-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Here $J_e$ is an engineering current density for the stated whole-conductor area. Nominal superconducting area does not resolve nonuniform current paths or pores. A different definition of non-copper area, filament area or cable area requires a different label. These identities compare area conventions; they do not correct a damaged conductor or infer intrinsic microscopic current density.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-39e3e980bd8a0271"
+      ],
+      "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+    },
+    {
+      "id": "scwiki-a7-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A simple sensitivity calculation illustrates why the criterion matters. If a measured interval is modeled by $E=E_0(J/J_0)^n$ with positive constant $n$, changing the criterion by a factor $r$ changes the inferred current by $r^{1/n}$. For $n=20$, a tenfold criterion change gives a factor of about 1.122. This is an illustrative power-law calculation, not a measured exponent or a universal transport law.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-39e3e980bd8a0271"
+      ],
+      "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+    },
+    {
+      "id": "scwiki-a7-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The magnetic force density is the vector product $\\mathbf F=\\mathbf J\\times\\mathbf B$. For current perpendicular to the induction, its magnitude at the threshold becomes $F_p=J_cB$ if a static pinning-force balance is the applicable model. In SI units this is N/m³; resistive heating instead has power density $\\mathbf E\\cdot\\mathbf J$ in W/m³. A parallel configuration has no force from this cross product. Replacing $B$ by $\\mu_0H$ requires an additional approximation, especially near self-field conditions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-39e3e980bd8a0271"
+      ],
+      "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+    },
+    {
+      "id": "scwiki-a7-claim-mathematical-assumptions-6",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For an explicit geometry check, take an infinite slab of full thickness $2a$, field parallel to its faces, constant $J_c$ and fully developed opposite critical-state branches. Neglect demagnetization, reversible magnetization and creep. Ampere's law gives $|dB/dx|=\\mu_0J_c$. With $x$ measured across the thickness, the ideal branch profiles are $B_\\pm(x)=\\mu_0[H_a\\pm J_c(a-|x|)]$. Their spatial averages give",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-39e3e980bd8a0271"
+      ],
+      "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+    },
+    {
+      "id": "scwiki-a7-claim-mathematical-assumptions-7",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$M_\\pm=\\pm\\frac{J_ca}{2},\\qquad \\Delta M=M_+-M_-=J_ca,\\qquad J_c=\\frac{\\Delta M}{a}.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-39e3e980bd8a0271"
+      ],
+      "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+    },
+    {
+      "id": "scwiki-a7-claim-mathematical-assumptions-8",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$\\Delta M$ is the full vertical loop width in A/m; $a$ is the half-thickness in metres. Numerically integrating these stated profiles verifies the factor and dimensions. This is a local derivation under ideal assumptions, not a reanalysis of Bean's original data. Bean's 1962 paper is the historical source; its full text was not available in this check. Do not transfer this slab expression to arbitrary films, cylinders, partial penetration or field-dependent $J_c$.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-39e3e980bd8a0271"
+      ],
+      "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+    },
+    {
+      "id": "scwiki-a7-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Keep enough information to reconstruct both the measured threshold and the conversion to a current density. The following is an editorial reporting guide, not a table of certified material records.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-82f53ca35625217d"
+      ],
+      "conditions": "Editorial reporting/inference guidance; requires a sample-specific source, protocol and uncertainty. No new current or transition-temperature dataset certified.",
+      "verificationScope": "Pinned chapter edited with explicitly limited reference checks."
+    },
+    {
+      "id": "scwiki-a7-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "| Measurement | Record with the result | Interpretation boundary |\n|---|---|---|\n| Transport | Temperature, field magnitude and orientation, voltage-tap spacing, electric-field criterion, current ramp or pulse duration, duty cycle, area convention | Contact heating, current sharing and voltage offsets can change the inferred threshold |\n| Magnetization | Magnetic moment, volume, dimensions, field history, sweep rate, elapsed time and background subtraction | Conversion to current requires a geometry and critical-state model |\n| Conductor or cable | Superconducting fraction, whole-conductor area, length, strain and thermal stabilization | Layer current density and engineering current density answer different questions |\n| Depairing model | Model, temperature regime, geometry and stability assumptions | A calculated instability is not automatically the measured transport limit |",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-82f53ca35625217d"
+      ],
+      "conditions": "Editorial reporting/inference guidance; requires a sample-specific source, protocol and uncertainty. No new current or transition-temperature dataset certified.",
+      "verificationScope": "Pinned chapter edited with explicitly limited reference checks."
+    },
+    {
+      "id": "scwiki-a7-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "MacManus-Driscoll and colleagues studied YBCO films grown with BaZrO3 added to the target. Their selected manuscript passages report improved in-field transport at 75.5 K, despite lower transition temperature or self-field current in some samples. The rotated field remained perpendicular to current. This comparison illustrates distinct performance measures, not proof of a different pairing mechanism. No electric-field criterion was extracted here, so no numerical current record is tabulated.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-51c947cf11bea72e"
+      ],
+      "conditions": "Selected author-manuscript passages only; retain sample, orientation, area and version limits. No complete numerical performance record or independent experimental reproduction.",
+      "verificationScope": "nmat1156 author manuscript pp. 2–4; nmat3887 earlier manuscript pp. 3–4 and publisher article identity, as applicable."
+    },
+    {
+      "id": "scwiki-a7-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Larbalestier and colleagues' 2014 paper is a primary Bi-2212 round-wire study, not a general engineering review. Its earlier author manuscript distinguishes whole-conductor $J_e$ from superconducting-area $J_c$ and compares short specimens with a demonstration coil. This entry uses that distinction without importing a cross-family ranking; the final published dataset and all measurement criteria were not independently re-extracted.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c1a5f8c50328f68e"
+      ],
+      "conditions": "Selected author-manuscript passages only; retain sample, orientation, area and version limits. No complete numerical performance record or independent experimental reproduction.",
+      "verificationScope": "nmat1156 author manuscript pp. 2–4; nmat3887 earlier manuscript pp. 3–4 and publisher article identity, as applicable."
+    },
+    {
+      "id": "scwiki-a7-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "An irreversible magnetic response and the upper critical field are different observables. A loss of measurable hysteresis or a transport threshold need not locate the destruction of superconductivity. Report the criterion, time scale and field history rather than silently equating an irreversibility line with $H_{c2}$. Thermally activated creep is one reason different observation times can yield different apparent current limits.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-82f53ca35625217d"
+      ],
+      "conditions": "Qualitative vortex/pinning interpretation; not a fitted universal Jc or critical-field boundary.",
+      "verificationScope": "Pinned chapter plus Blatter publisher abstract; full review remains unchecked."
+    },
+    {
+      "id": "scwiki-a7-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "A fitted pinning-curve exponent or angular peak does not uniquely identify a defect. Compare microscopy, processing controls and temperature/angle dependence. In the checked YBCO manuscript, the detailed composition of the small second-phase particles is not conclusively established; describing every particle as chemically proven BaZrO3 would overstate the evidence.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-51c947cf11bea72e"
+      ],
+      "conditions": "Selected author-manuscript passages only; retain sample, orientation, area and version limits. No complete numerical performance record or independent experimental reproduction.",
+      "verificationScope": "nmat1156 author manuscript pp. 2–4; nmat3887 earlier manuscript pp. 3–4 and publisher article identity, as applicable."
+    },
+    {
+      "id": "scwiki-a7-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Separate a better transport path, stronger pinning, a larger superconducting fraction and a higher depairing limit as distinct hypotheses. Compare controlled specimens under matched conditions before assigning an improvement to a microscopic mechanism. A gain in current-carrying performance does not by itself demonstrate higher $T_c$, a new pairing interaction or a new superconducting phase.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-82f53ca35625217d"
+      ],
+      "conditions": "Editorial reporting/inference guidance; requires a sample-specific source, protocol and uncertainty. No new current or transition-temperature dataset certified.",
+      "verificationScope": "Pinned chapter edited with explicitly limited reference checks."
+    },
+    {
+      "id": "scwiki-a7-claim-discovery-implications-2",
+      "sectionId": "discovery-implications",
+      "statement": "Preserve the measured signal, uncertainty and analysis conventions together. If the voltage criterion, geometry or thermal history is unavailable, retain that gap in the record. A useful follow-up is the measurement that discriminates between the competing limits, rather than another unsupported performance ranking.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-82f53ca35625217d"
+      ],
+      "conditions": "Editorial reporting/inference guidance; requires a sample-specific source, protocol and uncertainty. No new current or transition-temperature dataset certified.",
+      "verificationScope": "Pinned chapter edited with explicitly limited reference checks."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-a7-correction-1",
+      "description": "Identified nmat3887 as a primary Bi-2212 round-wire article rather than a general engineering review.",
+      "sourceId": "source-c1a5f8c50328f68e",
+      "scope": "Publication type and source use, not validation of all conductor comparisons."
+    },
+    {
+      "id": "scwiki-a7-correction-2",
+      "description": "Qualified Fp=Jc B by perpendicular geometry and a static force-balance model; distinguished induction from applied field.",
+      "sourceId": "source-82f53ca35625217d",
+      "scope": "Explicit SI vector relation and approximation, not a new measured force."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "J_e=fJ_c",
+      "check": "Same Ic divided by explicitly different cross-sectional areas; local identity check."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "J_c=\\Delta M/a",
+      "check": "Six numerical integrations and finite-difference Ampere slopes for stated ideal slab; full loop width/half-thickness conventions required."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "|\\mathbf J\\times\\mathbf B|=JB|\\sin\\theta|",
+      "check": "Three angle checks and SI dimensions; heating has different units."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "J_{c,2}/J_{c,1}=r^{1/n}",
+      "check": "Three constant-exponent power-law sensitivity cases; illustrative, not measured exponents."
+    }
+  ]
+}
