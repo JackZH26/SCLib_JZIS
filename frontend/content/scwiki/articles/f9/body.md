@@ -26,7 +26,7 @@ Finite inductance matters even in a simple sinusoidal single-π-junction model. 
 
 ## Limits and disputes
 
-Current-driven vortex motion can produce an electric field and dissipative transport even while a pair amplitude survives. Pinning, creep, drive and measurement duration therefore affect an operational zero-resistance criterion. The checked Bardeen–Stephen abstract supports a local vortex-motion model; its full viscosity and Hall-response calculation has not been reproduced. A magnetoresistance or Nernst signal alone does not determine a vortex structure or exclude quasiparticle contributions. [R8](#ref-source-df2a86953fbafad9)
+Current-driven vortex motion can produce an electric field and dissipative transport. The checked Bardeen–Stephen abstract supports this result in a local vortex-motion model. Its full viscosity and Hall-response calculation has not been reproduced here. [R8](#ref-source-df2a86953fbafad9)
 
 The full Byers–Yang proof, complete 1994 tricrystal analysis, multicomponent fractional-vortex energetics and experimental raw-data audits remain open. Selected original scans, the later Abrikosov lecture and the published Bauer passages support the bounded discussion above. The local winding and ring calculations are illustrative checks. They do not complete scientific acceptance or establish a material's topological superconductivity. [R1](#ref-source-89f5503f5e470385) [R2](#ref-source-fd4856def4ef50ca) [R3](#ref-source-60f0557cc9538506) [R4](#ref-source-68abc394c13fe83f) [R6](#ref-source-2e4d7fdb6c1797b7) [R7](#ref-source-279470d337ba1fff)
 

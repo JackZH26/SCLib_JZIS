@@ -25,7 +25,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T14:56:06.439161+00:00",
+  "modifiedAt": "2026-10-18T15:12:40.359204+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Original Deaver and Doll scans, selected Abrikosov and final Bauer passages, the original Tsuei abstract, and independent winding/inductance examples.",
@@ -278,7 +278,7 @@
     {
       "id": "scwiki-f9-claim-limits-and-disputes-1",
       "sectionId": "limits-and-disputes",
-      "statement": "Current-driven vortex motion can produce an electric field and dissipative transport even while a pair amplitude survives. Pinning, creep, drive and measurement duration therefore affect an operational zero-resistance criterion. The checked Bardeen–Stephen abstract supports a local vortex-motion model; its full viscosity and Hall-response calculation has not been reproduced. A magnetoresistance or Nernst signal alone does not determine a vortex structure or exclude quasiparticle contributions.",
+      "statement": "Current-driven vortex motion can produce an electric field and dissipative transport. The checked Bardeen–Stephen abstract supports this result in a local vortex-motion model. Its full viscosity and Hall-response calculation has not been reproduced here.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-df2a86953fbafad9"
@@ -322,6 +322,12 @@
       "sourceId": "source-60f0557cc9538506",
       "description": "The original Doll–Näbauer report states an unresolved quantitative discrepancy using an hc/e prediction. Its exact result is retained rather than rewritten as an identical precision h/2e determination.",
       "scope": "Original pages 51–52 visually read; this is a correction to the pinned summary, not a rejection of historical flux quantization."
+    },
+    {
+      "id": "scwiki-f9-correction-2",
+      "sourceId": "source-df2a86953fbafad9",
+      "description": "Restricted the vortex-transport paragraph to what the checked original abstract supports; removed the broader Nernst and pinning claims pending dedicated primary sources.",
+      "scope": "Citation-scope correction; no assertion that the removed general statements are false."
     }
   ],
   "equationChecks": [
