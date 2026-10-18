@@ -998,7 +998,7 @@ it("keeps plasmon mode energies and spectroscopy temperatures distinct from supe
  const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
  expect(math).toContain("finite-momentum static screening");expect(math).toContain("weak Landau damping");
  const limits=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
- expect(limits).toContain("phenomenologically");expect(limits).toContain("normal self-energy");expect(limits).toContain("full final-version comparison is still pending");
+ expect(limits).toContain("phenomenologically");expect(limits).toContain("normal-state Coulomb mass renormalization");expect(limits).toContain("normal-state energy-shift correction");expect(limits).toContain("complete version comparison and numerical reproduction remain open");
  expect(a.references.find(r=>r.doi==="10.1103/PhysRevB.94.224515")?.verification.evidenceUrl).toContain("accepted/");
  expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
 });

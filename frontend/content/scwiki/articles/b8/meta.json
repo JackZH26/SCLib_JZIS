@@ -27,10 +27,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.199132+00:00",
+  "modifiedAt": "2026-10-19",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected Ruhman–Lee accepted manuscript,Hepting published RIXS passages,Davydov earlier manuscript and independent screening illustrations.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Ruhman–Lee accepted manuscript,Hepting published RIXS passages,Davydov earlier manuscript and independent screening illustrations. Follow-up: published Davydov pp. 2-4 text and original v1 p. 3 image, normal-state energy-shift limitation, and explicit local-model source relationships/zero-frequency limit.",
     "limitations": [
       "Full scientific acceptance,complete version comparison and raw-data reproduction remain open.",
       "Takada,Akashi–Arita and Hepting2018 are abstract-scoped in this entry.",
@@ -185,10 +185,10 @@
       "url": "https://doi.org/10.1103/PhysRevB.102.214508",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "earlier-author-manuscript-scoped-check",
-        "checkedAt": "2026-10-18",
-        "evidenceUrl": "https://arxiv.org/pdf/2007.12886v1",
-        "note": "Davydov et al. selected earlier manuscript pp.2–4 and final publisher abstract: normal/anomalous Coulomb terms and formalism differences. Full final-version/data comparison pending."
+        "scope": "published-selected-passages-and-earlier-manuscript-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.102.214508",
+        "note": "Published PDF web text pp. 2-4 and author v1 pp. 2-4 checked; author p. 3 equation image viewed. Final p. 4 explicitly cautions about neglected normal-state energy shifts in doped insulators. Publisher file download was unavailable locally; published screenshot pixels were not returned. Complete version/data comparison and numerical reproduction remain open. Scalar and layered illustrations are local derivations."
       }
     }
   ],
@@ -225,7 +225,9 @@
         "source-87b23717bc50e3a9"
       ],
       "conditions": "Independent normalized Drude,ideal bilayer and single-oscillator checks are pedagogical; references supply background,not a claimed reproduction. Experiments retain sample/probe limits.",
-      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance."
+      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Davydov et al. published pp. 3-4, Eqs. (16)-(27), provide dielectric-matrix, spectral-decomposition and self-energy context. The scalar Drude, ideal bilayer and single-oscillator examples here are separate local illustrations, not their material calculation. No superconducting instability is solved."
     },
     {
       "id": "scwiki-b8-claim-mathematical-assumptions-2",
@@ -236,7 +238,9 @@
         "source-87b23717bc50e3a9"
       ],
       "conditions": "Independent normalized Drude,ideal bilayer and single-oscillator checks are pedagogical; references supply background,not a claimed reproduction. Experiments retain sample/probe limits.",
-      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance."
+      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Davydov et al. published pp. 3-4, Eqs. (16)-(27), provide dielectric-matrix, spectral-decomposition and self-energy context. The scalar Drude, ideal bilayer and single-oscillator examples here are separate local illustrations, not their material calculation. No superconducting instability is solved."
     },
     {
       "id": "scwiki-b8-claim-mathematical-assumptions-3",
@@ -247,7 +251,9 @@
         "source-87b23717bc50e3a9"
       ],
       "conditions": "Independent normalized Drude,ideal bilayer and single-oscillator checks are pedagogical; references supply background,not a claimed reproduction. Experiments retain sample/probe limits.",
-      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance."
+      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Davydov et al. published pp. 3-4, Eqs. (16)-(27), provide dielectric-matrix, spectral-decomposition and self-energy context. The scalar Drude, ideal bilayer and single-oscillator examples here are separate local illustrations, not their material calculation. No superconducting instability is solved."
     },
     {
       "id": "scwiki-b8-claim-mathematical-assumptions-4",
@@ -258,18 +264,22 @@
         "source-87b23717bc50e3a9"
       ],
       "conditions": "Independent normalized Drude,ideal bilayer and single-oscillator checks are pedagogical; references supply background,not a claimed reproduction. Experiments retain sample/probe limits.",
-      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance."
+      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Davydov et al. published pp. 3-4, Eqs. (16)-(27), provide dielectric-matrix, spectral-decomposition and self-energy context. The scalar Drude, ideal bilayer and single-oscillator examples here are separate local illustrations, not their material calculation. No superconducting instability is solved."
     },
     {
       "id": "scwiki-b8-claim-mathematical-assumptions-5",
       "sectionId": "mathematical-assumptions",
-      "statement": "With damping set to zero and imaginary frequency $i\\nu$, the same illustration gives",
+      "statement": "With damping set to zero, a positive plasma frequency $\\omega_p>0$ and nonzero real $\\nu$, substituting the imaginary frequency $i\\nu$ into the same illustration gives",
       "evidenceType": "theory",
       "sourceIds": [
         "source-87b23717bc50e3a9"
       ],
       "conditions": "Independent normalized Drude,ideal bilayer and single-oscillator checks are pedagogical; references supply background,not a claimed reproduction. Experiments retain sample/probe limits.",
-      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance."
+      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Davydov et al. published pp. 3-4, Eqs. (16)-(27), provide dielectric-matrix, spectral-decomposition and self-energy context. The scalar Drude, ideal bilayer and single-oscillator examples here are separate local illustrations, not their material calculation. No superconducting instability is solved."
     },
     {
       "id": "scwiki-b8-claim-mathematical-assumptions-6",
@@ -280,18 +290,22 @@
         "source-87b23717bc50e3a9"
       ],
       "conditions": "Independent normalized Drude,ideal bilayer and single-oscillator checks are pedagogical; references supply background,not a claimed reproduction. Experiments retain sample/probe limits.",
-      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance."
+      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Davydov et al. published pp. 3-4, Eqs. (16)-(27), provide dielectric-matrix, spectral-decomposition and self-energy context. The scalar Drude, ideal bilayer and single-oscillator examples here are separate local illustrations, not their material calculation. No superconducting instability is solved."
     },
     {
       "id": "scwiki-b8-claim-mathematical-assumptions-7",
       "sectionId": "mathematical-assumptions",
-      "statement": "Five direct evaluations are nonnegative despite the negative retarded term in the decomposition. Removing the instantaneous term would change the model. This long-wavelength expression must not be substituted for finite-momentum static screening. Whether a frequency-dependent interaction supports pairing requires the full gap equation, normal self-energy and a defensible treatment of high-energy states; the sign of one separated term is insufficient.",
+      "statement": "The ratio lies between zero and one for finite nonzero $\\nu$. Its continuous $\\nu\\to0$ limit is zero; direct substitution into the singular dielectric function at zero frequency is not defined. The negative retarded term in the decomposition does not make the total interaction negative. Removing the instantaneous term would change the model. This long-wavelength expression must not be substituted for finite-momentum static screening. Whether a frequency-dependent interaction supports pairing requires the full gap equation, normal self-energy and a defensible treatment of high-energy states; the sign of one separated term is insufficient.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-87b23717bc50e3a9"
       ],
       "conditions": "Independent normalized Drude,ideal bilayer and single-oscillator checks are pedagogical; references supply background,not a claimed reproduction. Experiments retain sample/probe limits.",
-      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance."
+      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Davydov et al. published pp. 3-4, Eqs. (16)-(27), provide dielectric-matrix, spectral-decomposition and self-energy context. The scalar Drude, ideal bilayer and single-oscillator examples here are separate local illustrations, not their material calculation. No superconducting instability is solved."
     },
     {
       "id": "scwiki-b8-claim-mathematical-assumptions-8",
@@ -302,7 +316,9 @@
         "source-87b23717bc50e3a9"
       ],
       "conditions": "Independent normalized Drude,ideal bilayer and single-oscillator checks are pedagogical; references supply background,not a claimed reproduction. Experiments retain sample/probe limits.",
-      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance."
+      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Davydov et al. published pp. 3-4, Eqs. (16)-(27), provide dielectric-matrix, spectral-decomposition and self-energy context. The scalar Drude, ideal bilayer and single-oscillator examples here are separate local illustrations, not their material calculation. No superconducting instability is solved."
     },
     {
       "id": "scwiki-b8-claim-mathematical-assumptions-9",
@@ -313,7 +329,9 @@
         "source-87b23717bc50e3a9"
       ],
       "conditions": "Independent normalized Drude,ideal bilayer and single-oscillator checks are pedagogical; references supply background,not a claimed reproduction. Experiments retain sample/probe limits.",
-      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance."
+      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Davydov et al. published pp. 3-4, Eqs. (16)-(27), provide dielectric-matrix, spectral-decomposition and self-energy context. The scalar Drude, ideal bilayer and single-oscillator examples here are separate local illustrations, not their material calculation. No superconducting instability is solved."
     },
     {
       "id": "scwiki-b8-claim-mathematical-assumptions-10",
@@ -324,7 +342,9 @@
         "source-87b23717bc50e3a9"
       ],
       "conditions": "Independent normalized Drude,ideal bilayer and single-oscillator checks are pedagogical; references supply background,not a claimed reproduction. Experiments retain sample/probe limits.",
-      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance."
+      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Davydov et al. published pp. 3-4, Eqs. (16)-(27), provide dielectric-matrix, spectral-decomposition and self-energy context. The scalar Drude, ideal bilayer and single-oscillator examples here are separate local illustrations, not their material calculation. No superconducting instability is solved."
     },
     {
       "id": "scwiki-b8-claim-mathematical-assumptions-11",
@@ -335,7 +355,9 @@
         "source-87b23717bc50e3a9"
       ],
       "conditions": "Independent normalized Drude,ideal bilayer and single-oscillator checks are pedagogical; references supply background,not a claimed reproduction. Experiments retain sample/probe limits.",
-      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance."
+      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Davydov et al. published pp. 3-4, Eqs. (16)-(27), provide dielectric-matrix, spectral-decomposition and self-energy context. The scalar Drude, ideal bilayer and single-oscillator examples here are separate local illustrations, not their material calculation. No superconducting instability is solved."
     },
     {
       "id": "scwiki-b8-claim-experimental-criteria-1",
@@ -384,13 +406,15 @@
     {
       "id": "scwiki-b8-claim-limits-and-disputes-2",
       "sectionId": "limits-and-disputes",
-      "statement": "Davydov and colleagues compared dynamical Coulomb treatments in Eliashberg theory, superconducting density-functional theory and a hybrid approach. Their calculations demonstrate that Coulomb effects in the normal self-energy can oppose enhancement in the pairing channel, and that different approximations produce different transition estimates. The earlier manuscript's selected equations and the final publisher abstract were checked; full final-version comparison is still pending. The study is not a theorem excluding all plasmon mechanisms.",
+      "statement": "Davydov and colleagues compared dynamical Coulomb treatments in Eliashberg theory, superconducting density-functional theory and a hybrid approach. Their calculations show that normal-state Coulomb mass renormalization can oppose enhancement in the pairing channel. Selected published pages 3-4 and the earlier manuscript were checked. The final text also notes that neglecting the normal-state energy-shift correction can fail, for example near a doped-insulator band gap. These approximation-dependent comparisons are not a theorem excluding all plasmon mechanisms; complete version comparison and numerical reproduction remain open.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-87b23717bc50e3a9"
       ],
       "conditions": "Independent normalized Drude,ideal bilayer and single-oscillator checks are pedagogical; references supply background,not a claimed reproduction. Experiments retain sample/probe limits.",
-      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance."
+      "verificationScope": "Selected primary passages plus tools/check_plasmon_models.py; no material Tc or full scientific acceptance.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Published p. 4 discussion after Eqs. (24)-(27) explicitly separates Coulomb mass renormalization from pairing and warns that the neglected energy-shift correction may matter near a band gap; selected passages only."
     },
     {
       "id": "scwiki-b8-claim-limits-and-disputes-3",

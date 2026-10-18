@@ -31,7 +31,7 @@
   "modifiedAt": "2026-10-19",
   "review": {
     "checkedAt": "2026-10-19",
-    "scope": "Historical original/comment/reply abstracts, selected Budden and Aranzadi manuscripts, published Kellogg passages and independent illustrative checks. Publisher notice identifying the 24 February 2016 Mitrano caption correction checked separately on 19 October 2026.",
+    "scope": "Historical original/comment/reply abstracts, selected Budden and Aranzadi manuscripts, published Kellogg passages and independent illustrative checks. Publisher notice identifying the 24 February 2016 Mitrano caption correction checked separately on 19 October 2026. Follow-up: historical abstract/reply boundaries rechecked; all seven mathematical claims distinguish local illustrations from historical source results.",
     "limitations": [
       "Full scientific acceptance, final-version comparison and raw-data audit remain open.",
       "Mitrano’s 24 February 2016 caption-correction notice is identified, but full final-version comparison remains open; several historical references are abstract-only.",
@@ -278,7 +278,9 @@
         "source-cce44fac9c5b145f"
       ],
       "conditions": "Independent weak-coupling cutoff, normalized three-state dynamics and neutral relative-phase illustrations; no material fit. Experiments retain protocol and version limits.",
-      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation."
+      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Allender-Bray-Bardeen supplies historical model context from its abstract only. The cutoff expression, derivative/optimum, three-state drive and relative-phase stiffness here are separate local illustrations, not equations or a reproduction attributed to that paper."
     },
     {
       "id": "scwiki-b7-claim-mathematical-assumptions-2",
@@ -289,7 +291,9 @@
         "source-cce44fac9c5b145f"
       ],
       "conditions": "Independent weak-coupling cutoff, normalized three-state dynamics and neutral relative-phase illustrations; no material fit. Experiments retain protocol and version limits.",
-      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation."
+      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Allender-Bray-Bardeen supplies historical model context from its abstract only. The cutoff expression, derivative/optimum, three-state drive and relative-phase stiffness here are separate local illustrations, not equations or a reproduction attributed to that paper."
     },
     {
       "id": "scwiki-b7-claim-mathematical-assumptions-3",
@@ -300,7 +304,9 @@
         "source-cce44fac9c5b145f"
       ],
       "conditions": "Independent weak-coupling cutoff, normalized three-state dynamics and neutral relative-phase illustrations; no material fit. Experiments retain protocol and version limits.",
-      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation."
+      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Allender-Bray-Bardeen supplies historical model context from its abstract only. The cutoff expression, derivative/optimum, three-state drive and relative-phase stiffness here are separate local illustrations, not equations or a reproduction attributed to that paper."
     },
     {
       "id": "scwiki-b7-claim-mathematical-assumptions-4",
@@ -311,7 +317,9 @@
         "source-cce44fac9c5b145f"
       ],
       "conditions": "Independent weak-coupling cutoff, normalized three-state dynamics and neutral relative-phase illustrations; no material fit. Experiments retain protocol and version limits.",
-      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation."
+      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Allender-Bray-Bardeen supplies historical model context from its abstract only. The cutoff expression, derivative/optimum, three-state drive and relative-phase stiffness here are separate local illustrations, not equations or a reproduction attributed to that paper."
     },
     {
       "id": "scwiki-b7-claim-mathematical-assumptions-5",
@@ -322,7 +330,9 @@
         "source-cce44fac9c5b145f"
       ],
       "conditions": "Independent weak-coupling cutoff, normalized three-state dynamics and neutral relative-phase illustrations; no material fit. Experiments retain protocol and version limits.",
-      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation."
+      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Allender-Bray-Bardeen supplies historical model context from its abstract only. The cutoff expression, derivative/optimum, three-state drive and relative-phase stiffness here are separate local illustrations, not equations or a reproduction attributed to that paper."
     },
     {
       "id": "scwiki-b7-claim-mathematical-assumptions-6",
@@ -333,7 +343,9 @@
         "source-cce44fac9c5b145f"
       ],
       "conditions": "Independent weak-coupling cutoff, normalized three-state dynamics and neutral relative-phase illustrations; no material fit. Experiments retain protocol and version limits.",
-      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation."
+      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Allender-Bray-Bardeen supplies historical model context from its abstract only. The cutoff expression, derivative/optimum, three-state drive and relative-phase stiffness here are separate local illustrations, not equations or a reproduction attributed to that paper."
     },
     {
       "id": "scwiki-b7-claim-mathematical-assumptions-7",
@@ -344,7 +356,9 @@
         "source-cce44fac9c5b145f"
       ],
       "conditions": "Independent weak-coupling cutoff, normalized three-state dynamics and neutral relative-phase illustrations; no material fit. Experiments retain protocol and version limits.",
-      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation."
+      "verificationScope": "Selected primary passages and independent illustrative checks; no complete source reconciliation, raw-data reproduction or mechanism confirmation.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Allender-Bray-Bardeen supplies historical model context from its abstract only. The cutoff expression, derivative/optimum, three-state drive and relative-phase stiffness here are separate local illustrations, not equations or a reproduction attributed to that paper."
     },
     {
       "id": "scwiki-b7-claim-experimental-criteria-1",
