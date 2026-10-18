@@ -6,7 +6,7 @@ export const topicGroups = [
     {code:"D3", label:"Cuprates"}, {code:"D4", label:"Iron-based superconductors"}, {code:"D5", label:"Nickelates"},
   ]},
   {id:"pairing", title:"Pairing & mechanisms", description:"Connect observations to models of the paired state.", topics:[
-    {code:"B1", label:"BCS theory"}, {code:"B2", label:"Eliashberg theory"}, {code:"B3", label:"Spin-fluctuation pairing"}, {code:"B4", label:"Ferromagnetic fluctuations"}, {code:"B5", label:"Nematic fluctuations"}, {code:"B6", label:"Charge fluctuations / CDW"}, {code:"B12", label:"Multiband pairing"}, {code:"C2", label:"s± pairing"}, {code:"G7", label:"Spin liquids & RVB"},
+    {code:"B1", label:"BCS theory"}, {code:"B2", label:"Eliashberg theory"}, {code:"B3", label:"Spin-fluctuation pairing"}, {code:"B4", label:"Ferromagnetic fluctuations"}, {code:"B5", label:"Nematic fluctuations"}, {code:"B6", label:"Charge fluctuations / CDW"}, {code:"B7", label:"Exciton-mediated pairing"}, {code:"B12", label:"Multiband pairing"}, {code:"C2", label:"s± pairing"}, {code:"G7", label:"Spin liquids & RVB"},
   ]},
   {id:"frontiers", title:"Properties & frontiers", description:"Follow the links between superconductivity and its wider physics.", topics:[
     {code:"F7", label:"Geometric superfluid weight"}, {code:"E4", label:"Strain engineering"}, {code:"H2", label:"Planckian dissipation"}, {code:"A8", label:"Linear-T resistivity"},

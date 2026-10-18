@@ -496,3 +496,19 @@ it("exports charge-order evidence limits and keeps ordering temperatures out of 
  expect(limits).toContain("full scientific");
  expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
 });
+
+it("preserves exciton proposal disputes and transient transport conditions without ranking them as Tc",async()=>{
+ const a=articles().find(a=>a.code==="B7")!,m=a.materialCases[0];
+ expect(m.reportedTemperatureK).toBe(100);expect(m.tcK).toBeNull();expect(m.temperatureKind).toBe("transient-response");
+ expect(searchArticles(searchIndex().entries,"exciton",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"exciton",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const exp=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(exp).toContain("two-terminal probe");expect(exp).toContain("static four-terminal");expect(exp).toContain("not a direct transient four-terminal");
+ const conditions=await(await get(["articles",a.id,"sections","material-cases"],"?format=markdown")).text();
+ expect(conditions).toContain("75ps");expect(conditions).toContain("non-equilibrium");
+ const limits=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+ expect(limits).toContain("10.1103/PhysRevB.8.4429");expect(limits).toContain("10.1103/PhysRevB.8.4433");
+ expect(limits).toContain("30 THz");expect(limits).toContain("10 THz");expect(limits).toContain("preprint");
+ const theory=a.references.find(r=>r.doi==="10.48550/arXiv.2604.10987")!;expect(theory.publicationStatus).toBe("preprint");expect(theory.url).toContain("v2");
+ expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
+});
