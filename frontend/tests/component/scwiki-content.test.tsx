@@ -512,3 +512,18 @@ it("preserves exciton proposal disputes and transient transport conditions witho
  const theory=a.references.find(r=>r.doi==="10.48550/arXiv.2604.10987")!;expect(theory.publicationStatus).toBe("preprint");expect(theory.url).toContain("v2");
  expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
 });
+
+it("keeps plasmon mode energies and spectroscopy temperatures distinct from superconducting transitions",async()=>{
+ const a=articles().find(a=>a.code==="B8")!,m=a.materialCases[0];
+ expect(m.reportedTemperatureK).toBe(20);expect(m.temperatureKind).toBe("spectroscopic");expect(m.tcK).toBeNull();
+ expect(searchArticles(searchIndex().entries,"plasmon",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"plasmon",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const exp=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(exp).toContain("40 meV");expect(exp).toContain("120 meV");expect(exp).toContain("excluded from the model fit");
+ const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(math).toContain("finite-momentum static screening");expect(math).toContain("weak Landau damping");
+ const limits=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+ expect(limits).toContain("phenomenologically");expect(limits).toContain("normal self-energy");expect(limits).toContain("full final-version comparison is still pending");
+ expect(a.references.find(r=>r.doi==="10.1103/PhysRevB.94.224515")?.verification.evidenceUrl).toContain("accepted/");
+ expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
+});
