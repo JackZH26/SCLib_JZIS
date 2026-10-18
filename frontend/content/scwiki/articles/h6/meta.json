@@ -1,0 +1,480 @@
+{
+  "id": "scwiki-h6",
+  "topicId": "scwiki-topic-h6",
+  "code": "H6",
+  "slug": "nematic-order",
+  "title": "Nematic order: symmetry, lattice coupling and experimental tests",
+  "summary": "Separate spontaneous order from induced anisotropy, compare strain and spectroscopic probes, and keep nematic mechanisms distinct from pairing evidence.",
+  "aliases": [
+    "nematicity",
+    "nematic order",
+    "electronic nematic",
+    "向列序"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "B5",
+    "H5",
+    "E4"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T17:03:10.063461+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Böhmer shear-modulus and Shimojima/Watson ARPES author text and figures; published Fernandes pairing text; selected Lawler final text; scoped Chu, FeSe neutron/NMR and B5 evidence.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Full source-version, Chu correction, strain calibration, spectral-fit and STM registration reviews remain open.",
+      "Coupled response does not uniquely establish the primary instability or pairing interaction.",
+      "Independent quadratic models are not experimental reproductions and do not solve all lower-temperature phases."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "H_anomalous_normal_state/H6_nematic_order.md",
+    "sha256": "2ba653f9dc6a238d9fc5c32e474fc578d69744f66110324c23db99f6a756f5c9",
+    "sourceId": "file-1a2d87da4c16745b"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 684,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained; correct categorical causal hierarchy, blanket orbital degeneracy, directional Tc and STM/ARPES confusion. Do not import source audit badges as acceptance."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-h6-correction-1",
+      "description": "Replace unconditional lattice-as-passive-result claims with coupled response; a band splitting or externally induced anisotropy alone is not proof of spontaneous nematicity.",
+      "sourceId": "source-643062e6ad91fafe",
+      "scope": "Correct inherited causal and symmetry overstatements."
+    },
+    {
+      "id": "scwiki-h6-correction-2",
+      "description": "An anisotropic superconducting gap does not imply separate direction-dependent thermodynamic critical temperatures; Lawler reports STM intra-unit-cell contrast rather than ARPES Fermi arcs.",
+      "sourceId": "source-03c03feac2435b1b",
+      "scope": "Distinguish the superconducting onset from directional response and retain the correct experimental probe."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "E_\\pm=\\pm\\sqrt{\\lambda_{\\rm so}^2+\\phi^2}",
+      "check": "20 orbital-spin spectrum/symmetry cases, 80 coupled pairing onset eigenvalue cases and 36 relaxed elastic curvatures independently checked. No raw experimental fits reproduced."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-bd2e7b2930bdd775",
+      "doi": "10.1038/nphys2877",
+      "title": "What drives nematic order in iron-based superconductors?",
+      "year": 2014,
+      "url": "https://doi.org/10.1038/nphys2877",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-abstract-and-inherited-summary-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/abs/1312.6085",
+        "note": "Author review abstract checked alongside inherited publisher summary: coupled structural, orbital and spin scenarios. Full review not independently audited."
+      }
+    },
+    {
+      "id": "source-bac80c20c1347e23",
+      "doi": "10.1126/science.1190482",
+      "title": "In-Plane Resistivity Anisotropy in an Underdoped Iron Arsenide Superconductor",
+      "year": 2010,
+      "url": "https://doi.org/10.1126/science.1190482",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-institution-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://fishergroup.stanford.edu/publications/detwinning-anisotropic-strain/plane-resistivity-anisotropy-underdoped-iron-pnictide",
+        "note": "Fisher group abstract: detwinned Co-Ba122 has larger resistivity along shorter b axis; above-transition anisotropy is induced by uniaxial stress. Full methods and original data not reviewed."
+      }
+    },
+    {
+      "id": "source-d29c3c764d26edfd",
+      "doi": "10.1126/science.1221713",
+      "title": "Divergent nematic susceptibility in an iron arsenide superconductor",
+      "year": 2012,
+      "url": "https://doi.org/10.1126/science.1221713",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-with-update-pending",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1203.3239v1",
+        "note": "Chu et al. selected pp.1–4; p.3 Eqs.1–4 visually checked. PubMed22879513 lists Science338(6106)469 correction; publisher correction text unavailable. Independent static derivatives checked, but full final-version reconciliation remains open. No quantitative phase boundary cleared."
+      }
+    },
+    {
+      "id": "source-052b3d26e6f02b35",
+      "doi": "10.1126/science.338.6106.469-a",
+      "title": "Corrections and Clarifications",
+      "year": 2012,
+      "url": "https://doi.org/10.1126/science.338.6106.469-a",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-with-content-pending",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://doi.org/10.1126/science.338.6106.469-a",
+        "note": "Crossref issue/date/page match to the correction flagged by PubMed22879513. Direct publisher text unavailable; exact correction content and final-version effect not verified. This reference records an unresolved review requirement, not a verified amendment to scientific results."
+      }
+    },
+    {
+      "id": "source-643062e6ad91fafe",
+      "doi": "10.1103/PhysRevLett.112.047001",
+      "title": "Nematic Susceptibility of Hole-Doped and Electron-Doped BaFe2As2 Iron-Based Superconductors from Shear Modulus Measurements",
+      "year": 2014,
+      "url": "https://doi.org/10.1103/PhysRevLett.112.047001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1305.3515v2",
+        "note": "Author v2 pp. 1–3 read; p. 2 Figure 1 and equations visually checked. Bending measures normalized Young modulus, with a C66 approximation and fitted noncritical background; no universal softening percentage. arXiv v2 history is 29 January 2014, while PDF typeset date says June 2018; not a new publication date. Full final/supplement comparison remains open."
+      }
+    },
+    {
+      "id": "source-43471709790b0a92",
+      "doi": "10.1103/PhysRevB.90.121111",
+      "title": "Lifting of xz/yz orbital degeneracy at the structural transition in detwinned FeSe",
+      "year": 2014,
+      "url": "https://doi.org/10.1103/PhysRevB.90.121111",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1407.1418v1",
+        "note": "Author v1 pp. 1–3 read, p. 2 Figure 1 visually checked; final publisher abstract checked. Distinct 5.9/60/21.2 eV setups and 3/20/10 meV resolutions, twinned and detwinned samples. Figure 1 caption inequalities for 120 K conflict with the stated 90 K structural transition; use explicit temperatures. Author methods Tc 9.8 K differs from abstract 9 K; no transition extraction."
+      }
+    },
+    {
+      "id": "source-82e36852ee3c27b9",
+      "doi": "10.7566/JPSJ.86.053703",
+      "title": "Shifts and Splittings of the Hole Bands in the Nematic Phase of FeSe",
+      "year": 2017,
+      "url": "https://doi.org/10.7566/JPSJ.86.053703",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1702.05460v1",
+        "note": "Author v1 pp. 1–4 read, p. 3 Figure 2 visually checked. Gamma-point spin–orbit splitting, seven-parameter constrained peak fits and uncertainty above the Fermi cutoff distinguished. Abstract increase 13 meV versus body 14 meV not reconciled with final version; no precise splitting promoted. PDF typeset November 2018 is not the February 2017 arXiv submission date."
+      }
+    },
+    {
+      "id": "source-229de7733ef6e2b5",
+      "doi": "10.1103/PhysRevLett.114.027001",
+      "title": "Origin of the Tetragonal-to-Orthorhombic Phase Transition in FeSe: A Combined Thermodynamic and NMR Study of Nematicity",
+      "year": 2015,
+      "url": "https://doi.org/10.1103/PhysRevLett.114.027001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1407.5497v1",
+        "note": "Only v1 listed in arXiv history. Selected pp. 1–4 text and p. 3 Figure 2 checked; 77Se NMR at 9 T and 73.28 MHz samples a low-frequency window. Authors infer a nonmagnetic driver; later neutron evidence must be considered. Old Kyoto URL returned HTML, not a final PDF."
+      }
+    },
+    {
+      "id": "source-3686ada319d8a30c",
+      "doi": "10.1038/nmat4492",
+      "title": "Strong interplay between stripe spin fluctuations, nematicity and superconductivity in FeSe",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nmat4492",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://jzhao.fudan.edu.cn/pdfs/Strong%20interplay%20between%20stripe%20spin%20fluctuations%20nematicity%20and%20superconductivity%20in%20FeSe.pdf",
+        "note": "Published online 7 December 2015, 2016 issue. Selected pp. 1, 2, 4, 6 read; p. 2 Figures 1–2 visually checked. FeSe0.990(10), magnetic onset 8.7 K at 10 Oe in-plane; orthorhombic neutron coordinates. PDF notes correction online 15 December 2015. Exact erratum comparison remains open."
+      }
+    },
+    {
+      "id": "source-03c03feac2435b1b",
+      "doi": "10.1103/PhysRevLett.111.127001",
+      "title": "Nematicity as a Probe of Superconducting Pairing in Iron-Based Superconductors",
+      "year": 2013,
+      "url": "https://doi.org/10.1103/PhysRevLett.111.127001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-theory-text-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.111.127001/fulltext",
+        "note": "Published pp. 1–3 web-extracted text, equations 1–3 and preexisting-order discussion checked. Trilinear s/d/nematic coupling and possible later phases distinguished. Publisher screenshot returned 401; no visual equation or full supplementary calculation review claimed."
+      }
+    },
+    {
+      "id": "source-34e188caa8191123",
+      "doi": "10.1103/PhysRevLett.88.137005",
+      "title": "Electrical Resistivity Anisotropy from Self-Organized One Dimensionality in High-Temperature Superconductors",
+      "year": 2002,
+      "url": "https://doi.org/10.1103/PhysRevLett.88.137005",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.88.137005",
+        "note": "Published 19 March 2002. Untwinned cuprate resistivity anisotropy and stripe interpretation checked at abstract scope; full structural and transport controls remain open."
+      }
+    },
+    {
+      "id": "source-b70aa455468dbc62",
+      "doi": "10.1038/nature09169",
+      "title": "Intra-unit-cell electronic nematicity of the high-Tc copper-oxide pseudogap states",
+      "year": 2010,
+      "url": "https://doi.org/10.1038/nature09169",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-text-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://infrared.phy.bnl.gov/pdf/ckkim/Nature_466_347.pdf",
+        "note": "Final p. 347 definition/registration requirements and p. 351 Figure 4 caption read as text; full image calibration, supplements and raw data not reviewed. Oxygen-site intra-unit-cell STM contrast is not an ARPES Fermi-arc image. Direct Nature page failed; author-institution PDF used."
+      }
+    },
+    {
+      "id": "source-24dd77640a555a0f",
+      "doi": "10.1103/PhysRevLett.114.097001",
+      "title": "Enhancement of Superconductivity near a Nematic Quantum Critical Point",
+      "year": 2015,
+      "url": "https://doi.org/10.1103/PhysRevLett.114.097001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-equations-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://harvest.aps.org/v2/journals/articles/10.1103/PhysRevLett.114.097001/fulltext",
+        "note": "Lederer et al. published selected pp.1–3 web text Eqs.3,6,11; authorv3 p.2 visually checked. Controlled weak coupling and nematic form factor versus gap symmetry. Publisher direct download401; full supplement and model reproduction open. Angular overlaps here are independent illustrations."
+      }
+    },
+    {
+      "id": "source-f9ae22fe4f6ed654",
+      "doi": "10.1126/science.aab0103",
+      "title": "Ubiquitous signatures of nematic quantum criticality in optimally doped Fe-based superconductors",
+      "year": 2016,
+      "url": "https://doi.org/10.1126/science.aab0103",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "earlier-author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1503.00402v1",
+        "note": "Kuo et al. selected pp.1–4,6–8,10: five families including FeTeSe, differential response, axes/background and lower-temperature deviations. Earlier-version composition labels differ between some text/captions; exact final sample composition and raw fits not audited."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "id": "scwiki-h6-material-1",
+      "formula": "FeSe",
+      "sample": "Shimojima strain-free twinned FeSe; Figure 1g",
+      "reportedTemperatureK": 20,
+      "temperatureNote": "Zone-corner ARPES at 20 K, photon energy 60 eV; not superconducting Tc.",
+      "criterion": "ARPES-measurement",
+      "probe": "Synchrotron ARPES",
+      "sourceId": "source-43471709790b0a92",
+      "aliases": [
+        "FeSe"
+      ]
+    },
+    {
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "id": "scwiki-h6-material-2",
+      "formula": "FeSe",
+      "sample": "Watson twinned FeSe temperature series; Figure 1b",
+      "reportedTemperatureK": 15,
+      "temperatureNote": "Laser ARPES at 15 K with 6.268 eV photons; not superconducting Tc.",
+      "criterion": "ARPES-measurement",
+      "probe": "Laser ARPES",
+      "sourceId": "source-82e36852ee3c27b9",
+      "aliases": [
+        "FeSe"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-h6-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Electronic nematic order makes symmetry-related directions inequivalent without requiring a new translation period. For a tetragonal crystal, a common example is spontaneous fourfold-to-twofold symmetry reduction. Resistivity anisotropy is a possible response, not a universal definition of the order parameter: external strain, pre-existing orthorhombicity and domain populations can also make transport anisotropic. Establishing spontaneous order requires identifying the symmetry-breaking field and its zero-field limit.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-bd2e7b2930bdd775",
+        "source-bac80c20c1347e23",
+        "source-d29c3c764d26edfd"
+      ],
+      "conditions": "Retain symmetry axes, stress versus strain, sample domains, probe window, momentum and version. Band splitting and induced anisotropy alone do not establish spontaneous nematic order.",
+      "verificationScope": "Selected primary evidence and independent quadratic models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h6-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Electronic and lattice degrees of freedom with the same symmetry couple. Evidence for an electronic instability does not make the lattice irrelevant, and the small size of a distortion alone does not prove which subsystem drives the transition. Orbital polarization, unequal fluctuations at two magnetic wave vectors and structural strain are candidate coupled variables; their appearance together is not a causal ranking.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-bd2e7b2930bdd775",
+        "source-643062e6ad91fafe"
+      ],
+      "conditions": "Retain symmetry axes, stress versus strain, sample domains, probe window, momentum and version. Band splitting and induced anisotropy alone do not establish spontaneous nematic order.",
+      "verificationScope": "Selected primary evidence and independent quadratic models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h6-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A uniform illustrative free energy is $F=a\\phi^2/2+b\\phi^4/4+C_0\\epsilon^2/2-\\lambda\\phi\\epsilon-\\sigma\\epsilon$, with nematic variable $\\phi$, symmetry-matched strain $\\epsilon$ and stress $\\sigma$. In the stable symmetric regime, the relaxed modulus is $C=C_0-\\lambda^2/a$. At fixed strain, $\\partial\\phi/\\partial\\epsilon=\\lambda/a$; stress control instead allows the lattice to relax. For $a=A(T-T_0)$, a continuous mean-field coupled instability occurs at $T_s=T_0+\\lambda^2/(AC_0)$. The extrapolated bare scale $T_0$ is neither automatically the measured transition nor a superconducting temperature. Positive quartic stabilization and explicit strain conventions are required.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d29c3c764d26edfd",
+        "source-643062e6ad91fafe"
+      ],
+      "conditions": "Retain symmetry axes, stress versus strain, sample domains, probe window, momentum and version. Band splitting and induced anisotropy alone do not establish spontaneous nematic order.",
+      "verificationScope": "Selected primary evidence and independent quadratic models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h6-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Band splitting also needs a symmetry test. At a symmetry point, the independent two-orbital illustration $H=\\lambda_{\\rm so}\\tau_y\\sigma_z+\\phi\\tau_z$ has energies $E_\\pm=\\pm\\sqrt{\\lambda_{\\rm so}^2+\\phi^2}$, each twice degenerate. Pauli matrices $\\tau$ and $\\sigma$ act on orbital and spin space. The spin–orbit term can preserve fourfold and time-reversal symmetries even when the bands are split; the nematic term reverses sign under a quarter rotation. Thus an observed splitting alone is not a symmetry-breaking diagnosis. This minimal model omits realistic dispersions and is not a fit to FeSe.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-82e36852ee3c27b9"
+      ],
+      "conditions": "Retain symmetry axes, stress versus strain, sample domains, probe window, momentum and version. Band splitting and induced anisotropy alone do not establish spontaneous nematic order.",
+      "verificationScope": "Selected primary evidence and independent quadratic models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h6-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For pre-existing nematic order, symmetry can permit $\\phi(\\Delta_s^*\\Delta_d+\\mathrm{c.c.})$ when the chosen d-wave component transforms like $\\phi$. In the illustrative quadratic matrix with diagonal entries $a_s(T-T_{s0})$, $a_d(T-T_{d0})$ and real off-diagonal $h=g\\phi$, the highest instability is $T_c=(T_{s0}+T_{d0})/2+\\sqrt{(T_{s0}-T_{d0})^2/4+h^2/(a_sa_d)}$, for positive slopes. The mixed gap has a common onset; anisotropic gap magnitude or critical fields do not imply separate a-axis and b-axis thermodynamic transition temperatures. Quartic terms can permit additional lower-temperature phases, which this calculation does not solve.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-03c03feac2435b1b"
+      ],
+      "conditions": "Retain symmetry axes, stress versus strain, sample domains, probe window, momentum and version. Band splitting and induced anisotropy alone do not establish spontaneous nematic order.",
+      "verificationScope": "Selected primary evidence and independent quadratic models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h6-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Chu's detwinned Co-substituted Ba122 crystals show larger resistivity along the shorter orthorhombic b axis. Above the structural transition, applied uniaxial stress already induces anisotropy, consistent with a substantial susceptibility. That induced response must not be relabelled spontaneous high-temperature order. Differential elastoresistance adds a strain-response measurement, with geometric backgrounds, strain transfer and residual bias requiring control.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-bac80c20c1347e23",
+        "source-d29c3c764d26edfd"
+      ],
+      "conditions": "Retain symmetry axes, stress versus strain, sample domains, probe window, momentum and version. Band splitting and induced anisotropy alone do not establish spontaneous nematic order.",
+      "verificationScope": "Selected primary evidence and independent quadratic models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h6-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Böhmer's three-point bending experiment measures a normalized Young modulus along tetragonal [110]. Inferring the shear modulus uses an approximation, a noncritical background and normalization choices. Its thermodynamic treatment cannot by itself distinguish spin-driven from orbital-driven order. The Co- and K-substituted series show different Curie–Weiss behavior; the study does not establish an identical quantum critical point beneath every superconducting dome.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-643062e6ad91fafe"
+      ],
+      "conditions": "Retain symmetry axes, stress versus strain, sample domains, probe window, momentum and version. Band splitting and induced anisotropy alone do not establish spontaneous nematic order.",
+      "verificationScope": "Selected primary evidence and independent quadratic models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h6-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Shimojima's FeSe ARPES assigns a roughly 50 meV zone-corner separation to orbital order in detwinned samples. The experiment uses different photon energies and resolutions for zone-center, zone-corner and detwinned measurements; these are not interchangeable spectra. Watson's later zone-center study resolves a spin–orbit contribution above the structural transition and additional splitting below it. Its constrained peak fits have larger uncertainty for a band partly above the Fermi cutoff. Momentum location, orbital assignment and fitting assumptions must accompany each energy scale.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-43471709790b0a92",
+        "source-82e36852ee3c27b9"
+      ],
+      "conditions": "Retain symmetry axes, stress versus strain, sample domains, probe window, momentum and version. Band splitting and induced anisotropy alone do not establish spontaneous nematic order.",
+      "verificationScope": "Selected primary evidence and independent quadratic models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h6-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "FeSe also separates static magnetism from dynamical evidence. Böhmer's NMR interpretation and Wang's later finite-energy neutron results sample different frequency windows. The absence of conventional ambient-pressure magnetic order does not exclude spin fluctuations or settle the microscopic nematic driver. Neither a structural onset nor an ARPES measurement temperature is a superconducting transition record.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-229de7733ef6e2b5",
+        "source-3686ada319d8a30c"
+      ],
+      "conditions": "Retain symmetry axes, stress versus strain, sample domains, probe window, momentum and version. Band splitting and induced anisotropy alone do not establish spontaneous nematic order.",
+      "verificationScope": "Selected primary evidence and independent quadratic models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h6-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "Cuprates require their own controls. Ando reports anisotropic transport in untwinned crystals and interprets it in terms of conducting stripes. Lawler analyzes intra-unit-cell STM contrast near the pseudogap energy, with oxygen-site differences and precise lattice registration. This is not an ARPES image of Fermi arcs. Existing lattice anisotropy, chain contributions where present, spatial inhomogeneity and charge modulation must be assessed before inferring a distinct bulk nematic transition from any one signal.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-34e188caa8191123",
+        "source-b70aa455468dbc62"
+      ],
+      "conditions": "Retain symmetry axes, stress versus strain, sample domains, probe window, momentum and version. Band splitting and induced anisotropy alone do not establish spontaneous nematic order.",
+      "verificationScope": "Selected primary evidence and independent quadratic models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h6-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A susceptibility enhancement or extrapolated Curie–Weiss scale supports a proposed instability within its analysis model; it is not direct observation of an uncovered zero-temperature critical point. A superconducting dome near that scale does not establish the pairing interaction. Controlled theories of nematic fluctuation enhancement remain distinct from a unique material-level mechanism, and composition-dependent deviations must stay visible.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-d29c3c764d26edfd",
+        "source-24dd77640a555a0f",
+        "source-f9ae22fe4f6ed654"
+      ],
+      "conditions": "Retain symmetry axes, stress versus strain, sample domains, probe window, momentum and version. Band splitting and induced anisotropy alone do not establish spontaneous nematic order.",
+      "verificationScope": "Selected primary evidence and independent quadratic models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h6-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. Chu's correction text still needs primary verification. Selected author manuscripts require final-version comparisons, including Watson's abstract/body difference in the quoted splitting increase and Shimojima's transition labels. Full strain calibration, ARPES fitting and STM registration have not been independently reproduced. No precise transition record is extracted from unresolved version differences.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-052b3d26e6f02b35",
+        "source-43471709790b0a92",
+        "source-82e36852ee3c27b9",
+        "source-b70aa455468dbc62"
+      ],
+      "conditions": "Retain symmetry axes, stress versus strain, sample domains, probe window, momentum and version. Band splitting and induced anisotropy alone do not establish spontaneous nematic order.",
+      "verificationScope": "Selected primary evidence and independent quadratic models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h6-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Combine symmetry-resolved strain response with structural, magnetic and momentum-resolved measurements on documented samples. Track domain history, mechanical boundary conditions, energy resolution and the reference axes used for symmetry-channel names. Predictions should specify which measurement distinguishes a primary instability from a coupled response, and whether the proposed tuning changes static order, fluctuations or both. Keep proposed pairing benefits separate from demonstrated superconducting transition shifts.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-d29c3c764d26edfd",
+        "source-643062e6ad91fafe",
+        "source-82e36852ee3c27b9",
+        "source-03c03feac2435b1b"
+      ],
+      "conditions": "Retain symmetry axes, stress versus strain, sample domains, probe window, momentum and version. Band splitting and induced anisotropy alone do not establish spontaneous nematic order.",
+      "verificationScope": "Selected primary evidence and independent quadratic models; full scientific acceptance remains open."
+    }
+  ]
+}
