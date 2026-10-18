@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "f6482a499a72d99bd722",
+  "revision": "0d777071ef2b785fff5f",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -65,6 +65,71 @@
         "10.6028/NIST.TN.1297"
       ],
       "text": " Scope\n\nA reported zero resistance means that a specified measurement cannot resolve a resistive voltage under its current, geometry and acquisition conditions. It is evidence within a detection limit, not a measurement of a mathematically exact zero. Keep the measured signal, correction and uncertainty together; a display reading of zero does not specify all three. The uncertainty framework below is separate from a microscopic theory of superconductivity. \n\nRecord transition onset, midpoint and the operational zero criterion separately. A conducting path need not occupy the whole specimen. As a simple counterexample, two ideal parallel channels have R{\\mathrm{eff}}=R1R2/(R1+R2): one zero-resistance channel shorts a finite-resistance channel. This circuit result establishes no volume fraction or material identity. Magnetic and thermodynamic probes answer complementary questions.\n\n Mathematical assumptions\n\nSuppose a corrected voltage estimate is \\hat V and the applied current estimate is \\hat I. If independently justified intervals satisfy |V-\\hat V|\\le UV and |I-\\hat I|\\le UI<|\\hat I|, the triangle inequality gives a conditional bound:\n\n\\left|\\frac{V}{I}\\right|\\le\\frac{|\\hat V|+UV}{|\\hat I|-UI}.\n\nThis is a local interval calculation, not an automatically calibrated confidence statement. If the input intervals have probabilistic coverage, the output statement must retain that coverage model and their dependence. An operational threshold |\\hat V|<V{\\mathrm{cut}} alone does not establish |V|<V{\\mathrm{cut}}. Do not substitute a display digit or a noise standard deviation for a validated bound without explaining the choice. NIST's uncertainty guidance distinguishes uncertainty components, applied corrections and coverage. \n\nFor a fixed linear resistance and equal opposite currents, model the readings as V+=IR+V{0,+}+\\epsilon+ and V-=-IR+V{0,-}+\\epsilon-. Then\n\n\\hat R=\\frac{V+-V-}{2I}=R+\\frac{V{0,+}-V{0,-}+\\epsilon+-\\epsilon-}{2I}.\n\nA constant current-even offset cancels. Drift, a current-odd voltage, unequal currents or a changing specimen do not satisfy that cancellation. NIST's shunt report describes a thermoelectric contribution that reverses with the current and therefore survives ordinary reversal averaging. Its apparatus-specific thermal treatment is not a universal correction for superconducting samples. \n\nWith fixed known I, the voltage contribution to standard uncertainty is uR^2=[u+^2+u-^2-2\\operatorname{cov}(V+,V-)]/(4I^2). Current uncertainty and model/systematic contributions must be included separately when present. Independent algebra and finite-outcome checks verify this conditional variance and show why assuming uncorrelated errors can fail. The check is not an instrument calibration. \n\nConverting resistance to resistivity as \\rho=RA/L additionally assumes the appropriate homogeneous current path, area A and voltage-contact separation L. Four-terminal geometry does not by itself establish uniform current density. Conversely, a passive lumped loop with constant inductance L{\\mathrm{loop}} and resistance obeys I(t)=I0e^{-Rt/L{\\mathrm{loop}}}. A measured fractional decay no larger than \\varepsilon gives R\\le-L{\\mathrm{loop}}\\ln(1-\\varepsilon)/t only under that loop model. Vortex relaxation or changing inductance needs a different treatment.\n\n Experimental criteria\n\nHalperin and Nelson's 1979 superconducting-film theory describes a vortex-unbinding regime, fluctuation conductivity and nonlinear resistivity. This supports a limited theoretical reference for thin-film analysis, not a universal fit or a pairing-symmetry test. The publisher abstract was checked; its full derivation has not yet been reviewed here. \n\nUse four-terminal measurements where the time scale and apparatus permit them, and state the actual geometry when they do not. Publish the voltage/current data, detection criterion, field orientation, temperature sweep, bandwidth or integration time and contact configuration. Check current dependence, contact stability and thermal response. Treat these as editorial evidence requirements rather than a claim that one fixed protocol fits every apparatus.\n\nIf contacts or backgrounds are subtracted, preserve the original reading and propagate the uncertainty of the subtraction. An independent magnetic or heat-capacity result on a comparable sample helps test a bulk interpretation. A low transport reading alone cannot exclude a connected minority phase, a short or an instrument limitation.\n\n Limits and disputes\n\nMitrano and colleagues' earlier author manuscript reports transient optical signatures in driven K3C60 and discusses a high-mobility alternative interpretation. Such spectra do not constitute a direct DC transport measurement. This check covers selected 2015 manuscript passages; the publisher record flags an update whose details have not been verified here. No optical crossover temperature is entered as an equilibrium transition. \n\nBudden and colleagues complement optics with a 1 ns electrical probe of a driven K3C60 pellet at 100 K. The checked manuscript uses a two-terminal transient measurement with contact resistance calibrated against static four-terminal measurements. Figure 4 explicitly includes a calibration-related systematic uncertainty. A resistance compatible with zero in this driven experiment is not an equilibrium T{c,\\mathrm{zero}}. The numerical waveform and complete final journal version were not independently reanalyzed. \n\nThese methods probe different observables and time windows. Keep optical extrapolation to zero frequency separate from electrical response, and distinguish either from long-time equilibrium transport. A very large photoconductivity can motivate further tests without resolving every question about phase coherence or magnetic expulsion.\n\n Discovery implications\n\nA useful discovery report states which observations would distinguish a superconducting path from a contact artifact, minority phase or alternative conducting state. Repeat under controlled current and magnetic field, retain unsuccessful controls, and seek independent probes of the claimed phase. Field suppression supports an interpretation but does not uniquely identify a pairing interaction.\n\nBCS theory is retained as a microscopic background reference, with its detailed treatment in the linked BCS entry. It is not the source for the measurement bounds or procedural requirements developed here. Keep operational transport evidence, theoretical interpretation and claims of bulk superconductivity distinct. \n\n Related topics\n\nRead , , , , , and ."
+    },
+    {
+      "id": "scwiki-a10",
+      "topicId": "scwiki-topic-a10",
+      "code": "A10",
+      "slug": "quasiparticle-interference",
+      "title": "Quasiparticle interference: momentum structure and phase limits",
+      "summary": "Read Fourier-transform tunneling maps with their scattering, sampling and phase assumptions. Distinguish measured modulation from inferred bands, gap sign and competing order.",
+      "aliases": [
+        "QPI",
+        "BQPI",
+        "FT-STM",
+        "quasiparticle scattering",
+        "octet model",
+        "phase resolved tunneling"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experiment",
+        "hypothesis"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "a7c758d27d4bd699b6ee",
+      "materialCases": [
+        {
+          "id": "scwiki-a10-material-1",
+          "formula": "Bi2Sr2CaCu2O8+delta",
+          "sample": "Hoffman Bi2212 crystals; selected imaging passages",
+          "recordType": "experiment",
+          "tcK": null,
+          "reportedTemperatureK": 4.2,
+          "temperatureKind": "spectroscopic-gap",
+          "temperatureNote": "Measurement temperature, not a transition Tc",
+          "criterion": "qpi-conductance-map",
+          "pressureRegime": "unknown",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Differential tunneling conductance maps; 4.2 K, cryogenic cleavage and Fourier peak tracking",
+          "sourceId": "source-e8e6ef56da103435"
+        },
+        {
+          "id": "scwiki-a10-material-2",
+          "formula": "FeSe",
+          "sample": "Sprau bulk FeSe; selected manuscript and defect analysis",
+          "recordType": "experiment",
+          "tcK": null,
+          "reportedTemperatureK": 0.28,
+          "temperatureKind": "spectroscopic-gap",
+          "temperatureNote": "Measurement temperature, not a transition Tc",
+          "criterion": "qpi-conductance-map",
+          "pressureRegime": "unknown",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "280 mK conductance maps; defect-centered Fourier phase and selected interband integration region",
+          "sourceId": "source-2f227038c5cf73a9"
+        }
+      ],
+      "dois": [
+        "10.1126/science.1072640",
+        "10.1103/PhysRevB.67.020511",
+        "10.1038/nature01496",
+        "10.1126/science.aal1575",
+        "10.1126/science.1066974"
+      ],
+      "text": " Scope\n\nQuasiparticle interference (QPI) uses spatial variations in scanning tunneling conductance to constrain electronic states and scattering. Elastic scattering can connect states of equal energy with momentum transfer \\mathbf q=\\mathbf k'-\\mathbf k. A Fourier peak is a feature of a measured response, not a direct photograph of a Fermi surface or a uniquely identified order parameter. Keep the tunneling matrix element, defect channel and preprocessing attached to every interpretation.\n\nIn a weak-tunneling description with a sufficiently smooth tip spectrum and matrix element, low-temperature differential conductance can approximate a sample's local density of states. Thermal and instrumental convolution, spatially varying set points and orbital sensitivity can change that relation. A conductance map and an ideal local-density-of-states calculation should not be treated as interchangeable without testing these assumptions.\n\n Mathematical assumptions\n\nWith the convention \\tilde g(\\mathbf q,E)=\\sum{\\mathbf r}e^{-i\\mathbf q\\cdot\\mathbf r}g(\\mathbf r,E), a translated pattern obeys\n\ng'(\\mathbf r,E)=g(\\mathbf r-\\mathbf r0,E),\\qquad\\tilde g'=e^{-i\\mathbf q\\cdot\\mathbf r0}\\tilde g.\n\nIts Fourier magnitude is unchanged, while its real and imaginary parts generally change. A real map satisfies \\tilde g(-\\mathbf q)=\\tilde g(\\mathbf q)^. Independent discrete-transform checks verify both identities, an exactly sampled cosine and sampling aliases. Finite cropping can also change amplitudes; the exact translation identity assumes the whole pattern or periodic data, not two differently cropped fields.\n\nFor a periodic lattice with N sites and one defect at the origin, define an ideal electron-block response\n\n\\Lambda(\\mathbf q,E)=\\frac{1}{N}\\sum{\\mathbf k}[G0(\\mathbf k,E)\\,T(E)\\,G0(\\mathbf k-\\mathbf q,E)]{11}.\n\nHere G0 is a retarded Nambu Green function and T=[1-Vg0]^{-1}V, with g0=N^{-1}\\sum{\\mathbf k}G0. The Fourier transform of the spin-resolved electron density-of-states change is\n\n\\delta\\tilde\\rho(\\mathbf q,E)=-\\frac{\\Lambda(\\mathbf q,E)-\\Lambda(-\\mathbf q,E)^}{2\\pi i}.\n\nTaking just -\\operatorname{Im}\\Lambda(\\mathbf q)/\\pi is insufficient for a general complex Fourier map. It becomes valid with the additional even-in-momentum response condition. Six independent checks compare full real-space resolvent inversion with the scattering expression on a ten-site, fixed-gap model; displaced defects expose the lost phase. This is a normalization and response check, not a cuprate or FeSe simulation. The selected Wang–Lee manuscript supplies the broader scattering framework and explicitly discusses off-shell and matrix-element limits. \n\nA joint-density-of-states construction counts candidate equal-energy connections but omits scattering amplitudes and coherence factors. In an ideal equal-magnitude, real-gap Fermi-surface limit, scalar and magnetic Born amplitudes contain uu'-vv' and uu'+vv'. Setting u=u'=1/\\sqrt2 and v=\\operatorname{sgn}(\\Delta)/\\sqrt2 interchanges their zero/nonzero weights when the relative gap sign changes. This conditional example explains sensitivity to the impurity channel; it does not identify a real defect from one bright peak. \n\n Experimental criteria\n\nHoffman and colleagues' dispersing-QPI manuscript reports Bi2212 conductance imaging at 4.2 K. Selected pages describe two peak families with opposite energy trends and doping-dependent dispersion, interpreted against photoemission information. Its Science DOI ends in 1072640. The inherited DOI ending in 1066974 instead identifies their distinct vortex-core modulation paper; these are not interchangeable evidence.  \n\nSprau and colleagues' FeSe manuscript reports imaging at 280 mK. The relative-sign analysis uses the real parts at opposite energies, isolates an interband momentum region and places the Fourier origin at a defect. Selected supplementary passages vary the integration area and repeat the analysis on additional impurities. The reported sign inference is conditional on their scattering model and band assignment; it is not an inference from the absolute Fourier intensity alone. \n\nReport field of view, pixel spacing, spatial drift correction, bias grid, temperature, excitation amplitude, tip condition, set-point protocol and defect selection. Preserve both raw and processed maps. State whether a displayed quantity is a complex transform, its real part, magnitude, power or a ratio: these operations retain different information. Explain normalization, windowing, background removal, symmetrization and peak uncertainties.\n\n Limits and disputes\n\nFor Nx equally spaced pixels of spacing ax, the periodic-transform length is Lx=Nxax and angular-wavevector bin spacing is 2\\pi/Lx; the Nyquist bound is \\pi/ax. Using cycles per length removes the 2\\pi factors. Zero padding interpolates the transform but does not create a larger measured field. A window trades spectral leakage against peak width, so bin spacing alone is not an experimental uncertainty or guaranteed resolving power.\n\nEnergy dispersion supports a scattering interpretation only together with band, defect and temperature/field controls. Weak dispersion over a limited window does not by itself prove charge order; Bragg, structural, moire and electronic features can overlap. Conversely, an order and QPI may coexist. The cuprate octet geometry must not be imposed on arbitrary multiband spectra.\n\nThe McElroy reference in the pinned chapter used an unrelated biology DOI, nature02269. The correct QPI paper is nature01496; its publisher identity is checked here, while its detailed data remain outside this entry's review. The original source is preserved and the replacement recorded. \n\n Discovery implications\n\nUse QPI to compare explicit candidate electronic and scattering models against multiple observables. A useful claim states which alternatives the data discriminate, which are still compatible, and how uncertainty in defect identity or preprocessing changes the result. Combine gap-magnitude constraints with independent bulk and phase-sensitive evidence before assigning a pairing state or mechanism.\n\n Related topics\n\nContinue with , , , , , and ."
     },
     {
       "id": "scwiki-a2",

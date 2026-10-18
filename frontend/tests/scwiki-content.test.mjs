@@ -95,3 +95,13 @@ test("DOI fields distinguish a canonical historical link from malformed identifi
   });
  }
 });
+
+test("QPI bibliography rejects the unrelated biology DOI but preserves the distinct vortex paper",t=>{
+ const f=inventoryFixture(t),filename=path.join(f.directory,"articles/a10/meta.json");
+ const meta=JSON.parse(readFileSync(filename,"utf8"));
+ assert.ok(meta.references.some(r=>r.doi==="10.1126/science.1066974"));
+ let result=f.build();assert.equal(result.status,0,result.stderr);
+ meta.references.find(r=>r.doi==="10.1038/nature01496").doi="10.1038/nature02269";
+ writeFileSync(filename,JSON.stringify(meta));result=f.build();
+ assert.notEqual(result.status,0);assert.match(result.stderr,/known incorrect DOI 10\.1038\/nature02269/);
+});

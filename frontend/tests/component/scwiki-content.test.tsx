@@ -396,3 +396,19 @@ it("exports historical sources without invented DOIs and separates A9 theory fro
  expect(a.references.find(r=>r.doi==="10.1103/PhysRevB.46.12841")!.verification.scope).toBe("primary-abstract-scoped-check");
  expect(a.body).toContain("zero temperature, bias and magnetic field");
 });
+
+it("preserves QPI source identities, phase assumptions and measurement temperatures in evidence exports",async()=>{
+ const a=articles().find(a=>a.code==="A10")!;
+ expect(a.references.some(r=>r.doi==="10.1038/nature02269")).toBe(false);
+ expect(a.references.find(r=>r.doi==="10.1126/science.1066974")!.title).toContain("Vortex Cores");
+ expect(a.references.find(r=>r.doi==="10.1126/science.1072640")!.title).toContain("Quasiparticle Interference");
+ expect(a.materialCases.map(m=>m.reportedTemperatureK)).toEqual([4.2,.28]);
+ expect(a.materialCases.every(m=>m.tcK===null&&m.temperatureKind!=="transition")).toBe(true);
+ expect(searchArticles(searchIndex().entries,"QPI",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const md=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(md).toContain("general complex Fourier map");expect(md).toContain("defect, phase origin, band and model assumptions");
+ expect(md).toContain("even-in-momentum response condition");
+ expect(a.claims.filter(c=>c.evidenceType==="experiment")).toHaveLength(2);
+ const json=await(await get(["articles",a.id])).json();expect(json.article.corrections).toHaveLength(2);
+ expect(json.article.references.find((r:{doi:string})=>r.doi==="10.1038/nature01496").verification.scope).toBe("publisher-metadata-scoped-check");
+});

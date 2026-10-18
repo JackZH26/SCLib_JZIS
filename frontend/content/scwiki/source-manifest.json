@@ -71,8 +71,8 @@
       "lineCount": 46,
       "topicId": "scwiki-topic-a10",
       "articleId": "scwiki-a10",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3438,6 +3438,35 @@
       "evidenceUrl": "https://www.nature.com/articles/nature00898",
       "checkedAt": "2026-10-18",
       "scope": "Publisher title/authors/pages and laboratory-hosted primary text identify Choi et al. MgB2 calculation. The incorrect DOI identifies an unrelated MscL biology paper. Fixed published B12; other pinned chapters remain unchanged and must apply this correction before publication."
+    },
+    {
+      "id": "correction-nature02269-qpi-doi",
+      "affectedTopics": [
+        "A10"
+      ],
+      "affectedSourcePaths": [
+        "A_phenomenology/A10_quasiparticle_interference.md"
+      ],
+      "incorrectDoi": "10.1038/nature02269",
+      "correctDoi": "10.1038/nature01496",
+      "evidenceUrl": "https://www.nature.com/articles/nature01496",
+      "checkedAt": "2026-10-18",
+      "scope": "McElroy QPI identity; incorrect DOI is Bastow et al. vernalization biology. Preserve source file and prevent reintroduction into public references."
+    },
+    {
+      "id": "correction-hoffman-qpi-versus-vortex",
+      "affectedTopics": [
+        "A10"
+      ],
+      "affectedSourcePaths": [
+        "A_phenomenology/A10_quasiparticle_interference.md",
+        "papers/A1_A10_PHENOMENOLOGY_SOURCE_AUDIT.md"
+      ],
+      "originalContextDoi": "10.1126/science.1066974",
+      "replacementContextDoi": "10.1126/science.1072640",
+      "evidenceUrl": "https://arxiv.org/abs/cond-mat/0209276",
+      "checkedAt": "2026-10-18",
+      "scope": "Dispersing QPI belongs to science.1072640. science.1066974 is valid vortex-core research and must not be globally blocked as an invalid source."
     }
   ]
 }
