@@ -1,0 +1,435 @@
+{
+  "id": "scwiki-g2",
+  "topicId": "scwiki-topic-g2",
+  "code": "G2",
+  "slug": "ferromagnetism-and-superconductivity",
+  "title": "Ferromagnetism and superconductivity: coexistence and pairing evidence",
+  "summary": "Compare intrinsic magnetic coexistence, sample-specific bulk superconductivity and equal-spin models without treating any one signature as a complete pairing determination.",
+  "aliases": [
+    "ferromagnetism and superconductivity",
+    "FM SC coexistence",
+    "equal spin pairing",
+    "nonunitary superconductivity",
+    "self induced vortex"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experimental"
+  ],
+  "relatedCodes": [
+    "B4",
+    "C9",
+    "D8",
+    "G1"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T15:23:30.900871+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected original UGe2 methods, UCoGe thermodynamic and local-probe evidence, URhGe abstracts and independent spin-model checks.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Original UGe2 figures and full URhGe phase-boundary analysis have not been visually audited.",
+      "Full final-version comparisons, raw-data fits, absolute volume calibration and material-specific spin-orbit models remain open.",
+      "The synthetic fixed-gap examples do not solve a self-consistent uranium-compound pairing mechanism."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "G_magnetism_interplay/G2_SC_FM_coexistence.md",
+    "sha256": "cf071093ebd3f746a20fb34448d2c5bd4b9e9bb21264a0e6774edf67f15dbc64",
+    "sourceId": "file-57c3d5760ecb9214"
+  },
+  "references": [
+    {
+      "id": "source-82c04c9061dbca4c",
+      "doi": "10.1103/PhysRevB.22.3173",
+      "title": "Coexistence of p-state superconductivity and itinerant ferromagnetism",
+      "year": 1980,
+      "url": "https://doi.org/10.1103/PhysRevB.22.3173",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "original-abstract-and-independent-model",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.22.3173",
+        "note": "Published 1 October 1980. Original abstract rechecked: longitudinal-fluctuation equal-spin model and nonmonotonic calculated transition. Complete calculation not reproduced; the Wiki matrices are independent illustrations."
+      }
+    },
+    {
+      "id": "source-d32df19524b2a1c8",
+      "doi": "10.1103/PhysRevLett.9.266",
+      "title": "Upper Limit for the Critical Field in Hard Superconductors",
+      "year": 1962,
+      "url": "https://doi.org/10.1103/PhysRevLett.9.266",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-identity-and-independent-energy-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.9.266",
+        "note": "Published 15 September 1962. Publisher identity verified; original full text unavailable. The stated zero-temperature constant-density-of-states energy comparison is independently evaluated, not a reproduction of the complete original paper."
+      }
+    },
+    {
+      "id": "source-db2917242488a101",
+      "doi": "10.1038/35020500",
+      "title": "Superconductivity on the border of itinerant-electron ferromagnetism in UGe2",
+      "year": 2000,
+      "url": "https://doi.org/10.1038/35020500",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-original-methods-and-captions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://go.gale.com/ps/i.do?asid=cd58d5dd&id=GALE%7CA188080966&it=r&p=AONE&u=googlescholar&v=2.1",
+        "note": "Published 10 August 2000. Original article text reproduced by Gale: selected results, Methods and Figures 1–4 captions read. Resistive 50-percent criterion and susceptibility specimen pressures distinguished. Images are absent from that text; full neutron analysis was deferred in the original paper."
+      }
+    },
+    {
+      "id": "source-15aec45a868e9fb9",
+      "doi": "10.1038/35098048",
+      "title": "Coexistence of superconductivity and ferromagnetism in URhGe",
+      "year": 2001,
+      "url": "https://doi.org/10.1038/35098048",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "indexed-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/11595943/",
+        "note": "Published 11 October 2001. Original abstract indexed by PubMed checked: ambient-pressure thermodynamic signature with explicitly qualified triplet interpretation. Original curves and full methods remain unchecked."
+      }
+    },
+    {
+      "id": "source-e917adb251d93c59",
+      "doi": "10.1126/science.1115498",
+      "title": "Magnetic Field-Induced Superconductivity in the Ferromagnet URhGe",
+      "year": 2005,
+      "url": "https://doi.org/10.1126/science.1115498",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/16123293/",
+        "note": "Levy et al. original abstract as indexed by PubMed: field along b, spin reorientation12T, second superconducting pocket. Full text and phase boundaries not audited; associated commentary1117436 is not the original research."
+      }
+    },
+    {
+      "id": "source-a4695ba5bfa789f3",
+      "doi": "10.1103/PhysRevLett.99.067006",
+      "title": "Superconductivity on the Border of Weak Itinerant Ferromagnetism in UCoGe",
+      "year": 2007,
+      "url": "https://doi.org/10.1103/PhysRevLett.99.067006",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-methods-and-author-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pure.uva.nl/ws/files/4183158/59196_Huy_Superconductivity_on_the_Border.pdf",
+        "note": "Published 10 August 2007. Selected published pages 067006-1 to -3 read via institutional PDF web text; author v1 page 3 Figures 3–4 visually checked. Sample 3 resistive onset, calorimetric onset and idealized equal-entropy temperatures distinguished. Full version comparison and raw-data fits remain open."
+      }
+    },
+    {
+      "id": "source-ed4fe7b26147de87",
+      "doi": "10.1143/JPSJ.77.023707",
+      "title": "Ferromagnetic Quantum Critical Fluctuations and Anomalous Coexistence of Ferromagnetism and Superconductivity in UCoGe Revealed by Co-NMR and NQR Studies",
+      "year": 2008,
+      "url": "https://doi.org/10.1143/JPSJ.77.023707",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-local-probe-and-final-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0712.1403v2",
+        "note": "Author v2 dated 31 December 2007, selected pages 1–4 read and page 4 Figure 7 visually checked. J-STAGE confirms publication 15 February 2008, distinct from its 2011 online release. Relaxation fractions and susceptibility criteria retained; self-induced vortices remain an interpretation. Full final comparison and raw fits open."
+      }
+    },
+    {
+      "id": "source-ca6322be2694e430",
+      "doi": "10.1126/science.aav8645",
+      "title": "Nearly ferromagnetic spin-triplet superconductivity",
+      "year": 2019,
+      "url": "https://doi.org/10.1126/science.aav8645",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-passages-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://vector.umd.edu/images/publications/Science365_6842019.pdf",
+        "note": "Ran et al. published paper pp.1–2; p.2 visually checked: maximum measured20T versus extrapolated b-axis40T. Historical spin/pairing interpretations are not adopted as settled consensus. Supplement and raw data not fully audited."
+      }
+    },
+    {
+      "id": "source-df199ac9453d6985",
+      "doi": "10.1038/s41586-021-04151-5",
+      "title": "Resonance from antiferromagnetic spin fluctuations for superconductivity in UTe2",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41586-021-04151-5",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-passages-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41586-021-04151-5",
+        "note": "Duan et al. publisher indexed abstract and Extended Data Fig.7 text checked: AFM resonance and no FM signal above background within specified window. Complete spectra and raw data not reproduced; not an exclusion of all FM fluctuations."
+      }
+    },
+    {
+      "id": "source-f2133d67ac862ff4",
+      "doi": "10.1103/PhysRevB.100.054501",
+      "title": "Symmetry of superconducting pairing in non-pseudospin electron bands",
+      "year": 2019,
+      "url": "https://doi.org/10.1103/PhysRevB.100.054501",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1907.08080v1",
+        "note": "Author v1, 18 July 2019; pp.1–2 and selected pp.4–6 equations 7–20 read. Static intraband parity and non-pseudospin rotation distinction; complete exceptional nodal tables not audited."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-g2-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Intrinsic ferromagnetism and superconductivity coexist in the uranium compounds UGe2, URhGe and UCoGe under specific conditions. Establishing two orders in one material, establishing their spatial overlap, and determining the pairing wavefunction are separate tasks. This page concerns bulk materials; superconducting correlations induced across an engineered ferromagnet interface are a different problem. Pressure, composition, field direction and the experimental transition criterion belong with each result.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-db2917242488a101",
+        "source-15aec45a868e9fb9",
+        "source-a4695ba5bfa789f3",
+        "source-ed4fe7b26147de87"
+      ],
+      "conditions": "Sample-specific pressure, orientation, probe and transition criterion; synthetic spin-only fixed-gap model with explicitly odd triplet momentum dependence.",
+      "verificationScope": "Selected primary passages and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g2-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Ferromagnetic fluctuations can provide an equal-spin pairing interaction in a model. Fay and Appel's longitudinal-fluctuation calculation predicts a nonmonotonic superconducting transition as the ferromagnetic boundary is approached. It does not imply that increasing magnetization always improves superconductivity. Static ordered moment, dynamic magnetic susceptibility and the electronic exchange splitting are different quantities. Their abstract supplies model motivation, not a measured pairing interaction for every uranium compound.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-82c04c9061dbca4c"
+      ],
+      "conditions": "Sample-specific pressure, orientation, probe and transition criterion; synthetic spin-only fixed-gap model with explicitly odd triplet momentum dependence.",
+      "verificationScope": "Selected primary passages and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g2-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Consider an inversion-symmetric spin model with normal Hamiltonian $H_0=\\xi_{\\mathbf k}I-h\\sigma_z$. Here $h$ is an energy, not a magnetic field in tesla. With an imposed singlet gap $\\Delta_0$, the four Bogoliubov energies are $\\pm\\sqrt{\\xi_{\\mathbf k}^2+|\\Delta_0|^2}\\pm h$. The gap held fixed closes spectrally at $|h|=|\\Delta_0|$ when $\\xi_{\\mathbf k}=0$. This spectral condition does not locate the thermodynamic transition of a self-consistent superconductor.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d32df19524b2a1c8"
+      ],
+      "conditions": "Sample-specific pressure, orientation, probe and transition criterion; synthetic spin-only fixed-gap model with explicitly odd triplet momentum dependence.",
+      "verificationScope": "Selected primary passages and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g2-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "At zero temperature, a separate weak-coupling comparison with constant single-spin density of states $N(0)$ gives $F_s-F_n=N(0)(-\\Delta_0^2/2+h^2)$. Its energy crossing occurs at $|h|=\\Delta_0/\\sqrt2$, before that fixed-gap spectral closure. This reference assumes a homogeneous singlet state and a spin-only field. Orbital effects, finite-momentum pairing, strong coupling and spin-orbit coupling are outside it. The original Clogston paper's identity is verified; this explicit energy example is independently checked.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d32df19524b2a1c8"
+      ],
+      "conditions": "Sample-specific pressure, orientation, probe and transition criterion; synthetic spin-only fixed-gap model with explicitly odd triplet momentum dependence.",
+      "verificationScope": "Selected primary passages and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g2-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For diagonal equal-spin gaps, the positive branches instead read $E_\\uparrow=\\sqrt{(\\xi-h)^2+|\\Delta_\\uparrow|^2}$ and $E_\\downarrow=\\sqrt{(\\xi+h)^2+|\\Delta_\\downarrow|^2}$. The imposed gaps pair states within their respective spin bands. Their spectra do not establish immunity to magnetic fields: the band populations, interaction, orbital motion and gap amplitudes can change. All 150 singlet and equal-spin matrix examples satisfy Hermiticity, the analytic spectra and particle-hole symmetry between opposite momenta. The triplet momentum factor is odd.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-82c04c9061dbca4c",
+        "source-f2133d67ac862ff4"
+      ],
+      "conditions": "Sample-specific pressure, orientation, probe and transition criterion; synthetic spin-only fixed-gap model with explicitly odd triplet momentum dependence.",
+      "verificationScope": "Selected primary passages and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g2-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Write $\\Delta=(\\mathbf d\\cdot\\boldsymbol\\sigma)i\\sigma_y$. Then $\\Delta\\Delta^\\dagger=|\\mathbf d|^2I+\\mathbf q\\cdot\\boldsymbol\\sigma$, with $\\mathbf q=i\\mathbf d\\times\\mathbf d^*$. A unitary gap has $\\mathbf q=0$. Equal-spin pairing can be unitary: $\\mathbf d=(0,-i,0)$ gives $\\Delta=I$ at the selected momentum. By contrast, $\\mathbf d=(-1/2,-i/2,0)$ gives $\\Delta=\\mathrm{diag}(1,0)$, a nonunitary example with one ungapped spin band. One hundred complex-vector checks verify the identity and nonnegative squared gaps. This spin-basis illustration is not a determination of total sample magnetization or a realistic spin-orbit-coupled band structure.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f2133d67ac862ff4"
+      ],
+      "conditions": "Sample-specific pressure, orientation, probe and transition criterion; synthetic spin-only fixed-gap model with explicitly odd triplet momentum dependence.",
+      "verificationScope": "Selected primary passages and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g2-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Saxena and colleagues' UGe2 discovery uses resistivity and ac susceptibility under pressure. The published phase-diagram caption defines the superconducting temperature by a 50-percent resistivity drop; it scales that axis by ten for display. Its susceptibility caption uses approximately 1.3 GPa for the main magnetic curve and 1.5 GPa for the superconducting inset. These are distinct conditions. The paper reports magnetic survival below the superconducting transition, but defers the detailed neutron analysis. Selected methods and captions are checked here; the original plots are not visually audited.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-db2917242488a101"
+      ],
+      "conditions": "Sample-specific pressure, orientation, probe and transition criterion; synthetic spin-only fixed-gap model with explicitly odd triplet momentum dependence.",
+      "verificationScope": "Selected primary passages and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g2-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Aoki and colleagues' URhGe discovery adds a thermodynamic superconducting signature at ambient pressure. Its abstract explicitly leaves the pairing symmetry and dominant mechanism unidentified. Levy and colleagues subsequently report a second superconducting field pocket around a spin reorientation near 12 T for a field along the crystal b axis, above the field that suppresses the first pocket. This ties superconductivity to magnetic evolution without uniquely identifying a gap symmetry. The complete discovery curves and reentrant phase boundaries remain outside this selected review.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-15aec45a868e9fb9",
+        "source-e917adb251d93c59"
+      ],
+      "conditions": "Sample-specific pressure, orientation, probe and transition criterion; synthetic spin-only fixed-gap model with explicitly odd triplet momentum dependence.",
+      "verificationScope": "Selected primary passages and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g2-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "For Huy and colleagues' UCoGe sample 3, the resistive onset is 0.82 K, while heat capacity and thermal expansion begin their broad anomalies near 0.66 K. An idealized equal-entropy construction places a sharp transition near 0.45 K. Those values represent different criteria, not three competing measurements of one exact universal constant. The approximately 3 K Curie temperature is magnetic and must not populate a superconducting-temperature filter. The thermodynamic anomalies support bulk superconductivity; the suggested triplet mechanism remains an inference.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-a4695ba5bfa789f3"
+      ],
+      "conditions": "Sample-specific pressure, orientation, probe and transition criterion; synthetic spin-only fixed-gap model with explicitly odd triplet momentum dependence.",
+      "verificationScope": "Selected primary passages and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g2-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Ohta and colleagues' separate polycrystalline UCoGe sample has a susceptibility onset near 0.7 K and midpoint near 0.55 K. At 95 mK, similar nuclear recovery at peaks with and without internal magnetic fields supports superconducting response in both regions. The slow relaxation component accounts for about 30 percent of the measured recovery, not a demonstrated uniform superconducting response at every site. Pulse-condition sensitivity and model assumptions matter. A self-induced vortex state is proposed to explain the components; this is not a direct vortex image.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-ed4fe7b26147de87"
+      ],
+      "conditions": "Sample-specific pressure, orientation, probe and transition criterion; synthetic spin-only fixed-gap model with explicitly odd triplet momentum dependence.",
+      "verificationScope": "Selected primary passages and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g2-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "UTe2 should not be inserted into the established ambient-pressure ferromagnetic-coexistence list simply because its discovery paper invokes nearly ferromagnetic fluctuations. That paper provides superconductivity and unconventional-pairing clues, without establishing static long-range ferromagnetism. Later neutron work reports antiferromagnetic fluctuations and a resonance; its absence of detected ferromagnetic scattering is restricted to the measured window. Neither result by itself fixes the full pairing interaction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ca6322be2694e430",
+        "source-df199ac9453d6985"
+      ],
+      "conditions": "Sample-specific pressure, orientation, probe and transition criterion; synthetic spin-only fixed-gap model with explicitly odd triplet momentum dependence.",
+      "verificationScope": "Selected primary passages and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g2-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. Selected source passages, local-probe figures and independent matrix checks support the discussion. Detailed magnetic and superconducting volume calibration, raw-data analysis, complete version comparisons and material-specific spin-orbit models remain unresolved. A large critical field, a small net moment or coexistence alone cannot replace a consistent set of spin, thermodynamic and phase-sensitive constraints.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-15aec45a868e9fb9",
+        "source-a4695ba5bfa789f3",
+        "source-ed4fe7b26147de87",
+        "source-f2133d67ac862ff4"
+      ],
+      "conditions": "Sample-specific pressure, orientation, probe and transition criterion; synthetic spin-only fixed-gap model with explicitly odd triplet momentum dependence.",
+      "verificationScope": "Selected primary passages and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g2-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Keep magnetic ordering temperature separate from superconducting onset, midpoint and bulk-anomaly criteria. Preserve specimen identity, field orientation and pressure for every observation. Test whether a pairing model accounts jointly for the measured magnetic response and superconducting evidence; do not turn one suggestive signature into a unique pairing assignment.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-82c04c9061dbca4c",
+        "source-db2917242488a101",
+        "source-a4695ba5bfa789f3",
+        "source-ed4fe7b26147de87"
+      ],
+      "conditions": "Sample-specific pressure, orientation, probe and transition criterion; synthetic spin-only fixed-gap model with explicitly odd triplet momentum dependence.",
+      "verificationScope": "Selected primary passages and independent bounded examples; complete scientific acceptance remains open."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "H_0=\\xi_{\\mathbf k}I-h\\sigma_z",
+      "check": "150 fixed-gap BdG matrices checked for analytic spectra, Hermiticity and particle-hole symmetry; spin energy h is not a field in tesla."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\mathbf q=i\\mathbf d\\times\\mathbf d^*",
+      "check": "100 complex vectors verify squared-gap identity and positivity. Explicit unitary equal-spin and nonunitary one-spin examples distinguish gap polarization from sample magnetization."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-g2-material-1",
+      "formula": "UCoGe",
+      "sample": "Huy sample 3, RRR 25",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.82,
+      "tcK": 0.82,
+      "temperatureKind": "transition",
+      "temperatureNote": "Resistive onset; distinct from calorimetric onset and idealized equal-entropy temperature.",
+      "criterion": "resistive-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Four-terminal low-frequency ac resistivity",
+      "sourceId": "source-a4695ba5bfa789f3",
+      "aliases": [
+        "ferromagnetism",
+        "coexistence"
+      ]
+    },
+    {
+      "id": "scwiki-g2-material-2",
+      "formula": "UCoGe",
+      "sample": "Huy sample 3 bulk anomaly",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.66,
+      "tcK": 0.66,
+      "temperatureKind": "transition",
+      "temperatureNote": "Broad calorimetric onset, also visible in thermal expansion; idealized equal-entropy transition approximately0.45K.",
+      "criterion": "heat-capacity-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Specific heat and thermal expansion",
+      "sourceId": "source-a4695ba5bfa789f3",
+      "aliases": [
+        "ferromagnetism",
+        "coexistence"
+      ]
+    },
+    {
+      "id": "scwiki-g2-material-3",
+      "formula": "UCoGe",
+      "sample": "Ohta polycrystalline NMR-coil sample",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.7,
+      "tcK": 0.7,
+      "temperatureKind": "transition",
+      "temperatureNote": "Onset; midpoint0.55K. Curie2.5K is a distinct magnetic transition.",
+      "criterion": "ac-susceptibility-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "NMR-coil ac susceptibility",
+      "sourceId": "source-ed4fe7b26147de87",
+      "aliases": [
+        "ferromagnetism",
+        "coexistence"
+      ]
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 108,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved. Added exact temperature criteria, original local-probe limits and independently checked spin matrices; does not infer a unique triplet state from coexistence."
+    }
+  ]
+}

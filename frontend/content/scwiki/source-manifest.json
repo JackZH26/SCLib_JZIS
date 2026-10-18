@@ -923,8 +923,8 @@
       "lineCount": 108,
       "topicId": "scwiki-topic-g2",
       "articleId": "scwiki-g2",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {

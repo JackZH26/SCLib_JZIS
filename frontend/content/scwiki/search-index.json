@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "03553663ffab99770996",
+  "revision": "38e0195c09d320263ec8",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -5692,6 +5692,102 @@
         "10.1103/PhysRevLett.101.257003"
       ],
       "text": " Scope\n\nAntiferromagnetism and superconductivity can be adjacent in a phase diagram, compete within a sample, or coexist microscopically. These statements require different evidence. A nearby superconducting dome does not locate both orders in the same volume. A magnetic anomaly below a superconducting transition shows an interaction only after alternative structural, volume-fraction and instrumental explanations are considered. Static magnetic order is also distinct from the dynamic spin fluctuations proposed to mediate pairing.   \n\nMicroscopic coexistence means that superconducting and magnetic order occupy overlapping regions on the length and time scales resolved by the probes. Combine local magnetic information with evidence for bulk superconductivity, report detection limits, and identify whether measurements used the same specimen, a crystal mosaic or different crystals from one batch. A resistance drop and a magnetic transition alone cannot exclude minority phases or pressure and composition gradients.  \n\n Mathematical assumptions\n\nA homogeneous Landau example uses x=M^2\\geq0, y=|\\Delta|^2\\geq0 and F=amx+bmx^2+asy+bsy^2+gxy, with bm,bs\\gt0. Here g\\gt0 penalizes simultaneous amplitudes; it does not automatically exclude them. An interior minimum requires D=4bmbs-g^2\\gt0 and positive solutions x=(-2bsam+gas)/D, y=(-2bmas+gam)/D. These coefficient definitions differ from papers that put factors of two or four in the free energy. \n\nFor dimensionless am=as=-2 and bm=bs=1, competitive coupling g=1 gives x=y=2/3 and F=-4/3, below either pure-order energy -1. At g=3, the interior stationary point is a saddle and the two pure minima tie. At g=2, a continuum x+y=1 is degenerate and higher-order terms can select the state. Strong negative coupling g\\lt-2\\sqrt{bmbs} makes this quartic theory unbounded in the physical quadrant. Twelve constrained examples were checked against an independent dense grid; they are not material fits. \n\nInside a coexistence branch, M^2=-am/(2bm)-g|\\Delta|^2/(2bm). Thus positive coupling suppresses the moment relative to its continuation without superconductivity. It need not make the moment decrease as temperature falls: the bare magnetic growth can dominate. Two independent linear-temperature examples verify both cooling slopes with the same positive coupling. A decrease below Tc is useful evidence, but its absence does not establish that the orders cooperate. \n\nFor fixed scattering geometry, an illustrative magnetic intensity scales as I\\propto fmM^2, where fm is magnetic volume fraction. A uniform moment reduced to 0.8 of its reference and an unchanged moment in 0.64 of the volume both give the same normalized intensity 0.64. This simple nonuniqueness is why local-field distributions and amplitudes add information to diffraction. Real refinements also need magnetic structure factors, domains and instrumental corrections.  \n\n Experimental criteria\n\nVaknin and colleagues' neutron result establishes magnetic order in undoped La2CuO4-y; it does not establish static antiferromagnetism inside an optimally doped superconducting sample. Huang and colleagues' BaFe2As2 diffraction study anchors the parent magnetic and structural transition. Neither parent result supplies a universal superconducting coexistence interval. Preserve family, stoichiometry and sample conditions instead of transferring a magnetic transition temperature into a superconducting Tc table.  \n\nPratt and colleagues' final abstract reports structural and antiferromagnetic transitions near 60 K and 47 K in Ba(Fe0.953Co0.047)2As2, with superconductivity below 17 K, reduced static magnetic order and redistributed low-energy excitations. The sole author manuscript instead gives 15 K and a 4 meV gap. Its methods describe diffraction crystals grown under conditions matching the bulk-measurement specimens. Use the final abstract's 17 K as a reported transition, retain the version difference, and do not claim that every measurement used the identical crystal. The complete final methods remain unchecked. \n\nMarsik and colleagues provide complementary local-probe evidence in BaFe1.89Co0.11As2. Their 21.7 K value is the midpoint of the zero-field-cooled susceptibility transition. Transverse-field muon measurements imply a magnetic volume exceeding 90 percent, with essentially unchanged signal fractions but reduced relaxation below Tc. A field-pinning experiment supports bulk superconductivity; infrared spectra from crystals in the same growth batch support condensate formation. The authors infer coexistence on nanometer scales, not atomic uniformity at every site. Their composition corresponds to x=0.055 in Ba(Fe1-xCox)2As2, not x=0.11. \n\nMito and colleagues report CeRhIn5 at 1.75 GPa: NQR splitting appears below TN=2.5 K, while in-situ coil susceptibility has a superconducting onset near 2.0 K. The comparable diamagnetic response at higher pressures supports bulk superconductivity. Their crushed grains and estimated pressure spread of approximately 0.05 GPa are part of the evidence conditions. The retrieved author PDF includes captions but omits the actual spectra and susceptibility figures, so this review verifies the reported interpretation and methods without claiming visual confirmation of those plots. \n\nPark and colleagues use pressure- and field-dependent specific heat in CeRhIn5 to infer a magnetic transition line inside the superconducting state. Their low-temperature phase diagram is an extrapolation from finite temperatures. The supplementary method measures relative ac heat capacity and calibrates pressure with a tin transition; these details matter when interpreting anomalies. Calorimetry supports thermodynamic boundaries but does not alone determine a magnetic ordering wavevector or the spatial arrangement of coexisting orders. \n\n Limits and disputes\n\nThe Landau model organizes homogeneous amplitudes near transitions. It omits magnetic texture, superconducting phase coherence, disorder and gradients; a strong-coupling first-order boundary does not calculate the resulting domain structure. Fernandes and Schmalian's pairing inference additionally assumes itinerant electrons contributing to both orders and a system near particle-hole symmetry. Coexistence by itself is not a universal proof of sign-changing pairing or of a unique magnetic pairing interaction. \n\nComplete scientific acceptance remains open. Selected original abstracts, author methods and available figures have been checked, alongside bounded numerical examples. Missing Mito figures, complete final-version comparisons, absolute volume calibration and experimental raw-data audits remain unresolved. Cross-probe agreement is evidence whose spatial, temporal and sample limits should remain visible, not a reason to remove those limits.    \n\n Discovery implications\n\nRecord magnetic wavevector or local-field evidence, superconducting criterion, probe timescale, volume fractions, batch identity, pressure distribution and composition convention together. Compare the magnetic response above and below Tc against its normal-state continuation. Separate a proposed fluctuation mechanism from evidence for static coexistence, and prefer quantitative competing explanations over a single label such as magnetic superconductor.   \n\n Related topics\n\n, , , and ."
+    },
+    {
+      "id": "scwiki-g2",
+      "topicId": "scwiki-topic-g2",
+      "code": "G2",
+      "slug": "ferromagnetism-and-superconductivity",
+      "title": "Ferromagnetism and superconductivity: coexistence and pairing evidence",
+      "summary": "Compare intrinsic magnetic coexistence, sample-specific bulk superconductivity and equal-spin models without treating any one signature as a complete pairing determination.",
+      "aliases": [
+        "ferromagnetism and superconductivity",
+        "FM SC coexistence",
+        "equal spin pairing",
+        "nonunitary superconductivity",
+        "self induced vortex"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experimental"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "f52680249b6c05050715",
+      "materialCases": [
+        {
+          "id": "scwiki-g2-material-1",
+          "formula": "UCoGe",
+          "sample": "Huy sample 3, RRR 25",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.82,
+          "tcK": 0.82,
+          "temperatureKind": "transition",
+          "temperatureNote": "Resistive onset; distinct from calorimetric onset and idealized equal-entropy temperature.",
+          "criterion": "resistive-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Four-terminal low-frequency ac resistivity",
+          "sourceId": "source-a4695ba5bfa789f3",
+          "aliases": [
+            "ferromagnetism",
+            "coexistence"
+          ]
+        },
+        {
+          "id": "scwiki-g2-material-2",
+          "formula": "UCoGe",
+          "sample": "Huy sample 3 bulk anomaly",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.66,
+          "tcK": 0.66,
+          "temperatureKind": "transition",
+          "temperatureNote": "Broad calorimetric onset, also visible in thermal expansion; idealized equal-entropy transition approximately0.45K.",
+          "criterion": "heat-capacity-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Specific heat and thermal expansion",
+          "sourceId": "source-a4695ba5bfa789f3",
+          "aliases": [
+            "ferromagnetism",
+            "coexistence"
+          ]
+        },
+        {
+          "id": "scwiki-g2-material-3",
+          "formula": "UCoGe",
+          "sample": "Ohta polycrystalline NMR-coil sample",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.7,
+          "tcK": 0.7,
+          "temperatureKind": "transition",
+          "temperatureNote": "Onset; midpoint0.55K. Curie2.5K is a distinct magnetic transition.",
+          "criterion": "ac-susceptibility-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "NMR-coil ac susceptibility",
+          "sourceId": "source-ed4fe7b26147de87",
+          "aliases": [
+            "ferromagnetism",
+            "coexistence"
+          ]
+        }
+      ],
+      "dois": [
+        "10.1103/PhysRevB.22.3173",
+        "10.1103/PhysRevLett.9.266",
+        "10.1038/35020500",
+        "10.1038/35098048",
+        "10.1126/science.1115498",
+        "10.1103/PhysRevLett.99.067006",
+        "10.1143/JPSJ.77.023707",
+        "10.1126/science.aav8645",
+        "10.1038/s41586-021-04151-5",
+        "10.1103/PhysRevB.100.054501"
+      ],
+      "text": " Scope\n\nIntrinsic ferromagnetism and superconductivity coexist in the uranium compounds UGe2, URhGe and UCoGe under specific conditions. Establishing two orders in one material, establishing their spatial overlap, and determining the pairing wavefunction are separate tasks. This page concerns bulk materials; superconducting correlations induced across an engineered ferromagnet interface are a different problem. Pressure, composition, field direction and the experimental transition criterion belong with each result.    \n\nFerromagnetic fluctuations can provide an equal-spin pairing interaction in a model. Fay and Appel's longitudinal-fluctuation calculation predicts a nonmonotonic superconducting transition as the ferromagnetic boundary is approached. It does not imply that increasing magnetization always improves superconductivity. Static ordered moment, dynamic magnetic susceptibility and the electronic exchange splitting are different quantities. Their abstract supplies model motivation, not a measured pairing interaction for every uranium compound. \n\n Mathematical assumptions\n\nConsider an inversion-symmetric spin model with normal Hamiltonian H0=\\xi{\\mathbf k}I-h\\sigmaz. Here h is an energy, not a magnetic field in tesla. With an imposed singlet gap \\Delta0, the four Bogoliubov energies are \\pm\\sqrt{\\xi{\\mathbf k}^2+|\\Delta0|^2}\\pm h. The gap held fixed closes spectrally at |h|=|\\Delta0| when \\xi{\\mathbf k}=0. This spectral condition does not locate the thermodynamic transition of a self-consistent superconductor. \n\nAt zero temperature, a separate weak-coupling comparison with constant single-spin density of states N(0) gives Fs-Fn=N(0)(-\\Delta0^2/2+h^2). Its energy crossing occurs at |h|=\\Delta0/\\sqrt2, before that fixed-gap spectral closure. This reference assumes a homogeneous singlet state and a spin-only field. Orbital effects, finite-momentum pairing, strong coupling and spin-orbit coupling are outside it. The original Clogston paper's identity is verified; this explicit energy example is independently checked. \n\nFor diagonal equal-spin gaps, the positive branches instead read E\\uparrow=\\sqrt{(\\xi-h)^2+|\\Delta\\uparrow|^2} and E\\downarrow=\\sqrt{(\\xi+h)^2+|\\Delta\\downarrow|^2}. The imposed gaps pair states within their respective spin bands. Their spectra do not establish immunity to magnetic fields: the band populations, interaction, orbital motion and gap amplitudes can change. All 150 singlet and equal-spin matrix examples satisfy Hermiticity, the analytic spectra and particle-hole symmetry between opposite momenta. The triplet momentum factor is odd.  \n\nWrite \\Delta=(\\mathbf d\\cdot\\boldsymbol\\sigma)i\\sigmay. Then \\Delta\\Delta^\\dagger=|\\mathbf d|^2I+\\mathbf q\\cdot\\boldsymbol\\sigma, with \\mathbf q=i\\mathbf d\\times\\mathbf d^. A unitary gap has \\mathbf q=0. Equal-spin pairing can be unitary: \\mathbf d=(0,-i,0) gives \\Delta=I at the selected momentum. By contrast, \\mathbf d=(-1/2,-i/2,0) gives \\Delta=\\mathrm{diag}(1,0), a nonunitary example with one ungapped spin band. One hundred complex-vector checks verify the identity and nonnegative squared gaps. This spin-basis illustration is not a determination of total sample magnetization or a realistic spin-orbit-coupled band structure. \n\n Experimental criteria\n\nSaxena and colleagues' UGe2 discovery uses resistivity and ac susceptibility under pressure. The published phase-diagram caption defines the superconducting temperature by a 50-percent resistivity drop; it scales that axis by ten for display. Its susceptibility caption uses approximately 1.3 GPa for the main magnetic curve and 1.5 GPa for the superconducting inset. These are distinct conditions. The paper reports magnetic survival below the superconducting transition, but defers the detailed neutron analysis. Selected methods and captions are checked here; the original plots are not visually audited. \n\nAoki and colleagues' URhGe discovery adds a thermodynamic superconducting signature at ambient pressure. Its abstract explicitly leaves the pairing symmetry and dominant mechanism unidentified. Levy and colleagues subsequently report a second superconducting field pocket around a spin reorientation near 12 T for a field along the crystal b axis, above the field that suppresses the first pocket. This ties superconductivity to magnetic evolution without uniquely identifying a gap symmetry. The complete discovery curves and reentrant phase boundaries remain outside this selected review.  \n\nFor Huy and colleagues' UCoGe sample 3, the resistive onset is 0.82 K, while heat capacity and thermal expansion begin their broad anomalies near 0.66 K. An idealized equal-entropy construction places a sharp transition near 0.45 K. Those values represent different criteria, not three competing measurements of one exact universal constant. The approximately 3 K Curie temperature is magnetic and must not populate a superconducting-temperature filter. The thermodynamic anomalies support bulk superconductivity; the suggested triplet mechanism remains an inference. \n\nOhta and colleagues' separate polycrystalline UCoGe sample has a susceptibility onset near 0.7 K and midpoint near 0.55 K. At 95 mK, similar nuclear recovery at peaks with and without internal magnetic fields supports superconducting response in both regions. The slow relaxation component accounts for about 30 percent of the measured recovery, not a demonstrated uniform superconducting response at every site. Pulse-condition sensitivity and model assumptions matter. A self-induced vortex state is proposed to explain the components; this is not a direct vortex image. \n\n Limits and disputes\n\nUTe2 should not be inserted into the established ambient-pressure ferromagnetic-coexistence list simply because its discovery paper invokes nearly ferromagnetic fluctuations. That paper provides superconductivity and unconventional-pairing clues, without establishing static long-range ferromagnetism. Later neutron work reports antiferromagnetic fluctuations and a resonance; its absence of detected ferromagnetic scattering is restricted to the measured window. Neither result by itself fixes the full pairing interaction.  \n\nComplete scientific acceptance remains open. Selected source passages, local-probe figures and independent matrix checks support the discussion. Detailed magnetic and superconducting volume calibration, raw-data analysis, complete version comparisons and material-specific spin-orbit models remain unresolved. A large critical field, a small net moment or coexistence alone cannot replace a consistent set of spin, thermodynamic and phase-sensitive constraints.    \n\n Discovery implications\n\nKeep magnetic ordering temperature separate from superconducting onset, midpoint and bulk-anomaly criteria. Preserve specimen identity, field orientation and pressure for every observation. Test whether a pairing model accounts jointly for the measured magnetic response and superconducting evidence; do not turn one suggestive signature into a unique pairing assignment.    \n\n Related topics\n\n, , , and ."
     },
     {
       "id": "scwiki-g7",
