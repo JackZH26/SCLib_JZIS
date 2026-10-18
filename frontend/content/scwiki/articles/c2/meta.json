@@ -24,10 +24,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-17T12:17:52Z",
+  "modifiedAt": "2026-10-18T07:41:36.488335+00:00",
   "review": {
-    "checkedAt": "2026-10-17",
-    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "checkedAt": "2026-10-18",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below. Added Mazin publisher note 8 and Kuroki original abstract plus erratum text check on 2026-10-18; other empirical claims retain their prior review limits.",
     "limitations": [
       "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
       "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
@@ -142,6 +142,12 @@
         74
       ],
       "targetSectionId": "experimental-criteria"
+    },
+    {
+      "id": "scwiki-c2-correction-3",
+      "description": "Added the published Kuroki 2009 gap-plot erratum to the cited 2008 proposal.",
+      "sourceId": "source-6570d4401413e026",
+      "scope": "Primary erratum text, with parameter scope retained."
     }
   ],
   "equationChecks": [
@@ -160,29 +166,29 @@
     {
       "id": "source-7c2b55d128348e6c",
       "doi": "10.1103/PhysRevLett.101.057003",
-      "title": "Unconventional Superconductivity with a Sign Reversal in the Order Parameter of\n                    \n                      \n                        LaFeAsO\n                        \n                          1\n                          −\n                          x\n                        \n                      \n                      \n                        F\n                        x\n                      \n                    ",
+      "title": "Unconventional Superconductivity with a Sign Reversal in the Order Parameter of LaFeAsO1−xFx",
       "year": 2008,
       "url": "https://doi.org/10.1103/PhysRevLett.101.057003",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.101.057003",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "publisher-passages-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.057003",
+        "note": "Mazin et al. abstract and published note 8 checked. The note qualifies the initial identification of the magnetic instability; full electronic-structure calculation not reproduced."
       }
     },
     {
       "id": "source-f80a18149666bd31",
       "doi": "10.1103/PhysRevLett.101.087004",
-      "title": "Unconventional Pairing Originating from the Disconnected Fermi Surfaces of SuperconductingLaFeAsO1−xFx",
+      "title": "Unconventional Pairing Originating from the Disconnected Fermi Surfaces of Superconducting LaFeAsO1−xFx",
       "year": 2008,
       "url": "https://doi.org/10.1103/PhysRevLett.101.087004",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.101.087004",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "primary-abstract-with-erratum-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.087004",
+        "note": "Kuroki et al. five-orbital RPA abstract checked alongside 2009 erratum 10.1103/PhysRevLett.102.109902. The original gap plot must not be used without its correction; full model not reproduced."
       }
     },
     {
@@ -225,6 +231,20 @@
         "checkedAt": "2026-10-17",
         "evidenceUrl": "https://arxiv.org/abs/1201.3376",
         "note": "Material identity and abstract interpretation checked; KFe2As2, with the authors favoring d-wave."
+      }
+    },
+    {
+      "id": "source-6570d4401413e026",
+      "doi": "10.1103/PhysRevLett.102.109902",
+      "title": "Erratum: Unconventional Pairing Originating from the Disconnected Fermi Surfaces of Superconducting LaFeAsO1−xFx [Phys. Rev. Lett. 101, 087004 (2008)]",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevLett.102.109902",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-erratum-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.102.109902",
+        "note": "Complete one-page text read via web: orbital-to-band transformation correction, fully open diagonal gap for displayed parameters, parameter-dependent nodal competition retained. Direct download returned 403; figure was not visually audited or numerically reproduced."
       }
     }
   ],
@@ -367,6 +387,18 @@
       ],
       "conditions": "Gap sign is defined relative to Fermi-surface sheets in a material-specific model. Neutron/QPI/thermal probes constrain different quantities and are not interchangeable phase proofs.",
       "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-c2-claim-mathematical-assumptions-erratum",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Kuroki and colleagues published an erratum correcting an orbital-to-band transformation error in the original gap plot. The corrected diagonal band gap is fully open for the displayed parameter set; strong anisotropy and parameter-dependent nodal or d-wave competition remain. The original plot must be read with this correction, not treated as the corrected result.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f80a18149666bd31",
+        "source-6570d4401413e026"
+      ],
+      "conditions": "Kuroki erratum displayed parameter set; other nodal possibilities remain conditional.",
+      "verificationScope": "One-page erratum text read; no reproduction of corrected band calculation or figure."
     }
   ]
 }

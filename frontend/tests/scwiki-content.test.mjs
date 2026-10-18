@@ -114,3 +114,14 @@ test("wrong DOI correction remains enforced when the replacement is a historical
  const result=f.build();assert.notEqual(result.status,0);
  assert.match(result.stderr,/known incorrect DOI 10\.1007\/BF02745500/);
 });
+
+test("known Kuroki erratum accompanies the original in newly authored and existing pages",t=>{
+ for(const folder of ["b3","c2"]){
+  const f=inventoryFixture(t),filename=path.join(f.directory,"articles",folder,"meta.json");
+  const meta=JSON.parse(readFileSync(filename,"utf8"));
+  assert.ok(meta.references.some(r=>r.doi==="10.1103/PhysRevLett.101.087004"));
+  meta.references=meta.references.filter(r=>r.doi!=="10.1103/PhysRevLett.102.109902");
+  writeFileSync(filename,JSON.stringify(meta));const result=f.build();
+  assert.notEqual(result.status,0);assert.match(result.stderr,/missing required erratum 10\.1103\/PhysRevLett\.102\.109902/);
+ }
+});

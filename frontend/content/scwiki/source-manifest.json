@@ -287,8 +287,8 @@
       "lineCount": 50,
       "topicId": "scwiki-topic-b3",
       "articleId": "scwiki-b3",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3496,6 +3496,22 @@
       "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.122.027001",
       "checkedAt": "2026-10-18",
       "scope": "Publisher authors and abstract. Do not merge transport conditions with a different lanthanum hydride paper."
+    },
+    {
+      "id": "correction-kuroki-gap-plot-erratum",
+      "affectedTopics": [
+        "B3",
+        "C2"
+      ],
+      "affectedSourcePaths": [
+        "B_mechanisms/B3_spin_fluctuation_AFM.md",
+        "C_pairing_symmetry/C2_s_plus_minus.md"
+      ],
+      "articleDoi": "10.1103/PhysRevLett.101.087004",
+      "requiredCompanionDoi": "10.1103/PhysRevLett.102.109902",
+      "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.102.109902",
+      "checkedAt": "2026-10-18",
+      "scope": "Known published gap-plot erratum must accompany this original paper in any migrated article."
     }
   ]
 }

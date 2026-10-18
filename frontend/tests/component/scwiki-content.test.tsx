@@ -430,3 +430,22 @@ it("keeps Eliashberg numerical benchmarks separate from material measurements an
  expect(a.claims.filter(c=>c.statement.includes("13.30 K")).every(c=>c.evidenceType==="theory")).toBe(true);
  expect(a.corrections).toHaveLength(3);
 });
+
+it("exports spin-pairing probe limits and the published erratum without experimental model temperatures",async()=>{
+ const a=articles().find(a=>a.code==="B3")!;expect(a.materialCases).toEqual([]);
+ expect(searchArticles(searchIndex().entries,"spin fluctuation",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const experimental=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(experimental).toContain("NMR is not a momentum-resolved magnetic spectrum");
+ expect(experimental).toContain("10.1103/PhysRevB.52.R9831");
+ const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(math).toContain("sign-reversal condition is therefore insufficient");
+ expect(math).toContain("not measured transitions");
+ for(const code of ["B3","C2"]){
+  const article=articles().find(a=>a.code===code)!;
+  const md=await(await get(["articles",article.id,"markdown"])).text();
+  expect(md).toContain("10.1103/PhysRevLett.101.087004");expect(md).toContain("10.1103/PhysRevLett.102.109902");
+  expect(md).toContain("orbital-to-band transformation error");expect(md).toContain("displayed parameter set");
+  const json=await(await get(["articles",article.id])).json();
+  expect(json.article.references.some((r:{doi:string})=>r.doi==="10.1103/PhysRevLett.102.109902")).toBe(true);
+ }
+});

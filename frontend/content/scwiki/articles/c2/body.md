@@ -15,6 +15,8 @@ The labels $h$ and $e$ refer to hole and electron pockets in the model, not to a
 
 An A1g gap can also be anisotropic and can develop accidental nodes. This possibility should be distinguished from symmetry-enforced nodes in another representation. Observing nodes alone cannot choose among every candidate, and no one compound determines the gap of an entire family. [R1](#ref-source-7c2b55d128348e6c) [R2](#ref-source-f80a18149666bd31)
 
+Kuroki and colleagues published an erratum correcting an orbital-to-band transformation error in the original gap plot. The corrected diagonal band gap is fully open for the displayed parameter set; strong anisotropy and parameter-dependent nodal or d-wave competition remain. The original plot must be read with this correction, not treated as the corrected result. [R6](#ref-source-6570d4401413e026)
+
 ## Experimental criteria
 
 A neutron resonance can be consistent with a sign-changing coherence factor, but its interpretation depends on the normal-state response and gap structure. Christianson and colleagues studied K-doped Ba0.6K0.4Fe2As2; the pinned chapter's Co-doped attribution is corrected here. Their result provides a material-specific constraint rather than a universal direct phase measurement. [R3](#ref-source-716c338ddfa726d3)
