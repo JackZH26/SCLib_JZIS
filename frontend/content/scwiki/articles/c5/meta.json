@@ -1,0 +1,515 @@
+{
+  "id": "scwiki-c5",
+  "topicId": "scwiki-topic-c5",
+  "code": "C5",
+  "slug": "p-wave",
+  "title": "p-wave pairing: parity, spin and chirality",
+  "summary": "Separate odd parity, triplet spin structure and chirality, with helium-3 benchmarks and carefully bounded crystal evidence.",
+  "aliases": [
+    "p-wave",
+    "p wave",
+    "triplet pairing",
+    "helical",
+    "chiral p-wave",
+    "helium-3",
+    "3He",
+    "Sr2RuO4",
+    "muon Knight shift",
+    "d-vector"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "B4",
+    "B11",
+    "C3",
+    "C1",
+    "B12"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T09:38:17.343940+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected historical helium NMR, Leggett correction, Sr2RuO4 NMR/muon and uranium source checks; independent spin-matrix, imposed-gap and symmetry illustrations.",
+    "limitations": [
+      "Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
+      "The latest muon study is checked through its2025 author manuscript and2026 publication record; supplement not fully audited.",
+      "Independent single-band examples omit self-consistency, spin-orbit coupling and material fitting.",
+      "No definite crystal p-wave representation or topological invariant is established by these examples."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "C_pairing_symmetry/C5_p_wave.md",
+    "sha256": "774db0d5f756154f4f762b62030c680701f6e0bdd960226121ded111368760b1",
+    "sourceId": "file-8c1e3b23b727da60"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 15,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; spin/parity/chirality separated and historical/current-source limits added."
+    },
+    {
+      "startLine": 16,
+      "endLine": 29,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; spin/parity/chirality separated and historical/current-source limits added."
+    },
+    {
+      "startLine": 30,
+      "endLine": 37,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; spin/parity/chirality separated and historical/current-source limits added."
+    },
+    {
+      "startLine": 38,
+      "endLine": 45,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; spin/parity/chirality separated and historical/current-source limits added."
+    },
+    {
+      "startLine": 46,
+      "endLine": 53,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; spin/parity/chirality separated and historical/current-source limits added."
+    },
+    {
+      "startLine": 54,
+      "endLine": 65,
+      "targetSections": [
+        "experimental-criteria",
+        "discovery-implications"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; spin/parity/chirality separated and historical/current-source limits added."
+    },
+    {
+      "startLine": 66,
+      "endLine": 80,
+      "targetSections": [
+        "related-topics",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; spin/parity/chirality separated and historical/current-source limits added."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-8d1b859d5ffcad9f",
+      "doi": "10.1103/RevModPhys.63.239",
+      "title": "Phenomenological theory of unconventional superconductivity",
+      "year": 1991,
+      "url": "https://doi.org/10.1103/RevModPhys.63.239",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.63.239",
+        "note": "Identity and abstract scope checked. Full review not obtained; explicit angular illustrations are independently evaluated, not attributed as a reproduction of this review."
+      }
+    },
+    {
+      "id": "source-017750e49092dcb4",
+      "doi": "10.1103/PhysRevLett.28.885",
+      "title": "Evidence for a New Phase of Solid He3",
+      "year": 1972,
+      "url": "https://doi.org/10.1103/PhysRevLett.28.885",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.28.885",
+        "note": "Initial solid-phase interpretation; no claim of full p-wave identification from this paper."
+      }
+    },
+    {
+      "id": "source-b4c5ef61b3180334",
+      "doi": "10.1103/PhysRevLett.29.920",
+      "title": "New Magnetic Phenomena in Liquid He3 below 3 mK",
+      "year": 1972,
+      "url": "https://doi.org/10.1103/PhysRevLett.29.920",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.29.920",
+        "note": "Selected pp.920–923 text: gradient separation, liquid assignment and approximate extrapolated temperature. PDF opens with preceding article tail, excluded. Figures not independently audited."
+      }
+    },
+    {
+      "id": "source-b4553aaaeacb3c3d",
+      "doi": "10.1103/RevModPhys.47.331",
+      "title": "A theoretical description of the new phases of liquid 3He",
+      "year": 1975,
+      "url": "https://doi.org/10.1103/RevModPhys.47.331",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-with-erratum-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.47.331",
+        "note": "ABM/BW framework abstract checked with1976 erratum; full derivations not reviewed. Explicit local matrices are independent illustrations."
+      }
+    },
+    {
+      "id": "source-24556d6dba4d8cc1",
+      "doi": "10.1103/RevModPhys.48.357",
+      "title": "Erratum: A theoretical description of the new phases of liquid 3He",
+      "year": 1976,
+      "url": "https://doi.org/10.1103/RevModPhys.48.357",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-erratum-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/pdf/10.1103/RevModPhys.48.357",
+        "note": "Complete brief text checked: withdraws claimed factor-of-two disagreement with Brinkman–Smith near Tc on p.401. Direct download403; no visual scan claimed."
+      }
+    },
+    {
+      "id": "source-c7f8b99a795aba41",
+      "doi": "10.1038/s41586-019-1596-2",
+      "title": "Constraints on the superconducting order parameter in Sr2RuO4 from oxygen-17 nuclear magnetic resonance",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41586-019-1596-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1904.00047v1",
+        "note": "Pustogow et al. v1 selected pp.4–7; p.7 RF-energy and heating passage visually checked. Zero-strain0.7107T versus strained1.9980T conditions distinguished. Published identity checked; full final-version equivalence and subsequent literature survey not completed."
+      }
+    },
+    {
+      "id": "source-c4434644191d0174",
+      "doi": "10.1103/sgcz-9rc7",
+      "title": "Muon Knight Shift as a Precise Probe of the Superconducting Symmetry of Sr2RuO4",
+      "year": 2026,
+      "url": "https://doi.org/10.1103/sgcz-9rc7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2512.14107v1",
+        "note": "Selected pp.1–5 and Fig.3 visually checked. Published9February2026; manuscript16December2025. Same-crystal field-cooled subtraction and0.5K lower magnetization limit retained. Supplement, final-version comparison and raw-data reproduction open."
+      }
+    },
+    {
+      "id": "source-db2917242488a101",
+      "doi": "10.1038/35020500",
+      "title": "Superconductivity on the border of itinerant-electron ferromagnetism in UGe2",
+      "year": 2000,
+      "url": "https://doi.org/10.1038/35020500",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/35020500",
+        "note": "Saxena et al. publisher indexed abstract and Crossref identity checked. Restricted-pressure superconductivity; original curves and microscopic coexistence not audited. Replaces inherited DOI35050500 whose actual target remained unresolved."
+      }
+    },
+    {
+      "id": "source-15aec45a868e9fb9",
+      "doi": "10.1038/35098048",
+      "title": "Coexistence of superconductivity and ferromagnetism in URhGe",
+      "year": 2001,
+      "url": "https://doi.org/10.1038/35098048",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/35098048",
+        "note": "Aoki et al. publisher indexed abstract: ambient-pressure thermodynamic evidence, with qualified triplet interpretation. Corrects inherited35065045, which identifies unrelated semiconductor melting research. Full data not reanalyzed."
+      }
+    },
+    {
+      "id": "source-a4695ba5bfa789f3",
+      "doi": "10.1103/PhysRevLett.99.067006",
+      "title": "Superconductivity on the Border of Weak Itinerant Ferromagnetism in UCoGe",
+      "year": 2007,
+      "url": "https://doi.org/10.1103/PhysRevLett.99.067006",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.99.067006",
+        "note": "Huy et al. original abstract: ambient-pressure bulk signatures. Curie3K and best-sample resistive0.8K are distinct; no sample Tc extracted here. Full curves not reviewed."
+      }
+    },
+    {
+      "id": "source-ca6322be2694e430",
+      "doi": "10.1126/science.aav8645",
+      "title": "Nearly ferromagnetic spin-triplet superconductivity",
+      "year": 2019,
+      "url": "https://doi.org/10.1126/science.aav8645",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-passages-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://vector.umd.edu/images/publications/Science365_6842019.pdf",
+        "note": "Ran et al. published paper pp.1–2; p.2 visually checked: maximum measured20T versus extrapolated b-axis40T. Historical spin/pairing interpretations are not adopted as settled consensus. Supplement and raw data not fully audited."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-c5-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "p-wave describes orbital structure: angular momentum $l=1$ in a rotationally invariant continuum, or specified odd basis functions in a crystal. It is not a synonym for every odd-parity state. Spin triplet, odd parity, orbital representation and chirality answer different questions. The familiar relation between triplet and odd momentum parity assumes even-frequency pairing with no additional antisymmetric orbital index. Multiorbital and odd-frequency cases require the full exchange symmetry.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Neutral liquid helium-3 provides the established triplet p-wave benchmark through its A and B phases. It does not certify a crystal superconductor by analogy. Sr2RuO4 remains a constrained, unresolved order-parameter problem, while uranium superconductors motivate triplet and odd-parity studies without thereby selecting a p-wave representation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-b4553aaaeacb3c3d",
+        "source-c7f8b99a795aba41",
+        "source-c4434644191d0174",
+        "source-ca6322be2694e430"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For an even-frequency, single-band spin basis, write $\\Delta(\\mathbf k)=i[\\mathbf d(\\mathbf k)\\cdot\\boldsymbol\\sigma]\\sigma_y$, so $\\Delta_{\\uparrow\\uparrow}=-d_x+id_y$, $\\Delta_{\\downarrow\\downarrow}=d_x+id_y$ and $\\Delta_{\\uparrow\\downarrow}=\\Delta_{\\downarrow\\uparrow}=d_z$. Odd $\\mathbf d(-\\mathbf k)=-\\mathbf d(\\mathbf k)$ makes $\\Delta(\\mathbf k)=-\\Delta^T(-\\mathbf k)$, as required by fermionic exchange. In a centrosymmetric spin-orbit-coupled system the analogous pseudospin basis must be defined explicitly; these entries are not automatically laboratory spin populations.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The identity $\\Delta\\Delta^\\dagger=|\\mathbf d|^2I+i(\\mathbf d\\times\\mathbf d^*)\\cdot\\boldsymbol\\sigma$ gives squared gaps $|\\mathbf d|^2\\pm|i\\mathbf d\\times\\mathbf d^*|$. A unitary state has vanishing cross product; it need not preserve time reversal. Four complex examples verify the matrix identity and exchange symmetry. Independent diagonalization of 48 imposed-gap Bogoliubov matrices also agrees with $E_\\pm^2=\\xi^2+|\\mathbf d|^2\\pm|i\\mathbf d\\times\\mathbf d^*|$. The normal band here is spin-degenerate: this spectrum is not a general formula for a ferromagnetic multiband metal.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "On a unit circular Fermi contour, with gap scale one, compare polar $\\mathbf d=(0,0,k_x)$, helical $\\mathbf d=(k_x,k_y,0)$ and chiral $\\mathbf d=(0,0,k_x+ik_y)$. Polar pairing has two nodes; the other two are fully gapped on this contour. All three are unitary. A global-phase comparison with the time-reversed texture preserves the polar and helical states but distinguishes the two chiral partners. Thus a full gap or unitary pairing alone does not establish broken time reversal. These are imposed examples, not self-consistent material solutions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Changing the Fermi surface changes the answer. On a sphere the same chiral form has squared gap $k_x^2+k_y^2=\\sin^2\\theta$ and two polar point nodes, whereas the illustrative BW texture $\\mathbf d=(k_x,k_y,k_z)$ has constant squared gap one. Four spherical checks confirm both. Conversely, the nonunitary circular texture $\\mathbf d=(k_x,ik_y,0)$ has squared branches $(|k_x|\\pm|k_y|)^2$; a complex vector does not by itself imply the fully gapped chiral example above. No topological invariant is calculated here.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-b4553aaaeacb3c3d",
+        "source-24556d6dba4d8cc1"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a clean unitary model at zero temperature with negligible spin-orbit coupling and a fixed d texture, the ideal diagonal response is $\\chi_{ii}/\\chi_N=1-\\langle|d_i|^2/|\\mathbf d|^2\\rangle$. Uniform circular averaging gives $(1/2,1/2,1)$ for the helical example; fixed-z chiral pairing gives $(1,1,0)$. Isotropic spherical BW averaging gives $(2/3,2/3,2/3)$. These omit interaction corrections, orbital response and field-driven rotation. They illustrate why a decrease for one field direction alone cannot identify a singlet or an orbital representation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-b4553aaaeacb3c3d",
+        "source-c4434644191d0174"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "The 1972 discovery record needs two steps. Osheroff, Richardson and Lee initially interpreted pressure anomalies in a Pomeranchuk cell as a possible new solid-helium phase. The later NMR paper, also authored by Gully, separated solid and liquid signals using a field gradient and associated the changes with the liquid. Its temperatures below 3 mK came from approximate melting-curve extrapolation. These measurements are historical evidence for new liquid phases, not a standalone determination of the full p-wave order parameter.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-017750e49092dcb4",
+        "source-b4c5ef61b3180334"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Leggett's later review develops the ABM and BW descriptions associated with A and B phases. Its 1976 erratum withdraws a claimed factor-of-two disagreement with Brinkman and Smith near the transition; it does not retract the phase framework. The review abstract and correction text are checked here, while its complete derivations remain outside this scoped review. Helium is neutral and approximately rotationally invariant, so its response cannot be transferred directly to a charged crystal with strong spin-orbit coupling.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-b4553aaaeacb3c3d",
+        "source-24556d6dba4d8cc1"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "In Sr2RuO4, Pustogow and colleagues' oxygen-17 NMR work found a reduced spin response after controlling radio-frequency heating. The reviewed author manuscript distinguishes zero-strain measurements at 0.7107 T from strained measurements at 1.9980 T. This challenges the simple fixed-d-vector chiral interpretation used previously; it does not uniquely establish d-wave or invalidate every report of time-reversal breaking. Heating, field direction, strain and the assumed pseudospin response must accompany the inference.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c7f8b99a795aba41"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Matsuki and colleagues' study was published on 9 February 2026; the checked author manuscript is dated December 2025. Comparing one and six crystals exposed stray-field artifacts. They combined single-crystal muon shifts with field-cooled magnetization of that same crystal. For fields along [100], they inferred a spin-shift reduction consistent with singlet-like behavior. The spin-contact extraction was insufficiently accurate at 0.2 T; magnetization stopped at 0.5 K. Their conclusions therefore do not distinguish fully gapped, line-nodal, helical and interorbital states. The reported 0.05 K spectrum is a measurement temperature, not a transition.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c4434644191d0174"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "Junction phase tests, directional spin response, thermodynamic gaps and symmetry-breaking probes should constrain the same proposed state under matched sample conditions. A time-reversal-breaking signal alone does not select p-wave over other complex order parameters or establish its microscopic origin. Boundary features require comparison with surface disorder and ordinary bound states, plus an independently specified bulk phase; calling a feature “Majorana-like” is not a pairing-symmetry measurement.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "UGe2, URhGe and UCoGe have original reports connecting superconductivity with ferromagnetism under different pressure and sample conditions. These motivate equal-spin and odd-parity hypotheses, but ferromagnetic coexistence alone does not select a p-wave basis. Their source checks here are abstract-scoped; no new sample transition values or microscopic coexistence maps are extracted.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-db2917242488a101",
+        "source-15aec45a868e9fb9",
+        "source-a4695ba5bfa789f3"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "The UTe2 discovery paper presents triplet-related evidence and a nearly ferromagnetic interpretation without ambient-pressure long-range ferromagnetic order. Its approximately 40 T b-axis critical-field estimate was extrapolated beyond measurements reaching 20 T. Treat that historical inference separately from a directly observed boundary or a settled orbital representation. Strong coupling, spin-orbit coupling, anisotropic orbital limiting and multiple bands must be considered when interpreting unusually large critical fields.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ca6322be2694e430"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "Inversion absence permits singlet–triplet mixing; multiple orbitals and spin-orbit coupling further change the bookkeeping. Even in an inversion-symmetric crystal, several odd basis functions can belong to the same representation. A label such as p-wave must state which basis and symmetry operations are meant. A finite collection of supporting observations is not a universal exclusion of all alternatives.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c5-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "For each candidate, record inversion symmetry, the spin or pseudospin convention, field orientation, sample conditions and competing gap structures. Separate evidence for odd parity from evidence for chirality, nodes and topology. Use the explicit examples above to identify measurements that actually distinguish hypotheses. Full scientific acceptance, complete final-version comparisons and raw-data review remain open; the local model checks do not determine a material's pairing state.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-c7f8b99a795aba41",
+        "source-c4434644191d0174"
+      ],
+      "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-c5-correction-1",
+      "description": "Distinguished the initial solid-phase interpretation from the subsequent liquid NMR evidence and later order-parameter framework.",
+      "sourceId": "source-b4c5ef61b3180334",
+      "scope": "Historical attribution; approximate temperatures are not a universal transition."
+    },
+    {
+      "id": "scwiki-c5-correction-2",
+      "description": "Leggett1975 must retain its1976 correction to the claimed factor-of-two discrepancy.",
+      "sourceId": "source-24556d6dba4d8cc1",
+      "scope": "Complete erratum text; original derivation not reproduced."
+    },
+    {
+      "id": "scwiki-c5-correction-3",
+      "description": "Added published2026 muon evidence without promoting singlet-like response to a unique orbital representation.",
+      "sourceId": "source-c4434644191d0174",
+      "scope": "Selected author manuscript pp.1–5 and publication metadata."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta\\Delta^\\dagger=|\\mathbf d|^2I+i(\\mathbf d\\times\\mathbf d^*)\\cdot\\boldsymbol\\sigma",
+      "check": "Four complex exchange/product identities and48 independently diagonalized imposed-gap spectra."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\chi_{ii}/\\chi_N=1-\\langle|d_i|^2/|\\mathbf d|^2\\rangle",
+      "check": "Uniform circular helical averaging under explicit no-SOC, fixed-texture assumptions; no empirical fit."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-c5-material-1",
+      "formula": "Sr2RuO4",
+      "sample": "Matsuki et al. single-crystal versus six-crystal muon spectra",
+      "recordType": "experiment",
+      "tcK": null,
+      "reportedTemperatureK": 0.05,
+      "temperatureKind": "unassigned",
+      "temperatureNote": "0.05 K spectrum at0.2T along[100], not a transition; spin-contact extraction at this field insufficiently accurate",
+      "criterion": "muon-spectrum",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Muon spin rotation; same-crystal magnetization only down to0.5K; no inferred pairing representation",
+      "sourceId": "source-c4434644191d0174"
+    }
+  ]
+}

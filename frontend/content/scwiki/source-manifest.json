@@ -431,8 +431,8 @@
       "lineCount": 80,
       "topicId": "scwiki-topic-c5",
       "articleId": "scwiki-c5",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3584,6 +3584,20 @@
       "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.70.1553",
       "checkedAt": "2026-10-18",
       "scope": "Pinned ARPES reference identifies unrelated Brillouin spectroscopy; corrected Shen 1993 identity and abstract checked."
+    },
+    {
+      "id": "correction-leggett1975-comparison",
+      "articleDoi": "10.1103/RevModPhys.47.331",
+      "requiredCompanionDoi": "10.1103/RevModPhys.48.357",
+      "affectedTopics": [
+        "C5"
+      ],
+      "affectedSourcePaths": [
+        "C_pairing_symmetry/C5_p_wave.md"
+      ],
+      "evidenceUrl": "https://journals.aps.org/rmp/pdf/10.1103/RevModPhys.48.357",
+      "checkedAt": "2026-10-18",
+      "scope": "Withdrawn factor-of-two discrepancy statement onp401; full brief erratum text checked."
     }
   ]
 }

@@ -658,3 +658,22 @@ it("keeps dxy orbital weights, model channels and directional evidence distinct"
  const out=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
  expect(out).toContain("orbital-to-band transformation error");expect(out).toContain("Full scientific acceptance");
 });
+
+it("keeps p-wave symmetry distinct from spin response and measurement temperatures",async()=>{
+ const a=articles().find(a=>a.code==="C5")!;
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("It is not a synonym for every odd-parity state");
+ expect(md).toContain("not a general formula for a ferromagnetic multiband metal");
+ expect(md).toContain("not a standalone determination of the full p-wave order parameter");
+ expect(md).toContain("insufficiently accurate at 0.2 T");
+ expect(md).toContain("do not distinguish fully gapped, line-nodal, helical and interorbital states");
+ const recent=a.references.find(r=>r.doi==="10.1103/sgcz-9rc7")!;
+ expect(recent.year).toBe(2026);expect(recent.publicationStatus).toBe("journal-article");
+ expect(recent.verification.evidenceUrl).toContain("2512.14107v1");
+ expect(a.materialCases[0].reportedTemperatureK).toBe(.05);
+ expect(a.materialCases[0].tcK).toBeNull();expect(a.materialCases[0].temperatureKind).toBe("unassigned");
+ expect(searchArticles(searchIndex().entries,"helical",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"helical",{tcMin:.01}).some(r=>r.id===a.id)).toBe(false);
+ const out=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(out).toContain("field-cooled magnetization");expect(out).toContain("Full scientific acceptance");
+});

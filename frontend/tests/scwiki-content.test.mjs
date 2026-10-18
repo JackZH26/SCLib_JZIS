@@ -135,6 +135,14 @@ test("known Kuroki erratum accompanies the original in newly authored and existi
  }
 });
 
+test("Leggett phase review retains the correction to its historical comparison",t=>{
+ const f=inventoryFixture(t),filename=path.join(f.directory,"articles/c5/meta.json");
+ const meta=JSON.parse(readFileSync(filename,"utf8"));
+ meta.references=meta.references.filter(r=>r.doi!=="10.1103/RevModPhys.48.357");
+ writeFileSync(filename,JSON.stringify(meta));const result=f.build();
+ assert.notEqual(result.status,0);assert.match(result.stderr,/missing required erratum 10\.1103\/RevModPhys\.48\.357/);
+});
+
 test("uranium discovery references reject both inherited incorrect DOIs",t=>{
  for(const [correct,incorrect] of [["10.1038/35020500","10.1038/35050500"],["10.1038/35098048","10.1038/35065045"]]){
   const f=inventoryFixture(t),filename=path.join(f.directory,"articles/b4/meta.json"),meta=JSON.parse(readFileSync(filename,"utf8"));
