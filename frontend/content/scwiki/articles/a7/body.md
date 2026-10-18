@@ -1,6 +1,6 @@
 ## Scope
 
-Critical current is a limit defined for a specimen, measurement protocol and operating conditions. Transport measurements use a voltage or electric-field criterion; magnetization measurements infer a current through a model; the depairing current describes loss of stability of a superconducting state within a specified theory. These quantities must not share an unlabeled performance ranking.
+Critical current is a limit defined for a specimen, measurement protocol and operating conditions. Transport measurements use a voltage or electric-field criterion; magnetization measurements infer a current through a model; the depairing current describes loss of stability of a superconducting state within a specified theory. These quantities must not share an unlabeled performance ranking. [R5](#ref-source-25347d9dbd8e915f)
 
 Blatter and colleagues explicitly distinguish depinning and depairing current densities in their review abstract. Pinning, thermal fluctuations and vortex motion affect practical current transport. A measured threshold can instead be limited by weak connections or heating; its mechanism requires evidence beyond the value of the current itself. [R2](#ref-source-82f53ca35625217d)
 
@@ -12,7 +12,7 @@ $$J_c=\frac{I_c}{A_s},\qquad J_e=\frac{I_c}{A_t}=fJ_c,\qquad f=\frac{A_s}{A_t}.$
 
 Here $J_e$ is an engineering current density for the stated whole-conductor area. Nominal superconducting area does not resolve nonuniform current paths or pores. A different definition of non-copper area, filament area or cable area requires a different label. These identities compare area conventions; they do not correct a damaged conductor or infer intrinsic microscopic current density.
 
-A simple sensitivity calculation illustrates why the criterion matters. If a measured interval is modeled by $E=E_0(J/J_0)^n$ with positive constant $n$, changing the criterion by a factor $r$ changes the inferred current by $r^{1/n}$. For $n=20$, a tenfold criterion change gives a factor of about 1.122. This is an illustrative power-law calculation, not a measured exponent or a universal transport law.
+A simple sensitivity calculation illustrates why the criterion matters. If a measured interval is modeled by $E=E_0(J/J_0)^n$ with positive constant $n$, changing the criterion by a factor $r$ changes the inferred current by $r^{1/n}$. For $n=20$, a tenfold criterion change gives a factor of about 1.122. This is an illustrative power-law calculation, not a measured exponent or a universal transport law. [R5](#ref-source-25347d9dbd8e915f)
 
 The magnetic force density is the vector product $\mathbf F=\mathbf J\times\mathbf B$. For current perpendicular to the induction, its magnitude at the threshold becomes $F_p=J_cB$ if a static pinning-force balance is the applicable model. In SI units this is N/m³; resistive heating instead has power density $\mathbf E\cdot\mathbf J$ in W/m³. A parallel configuration has no force from this cross product. Replacing $B$ by $\mu_0H$ requires an additional approximation, especially near self-field conditions.
 
@@ -47,7 +47,7 @@ A fitted pinning-curve exponent or angular peak does not uniquely identify a def
 
 Separate a better transport path, stronger pinning, a larger superconducting fraction and a higher depairing limit as distinct hypotheses. Compare controlled specimens under matched conditions before assigning an improvement to a microscopic mechanism. A gain in current-carrying performance does not by itself demonstrate higher $T_c$, a new pairing interaction or a new superconducting phase.
 
-Preserve the measured signal, uncertainty and analysis conventions together. If the voltage criterion, geometry or thermal history is unavailable, retain that gap in the record. A useful follow-up is the measurement that discriminates between the competing limits, rather than another unsupported performance ranking.
+Preserve the measured signal, uncertainty and analysis conventions together. If the voltage criterion, geometry or thermal history is unavailable, retain that gap in the record. A useful follow-up is the measurement that discriminates between the competing limits, rather than another unsupported performance ranking. [R5](#ref-source-25347d9dbd8e915f)
 
 ## Related topics
 

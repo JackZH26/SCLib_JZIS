@@ -28,15 +28,16 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T06:46:01.713672+00:00",
+  "modifiedAt": "2026-10-19",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Edited pinned A7 chapter, selected engineering author-manuscript passages, publisher identities and vortex-review abstract; independent conditional current/force/slab calculations.",
+    "checkedAt": "2026-10-19",
+    "scope": "Edited pinned A7 chapter, selected engineering author-manuscript passages, publisher identities and vortex-review abstract; independent conditional current/force/slab calculations. NIST-hosted Goodrich-Srivastava 1995 p. S19 checked for operational criteria and measurement-condition dependence.",
     "limitations": [
       "Selected source checks are not full scientific acceptance or independent experimental replication.",
       "Bean original full text was inaccessible; the slab formula is a separately derived ideal model. Blatter is abstract-scoped.",
       "Engineering sources are checked at stated manuscript passages; no complete electric-field criterion or final numerical performance dataset was re-extracted.",
-      "No cross-family current ranking, experimental Tc record or universal depairing value is inferred."
+      "No cross-family current ranking, experimental Tc record or universal depairing value is inferred.",
+      "NIST source is a selected-page check of a measurement-methods paper, not validation of every reporting recommendation or material current record."
     ]
   },
   "provenance": {
@@ -161,6 +162,20 @@
         "evidenceUrl": "https://arxiv.org/pdf/1305.1269v1",
         "note": "Publisher identifies a primary Article published 9 March 2014. Earlier 2013 author manuscript, selected pp. 3–4, distinguishes superconducting/whole-conductor areas and sample lengths. Not a review; final dataset, criterion and manuscript-to-journal changes not fully checked."
       }
+    },
+    {
+      "id": "source-25347d9dbd8e915f",
+      "doi": null,
+      "title": "II-3: Critical current measurement methods: quantitative evaluation",
+      "year": 1995,
+      "url": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=30406",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "full-text-selected-page-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=30406",
+        "note": "NIST-hosted Cryogenics 35 supplement, p. S19: criterion definition, empirical voltage-current power law, Fig. 1 voltage/field criterion, and sensitivity to strain and experimental conditions. Selected first-page pixels read; remaining pages and underlying measurements not reanalyzed."
+      }
     }
   ],
   "materialCases": [],
@@ -171,10 +186,13 @@
       "statement": "Critical current is a limit defined for a specimen, measurement protocol and operating conditions. Transport measurements use a voltage or electric-field criterion; magnetization measurements infer a current through a model; the depairing current describes loss of stability of a superconducting state within a specified theory. These quantities must not share an unlabeled performance ranking.",
       "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-82f53ca35625217d"
+        "source-82f53ca35625217d",
+        "source-25347d9dbd8e915f"
       ],
       "conditions": "Editorial reporting/inference guidance; requires a sample-specific source, protocol and uncertainty. No new current or transition-temperature dataset certified.",
-      "verificationScope": "Pinned chapter edited with explicitly limited reference checks."
+      "verificationScope": "NIST Goodrich-Srivastava 1995 p. S19 and Blatter publisher abstract, plus explicit local reporting guidance; remaining full texts and sample-specific data not validated.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "NIST p. S19 supports operational transport criteria and sensitivity to measurement conditions; Blatter abstract supplies vortex/depinning context. The reporting checklist and refusal to rank incomparable limits are local editorial guidance, not a certified standard or measured result."
     },
     {
       "id": "scwiki-a7-claim-scope-2",
@@ -193,10 +211,12 @@
       "statement": "For voltage taps separated by length $L$, define the mean longitudinal electric-field criterion $E_c=V_c/L$. Using the same measured $I_c$, distinguish the nominal superconducting cross-section $A_s$ from the entire conductor area $A_t$:",
       "evidenceType": "theory",
       "sourceIds": [
-        "source-39e3e980bd8a0271"
+        "source-25347d9dbd8e915f"
       ],
       "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
-      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "NIST p. S19 defines transport criteria and an empirical V-I power law. Conversion to a mean electric field, area conventions and the criterion-ratio example are local algebra with fixed geometry and positive constant exponent; no measured material exponent is assigned."
     },
     {
       "id": "scwiki-a7-claim-mathematical-assumptions-2",
@@ -207,7 +227,9 @@
         "source-39e3e980bd8a0271"
       ],
       "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
-      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The stated algebra, vector force and ideal slab model are local derivations under explicit assumptions. Bean is historical context only; original full-text support was not verified."
     },
     {
       "id": "scwiki-a7-claim-mathematical-assumptions-3",
@@ -218,7 +240,9 @@
         "source-39e3e980bd8a0271"
       ],
       "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
-      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The stated algebra, vector force and ideal slab model are local derivations under explicit assumptions. Bean is historical context only; original full-text support was not verified."
     },
     {
       "id": "scwiki-a7-claim-mathematical-assumptions-4",
@@ -226,10 +250,12 @@
       "statement": "A simple sensitivity calculation illustrates why the criterion matters. If a measured interval is modeled by $E=E_0(J/J_0)^n$ with positive constant $n$, changing the criterion by a factor $r$ changes the inferred current by $r^{1/n}$. For $n=20$, a tenfold criterion change gives a factor of about 1.122. This is an illustrative power-law calculation, not a measured exponent or a universal transport law.",
       "evidenceType": "theory",
       "sourceIds": [
-        "source-39e3e980bd8a0271"
+        "source-25347d9dbd8e915f"
       ],
       "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
-      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "NIST p. S19 defines transport criteria and an empirical V-I power law. Conversion to a mean electric field, area conventions and the criterion-ratio example are local algebra with fixed geometry and positive constant exponent; no measured material exponent is assigned."
     },
     {
       "id": "scwiki-a7-claim-mathematical-assumptions-5",
@@ -240,7 +266,9 @@
         "source-39e3e980bd8a0271"
       ],
       "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
-      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The stated algebra, vector force and ideal slab model are local derivations under explicit assumptions. Bean is historical context only; original full-text support was not verified."
     },
     {
       "id": "scwiki-a7-claim-mathematical-assumptions-6",
@@ -251,7 +279,9 @@
         "source-39e3e980bd8a0271"
       ],
       "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
-      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The stated algebra, vector force and ideal slab model are local derivations under explicit assumptions. Bean is historical context only; original full-text support was not verified."
     },
     {
       "id": "scwiki-a7-claim-mathematical-assumptions-7",
@@ -262,7 +292,9 @@
         "source-39e3e980bd8a0271"
       ],
       "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
-      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The stated algebra, vector force and ideal slab model are local derivations under explicit assumptions. Bean is historical context only; original full-text support was not verified."
     },
     {
       "id": "scwiki-a7-claim-mathematical-assumptions-8",
@@ -273,7 +305,9 @@
         "source-39e3e980bd8a0271"
       ],
       "conditions": "Definitions and local illustrative models: stated area convention, constant positive n power law, vector Lorentz force; slab uses full loop width, half-thickness, field parallel to faces, full penetration, constant Jc, no creep/demagnetization/reversible background.",
-      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data."
+      "verificationScope": "Independent local algebra, SI dimensional checks and numerical profile integration; not a full-text check of Bean 1962 or a fit to material data.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The stated algebra, vector force and ideal slab model are local derivations under explicit assumptions. Bean is historical context only; original full-text support was not verified."
     },
     {
       "id": "scwiki-a7-claim-experimental-criteria-1",
@@ -281,10 +315,13 @@
       "statement": "Keep enough information to reconstruct both the measured threshold and the conversion to a current density. The following is an editorial reporting guide, not a table of certified material records.",
       "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-82f53ca35625217d"
+        "source-82f53ca35625217d",
+        "source-25347d9dbd8e915f"
       ],
       "conditions": "Editorial reporting/inference guidance; requires a sample-specific source, protocol and uncertainty. No new current or transition-temperature dataset certified.",
-      "verificationScope": "Pinned chapter edited with explicitly limited reference checks."
+      "verificationScope": "NIST Goodrich-Srivastava 1995 p. S19 and Blatter publisher abstract, plus explicit local reporting guidance; remaining full texts and sample-specific data not validated.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "NIST p. S19 supports operational transport criteria and sensitivity to measurement conditions; Blatter abstract supplies vortex/depinning context. The reporting checklist and refusal to rank incomparable limits are local editorial guidance, not a certified standard or measured result."
     },
     {
       "id": "scwiki-a7-claim-experimental-criteria-2",
@@ -292,10 +329,13 @@
       "statement": "| Measurement | Record with the result | Interpretation boundary |\n|---|---|---|\n| Transport | Temperature, field magnitude and orientation, voltage-tap spacing, electric-field criterion, current ramp or pulse duration, duty cycle, area convention | Contact heating, current sharing and voltage offsets can change the inferred threshold |\n| Magnetization | Magnetic moment, volume, dimensions, field history, sweep rate, elapsed time and background subtraction | Conversion to current requires a geometry and critical-state model |\n| Conductor or cable | Superconducting fraction, whole-conductor area, length, strain and thermal stabilization | Layer current density and engineering current density answer different questions |\n| Depairing model | Model, temperature regime, geometry and stability assumptions | A calculated instability is not automatically the measured transport limit |",
       "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-82f53ca35625217d"
+        "source-82f53ca35625217d",
+        "source-25347d9dbd8e915f"
       ],
       "conditions": "Editorial reporting/inference guidance; requires a sample-specific source, protocol and uncertainty. No new current or transition-temperature dataset certified.",
-      "verificationScope": "Pinned chapter edited with explicitly limited reference checks."
+      "verificationScope": "NIST Goodrich-Srivastava 1995 p. S19 and Blatter publisher abstract, plus explicit local reporting guidance; remaining full texts and sample-specific data not validated.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "NIST p. S19 supports operational transport criteria and sensitivity to measurement conditions; Blatter abstract supplies vortex/depinning context. The reporting checklist and refusal to rank incomparable limits are local editorial guidance, not a certified standard or measured result."
     },
     {
       "id": "scwiki-a7-claim-experimental-criteria-3",
@@ -358,10 +398,13 @@
       "statement": "Preserve the measured signal, uncertainty and analysis conventions together. If the voltage criterion, geometry or thermal history is unavailable, retain that gap in the record. A useful follow-up is the measurement that discriminates between the competing limits, rather than another unsupported performance ranking.",
       "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-82f53ca35625217d"
+        "source-82f53ca35625217d",
+        "source-25347d9dbd8e915f"
       ],
       "conditions": "Editorial reporting/inference guidance; requires a sample-specific source, protocol and uncertainty. No new current or transition-temperature dataset certified.",
-      "verificationScope": "Pinned chapter edited with explicitly limited reference checks."
+      "verificationScope": "NIST Goodrich-Srivastava 1995 p. S19 and Blatter publisher abstract, plus explicit local reporting guidance; remaining full texts and sample-specific data not validated.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "NIST p. S19 supports operational transport criteria and sensitivity to measurement conditions; Blatter abstract supplies vortex/depinning context. The reporting checklist and refusal to rank incomparable limits are local editorial guidance, not a certified standard or measured result."
     }
   ],
   "corrections": [
@@ -376,6 +419,12 @@
       "description": "Qualified Fp=Jc B by perpendicular geometry and a static force-balance model; distinguished induction from applied field.",
       "sourceId": "source-82f53ca35625217d",
       "scope": "Explicit SI vector relation and approximation, not a new measured force."
+    },
+    {
+      "id": "scwiki-a7-correction-measurement-source",
+      "description": "Added a directly checked measurement-methods source for operational transport criteria; separated local algebra and reporting guidance from historical source context.",
+      "sourceId": "source-25347d9dbd8e915f",
+      "scope": "Selected NIST-hosted p. S19 and explicit source relationships; no new current dataset or full scientific acceptance."
     }
   ],
   "equationChecks": [
