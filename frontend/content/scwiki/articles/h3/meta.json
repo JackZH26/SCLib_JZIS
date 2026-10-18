@@ -1,0 +1,460 @@
+{
+  "id": "scwiki-h3",
+  "topicId": "scwiki-topic-h3",
+  "code": "H3",
+  "slug": "pseudogap",
+  "title": "Pseudogap: probes, crossovers and competing explanations",
+  "summary": "Distinguish spectral suppression, superconducting fluctuations and ordered phases using material-specific probes, criteria and source versions.",
+  "aliases": [
+    "pseudogap",
+    "pseudogaps",
+    "T star",
+    "赝能隙",
+    "假能隙"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "H1",
+    "H2",
+    "C8"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T16:40:57.198448+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Historical primary abstracts; selected Wise final STM figures, Rullier author v1/v2 comparison, Badoux author Hall figure and methods, Sordi final model figures, and independently checked spectral non-uniqueness.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Full historical data, final-version comparisons and competing-literature assessment remain incomplete.",
+      "The magnetic Comment and Reply are identified but not independently adjudicated.",
+      "Toy spectra do not determine a cuprate mechanism or superfluid stiffness."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "H_anomalous_normal_state/H3_pseudogap.md",
+    "sha256": "060f1eb1c97b10f06d09e28621137ef914216ebdf308a211dc28c109464494b1",
+    "sourceId": "file-320de9b6f1a7279c"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 190,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained; specimen misattribution corrected, primary-version and competing-probe distinctions added. Historical audit labels do not prove complete scientific acceptance."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-h3-correction-1",
+      "description": "Correct the pinned chapter's Wise specimen attribution: the actual STM study uses Pb/La-substituted Bi2201; Na-CCOC is prior literature.",
+      "sourceId": "source-07213acd01bb9b90",
+      "scope": "Material identity; source chapter remains preserved."
+    },
+    {
+      "id": "scwiki-h3-correction-2",
+      "description": "Use the author v2 conductivity onset threshold10^3 rather than the v1 printed10^-3, retaining the sensitivity and final-version limits.",
+      "sourceId": "source-377dc0bc5c5160fa",
+      "scope": "Source-version comparison; not a universal onset criterion."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "G_{11}(z)=(z+\\xi)/(z^2-\\xi^2-\\Delta^2)",
+      "check": "315 direct-resolvent versus spectral-pole comparisons and four finite-window normalization checks. Toy two-level matrix; no material identification."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-2ecda5a1c9258a07",
+      "doi": "10.1103/PhysRevLett.62.1193",
+      "title": "Cu spin dynamics and superconducting precursor effects in planes above Tc in YBa2Cu3O6.7",
+      "year": 1989,
+      "url": "https://doi.org/10.1103/PhysRevLett.62.1193",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.62.1193",
+        "note": "Published 6 March 1989. Planar nuclear relaxation and the authors' tentative spin-pairing interpretation checked at abstract level; original curves and sample calibration not reanalysed."
+      }
+    },
+    {
+      "id": "source-ce431fada9b3a183",
+      "doi": "10.1103/PhysRevLett.63.1700",
+      "title": "89Y NMR evidence for a Fermi-liquid behavior in YBa2Cu3O6+x",
+      "year": 1989,
+      "url": "https://doi.org/10.1103/PhysRevLett.63.1700",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.63.1700",
+        "note": "Published 16 October 1989. Shift, relaxation and spin-susceptibility relationship checked at abstract level; complete experimental analysis remains open."
+      }
+    },
+    {
+      "id": "source-b8f71a71e90d00ff",
+      "doi": "10.1038/382051a0",
+      "title": "Spectroscopic evidence for a pseudogap in the normal state of underdoped high-Tc superconductors",
+      "year": 1996,
+      "url": "https://doi.org/10.1038/382051a0",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-institution-primary-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://okayama.elsevierpure.com/ja/publications/spectroscopic-evidence-for-a-pseudogap-in-the-normal-state-of-und/",
+        "note": "Author institutional record reproduces the original abstract for underdoped Bi2212 ARPES. Publisher endpoint unavailable; no full resolution or lineshape analysis claimed."
+      }
+    },
+    {
+      "id": "source-07213acd01bb9b90",
+      "doi": "10.1038/nphys1021",
+      "title": "Charge-density-wave origin of cuprate checkerboard visualized by scanning tunnelling microscopy",
+      "year": 2008,
+      "url": "https://doi.org/10.1038/nphys1021",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://info.phys.tsinghua.edu.cn/wang/publications/CDW-Nature%20Physics.pdf",
+        "note": "Published 6 July 2008. Final pp.696–697 read; Figures1–2 on p.697 visually checked. Actual specimen is Pb/La-substituted Bi2201; Na-CCOC is cited prior work. Complete raw maps and quantitative fits not reproduced."
+      }
+    },
+    {
+      "id": "source-377dc0bc5c5160fa",
+      "doi": "10.1103/PhysRevB.84.014522",
+      "title": "High-field studies of superconducting fluctuations in high-Tc cuprates: Evidence for a small gap distinct from the large pseudogap",
+      "year": 2011,
+      "url": "https://doi.org/10.1103/PhysRevB.84.014522",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-version-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1102.2804v2",
+        "note": "Author v2,18 July2011: selected pp.3,6–7 read and p.6 Figures6–8 visually checked. Compared v1 p.6: the printed 10^-3 conductivity threshold is corrected to10^3 in v2. Final-version comparison and raw-data reanalysis remain open."
+      }
+    },
+    {
+      "id": "source-fae77f2c38d4cf72",
+      "doi": "10.1038/nature16983",
+      "title": "Change of carrier density at the pseudogap critical point of a cuprate superconductor",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nature16983",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-figure-and-final-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1511.08162v1",
+        "note": "Author v1 pp.6,14–15,28–29 read; Figure4 on p.14 visually checked. Final publisher abstract and publication date22February2016 checked. Hall-number conversion, extrapolation, Ca substitution and15% absolute uncertainty distinguished; complete final-version and raw-data comparison remains open."
+      }
+    },
+    {
+      "id": "source-4fa5e96f6d9eec1b",
+      "doi": "10.1038/srep00547",
+      "title": "Pseudogap temperature as a Widom line in doped Mott insulators",
+      "year": 2012,
+      "url": "https://doi.org/10.1038/srep00547",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-model-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.nature.com/articles/srep00547.pdf",
+        "note": "Final selected pp.1,4–5 read; p.4 Figures3–4 visually checked. A2x2plaquette CDMFT Hubbard calculation with U=6.2t; no independent MonteCarlo replication or quantitative material identification."
+      }
+    },
+    {
+      "id": "source-5e00a8860f823681",
+      "doi": "10.1103/PhysRevLett.96.197001",
+      "title": "Magnetic Order in the Pseudogap Phase of High-Tc Superconductors",
+      "year": 2006,
+      "url": "https://doi.org/10.1103/PhysRevLett.96.197001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.96.197001",
+        "note": "Published15May2006. Translation-preserving neutron signal and orbital-current interpretation checked at abstract level; complete calibration and reproducibility not reviewed."
+      }
+    },
+    {
+      "id": "source-1642be5ac014792d",
+      "doi": "10.1103/PhysRevB.96.214504",
+      "title": "No evidence for orbital loop currents in charge-ordered YBa2Cu3O6+x from polarized neutron diffraction",
+      "year": 2017,
+      "url": "https://doi.org/10.1103/PhysRevB.96.214504",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-and-discussion-link-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.214504",
+        "note": "Published15December2017. Null result for p=.104,.123 and model-dependent moment bound checked at abstract level. Publisher links the2018Comment andReply; their full arguments are not independently adjudicated here."
+      }
+    },
+    {
+      "id": "source-e18dc1cf556fc915",
+      "doi": "10.1103/PhysRevB.98.016501",
+      "title": "Comment on No evidence for orbital loop currents in charge-ordered YBa2Cu3O6+x from polarized neutron diffraction",
+      "year": 2018,
+      "url": "https://doi.org/10.1103/PhysRevB.98.016501",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-linked-comment-identity-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.214504",
+        "note": "Bourges,Sidis,Mangin-Thro comment identified in the original publisher Comments and Replies section. Identity only; full argument not checked."
+      }
+    },
+    {
+      "id": "source-2e937b94b8b7edc6",
+      "doi": "10.1103/PhysRevB.98.016502",
+      "title": "Reply to Comment on No evidence for orbital loop currents in charge-ordered YBa2Cu3O6+x from polarized neutron diffraction",
+      "year": 2018,
+      "url": "https://doi.org/10.1103/PhysRevB.98.016502",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-linked-reply-identity-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.96.214504",
+        "note": "Croft and colleagues reply identified in publisher Comments and Replies. Identity only; full argument not checked."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "id": "scwiki-h3-material-1",
+      "formula": "Bi2-yPbySr2-zLazCuO6+x",
+      "sample": "Wise optimal Bi2201 specimen labelled Tc35K; transition criterion not independently verified",
+      "reportedTemperatureK": 6,
+      "temperatureNote": "STM mapping at6 K, not a transition temperature.",
+      "criterion": "STM-mapping",
+      "probe": "Scanning tunnelling conductance maps",
+      "sourceId": "source-07213acd01bb9b90",
+      "aliases": [
+        "Bi2201",
+        "Bi-2201"
+      ]
+    },
+    {
+      "recordType": "experiment",
+      "tcK": 93.6,
+      "temperatureKind": "transition",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "id": "scwiki-h3-material-2",
+      "formula": "YBa2Cu3O6+x",
+      "sample": "Rullier-Albenque OPT93.6 sample",
+      "reportedTemperatureK": 93.6,
+      "temperatureNote": "Mid-point resistive transition; distinct from fluctuation onset or pseudogap crossover.",
+      "criterion": "resistive-midpoint",
+      "probe": "Electrical resistivity",
+      "sourceId": "source-377dc0bc5c5160fa",
+      "aliases": [
+        "YBCO"
+      ]
+    },
+    {
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "id": "scwiki-h3-material-3",
+      "formula": "YBa2Cu3Oy",
+      "sample": "Badoux p=.16 YBCO; distinguish Ca-substituted higher-doping comparison specimens",
+      "reportedTemperatureK": 50,
+      "temperatureNote": "Hall comparison at50 K and80 T; not superconducting Tc.",
+      "criterion": "Hall-measurement",
+      "probe": "Pulsed-field Hall effect",
+      "sourceId": "source-fae77f2c38d4cf72",
+      "aliases": [
+        "YBCO"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-h3-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A pseudogap denotes suppressed low-energy spectral weight without requiring a fully gapped insulator or coherent superconductivity. In cuprates the term connects observations from nuclear magnetic resonance, photoemission, tunnelling and transport, but those probes interrogate different responses. A reported $T^*$ must retain its material, doping, observable and onset criterion. It need not be one universal transition temperature shared by every probe.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-2ecda5a1c9258a07",
+        "source-ce431fada9b3a183",
+        "source-b8f71a71e90d00ff"
+      ],
+      "conditions": "Probe, material, doping, source version, onset criterion and field must be retained. A spectral gap or Hall number alone does not determine microscopic order.",
+      "verificationScope": "Selected primary passages and independent two-level illustration; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h3-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The central question is which microscopic processes produce these changes and how they relate to superconductivity. Pairing, charge or magnetic order and strong-correlation scenarios remain distinguishable explanations. Observing a gap above $T_c$, a charge modulation or a Hall anomaly does not independently identify a unique origin. The original source chapter is retained, but its misattribution of Wise's STM sample to Na-CCOC is corrected here to Pb/La-substituted Bi2201.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-b8f71a71e90d00ff",
+        "source-07213acd01bb9b90",
+        "source-377dc0bc5c5160fa",
+        "source-fae77f2c38d4cf72",
+        "source-4fa5e96f6d9eec1b"
+      ],
+      "conditions": "Probe, material, doping, source version, onset criterion and field must be retained. A spectral gap or Hall number alone does not determine microscopic order.",
+      "verificationScope": "Selected primary passages and independent two-level illustration; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h3-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A useful non-uniqueness example is the two-level matrix $H=\\begin{pmatrix}\\xi&\\Delta\\\\\\Delta&-\\xi\\end{pmatrix}$ with real $\\Delta$. Its diagonal retarded resolvent is $G_{11}(z)=(z+\\xi)/(z^2-\\xi^2-\\Delta^2)$, where $z=\\omega+i\\eta$ and $\\eta>0$. The spectral function is $A_{11}=-\\operatorname{Im}G_{11}/\\pi$. Its poles lie at $E_\\pm=\\pm\\sqrt{\\xi^2+\\Delta^2}$, with positive weights $(1\\pm\\xi/\\sqrt{\\xi^2+\\Delta^2})/2$. Three hundred fifteen numerical comparisons verify the resolvent against this pole decomposition; four finite-window integrations recover almost all spectral weight, with small Lorentzian tails outside the window.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-b8f71a71e90d00ff",
+        "source-4fa5e96f6d9eec1b"
+      ],
+      "conditions": "Probe, material, doping, source version, onset criterion and field must be retained. A spectral gap or Hall number alone does not determine microscopic order.",
+      "verificationScope": "Selected primary passages and independent two-level illustration; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h3-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In a perfectly nested density-wave illustration, the matrix acts on two electron momenta; in a BCS illustration it acts on a particle–hole Nambu basis. The same diagonal spectrum can therefore accompany physically different off-diagonal correlations. This independently checked example does not model an actual cuprate, establish nesting or calculate phase stiffness. It shows why a spectral gap alone cannot select the broken symmetry. Additional momentum, spin, phase-sensitive and thermodynamic information must constrain the interpretation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-b8f71a71e90d00ff",
+        "source-4fa5e96f6d9eec1b"
+      ],
+      "conditions": "Probe, material, doping, source version, onset criterion and field must be retained. A spectral gap or Hall number alone does not determine microscopic order.",
+      "verificationScope": "Selected primary passages and independent two-level illustration; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h3-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For the Hall comparison, $n_H=V/(eR_H)$ expresses a number per chosen structural unit when $V$ is the corresponding volume. Its interpretation as carrier density requires transport assumptions; multiple bands, mobility imbalance, Fermi-surface reconstruction and scattering anisotropy can alter $R_H$. The high-field inference is consequently stronger when accompanied by magnetoresistance and specimen calibration, and it cannot be transferred unchanged to zero-field spectra.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fae77f2c38d4cf72"
+      ],
+      "conditions": "Probe, material, doping, source version, onset criterion and field must be retained. A spectral gap or Hall number alone does not determine microscopic order.",
+      "verificationScope": "Selected primary passages and independent two-level illustration; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h3-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Warren's YBa2Cu3O6.7 study reports a decrease of planar Cu nuclear relaxation below about 100 K, above its bulk superconducting transition. The authors discuss spin pairing as a possibility; the abstract does not establish Cooper-pair phase coherence. Alloul's 89Y NMR work separately constrains spin susceptibility through shifts and relaxation. Ding's underdoped Bi2212 ARPES reports an anisotropic normal-state pseudogap evolving into the superconducting gap. These historical results are checked at primary-abstract scope here, without reproducing their lineshape or calibration analyses.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-2ecda5a1c9258a07",
+        "source-ce431fada9b3a183",
+        "source-b8f71a71e90d00ff"
+      ],
+      "conditions": "Probe, material, doping, source version, onset criterion and field must be retained. A spectral gap or Hall number alone does not determine microscopic order.",
+      "verificationScope": "Selected primary passages and independent two-level illustration; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h3-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Wise's final paper measures Pb/La-substituted Bi2201. Its Figures 1–2 compare conductance maps at 6 K: specimens labelled by $T_c=35,32,25$ K have modulation periods approximately $6.2,5.1,4.5a_0$, respectively. The wavelength varies with doping, while the reported modulation is nondispersive over the investigated bias window. That supports the authors' charge-order interpretation within these measurements; it neither proves a universal pseudogap mechanism nor assigns their data to Ca2−xNaxCuO2Cl2, which appears as cited earlier work. The 6 K mapping temperature is not a transition.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-07213acd01bb9b90"
+      ],
+      "conditions": "Probe, material, doping, source version, onset criterion and field must be retained. A spectral gap or Hall number alone does not determine microscopic order.",
+      "verificationScope": "Selected primary passages and independent two-level illustration; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h3-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Rullier-Albenque's YBCO analysis uses pulsed fields up to 55–60 T along the c axis and a normal-state magnetoresistance background to extract excess conductivity. The author v2 defines a fluctuation-onset threshold of $10^3\\,(\\Omega\\,\\mathrm{m})^{-1}$; the earlier v1 prints $10^{-3}$ at that location, so version choice matters. Figure 8 shows distinct doping trends for the fluctuation onset and pseudogap scale. This constrains the identification of the entire pseudogap region with superconducting fluctuations. The threshold is an operational sensitivity criterion, not a universal thermodynamic boundary.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-377dc0bc5c5160fa"
+      ],
+      "conditions": "Probe, material, doping, source version, onset criterion and field must be retained. A spectral gap or Hall number alone does not determine microscopic order.",
+      "verificationScope": "Selected primary passages and independent two-level illustration; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h3-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Badoux's Hall measurements reach 88 T. The author Figure 4 compares YBCO samples at 50 K using values measured or extrapolated to 80 T, with about 15% uncertainty in the absolute Hall coefficient. The inferred change near $p^*=0.19\\pm0.01$ is separated from the charge-reconstruction endpoint near $p=0.16$. Those values belong to this material analysis. The two highest dopings use Ca substitution, and the figure also incorporates comparison data from other cuprates; it must not be presented as one homogeneous specimen series or an unconditional carrier count.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-fae77f2c38d4cf72"
+      ],
+      "conditions": "Probe, material, doping, source version, onset criterion and field must be retained. A spectral gap or Hall number alone does not determine microscopic order.",
+      "verificationScope": "Selected primary passages and independent two-level illustration; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h3-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Sordi's calculation obtains a pseudogap and a nearby Widom crossover in a square-lattice Hubbard model using a 2 × 2 plaquette CDMFT approximation at $U=6.2t$. Spectral, spin and singlet-probability criteria approach the compressibility crossover near the model's critical endpoint. Competing broken symmetries are unnecessary for that calculation to produce a pseudogap, but this does not exclude their role in real materials. The plotted conversion using $t=0.35$ eV is a model choice, not a universal experimental temperature calibration.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-4fa5e96f6d9eec1b"
+      ],
+      "conditions": "Normal-state square-lattice Hubbard model, nearest-neighbor hopping, U=6.2t, 2x2 plaquette CDMFT and selfconsistent bath. No complete material simulation or competing-order exclusion.",
+      "verificationScope": "Selected primary passages and independent two-level illustration; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h3-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Magnetic interpretations also remain contested. Fauqué reports translation-preserving polarized-neutron magnetic order; Croft reports no corresponding order in two underdoped YBCO specimens. Croft's upper bound depends on the assumed current pattern and experimental sensitivity. The linked 2018 Comment and Reply are recorded as identities, not as a dispute resolved by this review. Neither one positive signal nor one null result establishes the origin of every pseudogap observation.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-5e00a8860f823681",
+        "source-1642be5ac014792d",
+        "source-e18dc1cf556fc915",
+        "source-2e937b94b8b7edc6"
+      ],
+      "conditions": "Distinct polarized-neutron specimens and sensitivity limits; comment/reply identities alone do not resolve calibration disputes.",
+      "verificationScope": "Selected primary passages and independent two-level illustration; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h3-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. Historical abstracts, selected figures and toy spectra do not replace full final-version comparisons, raw-data reproduction or a comprehensive competing-literature assessment. Maintain separate definitions for a gap magnitude, crossover onset, charge modulation and superconducting transition.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-b8f71a71e90d00ff",
+        "source-07213acd01bb9b90",
+        "source-377dc0bc5c5160fa"
+      ],
+      "conditions": "Probe, material, doping, source version, onset criterion and field must be retained. A spectral gap or Hall number alone does not determine microscopic order.",
+      "verificationScope": "Selected primary passages and independent two-level illustration; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h3-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Seek predictions that discriminate between explanations on characterized specimens. Compare the same doping and field conditions across spectroscopy, transport and symmetry probes; test whether disorder or controlled tuning separates pairing fluctuations from the larger spectral suppression. A promising theory should explain both supporting observations and boundary cases instead of treating every normal-state anomaly as its confirmation.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-377dc0bc5c5160fa",
+        "source-fae77f2c38d4cf72",
+        "source-4fa5e96f6d9eec1b"
+      ],
+      "conditions": "Probe, material, doping, source version, onset criterion and field must be retained. A spectral gap or Hall number alone does not determine microscopic order.",
+      "verificationScope": "Selected primary passages and independent two-level illustration; full scientific acceptance remains open."
+    }
+  ]
+}
