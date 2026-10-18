@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "ae7c46225bb86c5a931f",
+  "revision": "e81cb8358fe3168b358f",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -2180,6 +2180,89 @@
         "10.1103/PhysRevLett.39.1201"
       ],
       "text": " Scope\n\nTwo-dimensional geometry and interface location are different coordinates. A film can have weak out-of-plane electronic dispersion without displaying a clean two-dimensional phase transition. An interface can host a superconducting region even when its two constituents are not superconducting alone. Neither statement identifies one universal mechanism for increasing a critical temperature.  \n\nAn interface may change charge transfer, oxygen defects, strain, orbital structure, phonons and disorder at the same time. Pair formation and macroscopic phase coherence can also occur at different scales. A useful report states whether a temperature comes from a spectral gap, resistive onset, zero resistance, magnetic screening or a BKT analysis.   \n\n Mathematical assumptions\n\nFor an ideal two-dimensional phase model, the BKT universal jump can be written in an energy-stiffness convention as\n\n\nkBT{\\mathrm{BKT}}=\\frac{\\pi}{2}Js(T{\\mathrm{BKT}}^-).\n\n\nHere Js is the renormalized total phase stiffness immediately below the transition. The normalization and the relevant long-wavelength limit must be stated. The relation does not apply directly to a bare mean-field pairing amplitude, and it does not separately measure a geometric contribution to the total stiffness. Finite size, inhomogeneity and interlayer coupling can modify an experimental comparison. \n\nBCS-like amplitude formation and BKT-like phase ordering describe different aspects of a system. Treating them as mutually exclusive microscopic pairing mechanisms would confuse an interaction model with a phase-coherence transition. \n\n Experimental criteria\n\nCombine independent phase-sensitive observables rather than fitting one resistive tail. Test non-linear current-voltage behavior, a suitable fluctuation-transport regime and sheet stiffness where available. Check finite-size effects, heating, current range and measurement frequency. A large anisotropy of the upper critical field is not by itself a BKT proof.\n\nAt LaAlO3/SrTiO3, Reyren and colleagues reported an interface transition around 200 mK with two-dimensional behavior. The source's inferred superconducting thickness is an upper bound, not an exact directly imaged electronic width. Gating can tune an interface phase diagram without proving that carrier density is its only control parameter. \n\n Interface examples\n\nCuprate heterostructures constructed from non-superconducting components demonstrate that an interface can support superconductivity. Gozar and colleagues and the layer-selective work of Logvenov and colleagues constrain where the superconducting response occurs. They establish particular interface states rather than the claim that interlayer coupling is irrelevant to every high-temperature cuprate.  \n\nFor single-layer FeSe/SrTiO3, a roughly 65 ± 5 K ARPES pairing scale retains its spectroscopic label. Replica-band evidence supports an interface electron-phonon interaction, but does not quantify every contribution to the full pairing kernel. This number cannot satisfy a query requiring zero resistance, even though it is a valid temperature observation.  \n\n Limits and disputes\n\nA dome-shaped gate dependence does not uniquely identify a quantum critical pairing interaction. Ionic gating also needs electrochemical controls. A superconducting single layer shows that one layer can suffice under the reported conditions, not that dimensionality or interlayer coupling never matters. Interface improvements should not be merged with bulk or transient temperature records.   \n\n Discovery implications\n\nPlan controls that separate thickness, interface termination, oxygen, strain and electrostatics. Report sample-to-sample variation alongside the most favorable device. A mechanism becomes more useful when it predicts which independent interface modification should change a gap scale and which should change phase stiffness. Keep those two outcomes separate in both the narrative and structured evidence.  \n\n Related topics\n\nSee , , and ."
+    },
+    {
+      "id": "scwiki-d12",
+      "topicId": "scwiki-topic-d12",
+      "code": "D12",
+      "slug": "topological-superconductor-candidates",
+      "title": "Topological superconductor candidates: materials and devices",
+      "summary": "Compare bulk crystals, superconducting surfaces, vortex spectra and semiconductor devices while preserving the boundary between candidate signals, topological interpretation and demonstrated operations.",
+      "aliases": [
+        "topological superconductor candidates",
+        "Majorana materials",
+        "FeTeSe vortex",
+        "YPtBi",
+        "拓扑超导候选",
+        "拓扑超导材料"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory",
+        "hypothesis"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "b6f0e9f711804d6ce4db",
+      "materialCases": [
+        {
+          "id": "scwiki-d12-material-1",
+          "recordType": "experiment",
+          "formula": "FeTe0.55Se0.45",
+          "sample": "Wang vortex spectra, Figure2,0.5T||c; area-normalized",
+          "tcK": null,
+          "reportedTemperatureK": 0.55,
+          "temperatureKind": "measurement",
+          "temperatureNote": "0.55K vortex-STM measurement; not a superconducting transition temperature.",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "criterion": "vortex-stm-measurement",
+          "probe": "Scanning tunneling spectroscopy",
+          "sourceId": "source-a972be8eb742181f",
+          "aliases": [
+            "FeTeSe",
+            "iron chalcogenide"
+          ]
+        },
+        {
+          "id": "scwiki-d12-material-2",
+          "recordType": "experiment",
+          "formula": "Cu0.12Bi2Se3",
+          "sample": "Hor Cu-intercalated crystal, author2009 Figures2/3",
+          "tcK": 3.8,
+          "reportedTemperatureK": 3.8,
+          "temperatureKind": "transition",
+          "temperatureNote": "Reported magnetic/resistive transition near3.8K; resistance did not reach zero; partial diamagnetic response.",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "criterion": "onset",
+          "probe": "Resistivity and magnetization",
+          "sourceId": "source-0857b567ea17c2f2",
+          "aliases": [
+            "CuxBi2Se3",
+            "copper intercalated bismuth selenide"
+          ]
+        }
+      ],
+      "dois": [
+        "10.1103/PhysRevB.78.195125",
+        "10.1103/PhysRevLett.105.097001",
+        "10.1103/PhysRevLett.100.096407",
+        "10.1103/PhysRevLett.105.077001",
+        "10.1103/PhysRevLett.105.177002",
+        "10.1103/PhysRevLett.104.057001",
+        "10.1103/PhysRevB.84.220504",
+        "10.1126/science.aan4596",
+        "10.1126/science.aao1797",
+        "10.1103/PhysRevLett.114.017001",
+        "10.1103/PhysRevResearch.2.013377",
+        "10.1038/nature26142",
+        "10.1038/s41586-021-03373-x",
+        "10.1038/s41586-024-08445-2",
+        "10.1038/s41586-025-09927-7"
+      ],
+      "text": " Scope\n\nTopological superconductivity concerns the superconducting quasiparticle state, not merely a topological normal-state band next to a superconducting transition. Candidate platforms include intrinsically paired crystals, proximitized surfaces and engineered semiconductor devices. This comparison separates measured superconductivity, a proposed topological phase and evidence for localized Majorana modes. Their criteria and relevant dimensionality differ; a surface result does not automatically classify an entire three-dimensional bulk.    \n\nFor a fully gapped Bogoliubov–de Gennes description, topology depends on dimensionality, symmetries and the occupied quasiparticle states. This restricted framework does not exhaust interacting or nodal superconductivity. A local zero-bias peak is neither a universal requirement for every topological superconductor nor sufficient proof of a Majorana mode. Demonstrating non-Abelian operations is a further question; it is not the definition of every bulk topological superconducting phase.    \n\n Mathematical assumptions\n\nOne clean single-subband wire model uses H(k)=\\xik\\tauz+\\alpha k\\tauz\\sigmay+VZ\\sigmax+\\Delta\\taux, where \\xik=\\hbar^2k^2/(2m)-\\mu, \\sigma acts on spin and \\tau on particle–hole space. Here \\Delta is real induced pairing, spin–orbit and Zeeman axes are perpendicular, and VZ=|g\\muB B|/2 is an energy rather than a magnetic field. With a=\\alpha k, diagonalization yields E\\pm^2=\\xik^2+a^2+VZ^2+\\Delta^2\\pm2\\sqrt{VZ^2(\\xik^2+\\Delta^2)+\\xik^2a^2}.  \n\nThe zero-momentum gap closes at VZ^2=\\mu^2+\\Delta^2. In the stated gapped wire model, the side with VZ^2>\\mu^2+\\Delta^2 supports the topological phase. The inequality alone is not a material diagnostic: setting spin–orbit coupling to zero can leave finite-momentum gapless excitations even when it holds. Independent checks compare 54 matrix spectra, three closure points and that counterexample. They do not simulate multiband disorder, orbital depairing, interfaces or a complete material invariant.  \n\nFu–Berg supplies a sufficient criterion for fully gapped, time-reversal-invariant odd-parity pairing in an inversion-symmetric weak-pairing setting, using the parity of enclosed time-reversal-invariant momenta. It is not a necessary criterion for every topological superconductor, nor proof that a particular doped crystal realizes odd parity. Fu–Kane's proximitized helical surface is a different construction: its uniform superconducting surface and a vortex carrying a localized mode must be distinguished.  \n\n Experimental criteria\n\nHor's Cu-intercalated Bi2Se3 study reports a transition near 3.8 K. In the checked author manuscript, Cu0.12Bi2Se3 has a magnetic response roughly one-fifth of ideal diamagnetism at the lowest accessible temperature, which the authors treat as a lower bound because the transition is incomplete. The resistance does not reach zero. This establishes why sample preparation and connected superconducting paths matter; neither a universal superconducting volume nor topological pairing can be inferred from those numbers alone. \n\nButch's YPtBi crystals show a resistive transition near 0.77 K with an AC diamagnetic response. The critical-field curve uses a 50% resistive criterion, with 10–90% bounds, and field perpendicular to [001]. The often-quoted 1.5 T is a zero-temperature extrapolation. Converting it with B{c2}=\\Phi0/(2\\pi\\xi^2) gives about 14.8 nm as a consistency estimate. Superconductivity in a candidate topological semimetal does not itself identify its pairing topology or establish a calibrated superconducting volume. \n\nTwo iron-chalcogenide papers require separate attribution. Zhang's ARPES study resolves a spin-helical surface band and a superconducting surface gap around 1.8 meV, interpreted as surface topological superconductivity. Its low-temperature measurement at 2.4 K is not the reported 14.5 K transition temperature. The study's surface interpretation must not be replaced by a statement that all bulk pairing is topological. In its angular-gap figure, hollow mirrored markers are not additional independent measurements. \n\nWang's distinct vortex-STM paper studies FeTe0.55Se0.45. Figure 2 spectra at 0.55 K and 0.5 T parallel to c are normalized by integrated spectral area; they cannot be read as an absolute quantized conductance plateau. The approximately 0.3 meV peak width contains instrumental and thermal broadening. Barrier and temperature scans elsewhere use different fields. The zero-energy signal is interpreted as Majorana evidence, while the displayed braiding sequence is a proposal, not a performed operation. \n\nXu's Bi2Te3/NbSe2 heterostructure study compares vortex spectra across film thicknesses. The checked 2013 author version underlying the 2015 publication distinguishes where split peaks become experimentally resolvable from the extrapolated origin of their splitting. The former is around 20 nm even for thinner films; the latter changes near four quintuple layers and supports the authors' Majorana interpretation. Treating every unsplit interval as a directly measured Majorana radius would discard both the extrapolation and approximately 0.2 meV resolution. \n\nSemiconductor readout advances also need their own evidence category. Aghaee's 2025 InAs–Al experiment measures single-shot parity interferometrically and explicitly retains an Andreev-state alternative. Dvir's 2026 work demonstrates parity readout in a minimal Kitaev-chain device, with a two-site rather than asymptotically long-chain model. These are useful experimental capabilities; neither result, as scoped here, establishes braiding or fault-tolerant topological computation. Readout performance, spatial nonlocality and a protected bulk phase remain distinct questions.  \n\n Limits and disputes\n\nConfinement, disorder and ordinary Andreev states can produce misleading local zero-bias signatures. Even apparent agreement with an ideal conductance value needs temperature, barrier, calibration and nonlocal checks. The 2018 paper Quantized Majorana conductance was retracted in 2021; its original result is retained here only as retracted history. The notice describes charge-jump corrections, an axis-label problem and conductance recalibration. A withdrawn claim cannot count as independent confirmation of later devices.   \n\nComplete scientific acceptance remains open. This article checks selected primary passages, figures and restricted models. Earlier author versions are identified; complete final-version comparisons, supplements, raw-data analysis, calibration and exclusion of competing interpretations remain unfinished. These limits concern the present review and should not be inflated into a claim that every platform has the same evidential status.       \n\n Discovery implications\n\nSpecify the target first: bulk odd-parity superconductivity, a proximitized topological surface, a wire end state or a controllable parity device. Then record composition, geometry, temperature, field, superconducting criterion and competing-state tests for that target. Compare complementary probes on characterized samples and preserve failures and retractions. Strong spin–orbit coupling or an attractive band calculation can motivate an experiment, but cannot replace identification of the actual paired phase and its protected observables.     \n\n Related topics\n\n, , , and ."
     },
     {
       "id": "scwiki-d2",
