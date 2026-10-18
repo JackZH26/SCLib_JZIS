@@ -16,6 +16,36 @@ import {legacyDestination} from "@/lib/site-routes";
 import {GET} from "@/app/api/scwiki/v1/[[...segments]]/route";
 const get=(segments:string[],query="")=>GET(new NextRequest("http://localhost/api/scwiki/v1/"+segments.join("/")+query),{params:Promise.resolve({segments})});
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("ranks curated topic names before incidental body mentions without relaxing conditions",()=>{
+  const base=searchIndex().entries[0];
+  const incidental={...base,code:"A1",title:"Background",aliases:[],summary:"Background",text:"A short mention of cobalt vortex diagnostics",materialCases:[]};
+  const topic={...base,code:"Z9",title:"Dedicated diagnostics",aliases:["cobalt vortex diagnostics"],summary:"A dedicated topic",text:"Evidence and limitations",materialCases:[]};
+  expect(searchArticles([incidental,topic],"cobalt vortex diagnostics").map(x=>x.code)).toEqual(["Z9","A1"]);
+  expect(searchArticles([incidental,topic],"cobalt vortex diagnostics",{tcMin:1})).toEqual([]);
+  for(const [q,codes]of [["equal spin pairing",["B4","C9","G2"]],["two-band superconductivity",["B12","D7"]],["FeSe",["D4","D11"]]] as const){
+   expect(searchArticles(searchIndex().entries,q).slice(0,3).some(x=>(codes as readonly string[]).includes(x.code))).toBe(true);
+  }
+ });
+ it("matches DOI identifiers exactly, including DOI URLs, instead of scattered body tokens",()=>{
+  const base=searchIndex().entries[0];
+  const exact={...base,code:"Z9",dois:["10.1234/Example.567"],text:""};
+  const decoy={...base,code:"A1",dois:[],text:"10 1234 example 567"};
+  for(const q of ["10.1234/example.567","https://doi.org/10.1234/Example.567","doi:10.1234/Example.567"]){
+   expect(searchArticles([decoy,exact],q).map(x=>x.code)).toEqual(["Z9"]);
+  }
+ });
+ it("keeps article review limits attached to every JSON section, including core articles",async()=>{
+  const a=articles().find(x=>x.code==="D6")!;
+  for(const section of a.sections){
+   const response=await get(["articles",a.id,"sections",section.id]);const payload=await response.json();
+   expect(payload.review).toEqual(a.review);
+   expect(payload.articleRevision).toBe(a.revision);
+   expect(response.headers.get("X-SCWiki-Revision")).toBe(a.revision);
+  }
+  const spec=await(await get(["openapi.json"])).json();
+  expect(spec.components.schemas.SectionEnvelope.required).toContain("review");
+  expect(spec.components.schemas.Review.required).toContain("limitations");
+ });
  it("retains all 71 approved extension targets separately from 282 pinned sources",()=>{
   const manifest=JSON.parse(readFileSync("content/scwiki/source-manifest.json","utf8"));
   const inventory=JSON.parse(readFileSync("content/scwiki/extension-inventory.json","utf8"));

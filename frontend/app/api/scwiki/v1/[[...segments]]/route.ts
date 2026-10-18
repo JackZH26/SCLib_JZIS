@@ -42,7 +42,7 @@ export async function GET(request:NextRequest,{params}:{params:Promise<{segments
     const review="## Review scope\n\n"+article.review.scope+"\n\n"+article.review.limitations.map(note=>"- "+note).join("\n");
     return text("# "+article.title+"\n\n"+section.markdown+"\n\n## Sources\n\n"+sourceText+"\n\n## Claim evidence and conditions\n\n"+claimText+"\n\n"+review+itemReview+"\n\nArticle ID: "+article.id+". Revision: "+article.revision+". Section ID: "+section.id+".\n",article.revision);
    }
-   return json({...base,articleId:article.id,articleRevision:article.revision,section,claims,sources,scopeItems,materialCases:section.id==="material-cases"?article.materialCases:[]},200,article.revision);
+   return json({...base,articleId:article.id,articleRevision:article.revision,review:article.review,section,claims,sources,scopeItems,materialCases:section.id==="material-cases"?article.materialCases:[]},200,article.revision);
   }
  }
  return json({error:"Endpoint not found."},404);

@@ -5,6 +5,8 @@ export function normalizeSearch(value: string): string {
 }
 export function searchArticles(entries: SearchEntry[], query: string, filters: SearchFilters = {}): SearchEntry[] {
   const normalizedQuery=normalizeSearch(query.slice(0,200));
+  const doiQuery=query.trim().replace(/^https?:\/\/(?:dx\.)?doi\.org\//i,"").replace(/^doi:\s*/i,"").toLowerCase();
+  const isDoi=/^10\.\d{4,9}\/\S+$/i.test(doiQuery);
   const tokens = normalizedQuery.split(/\s+/).filter(Boolean);
   const phraseMatches=(text:string,term:string)=>!!term && (" "+text+" ").includes(" "+term+" ");
   // Recognized material names bind conditions to that material, even in a multi-material topic.
@@ -16,7 +18,7 @@ export function searchArticles(entries: SearchEntry[], query: string, filters: S
     const words=new Set(haystack.split(" "));
     // Han keywords do not use spaces as word boundaries; keep short Latin
     // tokens exact so element symbols do not match arbitrary prose fragments.
-    if(!tokens.every(token=>token.length<=2&&!/^\p{Script=Han}+$/u.test(token)?words.has(token):haystack.includes(token))) return false;
+    if(isDoi ? !entry.dois.some(doi=>doi.toLowerCase()===doiQuery) : !tokens.every(token=>token.length<=2&&!/^\p{Script=Han}+$/u.test(token)?words.has(token):haystack.includes(token))) return false;
     if(filters.evidence && !entry.evidenceTypes.some(type=>type===filters.evidence)) return false;
     const conditioned=filters.pressure || filters.equilibrium || filters.criterion || filters.tcMin!==undefined;
     if(!conditioned) return true;
@@ -29,8 +31,18 @@ export function searchArticles(entries: SearchEntry[], query: string, filters: S
       (!filters.criterion || record.criterion===filters.criterion) &&
       (filters.tcMin===undefined || (record.recordType==="experiment" && record.tcK!==null && record.tcK>=filters.tcMin)));
   }).sort((a,b)=>{
-    const q=normalizeSearch(query);
-    const score=(x:SearchEntry)=>normalizeSearch(x.title).includes(q)?0:1;
+    // A curated topic alias is stronger evidence of relevance than an incidental
+    // mention in another article's body. Ranking never changes record filters.
+    const score=(x:SearchEntry)=>{
+      if(!normalizedQuery||isDoi)return 0;
+      const title=normalizeSearch(x.title),aliases=x.aliases.map(normalizeSearch);
+      if(title===normalizedQuery)return 0;
+      if(aliases.includes(normalizedQuery))return 1;
+      if(phraseMatches(title,normalizedQuery))return 2;
+      if(aliases.some(alias=>phraseMatches(alias,normalizedQuery)))return 3;
+      if(phraseMatches(normalizeSearch(x.summary),normalizedQuery))return 4;
+      return 5;
+    };
     return score(a)-score(b)||a.code.localeCompare(b.code,"en",{numeric:true});
   });
 }
