@@ -19,9 +19,49 @@ The candidate consists of three files in `nginx/`:
 - `scwiki-proxy-common.conf`: shared exact-root and slash-descendant proxy policy,
   installed at the include path in the server snippet when a release is approved.
 
-Do not apply the server snippet to `api.jzis.org`, replace the whole active
-configuration, or remove any existing service. The normal site generator has not
-yet been changed to install these snippets automatically.
+Do not apply the server snippet to `api.jzis.org`, overwrite the active file with
+a generic template, or remove any existing service. The normal site generator
+has not been changed to install these snippets automatically.
+
+## Complete candidate from an audited snapshot
+
+`scripts/prepare_scwiki_proxy.py` creates a separate candidate and a hash-bound
+receipt from an explicitly hashed input snapshot. It adds only the HTTP zone and
+three SCWiki locations in exactly one HTTPS `jzis.org`/`www.jzis.org` server.
+The shared proxy snippet is expanded inline, so this option needs no new snippet
+files on the VPS. Removing the two generated ranges reconstructs every original
+byte, including TLS, ACME, authentication, interview and other server blocks.
+
+The generator refuses changed input, existing SCWiki policy, ambiguous HTTPS
+hosts, server-level rewrites/trust overrides, in-place output and overwriting
+candidate or receipt files. Parsing respects quoted strings, comments, escaped
+characters and braced variables. Candidate and receipt files are created with
+owner-only permissions. No network, installation or service operation occurs.
+
+Run from the repository root with reviewed snapshot paths and its actual hash:
+
+```sh
+python3 scripts/prepare_scwiki_proxy.py \
+  --input /path/to/audited-jzis.conf \
+  --expected-sha256 AUDITED_SHA256 \
+  --output /path/to/inactive-candidate.conf \
+  --receipt /path/to/candidate-receipt.json
+```
+
+The 19 October candidate was generated from the read-only VPS snapshot and its
+diff contains only additions. The three other server blocks are byte-identical.
+This preservation check does not validate hidden includes, inherited directives,
+the complete Nginx grammar, TLS file access, or target-version behavior. The
+candidate receipt explicitly leaves those deployment gates open.
+
+Before an approved release, compare the current remote input hash again. If a
+broader website migration also changes this file, reconcile SCWiki with that
+reviewed final configuration and regenerate the candidate; do not overwrite one
+candidate with the other. Retain the original file, resolved symlink target,
+permissions and hash as rollback inputs. Validate the complete candidate with
+the target Nginx binary before activation, and validate and smoke-test the original
+configuration if rollback becomes necessary. These steps are release gates, not
+operations performed by the local generator.
 
 ## Candidate contract
 
