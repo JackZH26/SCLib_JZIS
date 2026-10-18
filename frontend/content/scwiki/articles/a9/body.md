@@ -18,7 +18,7 @@ Beenakker's later lectures give, at zero temperature, bias and magnetic field, $
 
 Equal normal conductance does not determine the superconducting conductance. For example, transmission sets $(1,0)$ and $(1/2,1/2)$ have the same sum but different sums of $\mathcal T_n^2/(2-\mathcal T_n)^2$. This independent counterexample explains why a contact resistance alone cannot specify a multichannel junction.
 
-For an elastic spectrum $g_0(E)$ whose temperature dependence is held fixed, thermal smearing is a convolution with the Fermi derivative:
+As a separate local derivation, take an elastic conductance spectrum $g_0(E)$ that is independent of temperature and bias, with reservoirs described by equilibrium Fermi functions at the same $T>0$. Let $e>0$ be the elementary charge and $eV$ the chemical-potential shift. Thermal smearing then gives:
 
 $$G(V,T)=\int dE\,g_0(E)\frac{\operatorname{sech}^2[(E-eV)/(2k_BT)]}{4k_BT}.$$
 

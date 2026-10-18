@@ -27,10 +27,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.193385+00:00",
+  "modifiedAt": "2026-10-19",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Pinned A8 chapter; selected published Cao passages, Legros/Romero earlier manuscripts and Martin abstract; independent fit-window, Drude-degeneracy, parallel-channel and frequency-convention checks.",
+    "checkedAt": "2026-10-19",
+    "scope": "Pinned A8 chapter; selected published Cao passages, Legros/Romero earlier manuscripts and Martin abstract; independent fit-window, Drude-degeneracy, parallel-channel and frequency-convention checks. Follow-up explicitly separates Legros v1 p. 4 from the local degeneracy and parallel-channel examples.",
     "limitations": [
       "Selected checks are not full scientific acceptance, experimental replication or complete uncertainty propagation.",
       "Legros and Romero earlier manuscript passages are version-specific; exhaustive comparison with final published articles remains open.",
@@ -245,7 +245,9 @@
         "source-c1ae7869b672a8e8"
       ],
       "conditions": "Conditional local models: symmetric equal-weight quadratic fit; single isotropic constant-parameter Drude channel; circular parabolic 2D band with explicit degeneracy; scalar zero-field parallel conductance; stated frequency denominator.",
-      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting."
+      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Legros v1 p. 4 supplies the isotropic Drude relation and its twofold-degenerate 2D expression. Explicit total-degeneracy counting, fitting-window examples and the parallel-channel counterexample are local conditional derivations; they are not fitted results from that paper."
     },
     {
       "id": "scwiki-a8-claim-mathematical-assumptions-2",
@@ -256,7 +258,9 @@
         "source-c1ae7869b672a8e8"
       ],
       "conditions": "Conditional local models: symmetric equal-weight quadratic fit; single isotropic constant-parameter Drude channel; circular parabolic 2D band with explicit degeneracy; scalar zero-field parallel conductance; stated frequency denominator.",
-      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting."
+      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Legros v1 p. 4 supplies the isotropic Drude relation and its twofold-degenerate 2D expression. Explicit total-degeneracy counting, fitting-window examples and the parallel-channel counterexample are local conditional derivations; they are not fitted results from that paper."
     },
     {
       "id": "scwiki-a8-claim-mathematical-assumptions-3",
@@ -267,7 +271,9 @@
         "source-c1ae7869b672a8e8"
       ],
       "conditions": "Conditional local models: symmetric equal-weight quadratic fit; single isotropic constant-parameter Drude channel; circular parabolic 2D band with explicit degeneracy; scalar zero-field parallel conductance; stated frequency denominator.",
-      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting."
+      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Legros v1 p. 4 supplies the isotropic Drude relation and its twofold-degenerate 2D expression. Explicit total-degeneracy counting, fitting-window examples and the parallel-channel counterexample are local conditional derivations; they are not fitted results from that paper."
     },
     {
       "id": "scwiki-a8-claim-mathematical-assumptions-4",
@@ -278,7 +284,9 @@
         "source-c1ae7869b672a8e8"
       ],
       "conditions": "Conditional local models: symmetric equal-weight quadratic fit; single isotropic constant-parameter Drude channel; circular parabolic 2D band with explicit degeneracy; scalar zero-field parallel conductance; stated frequency denominator.",
-      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting."
+      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Legros v1 p. 4 supplies the isotropic Drude relation and its twofold-degenerate 2D expression. Explicit total-degeneracy counting, fitting-window examples and the parallel-channel counterexample are local conditional derivations; they are not fitted results from that paper."
     },
     {
       "id": "scwiki-a8-claim-mathematical-assumptions-5",
@@ -289,7 +297,9 @@
         "source-c1ae7869b672a8e8"
       ],
       "conditions": "Conditional local models: symmetric equal-weight quadratic fit; single isotropic constant-parameter Drude channel; circular parabolic 2D band with explicit degeneracy; scalar zero-field parallel conductance; stated frequency denominator.",
-      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting."
+      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Legros v1 p. 4 supplies the isotropic Drude relation and its twofold-degenerate 2D expression. Explicit total-degeneracy counting, fitting-window examples and the parallel-channel counterexample are local conditional derivations; they are not fitted results from that paper."
     },
     {
       "id": "scwiki-a8-claim-mathematical-assumptions-6",
@@ -300,7 +310,9 @@
         "source-c1ae7869b672a8e8"
       ],
       "conditions": "Conditional local models: symmetric equal-weight quadratic fit; single isotropic constant-parameter Drude channel; circular parabolic 2D band with explicit degeneracy; scalar zero-field parallel conductance; stated frequency denominator.",
-      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting."
+      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Legros v1 p. 4 supplies the isotropic Drude relation and its twofold-degenerate 2D expression. Explicit total-degeneracy counting, fitting-window examples and the parallel-channel counterexample are local conditional derivations; they are not fitted results from that paper."
     },
     {
       "id": "scwiki-a8-claim-mathematical-assumptions-7",
@@ -311,7 +323,9 @@
         "source-c1ae7869b672a8e8"
       ],
       "conditions": "Conditional local models: symmetric equal-weight quadratic fit; single isotropic constant-parameter Drude channel; circular parabolic 2D band with explicit degeneracy; scalar zero-field parallel conductance; stated frequency denominator.",
-      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting."
+      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Legros v1 p. 4 supplies the isotropic Drude relation and its twofold-degenerate 2D expression. Explicit total-degeneracy counting, fitting-window examples and the parallel-channel counterexample are local conditional derivations; they are not fitted results from that paper."
     },
     {
       "id": "scwiki-a8-claim-mathematical-assumptions-8",
@@ -322,7 +336,9 @@
         "source-c1ae7869b672a8e8"
       ],
       "conditions": "Conditional local models: symmetric equal-weight quadratic fit; single isotropic constant-parameter Drude channel; circular parabolic 2D band with explicit degeneracy; scalar zero-field parallel conductance; stated frequency denominator.",
-      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting."
+      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Legros v1 p. 4 supplies the isotropic Drude relation and its twofold-degenerate 2D expression. Explicit total-degeneracy counting, fitting-window examples and the parallel-channel counterexample are local conditional derivations; they are not fitted results from that paper."
     },
     {
       "id": "scwiki-a8-claim-mathematical-assumptions-9",
@@ -333,7 +349,9 @@
         "source-c1ae7869b672a8e8"
       ],
       "conditions": "Conditional local models: symmetric equal-weight quadratic fit; single isotropic constant-parameter Drude channel; circular parabolic 2D band with explicit degeneracy; scalar zero-field parallel conductance; stated frequency denominator.",
-      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting."
+      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Legros v1 p. 4 supplies the isotropic Drude relation and its twofold-degenerate 2D expression. Explicit total-degeneracy counting, fitting-window examples and the parallel-channel counterexample are local conditional derivations; they are not fitted results from that paper."
     },
     {
       "id": "scwiki-a8-claim-mathematical-assumptions-10",
@@ -344,7 +362,9 @@
         "source-c1ae7869b672a8e8"
       ],
       "conditions": "Conditional local models: symmetric equal-weight quadratic fit; single isotropic constant-parameter Drude channel; circular parabolic 2D band with explicit degeneracy; scalar zero-field parallel conductance; stated frequency denominator.",
-      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting."
+      "verificationScope": "Independent synthetic/algebra/finite-difference checks, not experimental calibration or original dataset fitting.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Legros v1 p. 4 supplies the isotropic Drude relation and its twofold-degenerate 2D expression. Explicit total-degeneracy counting, fitting-window examples and the parallel-channel counterexample are local conditional derivations; they are not fitted results from that paper."
     },
     {
       "id": "scwiki-a8-claim-experimental-criteria-1",

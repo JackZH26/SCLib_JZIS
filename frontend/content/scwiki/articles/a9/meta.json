@@ -27,10 +27,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T07:13:29.474846+00:00",
+  "modifiedAt": "2026-10-19",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected Andreev original scan, Beenakker lecture passages and experimental/theoretical abstracts; independent ideal scattering, channel-distribution and thermal-kernel calculations.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Andreev original scan, Beenakker lecture passages and experimental/theoretical abstracts; independent ideal scattering, channel-distribution and thermal-kernel calculations. Thermal smearing is an explicitly separate local fixed-spectrum derivation with positive-temperature and equilibrium conditions.",
     "limitations": [
       "Scoped checks are not full scientific acceptance or independent reproduction of contact spectra.",
       "BTK original and Beenakker 1992 paper remain abstract-scoped; later same-title lectures have a separate source/version.",
@@ -300,13 +300,15 @@
     {
       "id": "scwiki-a9-claim-mathematical-assumptions-7",
       "sectionId": "mathematical-assumptions",
-      "statement": "For an elastic spectrum $g_0(E)$ whose temperature dependence is held fixed, thermal smearing is a convolution with the Fermi derivative:",
+      "statement": "As a separate local derivation, take an elastic conductance spectrum $g_0(E)$ that is independent of temperature and bias, with reservoirs described by equilibrium Fermi functions at the same $T>0$. Let $e>0$ be the elementary charge and $eV$ the chemical-potential shift. Thermal smearing then gives:",
       "evidenceType": "theory",
       "sourceIds": [
         "source-02f3aac52d07be56"
       ],
-      "conditions": "Conventional NS interface under explicitly stated band, flux, symmetry, temperature and response assumptions; independent ideal models do not certify real contacts.",
-      "verificationScope": "Selected original scan/review passages or author abstract as cited; conditional complex-amplitude and thermal-kernel checks, not full paper reproduction."
+      "conditions": "Fixed elastic spectrum independent of temperature and bias; equal positive reservoir temperature; chemical-potential displacement eV with e>0. No heating, nonequilibrium distributions, self-consistent gap change or nonlinear barrier.",
+      "verificationScope": "Local Fermi-function differentiation, normalization and synthetic quadrature; cited review provides zero-temperature context only, not direct finite-temperature derivation verification.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Beenakker v2 pp. 3-4 supplies zero-temperature coherent-interface context. This finite-temperature convolution is independently derived from the equilibrium Fermi occupation difference for a fixed spectrum; it is not attributed to those zero-temperature formulas."
     },
     {
       "id": "scwiki-a9-claim-mathematical-assumptions-8",
@@ -316,8 +318,10 @@
       "sourceIds": [
         "source-02f3aac52d07be56"
       ],
-      "conditions": "Conventional NS interface under explicitly stated band, flux, symmetry, temperature and response assumptions; independent ideal models do not certify real contacts.",
-      "verificationScope": "Selected original scan/review passages or author abstract as cited; conditional complex-amplitude and thermal-kernel checks, not full paper reproduction."
+      "conditions": "Fixed elastic spectrum independent of temperature and bias; equal positive reservoir temperature; chemical-potential displacement eV with e>0. No heating, nonequilibrium distributions, self-consistent gap change or nonlinear barrier.",
+      "verificationScope": "Local Fermi-function differentiation, normalization and synthetic quadrature; cited review provides zero-temperature context only, not direct finite-temperature derivation verification.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Beenakker v2 pp. 3-4 supplies zero-temperature coherent-interface context. This finite-temperature convolution is independently derived from the equilibrium Fermi occupation difference for a fixed spectrum; it is not attributed to those zero-temperature formulas."
     },
     {
       "id": "scwiki-a9-claim-mathematical-assumptions-9",
@@ -327,8 +331,10 @@
       "sourceIds": [
         "source-02f3aac52d07be56"
       ],
-      "conditions": "Conventional NS interface under explicitly stated band, flux, symmetry, temperature and response assumptions; independent ideal models do not certify real contacts.",
-      "verificationScope": "Selected original scan/review passages or author abstract as cited; conditional complex-amplitude and thermal-kernel checks, not full paper reproduction."
+      "conditions": "Fixed elastic spectrum independent of temperature and bias; equal positive reservoir temperature; chemical-potential displacement eV with e>0. No heating, nonequilibrium distributions, self-consistent gap change or nonlinear barrier.",
+      "verificationScope": "Local Fermi-function differentiation, normalization and synthetic quadrature; cited review provides zero-temperature context only, not direct finite-temperature derivation verification.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Beenakker v2 pp. 3-4 supplies zero-temperature coherent-interface context. This finite-temperature convolution is independently derived from the equilibrium Fermi occupation difference for a fixed spectrum; it is not attributed to those zero-temperature formulas."
     },
     {
       "id": "scwiki-a9-claim-experimental-criteria-1",
