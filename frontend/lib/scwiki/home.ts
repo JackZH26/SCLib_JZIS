@@ -22,6 +22,7 @@ export const topicGroups = [
     {code:"N1", label:"Room-temperature superconductivity?"},
     {code:"N2", label:"A unified pairing mechanism?"},
     {code:"N3", label:"Predicting correlated-material Tc?"},
+    {code:"N4", label:"Establishing Majorana zero modes?"},
     {code:"N10", label:"What limits flat-band Tc?"},
   ]},
 ] as const;

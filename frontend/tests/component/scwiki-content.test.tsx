@@ -128,6 +128,30 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(a.references.find(r=>r.doi==="10.1103/PhysRevX.15.021071")!.verification.evidenceUrl).toMatch(/v2$/);
  });
 
+ it("preserves Majorana operation evidence, preprint status and debate access limits",async()=>{
+  const a=articles().find(a=>a.code==="N4")!;
+  expect(a.slug).toBe("open-questions/n4");expect(a.materialCases).toEqual([]);
+  for(const id of a.scopeItems![0].sectionIds){
+   const data=await(await get(["articles",a.id,"sections",id])).json();
+   expect(data.scopeItems.map((i:{id:string})=>i.id)).toEqual(["N4"]);
+   const md=await(await get(["articles",a.id,"sections",id],"?format=markdown")).text();
+   expect(md).toContain(data.section.markdown);
+   for(const limit of a.review!.limitations)expect(md).toContain(limit);
+  }
+  for(const q of ["Majorana零模实验证认","non-Abelian braiding evidence","a 50/50 histogram alone"]){
+   expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
+   expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
+  }
+  for(const code of ["N4","F5","D12"]){
+   const article=articles().find(a=>a.code===code)!;
+   expect(article.references.find(r=>r.doi==="10.48550/arXiv.2607.09511")!.publicationStatus).toBe("preprint");
+   expect(article.markdown).toContain("Publication: preprint");
+  }
+  expect(a.references.filter(r=>r.verification.scope==="publication-identity-only")).toHaveLength(2);
+  expect(a.body).toContain("not a unique fusion signature");
+  expect(articles().find(a=>a.code==="D12")!.body).toContain("Van Loo's 2026 work");
+ });
+
  it("publishes all fifteen experimental-method sections with individual evidence limits",async()=>{
   const a=articles().find(a=>a.code==="I")!;
   expect(a.publicationKind).toBe("handbook");expect(a.slug).toBe("experimental-methods");

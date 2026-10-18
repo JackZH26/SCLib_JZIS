@@ -24,7 +24,9 @@ Wang's distinct vortex-STM paper studies FeTe0.55Se0.45. Figure 2 spectra at 0.5
 
 Xu's Bi2Te3/NbSe2 heterostructure study compares vortex spectra across film thicknesses. The checked 2013 author version underlying the 2015 publication distinguishes where split peaks become experimentally resolvable from the extrapolated origin of their splitting. The former is around 20 nm even for thinner films; the latter changes near four quintuple layers and supports the authors' Majorana interpretation. Treating every unsplit interval as a directly measured Majorana radius would discard both the extrapolation and approximately 0.2 meV resolution. [R10](#ref-source-6861a8084ed315a1)
 
-Semiconductor readout advances also need their own evidence category. Aghaee's 2025 InAs–Al experiment measures single-shot parity interferometrically and explicitly retains an Andreev-state alternative. Dvir's 2026 work demonstrates parity readout in a minimal Kitaev-chain device, with a two-site rather than asymptotically long-chain model. These are useful experimental capabilities; neither result, as scoped here, establishes braiding or fault-tolerant topological computation. Readout performance, spatial nonlocality and a protected bulk phase remain distinct questions. [R14](#ref-source-e3824a8727c3ec54) [R15](#ref-source-a3c2dc153700478a)
+Semiconductor readout advances also need their own evidence category. Aghaee's 2025 InAs–Al experiment measures single-shot parity interferometrically and explicitly retains an Andreev-state alternative. Van Loo's 2026 work demonstrates parity readout in a minimal Kitaev-chain device, with a two-site rather than asymptotically long-chain model. These are useful experimental capabilities; neither result, as scoped here, establishes braiding or fault-tolerant topological computation. Readout performance, spatial nonlocality and a protected bulk phase remain distinct questions. [R14](#ref-source-e3824a8727c3ec54) [R15](#ref-source-a3c2dc153700478a)
+
+A 10 July 2026 preprint by Zatelli and colleagues reports coherent parity oscillations in coupled minimal Kitaev chains. The authors distinguish partial protection at the sweet spot from the unprotected degeneracy-lifting operations used for rotation. No journal acceptance was verified here; this is not a demonstrated braid or a certified gate fidelity. [R16](#ref-source-818818441532a8ec)
 
 ## Limits and disputes
 
@@ -39,3 +41,5 @@ Specify the target first: bulk odd-parity superconductivity, a proximitized topo
 ## Related topics
 
 [Topological superconductivity](/scwiki/topological-superconductivity), [Majorana zero modes](/scwiki/majorana-zero-modes), [Heavy-fermion superconductors](/scwiki/heavy-fermion-superconductors), and [Spin–orbit coupling](/scwiki/spin-orbit-coupling).
+
+For a dated comparison of spectroscopy, control and exchange criteria, see [the Majorana identification question](/scwiki/open-questions/n4).

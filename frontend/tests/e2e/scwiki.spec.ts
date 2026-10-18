@@ -146,7 +146,7 @@ test("long desktop handbook contents keep the final links reachable within a sho
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(1280);
 });
 
- for(const [code,label,query] of [["N1","Room-temperature superconductivity?","室温常压超导"],["N2","A unified pairing mechanism?","非常规超导统一理论"],["N3","Predicting correlated-material Tc?","强关联Tc预测"]]) test(code+" question is reachable and preserves scoped evidence across formats",async({page,request})=>{
+ for(const [code,label,query] of [["N1","Room-temperature superconductivity?","室温常压超导"],["N2","A unified pairing mechanism?","非常规超导统一理论"],["N3","Predicting correlated-material Tc?","强关联Tc预测"],["N4","Establishing Majorana zero modes?","Majorana零模实验证认"]]) test(code+" question is reachable and preserves scoped evidence across formats",async({page,request})=>{
  await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
  await page.getByRole("link",{name:label,exact:true}).click();
  await expect(page).toHaveURL(new RegExp("/scwiki/open-questions/"+code.toLowerCase()+"$"));

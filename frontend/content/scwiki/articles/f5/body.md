@@ -24,6 +24,8 @@ Van Loo and colleagues, published online on 11 February 2026, read out the parit
 
 Spectroscopy, parity lifetime, readout fidelity, robustness, fusion and exchange probe different properties. Report the measured observable and the alternatives addressed by that particular protocol. A parity readout result alone does not demonstrate a non-Abelian exchange operation or a fault-tolerant processor. There is no platform-independent checklist in which every local zero-bias feature automatically advances toward a universal confirmation threshold. [R4](#ref-source-dca781066e96eecc) [R5](#ref-source-e3824a8727c3ec54) [R6](#ref-source-a3c2dc153700478a)
 
+A 10 July 2026 preprint by Zatelli and colleagues reports coherent parity oscillations in coupled minimal Kitaev chains. The authors distinguish partial protection at the sweet spot from the unprotected degeneracy-lifting operations used for rotation. No journal acceptance was verified here; this is not a demonstrated braid or a certified gate fidelity. [R9](#ref-source-818818441532a8ec)
+
 ## Limits and disputes
 
 The 2018 article “Quantized Majorana conductance” was retracted on 8 March 2021. The authors' notice describes undisclosed charge-jump corrections, a mislabeled axis and recalibration shifting plateau values above the claimed quantized conductance. The withdrawn positive claim is retained only as a historical record with its retraction notice. It cannot validate a device, and its retraction does not itself settle every other Majorana proposal. [R7](#ref-source-6a7f18eec743e89d) [R8](#ref-source-f127bb2d99183698)
@@ -37,3 +39,5 @@ Keep the operator convention, physical geometry, bulk-gap assumptions and measur
 ## Related topics
 
 Continue with [topological superconductivity](/scwiki/topological-superconductivity), [time-reversal-invariant topology](/scwiki/time-reversal-invariant-topological-superconductivity), [Chern number](/scwiki/chern-number), [chiral pairing](/scwiki/chiral-pairing) and [Andreev reflection](/scwiki/andreev-reflection).
+
+For a dated comparison of spectroscopy, control and exchange criteria, see [the Majorana identification question](/scwiki/open-questions/n4).

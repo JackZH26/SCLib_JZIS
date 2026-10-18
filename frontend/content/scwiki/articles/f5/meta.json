@@ -22,14 +22,15 @@
     "F4",
     "F3",
     "C7",
-    "A9"
+    "A9",
+    "N4"
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T14:22:32.414688+00:00",
+  "modifiedAt": "2026-10-18T20:39:53.167036+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected original chain/readout passages and institutional retraction text, independent Fock/BdG spectra and two-site parity checks.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected original chain/readout passages and institutional retraction text, independent Fock/BdG spectra and two-site parity checks. Selected July 2026 coherent-parity preprint results and explicit protection limits.",
     "limitations": [
       "Complete scientific acceptance and full final-version comparisons remain open.",
       "No full device datasets, supplementary readout analysis or platform-by-platform fusion/braiding audit.",
@@ -160,6 +161,20 @@
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://repository.tudelft.nl/record/uuid:1ee24710-a251-43c5-875e-5a7702c258d9",
         "note": "Institution-hosted notice text read: charge-jump corrections,axislabel and conductance recalibration; original claim withdrawn. Publisher full notice endpoint redirected to authentication."
+      }
+    },
+    {
+      "id": "source-818818441532a8ec",
+      "doi": "10.48550/arXiv.2607.09511",
+      "title": "Majorana parity qubit in coupled minimal Kitaev chains",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arXiv.2607.09511",
+      "publicationStatus": "preprint",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-preprint-results-and-conclusion",
+        "evidenceUrl": "https://arxiv.org/pdf/2607.09511v1",
+        "note": "v1 submitted 10 July 2026. Selected pp. 1–6 and p. 9; p. 5 Figure 2 and fitted trace visually checked. No journal acceptance verified; full methods, raw data and independent device replication remain open."
       }
     }
   ],
@@ -318,6 +333,17 @@
       ],
       "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
       "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-july2026-parity-control",
+      "sectionId": "experimental-criteria",
+      "statement": "A 10 July 2026 preprint by Zatelli and colleagues reports coherent parity oscillations in coupled minimal Kitaev chains. The authors distinguish partial protection at the sweet spot from the unprotected degeneracy-lifting operations used for rotation. No journal acceptance was verified here; this is not a demonstrated braid or a certified gate fidelity.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-818818441532a8ec"
+      ],
+      "conditions": "July 2026 preprint; partial sweet-spot protection and coherent rotation do not establish protected gates or braiding.",
+      "verificationScope": "v1 submitted 10 July 2026. Selected pp. 1–6 and p. 9; p. 5 Figure 2 and fitted trace visually checked. No journal acceptance verified; full methods, raw data and independent device replication remain open."
     }
   ],
   "corrections": [],
