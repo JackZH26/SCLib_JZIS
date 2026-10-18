@@ -1184,3 +1184,15 @@ it("keeps model Chern numbers out of experimental temperature results and preser
  expect(section.section.markdown).toContain("Overlaps must not vanish");
  expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
 });
+
+it("preserves DIII dimensional and interaction scope without inventing experimental material records",async()=>{
+ const a=articles().find(a=>a.code==="F4")!;
+ expect(a.materialCases).toEqual([]);
+ expect(a.references.find(r=>r.doi==="10.48550/arXiv.1406.3032")?.publicationStatus).toBe("preprint");
+ expect(searchArticles(searchIndex().entries,"Majorana Kramers pair",{}).some(a=>a.code==="F4")).toBe(true);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ for(const phrase of ["one and two spatial dimensions","integer $\\mathbb Z$ classification in three","an even count does not establish that the integer is zero","vortex in one component coincides with an antivortex","squares to fermion parity"])expect(md).toContain(phrase);
+ const data=await(await get(["search"],"?q=class%20DIII&tcMin=1")).json();
+ expect(data.results.some((r:{code:string})=>r.code==="F4")).toBe(false);
+ expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
+});
