@@ -1818,3 +1818,39 @@ it("separates topology, transition temperature and spectral visibility across ex
  expect(a.references.find(r=>r.doi==="10.1038/s41467-025-67957-1")!.verification.note).toContain("26 December 2025");
  expect(a.references.find(r=>r.doi==="10.1126/science.aao1797")!.verification.evidenceUrl).toMatch(/v3$/);
 });
+
+it("projects article metadata but keeps scientific conditions and provenance with excerpts",async()=>{
+ const full=(await(await get(["articles","scwiki-a4"])).json()).article;
+ const thinResponse=await get(["articles","scwiki-a4"],"?fields=title");const thin=(await thinResponse.json()).article;
+ expect(Object.keys(thin).sort()).toEqual(["code","editorialStatus","id","modifiedAt","provenance","review","revision","slug","title"]);
+ expect(thin.review).toEqual(full.review);expect(thin.provenance).toEqual(full.provenance);expect(thin.claims).toBeUndefined();
+ for(const field of ["summary","body","markdown","sections","claims","materialCases","sourceMap","corrections","scopeItems"]){
+  const selected=(await(await get(["articles","scwiki-a4"],"?fields="+field)).json()).article;
+  expect(selected[field]).toEqual(full[field]);for(const required of ["claims","references","materialCases","corrections","review","provenance"])expect(selected[required]).toEqual(full[required]);
+ }
+ const complete=await get(["articles","scwiki-a4"]);expect(thinResponse.headers.get("ETag")).not.toBe(complete.headers.get("ETag"));
+ for(const fields of ["","title,title","claims.statement","title,","unknown"," title","__proto__"]){expect((await get(["articles"],"?fields="+encodeURIComponent(fields))).status).toBe(400);}
+ expect((await get(["search"],"?fields=title")).status).toBe(400);
+ const page=await(await get(["articles"],"?fields=title&limit=1")).json();
+ expect(page.articles[0].body).toBeUndefined();expect(page.page.next).toContain("fields=title");
+ expect((await get(["articles"],"?fields=summary&limit=1&cursor="+page.page.nextCursor)).status).toBe(400);
+});
+it("paginates the complete lightweight revision manifest at one content revision",async()=>{
+ const records:any[]=[];let cursor:string|null=null;
+ do{const response=await get(["revisions"],"?limit=13"+(cursor?"&cursor="+cursor:""));expect(response.status).toBe(200);const data=await response.json();expect(data.revision).toBe(catalogue().revision);expect(data.total).toBe(articles().length);expect(data.snapshotKind).toBe("complete-current-inventory");records.push(...data.records);cursor=data.page.nextCursor;}while(cursor);
+ expect(records).toEqual(articles().map(a=>({id:a.id,revision:a.revision,modifiedAt:a.modifiedAt,url:"/scwiki/"+a.slug})));
+ const first=await(await get(["revisions"],"?limit=1")).json();expect((await get(["topics"],"?limit=1&cursor="+first.page.nextCursor)).status).toBe(400);
+ const spec=await(await get(["openapi.json"])).json();expect(spec.paths["/revisions"].get.operationId).toBe("listSCWikiRevisions");
+ for(const p of Object.values(spec.components.schemas.ArticleProjection.properties)as any[]){const key=p.$ref.split("/").pop();expect(spec.components.schemas.Article.properties[key]).toBeDefined();}
+});
+it("derives changes only from complete consistent snapshots, retaining failed-sync safety",async()=>{
+ const {diffRevisionSnapshots}=await import("@/lib/scwiki/revisions");
+ const record=(id:string,revision:string)=>({id,revision,modifiedAt:"2026-10-19",url:"/scwiki/example"});
+ const previous={revision:"a".repeat(20),total:2,records:[record("scwiki-a1","1".repeat(20)),record("scwiki-a2","2".repeat(20))]};
+ const current={revision:"b".repeat(20),total:2,records:[record("scwiki-a1","3".repeat(20)),record("scwiki-a3","4".repeat(20))]};
+ expect(diffRevisionSnapshots(previous,current)).toMatchObject({added:["scwiki-a3"],updated:["scwiki-a1"],removed:["scwiki-a2"]});
+ expect(diffRevisionSnapshots(previous,previous)).toMatchObject({added:[],updated:[],removed:[]});
+ expect(()=>diffRevisionSnapshots(previous,{...current,records:current.records.slice(0,1)})).toThrow(/complete/);
+ expect(()=>diffRevisionSnapshots(previous,{...current,records:[current.records[0],current.records[0]]})).toThrow(/duplicate/);
+ expect(()=>diffRevisionSnapshots(previous,{...current,revision:previous.revision})).toThrow(/Conflicting/);
+});

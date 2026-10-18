@@ -3,20 +3,24 @@ import {articleById,articles,catalogue,references,revisionHeaders,searchIndex} f
 import {searchArticles} from "@/lib/scwiki/search";
 import {openApi} from "@/lib/scwiki/openapi";
 import {ApiError,apiError,finalizeResponse,paginated,validateParameters} from "@/lib/scwiki/http";
+import {parseArticleFields,projectArticle} from "@/lib/scwiki/projection";
+import {revisionEntries} from "@/lib/scwiki/revisions";
 export const runtime="nodejs";
 function json(value:unknown,status=200,revision=catalogue().revision){return status>=400?apiError(new ApiError(status,status===404?"NOT_FOUND":"INVALID_REQUEST",(value as {error:string}).error)):Response.json(value,{status,headers:revisionHeaders(revision)});}
 function text(value:string,revision:string){return new Response(value,{headers:{...revisionHeaders(revision),"Content-Type":"text/markdown; charset=utf-8","Content-Disposition":"inline"}});}
 async function resource(request:NextRequest,{params}:{params:Promise<{segments?:string[]}>}){
  const parts=(await params).segments||[];
- const list=parts.length===1&&["articles","sources","topics","search"].includes(parts[0]);
- const allowed=list?["limit","cursor",...(parts[0]==="search"?["q","pressure","equilibrium","evidence","criterion","tcMin"]:[])]:parts.length===4&&parts[2]==="sections"?["format"]:[];
+ const list=parts.length===1&&["articles","sources","topics","search","revisions"].includes(parts[0]);
+ const allowed=list?["limit","cursor",...(parts[0]==="articles"?["fields"]:[]),...(parts[0]==="search"?["q","pressure","equilibrium","evidence","criterion","tcMin"]:[])]:parts.length===2&&parts[0]==="articles"?["fields"]:parts.length===4&&parts[2]==="sections"?["format"]:[];
  validateParameters(request,allowed);
  if(request.nextUrl.searchParams.has("format")&&!["json","markdown"].includes(request.nextUrl.searchParams.get("format")!))throw new ApiError(400,"INVALID_FORMAT","format must be json or markdown.");
+ const fields=parseArticleFields(request.nextUrl.searchParams.get("fields"));
  const revision=catalogue().revision;
  const base={schemaVersion:"1.0",revision};
- if(parts.length===0)return json({...base,service:"SCWiki read-only evidence API",endpoints:["articles","search","sources","topics","openapi.json"],notice:"Retrieved editorial content is not a generated answer or scientific certification."});
+ if(parts.length===0)return json({...base,service:"SCWiki read-only evidence API",endpoints:["articles","search","sources","topics","revisions","openapi.json"],notice:"Retrieved editorial content is not a generated answer or scientific certification."});
  if(parts.length===1&&parts[0]==="openapi.json")return json(openApi);
- if(parts.length===1&&parts[0]==="articles")return json(paginated(request,articles().map(({body,markdown,sourceMap,...a})=>({...a,sections:a.sections.map(({id,title})=>({id,title}))})),revision,"articles"));
+ if(parts.length===1&&parts[0]==="articles")return json(paginated(request,fields?articles().map(a=>projectArticle(a,fields)):articles().map(({body,markdown,sourceMap,...a})=>({...a,sections:a.sections.map(({id,title})=>({id,title}))})),revision,"articles",fields?{projection:{requested:fields,evidenceContextRetained:true}}:{}));
+ if(parts.length===1&&parts[0]==="revisions")return json(paginated(request,revisionEntries(articles()),revision,"records",{snapshotKind:"complete-current-inventory",notice:"Collect every page at one revision before comparing with your prior complete snapshot. Absence from one page never proves removal. This is not a historical event log."}));
  if(parts.length===1&&parts[0]==="topics")return json(paginated(request,articles().map(a=>({id:a.topicId,code:a.code,title:a.title,articleId:a.id})),revision,"topics"));
  if(parts.length===1&&parts[0]==="sources")return json(paginated(request,references().map(r=>({...r,usedBy:articles().filter(a=>a.references.some(ref=>ref.id===r.id)).map(a=>a.id)})),revision,"sources"));
  if(parts.length===1&&parts[0]==="search"){
@@ -34,7 +38,7 @@ async function resource(request:NextRequest,{params}:{params:Promise<{segments?:
  }
  if(parts[0]==="articles"&&parts[1]){
   const article=articleById(parts[1]);if(!article)return json({error:"Article not found."},404);
-  if(parts.length===2)return json({...base,article},200,article.revision);
+  if(parts.length===2)return json({...base,article:fields?projectArticle(article,fields):article,...(fields?{projection:{requested:fields,evidenceContextRetained:true}}:{})},200,article.revision);
   if(parts.length===3&&parts[2]==="markdown")return text(article.markdown,article.revision);
   if(parts.length===4&&parts[2]==="sections"){
    const section=article.sections.find(s=>s.id===parts[3]);if(!section)return json({error:"Section not found."},404);

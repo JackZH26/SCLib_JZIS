@@ -179,3 +179,17 @@ test("SCWiki API pages, conditional requests and write rejection work through th
  }
  const invalid=await request.get('/api/scwiki/v1/search?q=a&q=b');expect(invalid.status()).toBe(400);expect(invalid.headers()['cache-control']).toBe('no-store');
 });
+
+test("Agent guide exposes bounded field selection and complete-snapshot change discovery",async({page,request})=>{
+ await page.goto('/scwiki/agent-guide');
+ await expect(page.getByRole('heading',{name:'Choose fields',exact:true})).toBeVisible();
+ await expect(page.getByRole('heading',{name:'Discover changes',exact:true})).toBeVisible();
+ const metadata=await(await request.get('/api/scwiki/v1/articles/scwiki-a4?fields=title')).json();
+ expect(metadata.article.review.limitations.length).toBeGreaterThan(0);expect(metadata.article.claims).toBeUndefined();
+ const excerpt=await(await request.get('/api/scwiki/v1/articles/scwiki-a4?fields=claims')).json();
+ expect(excerpt.article.references.length).toBeGreaterThan(0);expect(excerpt.article.materialCases).toBeDefined();
+ const records=[];let url:string|null='/api/scwiki/v1/revisions';let revision:string|undefined;
+ while(url){const response=await request.get(url);expect(response.status()).toBe(200);const data=await response.json();revision??=data.revision;expect(data.revision).toBe(revision);records.push(...data.records);url=data.page.next;}
+ expect(records.length).toBe(catalogue.articles.length);expect(new Set(records.map(r=>r.id)).size).toBe(records.length);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(await page.evaluate(()=>innerWidth));
+});
