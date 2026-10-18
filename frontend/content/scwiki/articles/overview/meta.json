@@ -1,0 +1,411 @@
+{
+  "id": "scwiki-overview",
+  "topicId": "scwiki-topic-overview",
+  "code": "OVERVIEW",
+  "slug": "overview",
+  "title": "Superconductivity: evidence and concepts",
+  "summary": "A guide to what superconductivity measurements establish, how their limitations differ, and where to explore mechanisms, materials and open questions.",
+  "aliases": [
+    "superconductivity overview",
+    "superconductivity evidence",
+    "superconductivity basics",
+    "超导总览",
+    "超导证据"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "A1",
+    "A2",
+    "A3",
+    "A5",
+    "B1",
+    "C9",
+    "D14",
+    "E1",
+    "F1",
+    "G1",
+    "H1"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T18:08:49.128556+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Synthesis of the pinned phenomenology overview and previously recorded source-specific checks in A1–A10,B1,F8,F9,H1; inventory, link and export validation do not certify full scientific review.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "No new sample-specific experiment or material transition is introduced in this overview.",
+      "Historical source-audit labels do not replace current primary-text, supplement and raw-data review.",
+      "Follow each article and reference for its exact review scope and unresolved limitations."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "A_phenomenology/A_overview.md",
+    "sha256": "abe087c98d324035abb817df38382920eecd92f73b0c8ff15755fd18ac39b84c",
+    "sourceId": "file-0917df95f0222017"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 43,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Retain all ten observable topics, evidence-matrix caveats and cross-section navigation. Historical final-audit statement is contextual only; expand navigation across the approved core without asserting exhaustive scientific acceptance."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-overview-correction-1",
+      "description": "Treat the multi-probe matrix as context-dependent evidence guidance rather than a universal sufficient or necessary definition. Historical audit completeness does not establish present scientific acceptance.",
+      "sourceId": "source-0590b237a1d87de4",
+      "scope": "Preserve uncertainty and distinguish measurement from mechanism."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\rho=RA/L",
+      "check": "Uniform-bar geometry only; rho units ohm metre, resistance bound set by voltage sensitivity/current. London half-space formula reuses A2 source-scoped derivation; no new material fit."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-ba10e800a1246bf6",
+      "doi": "10.1103/PhysRev.108.1175",
+      "title": "Theory of Superconductivity",
+      "year": 1957,
+      "url": "https://doi.org/10.1103/PhysRev.108.1175",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/pdf/10.1103/PhysRev.108.1175",
+        "note": "Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review."
+      }
+    },
+    {
+      "id": "source-512705f3e64d88d7",
+      "doi": "10.1007/BF01504252",
+      "title": "Ein neuer Effekt bei Eintritt der Supraleitfähigkeit",
+      "year": 1933,
+      "url": "https://doi.org/10.1007/BF01504252",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-reproduction-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://courses.physics.ucsd.edu/2025/Fall/physics139/meissnerpapertranslated.pdf",
+        "note": "Selected first two PDF pages: German original with English translation by A. M. Forrest, external field redistribution in tin/lead and retained field in a lead-tube cavity. Original apparatus, uncertainties and complete translation not independently reproduced."
+      }
+    },
+    {
+      "id": "source-0590b237a1d87de4",
+      "doi": "10.1098/rspa.1935.0048",
+      "title": "The electromagnetic equations of the supraconductor",
+      "year": 1935,
+      "url": "https://doi.org/10.1098/rspa.1935.0048",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-scan-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://w2agz.com/Library/Classic%20Papers%20in%20Superconductivity/London%20%26%20London%2C%20Proc%20Roy%20Soc%20London%20A149%2C%2071%20%281935%29.pdf",
+        "note": "Original pp. 72–73 visually checked, Eqs. (2)–(6): initial-field integration constant, screening equation and additional magnetic-state postulate. Public equations use modern SI conventions and stated local assumptions; not an exhaustive check of the historical paper or later electrodynamics."
+      }
+    },
+    {
+      "id": "source-85009580cf550887",
+      "doi": "10.1088/0953-2048/26/11/115011",
+      "title": "Elaboration of the alpha-model derived from the BCS theory of superconductivity",
+      "year": 2013,
+      "url": "https://doi.org/10.1088/0953-2048/26/11/115011",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1304.2275v1",
+        "note": "Author manuscript arXiv:1304.2275v1: section IV Eqs. (19)-(22), section VII Eq. (50) and following entropy caveat, and section VIII gap-anisotropy discussion and section IX summary of coupled-band model extensions (underlying papers not independently checked). Journal identity linked by arXiv metadata; publisher-version text not compared. Manuscript typeset date is not treated as a new publication date. No independent reproduction of every model or experimental dataset."
+      }
+    },
+    {
+      "id": "source-22ad55507a1e49c5",
+      "doi": "10.1103/PhysRevLett.86.1877",
+      "title": "Boron Isotope Effect in Superconducting MgB2",
+      "year": 2001,
+      "url": "https://doi.org/10.1103/PhysRevLett.86.1877",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0101463v2",
+        "note": "Selected pp. 1–2: sample preparation, 25 G magnetization and 2% onset criterion, 40.2/39.2 K transitions, heat-capacity corroboration and partial boron coefficient. Raw curves and experimental uncertainty not independently refit. arXiv v2 dated 3 February 2001; later typeset date is not a new publication. Publisher identity and 26 February 2001 publication date checked; final journal text not compared."
+      }
+    },
+    {
+      "id": "source-fd4856def4ef50ca",
+      "doi": "10.1103/PhysRevLett.7.43",
+      "title": "Experimental Evidence for Quantized Flux in Superconducting Cylinders",
+      "year": 1961,
+      "url": "https://doi.org/10.1103/PhysRevLett.7.43",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "original-experiment-visually-read",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://physics.umd.edu/courses/Phys798S/anlage/Phys798SAnlageSpring06/Deaver%20PRL%207%20p43_1.pdf",
+        "note": "Published 15 July 1961. Original pages 43–46 and Figures 1–2 were visually read: tin cylinders, calibration, first-step uncertainty of about 20 percent, extra geometry uncertainty if the copper correction fails, and finite response time. No raw-data reanalysis was performed."
+      }
+    },
+    {
+      "id": "source-8f81510a80c35e3a",
+      "doi": "10.1103/PhysRevLett.39.1201",
+      "title": "Universal Jump in the Superfluid Density of Two-Dimensional Superfluids",
+      "year": 1977,
+      "url": "https://doi.org/10.1103/PhysRevLett.39.1201",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-original-publisher-text",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.39.1201",
+        "note": "Published 7 November 1977. Selected original publisher text on pages 1202–1203 was reread: bare and renormalized stiffness, recursion relations and the universal jump in Eq. (10). No inspectable screenshot was returned, so no visual equation check is claimed. The full derivation has not been reproduced."
+      }
+    },
+    {
+      "id": "source-51c947cf11bea72e",
+      "doi": "10.1038/nmat1156",
+      "title": "Strongly enhanced current densities in superconducting coated conductors of YBa2Cu3O7-x + BaZrO3",
+      "year": 2004,
+      "url": "https://doi.org/10.1038/nmat1156",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0406087v1",
+        "note": "Selected pp. 2–4: preparation, transport field orientation, in-field/self-field comparison and particle-composition ambiguity. No electric-field criterion extracted; raw curves and micrographs not independently reproduced."
+      }
+    },
+    {
+      "id": "source-18bd294c2b4c06a7",
+      "doi": null,
+      "title": "The Thermal Conductivity of the Intermediate State in Superconductors",
+      "year": 1964,
+      "url": "https://www.jetp.ras.ru/cgi-bin/dn/e_019_05_1228.pdf",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-scan-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.jetp.ras.ru/cgi-bin/dn/e_019_05_1228.pdf",
+        "note": "Andreev, Sov. Phys. JETP 19, 1228–1231. Selected pp. 1228–1229; p. 1229 visually checked for Eqs. (6)–(10), subgap evanescence and reversed velocity. Thermal-resistance derivation not fully reproduced. No DOI established."
+      }
+    },
+    {
+      "id": "source-e8e6ef56da103435",
+      "doi": "10.1126/science.1072640",
+      "title": "Imaging Quasiparticle Interference in Bi2Sr2CaCu2O8+delta",
+      "year": 2002,
+      "url": "https://doi.org/10.1126/science.1072640",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0209276v1",
+        "note": "Selected pp. 2–6: elastic scattering, 4.2 K conductance maps and dispersing peaks. Raw maps and final-version differences not reanalyzed."
+      }
+    },
+    {
+      "id": "source-374c8bc13ced83e8",
+      "doi": "10.1038/s41586-021-03697-8",
+      "title": "Linear-in temperature resistivity from an isotropic Planckian scattering rate",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41586-021-03697-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-methods-results-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://warwick.ac.uk/fac/sci/physics/research/condensedmatt/supermag/pubs2021/Grissonnanche_Nature.595.667.2021.pdf",
+        "note": "Final results and selected methods read; printed page 669, Figure 2 visually checked. Compared selected author v2 passages. Temperature stability, absolute error, angular superconducting regions and fitted bandwidth distinguished. Complete fitting and raw-data reproduction remain open."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-overview-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Superconductivity is a state with characteristic electrical, magnetic and collective behavior. Understanding a new claim requires more than finding a resistance drop or a gap-like feature. Start by asking what was measured, on which sample, under which conditions, and which alternative explanations were tested. This overview links the observable evidence to the wiki's theories, materials and control parameters. It does not assign a microscopic pairing mechanism from one probe or claim that every article has completed scientific acceptance.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-512705f3e64d88d7",
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Evidence synthesis and navigation; no single probe establishes every state, symmetry, mechanism and topology claim.",
+      "verificationScope": "Inherited named article/source scopes; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-overview-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Use [zero resistance](/scwiki/zero-resistance), [the Meissner effect](/scwiki/meissner-effect) and [specific heat](/scwiki/specific-heat-jump) to compare transport, magnetic response and thermodynamics. Continue to [gap measurements](/scwiki/superconducting-gap) for excitation spectra and to [flux quantization](/scwiki/vortex-topological-charge) for phase-related evidence. These observables constrain different aspects of the state. Agreement on matched samples strengthens a case; one positive result does not automatically supply the missing measurements.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-512705f3e64d88d7",
+        "source-85009580cf550887",
+        "source-fd4856def4ef50ca"
+      ],
+      "conditions": "Evidence synthesis and navigation; no single probe establishes every state, symmetry, mechanism and topology claim.",
+      "verificationScope": "Inherited named article/source scopes; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-overview-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Models turn observations into quantities under explicit assumptions. In a uniform bar carrying homogeneous current, resistivity is inferred from resistance as $\\rho=RA/L$, with cross-sectional area $A$ and voltage-contact separation $L$. A heterogeneous film or a filamentary path may violate that conversion. A measurement consistent with zero voltage establishes a resistance bound set by current and voltage sensitivity; it does not mathematically demonstrate an infinitely precise zero or determine superconducting volume fraction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Evidence synthesis and navigation; no single probe establishes every state, symmetry, mechanism and topology claim.",
+      "verificationScope": "Inherited named article/source scopes; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-overview-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The simplest local London description gives exponential magnetic screening in a uniform half-space, $B(x)=B(0)e^{-x/\\lambda}$. Penetration depth is not interchangeable with an uncorrected magnetic shielding fraction: sample shape, demagnetization, vortices and measurement history matter. A homogeneous weak-coupling isotropic BCS model also supplies useful reference scales, but its gap and heat-capacity ratios are not definitions that every superconductor must satisfy.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-0590b237a1d87de4",
+        "source-85009580cf550887"
+      ],
+      "conditions": "Evidence synthesis and navigation; no single probe establishes every state, symmetry, mechanism and topology claim.",
+      "verificationScope": "Inherited named article/source scopes; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-overview-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Distinguish pair formation, global phase coherence and a probe's practical transition criterion. In a two-dimensional regime, [BKT physics](/scwiki/bkt-transition) involves phase stiffness and vortex unbinding. A spectroscopic gap or resistance onset can therefore differ from a phase-ordering temperature. A fitted scale must retain its model, dimensionality, current range and uncertainty rather than being relabelled as a universal transition.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8f81510a80c35e3a"
+      ],
+      "conditions": "Evidence synthesis and navigation; no single probe establishes every state, symmetry, mechanism and topology claim.",
+      "verificationScope": "Inherited named article/source scopes; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-overview-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Transport should report contact geometry, applied current, voltage sensitivity, transition width and field dependence. Magnetic evidence should distinguish flux expulsion from shielding, field-cooled from zero-field-cooled protocols, and reversible response from pinning. Thermodynamic evidence should retain background subtraction and sample fraction. Where one probe is impractical, describe the evidence actually obtained and the missing controls rather than either declaring certainty or dismissing a result automatically.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-512705f3e64d88d7",
+        "source-0590b237a1d87de4",
+        "source-85009580cf550887"
+      ],
+      "conditions": "Evidence synthesis and navigation; no single probe establishes every state, symmetry, mechanism and topology claim.",
+      "verificationScope": "Inherited named article/source scopes; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-overview-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "[Isotope substitution](/scwiki/isotope-effect) tests how changing nuclear mass affects an observed scale, with chemical and structural controls. It does not prove that phonons are the only pairing interaction. [Critical fields](/scwiki/critical-fields) involve orbital, spin and vortex effects; a high field alone does not determine spin-triplet order. [Critical current](/scwiki/critical-current) additionally depends on pinning, geometry and an operational electric-field criterion, so it is not a universal material ranking independent of field and temperature.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-22ad55507a1e49c5",
+        "source-51c947cf11bea72e"
+      ],
+      "conditions": "Evidence synthesis and navigation; no single probe establishes every state, symmetry, mechanism and topology claim.",
+      "verificationScope": "Inherited named article/source scopes; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-overview-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "[Andreev reflection](/scwiki/andreev-reflection) probes electron–hole conversion at an interface, where transparency and the surrounding electronic structure matter. [Quasiparticle interference](/scwiki/quasiparticle-interference) maps scattering-related spatial modulations and constrains electronic states through a model. Neither an isolated conductance peak nor a Fourier feature independently determines pairing phase or establishes a Majorana mode. Follow the relevant article's probe-specific limitations before interpreting a pattern.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-18bd294c2b4c06a7",
+        "source-e8e6ef56da103435"
+      ],
+      "conditions": "Evidence synthesis and navigation; no single probe establishes every state, symmetry, mechanism and topology claim.",
+      "verificationScope": "Inherited named article/source scopes; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-overview-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "[Linear-temperature resistivity](/scwiki/linear-t-resistivity) and [strange-metal behavior](/scwiki/strange-metals) describe normal-state transport, not a superconductivity test by themselves. Residual resistance, temperature window, carrier weight and scattering anisotropy affect the inference. An observed linear curve is not automatically a direct measurement of a universal relaxation time or a unique quantum-critical mechanism.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-374c8bc13ced83e8"
+      ],
+      "conditions": "Evidence synthesis and navigation; no single probe establishes every state, symmetry, mechanism and topology claim.",
+      "verificationScope": "Inherited named article/source scopes; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-overview-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Evidence for a superconducting state, the symmetry of its order parameter, the interaction that produces pairing and the topology of its excitations are different claims. Bulk transport or screening does not alone determine gap phase; normal-state band topology does not alone classify the paired state. Disagreement between probes should be traced to samples, conditions, assumptions and uncertainties before being compressed into a single verdict. The core wiki keeps experiments, models, predictions and hypotheses distinguishable.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-0590b237a1d87de4",
+        "source-85009580cf550887",
+        "source-18bd294c2b4c06a7",
+        "source-e8e6ef56da103435"
+      ],
+      "conditions": "Evidence synthesis and navigation; no single probe establishes every state, symmetry, mechanism and topology claim.",
+      "verificationScope": "Inherited named article/source scopes; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-overview-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "The pinned overview's historical audit label is not a new independent verification. This page reuses the explicitly scoped source checks documented in the linked articles. Complete scientific acceptance remains open, including unresolved final-version comparisons, supplementary controls and raw-data analyses. Numerical illustrations establish only their stated algebra and assumptions; they do not certify experimental reproducibility or exhaustive coverage of the field.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-85009580cf550887",
+        "source-22ad55507a1e49c5",
+        "source-e8e6ef56da103435",
+        "source-374c8bc13ced83e8"
+      ],
+      "conditions": "Evidence synthesis and navigation; no single probe establishes every state, symmetry, mechanism and topology claim.",
+      "verificationScope": "Inherited named article/source scopes; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-overview-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Navigate by the question. Start with [BCS pairing](/scwiki/bcs-weak-coupling) and [spin fluctuations](/scwiki/spin-fluctuation-pairing) for interactions, then [singlet and triplet pairing](/scwiki/singlet-and-triplet-pairing) for order-parameter constraints. Compare [cuprates](/scwiki/cuprates), [nickelates](/scwiki/nickelates) or [kagome materials](/scwiki/kagome-superconductors) with their sample-specific evidence. Use [pressure](/scwiki/pressure-tuning) and [chemical substitution](/scwiki/chemical-doping) to define the state being tested. These are routes into the evidence, not interchangeable explanations.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-22ad55507a1e49c5",
+        "source-374c8bc13ced83e8"
+      ],
+      "conditions": "Evidence synthesis and navigation; no single probe establishes every state, symmetry, mechanism and topology claim.",
+      "verificationScope": "Inherited named article/source scopes; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-overview-claim-discovery-implications-2",
+      "sectionId": "discovery-implications",
+      "statement": "Keep a claim record with material, composition, preparation, pressure, field direction, measurement temperature, transition criterion and source version. Select the next experiment for its ability to distinguish competing interpretations. If a high-pressure, interfacial or transient result lacks a thermodynamic or magnetic cross-check, preserve that limitation in both prose and structured data. A transparent record can be revised as evidence develops without turning an untested hypothesis into a material fact.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-0590b237a1d87de4",
+        "source-85009580cf550887",
+        "source-51c947cf11bea72e",
+        "source-18bd294c2b4c06a7"
+      ],
+      "conditions": "Evidence synthesis and navigation; no single probe establishes every state, symmetry, mechanism and topology claim.",
+      "verificationScope": "Inherited named article/source scopes; complete scientific acceptance remains open."
+    }
+  ]
+}

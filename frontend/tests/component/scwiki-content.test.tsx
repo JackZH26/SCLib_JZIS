@@ -14,6 +14,28 @@ import {legacyDestination} from "@/lib/site-routes";
 import {GET} from "@/app/api/scwiki/v1/[[...segments]]/route";
 const get=(segments:string[],query="")=>GET(new NextRequest("http://localhost/api/scwiki/v1/"+segments.join("/")+query),{params:Promise.resolve({segments})});
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("exposes the approved overview through discovery and exports without inventing material transitions",async()=>{
+  const response=await get(["articles","scwiki-overview"]);
+  expect(response.status).toBe(200);
+  const {article}=await response.json();
+  expect(article.topicId).toBe("scwiki-topic-overview");
+  expect(article.provenance.path).toBe("A_phenomenology/A_overview.md");
+  expect(article.materialCases).toEqual([]);
+  const topics=await(await get(["topics"])).json();
+  expect(topics.topics.some((t:{articleId:string})=>t.articleId===article.id)).toBe(true);
+  const schema=await(await get(["openapi.json"])).json();
+  const idPattern=new RegExp(schema.components.schemas.ArticleId.pattern);
+  expect(idPattern.test(article.id)).toBe(true);
+  expect(idPattern.test("scwiki-overview-extra")).toBe(false);
+  for(const query of ["superconductivity overview","超导总览"]){
+   const found=await(await get(["search"],"?q="+encodeURIComponent(query))).json();
+   expect(found.results.some((a:{id:string})=>a.id===article.id)).toBe(true);
+  }
+  expect(searchArticles(searchIndex().entries,"superconductivity overview",{tcMin:1}).some(a=>a.id===article.id)).toBe(false);
+  const section=await(await get(["articles",article.id,"sections","material-cases"],"?format=markdown")).text();
+  expect(section).toContain("No sample-specific material records");
+  expect(section).toContain("Complete scientific acceptance remains open");
+ });
  it("exports versioned research datasets without promoting field-sweep temperatures to transition Tc",async()=>{
   const a=articles().find(a=>a.code==="G3")!;
   const dataset=a.references.find(r=>r.doi==="10.6084/m9.figshare.31861684.v1")!;
@@ -214,7 +236,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(m.commit).toBe("0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf");
   expect(m.files).toHaveLength(282);
   expect(new Set(m.files.map((x:{id:string})=>x.id)).size).toBe(282);
-  expect(m.files.filter((x:{topicId:string|null})=>x.topicId)).toHaveLength(88);
+  expect(m.files.filter((x:{topicId:string|null})=>x.topicId)).toHaveLength(89);
   expect(m.files.filter((x:{publicBody:boolean})=>x.publicBody).map((x:{articleId:string})=>x.articleId).sort()).toEqual(articles().map(a=>a.id).sort());
   expect(m.files.find((x:{path:string})=>x.path.includes("Al-O")).disposition).toContain("prediction-only");
   expect(articles().map(a=>a.code)).toEqual(expect.arrayContaining(["A1","A2","B12","C2","D11","D3","D4","D5","E4","F7","G7","H2"]));
@@ -223,7 +245,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
  it("uses stable IDs, content hashes, complete source mappings and separate review labels",()=>{
   const m=JSON.parse(readFileSync("content/scwiki/source-manifest.json","utf8"));
   for(const a of articles()){
-   expect(a.id).toMatch(/^scwiki-[a-h]\d+$/);expect(a.topicId).toBe("scwiki-topic-"+a.code.toLowerCase());
+   expect(a.id).toMatch(/^scwiki-(?:[a-h]\d+|overview)$/);expect(a.topicId).toBe("scwiki-topic-"+a.code.toLowerCase());
    expect(a.revision).toMatch(/^[a-f0-9]{20}$/);expect(a.editorialStatus).toBe("scoped-check");
    const source=m.files.find((x:{id:string})=>x.id===a.provenance.sourceId);
    expect(source.sha256).toBe(a.provenance.sha256);

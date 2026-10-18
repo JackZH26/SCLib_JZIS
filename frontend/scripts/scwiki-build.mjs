@@ -13,14 +13,14 @@ const bySource=new Map(manifest.files.map(f=>[f.id,f]));
 // publicBody is an explicit editorial publication decision, not a file-count target.
 const publishedSources=manifest.files.filter(f=>f.publicBody);
 const expectedIds=new Set(publishedSources.map(f=>f.articleId));
-if(!expectedIds.size||expectedIds.size!==publishedSources.length||publishedSources.some(f=>!/^scwiki-[a-h][0-9]+$/.test(f.articleId)))fail("invalid publication inventory");
+if(!expectedIds.size||expectedIds.size!==publishedSources.length||publishedSources.some(f=>!/^scwiki-(?:[a-h][0-9]+|overview)$/.test(f.articleId)))fail("invalid publication inventory");
 const articles=[],ids=new Set(),slugs=new Set();
 for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  const meta=JSON.parse(readFileSync(path.join(directory,"articles",folder,"meta.json"),"utf8"));
  const body=readFileSync(path.join(directory,"articles",folder,"body.md"),"utf8").trim();
  if(meta.contentState!=="pilot")continue;
  for(const key of ["id","topicId","code","slug","title","summary","modifiedAt"])if(!meta[key])fail(folder+" missing "+key);
- if(!/^scwiki-[a-h][0-9]+$/.test(meta.id)||!/^scwiki-topic-[a-h][0-9]+$/.test(meta.topicId)||!/^[-a-z0-9]+$/.test(meta.slug))fail(folder+" invalid ID");
+ if(!/^scwiki-(?:[a-h][0-9]+|overview)$/.test(meta.id)||!/^scwiki-topic-(?:[a-h][0-9]+|overview)$/.test(meta.topicId)||!/^[-a-z0-9]+$/.test(meta.slug))fail(folder+" invalid ID");
  if(ids.has(meta.id)||slugs.has(meta.slug))fail("duplicate article");
  ids.add(meta.id);slugs.add(meta.slug);
  const source=bySource.get(meta.provenance.sourceId);

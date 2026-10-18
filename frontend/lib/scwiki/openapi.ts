@@ -24,7 +24,7 @@ export const openApi={
  },
  components:{schemas:{
   Error:{type:"object",required:["error"],properties:{error:str}},
-  ArticleId:{type:"string",pattern:"^scwiki-[a-h][0-9]+$"},
+  ArticleId:{type:"string",pattern:"^scwiki-(?:[a-h][0-9]+|overview)$"},
   Revision:{type:"string",pattern:"^[0-9a-f]{20}$"},
   EvidenceType:{type:"string",enum:["experiment","theory","prediction","hypothesis"]},
   Source:{type:"object",required:["id","doi","title","year","url","publicationStatus","verification"],properties:{id:{type:"string",pattern:"^source-[a-f0-9]{16}$"},doi:{type:["string","null"],description:"DOI when known; null uses the canonical source URL."},title:str,year:{type:"integer"},url:{type:"string",format:"uri"},publicationStatus:{type:"string",enum:["journal-article","preprint","technical-report","dataset","unknown"]},retraction:{type:"object",description:"Present for a known retracted article; absence is not a certification that no retraction exists.",required:["noticeDoi","retractedAt","evidenceUrl"],properties:{noticeDoi:str,retractedAt:{type:"string",format:"date"},evidenceUrl:{type:"string",format:"uri"}}},verification:{type:"object",required:["scope","checkedAt","evidenceUrl"],properties:{scope:str,checkedAt:{type:"string",format:"date"},evidenceUrl:{type:"string",format:"uri"},note:str}},articleChecks:arr({type:"object",required:["articleId","verification"],properties:{articleId:ref("ArticleId"),verification:{type:"object",required:["scope","checkedAt","evidenceUrl"],properties:{scope:str,checkedAt:{type:"string",format:"date"},evidenceUrl:{type:"string",format:"uri"},note:str}}}}),usedBy:arr(ref("ArticleId"))}},

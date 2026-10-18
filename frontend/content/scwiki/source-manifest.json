@@ -189,10 +189,10 @@
       "sha256": "abe087c98d324035abb817df38382920eecd92f73b0c8ff15755fd18ac39b84c",
       "bytes": 2158,
       "lineCount": 43,
-      "topicId": null,
-      "articleId": null,
-      "disposition": "overview-awaiting-review",
-      "publicBody": false,
+      "topicId": "scwiki-topic-overview",
+      "articleId": "scwiki-overview",
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {

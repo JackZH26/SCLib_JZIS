@@ -73,6 +73,16 @@ test("publication inventory rejects missing, unapproved and mismatched articles"
  }
 });
 
+test("overview requires its own explicit publication approval",t=>{
+ const f=inventoryFixture(t);
+ const source=f.manifest.files.find(x=>x.articleId==="scwiki-overview");
+ assert.ok(source?.publicBody);
+ source.publicBody=false;f.save();
+ const result=f.build();
+ assert.notEqual(result.status,0);
+ assert.match(result.stderr,/overview article is not approved in the publication inventory/);
+});
+
 test("known source-identity corrections block reintroducing an unrelated DOI",t=>{
  const f=inventoryFixture(t);
  const filename=path.join(f.directory,"articles/b12/meta.json");
