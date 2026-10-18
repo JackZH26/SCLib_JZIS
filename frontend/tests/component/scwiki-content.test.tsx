@@ -27,6 +27,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
   const claim=article.claims.find((c:any)=>c.id==="scwiki-a4-claim-mathematical-assumptions-9");
   expect(claim.sourceRelationship).toBe("context-for-local-derivation");expect(claim.derivationNote).toContain("not this uncertainty formula");
   const text=await(await get(["articles","scwiki-a4","markdown"])).text();expect(text).toContain("Source relationship: context-for-local-derivation");
+  const sectionText=await(await get(["articles","scwiki-a4","sections","mathematical-assumptions"],"?format=markdown")).text();expect(sectionText).toContain("Source relationship: context-for-local-derivation");expect(sectionText).toContain(claim.derivationNote);
   const a1=articles().find(a=>a.code==="A1")!;expect(a1.body).toContain("elapsed time");expect(a1.body).toContain("current magnitude");
  });
 
