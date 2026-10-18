@@ -37,7 +37,7 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  if(sectionIds.size!==chunks.length)fail(folder+" duplicate section");
  const refIds=new Set(meta.references.map(r=>r.id));
  // Known identity corrections must also protect future migrations of pinned chapters.
- const incorrectDois=new Set((manifest.correctionRegister??[]).filter(c=>c.incorrectDoi&&c.correctDoi).map(c=>c.incorrectDoi.toLowerCase()));
+ const incorrectDois=new Set((manifest.correctionRegister??[]).filter(c=>c.incorrectDoi&&(c.correctDoi||c.correctUrl)).map(c=>c.incorrectDoi.toLowerCase()));
  for(const ref of meta.references)if((ref.doi!==null&&(typeof ref.doi!=="string"||!/^10\.\d{4,9}\/\S+$/.test(ref.doi)))||!/^source-[a-f0-9]{16}$/.test(ref.id)||!/^https:\/\//.test(ref.url)||!ref.verification?.scope)fail(folder+" reference schema");
  for(const ref of meta.references)if(ref.doi!==null&&incorrectDois.has(ref.doi.toLowerCase()))fail(folder+" known incorrect DOI "+ref.doi);
  for(const claim of meta.claims)if(!sectionIds.has(claim.sectionId)||!claim.sourceIds.length||claim.sourceIds.some(id=>!refIds.has(id))||!claim.conditions)fail(folder+" claim mapping "+claim.id);

@@ -1,0 +1,498 @@
+{
+  "id": "scwiki-b2",
+  "topicId": "scwiki-topic-b2",
+  "code": "B2",
+  "slug": "eliashberg-strong-coupling",
+  "title": "Migdal–Eliashberg theory: retardation and strong-coupling limits",
+  "summary": "Connect spectral functions, frequency-dependent pairing and Coulomb cutoffs. Distinguish numerical convergence, approximation validity and experimental evidence.",
+  "aliases": [
+    "Eliashberg",
+    "Migdal approximation",
+    "electron phonon coupling",
+    "alpha2F",
+    "Coulomb pseudopotential",
+    "McMillan",
+    "Allen Dynes"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "B1",
+    "B12",
+    "A4",
+    "A3",
+    "A5"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T07:31:20.973880+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected historical text and review equations; independent spectral, Coulomb-cutoff and linearized-kernel checks; scoped primary material abstracts and inherited MgB2 passage check.",
+    "limitations": [
+      "Full scientific acceptance and material-data replication remain open.",
+      "McMillan, Allen–Dynes, Morel–Anderson and hydride original data are not fully audited; author-manuscript checks do not establish final-version equivalence.",
+      "The 13.30 K value is a synthetic Einstein-model benchmark with zero Coulomb term, not an experimental material Tc.",
+      "No universal coupling threshold, instability bound or phonon mechanism is established by one parameter or fit."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "B_mechanisms/B2_Eliashberg_strong_coupling.md",
+    "sha256": "6e7d6eda5b6f42aafa62d90fa3137f61032c695e34bd11827d99b430cb8af5d5",
+    "sourceId": "file-d6dc7cca4e1a8bf0"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 5,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Retarded phonon framework and historical normal-metal boundary."
+    },
+    {
+      "startLine": 6,
+      "endLine": 14,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Z/phi, spectral coupling and energy conventions retained and expanded."
+    },
+    {
+      "startLine": 15,
+      "endLine": 20,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Migdal regimes and Coulomb/cutoff assumptions made explicit."
+    },
+    {
+      "startLine": 21,
+      "endLine": 28,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "McMillan/Allen–Dynes parameterizations remain conditional, not strict bounds."
+    },
+    {
+      "startLine": 29,
+      "endLine": 34,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "MgB2 theory and hydride measurements separated; DOI/authorship corrections."
+    },
+    {
+      "startLine": 35,
+      "endLine": 42,
+      "targetSections": [
+        "experimental-criteria",
+        "discovery-implications"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Structure, spectrum, computational and measurement criteria retained."
+    },
+    {
+      "startLine": 43,
+      "endLine": 54,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "All six inherited reference targets preserved or corrected, with explicit source scope."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-21442c6eb33d9b94",
+      "doi": null,
+      "title": "Interaction between Electrons and Lattice Vibrations in a Normal Metal",
+      "year": 1958,
+      "url": "https://www.jetp.ras.ru/cgi-bin/dn/e_007_06_0996.pdf",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-scan-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.jetp.ras.ru/cgi-bin/dn/e_007_06_0996.pdf",
+        "note": "Selected pp. 996–998 text: normal-metal scope and vertex momentum/energy regimes. Full derivation not reproduced; no DOI established. Local download timed out; web-rendered source text was accessible."
+      }
+    },
+    {
+      "id": "source-aa8182fe7a3d8d0c",
+      "doi": "10.1103/PhysRev.167.331",
+      "title": "Transition Temperature of Strong-Coupled Superconductors",
+      "year": 1968,
+      "url": "https://doi.org/10.1103/PhysRev.167.331",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.167.331",
+        "note": "Publisher abstract: strong-coupling calculations and empirical parameters. Full original formula fit and dataset not reviewed."
+      }
+    },
+    {
+      "id": "source-0620df96ebbf2a66",
+      "doi": "10.1103/PhysRevB.12.905",
+      "title": "Transition temperature of strong-coupled superconductors reanalyzed",
+      "year": 1975,
+      "url": "https://doi.org/10.1103/PhysRevB.12.905",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.12.905",
+        "note": "Publisher abstract: modified prefactor, spectral moment/shape corrections and large-coupling limits within Eliashberg theory. Full derivation and Pb-Bi data not reanalyzed."
+      }
+    },
+    {
+      "id": "source-7c4eac077ae5e221",
+      "doi": "10.1038/nature00898",
+      "title": "The origin of the anomalous superconducting properties of MgB2",
+      "year": 2002,
+      "url": "https://doi.org/10.1038/nature00898",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www2.lbl.gov/Science-Articles/Archive/assets/images/2002/Aug-14-2002/MgB2Nature.pdf",
+        "note": "Selected pp. 758–759 and Fig. 3 checked during A5: anisotropic calculation, band-dependent gaps and common calculated transition. This article inherits that scoped check, not independent convergence or experimental replication."
+      }
+    },
+    {
+      "id": "source-8b901b9c6008c434",
+      "doi": "10.1038/nature14964",
+      "title": "Conventional superconductivity at 203 kelvin at high pressures in the sulfur hydride system",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/nature14964",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/abs/1506.08190",
+        "note": "Author abstract: resistivity, field, susceptibility and isotope observations; H3S attribution qualified in that version. Publisher identity checked; detailed data and final-version comparison pending."
+      }
+    },
+    {
+      "id": "source-77b774e18b0f50c7",
+      "doi": "10.1103/PhysRevLett.122.027001",
+      "title": "Evidence for Superconductivity above 260 K in Lanthanum Superhydride at Megabar Pressures",
+      "year": 2019,
+      "url": "https://doi.org/10.1103/PhysRevLett.122.027001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.122.027001",
+        "note": "Somayazulu et al., not Drozdov. Publisher abstract describes four-probe transport at 180–200 GPa and supporting characterization. No individual transition curve reanalyzed."
+      }
+    },
+    {
+      "id": "source-d56b04dc0b32c796",
+      "doi": "10.1016/j.aop.2020.168102",
+      "title": "Eliashberg Theory: a short review",
+      "year": 2020,
+      "url": "https://doi.org/10.1016/j.aop.2020.168102",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-review-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1911.05065v1",
+        "note": "Selected v1 pp. 1–5 and p. 8 model benchmark; p. 5 equations visually checked. Separate independent linearized Einstein-model computation agrees with the approximately 13.3 K benchmark. Full review/final-version equivalence not audited."
+      }
+    },
+    {
+      "id": "source-9f48e16ab7691de5",
+      "doi": "10.1103/PhysRev.125.1263",
+      "title": "Calculation of the Superconducting State Parameters with Retarded Electron-Phonon Interaction",
+      "year": 1962,
+      "url": "https://doi.org/10.1103/PhysRev.125.1263",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.125.1263",
+        "note": "Morel–Anderson original abstract checked. Detailed logarithmic cutoff treatment checked in the later Marsiglio review, with independent algebra; not a full-original-paper check."
+      }
+    },
+    {
+      "id": "source-50bdf310cb30a289",
+      "doi": "10.1016/j.aop.2020.168190",
+      "title": "Eliashberg theory of phonon-mediated superconductivity — When it is valid and how it breaks down",
+      "year": 2020,
+      "url": "https://doi.org/10.1016/j.aop.2020.168190",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/abs/2004.01281",
+        "note": "Author abstract and linked journal identity: model comparison with QMC and breakdown of some normal-state properties. No numerical dataset or universal threshold audited."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-b2-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Migdal–Eliashberg theory describes a frequency-dependent electronic self-energy and pairing response to a retarded interaction. The renormalization function $Z$ and anomalous self-energy $\\phi$ define $\\Delta=\\phi/Z$. A phonon-mediated calculation needs an electronic structure, phonon spectrum and interaction model; a large fitted coupling is not by itself evidence for a microscopic mechanism.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Migdal's original paper treats a normal metal and explicitly says that extension to the superconducting state requires a separate investigation. Its selected vertex discussion uses a separation of electronic and lattice scales with specified momentum regimes. The inherited DOI points to an unrelated primatology article; the correct historical JETP scan is retained without inventing a DOI.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-21442c6eb33d9b94"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Use phonon **energy** $\\Omega$ and Matsubara energies $\\omega_n=(2n+1)\\pi k_BT$; factors of $\\hbar$ are absorbed when converting angular frequencies to energies. For the isotropic spectral function $a(\\Omega)=\\alpha^2F(\\Omega)$, define",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\lambda=2\\int_0^\\infty\\frac{a(\\Omega)}{\\Omega}\\,d\\Omega,\\qquad K(\\nu)=2\\int_0^\\infty\\frac{\\Omega a(\\Omega)}{\\Omega^2+\\nu^2}\\,d\\Omega.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Thus $K(0)=\\lambda$. Neither this spectral coupling nor a band-resolved coupling matrix is an arbitrary pairing eigenvalue. The selected review derives the imaginary-axis equations under stated electronic-density-of-states and symmetry approximations.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An independent positive-mode example writes $a(\\Omega)=\\sum_i\\lambda_i\\Omega_i\\delta(\\Omega-\\Omega_i)/2$. It gives $\\lambda=\\sum_i\\lambda_i$ and $K(\\nu)=\\sum_i\\lambda_i\\Omega_i^2/(\\Omega_i^2+\\nu^2)$. With normalized weights $w_i=\\lambda_i/\\lambda$, the logarithmic energy is $\\Omega_{\\log}=\\Omega_{\\rm ref}\\exp[\\sum_iw_i\\ln(\\Omega_i/\\Omega_{\\rm ref})]$; the arbitrary positive reference cancels. The second moment is $\\langle\\Omega^2\\rangle=\\sum_iw_i\\Omega_i^2$.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "One mode with $\\lambda=1$ at energy $\\Omega_0$ and two modes with couplings $1/2$ at $\\Omega_0/2$ and $2\\Omega_0$ have the same $\\lambda$ and $\\Omega_{\\log}$. Their root-mean-square energies differ by a factor $\\sqrt{17/8}$, and at $\\nu=\\Omega_0/2$ their kernels are 0.8 and approximately 0.72059. This independently checked counterexample shows why two scalar summaries do not specify the full spectral problem.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-mathematical-assumptions-6",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For an isotropic, particle-hole-symmetric constant-density-of-states model with a fixed phonon kernel and **zero Coulomb term**, the linearized gap equation is",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-mathematical-assumptions-7",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$Z_n\\Delta_n=\\pi k_BT\\sum_m K(\\omega_n-\\omega_m)\\frac{\\Delta_m}{|\\omega_m|}.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-mathematical-assumptions-8",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The sum covers positive and negative fermion frequencies. The normal-state $Z_n$ must be calculated from the same kernel; omitting it changes the theory. We solve the equivalent symmetric positive-frequency eigenproblem, locating the temperature where its largest eigenvalue reaches one. Increasing the retained positive frequencies from 16 to 128 gives $k_BT_c/\\Omega_0\\simeq0.11462$ for a single mode with $\\lambda=1$. For a 10 meV mode this is about 13.30 K, consistent with the review's model benchmark. It is not an experimental transition or a prediction for a named material.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-mathematical-assumptions-9",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A scalar logarithmic Coulomb reduction has the conditional form $\\mu^*=\\mu/[1+\\mu\\ln(E_{\\rm el}/E_c)]$. It assumes well-separated cutoffs and the stated constant-density-of-states treatment. Reducing the energy range in two successive steps gives the same result as one step; independently checked differentiation gives $d\\mu^*/d\\ln(E_{\\rm el}/E_c)=-(\\mu^*)^2$. Report the cutoff with the number: changing the cutoff while keeping $\\mu^*$ fixed changes the model. Morel–Anderson's original abstract and the later review are distinct evidence scopes.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9f48e16ab7691de5",
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Choi and colleagues' MgB2 work uses anisotropic first-principles Eliashberg calculations to connect band-dependent gaps with a common calculated transition. These are theoretical results. The corrected DOI is **nature00898**, not the inherited unrelated **nature00992**. Agreement with observations must be assessed with sample and computational conditions preserved.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7c4eac077ae5e221"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Drozdov and colleagues' sulfur-hydride author abstract reports resistive, magnetic-field and susceptibility evidence, with an isotope comparison. It attributes the high-temperature phase to likely H3S formed from pressurized H2S. This entry retains that version-specific attribution and does not claim a new structural identification or independent reanalysis.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8b901b9c6008c434"
+      ],
+      "conditions": "Selected sulfur-hydride author abstract with version-specific H3S attribution; no individual curve or transition criterion reanalysis.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "The cited lanthanum-superhydride paper is by **Somayazulu and colleagues**, not Drozdov. Its publisher abstract describes four-probe transport drops at 180–200 GPa and supporting characterization. Do not combine its sample, pressure or criterion with a different LaH10 report merely because both discuss lanthanum hydrides. No sample-specific transition value is extracted here.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-77b774e18b0f50c7"
+      ],
+      "conditions": "Somayazulu lanthanum-superhydride four-probe publisher abstract, 180–200 GPa; not merged with a Drozdov sample.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "For a material calculation, preserve the crystal phase, pressure, stability analysis, electronic and phonon meshes, spectral normalization, Coulomb treatment and convergence. Distinguish harmonic from anharmonic phonons and isotropic from anisotropic or multiband kernels. An inverted tunneling spectrum is model-dependent evidence, not a direct measurement of the interaction function.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Editorial modeling/evidence requirements, not a new mechanism assignment.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "McMillan and Allen–Dynes expressions summarize particular Eliashberg solutions; they are not universal bounds. The Allen–Dynes abstract explicitly identifies errors at large coupling and correction factors depending on spectral shape. A fixed-spectrum strong-coupling asymptote does not prove that a real crystal remains stable while its coupling increases without limit. Their full original derivations and datasets are outside this scoped check.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-aa8182fe7a3d8d0c",
+        "source-0620df96ebbf2a66"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "A small phonon-to-electron energy ratio alone does not certify every approximation. Narrow bands, unusual momentum structure, phonon feedback and polaron physics require specific analysis. Chubukov and colleagues' abstract compares a model's Migdal results with quantum Monte Carlo and identifies a breakdown of some normal-state properties. This is a model result, not a universal numerical coupling threshold for all materials.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-50bdf310cb30a289"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "Real-axis spectra require analytic continuation and its numerical checks. An imaginary-axis gap value is not automatically a measured spectral edge; finite damping and multiple bands complicate that correspondence. Replacing the phonon kernel with a spin or charge fluctuation interaction requires a new justification of the approximation and evidence chain.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Explicit spectral, isotropic, fixed-phonon, energy-unit and cutoff assumptions. Independent model benchmark is not an experimental or material transition.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    },
+    {
+      "id": "scwiki-b2-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Use spectral calculations to test a candidate mechanism against consistent thermodynamic, spectroscopic and structural evidence. Compare sensitivity to the Coulomb term and phonon treatment rather than selecting whichever inputs yield the largest transition temperature. Keep numerical convergence, validity of the physical approximation and agreement with experiment as three separate judgments.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Editorial modeling/evidence requirements, not a new mechanism assignment.",
+      "verificationScope": "Source scopes and locations below; independent model arithmetic/eigenvalue checks certify only the stated synthetic problem."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-b2-correction-1",
+      "description": "Replaced unrelated primatology DOI BF02745500 with the original Migdal JETP scan; no DOI fabricated.",
+      "sourceId": "source-21442c6eb33d9b94",
+      "scope": "Reference identity correction; original pinned chapter unchanged."
+    },
+    {
+      "id": "scwiki-b2-correction-2",
+      "description": "Corrected the Choi MgB2 DOI from nature00992 to nature00898.",
+      "sourceId": "source-7c4eac077ae5e221",
+      "scope": "Inherited source identity correction."
+    },
+    {
+      "id": "scwiki-b2-correction-3",
+      "description": "Attributed PRL 122, 027001 to Somayazulu et al., keeping it separate from Drozdov lanthanum-hydride reports.",
+      "sourceId": "source-77b774e18b0f50c7",
+      "scope": "Author and experimental-source identity."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "K(0)=\\lambda",
+      "check": "Positive-mode counterexample with equal lambda/log moment and different second moments and kernels; three full-sum normal-state Z checks."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "k_BT_c/\\Omega_0=0.11462",
+      "check": "Symmetric positive-frequency kernel, 16/32/64/128-frequency convergence; fixed Einstein mode lambda=1 and mu*=0."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "d\\mu^*/d\\ln(E_{el}/E_c)=-(\\mu^*)^2",
+      "check": "Three scalar reduction composition and numerical derivative checks."
+    }
+  ],
+  "materialCases": []
+}

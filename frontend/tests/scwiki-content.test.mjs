@@ -105,3 +105,12 @@ test("QPI bibliography rejects the unrelated biology DOI but preserves the disti
  writeFileSync(filename,JSON.stringify(meta));result=f.build();
  assert.notEqual(result.status,0);assert.match(result.stderr,/known incorrect DOI 10\.1038\/nature02269/);
 });
+
+test("wrong DOI correction remains enforced when the replacement is a historical URL",t=>{
+ const f=inventoryFixture(t),filename=path.join(f.directory,"articles/b2/meta.json");
+ const meta=JSON.parse(readFileSync(filename,"utf8")),historical=meta.references.find(r=>r.doi===null);
+ assert.ok(historical.url.includes("e_007_06_0996.pdf"));
+ historical.doi="10.1007/BF02745500";writeFileSync(filename,JSON.stringify(meta));
+ const result=f.build();assert.notEqual(result.status,0);
+ assert.match(result.stderr,/known incorrect DOI 10\.1007\/BF02745500/);
+});

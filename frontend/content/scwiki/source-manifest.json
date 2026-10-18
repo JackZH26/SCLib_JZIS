@@ -275,8 +275,8 @@
       "lineCount": 54,
       "topicId": "scwiki-topic-b2",
       "articleId": "scwiki-b2",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3467,6 +3467,35 @@
       "evidenceUrl": "https://arxiv.org/abs/cond-mat/0209276",
       "checkedAt": "2026-10-18",
       "scope": "Dispersing QPI belongs to science.1072640. science.1066974 is valid vortex-core research and must not be globally blocked as an invalid source."
+    },
+    {
+      "id": "correction-migdal-unrelated-doi",
+      "affectedTopics": [
+        "B2"
+      ],
+      "affectedSourcePaths": [
+        "B_mechanisms/B2_Eliashberg_strong_coupling.md"
+      ],
+      "incorrectDoi": "10.1007/BF02745500",
+      "correctUrl": "https://www.jetp.ras.ru/cgi-bin/dn/e_007_06_0996.pdf",
+      "evidenceUrl": "https://link.springer.com/article/10.1007/BF02745500",
+      "checkedAt": "2026-10-18",
+      "scope": "Inherited DOI identifies primatology; actual Migdal article is JETP 7, 996–1001. Canonical historical URL, no established DOI."
+    },
+    {
+      "id": "correction-lanthanum-superhydride-prl-authors",
+      "affectedTopics": [
+        "B2"
+      ],
+      "affectedSourcePaths": [
+        "B_mechanisms/B2_Eliashberg_strong_coupling.md"
+      ],
+      "doi": "10.1103/PhysRevLett.122.027001",
+      "incorrectAttribution": "Drozdov et al.",
+      "correctAttribution": "Somayazulu et al.",
+      "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.122.027001",
+      "checkedAt": "2026-10-18",
+      "scope": "Publisher authors and abstract. Do not merge transport conditions with a different lanthanum hydride paper."
     }
   ]
 }

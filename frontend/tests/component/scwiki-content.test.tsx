@@ -412,3 +412,21 @@ it("preserves QPI source identities, phase assumptions and measurement temperatu
  const json=await(await get(["articles",a.id])).json();expect(json.article.corrections).toHaveLength(2);
  expect(json.article.references.find((r:{doi:string})=>r.doi==="10.1038/nature01496").verification.scope).toBe("publisher-metadata-scoped-check");
 });
+
+it("keeps Eliashberg numerical benchmarks separate from material measurements and corrected sources",async()=>{
+ const a=articles().find(a=>a.code==="B2")!;
+ expect(a.materialCases).toEqual([]);
+ expect(searchArticles(searchIndex().entries,"Eliashberg",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const historical=a.references.find(r=>r.doi===null)!;expect(historical.url).toContain("e_007_06_0996.pdf");
+ expect(a.references.some(r=>r.doi==="10.1007/BF02745500"||r.doi==="10.1038/nature00992")).toBe(false);
+ expect(a.references.find(r=>r.doi==="10.1103/PhysRevLett.122.027001")!.verification.note).toContain("Somayazulu");
+ const md=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(md).toContain("zero Coulomb term");expect(md).toContain("synthetic Einstein-model benchmark");
+ const full=await(await get(["articles",a.id,"markdown"])).text();
+ expect(full).toContain("[Source publication]("+historical.url+")");
+ const scope=await(await get(["articles",a.id,"sections","scope"],"?format=markdown")).text();
+ expect(scope).toContain("[Source publication]("+historical.url+")");
+ expect(a.claims.filter(c=>c.evidenceType==="experiment")).toHaveLength(2);
+ expect(a.claims.filter(c=>c.statement.includes("13.30 K")).every(c=>c.evidenceType==="theory")).toBe(true);
+ expect(a.corrections).toHaveLength(3);
+});
