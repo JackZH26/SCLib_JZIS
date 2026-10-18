@@ -897,7 +897,7 @@ it("keeps heavy-fermion transition criteria separate from magnetic and normal-st
 it("preserves fulleride polymorph and transport criteria while excluding driven and withdrawn Tc",async()=>{
  const a=articles().find(a=>a.code==="D9")!;
  const fcc=a.materialCases.filter(c=>c.formula==="Cs3C60"&&c.tcK!==null);
- expect(fcc.map(c=>[c.tcK,c.pressureGPa])).toEqual([[25.6,.13],[29.7,.22],[35,.7]]);
+ expect(fcc.map(c=>[c.tcK,c.pressureGPa])).toEqual([[25.6,{min:.13,max:.13}],[29.7,{min:.22,max:.22}],[35,{min:.7,max:.7}]]);
  const film=a.materialCases.filter(c=>c.formula==="Rb2.98C60");
  expect(film.map(c=>[c.tcK,c.criterion])).toEqual([[26.4,"local-resistivity-maximum"],[14.5,"resistivity-derivative-threshold"]]);
  expect(a.materialCases.find(c=>c.reportedTemperatureK===100)?.tcK).toBeNull();
@@ -911,4 +911,6 @@ it("preserves fulleride polymorph and transport criteria while excluding driven 
  const md=await(await get(["articles",a.id,"markdown"])).text();
  expect(md).toContain("2003-03-06");expect(md).toContain("10.1038/nature01466");
  expect(md).toContain("operational criterion");expect(md).toContain("no equilibrium Tc");
+ expect(md).toContain("0.13 to 0.13 GPa");expect(md).toContain("0.7 to 0.7 GPa");
+ expect(md).not.toContain("undefined");
 });

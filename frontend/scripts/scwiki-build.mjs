@@ -60,6 +60,8 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
   catch(error){fail(folder+" invalid math: "+error.message)}
  }
  for(const record of meta.materialCases){
+  const pressure=record.pressureGPa;
+  if(pressure!==null&&(typeof pressure!=="object"||Array.isArray(pressure)||!Number.isFinite(pressure.min)||!Number.isFinite(pressure.max)||pressure.min<0||pressure.max<pressure.min))fail(folder+" invalid pressure range");
   if(!["ambient","high","unknown"].includes(record.pressureRegime)||!["equilibrium","transient","metastable","unknown"].includes(record.equilibrium)||!["theory","experiment","prediction","hypothesis"].includes(record.recordType))fail(folder+" invalid material condition enum");
   if(!["transition","spectroscopic-gap","measurement","normal-state","transient-response","unassigned"].includes(record.temperatureKind))fail(folder+" invalid temperature kind");
   if(record.reportedTemperatureK!==null&&(!Number.isFinite(record.reportedTemperatureK)||record.reportedTemperatureK<0))fail(folder+" invalid reported temperature");

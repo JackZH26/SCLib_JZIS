@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "d0f92a17c2a31bca4c6e",
+  "revision": "6e8a0f9927725c0060db",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -2605,7 +2605,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "3e3945a27fcbeaac4e8c",
+      "revision": "264f2a5c5d6af50ca56c",
       "materialCases": [
         {
           "id": "scwiki-d9-material-1",
@@ -2615,7 +2615,7 @@
           "reportedTemperatureK": 18,
           "tcK": 18,
           "temperatureKind": "transition",
-          "temperatureNote": "Original abstract only; film16K onset/5K essentially zero are different measurements.",
+          "temperatureNote": "Original abstract only; film 16 K onset / 5 K essentially zero are different measurements.",
           "criterion": "magnetic-and-microwave-onset",
           "pressureRegime": "ambient",
           "pressureGPa": null,
@@ -2647,10 +2647,13 @@
           "reportedTemperatureK": 25.6,
           "tcK": 25.6,
           "temperatureKind": "transition",
-          "temperatureNote": "About0.1%shielding; do not infer bulk fraction from this onset.",
+          "temperatureNote": "About 0.1% shielding; do not infer bulk fraction from this onset.",
           "criterion": "magnetization-onset-trace-shielding",
           "pressureRegime": "high",
-          "pressureGPa": 0.13,
+          "pressureGPa": {
+            "min": 0.13,
+            "max": 0.13
+          },
           "equilibrium": "equilibrium",
           "probe": "20 Oe ZFC/FC magnetometry",
           "sourceId": "source-5e6d3e7ed715ad6a"
@@ -2658,7 +2661,7 @@
         {
           "id": "scwiki-d9-material-4",
           "formula": "Cs3C60",
-          "sample": "fcc polymorph, about12%shielding",
+          "sample": "fcc polymorph, about 12% shielding",
           "recordType": "experiment",
           "reportedTemperatureK": 29.7,
           "tcK": 29.7,
@@ -2666,7 +2669,10 @@
           "temperatureNote": "Pressure-specific magnetic onset in a multiphase powder.",
           "criterion": "magnetization-onset",
           "pressureRegime": "high",
-          "pressureGPa": 0.22,
+          "pressureGPa": {
+            "min": 0.22,
+            "max": 0.22
+          },
           "equilibrium": "equilibrium",
           "probe": "20 Oe ZFC/FC magnetometry",
           "sourceId": "source-5e6d3e7ed715ad6a"
@@ -2679,10 +2685,13 @@
           "reportedTemperatureK": 35,
           "tcK": 35,
           "temperatureKind": "transition",
-          "temperatureNote": "Approximate maximum at approximately7kbar; not A15 maximum38K.",
+          "temperatureNote": "Approximate maximum at approximately 7 kbar; not A15 maximum 38 K.",
           "criterion": "magnetization-onset",
           "pressureRegime": "high",
-          "pressureGPa": 0.7,
+          "pressureGPa": {
+            "min": 0.7,
+            "max": 0.7
+          },
           "equilibrium": "equilibrium",
           "probe": "20 Oe ZFC/FC magnetometry",
           "sourceId": "source-5e6d3e7ed715ad6a"
@@ -2711,12 +2720,12 @@
           "reportedTemperatureK": 26.4,
           "tcK": 26.4,
           "temperatureKind": "transition",
-          "temperatureNote": "Same film as14.5K derivative-threshold record; two criteria, not two independent specimens.",
+          "temperatureNote": "Same film as 14.5 K derivative-threshold record; two criteria, not two independent specimens.",
           "criterion": "local-resistivity-maximum",
           "pressureRegime": "ambient",
           "pressureGPa": null,
           "equilibrium": "equilibrium",
-          "probe": "Van der Pauw transport,1μA",
+          "probe": "Van der Pauw transport, 1 μA",
           "sourceId": "source-64cd48d99353501a"
         },
         {
@@ -2732,7 +2741,7 @@
           "pressureRegime": "ambient",
           "pressureGPa": null,
           "equilibrium": "equilibrium",
-          "probe": "Van der Pauw transport,1μA",
+          "probe": "Van der Pauw transport, 1 μA",
           "sourceId": "source-64cd48d99353501a"
         },
         {
@@ -2743,12 +2752,12 @@
           "reportedTemperatureK": 7,
           "tcK": 7,
           "temperatureKind": "transition",
-          "temperatureNote": "Same operational derivative threshold as14.5K optimally intercalated film.",
+          "temperatureNote": "Same operational derivative threshold as 14.5 K optimally intercalated film.",
           "criterion": "resistivity-derivative-threshold",
           "pressureRegime": "ambient",
           "pressureGPa": null,
           "equilibrium": "equilibrium",
-          "probe": "Van der Pauw transport,1μA",
+          "probe": "Van der Pauw transport, 1 μA",
           "sourceId": "source-64cd48d99353501a"
         },
         {

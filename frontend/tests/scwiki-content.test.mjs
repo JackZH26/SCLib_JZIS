@@ -26,6 +26,17 @@ function inventoryFixture(t){
  const build=()=>spawnSync(process.execPath,[path.resolve("scripts/scwiki-build.mjs")],{cwd,encoding:"utf8"});
  return {cwd,directory,manifest,save,build};
 }
+
+test("pressure ranges reject malformed values before rendering material conditions",async t=>{
+ for(const [name,pressure] of [["scalar",.13],["missing",undefined],["text",{min:"0.13",max:.13}],["partial",{min:.13}],["reversed",{min:2,max:1}],["negative",{min:-1,max:0}],["array",[.13,.13]]]){
+  await t.test(name,t=>{
+   const f=inventoryFixture(t),filename=path.join(f.directory,"articles/d9/meta.json"),meta=JSON.parse(readFileSync(filename,"utf8"));
+   meta.materialCases[0].pressureGPa=pressure;
+   writeFileSync(filename,JSON.stringify(meta));const result=f.build();
+   assert.notEqual(result.status,0);assert.match(result.stderr,/invalid pressure range/);
+  });
+ }
+});
 test("publication inventory permits an explicitly approved additional core article",t=>{
  const f=inventoryFixture(t);
  const published=f.manifest.files.filter(x=>x.publicBody).length;
