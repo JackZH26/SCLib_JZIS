@@ -829,7 +829,7 @@ it("separates transport thresholds, uncertainty and driven measurements in expor
  const driven=a.materialCases.find(c=>c.criterion==="transient-two-terminal-response")!;
  expect(driven.reportedTemperatureK).toBe(100);expect(driven.tcK).toBeNull();expect(driven.equilibrium).toBe("transient");expect(driven.probe).toContain("static four-terminal");
  expect(searchArticles(searchIndex().entries,"K3C60",{tcMin:90}).some(a=>a.code==="A1")).toBe(false);
- const md=await (await get(["articles",a.id,"markdown"])).text();expect(md).toContain("contact calibration from static four-terminal");expect(md).toContain("Mitrano publisher update details remain unresolved");
+ const md=await (await get(["articles",a.id,"markdown"])).text();expect(md).toContain("contact calibration from static four-terminal");expect(md).toContain("24 February 2016 caption-correction notice is identified");expect(md).toContain("no exhaustive old/corrected/final-version comparison was performed");
  const schema=await (await get(["openapi.json"])).json();const statuses=schema.components.schemas.Source.properties.publicationStatus.enum;
  expect(statuses).toContain("technical-report");
  for(const a of articles())for(const r of a.references)expect(statuses).toContain(r.publicationStatus);
@@ -1853,4 +1853,19 @@ it("derives changes only from complete consistent snapshots, retaining failed-sy
  expect(()=>diffRevisionSnapshots(previous,{...current,records:current.records.slice(0,1)})).toThrow(/complete/);
  expect(()=>diffRevisionSnapshots(previous,{...current,records:[current.records[0],current.records[0]]})).toThrow(/duplicate/);
  expect(()=>diffRevisionSnapshots(previous,{...current,revision:previous.revision})).toThrow(/Conflicting/);
+});
+
+it("propagates the identified Mitrano publisher correction without certifying the full paper",async()=>{
+ const sid="source-6ee3670220e24ff1";
+ for(const code of ["A1","B7","D9","E6"]){
+  const a=articles().find(a=>a.code===code)!;const source=a.references.find(r=>r.id===sid)!;
+  expect(source.updates).toHaveLength(1);expect(source.updates![0]).toMatchObject({kind:"correction",date:"2016-02-24",checkedAt:"2026-10-19"});
+  expect(source.updates![0].scope).toContain("not compared in full");
+  expect(source.verification.note).toContain("24 February 2016");
+  expect(JSON.stringify(a)).not.toMatch(/update (?:details )?remain[s]? unresolved|update whose details have not been verified/);
+  const json=(await(await get(["articles",a.id])).json()).article;
+  expect(json.references.find((r:any)=>r.id===sid).updates).toEqual(source.updates);
+  const md=await(await get(["articles",a.id,"markdown"])).text();expect(md).toContain("24 February 2016");
+ }
+ const sources=await getAll("sources");expect(sources.sources.find((r:any)=>r.id===sid).updates[0].date).toBe("2016-02-24");
 });

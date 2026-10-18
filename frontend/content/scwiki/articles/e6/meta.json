@@ -27,10 +27,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T13:00:31.287835+00:00",
+  "modifiedAt": "2026-10-19",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected original optical/transport/magnetic passages; Fausti, Budden, Dodge and Kennes figure/equation visual checks; bounded Drude, saturation-depth and oscillator calculations.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected original optical/transport/magnetic passages; Fausti, Budden, Dodge and Kennes figure/equation visual checks; bounded Drude, saturation-depth and oscillator calculations. Publisher notice identifying the 24 February 2016 Mitrano caption correction checked separately on 19 October 2026.",
     "limitations": [
       "Complete scientific acceptance, remaining final-version comparisons, full supplements and raw-data reproduction remain open.",
       "Fava author-hosted journal-formatted copy retains a placeholder date; publisher dates checked separately. Hu downloaded author-version history not fully compared.",
@@ -97,10 +97,20 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-final-optical-interpretation",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://qcmd.mpsd.mpg.de/wp-content/uploads/2023/01/mitrano-nature16522-2016.pdf",
-        "note": "Online8February2016,issue25February. Selected final p.461 main text, equilibrium20K reference and model-dependent optical-gap interpretation read. Full methods, extended data and rawdata not reanalyzed; no direct DC/Meissner result inferred."
-      }
+        "note": "Online8February2016,issue25February. Selected final p.461 main text, equilibrium20K reference and model-dependent optical-gap interpretation read. Full methods, extended data and rawdata not reanalyzed; no direct DC/Meissner result inferred. Publisher correction notice dated 24 February 2016 identifies a restored final sentence in the advance-online PDF Figure 4 caption; no full old/corrected PDF comparison was performed."
+      },
+      "updates": [
+        {
+          "kind": "correction",
+          "date": "2016-02-24",
+          "description": "The publisher restored a truncated final sentence in the Figure 4 caption of the advance-online PDF.",
+          "evidenceUrl": "https://www.nature.com/articles/nature16522#change-history",
+          "checkedAt": "2026-10-19",
+          "scope": "Publisher change-history notice and publisher-deposited Crossref assertion agree. Old and corrected PDFs were not compared in full."
+        }
+      ]
     },
     {
       "id": "source-07be806c0002c690",
@@ -392,6 +402,12 @@
       "scope": "Final journal title page and p.615 Fig4/caption visually checked.",
       "originalSourceLines": [],
       "targetSectionId": "experimental-criteria"
+    },
+    {
+      "id": "scwiki-e6-correction-mitrano-caption-notice",
+      "description": "Identified the previously unspecified Mitrano update as the publisher’s 24 February 2016 correction of a truncated Figure 4 caption sentence in the advance-online PDF.",
+      "sourceId": "source-6ee3670220e24ff1",
+      "scope": "Correction-notice identity only; earlier manuscript limits, full version comparison and raw-data limitations remain."
     }
   ],
   "equationChecks": [

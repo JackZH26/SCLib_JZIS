@@ -56,6 +56,10 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
    if(retracted&&(!retracted.retraction||retracted.retraction.noticeDoi!==correction.retractionNoticeDoi||retracted.retraction.retractedAt!==correction.retractedAt))fail(folder+" missing known retraction metadata "+correction.retractedDoi);
   }
  }
+ for(const ref of meta.references)if(ref.updates!==undefined){
+  if(!Array.isArray(ref.updates)||!ref.updates.length)fail(folder+" invalid publisher updates");
+  for(const u of ref.updates)if(u.kind!=="correction"||!/^\d{4}-\d{2}-\d{2}$/.test(u.date??"")||!/^\d{4}-\d{2}-\d{2}$/.test(u.checkedAt??"")||!/^https:\/\//.test(u.evidenceUrl??"")||!u.description?.trim()||!u.scope?.trim())fail(folder+" invalid publisher update notice");
+ }
  for(const ref of meta.references)if(ref.retraction){
   const notice=ref.retraction;
   if(!/^10\.\d{4,9}\/\S+$/.test(notice.noticeDoi??"")||!/^\d{4}-\d{2}-\d{2}$/.test(notice.retractedAt??"")||!/^https:\/\//.test(notice.evidenceUrl??""))fail(folder+" invalid retraction metadata");

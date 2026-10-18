@@ -28,12 +28,12 @@
   "contentState": "pilot",
   "modifiedAt": "2026-10-19",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Operational transport bounds and model checks; selected NIST metrology report passages, earlier optical/electrical K3C60 manuscript passages and existing Halperin–Nelson abstract check.",
+    "checkedAt": "2026-10-19",
+    "scope": "Operational transport bounds and model checks; selected NIST metrology report passages, earlier optical/electrical K3C60 manuscript passages and existing Halperin–Nelson abstract check. Publisher notice identifying the 24 February 2016 Mitrano caption correction checked separately on 19 October 2026.",
     "limitations": [
       "No full scientific acceptance, experimental replication or instrument calibration is claimed.",
       "Input uncertainty intervals and response models must be justified for the actual apparatus; mathematical checks do not establish their experimental validity.",
-      "Mitrano publisher update details remain unresolved; earlier manuscripts are identified explicitly and no exhaustive final-version comparison was performed.",
+      "Mitrano’s 24 February 2016 caption-correction notice is identified; earlier manuscripts remain explicit and no exhaustive old/corrected/final-version comparison was performed.",
       "Driven K3C60 observations are not equilibrium transition-temperature records; BCS remains a background reference in this entry."
     ]
   },
@@ -134,6 +134,12 @@
       "description": "Specified the driven electrical experiment as transient two-terminal transport calibrated with static four-terminal measurements.",
       "sourceId": "source-07be806c0002c690",
       "scope": "Selected earlier manuscript methods; no equilibrium Tc inferred."
+    },
+    {
+      "id": "scwiki-a1-correction-mitrano-caption-notice",
+      "description": "Identified the previously unspecified Mitrano update as the publisher’s 24 February 2016 correction of a truncated Figure 4 caption sentence in the advance-online PDF.",
+      "sourceId": "source-6ee3670220e24ff1",
+      "scope": "Correction-notice identity only; earlier manuscript limits, full version comparison and raw-data limitations remain."
     }
   ],
   "equationChecks": [
@@ -191,10 +197,20 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "earlier-author-manuscript-scoped-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://arxiv.org/pdf/1505.04529v1",
-        "note": "Selected pp. 1–2 and 4–6 of 2015 v1: transient optical response, high-mobility alternative and finite probe window. Earlier version with different title; final publisher record marks an update, details unresolved. No full version comparison, raw-data reproduction or equilibrium Tc extraction."
-      }
+        "note": "Selected pp. 1–2 and 4–6 of 2015 v1: transient optical response, high-mobility alternative and finite probe window. Earlier version with different title. The publisher’s 24 February 2016 notice identifies a restored, previously truncated final sentence in the advance-online PDF Figure 4 caption. No full version comparison, raw-data reproduction or equilibrium Tc extraction."
+      },
+      "updates": [
+        {
+          "kind": "correction",
+          "date": "2016-02-24",
+          "description": "The publisher restored a truncated final sentence in the Figure 4 caption of the advance-online PDF.",
+          "evidenceUrl": "https://www.nature.com/articles/nature16522#change-history",
+          "checkedAt": "2026-10-19",
+          "scope": "Publisher change-history notice and publisher-deposited Crossref assertion agree. Old and corrected PDFs were not compared in full."
+        }
+      ]
     },
     {
       "id": "source-07be806c0002c690",
@@ -434,7 +450,7 @@
     {
       "id": "scwiki-a1-claim-limits-and-disputes-1",
       "sectionId": "limits-and-disputes",
-      "statement": "Mitrano and colleagues' earlier author manuscript reports transient optical signatures in driven K3C60 and discusses a high-mobility alternative interpretation. Such spectra do not constitute a direct DC transport measurement. This check covers selected 2015 manuscript passages; the publisher record flags an update whose details have not been verified here. No optical crossover temperature is entered as an equilibrium transition.",
+      "statement": "Mitrano and colleagues' earlier author manuscript reports transient optical signatures in driven K3C60 and discusses a high-mobility alternative interpretation. Such spectra do not constitute a direct DC transport measurement. This check covers selected 2015 manuscript passages; the publisher’s 24 February 2016 correction notice identifies a truncated final sentence in the advance-online PDF Figure 4 caption, which was restored. This notice does not replace a full comparison of manuscript and journal versions. No optical crossover temperature is entered as an equilibrium transition.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-6ee3670220e24ff1"

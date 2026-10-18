@@ -280,3 +280,9 @@ test("claim source roles require a valid classification and an explanatory bound
   writeFileSync(file,JSON.stringify(m));const result=f.build();assert.notEqual(result.status,0);assert.match(result.stderr,/claim source relationship/);
  });}
 });
+
+test("publisher correction notices cannot omit their evidence and review boundary",t=>{
+ const f=inventoryFixture(t),file=path.join(f.directory,"articles/a1/meta.json"),m=JSON.parse(readFileSync(file,"utf8"));
+ const source=m.references.find(r=>r.id==="source-6ee3670220e24ff1");delete source.updates[0].scope;
+ writeFileSync(file,JSON.stringify(m));const result=f.build();assert.notEqual(result.status,0);assert.match(result.stderr,/invalid publisher update notice/);
+});

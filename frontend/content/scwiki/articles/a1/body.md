@@ -32,7 +32,7 @@ If contacts or backgrounds are subtracted, preserve the original reading and pro
 
 ## Limits and disputes
 
-Mitrano and colleagues' earlier author manuscript reports transient optical signatures in driven K3C60 and discusses a high-mobility alternative interpretation. Such spectra do not constitute a direct DC transport measurement. This check covers selected 2015 manuscript passages; the publisher record flags an update whose details have not been verified here. No optical crossover temperature is entered as an equilibrium transition. [R3](#ref-source-6ee3670220e24ff1)
+Mitrano and colleagues' earlier author manuscript reports transient optical signatures in driven K3C60 and discusses a high-mobility alternative interpretation. Such spectra do not constitute a direct DC transport measurement. This check covers selected 2015 manuscript passages; the publisher’s 24 February 2016 correction notice identifies a truncated final sentence in the advance-online PDF Figure 4 caption, which was restored. This notice does not replace a full comparison of manuscript and journal versions. No optical crossover temperature is entered as an equilibrium transition. [R3](#ref-source-6ee3670220e24ff1)
 
 Budden and colleagues complement optics with a 1 ns electrical probe of a driven K3C60 pellet at 100 K. The checked manuscript uses a two-terminal transient measurement with contact resistance calibrated against static four-terminal measurements. Figure 4 explicitly includes a calibration-related systematic uncertainty. A resistance compatible with zero in this driven experiment is not an equilibrium $T_{c,\mathrm{zero}}$. The numerical waveform and complete final journal version were not independently reanalyzed. [R4](#ref-source-07be806c0002c690)
 

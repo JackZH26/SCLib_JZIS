@@ -28,13 +28,13 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.198293+00:00",
+  "modifiedAt": "2026-10-19",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Historical original/comment/reply abstracts, selected Budden and Aranzadi manuscripts, published Kellogg passages and independent illustrative checks.",
+    "checkedAt": "2026-10-19",
+    "scope": "Historical original/comment/reply abstracts, selected Budden and Aranzadi manuscripts, published Kellogg passages and independent illustrative checks. Publisher notice identifying the 24 February 2016 Mitrano caption correction checked separately on 19 October 2026.",
     "limitations": [
       "Full scientific acceptance, final-version comparison and raw-data audit remain open.",
-      "Mitrano final-publication update remains unresolved; several historical references are abstract-only.",
+      "Mitrano’s 24 February 2016 caption-correction notice is identified, but full final-version comparison remains open; several historical references are abstract-only.",
       "Aranzadi v2 is a preprint; finite-cluster pair correlations do not establish bulk superconductivity or a lifetime.",
       "The100K transient measurement is a base temperature, not an equilibrium superconducting transition; model energies are not measured Tc."
     ]
@@ -145,10 +145,20 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "earlier-author-manuscript-scoped-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://arxiv.org/pdf/1505.04529v1",
-        "note": "Inherited A1 selected pp.1–2,4–6 check: finite-window transient optical response and high-mobility alternative. Final publication update remains unresolved; no full final-version equivalence."
-      }
+        "note": "Inherited A1 selected pp.1–2,4–6 check: finite-window transient optical response and high-mobility alternative. The publisher’s 24 February 2016 caption-correction notice is identified; no full final-version equivalence is established."
+      },
+      "updates": [
+        {
+          "kind": "correction",
+          "date": "2016-02-24",
+          "description": "The publisher restored a truncated final sentence in the Figure 4 caption of the advance-online PDF.",
+          "evidenceUrl": "https://www.nature.com/articles/nature16522#change-history",
+          "checkedAt": "2026-10-19",
+          "scope": "Publisher change-history notice and publisher-deposited Crossref assertion agree. Old and corrected PDFs were not compared in full."
+        }
+      ]
     },
     {
       "id": "source-07be806c0002c690",
@@ -361,7 +371,7 @@
     {
       "id": "scwiki-b7-claim-experimental-criteria-3",
       "sectionId": "experimental-criteria",
-      "statement": "Mitrano and colleagues' earlier K3C60 manuscript reports transient superconducting-like optical features while considering a high-mobility alternative within its finite probe window. The existing source check leaves a final-publication update unresolved. Budden and colleagues add calibrated electrical measurements: their author manuscript uses a 1 ns two-terminal probe and subtracts contact contributions inferred from static four-terminal measurements. At a 100 K base temperature, the reported transient resistance is compatible with zero within calibration uncertainty. This is not a direct transient four-terminal measurement, and 100 K is not entered as an equilibrium transition temperature.",
+      "statement": "Mitrano and colleagues' earlier K3C60 manuscript reports transient superconducting-like optical features while considering a high-mobility alternative within its finite probe window. The publisher’s 24 February 2016 notice identifies a restored, previously truncated final sentence in the advance-online PDF Figure 4 caption; a full final-version comparison remains open. Budden and colleagues add calibrated electrical measurements: their author manuscript uses a 1 ns two-terminal probe and subtracts contact contributions inferred from static four-terminal measurements. At a 100 K base temperature, the reported transient resistance is compatible with zero within calibration uncertainty. This is not a direct transient four-terminal measurement, and 100 K is not entered as an equilibrium transition temperature.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-6ee3670220e24ff1",
@@ -428,6 +438,12 @@
       "description": "Distinguished transient two-terminal measurements from static four-terminal contact calibration and retained preprint finite-size/initialization limits.",
       "sourceId": "source-07be806c0002c690",
       "scope": "Selected author manuscripts; full final-version audit open."
+    },
+    {
+      "id": "scwiki-b7-correction-mitrano-caption-notice",
+      "description": "Identified the previously unspecified Mitrano update as the publisher’s 24 February 2016 correction of a truncated Figure 4 caption sentence in the advance-online PDF.",
+      "sourceId": "source-6ee3670220e24ff1",
+      "scope": "Correction-notice identity only; earlier manuscript limits, full version comparison and raw-data limitations remain."
     }
   ],
   "equationChecks": [
