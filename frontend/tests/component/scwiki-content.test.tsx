@@ -505,7 +505,7 @@ it("preserves exciton proposal disputes and transient transport conditions witho
  const exp=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
  expect(exp).toContain("two-terminal probe");expect(exp).toContain("static four-terminal");expect(exp).toContain("not a direct transient four-terminal");
  const conditions=await(await get(["articles",a.id,"sections","material-cases"],"?format=markdown")).text();
- expect(conditions).toContain("75ps");expect(conditions).toContain("non-equilibrium");
+ expect(conditions).toContain("75ps");expect(conditions).toContain("transient");
  const limits=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
  expect(limits).toContain("10.1103/PhysRevB.8.4429");expect(limits).toContain("10.1103/PhysRevB.8.4433");
  expect(limits).toContain("30 THz");expect(limits).toContain("10 THz");expect(limits).toContain("preprint");
@@ -804,7 +804,7 @@ it("keeps elemental pressure cases and calculated temperatures distinct",async()
 it("keeps A15 transitions separate from operating and structural temperatures",async()=>{
  const a=articles().find(a=>a.code==="D2")!;
  const v3si=a.materialCases.find(m=>m.formula==="V3Si")!;
- expect(v3si.tcK).toBe(12.8);expect(v3si.sample).toContain("6.67T");
+ expect(v3si.tcK).toBe(12.8);expect(v3si.sample).toContain("6.67 T");
  expect(a.materialCases.filter(m=>m.temperatureKind==="measurement").every(m=>m.tcK===null)).toBe(true);
  expect(searchArticles(searchIndex().entries,"Kramer",{tcMin:22}).some(r=>r.id===a.id)).toBe(true);
  expect(searchArticles(searchIndex().entries,"Kramer",{tcMin:23}).some(r=>r.id===a.id)).toBe(false);
@@ -817,4 +817,48 @@ it("keeps A15 transitions separate from operating and structural temperatures",a
  expect(math).toContain("Neither improved value was measured");expect(math).toContain("Full scientific acceptance");
  expect(a.references.find(r=>r.doi==="10.1063/1.1890447")?.verification.evidenceUrl).toMatch(/v2$/);
  expect(a.relatedCodes).toContain("A6");
+});
+
+it("carries retraction status through source, article, section and rendered references",async()=>{
+ const a=articles().find(a=>a.code==="D6")!;
+ const withdrawn=a.references.filter(r=>r.retraction);expect(withdrawn).toHaveLength(2);
+ const articleJson=await(await get(["articles",a.id])).json();
+ const full=await(await get(["articles",a.id,"markdown"])).text();
+ const section=await(await get(["articles",a.id,"sections","limits-and-disputes"])).json();
+ const md=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+ const {default:ArticlePage}=await import("@/app/scwiki/[slug]/page");
+ const html=renderToStaticMarkup(await ArticlePage({params:Promise.resolve({slug:a.slug})}));
+ for(const ref of withdrawn){
+  const notice=ref.retraction!;
+  expect(articleJson.article.references.find((r:{id:string})=>r.id===ref.id).retraction).toEqual(notice);
+  expect(section.sources.find((r:{id:string})=>r.id===ref.id).retraction).toEqual(notice);
+  const sources=await(await get(["sources"])).json();
+  expect(sources.sources.find((r:{id:string})=>r.id===ref.id).retraction).toEqual(notice);
+  for(const text of [full,md]){expect(text).toContain("Retracted: "+notice.retractedAt);expect(text).toContain(notice.evidenceUrl);}
+  expect(html).toContain('dateTime="'+notice.retractedAt+'"');
+  expect(html).toContain('href="'+notice.evidenceUrl+'">Retraction notice</a>');
+  expect(a.materialCases.filter(c=>c.tcK!==null).some(c=>c.sourceId===ref.id)).toBe(false);
+ }
+ const spec=await(await get(["openapi.json"])).json();
+ expect(spec.components.schemas.Source.properties.retraction.required).toEqual(["noticeDoi","retractedAt","evidenceUrl"]);
+ expect(html).toContain('"creativeWorkStatus":"Retracted"');
+});
+it("does not promote hydride negative measurement limits or predictions to measured transition temperatures",()=>{
+ const a=articles().find(a=>a.code==="D6")!;
+ for(const formula of ["LuH2±xNy","Y3Fe4H20"]){const c=a.materialCases.find(c=>c.formula===formula)!;expect(c.tcK).toBeNull();expect(c.temperatureKind).toBe("measurement");}
+ const prediction=a.materialCases.find(c=>c.recordType==="prediction")!;expect(prediction.tcK).toBeNull();
+ expect(a.body).toContain("249 K and 180 K");expect(a.body).toContain("151 and 152 GPa");
+ expect(a.body).toContain("not direct measurements at 136 T");
+ expect(a.review.limitations[0]).toContain("remain open");
+});
+
+
+it("matches every material condition to the public search/API enum and retrieves transient optical evidence",()=>{
+ for(const a of articles())for(const c of a.materialCases){
+  expect(["ambient","high","unknown"]).toContain(c.pressureRegime);
+  expect(["equilibrium","transient","metastable","unknown"]).toContain(c.equilibrium);
+  expect(["theory","experiment","prediction","hypothesis"]).toContain(c.recordType);
+ }
+ expect(searchArticles(searchIndex().entries,"Budden",{equilibrium:"transient"}).some(a=>a.code==="B7")).toBe(true);
+ expect(searchArticles(searchIndex().entries,"LaH10",{pressure:"high",tcMin:240}).some(a=>a.code==="D6")).toBe(true);
 });

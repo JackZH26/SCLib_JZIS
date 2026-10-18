@@ -43,6 +43,15 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  const citedDois=new Set(meta.references.map(r=>r.doi?.toLowerCase()).filter(Boolean));
  for(const correction of manifest.correctionRegister??[]){
   if(correction.articleDoi&&correction.requiredCompanionDoi&&citedDois.has(correction.articleDoi.toLowerCase())&&!citedDois.has(correction.requiredCompanionDoi.toLowerCase()))fail(folder+" missing required erratum "+correction.requiredCompanionDoi);
+  if(correction.retractedDoi){
+   const retracted=meta.references.find(r=>r.doi?.toLowerCase()===correction.retractedDoi.toLowerCase());
+   if(retracted&&(!retracted.retraction||retracted.retraction.noticeDoi!==correction.retractionNoticeDoi||retracted.retraction.retractedAt!==correction.retractedAt))fail(folder+" missing known retraction metadata "+correction.retractedDoi);
+  }
+ }
+ for(const ref of meta.references)if(ref.retraction){
+  const notice=ref.retraction;
+  if(!/^10\.\d{4,9}\/\S+$/.test(notice.noticeDoi??"")||!/^\d{4}-\d{2}-\d{2}$/.test(notice.retractedAt??"")||!/^https:\/\//.test(notice.evidenceUrl??""))fail(folder+" invalid retraction metadata");
+  if(!citedDois.has(notice.noticeDoi.toLowerCase())||notice.noticeDoi.toLowerCase()===ref.doi?.toLowerCase())fail(folder+" missing retraction notice "+notice.noticeDoi);
  }
  for(const claim of meta.claims)if(!sectionIds.has(claim.sectionId)||!claim.sourceIds.length||claim.sourceIds.some(id=>!refIds.has(id))||!claim.conditions)fail(folder+" claim mapping "+claim.id);
  for(const match of body.matchAll(/\]\(#ref-([a-z0-9-]+)\)/g))if(!refIds.has(match[1]))fail(folder+" unresolved citation");
@@ -51,17 +60,19 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
   catch(error){fail(folder+" invalid math: "+error.message)}
  }
  for(const record of meta.materialCases){
+  if(!["ambient","high","unknown"].includes(record.pressureRegime)||!["equilibrium","transient","metastable","unknown"].includes(record.equilibrium)||!["theory","experiment","prediction","hypothesis"].includes(record.recordType))fail(folder+" invalid material condition enum");
   if(!["transition","spectroscopic-gap","measurement","normal-state","transient-response","unassigned"].includes(record.temperatureKind))fail(folder+" invalid temperature kind");
   if(record.reportedTemperatureK!==null&&(!Number.isFinite(record.reportedTemperatureK)||record.reportedTemperatureK<0))fail(folder+" invalid reported temperature");
   if(!refIds.has(record.sourceId)||!record.criterion||!record.sample||!record.probe||!record.equilibrium||!record.pressureRegime)fail(folder+" missing material conditions");
   if(record.temperatureKind!=="transition"&&record.tcK!==null)fail(folder+" non-transition temperature is not a transition Tc");
   if(record.tcK!==null&&(!Number.isFinite(record.tcK)||record.tcK<0))fail(folder+" invalid Tc");
   if(record.recordType!=="experiment"&&record.tcK!==null)fail(folder+" non-experimental Tc cannot enter experimental records");
+  if(record.tcK!==null&&meta.references.find(r=>r.id===record.sourceId)?.retraction)fail(folder+" retracted source cannot supply an experimental Tc");
  }
  const conditions=meta.materialCases.length===0?"## Material cases\n\nNo sample-specific material records are included in this article. Model results are not experimental transition temperatures.":"## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n"+
  "| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n"+
  meta.materialCases.map(r=>"| "+r.formula+"; "+r.sample+" | "+(r.reportedTemperatureK===null?r.temperatureNote:r.reportedTemperatureK+" K; "+r.temperatureNote)+" | "+r.temperatureKind+"; "+r.criterion+" | "+r.probe+" | "+r.pressureRegime+"; "+(r.pressureGPa?r.pressureGPa.min+" to "+r.pressureGPa.max+" GPa":"unknown GPa")+" | "+r.equilibrium+" | "+r.recordType+"; [source](#ref-"+r.sourceId+") |").join("\n");
- const referenceText=meta.references.map((r,i)=>"### Ref "+r.id+"\n\n[R"+(i+1)+"] "+r.title+" ("+r.year+"). ["+(r.doi?"DOI "+r.doi:"Source publication")+"]("+r.url+"). Publication: "+r.publicationStatus+". Check: "+r.verification.scope+". Checked: "+r.verification.checkedAt+". "+(r.verification.note??"")).join("\n");
+ const referenceText=meta.references.map((r,i)=>"### Ref "+r.id+"\n\n[R"+(i+1)+"] "+r.title+" ("+r.year+"). ["+(r.doi?"DOI "+r.doi:"Source publication")+"]("+r.url+"). Publication: "+r.publicationStatus+". "+(r.retraction?"Retracted: "+r.retraction.retractedAt+". [Retraction notice]("+r.retraction.evidenceUrl+"). ":"")+"Check: "+r.verification.scope+". Checked: "+r.verification.checkedAt+". "+(r.verification.note??"")).join("\n");
  // Export v4 also retains each material record's probe and measurement protocol.
  const revision=sha("scwiki-export-v4\n"+JSON.stringify(meta)+"\n"+body).slice(0,20);
  const provenance="## Revision and review\n\nArticle ID: "+meta.id+". Revision: "+revision+". Updated: "+meta.modifiedAt+".\n\nReview scope: "+meta.review.scope+"\n\n"+meta.review.limitations.map(x=>"- "+x).join("\n")+"\n\nSource: ["+meta.provenance.path+"](https://github.com/"+meta.provenance.repository+"/blob/"+meta.provenance.commit+"/"+meta.provenance.path+"), commit "+meta.provenance.commit+", SHA-256 "+meta.provenance.sha256+".";

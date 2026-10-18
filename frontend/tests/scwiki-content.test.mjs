@@ -178,3 +178,35 @@ test("noncentrosymmetric classification cannot drop the Frigeri SOC erratum",t=>
  writeFileSync(filename,JSON.stringify(meta));const result=f.build();
  assert.notEqual(result.status,0);assert.match(result.stderr,/missing required erratum 10\.1103\/PhysRevLett\.93\.099903/);
 });
+
+test("known retracted originals require dated notices and cannot supply experimental Tc",async t=>{
+ for(const scenario of ["missing-status","missing-notice","withdrawn-tc"]){
+  await t.test(scenario,t=>{
+   const f=inventoryFixture(t),filename=path.join(f.directory,"articles/d6/meta.json"),meta=JSON.parse(readFileSync(filename,"utf8"));
+   const ref=meta.references.find(r=>r.doi==="10.1038/s41586-020-2801-z");
+   assert.ok(ref.retraction);
+   if(scenario==="missing-status")delete ref.retraction;
+   if(scenario==="missing-notice")meta.references=meta.references.filter(r=>r.doi!==ref.retraction.noticeDoi);
+   if(scenario==="withdrawn-tc")meta.materialCases[0].sourceId=ref.id;
+   writeFileSync(filename,JSON.stringify(meta));const result=f.build();
+   assert.notEqual(result.status,0);
+   assert.match(result.stderr,scenario==="missing-status"?/missing known retraction metadata/:scenario==="missing-notice"?/missing retraction notice/:/retracted source cannot supply an experimental Tc/);
+  });
+ }
+});
+test("historical retraction discussion remains publishable with notice metadata",t=>{
+ const f=inventoryFixture(t),result=f.build();assert.equal(result.status,0,result.stderr);
+ const catalogue=JSON.parse(readFileSync(path.join(f.directory,"catalogue.json"),"utf8")),article=catalogue.articles.find(a=>a.code==="D6");
+ assert.equal(article.references.filter(r=>r.retraction).length,2);
+ assert.match(article.markdown,/Retracted: 2022-09-26/);assert.match(article.markdown,/Retracted: 2023-11-07/);
+});
+
+test("material condition enums cannot silently bypass search filters",async t=>{
+ for(const change of [{pressureRegime:"high-pressure"},{equilibrium:"stable"},{recordType:"observation"}]){
+  await t.test(JSON.stringify(change),t=>{
+   const f=inventoryFixture(t),filename=path.join(f.directory,"articles/d6/meta.json"),meta=JSON.parse(readFileSync(filename,"utf8"));
+   Object.assign(meta.materialCases[0],change);writeFileSync(filename,JSON.stringify(meta));
+   const result=f.build();assert.notEqual(result.status,0);assert.match(result.stderr,/invalid material condition enum/);
+  });
+ }
+});

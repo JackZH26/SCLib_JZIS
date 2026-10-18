@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "a645ca775f5fa5f4c64b",
+  "revision": "90c61604d919ed005d99",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -986,7 +986,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "e4171c1803390e1ac21f",
+      "revision": "194de516b93b4d06fd68",
       "materialCases": [
         {
           "id": "scwiki-b7-material-1",
@@ -1000,7 +1000,7 @@
           "criterion": "calibrated-transient-resistance",
           "pressureRegime": "unknown",
           "pressureGPa": null,
-          "equilibrium": "non-equilibrium",
+          "equilibrium": "transient",
           "probe": "1ns two-terminal voltage probe; contacts calibrated by static four-terminal measurements; about25mJ/cm2 pump fluence and75ps transport pump duration",
           "sourceId": "source-07be806c0002c690"
         }
@@ -1871,7 +1871,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "2f4bda1896896e593ff3",
+      "revision": "bfc65a9f231f266d6bbd",
       "materialCases": [
         {
           "id": "scwiki-d2-material-1",
@@ -1892,7 +1892,7 @@
         {
           "id": "scwiki-d2-material-2",
           "formula": "Nb3Sn",
-          "sample": "B34 ternary PIT, 64h at675C",
+          "sample": "B34 ternary PIT, 64 h at 675 °C",
           "recordType": "experiment",
           "reportedTemperatureK": 4.2,
           "tcK": null,
@@ -1902,23 +1902,23 @@
           "pressureRegime": "ambient",
           "pressureGPa": null,
           "equilibrium": "unknown",
-          "probe": "2250 A/mm2 non-Cu at12T; Kramer24.9T versus99%resistive26.9T",
+          "probe": "2250 A/mm2 non-Cu at 12 T; Kramer 24.9 T versus 99% resistive 26.9 T",
           "sourceId": "source-d27a049f764be753"
         },
         {
           "id": "scwiki-d2-material-3",
           "formula": "V3Si",
-          "sample": "MP3 floating-zone single crystal, RRR47, field6.67T",
+          "sample": "MP3 floating-zone single crystal, RRR47, field 6.67 T",
           "recordType": "experiment",
           "reportedTemperatureK": 12.8,
           "tcK": 12.8,
           "temperatureKind": "transition",
-          "temperatureNote": "Retain6.67T condition; structural transition21.1K is not Tc.",
+          "temperatureNote": "Retain 6.67 T condition; structural transition 21.1 K is not Tc.",
           "criterion": "reported-transport-transition-in-field",
           "pressureRegime": "ambient",
           "pressureGPa": null,
           "equilibrium": "unknown",
-          "probe": "Transport context for51V NMR; Tm21.1K, zero-fieldTc17K",
+          "probe": "Transport context for 51V NMR; Tm 21.1 K, zero-field Tc 17 K",
           "sourceId": "source-9fe69d0a6cecbb0c"
         },
         {
@@ -1934,7 +1934,7 @@
           "pressureRegime": "ambient",
           "pressureGPa": null,
           "equilibrium": "unknown",
-          "probe": "50mK and9T reported in abstract; Q declines in field",
+          "probe": "50 mK and 9 T reported in abstract; Q declines in field",
           "sourceId": "source-3633507cd1108d10"
         }
       ],
@@ -2166,6 +2166,163 @@
         "10.1038/s41586-026-10446-2"
       ],
       "text": " Scope\n\n“Nickelate superconductivity” includes distinct structural and preparation routes. Infinite-layer RNiO2 films and bilayer Ruddlesden-Popper La3Ni2O7 crystals differ in layer geometry, oxygen coordination and electronic structure. Their temperatures should not be presented as continuous optimization of one material. Li and colleagues' 2019 discovery and Sun and colleagues' 2023 high-pressure report establish different experimental settings.  \n\nThe infinite-layer route uses epitaxial precursors and topotactic reduction. Oxygen stoichiometry, residual apical oxygen, reduction uniformity and the substrate can all matter. A nominal chemical formula does not prove identical electronic states across bulk powders, supported films and membranes. This pilot does not infer a universal exchange energy or a common one-band model from the resemblance of NiO2 and CuO2 planes. \n\n Mathematical assumptions\n\nAn orbital label such as d{x^2-y^2} or d{z^2} identifies part of a model basis; it does not by itself identify the pairing channel. A proposed gap or coupling matrix needs a declared band structure, filling, interaction and structural phase. Similar local configurations can motivate a cuprate analogy, but do not transfer a phase diagram or a numerical pairing scale to nickelates. \n\nPressure changes can involve structural rearrangement as well as electronic bandwidth. For a bilayer crystal, a model evaluated in one structural phase must be compared with measurements in the same pressure regime. Distinguish calculations suggesting a favorable orbital configuration from observations establishing superconducting signatures. \n\n Experimental criteria\n\nRecord family, layer count, rare-earth composition, sample form, reduction procedure, oxygen content and substrate. Keep resistance onset, zero resistance, magnetic response and superconducting fraction separate. If a field-induced or re-entrant state is proposed, include field direction and the temperature of the measurement rather than substituting a characteristic field for an upper critical field.\n\nThe Li source reports a transition range around 9–15 K in infinite-layer films; its individual criteria remain unextracted here. \n\nSun2023 reports a resistance onset of 80 K at 18.5 GPa in run 1 without pressure medium. Run 2 uses KBr and shows an onset of 78 K at 18.9 GPa. The 77 K magnetic response is a separate measurement at 25.2 GPa. Residual resistance is explicitly discussed in the methods; these records must not be relabeled as zero resistance. \n\n Limits and disputes\n\nAn 80 K high-pressure bilayer observation is not ambient-pressure bulk superconductivity. Likewise, a strained film and a pressure-treated crystal need not follow an identical structural path. The 2026 film, membrane, oxygen-cycling and magnetic-substitution updates in the pinned chapter require separate primary-text checks. This pilot retains their review debt rather than adding their numbers to a quantitative record.  \n\nThe pairing symmetry and microscopic interaction remain inference questions. A theoretical s± candidate, an orbital-selective interpretation or a magnetic compensation scenario must keep its theoretical or hypothetical label until supported by the corresponding phase-sensitive or field-resolved evidence. \n\n Discovery implications\n\nCompare controlled sample series within a structural family before making cross-family claims. A useful design experiment separates oxygen, strain, interface and carrier changes as far as possible. Negative controls are especially valuable when two substrates both produce compression but only one preparation yields a transition. Such observations constrain a mechanism without proving that one structural variable is sufficient.  \n\n Related topics\n\nRead , , and ."
+    },
+    {
+      "id": "scwiki-d6",
+      "topicId": "scwiki-topic-d6",
+      "code": "D6",
+      "slug": "hydride-superconductors",
+      "title": "Hydride superconductors: pressure, evidence and recovery",
+      "summary": "Understand H3S, LaH10 and hydrogen-rich materials through structures, pressure conditions, isotope comparisons and the limits of disputed claims.",
+      "aliases": [
+        "hydrides",
+        "H3S",
+        "LaH10",
+        "LaD10",
+        "chemical precompression",
+        "LuH2",
+        "LuH2±xNy",
+        "Y3Fe4H20",
+        "carbonaceous sulfur hydride",
+        "retraction"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experiment",
+        "prediction"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "b23aceaf71114fcf1843",
+      "materialCases": [
+        {
+          "id": "scwiki-d6-material-1",
+          "formula": "H3S",
+          "sample": "Sulfur hydride, author Fig4a, 155 GPa",
+          "recordType": "experiment",
+          "reportedTemperatureK": 203,
+          "tcK": 203,
+          "temperatureKind": "transition",
+          "temperatureNote": "Reported203(1)K onset; raw background subtraction not independently reproduced.",
+          "criterion": "zfc-magnetic-onset",
+          "pressureRegime": "high",
+          "pressureGPa": {
+            "min": 155,
+            "max": 155
+          },
+          "equilibrium": "unknown",
+          "probe": "ZFC/FC magnetization; 20 Oe FC comparison",
+          "sourceId": "source-8b901b9c6008c434"
+        },
+        {
+          "id": "scwiki-d6-material-2",
+          "formula": "LaH10",
+          "sample": "Final2019 pressure-dome maximum, near170 GPa",
+          "recordType": "experiment",
+          "reportedTemperatureK": 250,
+          "tcK": 250,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate maximum250–252K; onset of departure from normal metallic resistance.",
+          "criterion": "resistance-onset-deviation",
+          "pressureRegime": "high",
+          "pressureGPa": {
+            "min": 170,
+            "max": 170
+          },
+          "equilibrium": "unknown",
+          "probe": "Zero resistance, isotope and measured field suppression; no SQUID measurement",
+          "sourceId": "source-1e6e868a12cdd34f"
+        },
+        {
+          "id": "scwiki-d6-material-3",
+          "formula": "LaD10",
+          "sample": "fcc sample17, isotope Fig4, 152 GPa",
+          "recordType": "experiment",
+          "reportedTemperatureK": 180,
+          "tcK": 180,
+          "temperatureKind": "transition",
+          "temperatureNote": "Final isotope comparison; not early168K assignment.",
+          "criterion": "resistance-onset-deviation",
+          "pressureRegime": "high",
+          "pressureGPa": {
+            "min": 152,
+            "max": 152
+          },
+          "equilibrium": "unknown",
+          "probe": "Resistance; diffraction-assigned fcc phase with mixture limitations",
+          "sourceId": "source-1e6e868a12cdd34f"
+        },
+        {
+          "id": "scwiki-d6-material-4",
+          "formula": "LuH2±xNy",
+          "sample": "Ming final published tested samples",
+          "recordType": "experiment",
+          "reportedTemperatureK": 2,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Lower measurement limit, not a measured Tc; synthesis/sample-specific negative result.",
+          "criterion": "negative-search-lower-limit",
+          "pressureRegime": "high",
+          "pressureGPa": {
+            "min": 0.4,
+            "max": 40.1
+          },
+          "equilibrium": "unknown",
+          "probe": "Transport found no superconductivity above2K",
+          "sourceId": "source-151c87f0eda0236f"
+        },
+        {
+          "id": "scwiki-d6-material-5",
+          "formula": "Y3Fe4H20",
+          "sample": "Recovered run4 sample, small and not pure",
+          "recordType": "experiment",
+          "reportedTemperatureK": 3,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Lower measurement limit, not Tc; ambient recovery lasted tens of hours.",
+          "criterion": "negative-squid-lower-limit",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "metastable",
+          "probe": "SQUID test found no superconductivity down to3K",
+          "sourceId": "source-f9dfe34f7dffd9d2"
+        },
+        {
+          "id": "scwiki-d6-material-6",
+          "formula": "H3S",
+          "sample": "Im-3m harmonic model, mu*=0.10",
+          "recordType": "prediction",
+          "reportedTemperatureK": 203.65062833468093,
+          "tcK": null,
+          "temperatureKind": "transition",
+          "temperatureNote": "Calculated estimate, not measured transition.",
+          "criterion": "modified-mcmillan-prediction",
+          "pressureRegime": "high",
+          "pressureGPa": {
+            "min": 200,
+            "max": 200
+          },
+          "equilibrium": "unknown",
+          "probe": "Harmonic DFPT parameters; bounded algebra independently checked",
+          "sourceId": "source-2b01ce847be6bc20"
+        }
+      ],
+      "dois": [
+        "10.1103/PhysRevLett.21.1748",
+        "10.1103/PhysRevLett.92.187002",
+        "10.1038/srep06968",
+        "10.1038/nature14964",
+        "10.1038/nphys3760",
+        "10.1103/PhysRevLett.122.027001",
+        "10.1038/s41586-019-1201-8",
+        "10.1103/PhysRevLett.114.157004",
+        "10.1038/s41586-020-2801-z",
+        "10.1038/s41586-022-05294-9",
+        "10.1038/s41586-023-05742-0",
+        "10.1038/s41586-023-06774-2",
+        "10.1038/s41586-023-06162-w",
+        "10.1038/s41467-026-74232-4"
+      ],
+      "text": " Scope\n\nHydrogen-rich superconductors connect light nuclei, strong electron–phonon coupling and pressure-dependent chemistry. Ashcroft's metallic-hydrogen proposal and later hydrogen-dominant-alloy proposal motivate this route; neither established a recoverable ambient-pressure superconductor. H₃S and LaH₁₀ are important high-pressure experimental systems. Their formulae, pressure scales and sample histories must accompany any quoted transition temperature.    \n\n“Chemical precompression” describes a design idea, not a guarantee of low operating pressure. A predicted metallic structure, a synthesized hydride and a superconducting phase are different achievements. Distinguish the starting H₂S reagent from its proposed H₃S product, and a clathrate-like hydrogen framework from directly measured hydrogen positions. The sulfur-hydride diffraction study supports the sulfur sublattice and coexistence with sulfur; its measured patterns cannot by themselves distinguish hydrogen arrangements with the same sulfur periodicity.   \n\n Mathematical assumptions\n\nFor a specified structure, a commonly used modified-McMillan estimate is Tc=(\\omega{\\log}/1.2)\\exp[-1.04(1+\\lambda)/(\\lambda-\\mu^(1+0.62\\lambda))], with \\omega{\\log} expressed in kelvin here. Duan's harmonic calculations give \\lambda=2.07, \\omega{\\log}=1125.1 K for R3m at 130 GPa and \\lambda=2.19, \\omega{\\log}=1334.6 K for Im\\bar{3}m at 200 GPa. Substitution with \\mu^=0.13 and 0.10 gives approximately 155–166 K and 191–204 K, respectively. This reproduces the printed estimate convention, without additional strong-coupling or spectral-shape factors; it does not reproduce the underlying density-functional perturbation calculation. \n\nHydrogen motion can invalidate a harmonic treatment. Errea and colleagues calculated a change from \\lambda=2.64 to 1.84 for H₃S at 200 GPa when including anharmonicity. Their full isotropic Migdal–Eliashberg calculation with \\mu^=0.16 changed the calculated transition from 250 to 194 K. That table is not obtained by simply substituting parameters into the preceding approximate formula. Zero-point contributions also alter the calculated decomposition landscape: both 3\\mathrm{H2S}\\rightarrow2\\mathrm{H3S}+\\mathrm{S} and 5\\mathrm{H2S}\\rightarrow3\\mathrm{H3S}+\\mathrm{HS2} conserve atoms, but atom balance alone does not establish stability or a reaction pathway. \n\nAn isotope comparison uses \\alpha=\\ln(T{c,\\mathrm H}/T{c,\\mathrm D})/\\ln2 only after checking structure, pressure and transition criteria. The final LaH₁₀ paper compares approximately 249 K and 180 K for fcc hydride and deuteride near 150 GPa; its Fig. 4 specifies 151 and 152 GPa. These rounded values give 0.468, while the paper states 0.46. The early author's 250/168 K comparison gives 0.573 and must not be silently substituted for the final result. Phase mixtures and different deuteride structures further limit interpretation. \n\n Experimental criteria\n\nFor sulfur hydride, the 2015 report combined resistance, field response, isotope substitution and magnetization. Its author-version Fig. 4a reports a zero-field-cooled magnetic onset of 203(1) K at 155 GPa, with a 20 Oe field-cooled comparison. The plotted transport comparison is a different pressure, 145 GPa, and must not be treated as the identical specimen condition. Background subtraction and diamond-anvil-cell contributions require scrutiny; this scoped reading does not independently reproduce raw magnetization. The later simultaneous diffraction/transport experiment on deuteride at 173 GPa provides structural context, not a direct measurement of every hydrogen coordinate.  \n\nThe two early lanthanum-superhydride studies have different evidence scopes. Somayazulu's author v3 describes a large resistance drop around 260 K, with room-temperature pressure changing from 188 to 196 GPa across a thermal cycle; pressure at the actual transition was not measured in that run. The lowest four-probe resistance was about 20 μΩ, while pseudo-four-probe measurements carried contact-resistance limitations. This should not be rewritten as an independently established zero-resistance or magnetic-shielding result. The final journal abstract was checked, but the selected detailed methods here come from the identified author version. \n\nDrozdov's final 2019 LaH₁₀ paper reports zero resistance, isotope dependence and field suppression, with a maximum near 250–252 K around 170 GPa. Its transition criterion is the onset of deviation from normal metallic resistance. Measurements to 9 T support an extrapolated zero-temperature upper critical field of approximately 95–136 T; they are not direct measurements at 136 T. The authors explicitly state that their tiny samples were below the available SQUID sensitivity. Their H₂/D₂ vibron pressure estimates were often 10–30 GPa lower than diamond-edge estimates around 150 GPa, so pressure calibrations cannot be freely interchanged. \n\n Limits and disputes\n\nThe 2020 carbonaceous-sulfur-hydride article was retracted on 26 September 2022. The corrected notice identifies concerns about non-standard, user-defined magnetic-background subtraction; all authors disagreed with the retraction. The 2023 nitrogen-doped lutetium-hydride article was retracted on 7 November 2023 following concerns including sample provenance, measurements and processing. These original papers remain linked as historical claims, accompanied by their notices. Their claimed temperatures are not usable experimental benchmarks in this catalogue. A retraction notice is not a substitute for an independent misconduct finding.    \n\nAn independent LuH₂±xNᵧ study reported no superconductivity above 2 K over 0.4–40.1 GPa in its transport measurements. That constrains its tested samples and synthesis route; it does not prove that every possible Lu–N–H composition is nonsuperconducting. The final published pressure range differs from an early preprint's narrower range. In particular, a blue-to-pink colour change is not a superconductivity measurement. \n\n Discovery implications\n\nA credible search must connect composition and structure to dynamical and thermodynamic stability, finite-temperature and nuclear-quantum effects, synthesis access and multiple superconductivity probes. A finite structure search can miss larger cells; absence of imaginary harmonic frequencies is a local dynamical check, not proof of global stability. Preserve decompression history, mixed phases, pressure standards and unsuccessful samples instead of ranking formulae by isolated temperature claims.   \n\nA June 2026 study recovered Y₃Fe₄H₂₀ at ambient pressure after synthesis above about 60 GPa, with survival on the scale of tens of hours. This is useful progress in hydride recovery, but its reported SQUID test found no superconductivity down to 3 K in the tested recovered sample. Hydrogen positions were supported by structure searches, and the sample was small and not pure. Recovery, long-term stability and ambient-pressure superconductivity remain distinct questions. Full raw-data, convergence and cross-laboratory assessment remain open for this article. \n\n Related topics\n\nContinue with , ,  and ."
     },
     {
       "id": "scwiki-e4",

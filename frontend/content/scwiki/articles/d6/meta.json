@@ -1,0 +1,554 @@
+{
+  "id": "scwiki-d6",
+  "topicId": "scwiki-topic-d6",
+  "code": "D6",
+  "slug": "hydride-superconductors",
+  "title": "Hydride superconductors: pressure, evidence and recovery",
+  "summary": "Understand H3S, LaH10 and hydrogen-rich materials through structures, pressure conditions, isotope comparisons and the limits of disputed claims.",
+  "aliases": [
+    "hydrides",
+    "H3S",
+    "LaH10",
+    "LaD10",
+    "chemical precompression",
+    "LuH2",
+    "LuH2±xNy",
+    "Y3Fe4H20",
+    "carbonaceous sulfur hydride",
+    "retraction"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "prediction"
+  ],
+  "relatedCodes": [
+    "D1",
+    "A4",
+    "A6",
+    "B1",
+    "B2"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T11:06:56.295974+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected primary structure, transport and magnetometry passages; final LaH10 isotope and pressure methods; both retraction notices in full; bounded printed-parameter and isotope calculations.",
+    "limitations": [
+      "Full scientific acceptance, raw-data and independent reproducibility assessment remain open.",
+      "Ashcroft proposals checked at abstract level; Einaga and Somayazulu detailed checks use identified author versions, not final-methods comparison.",
+      "Numerical checks do not reproduce structure searches, DFPT, anharmonic phonons or Eliashberg solutions.",
+      "2026 recovery result is not ambient-pressure superconductivity; supplementary methods and raw-data review remain open."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D6_hydrides.md",
+    "sha256": "b5a8aa93b211383ef8a435e968858295adef9f5b2f89fe842e66112baeff3ae6",
+    "sourceId": "file-7fa327f5deb92987"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 71,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; original versions, withdrawn claims and recovery limits made explicit."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-6fbecff48a8989e8",
+      "doi": "10.1103/PhysRevLett.21.1748",
+      "title": "Metallic Hydrogen: A High-Temperature Superconductor?",
+      "year": 1968,
+      "url": "https://doi.org/10.1103/PhysRevLett.21.1748",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.21.1748",
+        "note": "Published 23 December 1968. Abstract only; theoretical proposal, not experimental realization."
+      }
+    },
+    {
+      "id": "source-ba29a1eb0f9df263",
+      "doi": "10.1103/PhysRevLett.92.187002",
+      "title": "Hydrogen Dominant Metallic Alloys: High Temperature Superconductors?",
+      "year": 2004,
+      "url": "https://doi.org/10.1103/PhysRevLett.92.187002",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.92.187002",
+        "note": "Published 6 May 2004. Abstract only; chemical precompression is a proposal, not an ambient-pressure guarantee."
+      }
+    },
+    {
+      "id": "source-2b01ce847be6bc20",
+      "doi": "10.1038/srep06968",
+      "title": "Pressure-induced metallization of dense (H2S)2H2 with high-Tc superconductivity",
+      "year": 2014,
+      "url": "https://doi.org/10.1038/srep06968",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-methods-equation-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/srep06968.pdf",
+        "note": "Published 10 November 2014. Selected pp.1–6: structure search, Table1 and methods. Printed modified-McMillan estimates independently calculated; no DFPT or search reproduced."
+      }
+    },
+    {
+      "id": "source-8b901b9c6008c434",
+      "doi": "10.1038/nature14964",
+      "title": "Conventional superconductivity at 203 kelvin at high pressures in the sulfur hydride system",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/nature14964",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-and-published-caption-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1506.08190v1",
+        "note": "Published 17 August 2015. Author v1 of 26 June 2015: selected pp.3/5 and Fig4 pp.11–12, visually checked; publisher abstract and extended captions also checked. Magnetization raw data and background subtraction not independently reproduced."
+      }
+    },
+    {
+      "id": "source-e7837a18f3252cb9",
+      "doi": "10.1038/nphys3760",
+      "title": "Crystal structure of the superconducting phase of sulfur hydride",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nphys3760",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-structure-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1509.03156v1",
+        "note": "Author v1 of 10 September 2015, selected pp.1–3: sulfur sublattice, mixed sulfur phase and deuteride173GPa simultaneous transport/XRD. Final published full text not compared; hydrogen positions not directly resolved."
+      }
+    },
+    {
+      "id": "source-77b774e18b0f50c7",
+      "doi": "10.1103/PhysRevLett.122.027001",
+      "title": "Evidence for Superconductivity above 260 K in Lanthanum Superhydride at Megabar Pressures",
+      "year": 2019,
+      "url": "https://doi.org/10.1103/PhysRevLett.122.027001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-and-selected-author-v3-methods-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1808.07695v3",
+        "note": "Journal published 14 January 2019; detailed scope is author v3 of29August2018 pp.3–7. Four-probe versus pseudo-four-probe, pressure drift, about20microohm minimum and sample geometry. Final journal methods not compared; intrinsic resistivity not determined."
+      }
+    },
+    {
+      "id": "source-1e6e868a12cdd34f",
+      "doi": "10.1038/s41586-019-1201-8",
+      "title": "Superconductivity at 250 K in lanthanum hydride under high pressures",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41586-019-1201-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-methods-figures-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://public.magnet.fsu.edu/AToth/NSF%20publication%20access/2019/05%20Newly%20Entered%20Pubs%20May%202019/2019%20cited/2019_Superconductivity%20at%20250%20K%20in%20lanthanum%20hydride%20under%20high%20pressures.pdf",
+        "note": "Published online22May2019. Selected printedpp.528–529, Fig4p.531, Methods and deuteride assignment; PDFp2 visually checked. Final249/180K comparison replaces early250/168K; rounded ratio0.468 differs from stated0.46. Measured9T versus extrapolated95–136T; no SQUID measurement."
+      }
+    },
+    {
+      "id": "source-1bec081a84267ffb",
+      "doi": "10.1103/PhysRevLett.114.157004",
+      "title": "High-Pressure Hydrogen Sulfide from First Principles: A Strongly Anharmonic Phonon-Mediated Superconductor",
+      "year": 2015,
+      "url": "https://doi.org/10.1103/PhysRevLett.114.157004",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-equations-table-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://api.repository.cam.ac.uk/server/api/core/bitstreams/5cc3e771-c6c8-423c-bea3-7faa5ba6a44f/content",
+        "note": "Author accepted manuscript dated26March2015, selectedpp.1–4 and TableII visually checked. Publisher identity confirmed. No SSCHA, phonon or full Eliashberg solver reproduced; early experimental190/90K comparison not promoted to later benchmark."
+      }
+    },
+    {
+      "id": "source-d04f7965dca4d5a5",
+      "doi": "10.1038/s41586-020-2801-z",
+      "title": "RETRACTED ARTICLE: Room-temperature superconductivity in a carbonaceous sulfur hydride",
+      "year": 2020,
+      "url": "https://doi.org/10.1038/s41586-020-2801-z",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "retraction-notice-identity-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41586-022-05294-9.pdf",
+        "note": "Original article identity checked against the corrected retraction notice; original experimental claim is not accepted as a benchmark."
+      },
+      "retraction": {
+        "noticeDoi": "10.1038/s41586-022-05294-9",
+        "retractedAt": "2022-09-26",
+        "evidenceUrl": "https://doi.org/10.1038/s41586-022-05294-9"
+      }
+    },
+    {
+      "id": "source-754d75026e52d9ac",
+      "doi": "10.1038/s41586-022-05294-9",
+      "title": "Retraction Note: Room-temperature superconductivity in a carbonaceous sulfur hydride",
+      "year": 2022,
+      "url": "https://doi.org/10.1038/s41586-022-05294-9",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "complete-retraction-notice-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41586-022-05294-9.pdf",
+        "note": "Published26September2022. Corrected notice read in full; concerns about non-standard user-defined background subtraction. All authors disagreed with retraction."
+      }
+    },
+    {
+      "id": "source-a7b93ad4f4896402",
+      "doi": "10.1038/s41586-023-05742-0",
+      "title": "RETRACTED ARTICLE: Evidence of near-ambient superconductivity in a N-doped lutetium hydride",
+      "year": 2023,
+      "url": "https://doi.org/10.1038/s41586-023-05742-0",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "retraction-notice-identity-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41586-023-06774-2.pdf",
+        "note": "Original article identity checked against its retraction notice; original experimental claim is not accepted as a benchmark."
+      },
+      "retraction": {
+        "noticeDoi": "10.1038/s41586-023-06774-2",
+        "retractedAt": "2023-11-07",
+        "evidenceUrl": "https://doi.org/10.1038/s41586-023-06774-2"
+      }
+    },
+    {
+      "id": "source-98bc73a5e1c86c78",
+      "doi": "10.1038/s41586-023-06774-2",
+      "title": "Retraction Note: Evidence of near-ambient superconductivity in a N-doped lutetium hydride",
+      "year": 2023,
+      "url": "https://doi.org/10.1038/s41586-023-06774-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "complete-retraction-notice-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41586-023-06774-2.pdf",
+        "note": "Published7November2023. Notice read in full: eight authors requested retraction over provenance, measurements and processing; additional resistivity concerns. No independent misconduct finding inferred."
+      }
+    },
+    {
+      "id": "source-151c87f0eda0236f",
+      "doi": "10.1038/s41586-023-06162-w",
+      "title": "Absence of near-ambient superconductivity in LuH2±xNy",
+      "year": 2023,
+      "url": "https://doi.org/10.1038/s41586-023-06162-w",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-abstract-methods-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41586-023-06162-w.pdf",
+        "note": "Published online11May2023; version of record26July2023. Final abstract and selected synthesis/probe methods read. Transport0.4–40.1GPa down to2K; limited tested samples, not universal exclusion. Full curves and raw data not reproduced."
+      }
+    },
+    {
+      "id": "source-f9dfe34f7dffd9d2",
+      "doi": "10.1038/s41467-026-74232-4",
+      "title": "Ambient pressure recovery of the structurally unconventional hydride Y3Fe4H20",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41467-026-74232-4",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-recovery-and-magnetometry-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-026-74232-4.pdf",
+        "note": "Published20June2026. Selected abstractp1, structure/DFPTdiscussionp4 and SQUIDparagraphp5: recovered material survives tens of hours; no superconductivity down to3K in run4. Full supplementary methods and raw data remain open."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d6-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Hydrogen-rich superconductors connect light nuclei, strong electron–phonon coupling and pressure-dependent chemistry. Ashcroft's metallic-hydrogen proposal and later hydrogen-dominant-alloy proposal motivate this route; neither established a recoverable ambient-pressure superconductor. H₃S and LaH₁₀ are important high-pressure experimental systems. Their formulae, pressure scales and sample histories must accompany any quoted transition temperature.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6fbecff48a8989e8",
+        "source-ba29a1eb0f9df263",
+        "source-8b901b9c6008c434",
+        "source-1e6e868a12cdd34f"
+      ],
+      "conditions": "Named source/version, sample, pressure calibration and probe limits; withdrawn claims are historical only.",
+      "verificationScope": "Selected primary passages and bounded algebra, not independent raw-data reproduction or full scientific acceptance."
+    },
+    {
+      "id": "scwiki-d6-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "“Chemical precompression” describes a design idea, not a guarantee of low operating pressure. A predicted metallic structure, a synthesized hydride and a superconducting phase are different achievements. Distinguish the starting H₂S reagent from its proposed H₃S product, and a clathrate-like hydrogen framework from directly measured hydrogen positions. The sulfur-hydride diffraction study supports the sulfur sublattice and coexistence with sulfur; its measured patterns cannot by themselves distinguish hydrogen arrangements with the same sulfur periodicity.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba29a1eb0f9df263",
+        "source-2b01ce847be6bc20",
+        "source-e7837a18f3252cb9"
+      ],
+      "conditions": "Named source/version, sample, pressure calibration and probe limits; withdrawn claims are historical only.",
+      "verificationScope": "Selected primary passages and bounded algebra, not independent raw-data reproduction or full scientific acceptance."
+    },
+    {
+      "id": "scwiki-d6-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a specified structure, a commonly used modified-McMillan estimate is $T_c=(\\omega_{\\log}/1.2)\\exp[-1.04(1+\\lambda)/(\\lambda-\\mu^*(1+0.62\\lambda))]$, with $\\omega_{\\log}$ expressed in kelvin here. Duan's harmonic calculations give $\\lambda=2.07$, $\\omega_{\\log}=1125.1$ K for R3m at 130 GPa and $\\lambda=2.19$, $\\omega_{\\log}=1334.6$ K for Im$\\bar{3}$m at 200 GPa. Substitution with $\\mu^*=0.13$ and 0.10 gives approximately 155–166 K and 191–204 K, respectively. This reproduces the printed estimate convention, without additional strong-coupling or spectral-shape factors; it does not reproduce the underlying density-functional perturbation calculation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2b01ce847be6bc20"
+      ],
+      "conditions": "Named source/version, sample, pressure calibration and probe limits; withdrawn claims are historical only.",
+      "verificationScope": "Selected primary passages and bounded algebra, not independent raw-data reproduction or full scientific acceptance."
+    },
+    {
+      "id": "scwiki-d6-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Hydrogen motion can invalidate a harmonic treatment. Errea and colleagues calculated a change from $\\lambda=2.64$ to 1.84 for H₃S at 200 GPa when including anharmonicity. Their full isotropic Migdal–Eliashberg calculation with $\\mu^*=0.16$ changed the calculated transition from 250 to 194 K. That table is not obtained by simply substituting parameters into the preceding approximate formula. Zero-point contributions also alter the calculated decomposition landscape: both $3\\mathrm{H_2S}\\rightarrow2\\mathrm{H_3S}+\\mathrm{S}$ and $5\\mathrm{H_2S}\\rightarrow3\\mathrm{H_3S}+\\mathrm{HS_2}$ conserve atoms, but atom balance alone does not establish stability or a reaction pathway.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-1bec081a84267ffb"
+      ],
+      "conditions": "Named source/version, sample, pressure calibration and probe limits; withdrawn claims are historical only.",
+      "verificationScope": "Selected primary passages and bounded algebra, not independent raw-data reproduction or full scientific acceptance."
+    },
+    {
+      "id": "scwiki-d6-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An isotope comparison uses $\\alpha=\\ln(T_{c,\\mathrm H}/T_{c,\\mathrm D})/\\ln2$ only after checking structure, pressure and transition criteria. The final LaH₁₀ paper compares approximately 249 K and 180 K for fcc hydride and deuteride near 150 GPa; its Fig. 4 specifies 151 and 152 GPa. These rounded values give 0.468, while the paper states 0.46. The early author's 250/168 K comparison gives 0.573 and must not be silently substituted for the final result. Phase mixtures and different deuteride structures further limit interpretation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-1e6e868a12cdd34f"
+      ],
+      "conditions": "Named source/version, sample, pressure calibration and probe limits; withdrawn claims are historical only.",
+      "verificationScope": "Selected primary passages and bounded algebra, not independent raw-data reproduction or full scientific acceptance."
+    },
+    {
+      "id": "scwiki-d6-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "For sulfur hydride, the 2015 report combined resistance, field response, isotope substitution and magnetization. Its author-version Fig. 4a reports a zero-field-cooled magnetic onset of 203(1) K at 155 GPa, with a 20 Oe field-cooled comparison. The plotted transport comparison is a different pressure, 145 GPa, and must not be treated as the identical specimen condition. Background subtraction and diamond-anvil-cell contributions require scrutiny; this scoped reading does not independently reproduce raw magnetization. The later simultaneous diffraction/transport experiment on deuteride at 173 GPa provides structural context, not a direct measurement of every hydrogen coordinate.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8b901b9c6008c434",
+        "source-e7837a18f3252cb9"
+      ],
+      "conditions": "Named source/version, sample, pressure calibration and probe limits; withdrawn claims are historical only.",
+      "verificationScope": "Selected primary passages and bounded algebra, not independent raw-data reproduction or full scientific acceptance."
+    },
+    {
+      "id": "scwiki-d6-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "The two early lanthanum-superhydride studies have different evidence scopes. Somayazulu's author v3 describes a large resistance drop around 260 K, with room-temperature pressure changing from 188 to 196 GPa across a thermal cycle; pressure at the actual transition was not measured in that run. The lowest four-probe resistance was about 20 μΩ, while pseudo-four-probe measurements carried contact-resistance limitations. This should not be rewritten as an independently established zero-resistance or magnetic-shielding result. The final journal abstract was checked, but the selected detailed methods here come from the identified author version.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-77b774e18b0f50c7"
+      ],
+      "conditions": "Named source/version, sample, pressure calibration and probe limits; withdrawn claims are historical only.",
+      "verificationScope": "Selected primary passages and bounded algebra, not independent raw-data reproduction or full scientific acceptance."
+    },
+    {
+      "id": "scwiki-d6-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Drozdov's final 2019 LaH₁₀ paper reports zero resistance, isotope dependence and field suppression, with a maximum near 250–252 K around 170 GPa. Its transition criterion is the onset of deviation from normal metallic resistance. Measurements to 9 T support an extrapolated zero-temperature upper critical field of approximately 95–136 T; they are not direct measurements at 136 T. The authors explicitly state that their tiny samples were below the available SQUID sensitivity. Their H₂/D₂ vibron pressure estimates were often 10–30 GPa lower than diamond-edge estimates around 150 GPa, so pressure calibrations cannot be freely interchanged.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-1e6e868a12cdd34f"
+      ],
+      "conditions": "Named source/version, sample, pressure calibration and probe limits; withdrawn claims are historical only.",
+      "verificationScope": "Selected primary passages and bounded algebra, not independent raw-data reproduction or full scientific acceptance."
+    },
+    {
+      "id": "scwiki-d6-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The 2020 carbonaceous-sulfur-hydride article was retracted on 26 September 2022. The corrected notice identifies concerns about non-standard, user-defined magnetic-background subtraction; all authors disagreed with the retraction. The 2023 nitrogen-doped lutetium-hydride article was retracted on 7 November 2023 following concerns including sample provenance, measurements and processing. These original papers remain linked as historical claims, accompanied by their notices. Their claimed temperatures are not usable experimental benchmarks in this catalogue. A retraction notice is not a substitute for an independent misconduct finding.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d04f7965dca4d5a5",
+        "source-754d75026e52d9ac",
+        "source-a7b93ad4f4896402",
+        "source-98bc73a5e1c86c78"
+      ],
+      "conditions": "Named source/version, sample, pressure calibration and probe limits; withdrawn claims are historical only.",
+      "verificationScope": "Selected primary passages and bounded algebra, not independent raw-data reproduction or full scientific acceptance."
+    },
+    {
+      "id": "scwiki-d6-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "An independent LuH₂±xNᵧ study reported no superconductivity above 2 K over 0.4–40.1 GPa in its transport measurements. That constrains its tested samples and synthesis route; it does not prove that every possible Lu–N–H composition is nonsuperconducting. The final published pressure range differs from an early preprint's narrower range. In particular, a blue-to-pink colour change is not a superconductivity measurement.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-151c87f0eda0236f"
+      ],
+      "conditions": "Named source/version, sample, pressure calibration and probe limits; withdrawn claims are historical only.",
+      "verificationScope": "Selected primary passages and bounded algebra, not independent raw-data reproduction or full scientific acceptance."
+    },
+    {
+      "id": "scwiki-d6-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "A credible search must connect composition and structure to dynamical and thermodynamic stability, finite-temperature and nuclear-quantum effects, synthesis access and multiple superconductivity probes. A finite structure search can miss larger cells; absence of imaginary harmonic frequencies is a local dynamical check, not proof of global stability. Preserve decompression history, mixed phases, pressure standards and unsuccessful samples instead of ranking formulae by isolated temperature claims.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2b01ce847be6bc20",
+        "source-e7837a18f3252cb9",
+        "source-1bec081a84267ffb"
+      ],
+      "conditions": "Named source/version, sample, pressure calibration and probe limits; withdrawn claims are historical only.",
+      "verificationScope": "Selected primary passages and bounded algebra, not independent raw-data reproduction or full scientific acceptance."
+    },
+    {
+      "id": "scwiki-d6-claim-discovery-implications-2",
+      "sectionId": "discovery-implications",
+      "statement": "A June 2026 study recovered Y₃Fe₄H₂₀ at ambient pressure after synthesis above about 60 GPa, with survival on the scale of tens of hours. This is useful progress in hydride recovery, but its reported SQUID test found no superconductivity down to 3 K in the tested recovered sample. Hydrogen positions were supported by structure searches, and the sample was small and not pure. Recovery, long-term stability and ambient-pressure superconductivity remain distinct questions. Full raw-data, convergence and cross-laboratory assessment remain open for this article.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-f9dfe34f7dffd9d2"
+      ],
+      "conditions": "Named source/version, sample, pressure calibration and probe limits; withdrawn claims are historical only.",
+      "verificationScope": "Selected primary passages and bounded algebra, not independent raw-data reproduction or full scientific acceptance."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-d6-correction-1",
+      "description": "Retained final LaH10 249/180K isotope comparison and identified early-version differences; explicitly linked two retraction notices and excluded withdrawn Tc benchmarks.",
+      "sourceId": "source-1e6e868a12cdd34f",
+      "scope": "Public article and metadata; pinned source bytes unchanged."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "T_c=\\omega_{\\log}\\exp[-1.04(1+\\lambda)/(\\lambda-\\mu^*(1+0.62\\lambda))]/1.2",
+      "check": "Four printed-parameter estimates and bounded monotonic Coulomb suppression."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\alpha=\\ln(T_{c,H}/T_{c,D})/\\ln2",
+      "check": "Final rounded0.468, early-version0.573, theory0.352 distinguished; atom balances verified separately."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-d6-material-1",
+      "formula": "H3S",
+      "sample": "Sulfur hydride, author Fig4a, 155 GPa",
+      "recordType": "experiment",
+      "reportedTemperatureK": 203,
+      "tcK": 203,
+      "temperatureKind": "transition",
+      "temperatureNote": "Reported203(1)K onset; raw background subtraction not independently reproduced.",
+      "criterion": "zfc-magnetic-onset",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 155,
+        "max": 155
+      },
+      "equilibrium": "unknown",
+      "probe": "ZFC/FC magnetization; 20 Oe FC comparison",
+      "sourceId": "source-8b901b9c6008c434"
+    },
+    {
+      "id": "scwiki-d6-material-2",
+      "formula": "LaH10",
+      "sample": "Final2019 pressure-dome maximum, near170 GPa",
+      "recordType": "experiment",
+      "reportedTemperatureK": 250,
+      "tcK": 250,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate maximum250–252K; onset of departure from normal metallic resistance.",
+      "criterion": "resistance-onset-deviation",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 170,
+        "max": 170
+      },
+      "equilibrium": "unknown",
+      "probe": "Zero resistance, isotope and measured field suppression; no SQUID measurement",
+      "sourceId": "source-1e6e868a12cdd34f"
+    },
+    {
+      "id": "scwiki-d6-material-3",
+      "formula": "LaD10",
+      "sample": "fcc sample17, isotope Fig4, 152 GPa",
+      "recordType": "experiment",
+      "reportedTemperatureK": 180,
+      "tcK": 180,
+      "temperatureKind": "transition",
+      "temperatureNote": "Final isotope comparison; not early168K assignment.",
+      "criterion": "resistance-onset-deviation",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 152,
+        "max": 152
+      },
+      "equilibrium": "unknown",
+      "probe": "Resistance; diffraction-assigned fcc phase with mixture limitations",
+      "sourceId": "source-1e6e868a12cdd34f"
+    },
+    {
+      "id": "scwiki-d6-material-4",
+      "formula": "LuH2±xNy",
+      "sample": "Ming final published tested samples",
+      "recordType": "experiment",
+      "reportedTemperatureK": 2,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Lower measurement limit, not a measured Tc; synthesis/sample-specific negative result.",
+      "criterion": "negative-search-lower-limit",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 0.4,
+        "max": 40.1
+      },
+      "equilibrium": "unknown",
+      "probe": "Transport found no superconductivity above2K",
+      "sourceId": "source-151c87f0eda0236f"
+    },
+    {
+      "id": "scwiki-d6-material-5",
+      "formula": "Y3Fe4H20",
+      "sample": "Recovered run4 sample, small and not pure",
+      "recordType": "experiment",
+      "reportedTemperatureK": 3,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Lower measurement limit, not Tc; ambient recovery lasted tens of hours.",
+      "criterion": "negative-squid-lower-limit",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "metastable",
+      "probe": "SQUID test found no superconductivity down to3K",
+      "sourceId": "source-f9dfe34f7dffd9d2"
+    },
+    {
+      "id": "scwiki-d6-material-6",
+      "formula": "H3S",
+      "sample": "Im-3m harmonic model, mu*=0.10",
+      "recordType": "prediction",
+      "reportedTemperatureK": 203.65062833468093,
+      "tcK": null,
+      "temperatureKind": "transition",
+      "temperatureNote": "Calculated estimate, not measured transition.",
+      "criterion": "modified-mcmillan-prediction",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 200,
+        "max": 200
+      },
+      "equilibrium": "unknown",
+      "probe": "Harmonic DFPT parameters; bounded algebra independently checked",
+      "sourceId": "source-2b01ce847be6bc20"
+    }
+  ]
+}

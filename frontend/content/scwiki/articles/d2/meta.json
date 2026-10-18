@@ -403,7 +403,7 @@
     {
       "id": "scwiki-d2-material-2",
       "formula": "Nb3Sn",
-      "sample": "B34 ternary PIT, 64h at675C",
+      "sample": "B34 ternary PIT, 64 h at 675 °C",
       "recordType": "experiment",
       "reportedTemperatureK": 4.2,
       "tcK": null,
@@ -413,23 +413,23 @@
       "pressureRegime": "ambient",
       "pressureGPa": null,
       "equilibrium": "unknown",
-      "probe": "2250 A/mm2 non-Cu at12T; Kramer24.9T versus99%resistive26.9T",
+      "probe": "2250 A/mm2 non-Cu at 12 T; Kramer 24.9 T versus 99% resistive 26.9 T",
       "sourceId": "source-d27a049f764be753"
     },
     {
       "id": "scwiki-d2-material-3",
       "formula": "V3Si",
-      "sample": "MP3 floating-zone single crystal, RRR47, field6.67T",
+      "sample": "MP3 floating-zone single crystal, RRR47, field 6.67 T",
       "recordType": "experiment",
       "reportedTemperatureK": 12.8,
       "tcK": 12.8,
       "temperatureKind": "transition",
-      "temperatureNote": "Retain6.67T condition; structural transition21.1K is not Tc.",
+      "temperatureNote": "Retain 6.67 T condition; structural transition 21.1 K is not Tc.",
       "criterion": "reported-transport-transition-in-field",
       "pressureRegime": "ambient",
       "pressureGPa": null,
       "equilibrium": "unknown",
-      "probe": "Transport context for51V NMR; Tm21.1K, zero-fieldTc17K",
+      "probe": "Transport context for 51V NMR; Tm 21.1 K, zero-field Tc 17 K",
       "sourceId": "source-9fe69d0a6cecbb0c"
     },
     {
@@ -445,7 +445,7 @@
       "pressureRegime": "ambient",
       "pressureGPa": null,
       "equilibrium": "unknown",
-      "probe": "50mK and9T reported in abstract; Q declines in field",
+      "probe": "50 mK and 9 T reported in abstract; Q declines in field",
       "sourceId": "source-3633507cd1108d10"
     }
   ]

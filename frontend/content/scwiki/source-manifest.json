@@ -623,8 +623,8 @@
       "lineCount": 71,
       "topicId": "scwiki-topic-d6",
       "articleId": "scwiki-d6",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3626,6 +3626,20 @@
       "evidenceUrl": "https://link.aps.org/accepted/10.1103/PhysRevLett.109.087001",
       "checkedAt": "2026-10-18",
       "scope": "Reid2012 DOI109.087001 identifies KFe2As2, not P-Ba122. Original DOI retained with correct material; separate Hashimoto2010 source added."
+    },
+    {
+      "id": "scwiki-d6-retraction-8",
+      "retractedDoi": "10.1038/s41586-020-2801-z",
+      "retractionNoticeDoi": "10.1038/s41586-022-05294-9",
+      "retractedAt": "2022-09-26",
+      "reason": "Known retracted claim must retain notice and cannot supply accepted experimental Tc."
+    },
+    {
+      "id": "scwiki-d6-retraction-10",
+      "retractedDoi": "10.1038/s41586-023-05742-0",
+      "retractionNoticeDoi": "10.1038/s41586-023-06774-2",
+      "retractedAt": "2023-11-07",
+      "reason": "Known retracted claim must retain notice and cannot supply accepted experimental Tc."
     }
   ]
 }
