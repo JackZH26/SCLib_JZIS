@@ -23,10 +23,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-17T12:13:01Z",
+  "modifiedAt": "2026-10-18T08:54:40.853140+00:00",
   "review": {
-    "checkedAt": "2026-10-17",
-    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Peotta published passages and earlier Julku/Tanaka manuscripts checked; Liang2017 remains metadata-only; complete scientific acceptance open.",
     "limitations": [
       "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
       "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
@@ -129,10 +129,10 @@
       "url": "https://doi.org/10.1038/ncomms9944",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "primary-text-scoped-check",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://www.nature.com/articles/ncomms9944",
-        "note": "Checked the current-response decomposition and restricted isolated-flat-band assumptions; no independent derivation or numerical reproduction."
+        "scope": "selected-published-primary-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/ncomms9944.pdf",
+        "note": "Selected pp2–6; p5 visually inspected. Interaction/band hierarchy,uniform pairing,normalization and conditional Chern bound retained."
       }
     },
     {
@@ -143,10 +143,10 @@
       "url": "https://doi.org/10.1103/PhysRevLett.117.045303",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.117.045303",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "selected-earlier-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1603.03237v2",
+        "note": "Selected pp1–2: Chern-zero model,band gap,orbital-dependent order parameters; full final-version review open."
       }
     },
     {
@@ -171,10 +171,10 @@
       "url": "https://doi.org/10.1038/s41586-024-08494-7",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fs41586-024-08494-7",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "selected-earlier-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/html/2406.13740v2",
+        "note": "Selected device and stiffness sections:20mKbase/~40mKdevice,edge proximity model,activeaspectratio andhalf-resistance criterion. Published5February2025; full publishedversion/raw-data review open."
       }
     }
   ],
@@ -292,6 +292,17 @@
       ],
       "conditions": "The schematic metric formula requires a declared multiband mean-field model, normalization and pairing assumptions. Experimental stiffness is total and may be renormalized.",
       "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-f7-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "The reviewed Tanaka manuscript extracts stiffness with an explicit parallel edge-proximity circuit model and an assumed active-region aspect ratio. It distinguishes a 20 mK refrigerator base from an approximately 40 mK device temperature. Its half-normal-resistance criterion is not automatically a BKT transition. Full published-version and raw-data comparison remains open.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Earlier-author v2 selected device/analysis sections; model-dependent total stiffness extraction.",
+      "verificationScope": "Selected primary passages only; full final-version and raw-data review open."
     }
   ]
 }

@@ -35,6 +35,8 @@ State which stiffness convention is measured, its units, dimensionality, thickne
 
 For a BKT comparison, use the renormalized total phase stiffness in the appropriate sheet-energy convention. A transition temperature can constrain that total without separately measuring the geometric term. The relation between pairing amplitude and phase coherence remains a second issue. [R1](#ref-source-fdf091e09e7f4a6f) [R3](#ref-source-fa7a165c8c344a63)
 
+The reviewed Tanaka manuscript extracts stiffness with an explicit parallel edge-proximity circuit model and an assumed active-region aspect ratio. It distinguishes a 20 mK refrigerator base from an approximately 40 mK device temperature. Its half-normal-resistance criterion is not automatically a BKT transition. Full published-version and raw-data comparison remains open. [R4](#ref-source-be7282623ca96056)
+
 ## Limits and disputes
 
 Topology can impose a lower bound under particular assumptions, but a nonzero Chern number is not necessary for geometric superfluid weight. A Chern-trivial band can still have a nonzero quantum metric. Lieb-lattice work is a useful model example of finite flat-band superfluid response. The result is theoretical and depends on its interaction and band assumptions. [R1](#ref-source-fdf091e09e7f4a6f) [R2](#ref-source-b43340ce5c356e49)

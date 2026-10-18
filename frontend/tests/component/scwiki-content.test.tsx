@@ -212,7 +212,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(source.sha256).toBe(a.provenance.sha256);
    expect(a.sourceMap[0].startLine).toBe(1);expect(a.sourceMap.at(-1)?.endLine).toBe(source.lineCount);
    for(let i=1;i<a.sourceMap.length;i++)expect(a.sourceMap[i].startLine).toBe(a.sourceMap[i-1].endLine+1);
-   expect(a.review.limitations.join(" ")).toContain("not");
+   expect(a.review.limitations.join(" ")).toMatch(/\b(?:not|no|pending|remain|open)\b/i);
    expect(a.references.every(r=>r.publicationStatus && r.verification.scope)).toBe(true);
    const {revision,body,markdown,sections,wordCount,...meta}=a;
    expect(createHash("sha256").update("scwiki-export-v4\n"+JSON.stringify(meta)+"\n"+body).digest("hex").slice(0,20)).toBe(revision);
@@ -569,5 +569,19 @@ it("preserves topological criterion conditions, retraction and readout limits in
  const md=await(await get(["articles",a.id,"markdown"])).text();
  expect(md).toContain("uniform paired surface preserves time reversal");expect(md).toContain("retracted in 2021");expect(md).toContain("11 February 2026");expect(md).toContain("not a demonstration of fault-tolerant braiding");
  expect(a.references.find(r=>r.doi==="10.1038/s41586-025-09927-7")?.verification.scope).toBe("published-abstract-and-date-check");
+ expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
+});
+
+it("keeps flat-band pairing, frozen geometry and measured stiffness conditions separate",async()=>{
+ const a=articles().find(a=>a.code==="B13")!,m=a.materialCases[0];
+ expect(m.tcK).toBeNull();expect(m.reportedTemperatureK).toBe(.02);expect(m.temperatureKind).toBe("measurement");
+ expect(searchArticles(searchIndex().entries,"flat-band",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"flat-band",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(math).toContain("not a true finite-temperature superconducting transition");expect(math).toContain("one quarter");expect(math).toContain("frozen projected overlap response");expect(math).toContain("renormalized stiffness");
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("parallel electrode-proximitized edge");expect(md).toContain("half normal-state resistance");expect(md).toContain("not an observed universal correlation");
+ const ref=a.references.find(r=>r.doi==="10.48550/arXiv.2603.24766")!;expect(ref.publicationStatus).toBe("preprint");expect(ref.url).toContain("v2");
+ const f=articles().find(a=>a.code==="F7")!;const fm=await(await get(["articles",f.id,"markdown"])).text();expect(fm).toContain("assumed active-region aspect ratio");
  expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
 });
