@@ -961,3 +961,37 @@ it("binds recognized material names and curated aliases to the same record as nu
  const positive=await(await get(["search"],"?q=FeSe&tcMin=30")).json();expect(positive.results.some((a:{code:string})=>a.code==="E1")).toBe(true);
  const md=await(await get(["articles","scwiki-e1","markdown"])).text();expect(md).toContain("aliases: FeSe, iron selenide");
 });
+
+it("keeps composition conventions and doping-series criteria intact across search and exports",async()=>{
+ const a=articles().find(a=>a.code==="E2")!;
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("y=2x");expect(md).toContain("factor-of-two mismatch");
+ expect(md).toContain("0.078");expect(md).toContain("final-version");
+ expect(a.materialCases.find(c=>c.reportedTemperatureK===20)?.tcK).toBeNull();
+ expect(a.materialCases.find(c=>c.tcK===23)?.criterion).toBe("series-maximum-multiple-criteria");
+ expect(a.materialCases.find(c=>c.tcK===85.3)?.criterion).toBe("field-cooled-magnetization-midpoint");
+ expect(a.materialCases.every(c=>c.pressureGPa===null)).toBe(true);
+ const index=searchIndex().entries;
+ expect(searchArticles(index,"chemical doping",{tcMin:80}).some(a=>a.code==="E2")).toBe(true);
+ expect(searchArticles(index,"chemical doping",{tcMin:20,criterion:"zero-resistance"}).some(a=>a.code==="E2")).toBe(false);
+ expect(searchArticles(index,"Ba(Fe1−xCox)2As2",{tcMin:30}).some(a=>a.code==="E2")).toBe(false);
+ expect(searchArticles(index,"Nd1−xSrxNiO2",{tcMin:1}).some(a=>a.code==="E2")).toBe(false);
+ const data=await(await get(["search"],"?q=chemical%20doping&tcMin=80&criterion=field-cooled-magnetization-midpoint")).json();
+ expect(data.results.some((r:{code:string})=>r.code==="E2")).toBe(true);
+ expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
+});
+
+it("binds curated material families to their own transitions in a mixed-material article",async()=>{
+ const index=searchIndex().entries;
+ for(const q of ["nickelate","nickelates","iron-based","fulleride","organic","heavy fermion"]){
+  expect(searchArticles(index,q,{tcMin:80}).some(a=>a.code==="E2")).toBe(false);
+ }
+ expect(searchArticles(index,"cuprate",{tcMin:80}).some(a=>a.code==="E2")).toBe(true);
+ expect(searchArticles(index,"iron-based",{tcMin:30}).some(a=>a.code==="E2")).toBe(true);
+ expect(searchArticles(index,"nickelates",{tcMin:70,pressure:"high"}).some(a=>a.code==="D5")).toBe(true);
+ expect(searchArticles(index,"nickelates",{tcMin:70,pressure:"ambient"})).toEqual([]);
+ const negative=await(await get(["search"],"?q=nickelates&tcMin=70&pressure=ambient")).json();
+ expect(negative.results).toEqual([]);
+ const md=await(await get(["articles","scwiki-e2","markdown"])).text();
+ expect(md).toContain("aliases: nickelate, nickelates");
+});

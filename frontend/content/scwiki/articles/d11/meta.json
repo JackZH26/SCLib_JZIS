@@ -23,7 +23,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-17T12:13:01Z",
+  "modifiedAt": "2026-10-18T12:19:32.206842+00:00",
   "review": {
     "checkedAt": "2026-10-17",
     "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
@@ -256,7 +256,11 @@
       "id": "scwiki-d11-material-2",
       "sourceId": "source-a95bcf0cb2681557",
       "reportedTemperatureK": 65,
-      "temperatureKind": "spectroscopic-gap"
+      "temperatureKind": "spectroscopic-gap",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
     }
   ],
   "claims": [

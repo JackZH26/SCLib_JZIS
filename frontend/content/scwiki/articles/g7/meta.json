@@ -26,7 +26,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T08:32:24.908533+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.215468+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below. Updated selected Pustogow published passages and Anderson/Shimizu/Kurosaki abstracts on 2026-10-18.",
@@ -233,7 +233,11 @@
       "id": "scwiki-g7-material-1",
       "sourceId": "source-0443485ac20d3a8c",
       "reportedTemperatureK": null,
-      "temperatureKind": "unassigned"
+      "temperatureKind": "unassigned",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
     }
   ],
   "claims": [

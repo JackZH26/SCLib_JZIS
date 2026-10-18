@@ -31,7 +31,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T11:12:52.733822+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.210765+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected primary structure, transport and magnetometry passages; final LaH10 isotope and pressure methods; both retraction notices in full; bounded printed-parameter and isotope calculations.",
@@ -456,7 +456,11 @@
       },
       "equilibrium": "unknown",
       "probe": "ZFC/FC magnetization; 20 Oe FC comparison",
-      "sourceId": "source-8b901b9c6008c434"
+      "sourceId": "source-8b901b9c6008c434",
+      "aliases": [
+        "hydride",
+        "hydrides"
+      ]
     },
     {
       "id": "scwiki-d6-material-2",
@@ -475,7 +479,11 @@
       },
       "equilibrium": "unknown",
       "probe": "Zero resistance, isotope and measured field suppression; no SQUID measurement",
-      "sourceId": "source-1e6e868a12cdd34f"
+      "sourceId": "source-1e6e868a12cdd34f",
+      "aliases": [
+        "hydride",
+        "hydrides"
+      ]
     },
     {
       "id": "scwiki-d6-material-3",
@@ -494,7 +502,11 @@
       },
       "equilibrium": "unknown",
       "probe": "Resistance; diffraction-assigned fcc phase with mixture limitations",
-      "sourceId": "source-1e6e868a12cdd34f"
+      "sourceId": "source-1e6e868a12cdd34f",
+      "aliases": [
+        "hydride",
+        "hydrides"
+      ]
     },
     {
       "id": "scwiki-d6-material-4",
@@ -513,7 +525,11 @@
       },
       "equilibrium": "unknown",
       "probe": "Transport found no superconductivity above 2 K",
-      "sourceId": "source-151c87f0eda0236f"
+      "sourceId": "source-151c87f0eda0236f",
+      "aliases": [
+        "hydride",
+        "hydrides"
+      ]
     },
     {
       "id": "scwiki-d6-material-5",
@@ -529,7 +545,11 @@
       "pressureGPa": null,
       "equilibrium": "metastable",
       "probe": "SQUID test found no superconductivity down to 3 K",
-      "sourceId": "source-f9dfe34f7dffd9d2"
+      "sourceId": "source-f9dfe34f7dffd9d2",
+      "aliases": [
+        "hydride",
+        "hydrides"
+      ]
     },
     {
       "id": "scwiki-d6-material-6",
@@ -548,7 +568,11 @@
       },
       "equilibrium": "unknown",
       "probe": "Harmonic DFPT parameters; bounded algebra independently checked",
-      "sourceId": "source-2b01ce847be6bc20"
+      "sourceId": "source-2b01ce847be6bc20",
+      "aliases": [
+        "hydride",
+        "hydrides"
+      ]
     }
   ]
 }

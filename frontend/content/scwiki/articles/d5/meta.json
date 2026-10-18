@@ -23,7 +23,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T09:04:57.757329+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.210016+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected Sun2023 published figure, results and methods checked; Li2019 and the2026 strain report retain their listed review scopes.",
@@ -205,7 +205,11 @@
       "id": "scwiki-d5-material-1",
       "sourceId": "source-35fd62b7cb3c490c",
       "reportedTemperatureK": null,
-      "temperatureKind": "unassigned"
+      "temperatureKind": "unassigned",
+      "aliases": [
+        "nickelate",
+        "nickelates"
+      ]
     },
     {
       "formula": "La3Ni2O7",
@@ -224,7 +228,11 @@
       "id": "scwiki-d5-material-2",
       "sourceId": "source-df0c15d62982f853",
       "reportedTemperatureK": 80,
-      "temperatureKind": "transition"
+      "temperatureKind": "transition",
+      "aliases": [
+        "nickelate",
+        "nickelates"
+      ]
     }
   ],
   "claims": [

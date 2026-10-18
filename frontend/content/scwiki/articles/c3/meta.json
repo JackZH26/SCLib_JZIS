@@ -29,7 +29,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T09:22:17.409794+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.202392+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected 2000 and 2004 tricrystal author manuscripts, early penetration-depth and ARPES abstracts, inherited scoped sources, and independent symmetry, nodal-state and finite-loop calculations.",
@@ -444,7 +444,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Scanning SQUID; nominal zero-field cooling, images at applied fields of ±0.2 mG",
-      "sourceId": "source-7700f02a5390b1cf"
+      "sourceId": "source-7700f02a5390b1cf",
+      "aliases": [
+        "cuprate",
+        "cuprates"
+      ]
     }
   ]
 }

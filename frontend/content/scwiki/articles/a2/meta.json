@@ -26,7 +26,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T06:51:41.542639+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.191967+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected historical experiment reproduction and London original scan, modern demagnetization manuscript and Hardy abstract; independent London boundary-value, demagnetization and sheet-energy checks.",
@@ -253,7 +253,11 @@
       "id": "scwiki-a2-material-1",
       "sourceId": "source-b7bc48c845a47b53",
       "reportedTemperatureK": null,
-      "temperatureKind": "unassigned"
+      "temperatureKind": "unassigned",
+      "aliases": [
+        "cuprate",
+        "cuprates"
+      ]
     }
   ],
   "claims": [

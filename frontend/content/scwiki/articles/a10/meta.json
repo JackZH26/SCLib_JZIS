@@ -28,7 +28,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T07:23:21.474470+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.190835+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected Hoffman, Wang–Lee and Sprau author-manuscript passages; bibliographic identity corrections; independent finite-model and Fourier calculations.",
@@ -422,7 +422,11 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "Differential tunneling conductance maps; 4.2 K, cryogenic cleavage and Fourier peak tracking",
-      "sourceId": "source-e8e6ef56da103435"
+      "sourceId": "source-e8e6ef56da103435",
+      "aliases": [
+        "cuprate",
+        "cuprates"
+      ]
     },
     {
       "id": "scwiki-a10-material-2",
@@ -438,7 +442,11 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "280 mK conductance maps; defect-centered Fourier phase and selected interband integration region",
-      "sourceId": "source-2f227038c5cf73a9"
+      "sourceId": "source-2f227038c5cf73a9",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
     }
   ]
 }

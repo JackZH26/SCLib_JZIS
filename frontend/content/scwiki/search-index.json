@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "5025dd2b5147c9faf83b",
+  "revision": "226813fb78133d901d5f",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -21,7 +21,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "4e0d1e43bf65de188085",
+      "revision": "c445cb62b6f686dadde2",
       "materialCases": [
         {
           "formula": "K3C60",
@@ -37,7 +37,11 @@
           "id": "scwiki-a1-material-1",
           "sourceId": "source-6ee3670220e24ff1",
           "reportedTemperatureK": null,
-          "temperatureKind": "transient-response"
+          "temperatureKind": "transient-response",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
         },
         {
           "id": "scwiki-a1-material-2",
@@ -53,7 +57,11 @@
           "pressureGPa": null,
           "equilibrium": "transient",
           "probe": "1 ns electrical probe; contact calibration from static four-terminal measurement; systematic calibration uncertainty retained",
-          "sourceId": "source-07be806c0002c690"
+          "sourceId": "source-07be806c0002c690",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
         }
       ],
       "dois": [
@@ -87,7 +95,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "a7c758d27d4bd699b6ee",
+      "revision": "3f25b1373eca1d722cb1",
       "materialCases": [
         {
           "id": "scwiki-a10-material-1",
@@ -103,7 +111,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Differential tunneling conductance maps; 4.2 K, cryogenic cleavage and Fourier peak tracking",
-          "sourceId": "source-e8e6ef56da103435"
+          "sourceId": "source-e8e6ef56da103435",
+          "aliases": [
+            "cuprate",
+            "cuprates"
+          ]
         },
         {
           "id": "scwiki-a10-material-2",
@@ -119,7 +131,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "280 mK conductance maps; defect-centered Fourier phase and selected interband integration region",
-          "sourceId": "source-2f227038c5cf73a9"
+          "sourceId": "source-2f227038c5cf73a9",
+          "aliases": [
+            "iron-based",
+            "iron based superconductors"
+          ]
         }
       ],
       "dois": [
@@ -150,7 +166,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "e23a0dafe844cf914e57",
+      "revision": "487b811ddc82b74d9b71",
       "materialCases": [
         {
           "formula": "YBa2Cu3O6.95",
@@ -166,7 +182,11 @@
           "id": "scwiki-a2-material-1",
           "sourceId": "source-b7bc48c845a47b53",
           "reportedTemperatureK": null,
-          "temperatureKind": "unassigned"
+          "temperatureKind": "unassigned",
+          "aliases": [
+            "cuprate",
+            "cuprates"
+          ]
         }
       ],
       "dois": [
@@ -394,7 +414,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "0fac753e9858ef451fb9",
+      "revision": "0e6b051b06c4b6f6d763",
       "materialCases": [
         {
           "id": "scwiki-a8-material-1",
@@ -410,7 +430,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Six-point transport in pulsed fields; 55 T trace and magnetoresistance-corrected extrapolation distinguished",
-          "sourceId": "source-c1ae7869b672a8e8"
+          "sourceId": "source-c1ae7869b672a8e8",
+          "aliases": [
+            "cuprate",
+            "cuprates"
+          ]
         },
         {
           "id": "scwiki-a8-material-2",
@@ -442,7 +466,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "0.2–3 THz spectroscopy with DC constraint; narrow-channel 20–40 K fit; ordinary-frequency rate",
-          "sourceId": "source-05b2d5ff6757b5eb"
+          "sourceId": "source-05b2d5ff6757b5eb",
+          "aliases": [
+            "iron-based",
+            "iron based superconductors"
+          ]
         }
       ],
       "dois": [
@@ -555,7 +583,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "78cf1ba74ec64769e6e1",
+      "revision": "a79de02bfaa0a32d3971",
       "materialCases": [
         {
           "id": "scwiki-b10-material-1",
@@ -571,7 +599,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "calorimetry,0T;5.5T along c normal-state comparison; no uncertainty re-extracted",
-          "sourceId": "source-76e58b04a07e6eca"
+          "sourceId": "source-76e58b04a07e6eca",
+          "aliases": [
+            "iron-based",
+            "iron based superconductors"
+          ]
         }
       ],
       "dois": [
@@ -638,7 +670,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "6220568a397fe22f262c",
+      "revision": "321feb3909bef769f5a5",
       "materialCases": [
         {
           "formula": "MgB2",
@@ -670,7 +702,11 @@
           "id": "scwiki-b12-material-2",
           "sourceId": "source-f9fe6e9bc3792dcc",
           "reportedTemperatureK": null,
-          "temperatureKind": "spectroscopic-gap"
+          "temperatureKind": "spectroscopic-gap",
+          "aliases": [
+            "iron-based",
+            "iron based superconductors"
+          ]
         }
       ],
       "dois": [
@@ -865,7 +901,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "dffed0d8ec046a6dde4a",
+      "revision": "f1debd312a212d40bd97",
       "materialCases": [
         {
           "id": "scwiki-b4-material-1",
@@ -881,7 +917,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Pulsed fields up to60T; field rotations in ac/bc planes; transverse susceptibility inferred from magnetotropic response",
-          "sourceId": "source-15cfc4a2f9587af0"
+          "sourceId": "source-15cfc4a2f9587af0",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
         }
       ],
       "dois": [
@@ -986,7 +1026,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "194de516b93b4d06fd68",
+      "revision": "71ec80a6a8af44eda142",
       "materialCases": [
         {
           "id": "scwiki-b7-material-1",
@@ -1002,7 +1042,11 @@
           "pressureGPa": null,
           "equilibrium": "transient",
           "probe": "1ns two-terminal voltage probe; contacts calibrated by static four-terminal measurements; about25mJ/cm2 pump fluence and75ps transport pump duration",
-          "sourceId": "source-07be806c0002c690"
+          "sourceId": "source-07be806c0002c690",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
         }
       ],
       "dois": [
@@ -1040,7 +1084,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "32840a54cb81e6bae0e0",
+      "revision": "6d31467333dc7294b531",
       "materialCases": [
         {
           "id": "scwiki-b8-material-1",
@@ -1056,7 +1100,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "CuL3-edge RIXS;about40meV energy resolution;small-H phonon-overlap points excluded from dispersion fit",
-          "sourceId": "source-06e9bd0e34513767"
+          "sourceId": "source-06e9bd0e34513767",
+          "aliases": [
+            "cuprate",
+            "cuprates"
+          ]
         }
       ],
       "dois": [
@@ -1181,7 +1229,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "fdd0bfde342590daf3ce",
+      "revision": "1fee22accdd291a97f44",
       "materialCases": [
         {
           "id": "scwiki-c10-material-1",
@@ -1197,7 +1245,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Directional thermal conductivity; fit below 0.3 K and extrapolated residual term",
-          "sourceId": "source-8a117f38b78526ff"
+          "sourceId": "source-8a117f38b78526ff",
+          "aliases": [
+            "iron-based",
+            "iron based superconductors"
+          ]
         },
         {
           "id": "scwiki-c10-material-2",
@@ -1213,7 +1265,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "13 MHz tunnel-diode oscillator; electron irradiation 2.5 MeV; partial defect annealing on warming",
-          "sourceId": "source-c4a5c25b97df43a2"
+          "sourceId": "source-c4a5c25b97df43a2",
+          "aliases": [
+            "iron-based",
+            "iron based superconductors"
+          ]
         }
       ],
       "dois": [
@@ -1250,7 +1306,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "56db8b71af4e072cd837",
+      "revision": "3243b539a4669811ddf3",
       "materialCases": [
         {
           "formula": "KFe2As2",
@@ -1266,7 +1322,11 @@
           "id": "scwiki-c2-material-1",
           "sourceId": "source-8a117f38b78526ff",
           "reportedTemperatureK": null,
-          "temperatureKind": "unassigned"
+          "temperatureKind": "unassigned",
+          "aliases": [
+            "iron-based",
+            "iron based superconductors"
+          ]
         },
         {
           "formula": "Ba0.6K0.4Fe2As2",
@@ -1282,7 +1342,11 @@
           "id": "scwiki-c2-material-2",
           "sourceId": "source-716c338ddfa726d3",
           "reportedTemperatureK": null,
-          "temperatureKind": "unassigned"
+          "temperatureKind": "unassigned",
+          "aliases": [
+            "iron-based",
+            "iron based superconductors"
+          ]
         }
       ],
       "dois": [
@@ -1318,7 +1382,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "e21aa18d501ae2f53287",
+      "revision": "a2010dbc9b025750901e",
       "materialCases": [
         {
           "id": "scwiki-c3-material-1",
@@ -1334,7 +1398,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Scanning SQUID; nominal zero-field cooling, images at applied fields of ±0.2 mG",
-          "sourceId": "source-7700f02a5390b1cf"
+          "sourceId": "source-7700f02a5390b1cf",
+          "aliases": [
+            "cuprate",
+            "cuprates"
+          ]
         }
       ],
       "dois": [
@@ -1465,7 +1533,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "4da169060850a9e26565",
+      "revision": "4870467d2df593777794",
       "materialCases": [
         {
           "id": "scwiki-c6-material-1",
@@ -1481,7 +1549,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "1550nm polar Kerr; field-off warmup after zero-field or±50G training; separate upper susceptibility onset",
-          "sourceId": "source-d3edee404071ac81"
+          "sourceId": "source-d3edee404071ac81",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
         }
       ],
       "dois": [
@@ -1592,7 +1664,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "ce08edb18f71b31bf30b",
+      "revision": "21b180ec9bfee6e57185",
       "materialCases": [
         {
           "id": "scwiki-c8-material-1",
@@ -1608,7 +1680,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Scanned Josephson tunneling microscopy in the phase-diffusion regime; field condition not assigned at this scoped review",
-          "sourceId": "source-66a2b2a9519f6f44"
+          "sourceId": "source-66a2b2a9519f6f44",
+          "aliases": [
+            "cuprate",
+            "cuprates"
+          ]
         },
         {
           "id": "scwiki-c8-material-2",
@@ -1624,7 +1700,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Single-electron STM; field-induced difference between 8.25 T and 0 T, 58 nm by 58 nm view",
-          "sourceId": "source-d306adac5d567426"
+          "sourceId": "source-d306adac5d567426",
+          "aliases": [
+            "cuprate",
+            "cuprates"
+          ]
         }
       ],
       "dois": [
@@ -1808,7 +1888,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "b8a1480068f4f306dfa9",
+      "revision": "1c17af040ee086fb7fc9",
       "materialCases": [
         {
           "id": "scwiki-d10-material-1",
@@ -1824,7 +1904,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Inductive response; original title only",
-          "sourceId": "source-c3edeba243e544d9"
+          "sourceId": "source-c3edeba243e544d9",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
         },
         {
           "id": "scwiki-d10-material-2",
@@ -1840,7 +1924,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Electrical resistance; original title only",
-          "sourceId": "source-c3edeba243e544d9"
+          "sourceId": "source-c3edeba243e544d9",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
         },
         {
           "id": "scwiki-d10-material-3",
@@ -1859,7 +1947,11 @@
           },
           "equilibrium": "equilibrium",
           "probe": "Four-probe DC conductance under helium pressure",
-          "sourceId": "source-09e9a4299e3fd1d3"
+          "sourceId": "source-09e9a4299e3fd1d3",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
         },
         {
           "id": "scwiki-d10-material-4",
@@ -1878,7 +1970,11 @@
           },
           "equilibrium": "equilibrium",
           "probe": "NMR0.5T perpendicular; AC0.05Oe parallel without static field",
-          "sourceId": "source-2cc5358d54a65217"
+          "sourceId": "source-2cc5358d54a65217",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
         },
         {
           "id": "scwiki-d10-material-5",
@@ -1894,7 +1990,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Electrical resistance characterization",
-          "sourceId": "source-9fb11dd7e1fcdc76"
+          "sourceId": "source-9fb11dd7e1fcdc76",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
         },
         {
           "id": "scwiki-d10-material-6",
@@ -1910,7 +2010,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Heat current b, in-plane2T field, alignment better than0.01degree",
-          "sourceId": "source-9fb11dd7e1fcdc76"
+          "sourceId": "source-9fb11dd7e1fcdc76",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
         },
         {
           "id": "scwiki-d10-material-7",
@@ -1926,7 +2030,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Electrical resistance and reflected RF power",
-          "sourceId": "source-c08f058f3170fafa"
+          "sourceId": "source-c08f058f3170fafa",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
         },
         {
           "id": "scwiki-d10-material-8",
@@ -1942,7 +2050,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Cooling protocol7mK/min",
-          "sourceId": "source-c08f058f3170fafa"
+          "sourceId": "source-c08f058f3170fafa",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
         },
         {
           "id": "scwiki-d10-material-9",
@@ -1958,7 +2070,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Low-tip-angle NMR at100mK, crossover near15kOe",
-          "sourceId": "source-c08f058f3170fafa"
+          "sourceId": "source-c08f058f3170fafa",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
         },
         {
           "id": "scwiki-d10-material-10",
@@ -1974,7 +2090,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "NMR, reused scoped original abstract",
-          "sourceId": "source-9d15cd9236072f5c"
+          "sourceId": "source-9d15cd9236072f5c",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
         }
       ],
       "dois": [
@@ -2012,7 +2132,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "1a1ab554e26e9b738215",
+      "revision": "6d2da325bb09e6da30c7",
       "materialCases": [
         {
           "formula": "LaAlO3/SrTiO3",
@@ -2044,7 +2164,11 @@
           "id": "scwiki-d11-material-2",
           "sourceId": "source-a95bcf0cb2681557",
           "reportedTemperatureK": 65,
-          "temperatureKind": "spectroscopic-gap"
+          "temperatureKind": "spectroscopic-gap",
+          "aliases": [
+            "iron-based",
+            "iron based superconductors"
+          ]
         }
       ],
       "dois": [
@@ -2079,7 +2203,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "bfc65a9f231f266d6bbd",
+      "revision": "642d7510838c8f33fe92",
       "materialCases": [
         {
           "id": "scwiki-d2-material-1",
@@ -2095,7 +2219,10 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Publisher abstract; full criterion not reviewed",
-          "sourceId": "source-82a0df3d764cd0bc"
+          "sourceId": "source-82a0df3d764cd0bc",
+          "aliases": [
+            "A15"
+          ]
         },
         {
           "id": "scwiki-d2-material-2",
@@ -2111,7 +2238,10 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "2250 A/mm2 non-Cu at 12 T; Kramer 24.9 T versus 99% resistive 26.9 T",
-          "sourceId": "source-d27a049f764be753"
+          "sourceId": "source-d27a049f764be753",
+          "aliases": [
+            "A15"
+          ]
         },
         {
           "id": "scwiki-d2-material-3",
@@ -2127,7 +2257,10 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Transport context for 51V NMR; Tm 21.1 K, zero-field Tc 17 K",
-          "sourceId": "source-9fe69d0a6cecbb0c"
+          "sourceId": "source-9fe69d0a6cecbb0c",
+          "aliases": [
+            "A15"
+          ]
         },
         {
           "id": "scwiki-d2-material-4",
@@ -2143,7 +2276,10 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "50 mK and 9 T reported in abstract; Q declines in field",
-          "sourceId": "source-3633507cd1108d10"
+          "sourceId": "source-3633507cd1108d10",
+          "aliases": [
+            "A15"
+          ]
         }
       ],
       "dois": [
@@ -2179,7 +2315,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "18d91881ccd885691abc",
+      "revision": "b494934785ed56b613ec",
       "materialCases": [
         {
           "formula": "HgBa2Ca2Cu3O8+delta",
@@ -2195,7 +2331,11 @@
           "id": "scwiki-d3-material-1",
           "sourceId": "source-d95477ebe515f481",
           "reportedTemperatureK": 133,
-          "temperatureKind": "transition"
+          "temperatureKind": "transition",
+          "aliases": [
+            "cuprate",
+            "cuprates"
+          ]
         },
         {
           "formula": "HgBa2Ca2Cu3O8+delta",
@@ -2214,7 +2354,11 @@
           "id": "scwiki-d3-material-2",
           "sourceId": "source-6d09a24a26a15997",
           "reportedTemperatureK": 164,
-          "temperatureKind": "transition"
+          "temperatureKind": "transition",
+          "aliases": [
+            "cuprate",
+            "cuprates"
+          ]
         }
       ],
       "dois": [
@@ -2247,7 +2391,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "4914944b7c8074104348",
+      "revision": "d6d4e43ae66ea6c901cf",
       "materialCases": [
         {
           "formula": "LaFeAsO1-xFx",
@@ -2263,7 +2407,11 @@
           "id": "scwiki-d4-material-1",
           "sourceId": "source-62a72493865c59d7",
           "reportedTemperatureK": 26,
-          "temperatureKind": "transition"
+          "temperatureKind": "transition",
+          "aliases": [
+            "iron-based",
+            "iron based superconductors"
+          ]
         },
         {
           "formula": "Ba1-xKxFe2As2",
@@ -2279,7 +2427,11 @@
           "id": "scwiki-d4-material-2",
           "sourceId": "source-1a3690e5f1d38f3e",
           "reportedTemperatureK": 38,
-          "temperatureKind": "transition"
+          "temperatureKind": "transition",
+          "aliases": [
+            "iron-based",
+            "iron based superconductors"
+          ]
         },
         {
           "formula": "Fe1.01Se",
@@ -2301,7 +2453,9 @@
           "temperatureKind": "transition",
           "aliases": [
             "FeSe",
-            "iron selenide"
+            "iron selenide",
+            "iron-based",
+            "iron based superconductors"
           ]
         }
       ],
@@ -2334,7 +2488,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "9b0458bd758abd9457bb",
+      "revision": "0ef70d29dde1b968f368",
       "materialCases": [
         {
           "formula": "Nd0.8Sr0.2NiO2",
@@ -2350,7 +2504,11 @@
           "id": "scwiki-d5-material-1",
           "sourceId": "source-35fd62b7cb3c490c",
           "reportedTemperatureK": null,
-          "temperatureKind": "unassigned"
+          "temperatureKind": "unassigned",
+          "aliases": [
+            "nickelate",
+            "nickelates"
+          ]
         },
         {
           "formula": "La3Ni2O7",
@@ -2369,7 +2527,11 @@
           "id": "scwiki-d5-material-2",
           "sourceId": "source-df0c15d62982f853",
           "reportedTemperatureK": 80,
-          "temperatureKind": "transition"
+          "temperatureKind": "transition",
+          "aliases": [
+            "nickelate",
+            "nickelates"
+          ]
         }
       ],
       "dois": [
@@ -2404,7 +2566,7 @@
         "prediction"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "ef044e8d5c19b1105586",
+      "revision": "81a69302622ec86d7f36",
       "materialCases": [
         {
           "id": "scwiki-d6-material-1",
@@ -2423,7 +2585,11 @@
           },
           "equilibrium": "unknown",
           "probe": "ZFC/FC magnetization; 20 Oe FC comparison",
-          "sourceId": "source-8b901b9c6008c434"
+          "sourceId": "source-8b901b9c6008c434",
+          "aliases": [
+            "hydride",
+            "hydrides"
+          ]
         },
         {
           "id": "scwiki-d6-material-2",
@@ -2442,7 +2608,11 @@
           },
           "equilibrium": "unknown",
           "probe": "Zero resistance, isotope and measured field suppression; no SQUID measurement",
-          "sourceId": "source-1e6e868a12cdd34f"
+          "sourceId": "source-1e6e868a12cdd34f",
+          "aliases": [
+            "hydride",
+            "hydrides"
+          ]
         },
         {
           "id": "scwiki-d6-material-3",
@@ -2461,7 +2631,11 @@
           },
           "equilibrium": "unknown",
           "probe": "Resistance; diffraction-assigned fcc phase with mixture limitations",
-          "sourceId": "source-1e6e868a12cdd34f"
+          "sourceId": "source-1e6e868a12cdd34f",
+          "aliases": [
+            "hydride",
+            "hydrides"
+          ]
         },
         {
           "id": "scwiki-d6-material-4",
@@ -2480,7 +2654,11 @@
           },
           "equilibrium": "unknown",
           "probe": "Transport found no superconductivity above 2 K",
-          "sourceId": "source-151c87f0eda0236f"
+          "sourceId": "source-151c87f0eda0236f",
+          "aliases": [
+            "hydride",
+            "hydrides"
+          ]
         },
         {
           "id": "scwiki-d6-material-5",
@@ -2496,7 +2674,11 @@
           "pressureGPa": null,
           "equilibrium": "metastable",
           "probe": "SQUID test found no superconductivity down to 3 K",
-          "sourceId": "source-f9dfe34f7dffd9d2"
+          "sourceId": "source-f9dfe34f7dffd9d2",
+          "aliases": [
+            "hydride",
+            "hydrides"
+          ]
         },
         {
           "id": "scwiki-d6-material-6",
@@ -2515,7 +2697,11 @@
           },
           "equilibrium": "unknown",
           "probe": "Harmonic DFPT parameters; bounded algebra independently checked",
-          "sourceId": "source-2b01ce847be6bc20"
+          "sourceId": "source-2b01ce847be6bc20",
+          "aliases": [
+            "hydride",
+            "hydrides"
+          ]
         }
       ],
       "dois": [
@@ -2677,7 +2863,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "99973f2239236ec6895f",
+      "revision": "309a3dadaee1f66ae702",
       "materialCases": [
         {
           "id": "scwiki-d8-material-1",
@@ -2693,7 +2879,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Specific heat",
-          "sourceId": "source-e721bddb9ef11661"
+          "sourceId": "source-e721bddb9ef11661",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
         },
         {
           "id": "scwiki-d8-material-2",
@@ -2709,7 +2899,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Specific heat",
-          "sourceId": "source-e721bddb9ef11661"
+          "sourceId": "source-e721bddb9ef11661",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
         },
         {
           "id": "scwiki-d8-material-3",
@@ -2725,7 +2919,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Quasi-adiabatic heat pulse",
-          "sourceId": "source-2764bce38246bfae"
+          "sourceId": "source-2764bce38246bfae",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
         },
         {
           "id": "scwiki-d8-material-4",
@@ -2741,7 +2939,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Resistivity and diamagnetic shielding; corroborating heat-capacity anomaly",
-          "sourceId": "source-5962cf8038597944"
+          "sourceId": "source-5962cf8038597944",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
         },
         {
           "id": "scwiki-d8-material-5",
@@ -2757,7 +2959,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Resistance and proximity-detector oscillator; angle-dependent fields to around 73 T",
-          "sourceId": "source-0c4d7cebb12a0d5b"
+          "sourceId": "source-0c4d7cebb12a0d5b",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
         },
         {
           "id": "scwiki-d8-material-6",
@@ -2773,7 +2979,11 @@
           "pressureGPa": null,
           "equilibrium": "unknown",
           "probe": "Pulsed-field magnetic fluctuation probe",
-          "sourceId": "source-15cfc4a2f9587af0"
+          "sourceId": "source-15cfc4a2f9587af0",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
         }
       ],
       "dois": [
@@ -2817,7 +3027,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "264f2a5c5d6af50ca56c",
+      "revision": "720e71b63fdfa04feaa5",
       "materialCases": [
         {
           "id": "scwiki-d9-material-1",
@@ -2833,7 +3043,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Meissner and microwave response",
-          "sourceId": "source-51b1a52d16139e58"
+          "sourceId": "source-51b1a52d16139e58",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
         },
         {
           "id": "scwiki-d9-material-2",
@@ -2849,7 +3063,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Meissner and microwave response",
-          "sourceId": "source-0fb5ae1290bd2998"
+          "sourceId": "source-0fb5ae1290bd2998",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
         },
         {
           "id": "scwiki-d9-material-3",
@@ -2868,7 +3086,11 @@
           },
           "equilibrium": "equilibrium",
           "probe": "20 Oe ZFC/FC magnetometry",
-          "sourceId": "source-5e6d3e7ed715ad6a"
+          "sourceId": "source-5e6d3e7ed715ad6a",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
         },
         {
           "id": "scwiki-d9-material-4",
@@ -2887,7 +3109,11 @@
           },
           "equilibrium": "equilibrium",
           "probe": "20 Oe ZFC/FC magnetometry",
-          "sourceId": "source-5e6d3e7ed715ad6a"
+          "sourceId": "source-5e6d3e7ed715ad6a",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
         },
         {
           "id": "scwiki-d9-material-5",
@@ -2906,7 +3132,11 @@
           },
           "equilibrium": "equilibrium",
           "probe": "20 Oe ZFC/FC magnetometry",
-          "sourceId": "source-5e6d3e7ed715ad6a"
+          "sourceId": "source-5e6d3e7ed715ad6a",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
         },
         {
           "id": "scwiki-d9-material-6",
@@ -2922,7 +3152,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Muon spin rotation and magnetism",
-          "sourceId": "source-5e6d3e7ed715ad6a"
+          "sourceId": "source-5e6d3e7ed715ad6a",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
         },
         {
           "id": "scwiki-d9-material-7",
@@ -2938,7 +3172,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Van der Pauw transport, 1 μA",
-          "sourceId": "source-64cd48d99353501a"
+          "sourceId": "source-64cd48d99353501a",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
         },
         {
           "id": "scwiki-d9-material-8",
@@ -2954,7 +3192,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Van der Pauw transport, 1 μA",
-          "sourceId": "source-64cd48d99353501a"
+          "sourceId": "source-64cd48d99353501a",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
         },
         {
           "id": "scwiki-d9-material-9",
@@ -2970,7 +3212,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Van der Pauw transport, 1 μA",
-          "sourceId": "source-64cd48d99353501a"
+          "sourceId": "source-64cd48d99353501a",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
         },
         {
           "id": "scwiki-d9-material-10",
@@ -2986,7 +3232,11 @@
           "pressureGPa": null,
           "equilibrium": "transient",
           "probe": "Pulsed two-terminal readout with separate static four-terminal calibration",
-          "sourceId": "source-07be806c0002c690"
+          "sourceId": "source-07be806c0002c690",
+          "aliases": [
+            "fulleride",
+            "fullerides"
+          ]
         }
       ],
       "dois": [
@@ -3025,7 +3275,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "38346e6a98bb561d4305",
+      "revision": "3f6c6b21076f8357faf1",
       "materialCases": [
         {
           "id": "scwiki-e1-material-1",
@@ -3047,7 +3297,9 @@
           "sourceId": "source-a631bcd83d23567b",
           "aliases": [
             "FeSe",
-            "iron selenide"
+            "iron selenide",
+            "iron-based",
+            "iron based superconductors"
           ]
         },
         {
@@ -3070,7 +3322,9 @@
           "sourceId": "source-a631bcd83d23567b",
           "aliases": [
             "FeSe",
-            "iron selenide"
+            "iron selenide",
+            "iron-based",
+            "iron based superconductors"
           ]
         },
         {
@@ -3093,7 +3347,9 @@
           "sourceId": "source-a631bcd83d23567b",
           "aliases": [
             "FeSe",
-            "iron selenide"
+            "iron selenide",
+            "iron-based",
+            "iron based superconductors"
           ]
         },
         {
@@ -3110,7 +3366,11 @@
           "pressureGPa": null,
           "equilibrium": "equilibrium",
           "probe": "Resistance under quasihydrostatic pressure; original abstract",
-          "sourceId": "source-6d09a24a26a15997"
+          "sourceId": "source-6d09a24a26a15997",
+          "aliases": [
+            "cuprate",
+            "cuprates"
+          ]
         },
         {
           "id": "scwiki-e1-material-5",
@@ -3143,6 +3403,121 @@
         "10.1103/PhysRev.108.1175"
       ],
       "text": " Scope\n\nPressure changes interatomic distances, electronic bandwidths, lattice vibrations and phase stability. It can also change the material itself through structural conversion or chemical reaction. A diamond anvil cell identifies an apparatus; it does not establish a purely hydrostatic stress state at the sample. Pressure medium, temperature, loading history and sample geometry belong to every quantitative comparison.   \n\nThis article concerns measurements while pressure is applied. A state retained after rapid pressure release has a different thermodynamic and kinetic history. Deng's 2026 pressure-quench paper explicitly separates creating a phase under load, releasing pressure and characterizing the recovered state. Its reported 151 K scale must not be pooled with an in-situ pressure curve. Here only its abstract and introductory protocol are checked; the detailed transition criterion and recovery evidence require a separate review. \n\n Mathematical assumptions\n\nWith tensile stress positive, define P=-\\mathrm{tr}(\\sigma)/3 and s{ij}=\\sigma{ij}+P\\delta{ij}. Then \\sigma{ij}=-P\\delta{ij}+s{ij} with \\mathrm{tr}(s)=0. Hydrostatic stress has s=0; equal mean pressure does not imply equal deviatoric stress. For a symmetric stress tensor, \\sqrt{3s{ij}s{ij}/2} is a rotationally invariant scalar measure of deviatoric magnitude. It summarizes stress anisotropy, but does not identify its orientation or predict superconductivity. These definitions and rotation identities were checked on illustrative tensors. \n\nA measured pressure dependence is a path through several changing variables. Within a differentiable single phase, dTc/dP=\\suma(\\partial Tc/\\partial xa)(dxa/dP) is a chain rule, not evidence that any one variable causes pairing. Phase conversion, hysteresis or a changed resistance criterion can invalidate a single smooth derivative across the whole dataset. Even an ideal dome has different local slopes on opposite sides of its maximum.  \n\nIn the simplified weak-coupling expression Tc=A\\omega\\exp(-1/\\lambda), holding A fixed gives d\\ln Tc/dP=d\\ln\\omega/dP+\\lambda^{-2}d\\lambda/dP. A rising frequency can therefore compete with decreasing coupling. This illustration neglects the Coulomb term, strong-coupling corrections, multiple bands and structural changes; it is not a quantitative model for the hydrides or FeSe. Numerical differentiation checks the stated algebra only.  \n\n Experimental criteria\n\nTorikachvili and colleagues used sample-resistance anomalies, cross-checked against manganin, to locate freezing-related changes in pressure media. Their room-temperature manganin calibration and low-temperature Pb manometer are distinct measurements. Between 300 and 90 K, pressure was estimated by interpolation; below 90 K it was assumed constant. Data used for the anomaly analysis came from slow warming near 0.35 K per minute. These details prevent the loading pressure from silently becoming the pressure at every temperature. The silicone-oil freezing points were not unambiguously determined. \n\nMedvedev's Fe1.01Se study reports an approximately 36.7 K resistive transition at 8.9 GPa and a decrease at higher pressures. At 15 GPa the roughly 25 K transition did not reach zero resistance, in a mixed-phase regime. The selected transport Methods describe DC van der Pauw measurements, ruby checks at both room and low temperature and a reported spatial pressure spread no greater than 0.05 GPa. Silicone oil is specified in the separate Mössbauer paragraph; this review does not assign that medium to transport without evidence. \n\nGao's original abstract reports resistive measurements of mercury cuprates under quasihydrostatic pressures and a maximum of 164 K for the three-layer member. It does not, at this checked scope, establish a zero-resistance or thermodynamic criterion. The full 1994 methods remain inaccessible here, so no more precise criterion is manufactured for the material record. A family trend in that report is not a universal positive pressure coefficient for superconductors. \n\nThe bilayer nickelate report combines resistance signatures with a separate magnetic experiment. Its checked methods use KBr and room-temperature ruby calibration; residual resistance and sample-specific onset criteria remain explicit. In sulfur and lanthanum hydrides, pressure also helps produce or stabilize the hydrogen-rich phases being measured. Pairing a transport curve with a proposed structure requires attention to synthesis history, phase fractions and the conditions of each probe.   \n\n Limits and disputes\n\nA small spread in pressure inferred from calibrant readings does not reconstruct the full sample stress tensor. Conversely, a frozen medium need not produce the same shear stress in every geometry. Hydrostaticity is an experimental condition to assess, not a binary quality label inferred solely from the material name. The freezing study's calibration assumptions and unresolved oil anomalies should remain attached to any reuse of its data. \n\nOnset, midpoint, zero resistance and magnetic or thermodynamic signatures answer different questions. The high-pressure FeSe curves broaden and coexist with a structurally transformed fraction; a surviving conducting path is not a direct bulk-volume measurement. Likewise, a structural measurement at room temperature cannot by itself establish the complete structure at a low-temperature transition. This entry retains the historical report's conditions without generalizing its magnetic conclusions to every later FeSe experiment.  \n\n Discovery implications\n\nDesign a pressure series around explicit alternatives: distinguish an electronic crossover from a structural transformation, a pressure gradient from intrinsic broadening, and a reversible response from kinetic trapping. Combine loading and unloading curves with pressure calibration near the measurement temperature, and compare transport with structural or magnetic probes wherever feasible. Differences between probes are evidence to explain, not numbers to average away.   \n\nFor transferable discovery records, preserve composition, pressure interval, medium, calibrant, temperature, protocol and transition criterion. Quote a slope only over its stated phase and pressure interval. Keep ambient recovered states, in-situ high-pressure phases and theoretical estimates separately searchable. Pressure can expose useful physics without guaranteeing a recoverable ambient material or a technologically useful conductor.   \n\n Related topics\n\nContinue with , , ,  and ."
+    },
+    {
+      "id": "scwiki-e2",
+      "topicId": "scwiki-topic-e2",
+      "code": "E2",
+      "slug": "chemical-doping",
+      "title": "Chemical doping: composition, carriers and disorder",
+      "summary": "Separate nominal composition, measured site occupancy and mobile carriers when reading superconducting phase diagrams.",
+      "aliases": [
+        "chemical doping",
+        "carrier doping",
+        "substitution",
+        "oxygen stoichiometry",
+        "isovalent doping",
+        "WDS",
+        "EDX",
+        "nominal composition"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experiment"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "5f5f844259adb9624bbd",
+      "materialCases": [
+        {
+          "id": "scwiki-e2-material-1",
+          "formula": "Ba(Fe1−xCox)2As2",
+          "sample": "Ni WDS fractions approximately 0.058–0.074; series summary",
+          "recordType": "experiment",
+          "reportedTemperatureK": 23,
+          "tcK": 23,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate series maximum; no one specimen or common onset/zero criterion is assigned. Specific-heat 0.078/0.074 mismatch remains unresolved.",
+          "criterion": "series-maximum-multiple-criteria",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Resistance, magnetization and heat capacity phase diagram",
+          "sourceId": "source-cf1286d7701502f2",
+          "aliases": [
+            "iron-based",
+            "iron based superconductors"
+          ]
+        },
+        {
+          "id": "scwiki-e2-material-2",
+          "formula": "YBa2Cu3O7",
+          "sample": "Liang fully oxygenated reference",
+          "recordType": "experiment",
+          "reportedTemperatureK": 85.3,
+          "tcK": 85.3,
+          "temperatureKind": "transition",
+          "temperatureNote": "Calibration reference; hole count inferred through an empirical overdoped branch, not directly measured.",
+          "criterion": "field-cooled-magnetization-midpoint",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "1 Oe along c",
+          "sourceId": "source-e24ef58054ac9b71",
+          "aliases": [
+            "cuprate",
+            "cuprates"
+          ]
+        },
+        {
+          "id": "scwiki-e2-material-3",
+          "formula": "BaFe2(As1−xPx)2",
+          "sample": "Kasahara author v3 phase-summary maximum",
+          "recordType": "experiment",
+          "reportedTemperatureK": 31,
+          "tcK": 31,
+          "temperatureKind": "transition",
+          "temperatureNote": "Maximum around x = 0.26 in author text; exact onset/zero assignment and final-version comparison remain open.",
+          "criterion": "transition-summary-unspecified",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Transport phase diagram with separate onset and zero curves",
+          "sourceId": "source-b9e77d2ee024ff3b",
+          "aliases": [
+            "iron-based",
+            "iron based superconductors"
+          ]
+        },
+        {
+          "id": "scwiki-e2-material-4",
+          "formula": "Nd1−xSrxNiO2",
+          "sample": "Li films: resistance normalization across composition series",
+          "recordType": "experiment",
+          "reportedTemperatureK": 20,
+          "tcK": null,
+          "temperatureKind": "normal-state",
+          "temperatureNote": "Reference temperature for 10% and 90% resistive thresholds; not Tc. No numerical transition temperature digitized from the figure.",
+          "criterion": "resistance-normalization-temperature",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Hall-bar magnetotransport",
+          "sourceId": "source-c636cc691b7ff013",
+          "aliases": [
+            "nickelate",
+            "nickelates"
+          ]
+        }
+      ],
+      "dois": [
+        "10.1103/PhysRevB.40.2254",
+        "10.1103/PhysRevB.73.180505",
+        "10.1103/PhysRevB.78.214515",
+        "10.1103/PhysRevB.81.184519",
+        "10.1103/PhysRevLett.125.027001",
+        "10.1103/PhysRevLett.84.5900"
+      ],
+      "text": " Scope\n\nChemical doping changes a material's composition; it does not supply a universal carrier counter. Distinguish the starting mixture, measured site occupancy, formal ionic charge and mobile carriers. Substitution can also change disorder, bond geometry and competing order. Oxygen removal or chain ordering adds another control variable. A superconducting dome is therefore a relationship among specified samples and criteria, not a recipe transferable between families.    \n\nNotation matters even before measurement. Takagi's 1989 paper uses (\\mathrm{La}{1-x}\\mathrm{Sr}x)2\\mathrm{CuO}4 and studies x\\leq0.175. In the alternative formula \\mathrm{La}{2-y}\\mathrm{Sr}y\\mathrm{CuO}4, the same composition has y=2x, reaching 0.35. The inherited draft attached 0.175 to the latter convention without converting it. This page corrects that factor-of-two mismatch; the original abstract, not its inaccessible full methods, was checked. \n\n Mathematical assumptions\n\nCharge neutrality is useful bookkeeping under explicit ionic assumptions. Taking La/Nd as 3+, Sr as 2+, Ce as 4+ and O as 2- gives formal average Cu valence 2+x+2\\delta in \\mathrm{La}{2-x}\\mathrm{Sr}x\\mathrm{CuO}{4+\\delta}, and 2-x-2y in \\mathrm{Nd}{2-x}\\mathrm{Ce}x\\mathrm{CuO}{4-y}. Stoichiometric infinite-layer \\mathrm{Nd}{1-x}\\mathrm{Sr}x\\mathrm{NiO}2 gives formal Ni valence 1+x. These balances do not locate holes among orbitals or establish an itinerant carrier density. Oxygen deviations and compensating defects change the balance.  \n\nEven the elementary weak-field two-band Drude model yields RH=(nh\\muh^2-ne\\mue^2)/[e(nh\\muh+ne\\mue)^2], with e>0. Mobilities weight the response. For compensation, ne=nh=n, this becomes (\\muh-\\mue)/[en(\\muh+\\mue)]; its sign can reverse at fixed density. This illustrative identity is not a fit to correlated transport. Kasahara explicitly discusses why that simple model fails for the magnitude of the observed Hall response. \n\nLiang's empirical YBCO calibration uses p=11.491u+5.17\\times10^9u^6, u=1-c/c0, with c0=1.18447\\,\\mathrm{nm} and c measured at 22°C. It depends on chain-order assumptions and reference compositions. The relation Tc/T{c,\\max}=1-82.6(p-0.16)^2 has two algebraic branches and fails near the material's suppressed one-eighth region. Neither expression is a universal oxygen-to-hole conversion; a fitted lattice parameter and a directly measured carrier density are different evidence. \n\n Experimental criteria\n\nMeasure composition on the specimens whose transitions are compared. Ni's Co-substituted Ba122 series used wavelength-dispersive spectroscopy (WDS): actual Co fraction was about 0.74 times the nominal fraction for that growth series. A nominal 0.10 batch averaged approximately 0.074. Its phase diagram distinguishes resistance, magnetization and heat capacity. Resistive offset means maximum-slope extrapolation to zero, rather than an independently established instrumental zero. The reported maximum near 23 K spans measured fractions approximately 0.058–0.074. \n\nFor YBCO, oxygen content alone omits chain configuration. Liang combined oxygen control, ordered-chain preparations and room-temperature lattice measurements; Tc was the midpoint of field-cooled magnetization in 1 Oe along the c axis. Fully oxygenated material's 85.3 K transition anchors the overdoped calibration through the empirical parabola. It is not a new direct measurement of p. Record thermal history, chain order, calibration assumptions and their uncertainty alongside oxygen stoichiometry. \n\nIn the P-substituted Ba122 author manuscript, composition was measured by energy-dispersive X-ray analysis. Figure 2 separates onset and zero-resistivity temperatures. Version 3 reports zero resistance from x\\geq0.20 and a maximum transition around 31 K, while observing a narrow transition at x=0.33. Do not turn “isovalent” into proof of unchanged Fermi surfaces, scattering or carrier populations. Nor does a similar phase diagram make chemical substitution physically identical to applied pressure. \n\nLi's nickelate study concerns 8–10 nm films on SrTiO3, capped and reduced from perovskite precursors. Its superconducting compositions lie inside 0.125<x<0.25. Figure 2 defines two temperatures at 10% and 90% of each sample's resistance at 20 K; symbols average multiple samples and error bars show extrema. The comparison cuprate curve instead uses 50%. These are unequal criteria. The 20 K normalization is not a superconducting transition, and the sign-changing Hall response is interpreted through multiple bands. \n\n Limits and disputes\n\nChanging composition and introducing pair-breaking disorder can occur together. Sidis's original abstract reports different neutron-resonance responses to Ni and Zn impurities in YBCO. That comparison does not justify a universal impurity ranking across pairing states or substitution sites. Separate scattering, magnetic moments, charge redistribution, structural effects and phase purity before inferring the origin of a Tc trend. Abstract-only evidence cannot support a detailed impurity-dose reconstruction. \n\nVersion and specimen checks remain necessary. Ni's author manuscript mentions 0.078 in its specific-heat discussion while the phase-summary maximum uses 0.074; this page does not silently identify them as one specimen. Kasahara's earlier and later manuscripts differ in the composition range and reported zero-resistance boundary, and the later figure's color description conflicts with the displayed onset/zero labels. Use the labeled criteria, not color alone. Final journal comparisons and raw-data reproduction remain open.  \n\nA dome does not establish a unique pairing mechanism, homogeneous microscopic coexistence or a universal optimal carrier concentration. The nickelate manuscript notes sample-to-sample resistivity variations associated with microstructure and does not establish the origin of its small dip within the dome. Preserve that uncertainty; numerical resemblance to a cuprate anomaly is not an ordering measurement. \n\n Discovery implications\n\nStore nominal and measured composition separately, including the chemical formula convention, analytical method, uncertainty and spatial variation. Link each transition to its specimen, phase, oxygen/reduction history, substrate or strain, measurement criterion and source version. Keep Hall-derived model parameters separate from valence arithmetic. Prioritize reproducible composition–structure–property relationships and independent magnetic or thermodynamic checks before ranking a tuning series. The calculations here verify notation and algebra, not an optimal synthesis or a carrier-density calibration.    \n\n Related topics\n\nCompare , , , ,  and ."
     },
     {
       "id": "scwiki-e4",
@@ -3258,7 +3633,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "557fae67a7f794360f48",
+      "revision": "07c8e818d97731c55d27",
       "materialCases": [
         {
           "formula": "κ-(BEDT-TTF)2Cu2(CN)3",
@@ -3274,7 +3649,11 @@
           "id": "scwiki-g7-material-1",
           "sourceId": "source-0443485ac20d3a8c",
           "reportedTemperatureK": null,
-          "temperatureKind": "unassigned"
+          "temperatureKind": "unassigned",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
         }
       ],
       "dois": [
@@ -3306,7 +3685,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "1013209bafda03572182",
+      "revision": "b1ad1168787833c3b66d",
       "materialCases": [
         {
           "formula": "overdoped cuprates",
@@ -3322,7 +3701,11 @@
           "id": "scwiki-h2-material-1",
           "sourceId": "source-c1ae7869b672a8e8",
           "reportedTemperatureK": null,
-          "temperatureKind": "normal-state"
+          "temperatureKind": "normal-state",
+          "aliases": [
+            "cuprate",
+            "cuprates"
+          ]
         }
       ],
       "dois": [

@@ -32,7 +32,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T11:30:41.526332+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.212011+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected CeCu2Si2 and CeCoIn5 methods, nuclear subtraction, proposed gap model and UTe2 pulsed-field passages; previously scoped uranium evidence and independent bounded algebra.",
@@ -454,7 +454,11 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "Specific heat",
-      "sourceId": "source-e721bddb9ef11661"
+      "sourceId": "source-e721bddb9ef11661",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
     },
     {
       "id": "scwiki-d8-material-2",
@@ -470,7 +474,11 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "Specific heat",
-      "sourceId": "source-e721bddb9ef11661"
+      "sourceId": "source-e721bddb9ef11661",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
     },
     {
       "id": "scwiki-d8-material-3",
@@ -486,7 +494,11 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "Quasi-adiabatic heat pulse",
-      "sourceId": "source-2764bce38246bfae"
+      "sourceId": "source-2764bce38246bfae",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
     },
     {
       "id": "scwiki-d8-material-4",
@@ -502,7 +514,11 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "Resistivity and diamagnetic shielding; corroborating heat-capacity anomaly",
-      "sourceId": "source-5962cf8038597944"
+      "sourceId": "source-5962cf8038597944",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
     },
     {
       "id": "scwiki-d8-material-5",
@@ -518,7 +534,11 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "Resistance and proximity-detector oscillator; angle-dependent fields to around 73 T",
-      "sourceId": "source-0c4d7cebb12a0d5b"
+      "sourceId": "source-0c4d7cebb12a0d5b",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
     },
     {
       "id": "scwiki-d8-material-6",
@@ -534,7 +554,11 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "Pulsed-field magnetic fluctuation probe",
-      "sourceId": "source-15cfc4a2f9587af0"
+      "sourceId": "source-15cfc4a2f9587af0",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
     }
   ]
 }

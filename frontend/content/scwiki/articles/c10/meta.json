@@ -28,7 +28,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T10:28:52.386170+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.200287+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected Reid accepted methods, Hashimoto/Mizukami author passages, published Vorontsov field-angle model, Durst nodal/thermal passages and Agterberg Pfaffian model. Explicit abstract-only Hardy and Schnyder–Ryu scopes. Independent phase-volume, thermal, root and determinant checks.",
@@ -464,7 +464,11 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "Directional thermal conductivity; fit below 0.3 K and extrapolated residual term",
-      "sourceId": "source-8a117f38b78526ff"
+      "sourceId": "source-8a117f38b78526ff",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
     },
     {
       "id": "scwiki-c10-material-2",
@@ -480,7 +484,11 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "13 MHz tunnel-diode oscillator; electron irradiation 2.5 MeV; partial defect annealing on warming",
-      "sourceId": "source-c4a5c25b97df43a2"
+      "sourceId": "source-c4a5c25b97df43a2",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
     }
   ]
 }

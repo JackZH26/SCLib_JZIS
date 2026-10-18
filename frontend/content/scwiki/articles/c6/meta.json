@@ -29,7 +29,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T09:45:48.034111+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.203509+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected UPt3 Kerr and planar-state manuscripts, historical transport/review abstracts, UTe2 contrasting Kerr reports, and independent harmonic/nodal/free-energy checks.",
@@ -469,7 +469,11 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "1550nm polar Kerr; field-off warmup after zero-field or±50G training; separate upper susceptibility onset",
-      "sourceId": "source-d3edee404071ac81"
+      "sourceId": "source-d3edee404071ac81",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
     }
   ]
 }

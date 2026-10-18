@@ -24,7 +24,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:07:06.644281+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.209332+00:00",
   "review": {
     "checkedAt": "2026-10-17",
     "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
@@ -309,7 +309,11 @@
       "id": "scwiki-d4-material-1",
       "sourceId": "source-62a72493865c59d7",
       "reportedTemperatureK": 26,
-      "temperatureKind": "transition"
+      "temperatureKind": "transition",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
     },
     {
       "formula": "Ba1-xKxFe2As2",
@@ -325,7 +329,11 @@
       "id": "scwiki-d4-material-2",
       "sourceId": "source-1a3690e5f1d38f3e",
       "reportedTemperatureK": 38,
-      "temperatureKind": "transition"
+      "temperatureKind": "transition",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
     },
     {
       "formula": "Fe1.01Se",
@@ -347,7 +355,9 @@
       "temperatureKind": "transition",
       "aliases": [
         "FeSe",
-        "iron selenide"
+        "iron selenide",
+        "iron-based",
+        "iron based superconductors"
       ]
     }
   ],

@@ -22,7 +22,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T06:09:50.849181+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.195712+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below. Corrected a mismatched MgB2 DOI and checked selected Choi et al. primary passages; other references retain their individual review limits.",
@@ -250,7 +250,11 @@
       "id": "scwiki-b12-material-2",
       "sourceId": "source-f9fe6e9bc3792dcc",
       "reportedTemperatureK": null,
-      "temperatureKind": "spectroscopic-gap"
+      "temperatureKind": "spectroscopic-gap",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
     }
   ],
   "claims": [

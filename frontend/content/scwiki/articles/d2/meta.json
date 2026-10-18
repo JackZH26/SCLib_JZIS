@@ -28,7 +28,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T10:51:42.036566+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.207475+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected Godeke author reviews and v2 experiment, published V3Si NMR methods/results and limited historical/2026 abstract checks. Independent digamma roots, Kramer/grain examples and printed-current rounding check.",
@@ -398,7 +398,10 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "Publisher abstract; full criterion not reviewed",
-      "sourceId": "source-82a0df3d764cd0bc"
+      "sourceId": "source-82a0df3d764cd0bc",
+      "aliases": [
+        "A15"
+      ]
     },
     {
       "id": "scwiki-d2-material-2",
@@ -414,7 +417,10 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "2250 A/mm2 non-Cu at 12 T; Kramer 24.9 T versus 99% resistive 26.9 T",
-      "sourceId": "source-d27a049f764be753"
+      "sourceId": "source-d27a049f764be753",
+      "aliases": [
+        "A15"
+      ]
     },
     {
       "id": "scwiki-d2-material-3",
@@ -430,7 +436,10 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "Transport context for 51V NMR; Tm 21.1 K, zero-field Tc 17 K",
-      "sourceId": "source-9fe69d0a6cecbb0c"
+      "sourceId": "source-9fe69d0a6cecbb0c",
+      "aliases": [
+        "A15"
+      ]
     },
     {
       "id": "scwiki-d2-material-4",
@@ -446,7 +455,10 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "50 mK and 9 T reported in abstract; Q declines in field",
-      "sourceId": "source-3633507cd1108d10"
+      "sourceId": "source-3633507cd1108d10",
+      "aliases": [
+        "A15"
+      ]
     }
   ]
 }

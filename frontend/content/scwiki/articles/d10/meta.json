@@ -29,7 +29,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T11:57:40.169991+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.205840+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected Lefebvre phase/probe, Izawa angular-transport, Kagawa Mott-scaling and Shinagawa spin-response passages, plus scoped discovery metadata and prior B9 checks.",
@@ -439,7 +439,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Inductive response; original title only",
-      "sourceId": "source-c3edeba243e544d9"
+      "sourceId": "source-c3edeba243e544d9",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
     },
     {
       "id": "scwiki-d10-material-2",
@@ -455,7 +459,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Electrical resistance; original title only",
-      "sourceId": "source-c3edeba243e544d9"
+      "sourceId": "source-c3edeba243e544d9",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
     },
     {
       "id": "scwiki-d10-material-3",
@@ -474,7 +482,11 @@
       },
       "equilibrium": "equilibrium",
       "probe": "Four-probe DC conductance under helium pressure",
-      "sourceId": "source-09e9a4299e3fd1d3"
+      "sourceId": "source-09e9a4299e3fd1d3",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
     },
     {
       "id": "scwiki-d10-material-4",
@@ -493,7 +505,11 @@
       },
       "equilibrium": "equilibrium",
       "probe": "NMR0.5T perpendicular; AC0.05Oe parallel without static field",
-      "sourceId": "source-2cc5358d54a65217"
+      "sourceId": "source-2cc5358d54a65217",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
     },
     {
       "id": "scwiki-d10-material-5",
@@ -509,7 +525,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Electrical resistance characterization",
-      "sourceId": "source-9fb11dd7e1fcdc76"
+      "sourceId": "source-9fb11dd7e1fcdc76",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
     },
     {
       "id": "scwiki-d10-material-6",
@@ -525,7 +545,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Heat current b, in-plane2T field, alignment better than0.01degree",
-      "sourceId": "source-9fb11dd7e1fcdc76"
+      "sourceId": "source-9fb11dd7e1fcdc76",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
     },
     {
       "id": "scwiki-d10-material-7",
@@ -541,7 +565,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Electrical resistance and reflected RF power",
-      "sourceId": "source-c08f058f3170fafa"
+      "sourceId": "source-c08f058f3170fafa",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
     },
     {
       "id": "scwiki-d10-material-8",
@@ -557,7 +585,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Cooling protocol7mK/min",
-      "sourceId": "source-c08f058f3170fafa"
+      "sourceId": "source-c08f058f3170fafa",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
     },
     {
       "id": "scwiki-d10-material-9",
@@ -573,7 +605,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Low-tip-angle NMR at100mK, crossover near15kOe",
-      "sourceId": "source-c08f058f3170fafa"
+      "sourceId": "source-c08f058f3170fafa",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
     },
     {
       "id": "scwiki-d10-material-10",
@@ -589,7 +625,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "NMR, reused scoped original abstract",
-      "sourceId": "source-9d15cd9236072f5c"
+      "sourceId": "source-9d15cd9236072f5c",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
     }
   ]
 }

@@ -28,7 +28,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T11:08:56.131580+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.198293+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Historical original/comment/reply abstracts, selected Budden and Aranzadi manuscripts, published Kellogg passages and independent illustrative checks.",
@@ -462,7 +462,11 @@
       "pressureGPa": null,
       "equilibrium": "transient",
       "probe": "1ns two-terminal voltage probe; contacts calibrated by static four-terminal measurements; about25mJ/cm2 pump fluence and75ps transport pump duration",
-      "sourceId": "source-07be806c0002c690"
+      "sourceId": "source-07be806c0002c690",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
     }
   ]
 }

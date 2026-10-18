@@ -25,7 +25,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T05:43:01Z",
+  "modifiedAt": "2026-10-18T12:19:32.216409+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below. H2 follow-up: selected full-text passages of Maldacena-Shenker-Stanford (published version) and Hartnoll-Mackenzie (arXiv v3) checked for the chaos-bound assumptions, distinct lifetimes and Drude-inference caveats; other empirical sources remain pending.",
@@ -285,7 +285,11 @@
       "id": "scwiki-h2-material-1",
       "sourceId": "source-c1ae7869b672a8e8",
       "reportedTemperatureK": null,
-      "temperatureKind": "normal-state"
+      "temperatureKind": "normal-state",
+      "aliases": [
+        "cuprate",
+        "cuprates"
+      ]
     }
   ],
   "claims": [

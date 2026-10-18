@@ -29,7 +29,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T11:47:34.048301+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.213032+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected fcc Cs3C60 pressure/magnetometry, fulleride model equations, 2026 intercalation transport criteria, prior scoped driven-state readings and complete indexed retraction notice.",
@@ -398,7 +398,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Meissner and microwave response",
-      "sourceId": "source-51b1a52d16139e58"
+      "sourceId": "source-51b1a52d16139e58",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
     },
     {
       "id": "scwiki-d9-material-2",
@@ -414,7 +418,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Meissner and microwave response",
-      "sourceId": "source-0fb5ae1290bd2998"
+      "sourceId": "source-0fb5ae1290bd2998",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
     },
     {
       "id": "scwiki-d9-material-3",
@@ -433,7 +441,11 @@
       },
       "equilibrium": "equilibrium",
       "probe": "20 Oe ZFC/FC magnetometry",
-      "sourceId": "source-5e6d3e7ed715ad6a"
+      "sourceId": "source-5e6d3e7ed715ad6a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
     },
     {
       "id": "scwiki-d9-material-4",
@@ -452,7 +464,11 @@
       },
       "equilibrium": "equilibrium",
       "probe": "20 Oe ZFC/FC magnetometry",
-      "sourceId": "source-5e6d3e7ed715ad6a"
+      "sourceId": "source-5e6d3e7ed715ad6a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
     },
     {
       "id": "scwiki-d9-material-5",
@@ -471,7 +487,11 @@
       },
       "equilibrium": "equilibrium",
       "probe": "20 Oe ZFC/FC magnetometry",
-      "sourceId": "source-5e6d3e7ed715ad6a"
+      "sourceId": "source-5e6d3e7ed715ad6a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
     },
     {
       "id": "scwiki-d9-material-6",
@@ -487,7 +507,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Muon spin rotation and magnetism",
-      "sourceId": "source-5e6d3e7ed715ad6a"
+      "sourceId": "source-5e6d3e7ed715ad6a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
     },
     {
       "id": "scwiki-d9-material-7",
@@ -503,7 +527,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Van der Pauw transport, 1 μA",
-      "sourceId": "source-64cd48d99353501a"
+      "sourceId": "source-64cd48d99353501a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
     },
     {
       "id": "scwiki-d9-material-8",
@@ -519,7 +547,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Van der Pauw transport, 1 μA",
-      "sourceId": "source-64cd48d99353501a"
+      "sourceId": "source-64cd48d99353501a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
     },
     {
       "id": "scwiki-d9-material-9",
@@ -535,7 +567,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Van der Pauw transport, 1 μA",
-      "sourceId": "source-64cd48d99353501a"
+      "sourceId": "source-64cd48d99353501a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
     },
     {
       "id": "scwiki-d9-material-10",
@@ -551,7 +587,11 @@
       "pressureGPa": null,
       "equilibrium": "transient",
       "probe": "Pulsed two-terminal readout with separate static four-terminal calibration",
-      "sourceId": "source-07be806c0002c690"
+      "sourceId": "source-07be806c0002c690",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
     }
   ]
 }

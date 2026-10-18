@@ -28,7 +28,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:04:39.461191+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.213972+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected pressure-medium calibration and FeSe author passages, original Gao abstract, prior nickelate/hydride checks and the introductory pressure-quench protocol.",
@@ -366,7 +366,9 @@
       "sourceId": "source-a631bcd83d23567b",
       "aliases": [
         "FeSe",
-        "iron selenide"
+        "iron selenide",
+        "iron-based",
+        "iron based superconductors"
       ]
     },
     {
@@ -389,7 +391,9 @@
       "sourceId": "source-a631bcd83d23567b",
       "aliases": [
         "FeSe",
-        "iron selenide"
+        "iron selenide",
+        "iron-based",
+        "iron based superconductors"
       ]
     },
     {
@@ -412,7 +416,9 @@
       "sourceId": "source-a631bcd83d23567b",
       "aliases": [
         "FeSe",
-        "iron selenide"
+        "iron selenide",
+        "iron-based",
+        "iron based superconductors"
       ]
     },
     {
@@ -429,7 +435,11 @@
       "pressureGPa": null,
       "equilibrium": "equilibrium",
       "probe": "Resistance under quasihydrostatic pressure; original abstract",
-      "sourceId": "source-6d09a24a26a15997"
+      "sourceId": "source-6d09a24a26a15997",
+      "aliases": [
+        "cuprate",
+        "cuprates"
+      ]
     },
     {
       "id": "scwiki-e1-material-5",

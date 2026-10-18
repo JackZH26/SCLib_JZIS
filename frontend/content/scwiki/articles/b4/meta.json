@@ -30,7 +30,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T07:50:57.056432+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.196903+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected primary abstracts, Sr2RuO4/Ran manuscript passages,2021 neutron extended-data text and2026 UTe2 publisher passages; independent spin, parity and angular-projection checks.",
@@ -457,7 +457,11 @@
       "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "Pulsed fields up to60T; field rotations in ac/bc planes; transverse susceptibility inferred from magnetotropic response",
-      "sourceId": "source-15cfc4a2f9587af0"
+      "sourceId": "source-15cfc4a2f9587af0",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
     }
   ]
 }

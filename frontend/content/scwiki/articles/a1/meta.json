@@ -26,7 +26,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T06:57:31.390654+00:00",
+  "modifiedAt": "2026-10-18T12:19:32.188814+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Operational transport bounds and model checks; selected NIST metrology report passages, earlier optical/electrical K3C60 manuscript passages and existing Halperin–Nelson abstract check.",
@@ -254,7 +254,11 @@
       "id": "scwiki-a1-material-1",
       "sourceId": "source-6ee3670220e24ff1",
       "reportedTemperatureK": null,
-      "temperatureKind": "transient-response"
+      "temperatureKind": "transient-response",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
     },
     {
       "id": "scwiki-a1-material-2",
@@ -270,7 +274,11 @@
       "pressureGPa": null,
       "equilibrium": "transient",
       "probe": "1 ns electrical probe; contact calibration from static four-terminal measurement; systematic calibration uncertainty retained",
-      "sourceId": "source-07be806c0002c690"
+      "sourceId": "source-07be806c0002c690",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
     }
   ],
   "claims": [
