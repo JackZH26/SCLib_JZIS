@@ -3,14 +3,17 @@ import {readFileSync} from "node:fs";
 const catalogue=JSON.parse(readFileSync("content/scwiki/catalogue.json","utf8"));
 test("SCWiki ships complete server-rendered English content and lazy search",async({page,request})=>{
  const response=await request.get("/scwiki");expect(response.status()).toBe(200);
- const html=await response.text();for(const a of catalogue.articles)expect(html).toContain(a.title.replaceAll("&","&amp;"));
+ const html=await response.text();for(const a of catalogue.articles)expect(html).toContain("/scwiki/"+a.slug);
+ expect(html.indexOf("Latest research")).toBeLessThan(html.indexOf("Explore the key concepts"));
  await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
- expect(await page.locator(".scwiki-article-grid li").count()).toBe(12);
+ expect(await page.locator(".scwiki-topic-group li").count()).toBe(12);
+ await expect(page.getByRole("heading",{name:"Latest research",exact:true})).toBeVisible();
  const indexRequests:string[]=[];page.on("request",r=>{if(r.url().includes("search-index.json"))indexRequests.push(r.url());});
  expect(indexRequests).toEqual([]);
  const input=page.getByRole("searchbox",{name:"Search SCWiki",exact:true});
  await input.fill("La₃Ni₂O₇");
  await expect.poll(()=>indexRequests.length).toBe(1);
+ await page.getByRole("button",{name:"Filters",exact:true}).click();
  await page.getByLabel("Pressure",{exact:true}).selectOption("ambient");
  await page.getByLabel("Reported transition at least (K)",{exact:true}).fill("70");
  await expect(page.getByRole("heading",{name:"No matching evidence"})).toBeVisible();
@@ -18,7 +21,8 @@ test("SCWiki ships complete server-rendered English content and lazy search",asy
  await expect(page.locator(".scwiki-article-grid")).toContainText("Nickelate superconductors");
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
  await page.getByRole("button",{name:"Clear filters",exact:true}).click();
- await expect(page.locator(".scwiki-article-grid li")).toHaveCount(12);
+ await expect(page.locator(".scwiki-topic-group li")).toHaveCount(12);
+ await expect(page.getByRole("heading",{name:"Latest research",exact:true})).toBeVisible();
  await page.screenshot({path:"test-results/scwiki-index-390.png",fullPage:true});
 });
 test("all 12 articles have formulas, real citation anchors and HTML/Markdown/JSON consistency",async({page,request})=>{

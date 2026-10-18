@@ -1,4 +1,4 @@
-import {render,screen} from "@testing-library/react";
+import {render,screen,fireEvent} from "@testing-library/react";
 import {SearchCatalogue} from "@/components/scwiki/SearchCatalogue";
 import {middleware} from "../../middleware";
 import {describe,it,expect} from "vitest";
@@ -139,11 +139,12 @@ describe("SCWiki API and migration",()=>{
 
 it("gives every scientific filter a distinct accessible label",()=>{
  render(<SearchCatalogue initial={articles().map(({id,code,slug,title,summary,evidenceTypes})=>({id,code,slug,title,summary,evidenceTypes}))}/>);
+ fireEvent.click(screen.getByRole("button",{name:"Filters"}));
  expect(screen.getByRole("combobox",{name:"Evidence",exact:true})).toBeInTheDocument();
  expect(screen.getByRole("combobox",{name:"Pressure",exact:true})).toBeInTheDocument();
  expect(screen.getByRole("combobox",{name:"State",exact:true})).toBeInTheDocument();
  expect(screen.getByRole("spinbutton",{name:"Reported transition at least (K)",exact:true})).toBeInTheDocument();
- for(const article of articles())expect(screen.getByRole("link",{name:"Read article: "+article.title,exact:true})).toHaveTextContent("Read article");
+ expect(screen.queryByRole("link",{name:/Read article:/})).not.toBeInTheDocument();
 });
 it.each(["/docs/","/sclib/docs/","/docs"])("keeps exact loopback destination for %s",path=>{
  const response=middleware(new NextRequest("http://localhost:3102"+path+"?q=Fe%2BSe",{headers:{host:"127.0.0.1:3102"}}));
