@@ -107,10 +107,10 @@ test("approved question routes preserve provenance and exclude unfinished extens
  await expect(page.getByText("The pinned planning document identifies the approved scope.",{exact:false})).toBeVisible();
  const response=await request.get("/api/scwiki/v1/articles/scwiki-n10/sections/mathematical-assumptions");
  const data=await response.json();expect(data.scopeItems[0].id).toBe("N10");
- for(const path of ["/scwiki/open-questions/n1","/scwiki/open-questions/n11","/scwiki/research-methodology"]){expect((await request.get(path)).status()).toBe(404);}
+ for(const path of ["/scwiki/open-questions/n1","/scwiki/open-questions/n11","/scwiki/open-questions/n9"]){expect((await request.get(path)).status()).toBe(404);}
 });
 
-for(const [code,slug,label] of [["I","experimental-methods","Experimental methods"],["J","theoretical-tools","Theoretical tools"],["K","applications","Superconducting applications"],["L","history","History of superconductivity"]]) test(code+" handbook keeps all approved section links and scoped API exports usable",async({page,request})=>{
+for(const [code,slug,label] of [["I","experimental-methods","Experimental methods"],["J","theoretical-tools","Theoretical tools"],["K","applications","Superconducting applications"],["L","history","History of superconductivity"],["M","research-methodology","Research methodology"]]) test(code+" handbook keeps all approved section links and scoped API exports usable",async({page,request})=>{
  await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
  await page.getByRole("link",{name:label,exact:true}).click();
  await expect(page).toHaveURL(new RegExp("/scwiki/"+slug+"$"));

@@ -2,7 +2,7 @@ import {render,screen,fireEvent} from "@testing-library/react";
 import {SearchCatalogue} from "@/components/scwiki/SearchCatalogue";
 import {middleware} from "../../middleware";
 import {describe,it,expect} from "vitest";
-import {readFileSync} from "node:fs";
+import {readFileSync,existsSync} from "node:fs";
 import {createHash} from "node:crypto";
 import {renderToStaticMarkup} from "react-dom/server";
 import {NextRequest} from "next/server";
@@ -61,7 +61,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
    expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
   }
-  for(const id of ["scwiki-m","scwiki-n1"]){expect((await get(["articles",id])).status).toBe(404);}
+  for(const id of ["scwiki-n2","scwiki-n1"]){expect((await get(["articles",id])).status).toBe(404);}
  });
 
  it("publishes all fifteen experimental-method sections with individual evidence limits",async()=>{
@@ -162,6 +162,33 @@ describe("SCWiki source and scientific-content contracts",()=>{
   const guide=a.sections.find(s=>s.id==="chronological-guide")!;
   expect(guide.markdown.indexOf("(#l16)")).toBeLessThan(guide.markdown.indexOf("(#l15)"));
   expect(a.body).toContain("Complete scientific acceptance");
+ });
+
+ it("exports six research-method sections without making models or database records experimental evidence",async()=>{
+  const a=articles().find(a=>a.code==="M")!;
+  expect(a.scopeItems?.map(i=>i.id)).toEqual(Array.from({length:6},(_,i)=>"M"+(i+1)));
+  for(const item of a.scopeItems!){
+   const id=item.id.toLowerCase();expect(item.sectionIds).toEqual([id]);
+   const data=await(await get(["articles",a.id,"sections",id])).json();
+   expect(data.scopeItems.map((s:{id:string})=>s.id)).toEqual([item.id]);
+   const md=await(await get(["articles",a.id,"sections",id],"?format=markdown")).text();
+   expect(md).toContain(data.section.markdown);
+   for(const limit of item.limitations)expect(md).toContain(limit);
+  }
+  for(const q of ["研究方法","论文精读","machine learning Tc","overlapping selections"]){
+   expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
+   expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
+  }
+  expect(a.materialCases).toEqual([]);
+  expect(a.body).toContain("not independent peer review or experimental replication");
+  expect(a.body).toContain("96.6% accuracy and zero positive recall");
+  expect(a.body).toContain("approximately 7.69%");
+  expect(a.body).toContain("818 retained calculated spectra");
+  expect(a.body).toContain("NIMS is the institution that publishes SuperCon");
+  expect(a.references.find(r=>r.doi==="10.1038/s41524-024-01475-4")?.year).toBe(2025);
+  expect(a.references.find(r=>r.doi==="10.48505/nims.3837")?.publicationStatus).toBe("dataset");
+  const section=await(await get(["articles",a.id,"sections","m6"],"?format=markdown")).text();
+  expect(section).toContain("Publication date unknown");
  });
 
  it("matches short Han keywords within phrases while keeping short Latin tokens exact",()=>{
@@ -461,7 +488,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(a.claims.length).toBeGreaterThan(5);
    for(const c of a.claims){expect(sections.has(c.sectionId)).toBe(true);expect(c.conditions.length).toBeGreaterThan(30);expect(c.sourceIds.every(id=>refs.has(id))).toBe(true);}
    for(const match of a.body.matchAll(/\]\(#ref-([a-z0-9-]+)\)/g))expect(refs.has(match[1])).toBe(true);
-   for(const match of a.body.matchAll(/\]\(\/scwiki\/([a-z0-9/-]+)\)/g))expect(slugs.has(match[1])).toBe(true);
+   for(const match of a.body.matchAll(/\]\(\/scwiki\/([a-z0-9/-]+)\)/g))expect(slugs.has(match[1]) || existsSync("app/scwiki/"+match[1]+"/page.tsx"), "Unresolved SCWiki link: "+match[1]).toBe(true);
    const html=renderToStaticMarkup(<ScientificMarkdown markdown={a.body}/>);
    expect(html).not.toContain('class="katex-error"');expect(html).not.toContain("language-text");
    if(a.body.includes("$$"))expect(html).toContain('class="katex"');
