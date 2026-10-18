@@ -13,24 +13,28 @@
   ],
   "evidenceTypes": [
     "experiment",
-    "theory"
+    "theory",
+    "hypothesis"
   ],
   "relatedCodes": [
     "A1",
-    "F7",
-    "D3"
+    "A6",
+    "A7",
+    "A3",
+    "A5",
+    "F7"
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-17T12:13:01Z",
+  "modifiedAt": "2026-10-18T06:51:41.542639+00:00",
   "review": {
-    "checkedAt": "2026-10-17",
-    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "checkedAt": "2026-10-18",
+    "scope": "Selected historical experiment reproduction and London original scan, modern demagnetization manuscript and Hardy abstract; independent London boundary-value, demagnetization and sheet-energy checks.",
     "limitations": [
-      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
-      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
-      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
-      "Historical audit scores and file presence are not evidence that a proposition is correct."
+      "Scoped passage checks and model calculations are not full scientific acceptance or independent experimental replication.",
+      "London pp. 72–73 and Prozorov–Kogan pp. 1–2 only; arbitrary-shape simulation, microscopic/nonlocal theories and full historical manuscripts not exhaustively checked.",
+      "Hardy remains abstract-scoped. Bozovic LSCO is a bibliographic pointer; no scaling dataset or experimental Tc was re-extracted.",
+      "Shielding, demagnetization and sheet inductance formulas require their stated geometry, SI normalization and response regime."
     ]
   },
   "provenance": {
@@ -45,10 +49,10 @@
       "startLine": 1,
       "endLine": 5,
       "targetSections": [
-        "experimental-criteria"
+        "scope"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "Magnetic evidence scope retained."
     },
     {
       "startLine": 6,
@@ -57,83 +61,110 @@
         "scope",
         "limits-and-disputes"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "Selected historical primary observations distinguish wall and cavity; London magnetic-state postulate separated from perfect conductivity."
     },
     {
       "startLine": 12,
       "endLine": 21,
       "targetSections": [
-        "mathematical-assumptions"
+        "mathematical-assumptions",
+        "experimental-criteria"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "Modern SI London limits, explicit local model checks and Hardy abstract scope."
     },
     {
       "startLine": 22,
       "endLine": 31,
       "targetSections": [
-        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
         "limits-and-disputes"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "Demagnetization now has a specific modern primary model source, rather than a general historical citation."
     },
     {
       "startLine": 32,
       "endLine": 35,
       "targetSections": [
+        "mathematical-assumptions",
         "limits-and-disputes"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "Sheet normalization clarified; quantum-geometric decomposition deferred to dedicated F7, no unchecked Tian claim repeated."
     },
     {
       "startLine": 36,
       "endLine": 43,
       "targetSections": [
-        "sources"
+        "experimental-criteria",
+        "limits-and-disputes"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "Bibliography repaired; exact checked source scope retained."
     },
     {
       "startLine": 44,
       "endLine": 46,
       "targetSections": [
-        "scope",
-        "limits-and-disputes"
+        "discovery-implications"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "Do not infer mechanism or volume without a model and controls."
     }
   ],
-  "corrections": [],
+  "corrections": [
+    {
+      "id": "scwiki-a2-correction-1",
+      "description": "Repaired corrupted historical title and multiline chemical-formula metadata in the Hardy reference.",
+      "sourceId": "source-512705f3e64d88d7",
+      "scope": "Bibliographic presentation; not a new scientific result."
+    },
+    {
+      "id": "scwiki-a2-correction-2",
+      "description": "Replaced broad London attribution for geometry corrections with a specifically checked modern demagnetization source; separated theoretical/reporting statements from experiments.",
+      "sourceId": "source-37f27e50dbdcf3a5",
+      "scope": "Claim mapping and SI/model boundary."
+    },
+    {
+      "id": "scwiki-a2-correction-3",
+      "description": "Specified Hardy sample composition and probe; changed unsupported ambient-pressure/equilibrium labels to unknown at the checked abstract scope.",
+      "sourceId": "source-b7bc48c845a47b53",
+      "scope": "Evidence conditions; no transition temperature added."
+    }
+  ],
   "equationChecks": [
     {
       "targetSectionId": "mathematical-assumptions",
-      "tex": "\\lambda_L",
-      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+      "tex": "B(x)/B_0=\\cosh(x/\\lambda)/\\cosh(a/\\lambda)",
+      "check": "Independent finite-difference boundary-value solutions at five thickness ratios and two grid sizes agree and converge; parallel infinite slab only."
     },
     {
       "targetSectionId": "mathematical-assumptions",
-      "tex": "\\lambda_L^{-2}",
-      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+      "tex": "\\chi_{app}=\\chi/(1+N\\chi)",
+      "check": "Four SI ellipsoid perfect-diamagnet cases satisfy B=mu0(Hint+M)=0; apparent magnitude can exceed one."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "L_k=\\mu_0\\lambda^2/d",
+      "check": "Carrier density/charge/mass convention and sheet kinetic energy agree for uniform thin-film current; not an arbitrary film response fit."
     }
   ],
   "references": [
     {
       "id": "source-512705f3e64d88d7",
       "doi": "10.1007/BF01504252",
-      "title": "Ein neuer Effekt bei Eintritt der Supraleitf�higkeit",
+      "title": "Ein neuer Effekt bei Eintritt der Supraleitfähigkeit",
       "year": 1933,
       "url": "https://doi.org/10.1007/BF01504252",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1007%2FBF01504252",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "primary-reproduction-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://courses.physics.ucsd.edu/2025/Fall/physics139/meissnerpapertranslated.pdf",
+        "note": "Selected first two PDF pages: German original with English translation by A. M. Forrest, external field redistribution in tin/lead and retained field in a lead-tube cavity. Original apparatus, uncertainties and complete translation not independently reproduced."
       }
     },
     {
@@ -144,24 +175,24 @@
       "url": "https://doi.org/10.1098/rspa.1935.0048",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1098%2Frspa.1935.0048",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "primary-scan-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://w2agz.com/Library/Classic%20Papers%20in%20Superconductivity/London%20%26%20London%2C%20Proc%20Roy%20Soc%20London%20A149%2C%2071%20%281935%29.pdf",
+        "note": "Original pp. 72–73 visually checked, Eqs. (2)–(6): initial-field integration constant, screening equation and additional magnetic-state postulate. Public equations use modern SI conventions and stated local assumptions; not an exhaustive check of the historical paper or later electrodynamics."
       }
     },
     {
       "id": "source-b7bc48c845a47b53",
       "doi": "10.1103/PhysRevLett.70.3999",
-      "title": "Precision measurements of the temperature dependence of λ in\n                    \n                      \n                        \n                          \n                            YBa\n                          \n                          \n                            2\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            Cu\n                          \n                          \n                            3\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            O\n                          \n                          \n                            6.95\n                          \n                        \n                      \n                    \n                    : Strong evidence for nodes in the gap function",
+      "title": "Precision measurements of the temperature dependence of lambda in YBa2Cu3O6.95: Strong evidence for nodes in the gap function",
       "year": 1993,
       "url": "https://doi.org/10.1103/PhysRevLett.70.3999",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.70.3999",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.70.3999",
+        "note": "Publisher abstract: single-crystal YBa2Cu3O6.95, 900 MHz resonator, penetration-depth change and linear term around 3–25 K. Full curves, fitting and defect interpretation not independently reproduced; not a phase measurement."
       }
     },
     {
@@ -172,25 +203,53 @@
       "url": "https://doi.org/10.1038/nature19061",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnature19061",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "publisher-and-author-metadata-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.bnl.gov/cmpmsd/mbe/publications/",
+        "note": "Author laboratory publication list and publisher record agree on DOI, title, Nature 536, 309–311 (2016). Scaling data and full primary results were not reanalyzed; this reference is a bibliographic pointer only."
+      }
+    },
+    {
+      "id": "source-37f27e50dbdcf3a5",
+      "doi": "10.1103/PhysRevApplied.10.014030",
+      "title": "Effective Demagnetizing Factors of Diamagnetic Samples of Various Shapes",
+      "year": 2018,
+      "url": "https://doi.org/10.1103/PhysRevApplied.10.014030",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1712.06037v2",
+        "note": "Selected pp. 1–2, section II Eqs. (1)–(7): SI susceptibility, ellipsoidal demagnetization and distinction from integral effective factors for other shapes. Full three-dimensional numerical simulations and all shape approximations not reproduced."
+      }
+    },
+    {
+      "id": "source-82f53ca35625217d",
+      "doi": "10.1103/RevModPhys.66.1125",
+      "title": "Vortices in high-temperature superconductors",
+      "year": 1994,
+      "url": "https://doi.org/10.1103/RevModPhys.66.1125",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.66.1125",
+        "note": "Publisher abstract distinguishes depinning and depairing currents and discusses thermal fluctuations, pinning and creep. Full review derivations and quantitative phase boundaries were not checked."
       }
     }
   ],
   "materialCases": [
     {
-      "formula": "YBa2Cu3O7-delta",
-      "sample": "cuprate crystal in penetration-depth experiments",
+      "formula": "YBa2Cu3O6.95",
+      "sample": "single crystals in Hardy et al. publisher abstract",
       "recordType": "experiment",
       "tcK": null,
-      "temperatureNote": "not a temperature-record entry",
-      "criterion": "penetration-depth",
-      "pressureRegime": "ambient",
+      "temperatureNote": "measurement interval is not an extracted transition temperature",
+      "criterion": "penetration-depth-change",
+      "pressureRegime": "unknown",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
-      "probe": "microwave penetration depth",
+      "equilibrium": "unknown",
+      "probe": "900 MHz resonator; penetration-depth change over approximately 3–25 K",
       "id": "scwiki-a2-material-1",
       "sourceId": "source-b7bc48c845a47b53",
       "reportedTemperatureK": null,
@@ -201,92 +260,211 @@
     {
       "id": "scwiki-a2-claim-scope-1",
       "sectionId": "scope",
-      "statement": "The Meissner effect concerns the magnetic state selected on entering superconductivity. Meissner and Ochsenfeld's historical observation of flux expulsion is conceptually different from merely freezing the field already inside an ideal perfect conductor. Electrical transport and magnetic response therefore answer complementary questions. A sample may screen a changing field while retaining trapped vortices, so the cooling protocol must accompany a magnetization curve.",
-      "evidenceType": "experiment",
+      "statement": "The Meissner effect describes magnetic flux exclusion from superconducting material in the appropriate equilibrium, low-field state. It adds information beyond persistent current or zero resistance. The London brothers explicitly distinguished their magnetic-state condition from an acceleration-only description that can retain the initial field. Their historical equations are used here in a modern SI convention, within a stated local model.",
+      "evidenceType": "theory",
       "sourceIds": [
-        "source-512705f3e64d88d7",
         "source-0590b237a1d87de4"
       ],
-      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
     },
     {
       "id": "scwiki-a2-claim-scope-2",
       "sectionId": "scope",
-      "statement": "Separate zero-field-cooled shielding, field-cooled magnetization and magnetic hysteresis. Strong pinning can make the field-cooled signal small even in a superconducting specimen. Conversely, a large shielding response cannot be read as an exact superconducting volume fraction without considering shape, connectivity and background subtraction. The magnetic inference belongs to the actual sample and protocol, not to a chemical formula in isolation.",
+      "statement": "The 1933 Meissner–Ochsenfeld report compares the external field around tin and lead before and after cooling through the transition. It also describes field retained in the cavity of a hollow lead tube. A field in that cavity is not a measurement of field penetrating the superconducting wall. Selected pages of a reproduction containing the original German and an English translation were checked; the historical experiment was not independently reproduced.",
       "evidenceType": "experiment",
       "sourceIds": [
-        "source-0590b237a1d87de4"
+        "source-512705f3e64d88d7"
       ],
-      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Selected historical first two reproduction pages, or Hardy YBa2Cu3O6.95 single crystals at 900 MHz and approximately 3–25 K; no inferred Tc or independent replication.",
+      "verificationScope": "Primary reproduction/abstract passages only; no raw-data reanalysis."
+    },
+    {
+      "id": "scwiki-a2-claim-scope-3",
+      "sectionId": "scope",
+      "statement": "Separate zero-field-cooled shielding, field-cooled magnetization and hysteresis. A type-II specimen can contain vortices, and pinning can prevent equilibration during cooling or field sweeps. Thus a protocol-dependent signal should not be labeled complete equilibrium flux expulsion. The vortex review supplies qualitative context; it is not a calibration of a particular sample's volume fraction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-82f53ca35625217d"
+      ],
+      "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
     },
     {
       "id": "scwiki-a2-claim-mathematical-assumptions-1",
       "sectionId": "mathematical-assumptions",
-      "statement": "The penetration depth $\\lambda_L$ describes the decay of magnetic field in the stated limit. In a simple single-component convention, $\\lambda_L^{-2}$ is proportional to superfluid weight. Multiband, anisotropic or non-local electrodynamics requires a more careful response model; the same fitted depth need not represent the same microscopic density across those settings.",
+      "statement": "In a homogeneous, isotropic, vortex-free local London model, with displacement current neglected, combine the magnetic London relation with Ampere's law and $\\nabla\\cdot\\mathbf B=0$:",
       "evidenceType": "theory",
       "sourceIds": [
         "source-0590b237a1d87de4"
       ],
-      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
     },
     {
       "id": "scwiki-a2-claim-mathematical-assumptions-2",
       "sectionId": "mathematical-assumptions",
-      "statement": "For an approximately ellipsoidal specimen, the measured susceptibility is altered by a demagnetizing field. The correction depends on the field direction and shape. Quoting a shielding percentage without the underlying convention can produce values that look like a volume fraction but do not have that interpretation. The pilot therefore records the measurement criterion separately from any transition temperature.",
+      "statement": "$$\\nabla\\times\\mathbf j=-\\frac{\\mathbf B}{\\mu_0\\lambda^2},\\qquad \\nabla\\times\\mathbf B=\\mu_0\\mathbf j,\\qquad \\nabla^2\\mathbf B=\\frac{\\mathbf B}{\\lambda^2}.$$",
       "evidenceType": "theory",
       "sourceIds": [
         "source-0590b237a1d87de4"
       ],
-      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
+    },
+    {
+      "id": "scwiki-a2-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a half-space $x>0$ with parallel surface field $B(0)=B_0$ and bounded field at depth, the solution is $B(x)=B_0e^{-x/\\lambda}$. The surface boundary and exclusion of a growing solution matter; the differential equation alone does not specify an arbitrary specimen's field map. These are modern local-model deductions, not a claim that London theory covers every superconducting state.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
+    },
+    {
+      "id": "scwiki-a2-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For an infinite slab $-a<x<a$ with equal parallel fields on its two faces, no vortices and constant $\\lambda$, the same boundary-value problem gives",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
+    },
+    {
+      "id": "scwiki-a2-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\frac{B(x)}{B_0}=\\frac{\\cosh(x/\\lambda)}{\\cosh(a/\\lambda)},\\qquad \\chi_{\\parallel}=\\frac{\\langle B\\rangle}{B_0}-1=\\frac{\\lambda}{a}\\tanh\\!\\left(\\frac{a}{\\lambda}\\right)-1.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
+    },
+    {
+      "id": "scwiki-a2-claim-mathematical-assumptions-6",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Here $2a$ is the full thickness and $B_0=\\mu_0H_a$. A local finite-difference solution independently checks the field profile and its spatial average. A thick slab tends toward $\\chi_{\\parallel}=-1$; a very thin slab in this parallel geometry has much weaker shielding even when the entire slab obeys the superconducting model. This is not a formula for a perpendicular-field thin film or a porous specimen.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
+    },
+    {
+      "id": "scwiki-a2-claim-mathematical-assumptions-7",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Demagnetization is a separate shape effect. For an ellipsoid along a principal axis, with uniform scalar susceptibility in SI, let $H_{\\mathrm{int}}=H_a-NM$ and $M=\\chi H_{\\mathrm{int}}$. Then",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
+    },
+    {
+      "id": "scwiki-a2-claim-mathematical-assumptions-8",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\chi_{\\mathrm{app}}=\\frac{M}{H_a}=\\frac{\\chi}{1+N\\chi}.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
+    },
+    {
+      "id": "scwiki-a2-claim-mathematical-assumptions-9",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For the perfect-diamagnet limit $\\chi=-1$, this gives $\\chi_{\\mathrm{app}}=-1/(1-N)$, for $N<1$. A sphere has $N=1/3$, so an uncorrected magnitude of 1.5 is consistent with this ideal geometry, not a 150% superconducting volume. The Prozorov–Kogan manuscript defines the convention and explains why nonellipsoidal specimens need additional treatment. Its numerical arbitrary-shape results are not reproduced here.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-37f27e50dbdcf3a5"
+      ],
+      "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
+    },
+    {
+      "id": "scwiki-a2-claim-mathematical-assumptions-10",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In a single-component carrier convention, $\\lambda^{-2}=\\mu_0n_sq^2/m^*$. Count charge, mass and density consistently: pair density is not electron density. For a uniform thin film with thickness $d\\ll\\lambda$ and negligible dissipative response, the sheet kinetic inductance is $L_k=\\mu_0\\lambda^2/d$. Equating magnetic-model current response and carrier kinetic energy checks this normalization. Inferring a bulk penetration depth from a sheet response therefore requires thickness and a response model; multiband or nonlocal systems need their corresponding treatment.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
     },
     {
       "id": "scwiki-a2-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "Low-temperature penetration-depth behavior constrains low-energy quasiparticles. Hardy and colleagues' YBCO microwave work is an important cuprate example, but extracting a gap structure still depends on impurity scattering, surface effects and the electrodynamic limit. A power law by itself does not uniquely identify an irreducible pairing representation.",
+      "statement": "Report specimen dimensions, field orientation and amplitude, cooling and sweep history, magnetic moment normalization, background subtraction and the assumed geometry. For AC or microwave probes, include frequency, amplitude and the conversion from the measured response. These are reporting requirements; a successful model inversion is not an independent demonstration of its assumptions.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-37f27e50dbdcf3a5"
+      ],
+      "conditions": "Editorial reporting/inference boundary; sample-specific protocol, geometry, uncertainty and source required.",
+      "verificationScope": "Pinned chapter edited with source checks stated individually; no new experimental dataset certified."
+    },
+    {
+      "id": "scwiki-a2-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Hardy and colleagues report a linear contribution to the penetration-depth change of YBa2Cu3O6.95 single crystals over approximately 3–25 K with a 900 MHz resonator. This abstract-scoped observation constrains low-energy excitations. It does not directly measure gap phase or uniquely identify the pairing representation; sample disorder and electrodynamics belong in the interpretation. No transition temperature is extracted here.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-b7bc48c845a47b53"
       ],
-      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Selected historical first two reproduction pages, or Hardy YBa2Cu3O6.95 single crystals at 900 MHz and approximately 3–25 K; no inferred Tc or independent replication.",
+      "verificationScope": "Primary reproduction/abstract passages only; no raw-data reanalysis."
     },
     {
       "id": "scwiki-a2-claim-limits-and-disputes-1",
       "sectionId": "limits-and-disputes",
-      "statement": "Geometry, granularity and pinning can separate shielding from equilibrium flux expulsion. A small magnetic signal may reflect a small superconducting region, a difficult geometry or background uncertainty; these possibilities must be evaluated rather than silently choosing one. Likewise, magnetic screening alone does not identify a pairing mediator.",
-      "evidenceType": "experiment",
+      "statement": "Shielding and expulsion can differ because of field history, geometry, connectivity and pinning. A small signal alone does not distinguish a small superconducting region from a measurement or geometry limitation. Conversely, a connected superconducting shell can screen a nonsuperconducting interior; a shielding measurement alone cannot establish the interior's volume fraction. The historical hollow-tube observation makes the distinction between material and enclosed space especially important.",
+      "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-0590b237a1d87de4"
+        "source-512705f3e64d88d7"
       ],
-      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Editorial reporting/inference boundary; sample-specific protocol, geometry, uncertainty and source required.",
+      "verificationScope": "Pinned chapter edited with source checks stated individually; no new experimental dataset certified."
     },
     {
       "id": "scwiki-a2-claim-limits-and-disputes-2",
       "sectionId": "limits-and-disputes",
-      "statement": "Superfluid-density studies of overdoped La2-xSrxCuO4 constrain how the condensate evolves across a controlled sample series. Such correlations are useful but do not automatically determine a microscopic interaction. When comparing stiffness across two- and three-dimensional systems, retain thickness and the electromagnetic normalization. A geometric contribution cannot be obtained merely by relabeling a measured total stiffness.",
-      "evidenceType": "experiment",
+      "statement": "Božović and colleagues' overdoped LSCO study is retained as a reference for superfluid-density measurements, but this check confirms its bibliographic identity rather than reanalyzing its scaling data. Do not infer a pairing mediator from a correlation alone. Likewise, a measured total stiffness cannot be decomposed into conventional and geometric contributions merely by changing its label. Follow the dedicated geometric-superfluid-weight entry for that separate model question.",
+      "evidenceType": "hypothesis",
       "sourceIds": [
         "source-b96ffab89d45664d"
       ],
-      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Editorial reporting/inference boundary; sample-specific protocol, geometry, uncertainty and source required.",
+      "verificationScope": "Pinned chapter edited with source checks stated individually; no new experimental dataset certified."
     },
     {
       "id": "scwiki-a2-claim-discovery-implications-1",
       "sectionId": "discovery-implications",
-      "statement": "A persuasive magnetic evidence package documents what field is excluded, which part is trapped and how the susceptibility was corrected. Pair transport and magnetic probes on comparable samples. For thin films, explicitly report whether the inferred quantity is a sheet response or a bulk penetration depth. These distinctions support reproducibility without turning an inversion model into an unqualified material property.",
-      "evidenceType": "experiment",
+      "statement": "Build a magnetic evidence package around discriminating measurements: cooling history for trapping, dimensions and orientation for demagnetization, thickness for sheet response, and transport or heat capacity on comparable specimens for complementary evidence. Preserve disagreements between probes until sample and analysis differences are tested.",
+      "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-0590b237a1d87de4",
-        "source-b96ffab89d45664d"
+        "source-37f27e50dbdcf3a5"
       ],
-      "conditions": "Magnetic response depends on field-cooling protocol, sample shape, demagnetizing correction, pinning and probe frequency; London equations assume a local homogeneous response.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Editorial reporting/inference boundary; sample-specific protocol, geometry, uncertainty and source required.",
+      "verificationScope": "Pinned chapter edited with source checks stated individually; no new experimental dataset certified."
+    },
+    {
+      "id": "scwiki-a2-claim-discovery-implications-2",
+      "sectionId": "discovery-implications",
+      "statement": "Separate measured magnetic response, the fitted electrodynamic parameters and the microscopic interpretation. This keeps magnetic evidence useful for discovering superconductivity without turning one model-dependent inversion into an unqualified material property or mechanism assignment.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-37f27e50dbdcf3a5"
+      ],
+      "conditions": "Editorial reporting/inference boundary; sample-specific protocol, geometry, uncertainty and source required.",
+      "verificationScope": "Pinned chapter edited with source checks stated individually; no new experimental dataset certified."
     }
   ]
 }

@@ -331,3 +331,17 @@ it("preserves current criteria, slab geometry and primary engineering source lim
  expect(exported).toContain("no creep/demagnetization/reversible background");
  expect(exported).toContain("Bean original full text was inaccessible");
 });
+
+it("keeps Meissner geometry and source-check boundaries in the article and evidence API",async()=>{
+ const a=articles().find(a=>a.code==="A2")!;
+ expect(a.body).toContain("not a 150% superconducting volume");
+ expect(a.body).toContain("not a formula for a perpendicular-field thin film");
+ expect(a.body).toContain("cavity is not a measurement of field penetrating");
+ expect(a.references.every(r=>!r.title.includes("\uFFFD")&&!r.title.includes("\n"))).toBe(true);
+ const sample=a.materialCases[0];expect(sample.formula).toBe("YBa2Cu3O6.95");expect(sample.tcK).toBeNull();expect(sample.equilibrium).toBe("unknown");expect(sample.pressureRegime).toBe("unknown");
+ expect(sample.probe).toContain("900 MHz");
+ const section=await (await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(section).toContain("slab full thickness 2a and parallel field");
+ expect(section).toContain("Bozovic LSCO is a bibliographic pointer");
+ expect(a.claims.filter(c=>c.evidenceType==="experiment")).toHaveLength(2);
+});
