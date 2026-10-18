@@ -323,8 +323,8 @@
       "lineCount": 55,
       "topicId": "scwiki-topic-b6",
       "articleId": "scwiki-b6",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3540,6 +3540,20 @@
       "evidenceUrl": "https://www.nature.com/articles/35098048",
       "checkedAt": "2026-10-18",
       "scope": "Correct URhGe identity verified; incorrect target is semiconductor melting research."
+    },
+    {
+      "id": "correction-b6-csv3sb5-context",
+      "affectedTopics": [
+        "B6"
+      ],
+      "affectedSourcePaths": [
+        "B_mechanisms/B6_charge_fluctuations.md"
+      ],
+      "originalContextDoi": "10.1103/PhysRevMaterials.4.121801",
+      "replacementContextDoi": "10.1103/PhysRevLett.125.247002",
+      "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.125.247002",
+      "checkedAt": "2026-10-18",
+      "scope": "CsV3Sb5 citation misidentified a valid Osada nickelate paper. Do not globally ban the original DOI."
     }
   ]
 }

@@ -480,3 +480,19 @@ it("preserves nematic boundary conditions and unresolved source updates in machi
  expect(json.article.references.find((r:{doi:string})=>r.doi==="10.1126/science.1221713").verification.scope).toBe("author-manuscript-with-update-pending");
  expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
 });
+
+it("exports charge-order evidence limits and keeps ordering temperatures out of Tc filters",async()=>{
+ const a=articles().find(a=>a.code==="B6")!;
+ expect(a.materialCases).toEqual([]);
+ expect(searchArticles(searchIndex().entries,"charge fluctuations",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"charge fluctuations",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const exp=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(exp).toContain("130 meV");expect(exp).toContain("upper energy bound of 20 meV");expect(exp).toContain("not a resolved pairing-boson peak");
+ expect(exp).toContain("67 K");expect(exp).toContain("135 K");
+ const limits=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+ expect(limits).toContain("10.1103/PhysRevLett.125.247002");
+ expect(a.references.some(r=>r.doi==="10.1103/PhysRevMaterials.4.121801")).toBe(false);
+ expect(limits).toContain("single-component counterexample");expect(limits).toContain("exact particle–hole symmetry");
+ expect(limits).toContain("full scientific");
+ expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
+});
