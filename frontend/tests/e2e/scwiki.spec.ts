@@ -126,3 +126,21 @@ for(const [code,slug,label] of [["I","experimental-methods","Experimental method
  expect(await page.locator('.katex-error').count()).toBe(0);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
+
+
+test("long desktop handbook contents keep the final links reachable within a short viewport",async({page})=>{
+ await page.setViewportSize({width:1280,height:720});
+ await page.goto("/scwiki/history");
+ await page.getByRole("button",{name:"Reject all",exact:true}).click();
+ const contents=page.locator(".scwiki-contents");
+ for(const [label,id] of [["Chronological guide","chronological-guide"],["Revision and review","revision-and-review"]]){
+  await page.getByRole("navigation",{name:"Article contents"}).getByRole("link",{name:label,exact:true}).click();
+  await expect(page.locator("h2#"+id)).toBeInViewport();
+  const bounds=await contents.evaluate(e=>({top:e.getBoundingClientRect().top,bottom:e.getBoundingClientRect().bottom,scrollTop:e.scrollTop}));
+  expect(bounds.top).toBeGreaterThanOrEqual(64);expect(bounds.bottom).toBeLessThanOrEqual(720);
+  expect(bounds.scrollTop).toBeGreaterThan(0);
+ }
+ await page.getByRole("navigation",{name:"Article contents"}).getByRole("link",{name:"Scope",exact:true}).click();
+ await expect(page.locator("h2#scope")).toBeInViewport();
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(1280);
+});

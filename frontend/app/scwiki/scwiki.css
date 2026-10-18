@@ -33,7 +33,7 @@
 .scwiki-article-header h1{font-size:clamp(1.9rem,4.8vw,3rem);line-height:1.18;font-weight:700;letter-spacing:-.035em;margin:.5rem 0 1.2rem}
 .scwiki-summary{font-size:1.1rem;color:var(--text-secondary);max-width:70ch;line-height:1.85;margin-bottom:1rem}
 .scwiki-reading-layout{display:grid;grid-template-columns:215px minmax(0,1fr);gap:3rem;align-items:start;margin-top:2rem}
-.scwiki-contents{position:sticky;top:96px;font-size:.87rem}
+.scwiki-contents{position:sticky;top:96px;font-size:.87rem;max-height:calc(100dvh - 112px);overflow-y:auto;overscroll-behavior:contain;scrollbar-gutter:stable;padding-right:.65rem}
 .scwiki-contents summary{font-weight:650;cursor:pointer;min-height:35px}
 .scwiki-contents ol{list-style:none;padding:0;margin:.7rem 0;display:grid;gap:.55rem}
 .scwiki-contents a{color:var(--text-secondary);display:block;padding:.2rem 0}
@@ -74,7 +74,7 @@
 .scwiki-guide h2{font-size:1.5rem;font-weight:650;margin:2rem 0 1rem}
 .scwiki-guide ol{list-style:decimal;padding-left:1.5rem}
 .scwiki-guide li{margin:.6rem 0}
-@media(max-width:767px){.scwiki-intro{padding-top:.7rem}.scwiki-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.scwiki-article-grid{grid-template-columns:minmax(0,1fr);gap:0}.scwiki-search-panel{padding:1rem}.scwiki-reading-layout{grid-template-columns:minmax(0,1fr);gap:1.5rem}.scwiki-contents{position:static;border-bottom:1px solid var(--border);padding-bottom:1rem}.scwiki-contents ol{grid-template-columns:repeat(2,minmax(0,1fr));gap:.3rem 1rem}.scwiki-resource-links{gap:.7rem 1.2rem}.scwiki-summary{font-size:1rem}.scwiki-prose{font-size:.98rem}}
+@media(max-width:767px){.scwiki-intro{padding-top:.7rem}.scwiki-filters{grid-template-columns:repeat(2,minmax(0,1fr))}.scwiki-article-grid{grid-template-columns:minmax(0,1fr);gap:0}.scwiki-search-panel{padding:1rem}.scwiki-reading-layout{grid-template-columns:minmax(0,1fr);gap:1.5rem}.scwiki-contents{position:static;max-height:none;overflow:visible;scrollbar-gutter:auto;padding-right:0;border-bottom:1px solid var(--border);padding-bottom:1rem}.scwiki-contents ol{grid-template-columns:repeat(2,minmax(0,1fr));gap:.3rem 1rem}.scwiki-resource-links{gap:.7rem 1.2rem}.scwiki-summary{font-size:1rem}.scwiki-prose{font-size:.98rem}}
 @media(prefers-reduced-motion:reduce){.scwiki *{scroll-behavior:auto;transition:none!important}}
 
 /* The home page is a reference portal; article reading styles stay independent. */
