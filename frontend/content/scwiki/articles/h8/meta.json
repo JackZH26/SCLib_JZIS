@@ -1,0 +1,366 @@
+{
+  "id": "scwiki-h8",
+  "topicId": "scwiki-topic-h8",
+  "code": "H8",
+  "slug": "parallel-conduction-channels",
+  "title": "Parallel conduction channels: multiband transport and identifiability",
+  "summary": "Distinguish parallel conductivities from additive scattering rates, test model identifiability, and track superconducting spectral weight with explicit conventions.",
+  "aliases": [
+    "parallel conduction channels",
+    "two channel transport",
+    "two Drude",
+    "Matthiessen rule",
+    "双通道输运",
+    "多带输运"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "H2",
+    "B12",
+    "D7"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T17:18:42.097940+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Qazilbash final selected results/methods and Figures1/2; Romero author spectral-weight passages/figures; inherited Choi final review; Liu/Souma primary abstracts; independent transport and normalization checks.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Romero final-version/sum-rule calibration comparison, complete supplementary controls and raw-data reproduction remain open.",
+      "Historical sum-rule papers were checked for identity only, not their full derivations.",
+      "Independent transport models are not fits or experimental reproductions."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "H_anomalous_normal_state/H8_two_channel_transport.md",
+    "sha256": "d3feea04647e35f85de9d3236f2b17f8c537936bfe59a73365dd8413f722874a",
+    "sourceId": "file-692195d76235d215"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 153,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Retain pinned channel/identifiability scope; correct wrong DOI and frequency conventions; derive spectral normalization and preserve unresolved source-version limits."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-h8-correction-1",
+      "description": "Qazilbash optical study is10.1038/nphys1343; pinned nphys1346 is the unrelated lunar-science article In the Moon's wake.",
+      "sourceId": "source-8c3a5887a7e6b1a3",
+      "scope": "Correct primary identity; do not treat LaFePO extended-Drude analysis as a universal two-Drude decomposition."
+    },
+    {
+      "id": "scwiki-h8-correction-2",
+      "description": "Cycle-frequency rates use kBT/h; missing-area prefactors depend on the explicitly declared Drude normalization. Author manuscript printed normalization requires final comparison.",
+      "sourceId": "source-05b2d5ff6757b5eb",
+      "scope": "Prevent unconverted frequency factors and unverified condensate fractions."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\int_0^\\infty\\sigma_1(\\omega)d\\omega=\\pi S/2",
+      "check": "27 finite-cutoff integrations,12 DC-degenerate parameter sets,4 equal-width splits,3 broad-Drude limits,27 drag matrices and16 weak-field Hall tensor inversions passed. No material dataset fit."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-b0fd79e990759ecc",
+      "doi": "10.1103/PhysRevLett.87.087005",
+      "title": "Beyond Eliashberg Superconductivity in MgB2: Anharmonicity, Two-Phonon Scattering, and Multiple Gaps",
+      "year": 2001,
+      "url": "https://doi.org/10.1103/PhysRevLett.87.087005",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-theory-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.87.087005",
+        "note": "Published7August2001. Phonon/electron coupling and band-dependent order parameters checked at abstract scope; no numerical coupling value promoted and no complete calculation reproduced."
+      }
+    },
+    {
+      "id": "source-7c4eac077ae5e221",
+      "doi": "10.1038/nature00898",
+      "title": "The origin of the anomalous superconducting properties of MgB2",
+      "year": 2002,
+      "url": "https://doi.org/10.1038/nature00898",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-anisotropic-gap-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www2.lbl.gov/Science-Articles/Archive/assets/images/2002/Aug-14-2002/MgB2Nature.pdf",
+        "note": "Published 15 August 2002. Original pp.758–760 selected discussion and Figs. 2–4; p.759 visually checked. Calculated distributions/thermodynamics distinguished from measured gap constants. No anisotropic Eliashberg solve or original specific-heat reanalysis."
+      }
+    },
+    {
+      "id": "source-6f7229021dc0a92a",
+      "doi": "10.1038/nature01619",
+      "title": "The origin of multiple superconducting gaps in MgB2",
+      "year": 2003,
+      "url": "https://doi.org/10.1038/nature01619",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/12721624/",
+        "note": "Primary abstract reproduced in PubMed checked: separate sigma/pi and surface-band superconducting gaps.1May2003. Full momentum resolution, fitting and sample methods remain open; no gap magnitude or Tc record extracted."
+      }
+    },
+    {
+      "id": "source-8c3a5887a7e6b1a3",
+      "doi": "10.1038/nphys1343",
+      "title": "Electronic correlations in the iron pnictides",
+      "year": 2009,
+      "url": "https://doi.org/10.1038/nphys1343",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://infrared.ucsd.edu/basov_pubs/132.%20M.%20M.%20Qazibash%2C%20Nphys%202009.pdf",
+        "note": "Final printedpp647–650 selected results/methods read; p648 Figures1/2 visually checked. LaFePO reflectance100–24000cm^-1,ellipsometry5500–25000cm^-1; extended Drude/KK analysis, not a universal two-Drude decomposition. Kexp/Kband0.52 upper and0.4 lower extraction bounds; full supplement not read. Corrects pinned nphys1346, which publisher identifies as In the Moon's wake."
+      }
+    },
+    {
+      "id": "source-05b2d5ff6757b5eb",
+      "doi": "10.1038/s41567-026-03266-8",
+      "title": "Planckian scattering and parallel conduction channels in an iron chalcogenide superconductor",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41567-026-03266-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-spectral-weight-and-final-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/2505.00623v1",
+        "note": "H1/H2 selected methods and final abstract retained. H8 explicitly read authorp2response andp4sum-rule paragraphs; pp2/4 visually checked. Authorp4 prints SU=(pi/2)integral(sigma1), inconsistent with same-text Drude numerator S under ordinary integration; p2 delta convention also needs explicit half-line normalization. Final full-text/calibration comparison unresolved; no corrected condensate fraction asserted. Cycle-frequency rate uses kBT/h, not kBT/hbar."
+      }
+    },
+    {
+      "id": "source-7284fbccd4e5d459",
+      "doi": "10.1103/PhysRev.109.1398",
+      "title": "Conductivity of Superconducting Films: A Sum Rule",
+      "year": 1958,
+      "url": "https://doi.org/10.1103/PhysRev.109.1398",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "historical-identity-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.109.1398",
+        "note": "Publisher title/identity/date15February1958 checked. Original complete derivation not read; independent Drude normalization explicitly derived and tested here."
+      }
+    },
+    {
+      "id": "source-0d95fb4e6b9629c5",
+      "doi": "10.1103/PhysRevLett.2.331",
+      "title": "Determination of the Superconducting Skin Depth from the Energy Gap and Sum Rule",
+      "year": 1959,
+      "url": "https://doi.org/10.1103/PhysRevLett.2.331",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "historical-identity-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.2.331",
+        "note": "Publisher title/identity/date15April1959 checked. Original article requires access; no complete historical derivation review claimed."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-h8-material-1",
+      "recordType": "experiment",
+      "formula": "LaFePO",
+      "sample": "Qazilbash single crystals; final Figure1b",
+      "tcK": null,
+      "reportedTemperatureK": 10,
+      "temperatureKind": "measurement",
+      "temperatureNote": "10K lowest reflectance temperature in reported series; not Tc.",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "criterion": "optical-conductivity-measurement",
+      "probe": "In-plane reflectance/ellipsometry with KK-compatible extraction",
+      "sourceId": "source-8c3a5887a7e6b1a3",
+      "aliases": [
+        "LaFePO",
+        "LaOFeP"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-h8-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Two bands, two Drude components, two scattering processes and two pairing channels are different claims. Independent channels experiencing the same electric field add their conductivities. Scattering events within one channel instead enter a collision problem and can add as rates only under appropriate approximations. A good fit to DC resistivity alone rarely identifies which microscopic description is correct. MgB2 illustrates why band-resolved superconducting gaps must also be distinguished from independently conducting subsystems.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-b0fd79e990759ecc",
+        "source-7c4eac077ae5e221",
+        "source-6f7229021dc0a92a",
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Retain channel definition, independence, frequency convention/window, optical weight normalization, backgrounds and sample identity. No fitted component is automatically a separate band or pairing interaction.",
+      "verificationScope": "Selected primary text/figures and independent transport models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h8-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "This entry concerns transport decomposition and spectral-weight accounting. A fitted component can represent a band, an orbital sector, a spatial layer or an effective relaxation scale; the label must be justified with additional evidence. Identifying carriers that contribute to the condensate does not by itself identify the interaction responsible for pairing.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-8c3a5887a7e6b1a3",
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Retain channel definition, independence, frequency convention/window, optical weight normalization, backgrounds and sample identity. No fitted component is automatically a separate band or pairing interaction.",
+      "verificationScope": "Selected primary text/figures and independent transport models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h8-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For independent isotropic channels, use angular frequency $\\omega$ and the convention $e^{-i\\omega t}$: $\\sigma(\\omega)=\\sum_j S_j/(\\Gamma_j-i\\omega)$, where $S_j=n_je^2/m_j$ and $\\Gamma_j>0$ in the elementary Drude model. At zero field, $\\rho_{\\rm DC}=1/\\sum_j(S_j/\\Gamma_j)$, not the sum of channel resistivities. A broad component has $\\sigma_j\\simeq S_j/\\Gamma_j$ only within a window where $\\omega\\ll\\Gamma_j$; its constant approximation cannot be integrated to infinite frequency.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Retain channel definition, independence, frequency convention/window, optical weight normalization, backgrounds and sample identity. No fitted component is automatically a separate band or pairing interaction.",
+      "verificationScope": "Selected primary text/figures and independent transport models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h8-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Even exact DC data admit infinitely many positive pairs with the same total conductivity. Frequency information helps, but if two linewidths are identical, their sum is exactly a single Drude peak with weight $S_1+S_2$ at every frequency. A finite frequency window can also leave a very broad component's weight and linewidth strongly correlated. Report uncertainty and competing models, not just a residual sum of squares.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8c3a5887a7e6b1a3",
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Retain channel definition, independence, frequency convention/window, optical weight normalization, backgrounds and sample identity. No fitted component is automatically a separate band or pairing interaction.",
+      "verificationScope": "Selected primary text/figures and independent transport models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h8-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Independent scattering contributions can approximately give $\\Gamma=\\Gamma_{\\rm imp}+\\Gamma_{\\rm ph}+\\cdots$ within one relaxation model. This Matthiessen approximation is not a prescription for adding the resistivities of parallel bands. Interchannel momentum exchange generally couples their kinetic equations: an illustrative positive relaxation matrix has diagonals $\\gamma_1+g,\\gamma_2+g$ and off-diagonals $-g$. In normalized equal-density units its conductivity is $\\mathbf{1}^{T}C^{-1}\\mathbf{1}$, reducing to $1/\\gamma_1+1/\\gamma_2$ at $g=0$. This toy model exposes the independence assumption; it is not a material fit.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Retain channel definition, independence, frequency convention/window, optical weight normalization, backgrounds and sample identity. No fitted component is automatically a separate band or pairing interaction.",
+      "verificationScope": "Selected primary text/figures and independent transport models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h8-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Normalization matters in spectral-weight sums. For one Drude term, $\\int_0^\\infty\\sigma_1(\\omega)d\\omega=\\pi S/2$. With condensate response $\\sigma_{2,s}=S_s/\\omega$, the positive-frequency missing area is $\\pi S_s/2$, provided the relevant total optical weight is conserved and backgrounds are treated consistently. Thus $S_s=(2/\\pi)\\int_0^\\infty[\\sigma_{1,N}-\\sigma_{1,S}^{\\rm reg}]d\\omega$ in this convention. Cyclic frequency $\\nu=\\omega/(2\\pi)$ requires $\\Gamma_\\nu=\\Gamma/(2\\pi)$ and $S_\\nu=S/(2\\pi)$ in the same Drude form. Delta-function boundary conventions must also be stated. The numerical checks establish these model identities, not the complete historical derivation or experimental sum-rule saturation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-05b2d5ff6757b5eb",
+        "source-7284fbccd4e5d459",
+        "source-0d95fb4e6b9629c5"
+      ],
+      "conditions": "Retain channel definition, independence, frequency convention/window, optical weight normalization, backgrounds and sample identity. No fitted component is automatically a separate band or pairing interaction.",
+      "verificationScope": "Selected primary text/figures and independent transport models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h8-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Romero's FeTe1−xSex study uses complex terahertz conductivity with a DC constraint to distinguish a narrow response from a broad background. The checked author version covers two films, x=0.45 and x=0.35, over 0.2–3 THz. The broad component is not resolved as a second complete peak, so assigning it a unique scattering rate or a second Planckian coefficient would exceed the measurement. Its displayed rate uses cycle frequency and a thermal scale proportional to $k_BT/h$; substituting $\\hbar$ without conversion changes the convention.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Retain channel definition, independence, frequency convention/window, optical weight normalization, backgrounds and sample identity. No fitted component is automatically a separate band or pairing interaction.",
+      "verificationScope": "Selected primary text/figures and independent transport models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h8-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "The same study compares a fitted superconducting term, a low-frequency extrapolation of $\\nu\\sigma_2$, and a missing-area analysis. These are useful consistency comparisons but share measured spectra and modeling assumptions; they are not three independent experimental replications. Near the transition, a finite-width low-frequency response complicates extrapolation to zero frequency. The normal reference temperature, unmeasured low-frequency region and residual background must remain part of any condensate-weight claim.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Retain channel definition, independence, frequency convention/window, optical weight normalization, backgrounds and sample identity. No fitted component is automatically a separate band or pairing interaction.",
+      "verificationScope": "Selected primary text/figures and independent transport models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h8-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Qazilbash's LaFePO experiment combines in-plane reflectance with ellipsometry and Kramers–Kronig-compatible optical extraction. The final paper analyzes a low-frequency Drude response, higher-energy interband transitions and an extended-Drude scattering rate. Its comparison of integrated optical weight with band theory supports a correlation interpretation under that analysis; it does not establish exactly two independent Drude carriers throughout the iron-based family. The reported kinetic-energy ratio has extraction bounds, rather than being an exact universal one-half.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8c3a5887a7e6b1a3"
+      ],
+      "conditions": "Retain channel definition, independence, frequency convention/window, optical weight normalization, backgrounds and sample identity. No fitted component is automatically a separate band or pairing interaction.",
+      "verificationScope": "Selected primary text/figures and independent transport models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h8-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "MgB2 supplies a complementary comparison. Liu and Choi calculate band-dependent electron–phonon pairing, while Souma resolves different superconducting gaps on sigma and pi bands by photoemission. Choi's coupled calculation has a common transition. These results do not authorize treating the bands as two unrelated superconductors with separately assigned transition temperatures, or translating gap values into Drude scattering rates. Surface-sensitive spectroscopy and bulk optical transport retain different measurement conditions.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-b0fd79e990759ecc",
+        "source-7c4eac077ae5e221",
+        "source-6f7229021dc0a92a"
+      ],
+      "conditions": "Retain channel definition, independence, frequency convention/window, optical weight normalization, backgrounds and sample identity. No fitted component is automatically a separate band or pairing interaction.",
+      "verificationScope": "Selected primary text/figures and independent transport models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h8-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A spectral decomposition is not unique simply because it is causal or fits both real and imaginary conductivity. Independent Fermi-surface, mass, Hall and magnetoresistance constraints can narrow possibilities, while interband optical transitions and coupled scattering can invalidate a simple channel interpretation. Optical spectral weight, a transport lifetime and a superconducting gap are different quantities; no universal cross-material conversion is justified here.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-7c4eac077ae5e221",
+        "source-6f7229021dc0a92a",
+        "source-8c3a5887a7e6b1a3",
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Retain channel definition, independence, frequency convention/window, optical weight normalization, backgrounds and sample identity. No fitted component is automatically a separate band or pairing interaction.",
+      "verificationScope": "Selected primary text/figures and independent transport models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h8-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. The Romero author manuscript's printed missing-area prefactor differs from the normalization implied by its Drude numerator; the final paper and calibration must be compared before importing precise condensate fractions. The LaFePO supplement and complete historical sum-rule derivations have not been checked. Independent model integrations do not resolve those source-version questions or reproduce the experimental data.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-8c3a5887a7e6b1a3",
+        "source-05b2d5ff6757b5eb",
+        "source-7284fbccd4e5d459",
+        "source-0d95fb4e6b9629c5"
+      ],
+      "conditions": "Retain channel definition, independence, frequency convention/window, optical weight normalization, backgrounds and sample identity. No fitted component is automatically a separate band or pairing interaction.",
+      "verificationScope": "Selected primary text/figures and independent transport models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h8-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "First specify what would distinguish two physical channels from an effective two-component fit. Extend the measurement window where possible, constrain the DC limit, document tensor geometry, and test whether fitted weights and rates remain stable when backgrounds or cutoffs change. For superconducting spectral transfer, compare a justified normal-state reference with the regular superconducting response and quantify missing bandwidth. A successful transport decomposition constrains candidate mechanisms; it does not identify a unique pairing interaction.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-8c3a5887a7e6b1a3",
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Retain channel definition, independence, frequency convention/window, optical weight normalization, backgrounds and sample identity. No fitted component is automatically a separate band or pairing interaction.",
+      "verificationScope": "Selected primary text/figures and independent transport models; full scientific acceptance remains open."
+    }
+  ]
+}
