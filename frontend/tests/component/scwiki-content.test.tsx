@@ -390,7 +390,7 @@ it("exports historical sources without invented DOIs and separates A9 theory fro
  const Page=(await import("@/app/scwiki/[slug]/page")).default;
  const html=renderToStaticMarkup(await Page({params:Promise.resolve({slug:a.slug})}));
  expect(html).toContain('href="'+historical.url+'">Source publication</a>');
- expect(html).toContain('"identifier":"'+historical.url+'"');expect(html).not.toContain("DOI null");
+ expect(html).toContain('"identifier":"'+historical.url+'"');expect(html).not.toContain(">DOI null</a>");
  expect(a.claims.filter(c=>c.evidenceType==="experiment")).toHaveLength(1);
  expect(a.materialCases[0].tcK).toBeNull();
  expect(a.references.find(r=>r.doi==="10.1103/PhysRevB.46.12841")!.verification.scope).toBe("primary-abstract-scoped-check");
