@@ -21,6 +21,15 @@ const getAll=async(key:"articles"|"sources"|"topics")=>{
  return {[key]:items};
 };
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("exports local derivations without presenting contextual sources as direct evidence",async()=>{
+  const data=await(await get(["articles","scwiki-a4"])).json();
+  const article=data.article??data;
+  const claim=article.claims.find((c:any)=>c.id==="scwiki-a4-claim-mathematical-assumptions-9");
+  expect(claim.sourceRelationship).toBe("context-for-local-derivation");expect(claim.derivationNote).toContain("not this uncertainty formula");
+  const text=await(await get(["articles","scwiki-a4","markdown"])).text();expect(text).toContain("Source relationship: context-for-local-derivation");
+  const a1=articles().find(a=>a.code==="A1")!;expect(a1.body).toContain("elapsed time");expect(a1.body).toContain("current magnitude");
+ });
+
  it("paginates complete article and source inventories without duplicates or oversized pages",async()=>{
   for(const key of ["articles","sources","topics"] as const){
    const ids:string[]=[];let cursor:string|null=null;let total=0;

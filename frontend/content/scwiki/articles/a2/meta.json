@@ -26,7 +26,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.191967+00:00",
+  "modifiedAt": "2026-10-19",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected historical experiment reproduction and London original scan, modern demagnetization manuscript and Hardy abstract; independent London boundary-value, demagnetization and sheet-energy checks.",
@@ -303,7 +303,9 @@
         "source-0590b237a1d87de4"
       ],
       "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
-      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Modern SI local-model deduction using the magnetic London relation, Ampere law and div B=0; historical source uses different electromagnetic units."
     },
     {
       "id": "scwiki-a2-claim-mathematical-assumptions-2",
@@ -325,7 +327,9 @@
         "source-0590b237a1d87de4"
       ],
       "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
-      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Local boundary-value solution of the screening equation; the historical source supports exponential decay, while the stated modern boundary conditions specify this solution."
     },
     {
       "id": "scwiki-a2-claim-mathematical-assumptions-4",
@@ -402,7 +406,9 @@
         "source-0590b237a1d87de4"
       ],
       "conditions": "Homogeneous isotropic vortex-free local London response, quasistatic weak field; slab full thickness 2a and parallel field. Ellipsoid uses scalar SI susceptibility along principal axis; thin-film sheet inductance requires d much less than lambda and uniform current.",
-      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract."
+      "verificationScope": "London original pp. 72–73, Prozorov–Kogan selected pp. 1–2; explicitly separate independent numerical/local deductions and qualitative vortex abstract.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local sheet kinetic-energy deduction with consistent carrier density, mass and charge. Historical London references provide model context, not a direct thin-film measurement."
     },
     {
       "id": "scwiki-a2-claim-experimental-criteria-1",

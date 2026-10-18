@@ -62,6 +62,10 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
   if(!citedDois.has(notice.noticeDoi.toLowerCase())||notice.noticeDoi.toLowerCase()===ref.doi?.toLowerCase())fail(folder+" missing retraction notice "+notice.noticeDoi);
  }
  for(const claim of meta.claims)if(!sectionIds.has(claim.sectionId)||!claim.sourceIds.length||claim.sourceIds.some(id=>!refIds.has(id))||!claim.conditions)fail(folder+" claim mapping "+claim.id);
+ for(const c of meta.claims){
+  if(c.sourceRelationship!==undefined&&(!["direct-support","context-for-local-derivation","mixed-source-and-local-derivation"].includes(c.sourceRelationship)||typeof c.derivationNote!=="string"||!c.derivationNote.trim()))fail(folder+" invalid claim source relationship "+c.id);
+  if(c.derivationNote!==undefined&&c.sourceRelationship===undefined)fail(folder+" missing claim source relationship "+c.id);
+ }
  for(const match of body.matchAll(/\]\(#ref-([a-z0-9-]+)\)/g))if(!refIds.has(match[1]))fail(folder+" unresolved citation");
  for(const match of body.matchAll(/\$\$([\s\S]+?)\$\$|\$([^\n$]+)\$/g)){
   try{katex.renderToString(match[1]??match[2],{throwOnError:true,trust:false,maxExpand:1000,maxSize:10});}
@@ -87,7 +91,7 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  // Export v4 also retains each material record's probe and measurement protocol.
  const revision=sha("scwiki-export-v4\n"+JSON.stringify(meta)+"\n"+body).slice(0,20);
  const provenance="## Revision and review\n\nArticle ID: "+meta.id+". Revision: "+revision+". Updated: "+meta.modifiedAt+".\n\nReview scope: "+meta.review.scope+"\n\n"+meta.review.limitations.map(x=>"- "+x).join("\n")+"\n\nSource: ["+meta.provenance.path+"](https://github.com/"+meta.provenance.repository+"/blob/"+meta.provenance.commit+"/"+meta.provenance.path+"), commit "+meta.provenance.commit+", SHA-256 "+meta.provenance.sha256+".";
- const claimText="## Claim evidence and conditions\n\n"+meta.claims.map(c=>"### "+c.id+"\n\n"+c.statement+"\n\nEvidence: "+c.evidenceType+". Sources: "+c.sourceIds.join(", ")+".\n\nConditions: "+c.conditions+"\n\nVerification scope: "+(c.verificationScope??"No additional claim-level review recorded; see source checks.")).join("\n\n");
+ const claimText="## Claim evidence and conditions\n\n"+meta.claims.map(c=>"### "+c.id+"\n\n"+c.statement+"\n\nEvidence: "+c.evidenceType+". Sources: "+c.sourceIds.join(", ")+"."+(c.sourceRelationship?"\n\nSource relationship: "+c.sourceRelationship+". "+c.derivationNote:"")+"\n\nConditions: "+c.conditions+"\n\nVerification scope: "+(c.verificationScope??"No additional claim-level review recorded; see source checks.")).join("\n\n");
  const scopeText=(meta.scopeItems??[]).length?"\n\n## Approved scope items\n\n"+meta.scopeItems.map(item=>item.id+". Checked: "+item.checkedAt+". "+item.scope+"\n\n"+item.limitations.map(x=>"- "+x).join("\n")).join("\n\n"):"";
  const markdown="# "+meta.title+"\n\n"+meta.summary+"\n\n"+body+"\n\n"+conditions+"\n\n## Sources\n\n"+referenceText+"\n\n"+claimText+scopeText+"\n\n"+provenance+"\n";
  articles.push({...meta,body,revision,sections:[...chunks,{id:"material-cases",title:"Material cases",markdown:conditions}],markdown,wordCount:body.split(/\s+/).length});

@@ -268,3 +268,15 @@ test("approved extension pages cannot publish without registration and per-item 
   });
  }
 });
+
+// A linked paper must not silently inherit a fabricated derivation classification.
+test("claim source roles require a valid classification and an explanatory boundary",async t=>{
+ for(const mode of ["unknown-role","missing-note","orphan-note"]){await t.test(mode,t=>{
+  const f=inventoryFixture(t),file=path.join(f.directory,"articles/a4/meta.json"),m=JSON.parse(readFileSync(file,"utf8"));
+  const c=m.claims.find(c=>c.id==="scwiki-a4-claim-mathematical-assumptions-9");
+  if(mode==="unknown-role")c.sourceRelationship="fully-certified";
+  if(mode==="missing-note")delete c.derivationNote;
+  if(mode==="orphan-note")delete c.sourceRelationship;
+  writeFileSync(file,JSON.stringify(m));const result=f.build();assert.notEqual(result.status,0);assert.match(result.stderr,/claim source relationship/);
+ });}
+});
