@@ -24,7 +24,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T15:12:51.668175+00:00",
+  "modifiedAt": "2026-10-18T16:13:01.106500+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected Pratt, Marsik, Mito and Park experimental passages, available original figures, and independent coupled-order Landau checks.",
@@ -344,10 +344,7 @@
       "equilibrium": "unknown",
       "probe": "Published report of superconducting transition",
       "sourceId": "source-01629af670cc7358",
-      "aliases": [
-        "antiferromagnetism",
-        "coexistence"
-      ]
+      "aliases": []
     },
     {
       "id": "scwiki-g1-material-2",
@@ -364,10 +361,7 @@
       "equilibrium": "unknown",
       "probe": "Magnetic susceptibility, 10 Oe parallel to c",
       "sourceId": "source-67747eb35170b73b",
-      "aliases": [
-        "antiferromagnetism",
-        "coexistence"
-      ]
+      "aliases": []
     },
     {
       "id": "scwiki-g1-material-3",
@@ -387,10 +381,7 @@
       "equilibrium": "unknown",
       "probe": "In-situ NQR-coil ac susceptibility",
       "sourceId": "source-60c724cb09ba070e",
-      "aliases": [
-        "antiferromagnetism",
-        "coexistence"
-      ]
+      "aliases": []
     }
   ],
   "sourceMap": [

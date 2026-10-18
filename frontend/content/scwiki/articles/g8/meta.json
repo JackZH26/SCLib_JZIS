@@ -26,7 +26,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T16:09:01.092267+00:00",
+  "modifiedAt": "2026-10-18T16:13:01.112956+00:00",
   "review": {
     "checkedAt": "2026-10-19",
     "scope": "Selected original Rashba model text, Frigeri theory with erratum, NMR methods/figures, muon/calorimetry finaltext andauthorfigure, inherited TMD evidence and independent BdG checks.",
@@ -339,10 +339,7 @@
       "equilibrium": "unknown",
       "probe": "In-situ NMR-coil AC susceptibility",
       "sourceId": "source-876de9124496abcb",
-      "aliases": [
-        "noncentrosymmetric",
-        "SOC"
-      ]
+      "aliases": []
     },
     {
       "id": "scwiki-g8-material-2",
@@ -359,10 +356,7 @@
       "equilibrium": "unknown",
       "probe": "Transverse-field muon spin rotation",
       "sourceId": "source-30ad27b0f37b6baf",
-      "aliases": [
-        "muSR",
-        "spin orbit coupling"
-      ]
+      "aliases": []
     }
   ],
   "sourceMap": [

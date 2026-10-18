@@ -25,7 +25,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T15:12:40.359204+00:00",
+  "modifiedAt": "2026-10-18T16:13:01.105712+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Original Deaver and Doll scans, selected Abrikosov and final Bauer passages, the original Tsuei abstract, and independent winding/inductance examples.",
@@ -358,9 +358,7 @@
       "equilibrium": "equilibrium",
       "probe": "Scanning SQUID microscopy",
       "sourceId": "source-2e4d7fdb6c1797b7",
-      "aliases": [
-        "flux quantization"
-      ]
+      "aliases": []
     },
     {
       "id": "scwiki-f9-material-2",
@@ -377,9 +375,7 @@
       "equilibrium": "equilibrium",
       "probe": "Micro-Hall magnetometry field sweep",
       "sourceId": "source-279470d337ba1fff",
-      "aliases": [
-        "flux quantization"
-      ]
+      "aliases": []
     }
   ],
   "sourceMap": [

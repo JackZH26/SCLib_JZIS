@@ -1212,3 +1212,15 @@ it("preserves DIII dimensional and interaction scope without inventing experimen
  expect(data.results.some((r:{code:string})=>r.code==="F4")).toBe(false);
  expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
 });
+
+
+it("keeps topic searches independent of material identity while binding measurement conditions",async()=>{
+ const a=articles().find(a=>a.code==="G8")!;
+ const index=searchIndex().entries;
+ expect(searchArticles(index,"spin orbit coupling",{tcMin:2}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(index,"SOC",{tcMin:2}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(index,"Li2Pt3B",{tcMin:3}).some(r=>r.id===a.id)).toBe(false);
+ expect(searchArticles(index,"Li2Pt3B",{criterion:"muon-temperature-scan",tcMin:0.01}).some(r=>r.id===a.id)).toBe(false);
+ const exported=await(await get(["articles",a.id,"sections","material-cases"],"?format=markdown")).text();
+ expect(exported).toContain("2.68 K");expect(exported).toContain("measurement");
+});

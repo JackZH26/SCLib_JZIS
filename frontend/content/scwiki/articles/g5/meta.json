@@ -24,7 +24,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T15:48:38.426110+00:00",
+  "modifiedAt": "2026-10-18T16:13:01.109773+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Historical publisher records, selected original organic transport and NMR evidence, inherited scoped nickelate review and independent shift/energy examples.",
@@ -313,10 +313,7 @@
       "equilibrium": "unknown",
       "probe": "77Se angular NMR shift with hyperfine/dipolar calibration",
       "sourceId": "source-f328f3068f201541",
-      "aliases": [
-        "exchange compensation",
-        "Jaccarino-Peter effect"
-      ]
+      "aliases": []
     }
   ],
   "sourceMap": [

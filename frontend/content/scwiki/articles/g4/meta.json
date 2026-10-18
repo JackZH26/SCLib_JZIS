@@ -24,7 +24,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T15:41:06.310617+00:00",
+  "modifiedAt": "2026-10-18T16:13:01.108930+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Original Sinha and Yuan abstracts, Prozorov final susceptibility evidence, selected Crespo author local spectra, institutional pressure report and independent path examples.",
@@ -344,9 +344,7 @@
       "equilibrium": "unknown",
       "probe": "Pb-tip STM spectroscopy with tip-response deconvolution",
       "sourceId": "source-384b3a4f65f6493c",
-      "aliases": [
-        "reentrant superconductor"
-      ]
+      "aliases": []
     }
   ],
   "sourceMap": [

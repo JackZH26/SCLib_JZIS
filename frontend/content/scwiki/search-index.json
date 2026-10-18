@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "f78bdf0ed16fa7935ab6",
+  "revision": "5580882b46c38fef33e6",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -4508,7 +4508,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "838bd4c505cd20b57ed7",
+      "revision": "860aed301daaab6af247",
       "materialCases": [
         {
           "id": "scwiki-e7-material-1",
@@ -4680,8 +4680,7 @@
           "aliases": [
             "manganese phthalocyanine",
             "MnPc",
-            "Pb",
-            "YSR"
+            "Pb"
           ]
         }
       ],
@@ -5545,7 +5544,7 @@
         "experimental"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "afb82e00c45547a720e4",
+      "revision": "2a2c574aad69457de7e7",
       "materialCases": [
         {
           "id": "scwiki-f9-material-1",
@@ -5562,9 +5561,7 @@
           "equilibrium": "equilibrium",
           "probe": "Scanning SQUID microscopy",
           "sourceId": "source-2e4d7fdb6c1797b7",
-          "aliases": [
-            "flux quantization"
-          ]
+          "aliases": []
         },
         {
           "id": "scwiki-f9-material-2",
@@ -5581,9 +5578,7 @@
           "equilibrium": "equilibrium",
           "probe": "Micro-Hall magnetometry field sweep",
           "sourceId": "source-279470d337ba1fff",
-          "aliases": [
-            "flux quantization"
-          ]
+          "aliases": []
         }
       ],
       "dois": [
@@ -5616,7 +5611,7 @@
         "experimental"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "35de1def8081cd3c99f1",
+      "revision": "f20655a4a6a5fd4f504f",
       "materialCases": [
         {
           "id": "scwiki-g1-material-1",
@@ -5633,10 +5628,7 @@
           "equilibrium": "unknown",
           "probe": "Published report of superconducting transition",
           "sourceId": "source-01629af670cc7358",
-          "aliases": [
-            "antiferromagnetism",
-            "coexistence"
-          ]
+          "aliases": []
         },
         {
           "id": "scwiki-g1-material-2",
@@ -5653,10 +5645,7 @@
           "equilibrium": "unknown",
           "probe": "Magnetic susceptibility, 10 Oe parallel to c",
           "sourceId": "source-67747eb35170b73b",
-          "aliases": [
-            "antiferromagnetism",
-            "coexistence"
-          ]
+          "aliases": []
         },
         {
           "id": "scwiki-g1-material-3",
@@ -5676,10 +5665,7 @@
           "equilibrium": "unknown",
           "probe": "In-situ NQR-coil ac susceptibility",
           "sourceId": "source-60c724cb09ba070e",
-          "aliases": [
-            "antiferromagnetism",
-            "coexistence"
-          ]
+          "aliases": []
         }
       ],
       "dois": [
@@ -5712,7 +5698,7 @@
         "experimental"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "f52680249b6c05050715",
+      "revision": "5129da2bfe84d9221063",
       "materialCases": [
         {
           "id": "scwiki-g2-material-1",
@@ -5729,10 +5715,7 @@
           "equilibrium": "unknown",
           "probe": "Four-terminal low-frequency ac resistivity",
           "sourceId": "source-a4695ba5bfa789f3",
-          "aliases": [
-            "ferromagnetism",
-            "coexistence"
-          ]
+          "aliases": []
         },
         {
           "id": "scwiki-g2-material-2",
@@ -5749,10 +5732,7 @@
           "equilibrium": "unknown",
           "probe": "Specific heat and thermal expansion",
           "sourceId": "source-a4695ba5bfa789f3",
-          "aliases": [
-            "ferromagnetism",
-            "coexistence"
-          ]
+          "aliases": []
         },
         {
           "id": "scwiki-g2-material-3",
@@ -5769,10 +5749,7 @@
           "equilibrium": "unknown",
           "probe": "NMR-coil ac susceptibility",
           "sourceId": "source-ed4fe7b26147de87",
-          "aliases": [
-            "ferromagnetism",
-            "coexistence"
-          ]
+          "aliases": []
         }
       ],
       "dois": [
@@ -5808,7 +5785,7 @@
         "experimental"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "b065d6d5cc8405751f41",
+      "revision": "fdcdd6eb0221a6d6e5e8",
       "materialCases": [
         {
           "id": "scwiki-g3-material-1",
@@ -5826,8 +5803,7 @@
           "probe": "Magnetotransport",
           "sourceId": "source-3504ee9027165d0a",
           "aliases": [
-            "nickelate",
-            "field reentrance"
+            "nickelate"
           ]
         },
         {
@@ -5846,8 +5822,7 @@
           "probe": "Magnetotransport",
           "sourceId": "source-3504ee9027165d0a",
           "aliases": [
-            "nickelate",
-            "field reentrance"
+            "nickelate"
           ]
         },
         {
@@ -5866,8 +5841,7 @@
           "probe": "Magnetotransport",
           "sourceId": "source-3504ee9027165d0a",
           "aliases": [
-            "nickelate",
-            "field reentrance"
+            "nickelate"
           ]
         }
       ],
@@ -5902,7 +5876,7 @@
         "experimental"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "074a61ff260f778bb000",
+      "revision": "bee53e102d049f4a278b",
       "materialCases": [
         {
           "id": "scwiki-g4-material-1",
@@ -5919,9 +5893,7 @@
           "equilibrium": "unknown",
           "probe": "Pb-tip STM spectroscopy with tip-response deconvolution",
           "sourceId": "source-384b3a4f65f6493c",
-          "aliases": [
-            "reentrant superconductor"
-          ]
+          "aliases": []
         }
       ],
       "dois": [
@@ -5954,7 +5926,7 @@
         "experimental"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "8ff2c6c9b0b88a6a6890",
+      "revision": "181c58dcf6e6ef6fa7de",
       "materialCases": [
         {
           "id": "scwiki-g5-material-1",
@@ -5971,10 +5943,7 @@
           "equilibrium": "unknown",
           "probe": "77Se angular NMR shift with hyperfine/dipolar calibration",
           "sourceId": "source-f328f3068f201541",
-          "aliases": [
-            "exchange compensation",
-            "Jaccarino-Peter effect"
-          ]
+          "aliases": []
         }
       ],
       "dois": [
@@ -6007,7 +5976,7 @@
         "experimental"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "e5100be08ffb9a496d51",
+      "revision": "cdb1c45c6b5d897d5f4b",
       "materialCases": [
         {
           "id": "scwiki-g6-material-1",
@@ -6024,10 +5993,7 @@
           "equilibrium": "unknown",
           "probe": "Differential contact conductance",
           "sourceId": "source-c80fb39cdf748a83",
-          "aliases": [
-            "Pauli limit",
-            "Ising pairing"
-          ]
+          "aliases": []
         }
       ],
       "dois": [
@@ -6064,7 +6030,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "2479eb20ff048b669b30",
+      "revision": "ac215be3b2636cf6e38d",
       "materialCases": [
         {
           "formula": "κ-(BEDT-TTF)2Cu2(CN)3",
@@ -6102,7 +6068,6 @@
           "probe": "Proton nuclear magnetic resonance",
           "sourceId": "source-9d15cd9236072f5c",
           "aliases": [
-            "quantum spin liquid",
             "organic Mott insulator"
           ]
         }
@@ -6138,7 +6103,7 @@
         "experimental"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "c281f74f5594f869f8fa",
+      "revision": "87ea9e1906591bc5bcb2",
       "materialCases": [
         {
           "id": "scwiki-g8-material-1",
@@ -6155,10 +6120,7 @@
           "equilibrium": "unknown",
           "probe": "In-situ NMR-coil AC susceptibility",
           "sourceId": "source-876de9124496abcb",
-          "aliases": [
-            "noncentrosymmetric",
-            "SOC"
-          ]
+          "aliases": []
         },
         {
           "id": "scwiki-g8-material-2",
@@ -6175,10 +6137,7 @@
           "equilibrium": "unknown",
           "probe": "Transverse-field muon spin rotation",
           "sourceId": "source-30ad27b0f37b6baf",
-          "aliases": [
-            "muSR",
-            "spin orbit coupling"
-          ]
+          "aliases": []
         }
       ],
       "dois": [
