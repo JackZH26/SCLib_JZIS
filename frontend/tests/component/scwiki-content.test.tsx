@@ -1171,3 +1171,16 @@ it("keeps Berry curvature conventions and charge-order observations separate fro
  expect(data.results.some((r:{code:string})=>r.code==="F2")).toBe(false);
  expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
 });
+
+it("keeps model Chern numbers out of experimental temperature results and preserves subspace assumptions",async()=>{
+ const a=articles().find(a=>a.code==="F3")!;
+ expect(a.materialCases).toEqual([]);
+ expect(searchArticles(searchIndex().entries,"Fukui Hatsugai Suzuki",{}).some(a=>a.code==="F3")).toBe(true);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ for(const phrase of ["Degeneracies inside the selected multiplet","minus the oriented overlap-product phase","not synonymous","positive gap sampled on a finite grid alone","Do not apply this electron charge-transport formula to a BdG integer"])expect(md).toContain(phrase);
+ const data=await(await get(["search"],"?q=Chern%20number&tcMin=1")).json();
+ expect(data.results.some((r:{code:string})=>r.code==="F3")).toBe(false);
+ const section=await(await get(["articles",a.id,"sections","limits-and-disputes"])).json();
+ expect(section.section.markdown).toContain("Overlaps must not vanish");
+ expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
+});
