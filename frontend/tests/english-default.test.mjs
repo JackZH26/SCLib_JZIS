@@ -51,12 +51,19 @@ test("document language and metadata remain English", () => {
 });
 
 
-test("SCWiki authored Markdown and JSON remain English, with scientific symbols preserved", () => {
+test("SCWiki public prose remains English while search aliases support multilingual input", () => {
   const directory = path.join(root, "content/scwiki");
   const inspect = folder => readdirSync(folder, { withFileTypes: true }).flatMap(entry => {
     const file = path.join(folder, entry.name);
     return entry.isDirectory() ? inspect(file) : /\.(md|json)$/.test(entry.name) ? [file] : [];
   });
-  const violations = inspect(directory).filter(file => /\p{Script=Han}/u.test(readFileSync(file, "utf8"))).map(file => path.relative(root, file));
+  const violations = inspect(directory).filter(file => {
+    const text = readFileSync(file, "utf8");
+    // Aliases are query vocabulary, not displayed article or interface copy.
+    const publicText = file.endsWith(".json")
+      ? JSON.stringify(JSON.parse(text), (key, value) => key === "aliases" ? undefined : value)
+      : text;
+    return /\p{Script=Han}/u.test(publicText);
+  }).map(file => path.relative(root, file));
   assert.deepEqual(violations, []);
 });

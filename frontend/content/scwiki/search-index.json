@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "5580882b46c38fef33e6",
+  "revision": "ca988f9237012d3e64cb",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -6151,6 +6151,74 @@
         "10.1103/PhysRevLett.102.187001"
       ],
       "text": " Scope\n\nSpin–orbit coupling links electronic motion to spin and changes the normal-state band structure and magnetic response. It does not, by itself, specify the attractive interaction responsible for superconductivity. In a nonmagnetic system without inversion symmetry, antisymmetric spin–orbit coupling can split bands and allow pairing components that inversion would separate. Permission by symmetry is not a measurement of their relative weights. Gor'kov and Rashba's two-dimensional model explicitly leaves the pairing mechanism unspecified and assumes its spin–orbit splitting remains small compared with the Fermi energy.  \n\nIn an ideal Rashba model, the spin texture lies in the plane and winds perpendicular to momentum. In the Ising description used for monolayer NbSe2, opposite valleys have predominantly opposite out-of-plane spin orientations. These are different textures and give different directional responses. A spin–orbit energy expressed as an equivalent field is not an applied laboratory field. Strong spin–orbit coupling and a large upper critical field do not independently certify triplet pairing or topological superconductivity.   \n\n Mathematical assumptions\n\nFor a two-spin effective model, write h(\\mathbf k)=\\xi(\\mathbf k)I+\\mathbf g(\\mathbf k)\\cdot\\boldsymbol\\sigma, with even \\xi and odd \\mathbf g under momentum reversal. Its normal energies are \\xi\\pm|\\mathbf g|. An even-frequency gap may be written \\widehat\\Delta=[\\psi+\\mathbf d\\cdot\\boldsymbol\\sigma]i\\sigmay, with even singlet component \\psi and odd triplet vector \\mathbf d. The chosen spin or pseudospin basis matters; this two-component model is not a complete multiorbital classification. Neither the normal splitting nor the algebraic gap decomposition determines a self-consistent interaction.  \n\nAn independent calculation imposes a real, purely singlet gap \\widehat\\Delta=\\psi i\\sigmay. Its Bogoliubov excitation energies are E\\pm=\\sqrt{(\\xi\\pm g)^2+\\psi^2}, where g=|\\mathbf g|. For a nonzero Matsubara frequency, define f\\pm=-\\psi/(\\omega^2+E\\pm^2). The anomalous propagator decomposes as F=[fs+\\mathbf ft\\cdot\\boldsymbol\\sigma]i\\sigmay, with fs=(f++f-)/2 and \\mathbf ft=(f+-f-)\\hat{\\mathbf g}/2. Thus a momentum-resolved triplet pair amplitude can be nonzero although the imposed gap has no triplet component. These quantities should not both be labeled an experimental “triplet fraction.” \n\nOne hundred independently assembled matrices reproduce the spectra and fermionic relation F(\\mathbf k,i\\omega)=-F^T(-\\mathbf k,-i\\omega); one hundred decompositions match the analytic amplitudes. Three controls check cancellation at zero spin–orbit coupling or at \\xi=0, and a nonzero amplitude at generic parameters. The result distinguishes a propagator from a gap interaction. It does not compute a momentum-integrated mixing ratio, susceptibility, transition temperature or topological invariant. \n\nFrigeri and colleagues' weak-coupling treatment neglects small particle-hole-asymmetry mixing terms and studies pairing channels separately. Alignment of \\mathbf d with \\mathbf g avoids a leading suppression term; it does not select the stable material state. Their erratum adds an omitted linear contribution to the MnSi spin–orbit vector and rescales the original Figure 2 parameter by dividing by \\sqrt{3/2}. Claims about which p-wave component is suppressed therefore require the corrected vector and its relative coefficients.  \n\n Experimental criteria\n\nNishiyama and colleagues report a nearly unchanged Knight shift and approximately cubic temperature dependence of the relaxation rate in Li2Pt3B, interpreted as evidence for triplet pairing with nodes. Their crushed polycrystalline sample has a zero-field susceptibility transition at 2.68 K. For boron NMR, 0.26 T gives a transition near 2.1 K, while 0.35 T gives approximately 1.8 K. The 0.1 K spectrum is a measurement temperature, not a transition. The Li2Pd3B comparison uses a different field, 1.46 T, and the Knight-shift interpretation includes an orbital contribution and a fitted gap model. \n\nHäfliger and colleagues instead find low-temperature saturation in μSR-derived penetration depth and activated specific heat in Li2Pt3B, favoring a fully gapped interpretation. Their final text nevertheless notes that a simple single-gap fit to the penetration-depth data is unsatisfactory and that triplet states cannot be excluded. The low-field temperature scans extend to 30 mK, while the field-dependent comparison is made at 1 K; calorimetry reaches 0.1 K and uses a 4 T normal-state reference. These different probes and protocols must remain separately identifiable. \n\nIsing-protected superconductivity provides another route to an enhanced field scale. In the NbSe2 study, the approximately 35 T scale is fitted, whereas contact-conductance data extend to 31.5 T. In the TaS2 study, 34.5 T is an experimental ceiling and 65.6 T is a fit parameter. Orbital geometry, alignment, gap scale and the resistance criterion accompany any comparison with a weak-coupling Pauli estimate. A larger ratio alone does not determine the spin structure of the gap.  \n\n Limits and disputes\n\nThe Li2Pt3B disagreement cannot be settled by labeling one result “bulk” and another “surface”: NMR also probes bulk material. The μSR/calorimetry paper discusses sample inhomogeneity and metallic inclusions, but those possibilities are not independently demonstrated explanations for every contrasting measurement. Retain both experimental interpretations and their assumptions. Absence of a coherence peak is not, by itself, a unique nodal or triplet diagnostic. Complete scientific acceptance remains open, including raw-data comparisons, final-version checks and the wider subsequent literature.  \n\nA topological assignment requires a specified superconducting Hamiltonian, symmetry class and appropriate invariant, together with evidence that the physical system realizes the assumed state. Normal-state spin splitting, absence of inversion and a superconducting transition do not supply those steps. Likewise, a crystal's effective spin–orbit texture cannot be inferred quantitatively from a simple atomic-number scaling rule. Use a material-specific band model and experimentally constrained parameters before proposing a pairing mechanism or device advantage.  \n\n Discovery implications\n\nSeparate normal-state texture, superconducting gap, pair correlations and measured magnetic response in both language and data records. Compare field directions and sample conditions; retain corrections to theoretical papers and competing experimental interpretations. Useful spin–orbit engineering should predict an observable change under controlled gating, thickness or symmetry changes, then test it against alternatives such as orbital depairing and multiband response. An adjustable model parameter is a research hypothesis until the same model explains independent observations.    \n\n Related topics\n\n, , and ."
+    },
+    {
+      "id": "scwiki-g9",
+      "topicId": "scwiki-topic-g9",
+      "code": "G9",
+      "slug": "altermagnetism-and-superconductivity",
+      "title": "Altermagnetism and superconductivity",
+      "summary": "Separate magnetic symmetry, pairing-model constraints and proximity experiments, with specimen-specific evidence and explicit limits.",
+      "aliases": [
+        "altermagnetism",
+        "altermagnetic superconductivity",
+        "交错磁性",
+        "交替磁序",
+        "spin sublattice locking"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experimental"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "34306c696e1e635959c5",
+      "materialCases": [
+        {
+          "id": "scwiki-g9-material-1",
+          "formula": "CrSb",
+          "sample": "Long bulk crystal, magnetic quantum oscillations",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.4,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "0.4 K oscillation traces in a 41.5 T magnet; no superconducting transition assigned.",
+          "criterion": "quantum-oscillation-temperature",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Magnetic torque quantum oscillations",
+          "sourceId": "source-26b1bd116249a6d3",
+          "aliases": []
+        },
+        {
+          "id": "scwiki-g9-material-2",
+          "formula": "In–CrSb–In",
+          "sample": "Esin proximity device with 2 μm electrode spacing",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.03,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "30 mK device measurement, not intrinsic CrSb Tc; the separate 1.2 K trace shows suppression.",
+          "criterion": "proximity-current-measurement",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Four-terminal differential resistance and switching current",
+          "sourceId": "source-807f7414e83e5e4c",
+          "aliases": [
+            "In CrSb In",
+            "CrSb proximity junction"
+          ]
+        }
+      ],
+      "dois": [
+        "10.1103/PhysRevX.12.031042",
+        "10.1103/zylh-rqxl",
+        "10.1038/s41586-026-10902-z",
+        "10.1134/S0021364026600667",
+        "10.1103/PhysRevLett.133.176401"
+      ],
+      "text": " Scope\n\nAltermagnetism describes compensated collinear magnetic order whose opposite-spin sectors are related by crystal operations such as rotations. It can produce momentum-dependent spin splitting without requiring spin–orbit coupling. Cancellation of the total magnetic moment does not imply degeneracy of opposite spins at every momentum. Nor does the absence of a uniform moment remove every constraint on superconducting pairing. The magnetic symmetry, the occupied bands and the proposed superconducting state must be specified separately.  \n\nThree questions should remain distinct: whether a specimen has altermagnetic order, whether it becomes intrinsically superconducting, and whether superconducting electrodes induce correlations in a hybrid device. Evidence for one does not establish the others. A 2026 In–CrSb–In experiment provides a concrete proximity platform, so a blanket statement that experimental altermagnet–superconductor systems do not exist is outdated. That device does not establish intrinsic bulk superconductivity in CrSb.  \n\n Mathematical assumptions\n\nA useful symmetry relation is E\\uparrow(\\mathbf k)=E\\downarrow(R\\mathbf k) for an appropriate crystal operation R. It need not imply E\\uparrow(\\mathbf k)=E\\downarrow(\\mathbf k). In a simple even-parity texture, \\delta(\\mathbf k)=d(\\cos kx-\\cos ky) changes sign under a right-angle rotation and vanishes along diagonal directions. This illustrates a possible angular pattern, rather than identifying a material or determining its superconducting gap.  \n\nThe Chakraborty–Black-Schaffer construction retains two low-energy states with opposite spins on different sublattices. Its onsite singlet restriction depends on those projected states: opposite spins on the same site are absent from that retained space. A two-component band Hamiltonian must therefore preserve what its components represent. Reading its Pauli matrices as ordinary spin while discarding sublattice information changes the pairing problem. The result should not be promoted to an unconditional ban covering every multiband or strongly hybridized material. \n\nAn independent local calculation illustrates the projection explicitly. For spin \\sigma=\\pm1, take h\\sigma=(\\delta+\\sigma M)\\tauz+t\\taux, with M>0, real hybridization t and sublattice Pauli matrices \\tau. Let u\\sigma be the normalized lower-band eigenvector. An imposed unit onsite singlet has projected magnitude P=|u\\uparrow^T u\\downarrow|. When t=0 and |\\delta|<M, the two vectors occupy opposite sublattices and P=0. At \\delta=0, direct diagonalization gives P=|t|/\\sqrt{M^2+t^2}. Thus finite mixing changes the projection even when the imposed interaction is unchanged. \n\nForty-five parameter cases verify these limits and the exchange of spin branches under \\delta\\rightarrow-\\delta. This is an algebraic illustration, not a reproduction of the paper's full lattice calculation. It computes neither a stable superconducting phase nor a transition temperature. A nonzero projected matrix element does not establish that pairing wins over competing states; a zero matrix element in a truncated space does not by itself exclude higher-band processes. Self-consistency, available states and interaction structure remain additional questions. \n\n Experimental criteria\n\nLong and colleagues map CrSb's bulk angular electronic structure using magnetic quantum oscillations. Measurements use a 41.5 T magnet and include 0.4 K traces. Figure 3 compares angular oscillation branches with a g-wave interpretation; its displayed map is symmetrized. The comparison uses adjusted electronic bands, including a −0.11 eV shift for one pocket family and a compensating +0.015 eV shift for another. Oscillation frequencies constrain extremal orbit areas; assigning an order-parameter structure involves symmetry and band modeling. This is magnetic evidence, not a superconducting transition measurement. \n\nEsin and colleagues use superconducting indium contacts separated by 2 μm beneath CrSb flakes thicker than 1 μm. At 30 mK, the device shows a zero-resistance current interval; a 1.2 K trace shows suppression. They compare directional switching currents and average ten sweeps. Keep switching and return currents separate, and compare opposite current directions at the same field when assessing a diode effect. A relation involving simultaneous current and field reversal is a different test. The lowest measurement temperature is not a bulk CrSb transition temperature. \n\n Limits and disputes\n\nThe CrSb device authors interpret transport asymmetries using surface and bulk spin structure and discuss finite-momentum pairing. Such interpretations are not a direct image of pair momentum or a unique measurement of triplet content. Interface transparency, field history, geometry and alternative transport mechanisms still matter. The angular quantum-oscillation result and the proximity experiment also concern different specimens and observables; they should not be combined into a single specimen-level proof of a superconducting mechanism.  \n\nRuO2 illustrates why candidate labels require evidence dates and methods. Liu and colleagues report spin-resolved photoemission inconsistent with the proposed altermagnetic splitting in their investigated films and crystals. This challenges the assignment; it does not authorize transferring either a positive or a negative result to every strained film or interface. A superconducting transport report in a candidate material cannot establish magnetic coexistence without magnetic evidence for the relevant state. Complete scientific acceptance remains open, including broader competing literature, final-version comparisons and specimen-specific verification. \n\n Discovery implications\n\nUse experiments that can distinguish mechanisms: establish the magnetic symmetry, state the interface orientation, compare current and field reversals separately, and retain the orbital or sublattice content of the model. Proposed finite-momentum or topological states require their own discriminating observations. An altermagnetic label is a starting point for a testable pairing problem, not a shortcut from zero net moment to a confirmed superconducting device mechanism.   \n\n Related topics\n\n, , and ."
     },
     {
       "id": "scwiki-h2",

@@ -1224,3 +1224,15 @@ it("keeps topic searches independent of material identity while binding measurem
  const exported=await(await get(["articles",a.id,"sections","material-cases"],"?format=markdown")).text();
  expect(exported).toContain("2.68 K");expect(exported).toContain("measurement");
 });
+
+it("finds an English altermagnet article from Chinese queries without treating measurement temperatures as Tc",async()=>{
+ const a=articles().find(a=>a.code==="G9")!;
+ for(const query of ["交错磁性","交替磁序"]){
+  const response=await(await get(["search"],"?q="+encodeURIComponent(query))).json();
+  expect(response.results.some((r:{id:string})=>r.id===a.id)).toBe(true);
+ }
+ expect(a.title).toBe("Altermagnetism and superconductivity");
+ expect(a.materialCases.every(r=>r.tcK===null&&r.temperatureKind==="measurement")).toBe(true);
+ const filtered=await(await get(["search"],"?q="+encodeURIComponent("交错磁性")+"&tcMin=0.01")).json();
+ expect(filtered.results.some((r:{id:string})=>r.id===a.id)).toBe(false);
+});

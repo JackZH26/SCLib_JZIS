@@ -1,0 +1,35 @@
+## Scope
+
+Altermagnetism describes compensated collinear magnetic order whose opposite-spin sectors are related by crystal operations such as rotations. It can produce momentum-dependent spin splitting without requiring spin–orbit coupling. Cancellation of the total magnetic moment does not imply degeneracy of opposite spins at every momentum. Nor does the absence of a uniform moment remove every constraint on superconducting pairing. The magnetic symmetry, the occupied bands and the proposed superconducting state must be specified separately. [R1](#ref-source-ea3e0a10f6917658) [R2](#ref-source-7258aa669504806d)
+
+Three questions should remain distinct: whether a specimen has altermagnetic order, whether it becomes intrinsically superconducting, and whether superconducting electrodes induce correlations in a hybrid device. Evidence for one does not establish the others. A 2026 In–CrSb–In experiment provides a concrete proximity platform, so a blanket statement that experimental altermagnet–superconductor systems do not exist is outdated. That device does not establish intrinsic bulk superconductivity in CrSb. [R3](#ref-source-26b1bd116249a6d3) [R4](#ref-source-807f7414e83e5e4c)
+
+## Mathematical assumptions
+
+A useful symmetry relation is $E_\uparrow(\mathbf k)=E_\downarrow(R\mathbf k)$ for an appropriate crystal operation $R$. It need not imply $E_\uparrow(\mathbf k)=E_\downarrow(\mathbf k)$. In a simple even-parity texture, $\delta(\mathbf k)=d(\cos k_x-\cos k_y)$ changes sign under a right-angle rotation and vanishes along diagonal directions. This illustrates a possible angular pattern, rather than identifying a material or determining its superconducting gap. [R1](#ref-source-ea3e0a10f6917658) [R2](#ref-source-7258aa669504806d)
+
+The Chakraborty–Black-Schaffer construction retains two low-energy states with opposite spins on different sublattices. Its onsite singlet restriction depends on those projected states: opposite spins on the same site are absent from that retained space. A two-component band Hamiltonian must therefore preserve what its components represent. Reading its Pauli matrices as ordinary spin while discarding sublattice information changes the pairing problem. The result should not be promoted to an unconditional ban covering every multiband or strongly hybridized material. [R2](#ref-source-7258aa669504806d)
+
+An independent local calculation illustrates the projection explicitly. For spin $\sigma=\pm1$, take $h_\sigma=(\delta+\sigma M)\tau_z+t\tau_x$, with $M>0$, real hybridization $t$ and sublattice Pauli matrices $\tau$. Let $u_\sigma$ be the normalized lower-band eigenvector. An imposed unit onsite singlet has projected magnitude $P=|u_\uparrow^T u_\downarrow|$. When $t=0$ and $|\delta|<M$, the two vectors occupy opposite sublattices and $P=0$. At $\delta=0$, direct diagonalization gives $P=|t|/\sqrt{M^2+t^2}$. Thus finite mixing changes the projection even when the imposed interaction is unchanged. [R2](#ref-source-7258aa669504806d)
+
+Forty-five parameter cases verify these limits and the exchange of spin branches under $\delta\rightarrow-\delta$. This is an algebraic illustration, not a reproduction of the paper's full lattice calculation. It computes neither a stable superconducting phase nor a transition temperature. A nonzero projected matrix element does not establish that pairing wins over competing states; a zero matrix element in a truncated space does not by itself exclude higher-band processes. Self-consistency, available states and interaction structure remain additional questions. [R2](#ref-source-7258aa669504806d)
+
+## Experimental criteria
+
+Long and colleagues map CrSb's bulk angular electronic structure using magnetic quantum oscillations. Measurements use a 41.5 T magnet and include 0.4 K traces. Figure 3 compares angular oscillation branches with a g-wave interpretation; its displayed map is symmetrized. The comparison uses adjusted electronic bands, including a −0.11 eV shift for one pocket family and a compensating +0.015 eV shift for another. Oscillation frequencies constrain extremal orbit areas; assigning an order-parameter structure involves symmetry and band modeling. This is magnetic evidence, not a superconducting transition measurement. [R3](#ref-source-26b1bd116249a6d3)
+
+Esin and colleagues use superconducting indium contacts separated by 2 μm beneath CrSb flakes thicker than 1 μm. At 30 mK, the device shows a zero-resistance current interval; a 1.2 K trace shows suppression. They compare directional switching currents and average ten sweeps. Keep switching and return currents separate, and compare opposite current directions at the same field when assessing a diode effect. A relation involving simultaneous current and field reversal is a different test. The lowest measurement temperature is not a bulk CrSb transition temperature. [R4](#ref-source-807f7414e83e5e4c)
+
+## Limits and disputes
+
+The CrSb device authors interpret transport asymmetries using surface and bulk spin structure and discuss finite-momentum pairing. Such interpretations are not a direct image of pair momentum or a unique measurement of triplet content. Interface transparency, field history, geometry and alternative transport mechanisms still matter. The angular quantum-oscillation result and the proximity experiment also concern different specimens and observables; they should not be combined into a single specimen-level proof of a superconducting mechanism. [R3](#ref-source-26b1bd116249a6d3) [R4](#ref-source-807f7414e83e5e4c)
+
+RuO2 illustrates why candidate labels require evidence dates and methods. Liu and colleagues report spin-resolved photoemission inconsistent with the proposed altermagnetic splitting in their investigated films and crystals. This challenges the assignment; it does not authorize transferring either a positive or a negative result to every strained film or interface. A superconducting transport report in a candidate material cannot establish magnetic coexistence without magnetic evidence for the relevant state. Complete scientific acceptance remains open, including broader competing literature, final-version comparisons and specimen-specific verification. [R5](#ref-source-2a6a831bcc73374f)
+
+## Discovery implications
+
+Use experiments that can distinguish mechanisms: establish the magnetic symmetry, state the interface orientation, compare current and field reversals separately, and retain the orbital or sublattice content of the model. Proposed finite-momentum or topological states require their own discriminating observations. An altermagnetic label is a starting point for a testable pairing problem, not a shortcut from zero net moment to a confirmed superconducting device mechanism. [R1](#ref-source-ea3e0a10f6917658) [R2](#ref-source-7258aa669504806d) [R4](#ref-source-807f7414e83e5e4c)
+
+## Related topics
+
+[Antiferromagnetism and superconductivity](/scwiki/antiferromagnetism-and-superconductivity), [Spin–orbit coupling](/scwiki/spin-orbit-coupling), and [Singlet and triplet pairing](/scwiki/singlet-and-triplet-pairing).
