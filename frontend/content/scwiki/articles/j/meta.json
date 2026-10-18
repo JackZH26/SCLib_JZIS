@@ -34,7 +34,7 @@
   "modifiedAt": "2026-10-18T19:29:40.890430+00:00",
   "review": {
     "checkedAt": "2026-10-19",
-    "scope": "Twelve individually mapped theoretical tools: selected DFPT,Hubbard benchmarks,DMFT,Wannier andRG originals; bounded Allen-Dynes/conserving-approximation abstracts; prior BCS,Eliashberg,geometry,GL andKitaev checks retained. Independent finite-model checks.",
+    "scope": "Twelve individually mapped theoretical tools. Selected DFPT, Hubbard benchmark, DMFT, Wannier and RG passages were reviewed, together with bounded Allen–Dynes and conserving-approximation abstracts. Earlier BCS, Eliashberg, geometry, GL and Kitaev checks retain their original limits. Independent finite-model calculations check the stated algebra.",
     "limitations": [
       "Complete scientific acceptance remains open.",
       "Some original references remain abstract-only; full final-version/supplement/dataset comparisons are incomplete.",
@@ -185,17 +185,17 @@
     {
       "targetSectionId": "j4",
       "tex": "D=M^{-1/2}KM^{-1/2}",
-      "check": "12 two-mass Hessian cases including negativecurvature andtranslation zero modes."
+      "check": "12 two-mass Hessian cases including negative curvature and translation zero modes."
     },
     {
       "targetSectionId": "j9",
       "tex": "g(\\ell)=g_0/(1+g_0\\ell)",
-      "check": "12 independentRK4 flows in the declared normalization, before poles; not fullRG."
+      "check": "12 independent RK4 flows in the declared normalization, before poles; not full RG."
     },
     {
       "targetSectionId": "j12",
       "tex": "\\mathcal H=\\begin{pmatrix}h&\\Delta\\\\\\Delta^\\dagger&-h^T\\end{pmatrix}",
-      "check": "24 complexHermitian/antisymmetric-pairing cases verify particle-hole redundancy and pairedspectra; nottopologicalclassification."
+      "check": "24 complex Hermitian/antisymmetric-pairing cases verify particle-hole redundancy and paired spectra; not a topological classification."
     }
   ],
   "references": [
@@ -280,7 +280,7 @@
         "checkedAt": "2026-10-19",
         "scope": "selected-published-response-and-metals-check",
         "evidenceUrl": "https://people.sissa.it/~degironc/ES/lectures/papers/RMP-73-515-2001.pdf",
-        "note": "Published6July2001. Selected printedpp515-516,519,524,526,542 and543leftcolumn; p526Eqs80-87 visually checked. Mass-weightedHessian, selfconsistentresponse, smearing andelectronphonon versus transport spectrum distinguished. No fullDFTimplementation or materialbenchmark."
+        "note": "Published 6 July 2001. Selected printed pages 515–516, 519, 524, 526, 542 and the left column of 543; equations 80–87 on page 526 visually checked. Mass weighting, self-consistent response, metallic smearing and the distinction between electron–phonon and transport spectra were reviewed. No full DFT implementation or material benchmark was reproduced."
       }
     },
     {
@@ -294,7 +294,7 @@
         "checkedAt": "2026-10-19",
         "scope": "selected-published-qmc-dmrg-convergence-check",
         "evidenceUrl": "https://journals.aps.org/prx/pdf/10.1103/PhysRevX.5.041041",
-        "note": "Published14December2015. Selected pp1-4,7-8,10; p8DMRG convergence visually checked. AFQMC constrainedpath/particle-hole conditions, finitecylinder limits andmethod-specific errors retained. Fulltables/datasets andallalgorithms not reproduced."
+        "note": "Published 14 December 2015. Selected pages 1–4, 7–8 and 10; the DMRG convergence discussion on page 8 visually checked. The review retains constrained-path and particle-hole conditions, finite-cylinder limits and method-specific errors. Full tables, datasets and all algorithms have not been reproduced."
       }
     },
     {
@@ -308,7 +308,7 @@
         "checkedAt": "2026-10-19",
         "scope": "selected-published-self-consistency-and-limits-check",
         "evidenceUrl": "https://www.physics.rutgers.edu/~udo/qmc/rmp68_13.pdf",
-        "note": "Selected printedpp15-18,20; p18Eqs6-13 visually checked. Local temporal fluctuations, bathselfconsistency, largecoordination/hopping scaling andatomic/noninteractinglimits. Independentfour-state atomicGreenfunction only; fullimpuritysolver andlatticeDMFT not reproduced."
+        "note": "Selected printed pages 15–18 and 20; equations 6–13 on page 18 visually checked. Local temporal fluctuations, bath self-consistency, large-coordination scaling and atomic/noninteracting limits were reviewed. An independent four-state atomic Green function was checked; no interacting impurity solver or lattice DMFT calculation was reproduced."
       }
     },
     {
@@ -336,7 +336,7 @@
         "checkedAt": "2026-10-19",
         "scope": "publisher-original-abstract",
         "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.62.961",
-        "note": "Published20February1989. Originalabstract: selfconsistent infinite-order conservingapproximations andtwoparticlecorrelations. Fullfunctionalderivation/numericalbenchmark not reviewed."
+        "note": "Published 20 February 1989. Original publisher abstract checked: self-consistent conserving approximations and two-particle correlations. The full functional derivation and numerical benchmark have not been reviewed."
       }
     },
     {
@@ -350,7 +350,7 @@
         "checkedAt": "2026-10-19",
         "scope": "selected-author-gauge-window-interpolation-check",
         "evidenceUrl": "https://arxiv.org/pdf/1112.5411v2",
-        "note": "Authorv2 12May2012; journal10October2012. Selected pp4-5,11-13,36-37; p13Figure5/frozenwindow visually checked. Gauge/subspace distinction, Chernobstruction andinterpolationconditions retained. Independentfinite-rangeFourierexample, not materialswannierization. Fullfinalcomparison open."
+        "note": "Author version 2, dated 12 May 2012; journal publication 10 October 2012. Selected pages 4–5, 11–13 and 36–37; Figure 5 and the frozen-window explanation on page 13 visually checked. Gauge versus subspace selection, Chern obstruction and interpolation conditions were reviewed. The independent finite-range Fourier example is not a material wannierization. Full final-version comparison remains open."
       }
     },
     {
@@ -364,7 +364,7 @@
         "checkedAt": "2026-10-19",
         "scope": "selected-author-cooper-flow-and-caveats-check",
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/9307009v2",
-        "note": "Authorv2 9July1993. Selectedpp92-95,101-103; p102Eqs381-384 visually checked. Eq383normalization, attractive/repulsiveflow andp103Kohn-Luttingercaveat retained. IndependentnormalizedscalarRK4check, notfullRG ororderedstatesolution; finalcomparison open."
+        "note": "Author version 2, dated 9 July 1993. Selected pages 92–95 and 101–103; equations 381–384 on page 102 visually checked. Equation 383 supplies the stated normalization; the Kohn–Luttinger caveat on page 103 is retained. Independent scalar RK4 integration is not full RG or an ordered-state solution. Final-version comparison remains open."
       }
     },
     {
@@ -799,7 +799,7 @@
       ],
       "status": "scoped-check",
       "checkedAt": "2026-10-19",
-      "scope": "BCS mean-field theory: primary-full-text-scoped-check; primary-full-text-scoped-check. Source-specific dates and limits retained.",
+      "scope": "BCS mean-field theory: primary-full-text-scoped-check; primary-full-text-scoped-check. Source-specific review dates and limitations are listed with the references.",
       "limitations": [
         "Selected passages and explicit abstract-only boundaries; full scientific acceptance remains open.",
         "Synthetic checks do not reproduce interacting material calculations or full numerical algorithms."
@@ -812,7 +812,7 @@
       ],
       "status": "scoped-check",
       "checkedAt": "2026-10-19",
-      "scope": "Eliashberg theory: author-review-scoped-check; primary-full-text-scoped-check. Source-specific dates and limits retained.",
+      "scope": "Eliashberg theory: author-review-scoped-check; primary-full-text-scoped-check. Source-specific review dates and limitations are listed with the references.",
       "limitations": [
         "Selected passages and explicit abstract-only boundaries; full scientific acceptance remains open.",
         "Synthetic checks do not reproduce interacting material calculations or full numerical algorithms."
@@ -825,7 +825,7 @@
       ],
       "status": "scoped-check",
       "checkedAt": "2026-10-19",
-      "scope": "McMillan and Allen–Dynes estimates: author-review-scoped-check; primary-abstract-scoped-check. Source-specific dates and limits retained.",
+      "scope": "McMillan and Allen–Dynes estimates: author-review-scoped-check; primary-abstract-scoped-check. Source-specific review dates and limitations are listed with the references.",
       "limitations": [
         "Selected passages and explicit abstract-only boundaries; full scientific acceptance remains open.",
         "Synthetic checks do not reproduce interacting material calculations or full numerical algorithms."
@@ -838,7 +838,7 @@
       ],
       "status": "scoped-check",
       "checkedAt": "2026-10-19",
-      "scope": "DFT and density-functional perturbation theory: selected-published-response-and-metals-check. Source-specific dates and limits retained.",
+      "scope": "DFT and density-functional perturbation theory: selected-published-response-and-metals-check. Source-specific review dates and limitations are listed with the references.",
       "limitations": [
         "Selected passages and explicit abstract-only boundaries; full scientific acceptance remains open.",
         "Synthetic checks do not reproduce interacting material calculations or full numerical algorithms."
@@ -851,7 +851,7 @@
       ],
       "status": "scoped-check",
       "checkedAt": "2026-10-19",
-      "scope": "Hubbard-model QMC and DMRG: selected-published-qmc-dmrg-convergence-check. Source-specific dates and limits retained.",
+      "scope": "Hubbard-model QMC and DMRG: selected-published-qmc-dmrg-convergence-check. Source-specific review dates and limitations are listed with the references.",
       "limitations": [
         "Selected passages and explicit abstract-only boundaries; full scientific acceptance remains open.",
         "Synthetic checks do not reproduce interacting material calculations or full numerical algorithms."
@@ -864,7 +864,7 @@
       ],
       "status": "scoped-check",
       "checkedAt": "2026-10-19",
-      "scope": "Dynamical mean-field theory: selected-published-self-consistency-and-limits-check. Source-specific dates and limits retained.",
+      "scope": "Dynamical mean-field theory: selected-published-self-consistency-and-limits-check. Source-specific review dates and limitations are listed with the references.",
       "limitations": [
         "Selected passages and explicit abstract-only boundaries; full scientific acceptance remains open.",
         "Synthetic checks do not reproduce interacting material calculations or full numerical algorithms."
@@ -877,7 +877,7 @@
       ],
       "status": "scoped-check",
       "checkedAt": "2026-10-19",
-      "scope": "RPA, fluctuation exchange and pairing kernels: author-review-scoped-check; publisher-original-abstract. Source-specific dates and limits retained.",
+      "scope": "RPA, fluctuation exchange and pairing kernels: author-review-scoped-check; publisher-original-abstract. Source-specific review dates and limitations are listed with the references.",
       "limitations": [
         "Selected passages and explicit abstract-only boundaries; full scientific acceptance remains open.",
         "Synthetic checks do not reproduce interacting material calculations or full numerical algorithms."
@@ -890,7 +890,7 @@
       ],
       "status": "scoped-check",
       "checkedAt": "2026-10-19",
-      "scope": "Tight-binding and Wannier models: selected-author-gauge-window-interpolation-check. Source-specific dates and limits retained.",
+      "scope": "Tight-binding and Wannier models: selected-author-gauge-window-interpolation-check. Source-specific review dates and limitations are listed with the references.",
       "limitations": [
         "Selected passages and explicit abstract-only boundaries; full scientific acceptance remains open.",
         "Synthetic checks do not reproduce interacting material calculations or full numerical algorithms."
@@ -903,7 +903,7 @@
       ],
       "status": "scoped-check",
       "checkedAt": "2026-10-19",
-      "scope": "Renormalization group: selected-author-cooper-flow-and-caveats-check. Source-specific dates and limits retained.",
+      "scope": "Renormalization group: selected-author-cooper-flow-and-caveats-check. Source-specific review dates and limitations are listed with the references.",
       "limitations": [
         "Selected passages and explicit abstract-only boundaries; full scientific acceptance remains open.",
         "Synthetic checks do not reproduce interacting material calculations or full numerical algorithms."
@@ -916,7 +916,7 @@
       ],
       "status": "scoped-check",
       "checkedAt": "2026-10-19",
-      "scope": "Quantum geometry and Berry methods: selected-author-projector-and-metric-conventions; selected-published-relaxation-correction; selected-published-units-and-flat-band-assumptions. Source-specific dates and limits retained.",
+      "scope": "Quantum geometry and Berry methods: selected-author-projector-and-metric-conventions; selected-published-relaxation-correction; selected-published-units-and-flat-band-assumptions. Source-specific review dates and limitations are listed with the references.",
       "limitations": [
         "Selected passages and explicit abstract-only boundaries; full scientific acceptance remains open.",
         "Synthetic checks do not reproduce interacting material calculations or full numerical algorithms."
@@ -929,7 +929,7 @@
       ],
       "status": "scoped-check",
       "checkedAt": "2026-10-19",
-      "scope": "Ginzburg–Landau theory: primary-lecture-scoped-check; selected-author-variance-and-validity-check. Source-specific dates and limits retained.",
+      "scope": "Ginzburg–Landau theory: primary-lecture-scoped-check; selected-author-variance-and-validity-check. Source-specific review dates and limitations are listed with the references.",
       "limitations": [
         "Selected passages and explicit abstract-only boundaries; full scientific acceptance remains open.",
         "Synthetic checks do not reproduce interacting material calculations or full numerical algorithms."
@@ -942,7 +942,7 @@
       ],
       "status": "scoped-check",
       "checkedAt": "2026-10-19",
-      "scope": "Bogoliubov–de Gennes equations: selected-author-chain-and-operator-conventions. Source-specific dates and limits retained.",
+      "scope": "Bogoliubov–de Gennes equations: selected-author-chain-and-operator-conventions. Source-specific review dates and limitations are listed with the references.",
       "limitations": [
         "Selected passages and explicit abstract-only boundaries; full scientific acceptance remains open.",
         "Synthetic checks do not reproduce interacting material calculations or full numerical algorithms."
