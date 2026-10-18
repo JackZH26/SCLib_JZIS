@@ -1,6 +1,7 @@
 import {expect,test} from "./public-site-fixture";
 import {readFileSync} from "node:fs";
 const catalogue=JSON.parse(readFileSync("content/scwiki/catalogue.json","utf8"));
+const extensions=JSON.parse(readFileSync("content/scwiki/extension-inventory.json","utf8"));
 test("SCWiki ships complete server-rendered English content and lazy search",async({page,request})=>{
  const response=await request.get("/scwiki");expect(response.status()).toBe(200);
  const html=await response.text();for(const a of catalogue.articles)expect(html).toContain("/scwiki/"+a.slug);
@@ -107,7 +108,7 @@ test("approved question routes preserve provenance and exclude unfinished extens
  await expect(page.getByText("The pinned planning document identifies the approved scope.",{exact:false})).toBeVisible();
  const response=await request.get("/api/scwiki/v1/articles/scwiki-n10/sections/mathematical-assumptions");
  const data=await response.json();expect(data.scopeItems[0].id).toBe("N10");
- for(const path of ["/scwiki/open-questions/n3","/scwiki/open-questions/n11","/scwiki/open-questions/n9"]){expect((await request.get(path)).status()).toBe(404);}
+ for(const path of [...extensions.pages.filter((p:{publicBody:boolean})=>!p.publicBody).map((p:{slug:string})=>"/scwiki/"+p.slug),"/scwiki/open-questions/n11"]){expect((await request.get(path)).status()).toBe(404);}
 });
 
 for(const [code,slug,label] of [["I","experimental-methods","Experimental methods"],["J","theoretical-tools","Theoretical tools"],["K","applications","Superconducting applications"],["L","history","History of superconductivity"],["M","research-methodology","Research methodology"]]) test(code+" handbook keeps all approved section links and scoped API exports usable",async({page,request})=>{

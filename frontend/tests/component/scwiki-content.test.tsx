@@ -61,7 +61,9 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
    expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
   }
-  for(const id of ["scwiki-n4","scwiki-n9"]){expect((await get(["articles",id])).status).toBe(404);}
+  const unpub=JSON.parse(readFileSync("content/scwiki/extension-inventory.json","utf8")).pages.filter((p:{publicBody:boolean})=>!p.publicBody);
+  for(const p of unpub){expect((await get(["articles",p.id])).status).toBe(404);}
+  expect((await get(["articles","scwiki-n11"])).status).toBe(404);
  });
 
  it("exports the room-temperature question without treating conditional energy scales as measured Tc",async()=>{
