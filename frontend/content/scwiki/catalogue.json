@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "32742a1c3c9d1c29c901",
+  "revision": "dfda7f2af94a89e19f6f",
   "articles": [
     {
       "id": "scwiki-a1",
@@ -23987,13 +23987,15 @@
       "topicId": "scwiki-topic-e4",
       "code": "E4",
       "slug": "strain",
-      "title": "Strain tuning: anisotropic control, not hydrostatic pressure",
-      "summary": "Define the mechanical boundary conditions before attributing a superconducting change to strain, especially in epitaxial oxide films.",
+      "title": "Strain tuning: calibrated deformation and superconducting criteria",
+      "summary": "Separate nominal mismatch from measured strain, retain mechanical boundary conditions, and distinguish magnetic midpoints from resistive transitions.",
       "aliases": [
         "epitaxial strain",
-        "uniaxial pressure",
-        "Sr2RuO4",
+        "uniaxial strain",
         "lattice mismatch",
+        "load transfer",
+        "strain calibration",
+        "Sr2RuO4",
         "La3Ni2O7 strain"
       ],
       "evidenceTypes": [
@@ -24001,21 +24003,22 @@
         "theory"
       ],
       "relatedCodes": [
+        "E1",
+        "E2",
+        "E3",
         "D5",
-        "D11",
-        "D3"
+        "D11"
       ],
       "editorialStatus": "scoped-check",
       "contentState": "pilot",
-      "modifiedAt": "2026-10-17T12:13:01Z",
+      "modifiedAt": "2026-10-18T12:38:59.945312+00:00",
       "review": {
-        "checkedAt": "2026-10-17",
-        "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+        "checkedAt": "2026-10-18",
+        "scope": "Selected Hicks apparatus and Steppke accepted-manuscript methods/figures; Bhatt final-journal structure/growth passages and figures; complete Ko correction; bounded elastic checks.",
         "limitations": [
-          "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
-          "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
-          "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
-          "Historical audit scores and file presence are not evidence that a proposition is correct."
+          "Complete scientific acceptance, remaining final-version comparisons, full supplements and raw-data reproduction remain open.",
+          "Hicks2014Science and Ko original methods remain abstract/institution-summary scope; Bhatt final passage supplies film temperature records.",
+          "Isotropic elasticity and ideal adhesive calculations are illustrations, not anisotropic film fits or an equivalent-pressure calibration."
         ]
       },
       "provenance": {
@@ -24028,156 +24031,52 @@
       "sourceMap": [
         {
           "startLine": 1,
-          "endLine": 19,
-          "targetSections": [
-            "scope",
-            "limits-and-disputes"
-          ],
-          "decision": "condensed-and-structured",
-          "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
-        },
-        {
-          "startLine": 20,
-          "endLine": 31,
-          "targetSections": [
-            "limits-and-disputes"
-          ],
-          "decision": "condensed-and-structured",
-          "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
-        },
-        {
-          "startLine": 32,
-          "endLine": 78,
-          "targetSections": [
-            "mathematical-assumptions"
-          ],
-          "decision": "condensed-and-structured",
-          "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
-        },
-        {
-          "startLine": 79,
-          "endLine": 119,
-          "targetSections": [
-            "discovery-implications"
-          ],
-          "decision": "condensed-and-structured",
-          "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
-        },
-        {
-          "startLine": 120,
-          "endLine": 134,
-          "targetSections": [
-            "scope",
-            "limits-and-disputes"
-          ],
-          "decision": "condensed-and-structured",
-          "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
-        },
-        {
-          "startLine": 135,
-          "endLine": 183,
-          "targetSections": [
-            "scope",
-            "limits-and-disputes"
-          ],
-          "decision": "condensed-and-structured",
-          "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
-        },
-        {
-          "startLine": 184,
-          "endLine": 202,
-          "targetSections": [
-            "scope",
-            "limits-and-disputes"
-          ],
-          "decision": "condensed-and-structured",
-          "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
-        },
-        {
-          "startLine": 203,
-          "endLine": 237,
-          "targetSections": [
-            "scope",
-            "limits-and-disputes"
-          ],
-          "decision": "condensed-and-structured",
-          "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
-        },
-        {
-          "startLine": 238,
-          "endLine": 250,
-          "targetSections": [
-            "limits-and-disputes"
-          ],
-          "decision": "condensed-and-structured",
-          "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
-        },
-        {
-          "startLine": 251,
-          "endLine": 267,
-          "targetSections": [
-            "scope",
-            "limits-and-disputes"
-          ],
-          "decision": "condensed-and-structured",
-          "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
-        },
-        {
-          "startLine": 268,
-          "endLine": 291,
-          "targetSections": [],
-          "decision": "not-published-as-scientific-evidence",
-          "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
-        },
-        {
-          "startLine": 292,
-          "endLine": 303,
-          "targetSections": [
-            "limits-and-disputes"
-          ],
-          "decision": "condensed-and-structured",
-          "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
-        },
-        {
-          "startLine": 304,
-          "endLine": 331,
-          "targetSections": [],
-          "decision": "not-published-as-scientific-evidence",
-          "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
-        },
-        {
-          "startLine": 332,
-          "endLine": 344,
-          "targetSections": [
-            "sources"
-          ],
-          "decision": "condensed-and-structured",
-          "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
-        },
-        {
-          "startLine": 345,
           "endLine": 348,
-          "targetSections": [],
-          "decision": "not-published-as-scientific-evidence",
-          "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+          "targetSections": [
+            "scope",
+            "mathematical-assumptions",
+            "experimental-criteria",
+            "limits-and-disputes",
+            "discovery-implications",
+            "related-topics"
+          ],
+          "decision": "edited-with-scoped-evidence",
+          "note": "Pinned bytes preserved; final figure values and c-axis ranking corrected; magnetic criterion/adhesive calibration and original correction added."
         }
       ],
-      "corrections": [],
+      "corrections": [
+        {
+          "id": "scwiki-e4-correction-1",
+          "description": "Final Bhatt Fig1 measured strains are SLAO-1.6percent,LAO-0.9percent,NGO+0.6percent,STO+1.8percent; inherited values -1.8,-1.0,+0.6,+1.7 are not copied. Fig3 does not support a universal largest-c-axis ranking for SLAO.",
+          "sourceId": "source-4b5b65a5047eb1a9",
+          "scope": "Selected final Figures1/3 and captions checked visually; no claim of complete supplementary audit.",
+          "originalSourceLines": [],
+          "targetSectionId": "experimental-criteria"
+        },
+        {
+          "id": "scwiki-e4-correction-2",
+          "description": "Ko2026correction changes resistivity unit to mOhm cm and Fig3d horizontal label to T,notTc.",
+          "sourceId": "source-acee7fe0af86cc44",
+          "scope": "Complete original correction text.",
+          "originalSourceLines": [],
+          "targetSectionId": "experimental-criteria"
+        }
+      ],
       "equationChecks": [
         {
           "targetSectionId": "mathematical-assumptions",
-          "tex": "a",
-          "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+          "tex": "\\lambda=\\sqrt{Etd/(nG_e)}",
+          "check": "Independent exponential-ODE finite difference,90micrometre parameter scale and3effective-length calculations."
         },
         {
           "targetSectionId": "mathematical-assumptions",
-          "tex": "a_0",
-          "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+          "tex": "\\epsilon_{zz}=-2\\nu f/(1-\\nu)",
+          "check": "Three isotropic plane-stress substitutions yield zero normal stress; not a fitted material response."
         },
         {
           "targetSectionId": "mathematical-assumptions",
-          "tex": "\\sigma_{ij}=-p\\delta_{ij}",
-          "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+          "tex": "f=(a_{\\rm sub}-a_{\\rm ref})/a_{\\rm ref}",
+          "check": "Four nominal mismatches computed with3.833Angstrom reference; measured film strain is separate."
         }
       ],
       "references": [
@@ -24189,38 +24088,38 @@
           "url": "https://doi.org/10.1063/1.4881611",
           "publicationStatus": "journal-article",
           "verification": {
-            "scope": "crossref-metadata-only",
-            "checkedAt": "2026-10-17",
-            "evidenceUrl": "https://api.crossref.org/works/10.1063%2F1.4881611",
-            "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+            "scope": "selected-author-apparatus-and-adhesive-model",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://arxiv.org/pdf/1403.4368v2",
+            "note": "Author v2 revised8August2014; selected apparatus passages and AppendixA pp6–7 read, p6Fig5/equation visually checked. Transfer-length assumptions retained. No finite-element replication or complete final-version comparison."
           }
         },
         {
           "id": "source-2c98c9257f2c4d46",
           "doi": "10.1126/science.1248292",
-          "title": "Strong Increase of\n            T\n            c\n            of Sr\n            2\n            RuO\n            4\n            Under Both Tensile and Compressive Strain",
+          "title": "Strong Increase of Tc of Sr2RuO4 Under Both Tensile and Compressive Strain",
           "year": 2014,
           "url": "https://doi.org/10.1126/science.1248292",
           "publicationStatus": "journal-article",
           "verification": {
-            "scope": "crossref-metadata-only",
-            "checkedAt": "2026-10-17",
-            "evidenceUrl": "https://api.crossref.org/works/10.1126%2Fscience.1248292",
-            "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+            "scope": "author-institution-abstract-only",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://research-portal.st-andrews.ac.uk/en/publications/strong-increase-of-itisubcsub-of-srsub2subruosub4sub-under-both-t/",
+            "note": "Issue18April2014. Authors institutional abstract supports directional responses and0.23percent range. Full methods and curves not reviewed."
           }
         },
         {
           "id": "source-c9a97c501c718b62",
           "doi": "10.1126/science.aaf9398",
-          "title": "Strong peak in\n                    T\n                    c\n                    of Sr\n                    2\n                    RuO\n                    4\n                    under uniaxial pressure",
+          "title": "Strong peak in Tc of Sr2RuO4 under uniaxial pressure",
           "year": 2017,
           "url": "https://doi.org/10.1126/science.aaf9398",
           "publicationStatus": "journal-article",
           "verification": {
-            "scope": "author-abstract-scoped-check",
-            "checkedAt": "2026-10-17",
-            "evidenceUrl": "https://arxiv.org/abs/1604.06669",
-            "note": "Author abstract reports 3.4 K at approximately 0.6% a-axis compression; individual transition criterion was not re-extracted."
+            "scope": "selected-accepted-author-methods-and-figure",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://arxiv.org/pdf/1604.06669v2",
+            "note": "Accepted authorv2 revised14December2016; journal13January2017. Selected pp6–8 experimental methods/calibration and p32Fig4 checked visually. Magnetic50percent criterion,20/80width,distinct sample5peak and broken-sample artefact retained. Full supplement, final comparison, multiband calculation and raw-data reproduction remain open."
           }
         },
         {
@@ -24231,166 +24130,297 @@
           "url": "https://doi.org/10.1038/s41586-026-10446-2",
           "publicationStatus": "journal-article",
           "verification": {
-            "scope": "crossref-metadata-only",
-            "checkedAt": "2026-10-17",
-            "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fs41586-026-10446-2",
-            "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+            "scope": "selected-final-journal-figures-and-methods",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.nature.com/articles/s41586-026-10446-2.pdf",
+            "note": "Online1April2026,issue7May. Selected final pp2,4,8 and Figs1/3 visually checked. Final measured labels differ from inherited draft. Growth-method/oxygen covariates and c-axis contrast retained. Complete supplement and raw-data analysis remain open."
+          }
+        },
+        {
+          "id": "source-98849f3ad0a2df49",
+          "doi": "10.1038/s41586-024-08525-3",
+          "title": "Signatures of ambient pressure superconductivity in thin film La3Ni2O7",
+          "year": 2025,
+          "url": "https://doi.org/10.1038/s41586-024-08525-3",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-metadata-and-author-institution-summary",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.paradim.org/highlights/MIP_104",
+            "note": "Online19December2024; issue27February2025. Author institutional summary supports onset26–42K versuszeroaround2K. Final-PDF request returned non-PDF and OSTIaccepted download timed out; full methods not read. March2026correction accompanies this reference."
+          }
+        },
+        {
+          "id": "source-acee7fe0af86cc44",
+          "doi": "10.1038/s41586-026-10335-8",
+          "title": "Author Correction: Signatures of ambient pressure superconductivity in thin film La3Ni2O7",
+          "year": 2026,
+          "url": "https://doi.org/10.1038/s41586-026-10335-8",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "complete-correction-text",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.nature.com/articles/s41586-026-10335-8.pdf",
+            "note": "Complete one-page correction read. Published31March2026,issue16April. Resistivity unit mOhm cm replaces mOhm cm^-1; Fig3dx-axisT replacesTc. Not a retraction or new transition measurement."
           }
         }
       ],
       "materialCases": [
         {
+          "id": "scwiki-e4-material-1",
           "formula": "Sr2RuO4",
-          "sample": "crystal compressed approximately 0.6% along the a-axis",
+          "sample": "Steppke representative peak under approximately0.6percent a-axis compression",
           "recordType": "experiment",
+          "reportedTemperatureK": 3.4,
           "tcK": 3.4,
-          "temperatureNote": "author-abstract scale under uniaxial strain; not a universal maximum for all samples",
-          "criterion": "unknown",
+          "temperatureKind": "transition",
+          "temperatureNote": "Representative magnetic midpoint, not resistive zero or universal maximum.",
+          "criterion": "magnetic-susceptibility-50-percent",
           "pressureRegime": "unknown",
           "pressureGPa": null,
           "equilibrium": "equilibrium",
-          "probe": "superconducting transition under uniaxial compression",
-          "id": "scwiki-e4-material-1",
-          "sourceId": "source-c9a97c501c718b62",
-          "reportedTemperatureK": 3.4,
-          "temperatureKind": "transition"
+          "probe": "Mutual inductance",
+          "sourceId": "source-c9a97c501c718b62"
+        },
+        {
+          "id": "scwiki-e4-material-2",
+          "formula": "Sr2RuO4",
+          "sample": "Steppke sample5 peak",
+          "recordType": "experiment",
+          "reportedTemperatureK": 3.5,
+          "tcK": 3.5,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate sample5 peak; strain scale normalized in Fig4. Not a hydrostatic-pressure record.",
+          "criterion": "magnetic-susceptibility-50-percent",
+          "pressureRegime": "unknown",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Mutual inductance",
+          "sourceId": "source-c9a97c501c718b62"
+        },
+        {
+          "id": "scwiki-e4-material-3",
+          "formula": "La3Ni2O7",
+          "sample": "SLAO thin film; Bhatt final-journal passage citing Ko",
+          "recordType": "experiment",
+          "reportedTemperatureK": 42,
+          "tcK": 42,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate onset; exact original operational onset algorithm not independently reviewed. Film geometry,not bulk.",
+          "criterion": "resistive-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Resistivity",
+          "sourceId": "source-4b5b65a5047eb1a9",
+          "aliases": [
+            "nickelate",
+            "nickelates"
+          ]
+        },
+        {
+          "id": "scwiki-e4-material-4",
+          "formula": "La3Ni2O7",
+          "sample": "SLAO thin film; Bhatt final-journal passage citing Ko",
+          "recordType": "experiment",
+          "reportedTemperatureK": 2,
+          "tcK": 2,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate zero-resistance endpoint, distinct from42Konset. Does not reproduce raw measurement uncertainty.",
+          "criterion": "zero-resistance",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Resistivity",
+          "sourceId": "source-4b5b65a5047eb1a9",
+          "aliases": [
+            "nickelate",
+            "nickelates"
+          ]
         }
       ],
       "claims": [
         {
           "id": "scwiki-e4-claim-scope-1",
           "sectionId": "scope",
-          "statement": "Strain is a directional deformation relative to a stated reference structure. Epitaxial clamping, uniaxial loading and hydrostatic pressure impose different constraints, so “compressive” does not specify a unique path through a material's phase diagram. A thin film also carries substrate, defect and oxygen-history variables that a bulk pressure experiment does not reproduce automatically.",
-          "evidenceType": "experiment",
-          "sourceIds": [
-            "source-363388aa03563c00",
-            "source-2c98c9257f2c4d46"
-          ],
-          "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
-          "verificationScope": "See each source verification label; this ledger does not certify primary findings."
-        },
-        {
-          "id": "scwiki-e4-claim-scope-2",
-          "sectionId": "scope",
-          "statement": "This article treats the mechanical control and its evidential limits. A changed transition temperature is an observation; the attribution of that change to a particular bond angle, orbital or fluctuation is a further inference. Strain is useful precisely because it can tune selected directions, but the experimental boundary conditions must be retained.",
+          "statement": "Strain is a directional deformation relative to a stated reference structure. A uniaxially loaded crystal, a clamped epitaxial film and a hydrostatically compressed sample follow different mechanical paths. Applied displacement is not necessarily sample strain: mounting adhesive, thermal contraction, bending and fracture can all intervene. The useful control variable is the calibrated deformation in the region probed, together with its uncertainty and history.",
           "evidenceType": "experiment",
           "sourceIds": [
             "source-363388aa03563c00",
             "source-c9a97c501c718b62"
           ],
-          "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
-          "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+          "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
+          "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
         },
         {
-          "id": "scwiki-e4-claim-mathematical-assumptions-1",
-          "sectionId": "mathematical-assumptions",
-          "statement": "The nominal mismatch is not automatically the measured strain in a partially relaxed film. Dislocations, domains and thickness-dependent relaxation can change the actual lattice parameters. State the reference phase, orientation and measurement temperature rather than assigning one strain percentage from a substrate name.",
-          "evidenceType": "theory",
-          "sourceIds": [
-            "source-363388aa03563c00"
-          ],
-          "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
-          "verificationScope": "See each source verification label; this ledger does not certify primary findings."
-        },
-        {
-          "id": "scwiki-e4-claim-mathematical-assumptions-2",
-          "sectionId": "mathematical-assumptions",
-          "statement": "In a small-deformation continuum description, the strain tensor is the symmetric displacement gradient. Hydrostatic stress has the form $\\sigma_{ij}=-p\\delta_{ij}$, whereas uniaxial and epitaxial boundary conditions select directions. The resulting strain also depends on the elastic response. Out-of-plane expansion under in-plane compression is therefore not a contradiction.",
-          "evidenceType": "theory",
-          "sourceIds": [
-            "source-363388aa03563c00"
-          ],
-          "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
-          "verificationScope": "See each source verification label; this ledger does not certify primary findings."
-        },
-        {
-          "id": "scwiki-e4-claim-experimental-criteria-1",
-          "sectionId": "experimental-criteria",
-          "statement": "In Sr2RuO4, the earlier Hicks study and the later higher-strain Steppke study are distinct experimental steps. The larger transition-temperature peak belongs to the latter; it should not be attributed to the initial apparatus or to the earlier paper without checking the original curve. The pilot preserves an approximate source-reported scale while explicitly leaving an unretrieved criterion unknown.",
+          "id": "scwiki-e4-claim-scope-2",
+          "sectionId": "scope",
+          "statement": "Separate the early Sr2RuO4 experiments. Hicks's 2014 Science study reported different responses for loading along the crystallographic ⟨100⟩ and ⟨110⟩ directions, within an approximately 0.23% accessible range. The later Steppke study reached the much larger compressive strain associated with a transition near 3.4 K. These are distinct measurements, not interchangeable references for one apparatus or peak. The earlier result is checked here only through the authors' institutional abstract.",
           "evidenceType": "experiment",
           "sourceIds": [
             "source-2c98c9257f2c4d46",
             "source-c9a97c501c718b62"
           ],
-          "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
-          "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+          "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
+          "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
         },
         {
-          "id": "scwiki-e4-claim-limits-and-disputes-1",
-          "sectionId": "limits-and-disputes",
-          "statement": "A peak in transition temperature near a reconstructed Fermi surface is a constraint on theory, not a determination of every pairing property. Orbital shifts, density-of-states changes and modified correlations can coexist. Inferring a pairing symmetry still requires complementary measurements.",
+          "id": "scwiki-e4-claim-mathematical-assumptions-1",
+          "sectionId": "mathematical-assumptions",
+          "statement": "For a lattice parameter relative to a relaxed reference, engineering strain is $\\epsilon=(a-a_0)/a_0$. Nominal epitaxial mismatch uses $f=(a_{\\rm sub}-a_{\\rm ref})/a_{\\rm ref}$ instead. Neither a substrate name nor this calculation establishes the strain remaining after relaxation. Report reference composition, phase, temperature and orientation; compare actual film lattice parameters with that same reference.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-4b5b65a5047eb1a9"
+          ],
+          "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
+          "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e4-claim-mathematical-assumptions-2",
+          "sectionId": "mathematical-assumptions",
+          "statement": "In small-deformation elasticity, $\\epsilon_{ij}=(\\partial_i u_j+\\partial_j u_i)/2$ and $\\sigma_{ij}=C_{ijkl}\\epsilon_{kl}$. As an explicitly isotropic illustration, a film with equal in-plane strains $\\epsilon_{xx}=\\epsilon_{yy}=f$ and a traction-free surface has $\\epsilon_{zz}=-2\\nu f/(1-\\nu)$. Positive Poisson ratio therefore permits out-of-plane expansion under in-plane compression. This illustration is not an anisotropic nickelate fit, and it does not convert epitaxial mismatch into an equivalent hydrostatic pressure.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-363388aa03563c00",
+            "source-4b5b65a5047eb1a9"
+          ],
+          "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
+          "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e4-claim-mathematical-assumptions-3",
+          "sectionId": "mathematical-assumptions",
+          "statement": "Hicks's simplified adhesive model gives a load-transfer length $\\lambda=\\sqrt{Etd/(nG_e)}$, with sample Young's modulus $E$, sample thickness $t$, adhesive thickness $d$, adhesive shear modulus $G_e$, and one or two bonded faces $n$. For symmetric ends, displacement is distributed over approximately $L+2\\lambda$, not just the exposed length $L$. The stated illustrative parameters give about 90 micrometres. Rigid plates, a much softer adhesive and uniform sample strain across its section are assumptions; finite-element bending and real adhesive failure require additional treatment.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-363388aa03563c00"
+          ],
+          "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
+          "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e4-claim-experimental-criteria-1",
+          "sectionId": "experimental-criteria",
+          "statement": "Steppke measured magnetic transitions using mutual inductance, with approximately 0.2 Oe excitation at 1–20 kHz, and used a capacitive displacement sensor. Figure 4 defines the plotted transition temperatures at 50% of the magnetic response; the 20% and 80% levels show transition width. The reported peak strain is approximately −0.60% with a ±0.06 percentage-point uncertainty from four samples, while individual strain calibration was estimated to have roughly 20% uncertainty. These are different uncertainty statements.",
           "evidenceType": "experiment",
           "sourceIds": [
             "source-c9a97c501c718b62"
           ],
-          "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
-          "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+          "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
+          "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
         },
         {
-          "id": "scwiki-e4-claim-limits-and-disputes-2",
-          "sectionId": "limits-and-disputes",
-          "statement": "The pinned chapter's 2026 nickelate-film discussion distinguishes nominal and measured mismatch and warns against assuming that in-plane compression requires a shorter c axis. That update has not received a primary-text check here. Its strain percentages and transition values are consequently not promoted into the pilot's quantitative record. Oxygen stoichiometry, interface structure and defects remain possible covariates, not solved nuisance parameters.",
+          "id": "scwiki-e4-claim-experimental-criteria-2",
+          "sectionId": "experimental-criteria",
+          "statement": "The often-quoted 3.4 K scale is not a universal sample maximum: sample 5 reached approximately 3.5 K. Resistive transitions in the two contacted specimens did not exceed the highest magnetic transition by more than 0.08 K. That comparison does not redefine a magnetic midpoint as zero resistance. A flat feature near zero strain in sample 1 arose after the sample broke during cooling and needed compression to re-engage; it should not be fitted as an intrinsic phase boundary.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-c9a97c501c718b62"
+          ],
+          "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
+          "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e4-claim-experimental-criteria-3",
+          "sectionId": "experimental-criteria",
+          "statement": "Bhatt's final Figure 1 labels nominal/measured mismatch pairs, respectively, as SLAO −2.0%/−1.6%, LAO −1.2%/−0.9%, NGO +0.7%/+0.6% and STO +1.9%/+1.8%. These final labels replace several different measured values in the inherited chapter. The SLAO film has a broad resistive transition, with onset near 42 K and zero near 2 K; those endpoints cannot be merged into a 42 K zero-resistance claim.",
           "evidenceType": "experiment",
           "sourceIds": [
             "source-4b5b65a5047eb1a9"
           ],
-          "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
-          "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+          "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
+          "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e4-claim-experimental-criteria-4",
+          "sectionId": "experimental-criteria",
+          "statement": "Ko's original thin-film report also distinguishes onset and zero resistance. Its March 2026 correction fixes resistivity-axis units to mΩ cm and the Figure 3d horizontal label to temperature $T$, not $T_c$. The correction was read in full; the original paper's detailed methods were not retrieved here. The source-linked temperature records below therefore cite Bhatt's checked final passage, rather than implying a complete reanalysis of Ko's experiment.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-4b5b65a5047eb1a9",
+            "source-98849f3ad0a2df49",
+            "source-acee7fe0af86cc44"
+          ],
+          "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
+          "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e4-claim-limits-and-disputes-1",
+          "sectionId": "limits-and-disputes",
+          "statement": "Bhatt's films on SLAO used pulsed-laser deposition, whereas the other substrate films used molecular-beam epitaxy. Oxygen annealing and uncertain oxygen occupancy remain relevant covariates. Figure 3 supports out-of-plane expansion under in-plane compression, contrasting with hydrostatic contraction. It does not support the inherited universal superlative that the SLAO film has the largest c-axis: the plotted LAO values are comparable or higher. Avoid turning a qualitative structural contrast into an unsupported ranking.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-4b5b65a5047eb1a9"
+          ],
+          "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
+          "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e4-claim-limits-and-disputes-2",
+          "sectionId": "limits-and-disputes",
+          "statement": "A peak near a calculated Lifshitz transition constrains possible models without uniquely identifying pairing symmetry. Steppke's electronic-structure and order-parameter calculations are model-dependent; their discussion should not be read as a present-day determination of Sr2RuO4's order parameter. This scoped review checked selected experimental passages and a figure, not the full multiband calculation, all supplements or experimental raw data.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-c9a97c501c718b62"
+          ],
+          "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
+          "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
         },
         {
           "id": "scwiki-e4-claim-discovery-implications-1",
           "sectionId": "discovery-implications",
-          "statement": "Prefer controlled series that change one mechanical coordinate while monitoring oxygen, microstructure and sample geometry. A substrate series alone may change several variables at once. A useful design proposal predicts a trend, a null control and an independent structural or spectroscopic response, rather than stating that more compression must always improve superconductivity.",
-          "evidenceType": "experiment",
+          "statement": "Design a strain study around a measured mechanical path and a defined superconducting criterion. Retain loading direction, reference state, adhesive or substrate constraints, thermal history and reversibility. Check whether a broadened transition tracks strain inhomogeneity or a changed specimen, and compare transport with magnetic or thermodynamic evidence where feasible. Local arithmetic here verifies mismatch, ideal elastic identities and the adhesive model; it neither predicts a superconducting transition nor establishes a unique strain mechanism.",
+          "evidenceType": "theory",
           "sourceIds": [
             "source-363388aa03563c00",
-            "source-c9a97c501c718b62"
+            "source-c9a97c501c718b62",
+            "source-4b5b65a5047eb1a9"
           ],
-          "conditions": "Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.",
-          "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+          "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
+          "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
         }
       ],
-      "body": "## Scope\n\nStrain is a directional deformation relative to a stated reference structure. Epitaxial clamping, uniaxial loading and hydrostatic pressure impose different constraints, so “compressive” does not specify a unique path through a material's phase diagram. A thin film also carries substrate, defect and oxygen-history variables that a bulk pressure experiment does not reproduce automatically. [R1](#ref-source-363388aa03563c00) [R2](#ref-source-2c98c9257f2c4d46)\n\nThis article treats the mechanical control and its evidential limits. A changed transition temperature is an observation; the attribution of that change to a particular bond angle, orbital or fluctuation is a further inference. Strain is useful precisely because it can tune selected directions, but the experimental boundary conditions must be retained. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62)\n\n## Mathematical assumptions\n\nFor a lattice parameter $a$ relative to a relaxed reference $a_0$, an engineering strain is\n\n$\n\\epsilon=\\frac{a-a_0}{a_0}.\n$\n\nA nominal coherent epitaxial mismatch may be written\n\n$\nf=\\frac{a_{\\mathrm{sub}}-a_{\\mathrm{ref}}}{a_{\\mathrm{ref}}}.\n$\n\nThe nominal mismatch is not automatically the measured strain in a partially relaxed film. Dislocations, domains and thickness-dependent relaxation can change the actual lattice parameters. State the reference phase, orientation and measurement temperature rather than assigning one strain percentage from a substrate name. [R1](#ref-source-363388aa03563c00)\n\nIn a small-deformation continuum description, the strain tensor is the symmetric displacement gradient. Hydrostatic stress has the form $\\sigma_{ij}=-p\\delta_{ij}$, whereas uniaxial and epitaxial boundary conditions select directions. The resulting strain also depends on the elastic response. Out-of-plane expansion under in-plane compression is therefore not a contradiction. [R1](#ref-source-363388aa03563c00)\n\n## Experimental criteria\n\nMeasure actual lattice deformation using an appropriate structural method and report calibration, loading direction, transverse response, relaxation and hysteresis. Keep nominal mismatch and measured strain in separate fields. For superconductivity, identify onset, zero resistance or a magnetic/thermodynamic criterion, and compare equivalent sample histories.\n\nIn Sr2RuO4, the earlier Hicks study and the later higher-strain Steppke study are distinct experimental steps. The larger transition-temperature peak belongs to the latter; it should not be attributed to the initial apparatus or to the earlier paper without checking the original curve. The pilot preserves an approximate source-reported scale while explicitly leaving an unretrieved criterion unknown. [R2](#ref-source-2c98c9257f2c4d46) [R3](#ref-source-c9a97c501c718b62)\n\n## Limits and disputes\n\nA peak in transition temperature near a reconstructed Fermi surface is a constraint on theory, not a determination of every pairing property. Orbital shifts, density-of-states changes and modified correlations can coexist. Inferring a pairing symmetry still requires complementary measurements. [R3](#ref-source-c9a97c501c718b62)\n\nThe pinned chapter's 2026 nickelate-film discussion distinguishes nominal and measured mismatch and warns against assuming that in-plane compression requires a shorter c axis. That update has not received a primary-text check here. Its strain percentages and transition values are consequently not promoted into the pilot's quantitative record. Oxygen stoichiometry, interface structure and defects remain possible covariates, not solved nuisance parameters. [R4](#ref-source-4b5b65a5047eb1a9)\n\n## Discovery implications\n\nPrefer controlled series that change one mechanical coordinate while monitoring oxygen, microstructure and sample geometry. A substrate series alone may change several variables at once. A useful design proposal predicts a trend, a null control and an independent structural or spectroscopic response, rather than stating that more compression must always improve superconductivity. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62)\n\n## Related topics\n\nSee [nickelate structures](/scwiki/nickelates), [interface superconductivity](/scwiki/two-dimensional-interfaces), and [cuprate comparisons](/scwiki/cuprates).",
-      "revision": "b71381ed038e598f3a6e",
+      "body": "## Scope\n\nStrain is a directional deformation relative to a stated reference structure. A uniaxially loaded crystal, a clamped epitaxial film and a hydrostatically compressed sample follow different mechanical paths. Applied displacement is not necessarily sample strain: mounting adhesive, thermal contraction, bending and fracture can all intervene. The useful control variable is the calibrated deformation in the region probed, together with its uncertainty and history. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62)\n\nSeparate the early Sr2RuO4 experiments. Hicks's 2014 Science study reported different responses for loading along the crystallographic ⟨100⟩ and ⟨110⟩ directions, within an approximately 0.23% accessible range. The later Steppke study reached the much larger compressive strain associated with a transition near 3.4 K. These are distinct measurements, not interchangeable references for one apparatus or peak. The earlier result is checked here only through the authors' institutional abstract. [R2](#ref-source-2c98c9257f2c4d46) [R3](#ref-source-c9a97c501c718b62)\n\n## Mathematical assumptions\n\nFor a lattice parameter relative to a relaxed reference, engineering strain is $\\epsilon=(a-a_0)/a_0$. Nominal epitaxial mismatch uses $f=(a_{\\rm sub}-a_{\\rm ref})/a_{\\rm ref}$ instead. Neither a substrate name nor this calculation establishes the strain remaining after relaxation. Report reference composition, phase, temperature and orientation; compare actual film lattice parameters with that same reference. [R4](#ref-source-4b5b65a5047eb1a9)\n\nIn small-deformation elasticity, $\\epsilon_{ij}=(\\partial_i u_j+\\partial_j u_i)/2$ and $\\sigma_{ij}=C_{ijkl}\\epsilon_{kl}$. As an explicitly isotropic illustration, a film with equal in-plane strains $\\epsilon_{xx}=\\epsilon_{yy}=f$ and a traction-free surface has $\\epsilon_{zz}=-2\\nu f/(1-\\nu)$. Positive Poisson ratio therefore permits out-of-plane expansion under in-plane compression. This illustration is not an anisotropic nickelate fit, and it does not convert epitaxial mismatch into an equivalent hydrostatic pressure. [R1](#ref-source-363388aa03563c00) [R4](#ref-source-4b5b65a5047eb1a9)\n\nHicks's simplified adhesive model gives a load-transfer length $\\lambda=\\sqrt{Etd/(nG_e)}$, with sample Young's modulus $E$, sample thickness $t$, adhesive thickness $d$, adhesive shear modulus $G_e$, and one or two bonded faces $n$. For symmetric ends, displacement is distributed over approximately $L+2\\lambda$, not just the exposed length $L$. The stated illustrative parameters give about 90 micrometres. Rigid plates, a much softer adhesive and uniform sample strain across its section are assumptions; finite-element bending and real adhesive failure require additional treatment. [R1](#ref-source-363388aa03563c00)\n\n## Experimental criteria\n\nSteppke measured magnetic transitions using mutual inductance, with approximately 0.2 Oe excitation at 1–20 kHz, and used a capacitive displacement sensor. Figure 4 defines the plotted transition temperatures at 50% of the magnetic response; the 20% and 80% levels show transition width. The reported peak strain is approximately −0.60% with a ±0.06 percentage-point uncertainty from four samples, while individual strain calibration was estimated to have roughly 20% uncertainty. These are different uncertainty statements. [R3](#ref-source-c9a97c501c718b62)\n\nThe often-quoted 3.4 K scale is not a universal sample maximum: sample 5 reached approximately 3.5 K. Resistive transitions in the two contacted specimens did not exceed the highest magnetic transition by more than 0.08 K. That comparison does not redefine a magnetic midpoint as zero resistance. A flat feature near zero strain in sample 1 arose after the sample broke during cooling and needed compression to re-engage; it should not be fitted as an intrinsic phase boundary. [R3](#ref-source-c9a97c501c718b62)\n\nBhatt's final Figure 1 labels nominal/measured mismatch pairs, respectively, as SLAO −2.0%/−1.6%, LAO −1.2%/−0.9%, NGO +0.7%/+0.6% and STO +1.9%/+1.8%. These final labels replace several different measured values in the inherited chapter. The SLAO film has a broad resistive transition, with onset near 42 K and zero near 2 K; those endpoints cannot be merged into a 42 K zero-resistance claim. [R4](#ref-source-4b5b65a5047eb1a9)\n\nKo's original thin-film report also distinguishes onset and zero resistance. Its March 2026 correction fixes resistivity-axis units to mΩ cm and the Figure 3d horizontal label to temperature $T$, not $T_c$. The correction was read in full; the original paper's detailed methods were not retrieved here. The source-linked temperature records below therefore cite Bhatt's checked final passage, rather than implying a complete reanalysis of Ko's experiment. [R4](#ref-source-4b5b65a5047eb1a9) [R5](#ref-source-98849f3ad0a2df49) [R6](#ref-source-acee7fe0af86cc44)\n\n## Limits and disputes\n\nBhatt's films on SLAO used pulsed-laser deposition, whereas the other substrate films used molecular-beam epitaxy. Oxygen annealing and uncertain oxygen occupancy remain relevant covariates. Figure 3 supports out-of-plane expansion under in-plane compression, contrasting with hydrostatic contraction. It does not support the inherited universal superlative that the SLAO film has the largest c-axis: the plotted LAO values are comparable or higher. Avoid turning a qualitative structural contrast into an unsupported ranking. [R4](#ref-source-4b5b65a5047eb1a9)\n\nA peak near a calculated Lifshitz transition constrains possible models without uniquely identifying pairing symmetry. Steppke's electronic-structure and order-parameter calculations are model-dependent; their discussion should not be read as a present-day determination of Sr2RuO4's order parameter. This scoped review checked selected experimental passages and a figure, not the full multiband calculation, all supplements or experimental raw data. [R3](#ref-source-c9a97c501c718b62)\n\n## Discovery implications\n\nDesign a strain study around a measured mechanical path and a defined superconducting criterion. Retain loading direction, reference state, adhesive or substrate constraints, thermal history and reversibility. Check whether a broadened transition tracks strain inhomogeneity or a changed specimen, and compare transport with magnetic or thermodynamic evidence where feasible. Local arithmetic here verifies mismatch, ideal elastic identities and the adhesive model; it neither predicts a superconducting transition nor establishes a unique strain mechanism. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62) [R4](#ref-source-4b5b65a5047eb1a9)\n\n## Related topics\n\nCompare [pressure tuning](/scwiki/pressure-tuning), [chemical doping](/scwiki/chemical-doping), [electrostatic gating](/scwiki/electrostatic-gating), [nickelates](/scwiki/nickelates) and [two-dimensional interfaces](/scwiki/two-dimensional-interfaces).",
+      "revision": "138b5d11d4ac9c9142d7",
       "sections": [
         {
           "id": "scope",
           "title": "Scope",
-          "markdown": "## Scope\n\nStrain is a directional deformation relative to a stated reference structure. Epitaxial clamping, uniaxial loading and hydrostatic pressure impose different constraints, so “compressive” does not specify a unique path through a material's phase diagram. A thin film also carries substrate, defect and oxygen-history variables that a bulk pressure experiment does not reproduce automatically. [R1](#ref-source-363388aa03563c00) [R2](#ref-source-2c98c9257f2c4d46)\n\nThis article treats the mechanical control and its evidential limits. A changed transition temperature is an observation; the attribution of that change to a particular bond angle, orbital or fluctuation is a further inference. Strain is useful precisely because it can tune selected directions, but the experimental boundary conditions must be retained. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62)"
+          "markdown": "## Scope\n\nStrain is a directional deformation relative to a stated reference structure. A uniaxially loaded crystal, a clamped epitaxial film and a hydrostatically compressed sample follow different mechanical paths. Applied displacement is not necessarily sample strain: mounting adhesive, thermal contraction, bending and fracture can all intervene. The useful control variable is the calibrated deformation in the region probed, together with its uncertainty and history. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62)\n\nSeparate the early Sr2RuO4 experiments. Hicks's 2014 Science study reported different responses for loading along the crystallographic ⟨100⟩ and ⟨110⟩ directions, within an approximately 0.23% accessible range. The later Steppke study reached the much larger compressive strain associated with a transition near 3.4 K. These are distinct measurements, not interchangeable references for one apparatus or peak. The earlier result is checked here only through the authors' institutional abstract. [R2](#ref-source-2c98c9257f2c4d46) [R3](#ref-source-c9a97c501c718b62)"
         },
         {
           "id": "mathematical-assumptions",
           "title": "Mathematical assumptions",
-          "markdown": "## Mathematical assumptions\n\nFor a lattice parameter $a$ relative to a relaxed reference $a_0$, an engineering strain is\n\n$\n\\epsilon=\\frac{a-a_0}{a_0}.\n$\n\nA nominal coherent epitaxial mismatch may be written\n\n$\nf=\\frac{a_{\\mathrm{sub}}-a_{\\mathrm{ref}}}{a_{\\mathrm{ref}}}.\n$\n\nThe nominal mismatch is not automatically the measured strain in a partially relaxed film. Dislocations, domains and thickness-dependent relaxation can change the actual lattice parameters. State the reference phase, orientation and measurement temperature rather than assigning one strain percentage from a substrate name. [R1](#ref-source-363388aa03563c00)\n\nIn a small-deformation continuum description, the strain tensor is the symmetric displacement gradient. Hydrostatic stress has the form $\\sigma_{ij}=-p\\delta_{ij}$, whereas uniaxial and epitaxial boundary conditions select directions. The resulting strain also depends on the elastic response. Out-of-plane expansion under in-plane compression is therefore not a contradiction. [R1](#ref-source-363388aa03563c00)"
+          "markdown": "## Mathematical assumptions\n\nFor a lattice parameter relative to a relaxed reference, engineering strain is $\\epsilon=(a-a_0)/a_0$. Nominal epitaxial mismatch uses $f=(a_{\\rm sub}-a_{\\rm ref})/a_{\\rm ref}$ instead. Neither a substrate name nor this calculation establishes the strain remaining after relaxation. Report reference composition, phase, temperature and orientation; compare actual film lattice parameters with that same reference. [R4](#ref-source-4b5b65a5047eb1a9)\n\nIn small-deformation elasticity, $\\epsilon_{ij}=(\\partial_i u_j+\\partial_j u_i)/2$ and $\\sigma_{ij}=C_{ijkl}\\epsilon_{kl}$. As an explicitly isotropic illustration, a film with equal in-plane strains $\\epsilon_{xx}=\\epsilon_{yy}=f$ and a traction-free surface has $\\epsilon_{zz}=-2\\nu f/(1-\\nu)$. Positive Poisson ratio therefore permits out-of-plane expansion under in-plane compression. This illustration is not an anisotropic nickelate fit, and it does not convert epitaxial mismatch into an equivalent hydrostatic pressure. [R1](#ref-source-363388aa03563c00) [R4](#ref-source-4b5b65a5047eb1a9)\n\nHicks's simplified adhesive model gives a load-transfer length $\\lambda=\\sqrt{Etd/(nG_e)}$, with sample Young's modulus $E$, sample thickness $t$, adhesive thickness $d$, adhesive shear modulus $G_e$, and one or two bonded faces $n$. For symmetric ends, displacement is distributed over approximately $L+2\\lambda$, not just the exposed length $L$. The stated illustrative parameters give about 90 micrometres. Rigid plates, a much softer adhesive and uniform sample strain across its section are assumptions; finite-element bending and real adhesive failure require additional treatment. [R1](#ref-source-363388aa03563c00)"
         },
         {
           "id": "experimental-criteria",
           "title": "Experimental criteria",
-          "markdown": "## Experimental criteria\n\nMeasure actual lattice deformation using an appropriate structural method and report calibration, loading direction, transverse response, relaxation and hysteresis. Keep nominal mismatch and measured strain in separate fields. For superconductivity, identify onset, zero resistance or a magnetic/thermodynamic criterion, and compare equivalent sample histories.\n\nIn Sr2RuO4, the earlier Hicks study and the later higher-strain Steppke study are distinct experimental steps. The larger transition-temperature peak belongs to the latter; it should not be attributed to the initial apparatus or to the earlier paper without checking the original curve. The pilot preserves an approximate source-reported scale while explicitly leaving an unretrieved criterion unknown. [R2](#ref-source-2c98c9257f2c4d46) [R3](#ref-source-c9a97c501c718b62)"
+          "markdown": "## Experimental criteria\n\nSteppke measured magnetic transitions using mutual inductance, with approximately 0.2 Oe excitation at 1–20 kHz, and used a capacitive displacement sensor. Figure 4 defines the plotted transition temperatures at 50% of the magnetic response; the 20% and 80% levels show transition width. The reported peak strain is approximately −0.60% with a ±0.06 percentage-point uncertainty from four samples, while individual strain calibration was estimated to have roughly 20% uncertainty. These are different uncertainty statements. [R3](#ref-source-c9a97c501c718b62)\n\nThe often-quoted 3.4 K scale is not a universal sample maximum: sample 5 reached approximately 3.5 K. Resistive transitions in the two contacted specimens did not exceed the highest magnetic transition by more than 0.08 K. That comparison does not redefine a magnetic midpoint as zero resistance. A flat feature near zero strain in sample 1 arose after the sample broke during cooling and needed compression to re-engage; it should not be fitted as an intrinsic phase boundary. [R3](#ref-source-c9a97c501c718b62)\n\nBhatt's final Figure 1 labels nominal/measured mismatch pairs, respectively, as SLAO −2.0%/−1.6%, LAO −1.2%/−0.9%, NGO +0.7%/+0.6% and STO +1.9%/+1.8%. These final labels replace several different measured values in the inherited chapter. The SLAO film has a broad resistive transition, with onset near 42 K and zero near 2 K; those endpoints cannot be merged into a 42 K zero-resistance claim. [R4](#ref-source-4b5b65a5047eb1a9)\n\nKo's original thin-film report also distinguishes onset and zero resistance. Its March 2026 correction fixes resistivity-axis units to mΩ cm and the Figure 3d horizontal label to temperature $T$, not $T_c$. The correction was read in full; the original paper's detailed methods were not retrieved here. The source-linked temperature records below therefore cite Bhatt's checked final passage, rather than implying a complete reanalysis of Ko's experiment. [R4](#ref-source-4b5b65a5047eb1a9) [R5](#ref-source-98849f3ad0a2df49) [R6](#ref-source-acee7fe0af86cc44)"
         },
         {
           "id": "limits-and-disputes",
           "title": "Limits and disputes",
-          "markdown": "## Limits and disputes\n\nA peak in transition temperature near a reconstructed Fermi surface is a constraint on theory, not a determination of every pairing property. Orbital shifts, density-of-states changes and modified correlations can coexist. Inferring a pairing symmetry still requires complementary measurements. [R3](#ref-source-c9a97c501c718b62)\n\nThe pinned chapter's 2026 nickelate-film discussion distinguishes nominal and measured mismatch and warns against assuming that in-plane compression requires a shorter c axis. That update has not received a primary-text check here. Its strain percentages and transition values are consequently not promoted into the pilot's quantitative record. Oxygen stoichiometry, interface structure and defects remain possible covariates, not solved nuisance parameters. [R4](#ref-source-4b5b65a5047eb1a9)"
+          "markdown": "## Limits and disputes\n\nBhatt's films on SLAO used pulsed-laser deposition, whereas the other substrate films used molecular-beam epitaxy. Oxygen annealing and uncertain oxygen occupancy remain relevant covariates. Figure 3 supports out-of-plane expansion under in-plane compression, contrasting with hydrostatic contraction. It does not support the inherited universal superlative that the SLAO film has the largest c-axis: the plotted LAO values are comparable or higher. Avoid turning a qualitative structural contrast into an unsupported ranking. [R4](#ref-source-4b5b65a5047eb1a9)\n\nA peak near a calculated Lifshitz transition constrains possible models without uniquely identifying pairing symmetry. Steppke's electronic-structure and order-parameter calculations are model-dependent; their discussion should not be read as a present-day determination of Sr2RuO4's order parameter. This scoped review checked selected experimental passages and a figure, not the full multiband calculation, all supplements or experimental raw data. [R3](#ref-source-c9a97c501c718b62)"
         },
         {
           "id": "discovery-implications",
           "title": "Discovery implications",
-          "markdown": "## Discovery implications\n\nPrefer controlled series that change one mechanical coordinate while monitoring oxygen, microstructure and sample geometry. A substrate series alone may change several variables at once. A useful design proposal predicts a trend, a null control and an independent structural or spectroscopic response, rather than stating that more compression must always improve superconductivity. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62)"
+          "markdown": "## Discovery implications\n\nDesign a strain study around a measured mechanical path and a defined superconducting criterion. Retain loading direction, reference state, adhesive or substrate constraints, thermal history and reversibility. Check whether a broadened transition tracks strain inhomogeneity or a changed specimen, and compare transport with magnetic or thermodynamic evidence where feasible. Local arithmetic here verifies mismatch, ideal elastic identities and the adhesive model; it neither predicts a superconducting transition nor establishes a unique strain mechanism. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62) [R4](#ref-source-4b5b65a5047eb1a9)"
         },
         {
           "id": "related-topics",
           "title": "Related topics",
-          "markdown": "## Related topics\n\nSee [nickelate structures](/scwiki/nickelates), [interface superconductivity](/scwiki/two-dimensional-interfaces), and [cuprate comparisons](/scwiki/cuprates)."
+          "markdown": "## Related topics\n\nCompare [pressure tuning](/scwiki/pressure-tuning), [chemical doping](/scwiki/chemical-doping), [electrostatic gating](/scwiki/electrostatic-gating), [nickelates](/scwiki/nickelates) and [two-dimensional interfaces](/scwiki/two-dimensional-interfaces)."
         },
         {
           "id": "material-cases",
           "title": "Material cases",
-          "markdown": "## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| Sr2RuO4; crystal compressed approximately 0.6% along the a-axis | 3.4 K; author-abstract scale under uniaxial strain; not a universal maximum for all samples | transition; unknown | superconducting transition under uniaxial compression | unknown; unknown GPa | equilibrium | experiment; [source](#ref-source-c9a97c501c718b62) |"
+          "markdown": "## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| Sr2RuO4; Steppke representative peak under approximately0.6percent a-axis compression | 3.4 K; Representative magnetic midpoint, not resistive zero or universal maximum. | transition; magnetic-susceptibility-50-percent | Mutual inductance | unknown; unknown GPa | equilibrium | experiment; [source](#ref-source-c9a97c501c718b62) |\n| Sr2RuO4; Steppke sample5 peak | 3.5 K; Approximate sample5 peak; strain scale normalized in Fig4. Not a hydrostatic-pressure record. | transition; magnetic-susceptibility-50-percent | Mutual inductance | unknown; unknown GPa | equilibrium | experiment; [source](#ref-source-c9a97c501c718b62) |\n| La3Ni2O7 (aliases: nickelate, nickelates); SLAO thin film; Bhatt final-journal passage citing Ko | 42 K; Approximate onset; exact original operational onset algorithm not independently reviewed. Film geometry,not bulk. | transition; resistive-onset | Resistivity | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-4b5b65a5047eb1a9) |\n| La3Ni2O7 (aliases: nickelate, nickelates); SLAO thin film; Bhatt final-journal passage citing Ko | 2 K; Approximate zero-resistance endpoint, distinct from42Konset. Does not reproduce raw measurement uncertainty. | transition; zero-resistance | Resistivity | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-4b5b65a5047eb1a9) |"
         }
       ],
-      "markdown": "# Strain tuning: anisotropic control, not hydrostatic pressure\n\nDefine the mechanical boundary conditions before attributing a superconducting change to strain, especially in epitaxial oxide films.\n\n## Scope\n\nStrain is a directional deformation relative to a stated reference structure. Epitaxial clamping, uniaxial loading and hydrostatic pressure impose different constraints, so “compressive” does not specify a unique path through a material's phase diagram. A thin film also carries substrate, defect and oxygen-history variables that a bulk pressure experiment does not reproduce automatically. [R1](#ref-source-363388aa03563c00) [R2](#ref-source-2c98c9257f2c4d46)\n\nThis article treats the mechanical control and its evidential limits. A changed transition temperature is an observation; the attribution of that change to a particular bond angle, orbital or fluctuation is a further inference. Strain is useful precisely because it can tune selected directions, but the experimental boundary conditions must be retained. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62)\n\n## Mathematical assumptions\n\nFor a lattice parameter $a$ relative to a relaxed reference $a_0$, an engineering strain is\n\n$\n\\epsilon=\\frac{a-a_0}{a_0}.\n$\n\nA nominal coherent epitaxial mismatch may be written\n\n$\nf=\\frac{a_{\\mathrm{sub}}-a_{\\mathrm{ref}}}{a_{\\mathrm{ref}}}.\n$\n\nThe nominal mismatch is not automatically the measured strain in a partially relaxed film. Dislocations, domains and thickness-dependent relaxation can change the actual lattice parameters. State the reference phase, orientation and measurement temperature rather than assigning one strain percentage from a substrate name. [R1](#ref-source-363388aa03563c00)\n\nIn a small-deformation continuum description, the strain tensor is the symmetric displacement gradient. Hydrostatic stress has the form $\\sigma_{ij}=-p\\delta_{ij}$, whereas uniaxial and epitaxial boundary conditions select directions. The resulting strain also depends on the elastic response. Out-of-plane expansion under in-plane compression is therefore not a contradiction. [R1](#ref-source-363388aa03563c00)\n\n## Experimental criteria\n\nMeasure actual lattice deformation using an appropriate structural method and report calibration, loading direction, transverse response, relaxation and hysteresis. Keep nominal mismatch and measured strain in separate fields. For superconductivity, identify onset, zero resistance or a magnetic/thermodynamic criterion, and compare equivalent sample histories.\n\nIn Sr2RuO4, the earlier Hicks study and the later higher-strain Steppke study are distinct experimental steps. The larger transition-temperature peak belongs to the latter; it should not be attributed to the initial apparatus or to the earlier paper without checking the original curve. The pilot preserves an approximate source-reported scale while explicitly leaving an unretrieved criterion unknown. [R2](#ref-source-2c98c9257f2c4d46) [R3](#ref-source-c9a97c501c718b62)\n\n## Limits and disputes\n\nA peak in transition temperature near a reconstructed Fermi surface is a constraint on theory, not a determination of every pairing property. Orbital shifts, density-of-states changes and modified correlations can coexist. Inferring a pairing symmetry still requires complementary measurements. [R3](#ref-source-c9a97c501c718b62)\n\nThe pinned chapter's 2026 nickelate-film discussion distinguishes nominal and measured mismatch and warns against assuming that in-plane compression requires a shorter c axis. That update has not received a primary-text check here. Its strain percentages and transition values are consequently not promoted into the pilot's quantitative record. Oxygen stoichiometry, interface structure and defects remain possible covariates, not solved nuisance parameters. [R4](#ref-source-4b5b65a5047eb1a9)\n\n## Discovery implications\n\nPrefer controlled series that change one mechanical coordinate while monitoring oxygen, microstructure and sample geometry. A substrate series alone may change several variables at once. A useful design proposal predicts a trend, a null control and an independent structural or spectroscopic response, rather than stating that more compression must always improve superconductivity. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62)\n\n## Related topics\n\nSee [nickelate structures](/scwiki/nickelates), [interface superconductivity](/scwiki/two-dimensional-interfaces), and [cuprate comparisons](/scwiki/cuprates).\n\n## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| Sr2RuO4; crystal compressed approximately 0.6% along the a-axis | 3.4 K; author-abstract scale under uniaxial strain; not a universal maximum for all samples | transition; unknown | superconducting transition under uniaxial compression | unknown; unknown GPa | equilibrium | experiment; [source](#ref-source-c9a97c501c718b62) |\n\n## Sources\n\n### Ref source-363388aa03563c00\n\n[R1] Piezoelectric-based apparatus for strain tuning (2014). [DOI 10.1063/1.4881611](https://doi.org/10.1063/1.4881611). Publication: journal-article. Check: crossref-metadata-only. Checked: 2026-10-17. Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope.\n### Ref source-2c98c9257f2c4d46\n\n[R2] Strong Increase of\n            T\n            c\n            of Sr\n            2\n            RuO\n            4\n            Under Both Tensile and Compressive Strain (2014). [DOI 10.1126/science.1248292](https://doi.org/10.1126/science.1248292). Publication: journal-article. Check: crossref-metadata-only. Checked: 2026-10-17. Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope.\n### Ref source-c9a97c501c718b62\n\n[R3] Strong peak in\n                    T\n                    c\n                    of Sr\n                    2\n                    RuO\n                    4\n                    under uniaxial pressure (2017). [DOI 10.1126/science.aaf9398](https://doi.org/10.1126/science.aaf9398). Publication: journal-article. Check: author-abstract-scoped-check. Checked: 2026-10-17. Author abstract reports 3.4 K at approximately 0.6% a-axis compression; individual transition criterion was not re-extracted.\n### Ref source-4b5b65a5047eb1a9\n\n[R4] Structural modifications in strain-engineered bilayer nickelate thin films (2026). [DOI 10.1038/s41586-026-10446-2](https://doi.org/10.1038/s41586-026-10446-2). Publication: journal-article. Check: crossref-metadata-only. Checked: 2026-10-17. Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope.\n\n## Claim evidence and conditions\n\n### scwiki-e4-claim-scope-1\n\nStrain is a directional deformation relative to a stated reference structure. Epitaxial clamping, uniaxial loading and hydrostatic pressure impose different constraints, so “compressive” does not specify a unique path through a material's phase diagram. A thin film also carries substrate, defect and oxygen-history variables that a bulk pressure experiment does not reproduce automatically.\n\nEvidence: experiment. Sources: source-363388aa03563c00, source-2c98c9257f2c4d46.\n\nConditions: Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.\n\nVerification scope: See each source verification label; this ledger does not certify primary findings.\n\n### scwiki-e4-claim-scope-2\n\nThis article treats the mechanical control and its evidential limits. A changed transition temperature is an observation; the attribution of that change to a particular bond angle, orbital or fluctuation is a further inference. Strain is useful precisely because it can tune selected directions, but the experimental boundary conditions must be retained.\n\nEvidence: experiment. Sources: source-363388aa03563c00, source-c9a97c501c718b62.\n\nConditions: Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.\n\nVerification scope: See each source verification label; this ledger does not certify primary findings.\n\n### scwiki-e4-claim-mathematical-assumptions-1\n\nThe nominal mismatch is not automatically the measured strain in a partially relaxed film. Dislocations, domains and thickness-dependent relaxation can change the actual lattice parameters. State the reference phase, orientation and measurement temperature rather than assigning one strain percentage from a substrate name.\n\nEvidence: theory. Sources: source-363388aa03563c00.\n\nConditions: Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.\n\nVerification scope: See each source verification label; this ledger does not certify primary findings.\n\n### scwiki-e4-claim-mathematical-assumptions-2\n\nIn a small-deformation continuum description, the strain tensor is the symmetric displacement gradient. Hydrostatic stress has the form $\\sigma_{ij}=-p\\delta_{ij}$, whereas uniaxial and epitaxial boundary conditions select directions. The resulting strain also depends on the elastic response. Out-of-plane expansion under in-plane compression is therefore not a contradiction.\n\nEvidence: theory. Sources: source-363388aa03563c00.\n\nConditions: Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.\n\nVerification scope: See each source verification label; this ledger does not certify primary findings.\n\n### scwiki-e4-claim-experimental-criteria-1\n\nIn Sr2RuO4, the earlier Hicks study and the later higher-strain Steppke study are distinct experimental steps. The larger transition-temperature peak belongs to the latter; it should not be attributed to the initial apparatus or to the earlier paper without checking the original curve. The pilot preserves an approximate source-reported scale while explicitly leaving an unretrieved criterion unknown.\n\nEvidence: experiment. Sources: source-2c98c9257f2c4d46, source-c9a97c501c718b62.\n\nConditions: Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.\n\nVerification scope: See each source verification label; this ledger does not certify primary findings.\n\n### scwiki-e4-claim-limits-and-disputes-1\n\nA peak in transition temperature near a reconstructed Fermi surface is a constraint on theory, not a determination of every pairing property. Orbital shifts, density-of-states changes and modified correlations can coexist. Inferring a pairing symmetry still requires complementary measurements.\n\nEvidence: experiment. Sources: source-c9a97c501c718b62.\n\nConditions: Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.\n\nVerification scope: See each source verification label; this ledger does not certify primary findings.\n\n### scwiki-e4-claim-limits-and-disputes-2\n\nThe pinned chapter's 2026 nickelate-film discussion distinguishes nominal and measured mismatch and warns against assuming that in-plane compression requires a shorter c axis. That update has not received a primary-text check here. Its strain percentages and transition values are consequently not promoted into the pilot's quantitative record. Oxygen stoichiometry, interface structure and defects remain possible covariates, not solved nuisance parameters.\n\nEvidence: experiment. Sources: source-4b5b65a5047eb1a9.\n\nConditions: Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.\n\nVerification scope: See each source verification label; this ledger does not certify primary findings.\n\n### scwiki-e4-claim-discovery-implications-1\n\nPrefer controlled series that change one mechanical coordinate while monitoring oxygen, microstructure and sample geometry. A substrate series alone may change several variables at once. A useful design proposal predicts a trend, a null control and an independent structural or spectroscopic response, rather than stating that more compression must always improve superconductivity.\n\nEvidence: experiment. Sources: source-363388aa03563c00, source-c9a97c501c718b62.\n\nConditions: Strain is referenced to a declared relaxed lattice or measured displacement. Uniaxial stress, biaxial epitaxy and hydrostatic pressure have different tensors and boundary conditions.\n\nVerification scope: See each source verification label; this ledger does not certify primary findings.\n\n## Revision and review\n\nArticle ID: scwiki-e4. Revision: b71381ed038e598f3a6e. Updated: 2026-10-17T12:13:01Z.\n\nReview scope: Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.\n\n- No full scientific validation, raw-data reanalysis or independent replication review has been completed.\n- A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.\n- New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.\n- Historical audit scores and file presence are not evidence that a proposition is correct.\n\nSource: [E_tuning_parameters/E4_strain.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/E_tuning_parameters/E4_strain.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 cf37f577788e1dc80462cb7daac3a80d34e9656910b6a6e879440554376b99ab.\n",
-      "wordCount": 512
+      "markdown": "# Strain tuning: calibrated deformation and superconducting criteria\n\nSeparate nominal mismatch from measured strain, retain mechanical boundary conditions, and distinguish magnetic midpoints from resistive transitions.\n\n## Scope\n\nStrain is a directional deformation relative to a stated reference structure. A uniaxially loaded crystal, a clamped epitaxial film and a hydrostatically compressed sample follow different mechanical paths. Applied displacement is not necessarily sample strain: mounting adhesive, thermal contraction, bending and fracture can all intervene. The useful control variable is the calibrated deformation in the region probed, together with its uncertainty and history. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62)\n\nSeparate the early Sr2RuO4 experiments. Hicks's 2014 Science study reported different responses for loading along the crystallographic ⟨100⟩ and ⟨110⟩ directions, within an approximately 0.23% accessible range. The later Steppke study reached the much larger compressive strain associated with a transition near 3.4 K. These are distinct measurements, not interchangeable references for one apparatus or peak. The earlier result is checked here only through the authors' institutional abstract. [R2](#ref-source-2c98c9257f2c4d46) [R3](#ref-source-c9a97c501c718b62)\n\n## Mathematical assumptions\n\nFor a lattice parameter relative to a relaxed reference, engineering strain is $\\epsilon=(a-a_0)/a_0$. Nominal epitaxial mismatch uses $f=(a_{\\rm sub}-a_{\\rm ref})/a_{\\rm ref}$ instead. Neither a substrate name nor this calculation establishes the strain remaining after relaxation. Report reference composition, phase, temperature and orientation; compare actual film lattice parameters with that same reference. [R4](#ref-source-4b5b65a5047eb1a9)\n\nIn small-deformation elasticity, $\\epsilon_{ij}=(\\partial_i u_j+\\partial_j u_i)/2$ and $\\sigma_{ij}=C_{ijkl}\\epsilon_{kl}$. As an explicitly isotropic illustration, a film with equal in-plane strains $\\epsilon_{xx}=\\epsilon_{yy}=f$ and a traction-free surface has $\\epsilon_{zz}=-2\\nu f/(1-\\nu)$. Positive Poisson ratio therefore permits out-of-plane expansion under in-plane compression. This illustration is not an anisotropic nickelate fit, and it does not convert epitaxial mismatch into an equivalent hydrostatic pressure. [R1](#ref-source-363388aa03563c00) [R4](#ref-source-4b5b65a5047eb1a9)\n\nHicks's simplified adhesive model gives a load-transfer length $\\lambda=\\sqrt{Etd/(nG_e)}$, with sample Young's modulus $E$, sample thickness $t$, adhesive thickness $d$, adhesive shear modulus $G_e$, and one or two bonded faces $n$. For symmetric ends, displacement is distributed over approximately $L+2\\lambda$, not just the exposed length $L$. The stated illustrative parameters give about 90 micrometres. Rigid plates, a much softer adhesive and uniform sample strain across its section are assumptions; finite-element bending and real adhesive failure require additional treatment. [R1](#ref-source-363388aa03563c00)\n\n## Experimental criteria\n\nSteppke measured magnetic transitions using mutual inductance, with approximately 0.2 Oe excitation at 1–20 kHz, and used a capacitive displacement sensor. Figure 4 defines the plotted transition temperatures at 50% of the magnetic response; the 20% and 80% levels show transition width. The reported peak strain is approximately −0.60% with a ±0.06 percentage-point uncertainty from four samples, while individual strain calibration was estimated to have roughly 20% uncertainty. These are different uncertainty statements. [R3](#ref-source-c9a97c501c718b62)\n\nThe often-quoted 3.4 K scale is not a universal sample maximum: sample 5 reached approximately 3.5 K. Resistive transitions in the two contacted specimens did not exceed the highest magnetic transition by more than 0.08 K. That comparison does not redefine a magnetic midpoint as zero resistance. A flat feature near zero strain in sample 1 arose after the sample broke during cooling and needed compression to re-engage; it should not be fitted as an intrinsic phase boundary. [R3](#ref-source-c9a97c501c718b62)\n\nBhatt's final Figure 1 labels nominal/measured mismatch pairs, respectively, as SLAO −2.0%/−1.6%, LAO −1.2%/−0.9%, NGO +0.7%/+0.6% and STO +1.9%/+1.8%. These final labels replace several different measured values in the inherited chapter. The SLAO film has a broad resistive transition, with onset near 42 K and zero near 2 K; those endpoints cannot be merged into a 42 K zero-resistance claim. [R4](#ref-source-4b5b65a5047eb1a9)\n\nKo's original thin-film report also distinguishes onset and zero resistance. Its March 2026 correction fixes resistivity-axis units to mΩ cm and the Figure 3d horizontal label to temperature $T$, not $T_c$. The correction was read in full; the original paper's detailed methods were not retrieved here. The source-linked temperature records below therefore cite Bhatt's checked final passage, rather than implying a complete reanalysis of Ko's experiment. [R4](#ref-source-4b5b65a5047eb1a9) [R5](#ref-source-98849f3ad0a2df49) [R6](#ref-source-acee7fe0af86cc44)\n\n## Limits and disputes\n\nBhatt's films on SLAO used pulsed-laser deposition, whereas the other substrate films used molecular-beam epitaxy. Oxygen annealing and uncertain oxygen occupancy remain relevant covariates. Figure 3 supports out-of-plane expansion under in-plane compression, contrasting with hydrostatic contraction. It does not support the inherited universal superlative that the SLAO film has the largest c-axis: the plotted LAO values are comparable or higher. Avoid turning a qualitative structural contrast into an unsupported ranking. [R4](#ref-source-4b5b65a5047eb1a9)\n\nA peak near a calculated Lifshitz transition constrains possible models without uniquely identifying pairing symmetry. Steppke's electronic-structure and order-parameter calculations are model-dependent; their discussion should not be read as a present-day determination of Sr2RuO4's order parameter. This scoped review checked selected experimental passages and a figure, not the full multiband calculation, all supplements or experimental raw data. [R3](#ref-source-c9a97c501c718b62)\n\n## Discovery implications\n\nDesign a strain study around a measured mechanical path and a defined superconducting criterion. Retain loading direction, reference state, adhesive or substrate constraints, thermal history and reversibility. Check whether a broadened transition tracks strain inhomogeneity or a changed specimen, and compare transport with magnetic or thermodynamic evidence where feasible. Local arithmetic here verifies mismatch, ideal elastic identities and the adhesive model; it neither predicts a superconducting transition nor establishes a unique strain mechanism. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62) [R4](#ref-source-4b5b65a5047eb1a9)\n\n## Related topics\n\nCompare [pressure tuning](/scwiki/pressure-tuning), [chemical doping](/scwiki/chemical-doping), [electrostatic gating](/scwiki/electrostatic-gating), [nickelates](/scwiki/nickelates) and [two-dimensional interfaces](/scwiki/two-dimensional-interfaces).\n\n## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| Sr2RuO4; Steppke representative peak under approximately0.6percent a-axis compression | 3.4 K; Representative magnetic midpoint, not resistive zero or universal maximum. | transition; magnetic-susceptibility-50-percent | Mutual inductance | unknown; unknown GPa | equilibrium | experiment; [source](#ref-source-c9a97c501c718b62) |\n| Sr2RuO4; Steppke sample5 peak | 3.5 K; Approximate sample5 peak; strain scale normalized in Fig4. Not a hydrostatic-pressure record. | transition; magnetic-susceptibility-50-percent | Mutual inductance | unknown; unknown GPa | equilibrium | experiment; [source](#ref-source-c9a97c501c718b62) |\n| La3Ni2O7 (aliases: nickelate, nickelates); SLAO thin film; Bhatt final-journal passage citing Ko | 42 K; Approximate onset; exact original operational onset algorithm not independently reviewed. Film geometry,not bulk. | transition; resistive-onset | Resistivity | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-4b5b65a5047eb1a9) |\n| La3Ni2O7 (aliases: nickelate, nickelates); SLAO thin film; Bhatt final-journal passage citing Ko | 2 K; Approximate zero-resistance endpoint, distinct from42Konset. Does not reproduce raw measurement uncertainty. | transition; zero-resistance | Resistivity | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-4b5b65a5047eb1a9) |\n\n## Sources\n\n### Ref source-363388aa03563c00\n\n[R1] Piezoelectric-based apparatus for strain tuning (2014). [DOI 10.1063/1.4881611](https://doi.org/10.1063/1.4881611). Publication: journal-article. Check: selected-author-apparatus-and-adhesive-model. Checked: 2026-10-18. Author v2 revised8August2014; selected apparatus passages and AppendixA pp6–7 read, p6Fig5/equation visually checked. Transfer-length assumptions retained. No finite-element replication or complete final-version comparison.\n### Ref source-2c98c9257f2c4d46\n\n[R2] Strong Increase of Tc of Sr2RuO4 Under Both Tensile and Compressive Strain (2014). [DOI 10.1126/science.1248292](https://doi.org/10.1126/science.1248292). Publication: journal-article. Check: author-institution-abstract-only. Checked: 2026-10-18. Issue18April2014. Authors institutional abstract supports directional responses and0.23percent range. Full methods and curves not reviewed.\n### Ref source-c9a97c501c718b62\n\n[R3] Strong peak in Tc of Sr2RuO4 under uniaxial pressure (2017). [DOI 10.1126/science.aaf9398](https://doi.org/10.1126/science.aaf9398). Publication: journal-article. Check: selected-accepted-author-methods-and-figure. Checked: 2026-10-18. Accepted authorv2 revised14December2016; journal13January2017. Selected pp6–8 experimental methods/calibration and p32Fig4 checked visually. Magnetic50percent criterion,20/80width,distinct sample5peak and broken-sample artefact retained. Full supplement, final comparison, multiband calculation and raw-data reproduction remain open.\n### Ref source-4b5b65a5047eb1a9\n\n[R4] Structural modifications in strain-engineered bilayer nickelate thin films (2026). [DOI 10.1038/s41586-026-10446-2](https://doi.org/10.1038/s41586-026-10446-2). Publication: journal-article. Check: selected-final-journal-figures-and-methods. Checked: 2026-10-18. Online1April2026,issue7May. Selected final pp2,4,8 and Figs1/3 visually checked. Final measured labels differ from inherited draft. Growth-method/oxygen covariates and c-axis contrast retained. Complete supplement and raw-data analysis remain open.\n### Ref source-98849f3ad0a2df49\n\n[R5] Signatures of ambient pressure superconductivity in thin film La3Ni2O7 (2025). [DOI 10.1038/s41586-024-08525-3](https://doi.org/10.1038/s41586-024-08525-3). Publication: journal-article. Check: publisher-metadata-and-author-institution-summary. Checked: 2026-10-18. Online19December2024; issue27February2025. Author institutional summary supports onset26–42K versuszeroaround2K. Final-PDF request returned non-PDF and OSTIaccepted download timed out; full methods not read. March2026correction accompanies this reference.\n### Ref source-acee7fe0af86cc44\n\n[R6] Author Correction: Signatures of ambient pressure superconductivity in thin film La3Ni2O7 (2026). [DOI 10.1038/s41586-026-10335-8](https://doi.org/10.1038/s41586-026-10335-8). Publication: journal-article. Check: complete-correction-text. Checked: 2026-10-18. Complete one-page correction read. Published31March2026,issue16April. Resistivity unit mOhm cm replaces mOhm cm^-1; Fig3dx-axisT replacesTc. Not a retraction or new transition measurement.\n\n## Claim evidence and conditions\n\n### scwiki-e4-claim-scope-1\n\nStrain is a directional deformation relative to a stated reference structure. A uniaxially loaded crystal, a clamped epitaxial film and a hydrostatically compressed sample follow different mechanical paths. Applied displacement is not necessarily sample strain: mounting adhesive, thermal contraction, bending and fracture can all intervene. The useful control variable is the calibrated deformation in the region probed, together with its uncertainty and history.\n\nEvidence: experiment. Sources: source-363388aa03563c00, source-c9a97c501c718b62.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-scope-2\n\nSeparate the early Sr2RuO4 experiments. Hicks's 2014 Science study reported different responses for loading along the crystallographic ⟨100⟩ and ⟨110⟩ directions, within an approximately 0.23% accessible range. The later Steppke study reached the much larger compressive strain associated with a transition near 3.4 K. These are distinct measurements, not interchangeable references for one apparatus or peak. The earlier result is checked here only through the authors' institutional abstract.\n\nEvidence: experiment. Sources: source-2c98c9257f2c4d46, source-c9a97c501c718b62.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-mathematical-assumptions-1\n\nFor a lattice parameter relative to a relaxed reference, engineering strain is $\\epsilon=(a-a_0)/a_0$. Nominal epitaxial mismatch uses $f=(a_{\\rm sub}-a_{\\rm ref})/a_{\\rm ref}$ instead. Neither a substrate name nor this calculation establishes the strain remaining after relaxation. Report reference composition, phase, temperature and orientation; compare actual film lattice parameters with that same reference.\n\nEvidence: theory. Sources: source-4b5b65a5047eb1a9.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-mathematical-assumptions-2\n\nIn small-deformation elasticity, $\\epsilon_{ij}=(\\partial_i u_j+\\partial_j u_i)/2$ and $\\sigma_{ij}=C_{ijkl}\\epsilon_{kl}$. As an explicitly isotropic illustration, a film with equal in-plane strains $\\epsilon_{xx}=\\epsilon_{yy}=f$ and a traction-free surface has $\\epsilon_{zz}=-2\\nu f/(1-\\nu)$. Positive Poisson ratio therefore permits out-of-plane expansion under in-plane compression. This illustration is not an anisotropic nickelate fit, and it does not convert epitaxial mismatch into an equivalent hydrostatic pressure.\n\nEvidence: theory. Sources: source-363388aa03563c00, source-4b5b65a5047eb1a9.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-mathematical-assumptions-3\n\nHicks's simplified adhesive model gives a load-transfer length $\\lambda=\\sqrt{Etd/(nG_e)}$, with sample Young's modulus $E$, sample thickness $t$, adhesive thickness $d$, adhesive shear modulus $G_e$, and one or two bonded faces $n$. For symmetric ends, displacement is distributed over approximately $L+2\\lambda$, not just the exposed length $L$. The stated illustrative parameters give about 90 micrometres. Rigid plates, a much softer adhesive and uniform sample strain across its section are assumptions; finite-element bending and real adhesive failure require additional treatment.\n\nEvidence: theory. Sources: source-363388aa03563c00.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-experimental-criteria-1\n\nSteppke measured magnetic transitions using mutual inductance, with approximately 0.2 Oe excitation at 1–20 kHz, and used a capacitive displacement sensor. Figure 4 defines the plotted transition temperatures at 50% of the magnetic response; the 20% and 80% levels show transition width. The reported peak strain is approximately −0.60% with a ±0.06 percentage-point uncertainty from four samples, while individual strain calibration was estimated to have roughly 20% uncertainty. These are different uncertainty statements.\n\nEvidence: experiment. Sources: source-c9a97c501c718b62.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-experimental-criteria-2\n\nThe often-quoted 3.4 K scale is not a universal sample maximum: sample 5 reached approximately 3.5 K. Resistive transitions in the two contacted specimens did not exceed the highest magnetic transition by more than 0.08 K. That comparison does not redefine a magnetic midpoint as zero resistance. A flat feature near zero strain in sample 1 arose after the sample broke during cooling and needed compression to re-engage; it should not be fitted as an intrinsic phase boundary.\n\nEvidence: experiment. Sources: source-c9a97c501c718b62.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-experimental-criteria-3\n\nBhatt's final Figure 1 labels nominal/measured mismatch pairs, respectively, as SLAO −2.0%/−1.6%, LAO −1.2%/−0.9%, NGO +0.7%/+0.6% and STO +1.9%/+1.8%. These final labels replace several different measured values in the inherited chapter. The SLAO film has a broad resistive transition, with onset near 42 K and zero near 2 K; those endpoints cannot be merged into a 42 K zero-resistance claim.\n\nEvidence: experiment. Sources: source-4b5b65a5047eb1a9.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-experimental-criteria-4\n\nKo's original thin-film report also distinguishes onset and zero resistance. Its March 2026 correction fixes resistivity-axis units to mΩ cm and the Figure 3d horizontal label to temperature $T$, not $T_c$. The correction was read in full; the original paper's detailed methods were not retrieved here. The source-linked temperature records below therefore cite Bhatt's checked final passage, rather than implying a complete reanalysis of Ko's experiment.\n\nEvidence: experiment. Sources: source-4b5b65a5047eb1a9, source-98849f3ad0a2df49, source-acee7fe0af86cc44.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-limits-and-disputes-1\n\nBhatt's films on SLAO used pulsed-laser deposition, whereas the other substrate films used molecular-beam epitaxy. Oxygen annealing and uncertain oxygen occupancy remain relevant covariates. Figure 3 supports out-of-plane expansion under in-plane compression, contrasting with hydrostatic contraction. It does not support the inherited universal superlative that the SLAO film has the largest c-axis: the plotted LAO values are comparable or higher. Avoid turning a qualitative structural contrast into an unsupported ranking.\n\nEvidence: experiment. Sources: source-4b5b65a5047eb1a9.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-limits-and-disputes-2\n\nA peak near a calculated Lifshitz transition constrains possible models without uniquely identifying pairing symmetry. Steppke's electronic-structure and order-parameter calculations are model-dependent; their discussion should not be read as a present-day determination of Sr2RuO4's order parameter. This scoped review checked selected experimental passages and a figure, not the full multiband calculation, all supplements or experimental raw data.\n\nEvidence: experiment. Sources: source-c9a97c501c718b62.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-discovery-implications-1\n\nDesign a strain study around a measured mechanical path and a defined superconducting criterion. Retain loading direction, reference state, adhesive or substrate constraints, thermal history and reversibility. Check whether a broadened transition tracks strain inhomogeneity or a changed specimen, and compare transport with magnetic or thermodynamic evidence where feasible. Local arithmetic here verifies mismatch, ideal elastic identities and the adhesive model; it neither predicts a superconducting transition nor establishes a unique strain mechanism.\n\nEvidence: theory. Sources: source-363388aa03563c00, source-c9a97c501c718b62, source-4b5b65a5047eb1a9.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n## Revision and review\n\nArticle ID: scwiki-e4. Revision: 138b5d11d4ac9c9142d7. Updated: 2026-10-18T12:38:59.945312+00:00.\n\nReview scope: Selected Hicks apparatus and Steppke accepted-manuscript methods/figures; Bhatt final-journal structure/growth passages and figures; complete Ko correction; bounded elastic checks.\n\n- Complete scientific acceptance, remaining final-version comparisons, full supplements and raw-data reproduction remain open.\n- Hicks2014Science and Ko original methods remain abstract/institution-summary scope; Bhatt final passage supplies film temperature records.\n- Isotropic elasticity and ideal adhesive calculations are illustrations, not anisotropic film fits or an equivalent-pressure calibration.\n\nSource: [E_tuning_parameters/E4_strain.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/E_tuning_parameters/E4_strain.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 cf37f577788e1dc80462cb7daac3a80d34e9656910b6a6e879440554376b99ab.\n",
+      "wordCount": 842
     },
     {
       "id": "scwiki-f7",

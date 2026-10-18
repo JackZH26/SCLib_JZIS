@@ -1020,3 +1020,21 @@ it("keeps gate-dependent device thresholds and chemical controls separate in sea
  const negative=await(await get(["search"],"?q=VO2&tcMin=1")).json();
  expect(negative.results.some((r:{code:string})=>r.code==="E3")).toBe(false);
 });
+
+it("separates calibrated strain, magnetic midpoints and film resistive endpoints",async()=>{
+ const a=articles().find(a=>a.code==="E4")!;
+ const index=searchIndex().entries;
+ expect(a.materialCases.filter(c=>c.formula==="Sr2RuO4").map(c=>[c.tcK,c.criterion])).toEqual([[3.4,"magnetic-susceptibility-50-percent"],[3.5,"magnetic-susceptibility-50-percent"]]);
+ expect(searchArticles(index,"Sr2RuO4",{tcMin:4}).some(a=>a.code==="E4")).toBe(false);
+ expect(searchArticles(index,"Sr2RuO4",{tcMin:3,criterion:"zero-resistance"}).some(a=>a.code==="E4")).toBe(false);
+ expect(searchArticles(index,"nickelate",{tcMin:40,criterion:"resistive-onset",pressure:"ambient"}).some(a=>a.code==="E4")).toBe(true);
+ expect(searchArticles(index,"nickelate",{tcMin:40,criterion:"zero-resistance",pressure:"ambient"}).some(a=>a.code==="E4")).toBe(false);
+ expect(searchArticles(index,"nickelate",{tcMin:1,criterion:"zero-resistance",pressure:"ambient"}).some(a=>a.code==="E4")).toBe(true);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("−2.0%/−1.6%");expect(md).toContain("−1.2%/−0.9%");expect(md).toContain("+1.9%/+1.8%");
+ expect(md).toContain("10.1038/s41586-026-10335-8");expect(md).toContain("mΩ cm");
+ expect(md).toContain("sample broke");expect(md).toContain("not retrieved");
+ expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
+ const data=await(await get(["search"],"?q=nickelate&tcMin=40&criterion=zero-resistance&pressure=ambient")).json();
+ expect(data.results.some((r:{code:string})=>r.code==="E4")).toBe(false);
+});
