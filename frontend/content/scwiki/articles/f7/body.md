@@ -1,52 +1,39 @@
 ## Scope
 
-Superfluid weight describes the response of a superconducting system to a phase twist or electromagnetic field in a specified limiting procedure. In multiband systems the current response can include a contribution related to Bloch-state geometry, beyond the conventional dispersion-related part. Peotta and Törmä developed an important flat-band formulation; subsequent work extended the multiband description. [R1](#ref-source-fdf091e09e7f4a6f) [R3](#ref-source-fa7a165c8c344a63)
+Superfluid weight is a current or phase-twist response defined with a particular thermodynamic and electromagnetic convention. In a multiband superconductor, its conventional part is associated with intraband dispersion, while geometric terms involve the wavefunctions and interband matrix elements. These are parts of a specified response calculation, not two experimentally separated streams of Cooper pairs. [R1](#ref-source-fdf091e09e7f4a6f) [R3](#ref-source-fa7a165c8c344a63)
 
-The phrase “interband contribution” concerns response matrix elements. It does not require the assertion that every Cooper pair contains one electron from each of two different bands, and it does not mean that an experiment has isolated two separately flowing currents. Definitions of superfluid weight, sheet stiffness and penetration depth can differ by charge, Planck-constant, thickness and normalization factors. [R1](#ref-source-fdf091e09e7f4a6f) [R3](#ref-source-fa7a165c8c344a63)
+A response kernel also depends on how frequency and wavevector approach zero. Scalapino, White and Zhang discuss distinct limiting procedures for diagnosing insulating, metallic and superconducting lattice states. A clean metal's ideal transport response should not be identified with the equilibrium Meissner response merely because both are called a stiffness. This entry checks that paper's original abstract; its full correlation-function derivation remains open. [R6](#ref-source-dd8fd5ac429b785f)
 
 ## Mathematical assumptions
 
-Within a stated multiband mean-field response convention, write
+For an isotropic superconducting sheet, define the phase-energy density by $f=\rho_s|\nabla\theta-(2e/\hbar)\mathbf A|^2/2$, with $\rho_s$ in joules. The sheet electromagnetic kernel is $K_\square=4e^2\rho_s/\hbar^2=1/L_\square$, where $L_\square$ is sheet kinetic inductance. Peotta and Törmä instead define a mass-normalized weight through $f=D_s p_s^2/8$, with $p_s=\hbar\nabla\theta$ in zero field. Thus their convention gives $\rho_s=\hbar^2D_s/4$ and $K_\square=e^2D_s$. These quantities have different units even when each is called superfluid weight. [R1](#ref-source-fdf091e09e7f4a6f) [R4](#ref-source-be7282623ca96056)
 
-$
-D_{s,ij}=D^{\mathrm{conv}}_{ij}+D^{\mathrm{geom}}_{ij}.
-$
+A pair phase written as $\theta=2\mathbf q\cdot\mathbf r$ introduces another factor: the curvature with respect to $\mathbf q$ is four times the curvature with respect to $\nabla\theta$. For a hypothetical $L_\square=10$ nH, the sheet convention above gives $\rho_s/k_B\approx0.7845$ K. Three illustrative inductances were checked with SI charge, Planck and Boltzmann constants. These are conversion examples, not measured superconducting transition temperatures. [R1](#ref-source-fdf091e09e7f4a6f) [R4](#ref-source-be7282623ca96056)
 
-A useful schematic form in an isolated-band, uniform-pairing limit is
+In a fixed orbital basis, differentiating $H|m\rangle=\varepsilon_m|m\rangle$ gives $\langle n|\partial_iH|m\rangle=\delta_{nm}\partial_i\varepsilon_m+(\varepsilon_m-\varepsilon_n)\langle n|\partial_i m\rangle$. Flat eigenvalues set the diagonal velocity to zero without forcing the interband matrix elements to vanish. Fifteen checks in an illustrative two-band model reproduce this identity and $g_{kk}=1/4$ for a rotating eigenvector; multiplying either eigenvector by a smooth phase leaves the metric unchanged. This checks a band identity, not superconductivity or a self-consistent current response. [R3](#ref-source-fa7a165c8c344a63) [R5](#ref-source-72f7ddb9f13bbd81)
 
-$
-D^{\mathrm{geom}}_{ij}\propto
-\sum_{\mathbf k}\frac{|\Delta|^2}{E_{\mathbf k}}
-\tanh\!\left(\frac{E_{\mathbf k}}{2k_BT}\right)g_{ij}(\mathbf k).
-$
+The familiar isolated-band expression $D_{s,ij}^{\rm geom}\propto\sum_{\mathbf k}(|\Delta|^2/E_{\mathbf k})\tanh[E_{\mathbf k}/(2k_BT)]g_{ij}(\mathbf k)$ displays a geometric structure, not a convention-free numerical formula. It requires stated pairing, band-isolation and symmetry assumptions, a wavevector integration measure and charge factors. The metric used in the checked Liang manuscript is twice the Wiki convention $g_{ij}=\operatorname{Re}\langle\partial_i u|(1-|u\rangle\langle u|)|\partial_j u\rangle$. Translate that normalization before comparing prefactors. [R1](#ref-source-fdf091e09e7f4a6f) [R3](#ref-source-fa7a165c8c344a63)
 
-This proportionality displays the quantum-metric structure. It is not a numerical formula without the Hamiltonian, degeneracy, Brillouin-zone normalization and electromagnetic prefactor. For a normalized isolated Bloch state, the metric can be defined as
-
-$
-g_{ij}=\operatorname{Re}\langle\partial_i u|
-(1-|u\rangle\langle u|)|\partial_j u\rangle.
-$
-
-The isolated-band and self-consistency assumptions are consequential, especially near small interband gaps or nonuniform order parameters. [R1](#ref-source-fdf091e09e7f4a6f) [R3](#ref-source-fa7a165c8c344a63)
+The internal pairing fields must also respond to the twist. Under the time-reversal and equilibrium-minimum assumptions studied by Huhtinen and colleagues, the total free-energy curvature contains a negative-semidefinite relaxation correction to the frozen-field result. In their isolated flat-band uniform-pairing setting, the relevant integrated metric has minimal trace with respect to orbital positions. Equal pairing at zero twist does not justify freezing all relative phases at nonzero twist. A nonzero unrelaxed result can even become zero after relaxation. The scalar illustration in the flat-band article shows this possibility without claiming to reproduce the complete lattice response. [R5](#ref-source-72f7ddb9f13bbd81)
 
 ## Experimental criteria
 
-State which stiffness convention is measured, its units, dimensionality, thickness and frequency regime. Preserve the order of static and long-wavelength limits. To claim a geometric fraction, compare a justified multiband calculation with a conventional baseline and the measured total response. Measuring a total value larger than one simple estimate motivates further modeling; it is not a model-free subtraction. [R3](#ref-source-fa7a165c8c344a63) [R4](#ref-source-be7282623ca96056)
+Measure and report the total response with its units, dimensionality, frequency, geometry and fitting model. Tanaka and colleagues obtain stiffness through microwave kinetic inductance with a parallel electrode-proximitized edge in the circuit model. Their conversion uses an assumed active-region aspect ratio equal to the device aspect ratio; their reported $D_s=l/(wL_{\rm total})$ corresponds to inverse sheet inductance. A comparison with a conventional estimate can support a geometric interpretation without constituting a model-independent measurement of its fraction. [R4](#ref-source-be7282623ca96056)
 
-For a BKT comparison, use the renormalized total phase stiffness in the appropriate sheet-energy convention. A transition temperature can constrain that total without separately measuring the geometric term. The relation between pairing amplitude and phase coherence remains a second issue. [R1](#ref-source-fdf091e09e7f4a6f) [R3](#ref-source-fa7a165c8c344a63)
+The selected author manuscript distinguishes a 20 mK refrigerator base from an approximately 40 mK wired-device temperature. Its roughly 1 K resistive scale uses half the normal-state resistance. Neither the measurement temperature nor that resistive criterion should automatically be labelled a BKT transition. Full published-version and raw-data comparisons remain open. [R4](#ref-source-be7282623ca96056)
 
-The reviewed Tanaka manuscript extracts stiffness with an explicit parallel edge-proximity circuit model and an assumed active-region aspect ratio. It distinguishes a 20 mK refrigerator base from an approximately 40 mK device temperature. Its half-normal-resistance criterion is not automatically a BKT transition. Full published-version and raw-data comparison remains open. [R4](#ref-source-be7282623ca96056)
+For an effective isotropic two-dimensional BKT description, the jump involves the renormalized total sheet phase stiffness: $k_BT_{\rm BKT}=\pi\rho_s(T_{\rm BKT}^-)/2$. It does not determine a separate geometric component. Substituting a zero-temperature stiffness gives only an upper estimate if the stiffness at the transition does not exceed that zero-temperature value. With the hypothetical 10 nH example this estimate is about 1.232 K; it is neither a measured transition nor evidence that the BKT assumptions hold in a particular device. [R4](#ref-source-be7282623ca96056) [R7](#ref-source-8f81510a80c35e3a)
 
 ## Limits and disputes
 
-Topology can impose a lower bound under particular assumptions, but a nonzero Chern number is not necessary for geometric superfluid weight. A Chern-trivial band can still have a nonzero quantum metric. Lieb-lattice work is a useful model example of finite flat-band superfluid response. The result is theoretical and depends on its interaction and band assumptions. [R1](#ref-source-fdf091e09e7f4a6f) [R2](#ref-source-b43340ce5c356e49)
+A nonzero Chern number can provide a geometric lower bound in specified models, but it is not necessary for every geometric contribution. The Chern-trivial Lieb-lattice example has a finite flat-band response under its interaction assumptions. A bound on an integrated metric is not automatically a numerical bound on a dimensionful measured stiffness: filling, interaction, normalization and the complete response matter. [R1](#ref-source-fdf091e09e7f4a6f) [R2](#ref-source-b43340ce5c356e49) [R5](#ref-source-72f7ddb9f13bbd81)
 
-A positive geometric contribution is not a guarantee that an experimental critical temperature equals a mean-field pairing scale. Disorder, remote-band truncation, self-consistent order-parameter response and phase fluctuations affect quantitative comparisons. The moire experiment cited in the source chapter supplies an important constraint, but this pilot has not reanalyzed its raw data or independently separated a geometric fraction. [R3](#ref-source-fa7a165c8c344a63) [R4](#ref-source-be7282623ca96056)
+Selected original passages and equations, the band-current identity and unit conversions have been checked. Complete scientific acceptance has not been reached. Full current-correlation and BKT derivations, self-consistent multiband response, remote-band convergence and experimental data audits remain open. Disorder, finite frequency, sample inhomogeneity and phase fluctuations can affect the comparison between a theoretical weight and a measured response. [R3](#ref-source-fa7a165c8c344a63) [R4](#ref-source-be7282623ca96056) [R5](#ref-source-72f7ddb9f13bbd81) [R6](#ref-source-dd8fd5ac429b785f) [R7](#ref-source-8f81510a80c35e3a)
 
 ## Discovery implications
 
-Use geometry as a calculable constraint rather than an attractive label for a flat band. Report conventional, geometric and total response together, test the band truncation and state which prediction can be checked independently. A large metric does not compensate automatically for poor pairing, unfavorable filling or loss of macroscopic coherence. [R1](#ref-source-fdf091e09e7f4a6f) [R3](#ref-source-fa7a165c8c344a63)
+Report conventional, geometric and total response using a common convention, including internal-field relaxation. Check a band model's current operator and geometry before applying a flat-band formula, and retain the uncertainty of the experimental baseline. Geometry can constrain transport by pairs; it does not automatically supply the attraction, determine gap symmetry or ensure macroscopic phase coherence. [R1](#ref-source-fdf091e09e7f4a6f) [R3](#ref-source-fa7a165c8c344a63) [R5](#ref-source-72f7ddb9f13bbd81)
 
 ## Related topics
 
-Compare [magnetic penetration-depth evidence](/scwiki/meissner-effect), [two-dimensional phase coherence](/scwiki/two-dimensional-interfaces), and [multiband pairing](/scwiki/multiband-pairing).
+Continue with [quantum metric](/scwiki/quantum-metric), [flat-band superconductivity](/scwiki/flat-band-superconductivity), [flat-band pairing](/scwiki/flat-band-pairing), [Meissner effect](/scwiki/meissner-effect) and [dimensionality and phase slips](/scwiki/dimensionality).
