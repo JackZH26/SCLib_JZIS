@@ -1,0 +1,489 @@
+{
+  "id": "scwiki-e8",
+  "topicId": "scwiki-topic-e8",
+  "code": "E8",
+  "slug": "dimensionality",
+  "title": "Dimensionality: BKT coherence, phase slips and finite-size pairing",
+  "summary": "Compare two-dimensional films, narrow wires and small grains using phase stiffness, screening, sample geometry and explicit experimental criteria.",
+  "aliases": [
+    "dimensionality",
+    "BKT",
+    "Berezinskii Kosterlitz Thouless",
+    "phase stiffness",
+    "phase slips",
+    "LAMH",
+    "nanowire",
+    "nanoparticle",
+    "quantum phase slip",
+    "CQPS"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory"
+  ],
+  "relatedCodes": [
+    "E7",
+    "E5",
+    "A7",
+    "D11"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T13:25:10.195905+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected KT/NK original text, Xi/Bezryadin/Astafiev author experimental passages and bounded stiffness/GL-saddle/rate calculations.",
+    "limitations": [
+      "Complete scientific acceptance, full supplements and raw-data reanalysis remain open.",
+      "LA, McCumber–Halperin, Giordano and Black original full texts not retrieved; publisher abstract scope only.",
+      "Xi, Bezryadin and Astafiev final-version comparisons remain open. NK extracted text was not visually verified.",
+      "Finite-size/screening and measurement frequency limit direct comparison with the ideal renormalized BKT jump. No universal nanowire critical resistance asserted."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "E_tuning_parameters/E8_dimensionality.md",
+    "sha256": "8a1bc46aef3230356d75fc3e1f6ecbc6afae2da1d3521aa6b1f7bbf9490f4b8c",
+    "sourceId": "file-7bdc391cd224bc57"
+  },
+  "references": [
+    {
+      "id": "source-408113812912d816",
+      "doi": "10.1088/0022-3719/6/7/010",
+      "title": "Ordering, metastability and phase transitions in two-dimensional systems",
+      "year": 1973,
+      "url": "https://doi.org/10.1088/0022-3719/6/7/010",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-original-superfluid-and-screening-sections",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.physics.uci.edu/~taborek/publications/other/jcv6i7p1181.pdf",
+        "note": "Original journal scan, selected section 5 pp1197–1198 extracted text: neutral vortex energy, fluctuation renormalization and finite magnetic screening in charged films. Full original derivation not reviewed."
+      }
+    },
+    {
+      "id": "source-8f81510a80c35e3a",
+      "doi": "10.1103/PhysRevLett.39.1201",
+      "title": "Universal Jump in the Superfluid Density of Two-Dimensional Superfluids",
+      "year": 1977,
+      "url": "https://doi.org/10.1103/PhysRevLett.39.1201",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-original-publisher-text",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.39.1201",
+        "note": "Selected original pp1201–1203 extracted publisher text: renormalized stiffness, RG relation and universal jump. Screenshot pixels unavailable; no visual equation check claimed. Modern-constant mass-density conversion independently checked."
+      }
+    },
+    {
+      "id": "source-aa12d674a498e02d",
+      "doi": "10.1103/PhysRev.164.498",
+      "title": "Intrinsic Resistive Transition in Narrow Superconducting Channels",
+      "year": 1967,
+      "url": "https://doi.org/10.1103/PhysRev.164.498",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.164.498",
+        "note": "Original abstract read; full text access unsuccessful. Displayed zero-current GL barrier independently integrated locally; original full derivation remains open."
+      }
+    },
+    {
+      "id": "source-866d4492c91f5b39",
+      "doi": "10.1103/PhysRevB.1.1054",
+      "title": "Time Scale of Intrinsic Resistive Fluctuations in Thin Superconducting Wires",
+      "year": 1970,
+      "url": "https://doi.org/10.1103/PhysRevB.1.1054",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.1.1054",
+        "note": "Original abstract identifies revised time-dependent GL prefactor. Full original derivation not retrieved; no numerical LAMH attempt-frequency claim made. Directional-rate detailed balance is a separate local calculation."
+      }
+    },
+    {
+      "id": "source-93c2e7d6280c7bbc",
+      "doi": "10.1103/PhysRevLett.61.2137",
+      "title": "Evidence for Macroscopic Quantum Tunneling in One-Dimensional Superconductors",
+      "year": 1988,
+      "url": "https://doi.org/10.1103/PhysRevLett.61.2137",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.61.2137",
+        "note": "Indium-wire low-temperature deviation and quantum interpretation checked in original abstract only; no full data audit or quantitative transition record."
+      }
+    },
+    {
+      "id": "source-c80fb39cdf748a83",
+      "doi": "10.1038/nphys3538",
+      "title": "Ising pairing in superconducting NbSe2 atomic layers",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nphys3538",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-results-methods-and-figure",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1507.08731v1",
+        "note": "Author v1 selected pp1–3, p8 methods and p10 Figure2 caption read; p10 visually checked. AL fit near3.0K, distinct resistance/BKT criteria, 8K normal resistance and0.3K floor retained. Publisher online9November2015; issue2016. Final PDF not obtained; final comparison and supplement open."
+      }
+    },
+    {
+      "id": "source-9ebba9ba0616123e",
+      "doi": "10.1038/35010060",
+      "title": "Quantum suppression of superconductivity in ultrathin nanowires",
+      "year": 2000,
+      "url": "https://doi.org/10.1038/35010060",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-transport-and-methods",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0003198v1",
+        "note": "Selected author pp1–4 read; p4 visually checked. Mo79Ge21 wire geometry, electrode5.5K transition and50mK measurement floor distinguished. Final Nature404,971–974,27April2000; final comparison and raw-data review open."
+      }
+    },
+    {
+      "id": "source-42e0dec220b7b3ea",
+      "doi": "10.1038/nature10930",
+      "title": "Coherent quantum phase slip",
+      "year": 2012,
+      "url": "https://doi.org/10.1038/nature10930",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-two-state-model-and-spectroscopy",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1204.4511v1",
+        "note": "Selected author pp2–7 read: flux-state model, geometry,40mK spectroscopy, film2.7K transition,4.9GHz fit and resonator distortion. Nature484,355–358(2012). Full supplement, final comparison and raw-data analysis remain open."
+      }
+    },
+    {
+      "id": "source-9fd1a118a8a9914b",
+      "doi": "10.1103/PhysRevLett.76.688",
+      "title": "Spectroscopy of the Superconducting Gap in Individual Nanometer-Scale Aluminum Particles",
+      "year": 1996,
+      "url": "https://doi.org/10.1103/PhysRevLett.76.688",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.76.688",
+        "note": "Original publisher abstract: radius approximately5nm or greater, parity-dependent tunneling thresholds and field suppression. Full text not retrieved. Distinct from the1995 discrete-level paper; no Tc assigned."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-e8-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Dimensionality compares geometry with physical length scales. A layered crystal, a two-dimensional electronic band and a superconducting film with a nearly uniform order parameter through its thickness are different descriptions. Compare thickness with the perpendicular coherence length, wire transverse dimensions with coherence lengths, and lateral size with magnetic screening lengths. Interlayer coupling, substrate, disorder and carrier density can change when layers are removed. Reduced thickness alone does not establish an ideal two-dimensional phase transition.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-408113812912d816",
+        "source-c80fb39cdf748a83"
+      ],
+      "conditions": "Specify effective dimension, finite size and screening, probe/transition criterion, sample and temperature; distinguish thermal activation, coherent coupling and local pairing.",
+      "verificationScope": "Selected original text, author versions or clearly marked abstracts plus bounded calculations; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e8-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "For a short-range two-dimensional phase model, vortex–antivortex unbinding separates quasi-long-range order from a disordered phase. The relevant stiffness is renormalized by fluctuations. In a charged film, magnetic screening changes the vortex interaction at long distance: Kosterlitz and Thouless explicitly identified this limitation in their original paper. BKT-like behavior requires an appropriate range of length, current and temperature scales; do not transfer the neutral infinite-system limit to every finite superconducting sheet.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-408113812912d816",
+        "source-8f81510a80c35e3a"
+      ],
+      "conditions": "Specify effective dimension, finite size and screening, probe/transition criterion, sample and temperature; distinguish thermal activation, coherent coupling and local pairing.",
+      "verificationScope": "Selected original text, author versions or clearly marked abstracts plus bounded calculations; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e8-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Define the sheet phase stiffness $J$ in energy units by $F_\\theta=(J/2)\\int d^2r\\,|\\nabla\\theta|^2$. A single vortex has logarithmic energy $\\pi J\\ln(L/a)$ and positional entropy $2k_B\\ln(L/a)$ within this model, where $a$ is a core cutoff. The universal jump is $J_R(T_{\\rm BKT}^-)=2k_BT_{\\rm BKT}/\\pi$, with the long-distance **renormalized** stiffness $J_R$. The elementary energy–entropy balance explains the scale; it is not a replacement for the renormalization calculation. For a local sheet inductance $L_k$ per square, the corresponding stiffness convention is $J=\\hbar^2/(4e^2L_k)$. Frequency, vortex response and finite size matter when comparing a measured inductance with the static jump.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-408113812912d816",
+        "source-8f81510a80c35e3a"
+      ],
+      "conditions": "Specify effective dimension, finite size and screening, probe/transition criterion, sample and temperature; distinguish thermal activation, coherent coupling and local pairing.",
+      "verificationScope": "Selected original text, author versions or clearly marked abstracts plus bounded calculations; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e8-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In a uniform narrow wire near its mean-field transition, the zero-current Ginzburg–Landau saddle gives $\\Delta F_0=(8\\sqrt2/3)u_c A\\xi$, where $u_c=B_c^2/(2\\mu_0)$ is the SI condensation-energy density and $A$ is cross-sectional area. A local check integrates the normalized saddle $f(y)=\\tanh(y/\\sqrt2)$, $y=x/\\xi$, in $\\int[(1-f^2)^2+2(df/dy)^2]dy$. This checks the barrier factor under those assumptions, not a finite-current barrier, quantum tunneling action or the full LAMH prefactor. The original Langer–Ambegaokar and McCumber–Halperin full derivations have not been retrieved for this review.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-aa12d674a498e02d",
+        "source-866d4492c91f5b39"
+      ],
+      "conditions": "Specify effective dimension, finite size and screening, probe/transition criterion, sample and temperature; distinguish thermal activation, coherent coupling and local pairing.",
+      "verificationScope": "Selected original text, author versions or clearly marked abstracts plus bounded calculations; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e8-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For rare independent thermal phase slips, define $r_0$ explicitly as the zero-bias rate **per direction**. With $\\Phi_0=h/(2e)$, detailed balance gives $r_\\pm=r_0\\exp[\\pm I\\Phi_0/(2k_BT)]$ to leading small-bias barrier tilt, $V=\\Phi_0(r_+-r_-)$ and $R_{I\\to0}=\\Phi_0^2r_0/(k_BT)$. The thermal activation factor belongs inside $r_0$; this definition avoids confusing a total event rate with a directional one. Low-temperature resistance saturation alone does not identify coherent quantum phase slips.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-aa12d674a498e02d",
+        "source-866d4492c91f5b39",
+        "source-42e0dec220b7b3ea"
+      ],
+      "conditions": "Specify effective dimension, finite size and screening, probe/transition criterion, sample and temperature; distinguish thermal activation, coherent coupling and local pairing.",
+      "verificationScope": "Selected original text, author versions or clearly marked abstracts plus bounded calculations; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e8-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Xi's encapsulated NbSe2 devices distinguish several transition definitions. In the checked author manuscript, the monolayer Aslamazov–Larkin fit gives $T_{c0}\\approx3.0$ K, close to the 50% normal-resistance criterion; the inferred BKT transition lies near the 1% criterion. Those are separate quantities. Normal resistance was taken at 8 K. The four-terminal field series used a 50% criterion, while a separate two-terminal monolayer device used a rapid-resistance-drop criterion. The 0.3 K measurement floor is not another transition. Large in-plane critical fields support the authors' Ising-pairing interpretation under their model, rather than proving triplet pairing by themselves. The journal issue is from 2016; online publication was 9 November 2015.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c80fb39cdf748a83"
+      ],
+      "conditions": "Specify effective dimension, finite size and screening, probe/transition criterion, sample and temperature; distinguish thermal activation, coherent coupling and local pairing.",
+      "verificationScope": "Selected original text, author versions or clearly marked abstracts plus bounded calculations; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e8-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Bezryadin's nanotube-templated amorphous Mo79Ge21 wires were approximately 10 nm or less in diameter and 95–185 nm long. The resistance drop near 5.5 K belongs to the electrodes, after which the wire resistance could be isolated. In the studied series, samples on opposite sides of a normal-resistance scale near $R_Q=h/(4e^2)\\approx6.45$ kilohms showed decreasing or increasing resistance on cooling. One superconducting sample was checked down to 50 mK. These are sample-specific transport observations and a quantum-fluctuation interpretation, not a universal wire transition temperature or universal critical resistance for all geometries and environments.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9ebba9ba0616123e"
+      ],
+      "conditions": "Specify effective dimension, finite size and screening, probe/transition criterion, sample and temperature; distinguish thermal activation, coherent coupling and local pairing.",
+      "verificationScope": "Selected original text, author versions or clearly marked abstracts plus bounded calculations; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e8-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Astafiev's InOx loop experiment used microwave spectroscopy to investigate coherent coupling between flux states. The checked author version describes a 35 nm film, a narrow segment about 40 nm wide and 400 nm long, and measurements at 40 mK. A two-state fit gave $E_S/h=4.9$ GHz and persistent current 24 nA for the illustrated device; resonator features distorted portions of the spectrum. The film's separately reported 2.7 K transition is distinct from the loop spectroscopy temperature. Coherent coupling evidence is stronger and different in kind from fitting a dissipative resistance tail; the selected readings do not reproduce the complete supplementary analysis.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-42e0dec220b7b3ea"
+      ],
+      "conditions": "Specify effective dimension, finite size and screening, probe/transition criterion, sample and temperature; distinguish thermal activation, coherent coupling and local pairing.",
+      "verificationScope": "Selected original text, author versions or clearly marked abstracts plus bounded calculations; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e8-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "For aluminum nanoparticles, Black, Ralph and Tinkham reported even/odd differences in tunneling excitation thresholds and field suppression of a spectroscopic gap in sufficiently large particles, with radius roughly 5 nm or greater in their abstract. Radius is not diameter. Discrete levels, charging and parity enter the interpretation. Local pairing signatures do not demonstrate zero resistance across an isolated grain or global phase coherence in an array. This entry currently relies on the original publisher abstract, without a complete original-text audit.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9fd1a118a8a9914b"
+      ],
+      "conditions": "Specify effective dimension, finite size and screening, probe/transition criterion, sample and temperature; distinguish thermal activation, coherent coupling and local pairing.",
+      "verificationScope": "Selected original text, author versions or clearly marked abstracts plus bounded calculations; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e8-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Use several diagnostics for a BKT interpretation: nonlinear current–voltage behavior, stiffness and resistance scaling over justified windows, together with finite-size, heating and inhomogeneity checks. A convenient fit does not establish its asymptotic assumptions. Likewise, Giordano's early indium-wire work reported low-temperature deviations from thermal-activation predictions consistent with quantum tunneling; it should not be generalized into a rule that every residual resistance tail proves quantum phase slips. Weak links, contacts, normal regions and electromagnetic environment need independent controls.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-408113812912d816",
+        "source-8f81510a80c35e3a",
+        "source-93c2e7d6280c7bbc",
+        "source-9ebba9ba0616123e",
+        "source-42e0dec220b7b3ea"
+      ],
+      "conditions": "Specify effective dimension, finite size and screening, probe/transition criterion, sample and temperature; distinguish thermal activation, coherent coupling and local pairing.",
+      "verificationScope": "Selected original text, author versions or clearly marked abstracts plus bounded calculations; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e8-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Selected original KT passages, NK journal text and author-version experimental sections have been checked. The NK equations were read from extracted publisher text, not a visually verified scan. The original LA, McCumber–Halperin, Giordano and nanoparticle full texts remain unreviewed; final-version comparisons for Xi, Bezryadin and Astafiev and complete supplements/raw-data analyses also remain open. Local algebra checks and successful software tests do not complete scientific acceptance.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-408113812912d816",
+        "source-8f81510a80c35e3a",
+        "source-aa12d674a498e02d",
+        "source-866d4492c91f5b39",
+        "source-93c2e7d6280c7bbc",
+        "source-c80fb39cdf748a83",
+        "source-9ebba9ba0616123e",
+        "source-42e0dec220b7b3ea",
+        "source-9fd1a118a8a9914b"
+      ],
+      "conditions": "Specify effective dimension, finite size and screening, probe/transition criterion, sample and temperature; distinguish thermal activation, coherent coupling and local pairing.",
+      "verificationScope": "Selected original text, author versions or clearly marked abstracts plus bounded calculations; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-e8-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Build thickness and width series with documented oxidation protection, substrate, contacts and disorder. Store pairing-fit, phase-coherence, resistance and local-spectroscopy criteria separately, retaining the actual sample and measurement temperature. A route that strengthens pairing can simultaneously reduce phase stiffness; dimensional reduction is a tuning parameter, not a guarantee of a higher usable superconducting transition.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-c80fb39cdf748a83",
+        "source-9ebba9ba0616123e",
+        "source-42e0dec220b7b3ea",
+        "source-9fd1a118a8a9914b"
+      ],
+      "conditions": "Specify effective dimension, finite size and screening, probe/transition criterion, sample and temperature; distinguish thermal activation, coherent coupling and local pairing.",
+      "verificationScope": "Selected original text, author versions or clearly marked abstracts plus bounded calculations; full scientific acceptance open."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "J_R(T_{\\rm BKT}^-)=2k_BT_{\\rm BKT}/\\pi",
+      "check": "Vortex radial quadrature, sheet-inductance conversion and helium areal-density units checked; not an independent RG proof."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta F_0=(8\\sqrt2/3)u_c A\\xi",
+      "check": "100000-point GL saddle integral; zero-current uniform near-Tc model only."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "R=\\Phi_0^2r_0/(k_BT)",
+      "check": "Three small-current detailed-balance checks with explicit per-direction zero-bias rate; no LAMH prefactor reproduction."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-e8-material-1",
+      "formula": "NbSe2",
+      "sample": "Xi encapsulated monolayer",
+      "recordType": "experiment",
+      "reportedTemperatureK": 3.0,
+      "tcK": 3.0,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate fit temperature from author Figure2; not the distinct BKT or zero-resistance criterion.",
+      "criterion": "aslamazov-larkin-fit",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Four-terminal transport fluctuation-conductivity fit",
+      "sourceId": "source-c80fb39cdf748a83",
+      "aliases": [
+        "niobium diselenide",
+        "Ising NbSe2"
+      ]
+    },
+    {
+      "id": "scwiki-e8-material-2",
+      "formula": "NbSe2",
+      "sample": "Xi high-field measurement floor",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.3,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Measurement floor only; separate device criteria retained inthe article.",
+      "criterion": "measurement-floor",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Magnetotransport",
+      "sourceId": "source-c80fb39cdf748a83",
+      "aliases": [
+        "niobium diselenide",
+        "Ising NbSe2"
+      ]
+    },
+    {
+      "id": "scwiki-e8-material-3",
+      "formula": "NbSe2",
+      "sample": "Xi normal-resistance reference",
+      "recordType": "experiment",
+      "reportedTemperatureK": 8,
+      "tcK": null,
+      "temperatureKind": "normal-state",
+      "temperatureNote": "Reference temperature for Rn; not Tc.",
+      "criterion": "normal-resistance-reference",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Transport",
+      "sourceId": "source-c80fb39cdf748a83",
+      "aliases": [
+        "niobium diselenide",
+        "Ising NbSe2"
+      ]
+    },
+    {
+      "id": "scwiki-e8-material-4",
+      "formula": "Mo79Ge21",
+      "sample": "Bezryadin superconducting wire measurement floor",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.05,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "50mK checked in one superconducting sample. The5.5K electrode transition is not assigned to the wire.",
+      "criterion": "low-temperature-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Low-bias transport",
+      "sourceId": "source-9ebba9ba0616123e",
+      "aliases": [
+        "MoGe nanowire",
+        "amorphous MoGe"
+      ]
+    },
+    {
+      "id": "scwiki-e8-material-5",
+      "formula": "InOx",
+      "sample": "Astafiev superconducting film",
+      "recordType": "experiment",
+      "reportedTemperatureK": 2.7,
+      "tcK": 2.7,
+      "temperatureKind": "transition",
+      "temperatureNote": "Film transition reported separately from loop spectroscopy; exact operational threshold not established.",
+      "criterion": "transition-unspecified",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "DC transport of film",
+      "sourceId": "source-42e0dec220b7b3ea",
+      "aliases": [
+        "indium oxide",
+        "InOx film"
+      ]
+    },
+    {
+      "id": "scwiki-e8-material-6",
+      "formula": "InOx",
+      "sample": "Astafiev loop with narrow wire",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.04,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "40mK measurement temperature, not a loop transition.",
+      "criterion": "coherent-phase-slip-spectroscopy",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Microwave spectroscopy",
+      "sourceId": "source-42e0dec220b7b3ea",
+      "aliases": [
+        "indium oxide",
+        "InOx loop"
+      ]
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 67,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; added explicit magnetic-screening, rate-convention and sample-specific temperature boundaries with primary access limitations."
+    }
+  ]
+}

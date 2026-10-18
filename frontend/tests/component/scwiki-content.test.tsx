@@ -1093,3 +1093,20 @@ it("keeps irradiation and Shiba spectroscopy temperatures separate from transiti
  for(const phrase of ["17.85 K","50–100 microelectronvolt","tip-gap bias","20–22 K","not a completed original-text audit","10.7498/aps.21.75"])expect(md).toContain(phrase);
  expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
 });
+
+it("separates dimensional crossover criteria from measurement floors and electrode transitions",async()=>{
+ const a=articles().find(a=>a.code==="E8")!;
+ const index=searchIndex().entries;
+ expect(a.materialCases.filter(c=>c.temperatureKind!=="transition").every(c=>c.tcK===null)).toBe(true);
+ expect(searchArticles(index,"NbSe2",{tcMin:7}).some(a=>a.code==="E8")).toBe(false);
+ expect(searchArticles(index,"NbSe2",{tcMin:2,criterion:"aslamazov-larkin-fit"}).some(a=>a.code==="E8")).toBe(true);
+ expect(searchArticles(index,"NbSe2",{tcMin:2,criterion:"zero-resistance"}).some(a=>a.code==="E8")).toBe(false);
+ expect(searchArticles(index,"MoGe nanowire",{tcMin:1}).some(a=>a.code==="E8")).toBe(false);
+ expect(searchArticles(index,"InOx loop",{tcMin:1}).some(a=>a.code==="E8")).toBe(false);
+ const data=await(await get(["search"],"?q=NbSe2&tcMin=7")).json();
+ expect(data.results.some((r:{code:string})=>r.code==="E8")).toBe(false);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ for(const phrase of ["renormalized","per direction","5.5 K belongs to the electrodes","40 mK","radius roughly 5 nm","9 November 2015"])expect(md).toContain(phrase);
+ expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
+ expect(articles().find(a=>a.code==="E7")!.materialCases.filter(c=>c.criterion==="irradiation-bath-temperature").every(c=>c.equilibrium==="unknown")).toBe(true);
+});
