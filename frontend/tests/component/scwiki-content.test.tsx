@@ -291,9 +291,25 @@ describe("SCWiki source and scientific-content contracts",()=>{
    if(a.body.includes("$$"))expect(html).toContain('class="katex"');
   }
  });
+ it("carries C2 preprint limitations through section exports and excludes neutron measurement temperatures",async()=>{
+  const a=articles().find(a=>a.code==="C2")!;
+  const neutron=a.materialCases.find(r=>r.formula==="Ba0.6K0.4Fe2As2")!;
+  expect(neutron.temperatureKind).toBe("measurement");expect(neutron.reportedTemperatureK).toBe(7);expect(neutron.tcK).toBeNull();
+  const response=await get(["articles",a.id,"sections","experimental-criteria"]);
+  const section=await response.json();
+  expect(section.sources.filter((s:{publicationStatus:string})=>s.publicationStatus==="preprint")).toHaveLength(2);
+  const md=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+  expect(md).toContain("Publication: preprint");expect(md).toContain("finite");
+  expect(md).toContain("Complete scientific acceptance remains open");
+  for(const q of ["符号反转配对","s± pairing"]){
+   const data=await(await get(["search"],"?q="+encodeURIComponent(q))).json();expect(data.results.some((x:{code:string})=>x.code==="C2")).toBe(true);
+   const filtered=await(await get(["search"],"?q="+encodeURIComponent(q)+"&tcMin=1")).json();expect(filtered.results.some((x:{code:string})=>x.code==="C2")).toBe(false);
+  }
+  expect(a.references.find(r=>r.doi==="10.1038/s41567-023-02348-1")?.verification.scope).toBe("publisher-original-abstract-and-date-check");
+ });
  it("corrects the KFe2As2 citation in C2 and records C10 review debt",()=>{
   const a=articles().find(a=>a.code==="C2")!;
-  expect(a.body).toContain("is about KFe2As2");expect(a.corrections.length).toBeGreaterThanOrEqual(2);
+  expect(a.body).toMatch(/(?:is about|concerns) KFe2As2/);expect(a.corrections.length).toBeGreaterThanOrEqual(2);
   expect(a.materialCases.find(c=>c.formula==="KFe2As2")?.sourceId).toBe(a.references.find(r=>r.doi==="10.1103/PhysRevLett.109.087001")?.id);
   const m=JSON.parse(readFileSync("content/scwiki/source-manifest.json","utf8"));
   expect(m.correctionRegister.find((r:{id:string})=>r.id==="correction-prl-109-087001-material").affectedTopics).toEqual(["C2","C10"]);
