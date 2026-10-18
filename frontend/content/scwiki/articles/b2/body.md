@@ -14,7 +14,7 @@ Thus $K(0)=\lambda$. Neither this spectral coupling nor a band-resolved coupling
 
 An independent positive-mode example writes $a(\Omega)=\sum_i\lambda_i\Omega_i\delta(\Omega-\Omega_i)/2$. It gives $\lambda=\sum_i\lambda_i$ and $K(\nu)=\sum_i\lambda_i\Omega_i^2/(\Omega_i^2+\nu^2)$. With normalized weights $w_i=\lambda_i/\lambda$, the logarithmic energy is $\Omega_{\log}=\Omega_{\rm ref}\exp[\sum_iw_i\ln(\Omega_i/\Omega_{\rm ref})]$; the arbitrary positive reference cancels. The second moment is $\langle\Omega^2\rangle=\sum_iw_i\Omega_i^2$.
 
-One mode with $\lambda=1$ at energy $\Omega_0$ and two modes with couplings $1/2$ at $\Omega_0/2$ and $2\Omega_0$ have the same $\lambda$ and $\Omega_{\log}$. Their root-mean-square energies differ by a factor $\sqrt{17/8}$, and at $\nu=\Omega_0/2$ their kernels are 0.8 and approximately 0.72059. This independently checked counterexample shows why two scalar summaries do not specify the full spectral problem.
+One mode with $\lambda=1$ at energy $\Omega_0$ and two modes with couplings $1/2$ at $\Omega_0/2$ and $2\Omega_0$ have the same $\lambda$ and $\Omega_{\log}$. Their root-mean-square energies differ by a factor $\sqrt{17/8}$, and at $\nu=\Omega_0/2$ their kernels are exactly $4/5$ and $49/68$ (approximately 0.8 and 0.72059). This independently checked counterexample shows why two scalar summaries do not specify the full spectral problem. The differing kernels alone do not establish different transition temperatures without solving the corresponding equations.
 
 For an isotropic, particle-hole-symmetric constant-density-of-states model with a fixed phonon kernel and **zero Coulomb term**, the linearized gap equation is
 

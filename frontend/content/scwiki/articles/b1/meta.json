@@ -25,9 +25,9 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T06:02:10Z",
+  "modifiedAt": "2026-10-18T22:56:06.740319+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
+    "checkedAt": "2026-10-19",
     "scope": "Edited adaptation of the pinned B1 chapter with selected primary passages of Cooper (1956) and Bardeen-Cooper-Schrieffer (1957), plus model-equation and notation checks.",
     "limitations": [
       "This is a scoped theoretical review, not a full scientific validation or independent reproduction of every derivation.",
@@ -133,9 +133,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "primary-full-text-scoped-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://journals.aps.org/pr/pdf/10.1103/PhysRev.108.1175",
-        "note": "Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review."
+        "note": "Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review. Page 1186 Eq.(3.29) and adjacent isotope discussion re-read and visually checked; the displayed generalized mass derivative and compensation example are local deductions."
       }
     },
     {
@@ -213,13 +213,15 @@
     {
       "id": "scwiki-b1-claim-limits-and-disputes-2",
       "sectionId": "limits-and-disputes",
-      "statement": "The familiar isotope exponent $-d\\ln T_c/d\\ln M=1/2$ follows only if the cutoff has harmonic mass scaling and the remaining effective parameters are mass-independent. Changes in structure or coupling invalidate that inference. Likewise, a nonstandard gap ratio can motivate tests of stronger coupling or anisotropy; it does not, by itself, prove a named alternative mechanism. These applicability cautions follow the scope of the pinned B1 source chapter and are not new experimental findings.\n",
+      "statement": "The familiar isotope exponent $\\alpha=-d\\ln T_c/d\\ln M=1/2$ follows in this model when the cutoff has harmonic mass scaling and the remaining effective parameters are mass-independent. More generally, differentiating $k_BT_c=A E_c\\exp(-1/\\lambda)$ with mass-independent $A$ gives $\\alpha=-d\\ln E_c/d\\ln M-\\lambda^{-2}d\\lambda/d\\ln M$. Coupling or structural changes therefore prevent inferring the exponent from the cutoff alone; compensating mass dependences can also produce $\\alpha=1/2$. This local derivative is not an experimental fit. Likewise, a nonstandard gap ratio can motivate tests of stronger coupling or anisotropy; it does not, by itself, prove a named alternative mechanism. These applicability cautions are editorial model guidance, not new experimental findings.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-ba10e800a1246bf6"
       ],
       "conditions": "Equilibrium isotropic single-band model, weak net attraction in an energy shell, smooth one-spin DOS and sufficient phase coherence; a two-electron Cooper problem is not the full many-body solution.",
-      "verificationScope": "Selected primary model passages as listed in source notes; broader applicability cautions and measurement guidance are editorial synthesis of the pinned chapter, not independently verified experimental findings."
+      "verificationScope": "Selected primary model passages as listed in source notes; broader applicability cautions and measurement guidance are editorial synthesis of the pinned chapter, not independently verified experimental findings.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "BCS p.1186 Eq.(3.29) gives the weak-coupling cutoff/exponential dependence. The mass derivative, compensation example and inference limits are local algebra/editorial guidance under a mass-independent prefactor; 27 synthetic derivative cases are checked. No empirical isotope dataset is certified."
     },
     {
       "id": "scwiki-b1-claim-discovery-implications-1",
