@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "f8243ffd05e26570ee30",
+  "revision": "34732b38b99e2de8d881",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -6300,12 +6300,12 @@
       "title": "Planckian dissipation: definitions and inference",
       "summary": "A linear resistivity does not by itself measure a Planckian lifetime. Specify the relaxation channel, residual rate, frequency convention and transport model.",
       "aliases": [
+        "Planckian dissipation",
         "Planckian limit",
-        "T linear resistivity",
         "scattering time",
         "Drude",
-        "FeTeSe",
-        "strange metal"
+        "普朗克耗散",
+        "普朗克极限"
       ],
       "evidenceTypes": [
         "experiment",
@@ -6313,7 +6313,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "b1ad1168787833c3b66d",
+      "revision": "21e0ed3d03f7b5092d59",
       "materialCases": [
         {
           "formula": "overdoped cuprates",
@@ -6334,6 +6334,65 @@
             "cuprate",
             "cuprates"
           ]
+        },
+        {
+          "id": "scwiki-h2-material-2",
+          "formula": "La1.35Nd0.4Sr0.25CuO4",
+          "sample": "Grissonnanche Nd-LSCO, 45 T angular magnetoresistance at p=0.24",
+          "recordType": "experiment",
+          "reportedTemperatureK": 6,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "6 K measurement; superconducting angular sectors excluded. Absolute temperature uncertainty about ±1 K, distinct from ±1 mK stability.",
+          "criterion": "ADMR-measurement",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Angle-dependent c-axis magnetoresistance",
+          "sourceId": "source-374c8bc13ced83e8",
+          "aliases": [
+            "Nd-LSCO"
+          ]
+        },
+        {
+          "id": "scwiki-h2-material-3",
+          "formula": "FeTe0.55Se0.45",
+          "sample": "Romero author v1, 100 nm film, selenium fraction x=0.45",
+          "recordType": "experiment",
+          "reportedTemperatureK": 20,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "20 K is the lower edge of the 20–40 K linewidth-fitting interval; not a superconducting transition.",
+          "criterion": "optical-linewidth-fit",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Terahertz conductivity, narrow Drude plus broad background",
+          "sourceId": "source-05b2d5ff6757b5eb",
+          "aliases": [
+            "FeTeSe",
+            "iron chalcogenide"
+          ]
+        },
+        {
+          "id": "scwiki-h2-material-4",
+          "formula": "FeTe0.65Se0.35",
+          "sample": "Romero author v1, 100 nm film, selenium fraction x=0.35",
+          "recordType": "experiment",
+          "reportedTemperatureK": 20,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "20 K is the lower edge of the 20–40 K linewidth-fitting interval; not a superconducting transition.",
+          "criterion": "optical-linewidth-fit",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Terahertz conductivity, narrow Drude plus broad background",
+          "sourceId": "source-05b2d5ff6757b5eb",
+          "aliases": [
+            "FeTeSe",
+            "iron chalcogenide"
+          ]
         }
       ],
       "dois": [
@@ -6341,9 +6400,10 @@
         "10.1126/science.1227612",
         "10.1038/s41567-018-0334-2",
         "10.1038/s41567-026-03266-8",
-        "10.1007/JHEP08(2016)106"
+        "10.1007/JHEP08(2016)106",
+        "10.1038/s41586-021-03697-8"
       ],
-      "text": " Scope\n\n“Planckian” commonly describes a specified relaxation rate on the scale kBT/\\hbar, with a dimensionless coefficient of order unity. It is not a theorem inferred from a resistivity curve that happens to be linear in temperature. Transport, optical, single-particle, thermalization and quantum-chaos times probe different correlation functions and need not be equal. \n\nA useful experimental statement names the channel, fitting range and assumptions. It also separates an empirical scale from a proposed universal bound. The phrase “of order one” must not become an exact \\alpha=1 assertion without uncertainties and a consistent convention.  \n\n Mathematical assumptions\n\nFor a specified transport lifetime, a total dimensionless ratio is\n\n\n\\alpha{\\mathrm{tot}}(T)=\\frac{\\hbar}{kBT\\,\\tau{\\mathrm{tr}}(T)}.\n\n\nA model with a residual rate can instead be parametrized as\n\n\n\\frac{1}{\\tau{\\mathrm{tr}}(T)}\n=\\frac{1}{\\tau0}+\\alpha{\\mathrm{inel}}\\frac{kBT}{\\hbar}.\n\n\nThe second coefficient describes the inelastic slope under this assumption; it is not the first ratio when a residual term is appreciable. This distinction is made explicit in converting the source's ASCII notation. \n\nIn a single-band Drude limit with temperature-independent effective inputs,\n\n\n\\rho=\\frac{m^\\ast}{ne^2\\tau{\\mathrm{tr}}},\\qquad\n\\alpha{\\mathrm{inel}}\n=\\frac{\\hbar}{kB}\\frac{ne^2}{m^\\ast}\\frac{d\\rho}{dT}.\n\n\nThe resistivity slope alone does not supply the carrier density n or transport mass m^\\ast. Multiband conduction, changing spectral weight, angular scattering and vertex effects can invalidate this simple inversion. Sheet resistance and bulk resistivity must also use consistent thickness conventions.  \n\n Experimental criteria\n\nSpecify the lifetime definition, residual subtraction, frequency convention, fitting interval and uncertainties. State whether a quoted rate is an angular frequency or ordinary frequency; confusing h with \\hbar introduces a factor of 2\\pi. Use independent optical or Fermi-surface constraints where available, and propagate their uncertainty into an inferred coefficient.\n\nBruin and colleagues compared inferred rates across metals, while Legros and colleagues examined overdoped cuprates with a per-plane scaling analysis. Those studies provide important constraints within their transport assumptions. They do not measure one exact universal coefficient for every composition and every relaxation channel.  \n\n Limits and disputes\n\nMaldacena, Shenker and Stanford bound the growth of a regularized out-of-time-order correlator by \\lambdaL\\leq 2\\pi kBT/\\hbar. Their argument assumes analyticity and boundedness in a thermal complex-time strip, controlled factorization errors, and a separation between dissipation and scrambling times. It constrains a quantum-chaos exponent, not a measured charge-transport relaxation rate. Identifying \\lambdaL with 1/\\tau{\\mathrm{tr}} requires additional model-specific justification; the bound does not establish a universal transport coefficient \\alpha=1.  \n\nThe pinned chapter includes a 2026 FeTeSe frequency-domain report and a slow/fast-channel interpretation. That source's detailed sample and fitting claims are not independently re-extracted in this pilot. They are not used to prove a pairing mediator or to validate a separate multichannel theory. A fitted normal-state channel and a superconducting gap are different evidence objects. \n\n Discovery implications\n\nUse a Planckian-scale observation to formulate a falsifiable normal-state model. Ask which spectral weight, carrier estimate and scattering anisotropy would support or reject the proposed interpretation. Proximity to superconductivity can motivate a mechanism study, but it does not establish that faster scattering raises the critical temperature.  \n\n Related topics\n\nSee , , and ."
+      "text": " Scope\n\nA Planckian-scale claim compares a defined relaxation rate with kBT/\\hbar. It must identify the observable, residual subtraction and uncertainty. Charge transport, optical response, single-particle decay and quantum scrambling need not share one lifetime. An approximate coefficient near unity is an empirical observation within a model, not a universal theorem obtained from a straight resistivity curve. \n\nThe evidence has several levels: measured conductivity, an extracted rate, a cross-material scaling relation, and a proposed bound. Moving between them adds assumptions. Bruin's transport comparison, Legros's cuprate analysis, angular magnetoresistance and frequency-resolved film measurements test different parts of this chain. A useful comparison retains each experiment's conditions instead of pooling every quoted coefficient.    \n\n Mathematical assumptions\n\nWrite \\gamma{\\mathrm{tr}}=\\gamma0+\\alpha{\\mathrm{inel}}kBT/\\hbar. Then \\alpha{\\mathrm{tot}}=\\hbar\\gamma{\\mathrm{tr}}/(kBT)=\\alpha{\\mathrm{inel}}+\\hbar\\gamma0/(kBT). A constant residual rate makes the total ratio temperature dependent even when the inelastic slope is fixed. Twenty-seven independent synthetic parameter checks verify this algebra; they do not justify additive scattering in a material. \n\nWith temperature-independent density and mass in a single-band Drude model, \\rho=m^\\ast\\gamma{\\mathrm{tr}}/(ne^2) gives \\alpha{\\mathrm{inel}}=(\\hbar ne^2/kBm^\\ast)d\\rho/dT. A two-dimensional, spin-degenerate parabolic band instead uses sheet slope A1^\\square, areal density n{2D} and TF=\\pi\\hbar^2n{2D}/(m^\\ast kB), yielding A1^\\square TF=\\alpha{\\mathrm{inel}}h/(2e^2). The geometric conversion and mass estimate are essential inputs, not outputs of a resistivity slope. Noncircular or multiple Fermi surfaces require additional analysis. \n\nAn independent angular-scattering illustration makes the lifetime distinction explicit. On a circular Fermi line, define an elastic event kernel W(\\theta)=\\gamma[1+a\\cos\\theta]/(2\\pi) with |a|\\leq1. The event rate is \\int0^{2\\pi}W\\,d\\theta=\\gamma, whereas current relaxation weights changes of direction: \\int0^{2\\pi}W(1-\\cos\\theta)\\,d\\theta=\\gamma(1-a/2). Fifteen numerical quadratures verify both integrals. Forward-weighted events therefore relax current less efficiently in this specified model. The event rate is explicitly defined; it is not silently identified with a spectral half-width. This elastic Boltzmann example proves neither a quantum bound nor a superconducting mechanism. \n\nFor a fitted Drude denominator \\Gamma-i\\nu, both variables use cycles per second. The corresponding decay rate is \\gamma=2\\pi\\Gamma, so \\Gamma=\\alpha kBT/h and \\gamma=\\alpha kBT/\\hbar have the same dimensionless coefficient after conversion. Mixing the conventions without converting the fitted width changes the apparent coefficient by 2\\pi. Parallel channels add conductivities, further limiting inference from total resistance. \n\n Experimental criteria\n\nBruin and colleagues report linear resistivity in Sr3Ru2O7 at 7.9 T and use independently characterized Fermi-surface inputs to estimate scattering. The retrieved opening page describes a 1.5–400 K transport study and a field-induced nematic region below 1.2 K near that field. Those boundaries matter: the available page does not justify extending the measured law through the intervening phase or verify every cross-material fit. The remaining article pages and supplementary tables are outside this check. \n\nLegros's author manuscript compares sheet-resistance slopes with Fermi-temperature estimates. Its electron-doped comparison gives \\alpha=1.0\\pm0.3; the hole-doped estimates require more approximate geometry and specific-heat masses, with temperature-dependent mass an explicit complication in Nd-LSCO. The displayed \\alpha=1 prediction is a tested assumption, not an independent lifetime measurement. This article uses selected author-version passages; a complete comparison with the final publication remains open. \n\nGrissonnanche's final Nd-LSCO analysis separates an isotropic temperature-dependent component from anisotropic elastic scattering and reports \\alpha=1.2\\pm0.4. The band-energy scale is constrained by specific heat, and the quoted uncertainty includes fitting and sample-geometry contributions. Measurements at 45 T include superconducting angular sectors at the lower temperatures; those sectors are excluded. Neither a large applied field nor the isotropic inelastic term makes every datum normal-state or the total scattering isotropic. \n\nRomero's author manuscript fits two FeTe1−xSex films over 20–40 K using a narrow Drude contribution plus a broad background. It reports cycle-frequency coefficients 3.02 for x=0.45 and 2.42 for x=0.35, with widths below 0.2 THz unresolved in its spectral window. These are author-version fit values, not newly reproduced final-paper estimates. The published abstract confirms a parallel-channel interpretation; complete version comparison and fitting covariance remain open. A linear narrow-channel width can coexist with nonlinear total resistivity. \n\n Limits and disputes\n\nThe conditional chaos result \\lambdaL\\leq2\\pi kBT/\\hbar bounds exponential growth of a suitable regularized out-of-time-order correlator. Its argument requires thermal-strip analyticity and boundedness, controlled factorization errors and separated dissipation and scrambling scales. This is not a measured charge-transport rate; identifying the exponent with one requires another, model-specific argument. The theorem alone neither fixes a transport coefficient to one nor verifies a material's inferred mass.  \n\nComplete scientific acceptance remains open. Selected primary passages, figures and independent model checks do not constitute raw-data reproduction. Distinguish published results from the author's interpretation of universality; preserve unresolved frequency coverage, final-version and calibration limits. Spectral weight entering a condensate also does not identify the pairing mediator.   \n\n Discovery implications\n\nCompare rates only after aligning channel definitions, sample conditions and frequency units. Test whether alternative band weights or a temperature-dependent mass can explain the same measured curve. Then seek independent optical or angle-dependent constraints. A connection between normal-state relaxation and superconductivity is a research hypothesis to test; faster scattering does not, by itself, predict a higher transition temperature.   \n\n Related topics\n\n, , and ."
     }
   ]
 }

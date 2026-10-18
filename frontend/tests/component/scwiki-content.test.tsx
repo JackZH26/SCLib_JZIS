@@ -56,7 +56,8 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(payload.section.markdown).toContain("not a measured charge-transport");
   expect(payload.sources.find((r:{id:string})=>r.id==="source-8339743a9f1c3239").verification.scope).toBe("primary-full-text-scoped-check");
   expect(payload.sources.find((r:{id:string})=>r.id==="source-67da95cac5481029").verification.scope).toBe("review-full-text-scoped-check");
-  expect(a.references.find(r=>r.doi==="10.1126/science.1227612")!.verification.scope).toBe("crossref-metadata-only");
+  expect(a.references.find(r=>r.doi==="10.1126/science.1227612")!.verification.scope).toBe("selected-final-opening-page-check");
+  expect(a.references.find(r=>r.doi==="10.1126/science.1227612")!.verification.note).toContain("does not include pages 805–807");
   expect(a.editorialStatus).toBe("scoped-check");
  });
  it("preserves source-specific review limitations in Markdown exports",async()=>{

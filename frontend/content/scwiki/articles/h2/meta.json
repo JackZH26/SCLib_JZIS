@@ -6,12 +6,12 @@
   "title": "Planckian dissipation: definitions and inference",
   "summary": "A linear resistivity does not by itself measure a Planckian lifetime. Specify the relaxation channel, residual rate, frequency convention and transport model.",
   "aliases": [
+    "Planckian dissipation",
     "Planckian limit",
-    "T linear resistivity",
     "scattering time",
     "Drude",
-    "FeTeSe",
-    "strange metal"
+    "普朗克耗散",
+    "普朗克极限"
   ],
   "evidenceTypes": [
     "experiment",
@@ -19,21 +19,21 @@
     "hypothesis"
   ],
   "relatedCodes": [
-    "A1",
-    "D4",
-    "G7"
+    "H1",
+    "A8",
+    "D4"
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.216409+00:00",
+  "modifiedAt": "2026-10-18T16:34:01.759993+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below. H2 follow-up: selected full-text passages of Maldacena-Shenker-Stanford (published version) and Hartnoll-Mackenzie (arXiv v3) checked for the chaos-bound assumptions, distinct lifetimes and Drude-inference caveats; other empirical sources remain pending.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Bruin opening page, Legros author scaling passages, inherited final Nd-LSCO and author FeTeSe figure checks, conditional chaos theorem passages and independent lifetime-model checks.",
     "limitations": [
-      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
-      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
-      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
-      "Historical audit scores and file presence are not evidence that a proposition is correct."
+      "Complete scientific acceptance remains open.",
+      "Bruin pages805–807 and supplementary tables were not retrieved in the selected PDF.",
+      "Legros and Romero final-version comparison, fitting covariance and raw-data reproduction remain incomplete.",
+      "Elastic event-model and residual-rate checks do not establish universal transport or chaos bounds."
     ]
   },
   "provenance": {
@@ -154,48 +154,29 @@
       "description": "Reclassified the chaos-bound claim as theory, made its assumptions explicit, and removed experiment labels from conceptual guidance. Primary-source passage checks are scoped and do not validate the empirical references.",
       "sourceId": "source-8339743a9f1c3239",
       "scope": "Evidence classification and conditional chaos/transport distinction."
+    },
+    {
+      "id": "scwiki-h2-correction-3",
+      "description": "Experimental source scopes now identify retrieved pages and author versions; the Drude cycle-frequency coefficient is converted consistently to an angular decay rate.",
+      "sourceId": "source-05b2d5ff6757b5eb",
+      "scope": "Lifetime and version conventions; no final raw-data replication claimed."
     }
   ],
   "equationChecks": [
     {
       "targetSectionId": "mathematical-assumptions",
-      "tex": "k_BT/\\hbar",
-      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+      "tex": "\\gamma_{\\mathrm{tr}}=\\gamma(1-a/2)",
+      "check": "15 independent numerical angular-kernel integrations; defined elastic event convention, not a spectral half-width."
     },
     {
       "targetSectionId": "mathematical-assumptions",
-      "tex": "\\alpha=1",
-      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
-    },
-    {
-      "targetSectionId": "mathematical-assumptions",
-      "tex": "n",
-      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
-    },
-    {
-      "targetSectionId": "mathematical-assumptions",
-      "tex": "m^\\ast",
-      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
-    },
-    {
-      "targetSectionId": "mathematical-assumptions",
-      "tex": "h",
-      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
-    },
-    {
-      "targetSectionId": "mathematical-assumptions",
-      "tex": "\\hbar",
-      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
-    },
-    {
-      "targetSectionId": "mathematical-assumptions",
-      "tex": "2\\pi",
-      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+      "tex": "\\alpha_{\\mathrm{tot}}=\\alpha_{\\mathrm{inel}}+\\hbar\\gamma_0/(k_BT)",
+      "check": "27 independent residual-rate ratios; additivity is an assumption, not a material result."
     },
     {
       "targetSectionId": "limits-and-disputes",
-      "tex": "\\lambda_L\\leq 2\\pi k_BT/\\hbar",
-      "check": "Compared with published Eq. (2.5), restoring k_B and hbar: both sides have inverse-time units. This is an upper bound on the chaos exponent under the stated assumptions, not a transport rate equality."
+      "tex": "\\lambda_L\\leq2\\pi k_BT/\\hbar",
+      "check": "Inherited published MSS Eq.(2.5) scoped check; no identification with transport and no independent proof verification."
     }
   ],
   "references": [
@@ -216,29 +197,29 @@
     {
       "id": "source-e6d342432f3409ae",
       "doi": "10.1126/science.1227612",
-      "title": "Similarity of Scattering Rates in Metals Showing\n                    T\n                    -Linear Resistivity",
+      "title": "Similarity of Scattering Rates in Metals Showing T-Linear Resistivity",
       "year": 2013,
       "url": "https://doi.org/10.1126/science.1227612",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1126%2Fscience.1227612",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "selected-final-opening-page-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://lab.semi.ac.cn/download/0.4390469575788667.pdf",
+        "note": "Printed page 804 (PDF page 5) read and visually checked: abstract and opening discussion. This download mostly contains an adjacent article and does not include pages 805–807. Figure fits and supplementary parameter tables remain unaudited. Author institutional record confirms 15 February 2013."
       }
     },
     {
       "id": "source-c1ae7869b672a8e8",
       "doi": "10.1038/s41567-018-0334-2",
       "title": "Universal T-linear resistivity and Planckian dissipation in overdoped cuprates",
-      "year": 2018,
+      "year": 2019,
       "url": "https://doi.org/10.1038/s41567-018-0334-2",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fs41567-018-0334-2",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "earlier-author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1805.02512v1",
+        "note": "Selected v1 pp. 4, 7–8 and Figs. 1–2 captions: Drude assumptions, film method and magnetoresistance correction. Published volume year 2019; final-version comparison and complete data fitting remain open. H2 additionally checked v1 pp.4–5, Eq.(1), mass estimates and uncertainty discussion. Final PDF attempts were unavailable; no final full-text comparison is claimed."
       }
     },
     {
@@ -249,10 +230,10 @@
       "url": "https://doi.org/10.1038/s41567-026-03266-8",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fs41567-026-03266-8",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "selected-author-figure-and-final-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/2505.00623v1",
+        "note": "Author v1, 1 May 2025: selected methods and results, pages 1–4, read; page 4 Figure 3 visually checked. Final publisher abstract and publication date, 23 April 2026, checked. Final full text requires access; the attempted PDF returned HTML. Complete version comparison and spectral-weight calibration remain open."
       }
     },
     {
@@ -267,6 +248,20 @@
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://link.springer.com/content/pdf/10.1007/JHEP08(2016)106.pdf",
         "note": "Published version: Eq. (2.5), sections 4.1-4.2 and 4.3.3, printed pp. 5, 7-11. Checked the conditional chaos bound and its failure cases; not a transport measurement or an independent verification of the entire proof."
+      }
+    },
+    {
+      "id": "source-374c8bc13ced83e8",
+      "doi": "10.1038/s41586-021-03697-8",
+      "title": "Linear-in temperature resistivity from an isotropic Planckian scattering rate",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41586-021-03697-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-methods-results-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://warwick.ac.uk/fac/sci/physics/research/condensedmatt/supermag/pubs2021/Grissonnanche_Nature.595.667.2021.pdf",
+        "note": "Final results and selected methods read; printed page 669, Figure 2 visually checked. Compared selected author v2 passages. Temperature stability, absolute error, angular superconducting regions and fitted bandwidth distinguished. Complete fitting and raw-data reproduction remain open."
       }
     }
   ],
@@ -290,101 +285,218 @@
         "cuprate",
         "cuprates"
       ]
+    },
+    {
+      "id": "scwiki-h2-material-2",
+      "formula": "La1.35Nd0.4Sr0.25CuO4",
+      "sample": "Grissonnanche Nd-LSCO, 45 T angular magnetoresistance at p=0.24",
+      "recordType": "experiment",
+      "reportedTemperatureK": 6,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "6 K measurement; superconducting angular sectors excluded. Absolute temperature uncertainty about ±1 K, distinct from ±1 mK stability.",
+      "criterion": "ADMR-measurement",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Angle-dependent c-axis magnetoresistance",
+      "sourceId": "source-374c8bc13ced83e8",
+      "aliases": [
+        "Nd-LSCO"
+      ]
+    },
+    {
+      "id": "scwiki-h2-material-3",
+      "formula": "FeTe0.55Se0.45",
+      "sample": "Romero author v1, 100 nm film, selenium fraction x=0.45",
+      "recordType": "experiment",
+      "reportedTemperatureK": 20,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "20 K is the lower edge of the 20–40 K linewidth-fitting interval; not a superconducting transition.",
+      "criterion": "optical-linewidth-fit",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Terahertz conductivity, narrow Drude plus broad background",
+      "sourceId": "source-05b2d5ff6757b5eb",
+      "aliases": [
+        "FeTeSe",
+        "iron chalcogenide"
+      ]
+    },
+    {
+      "id": "scwiki-h2-material-4",
+      "formula": "FeTe0.65Se0.35",
+      "sample": "Romero author v1, 100 nm film, selenium fraction x=0.35",
+      "recordType": "experiment",
+      "reportedTemperatureK": 20,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "20 K is the lower edge of the 20–40 K linewidth-fitting interval; not a superconducting transition.",
+      "criterion": "optical-linewidth-fit",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Terahertz conductivity, narrow Drude plus broad background",
+      "sourceId": "source-05b2d5ff6757b5eb",
+      "aliases": [
+        "FeTeSe",
+        "iron chalcogenide"
+      ]
     }
   ],
   "claims": [
     {
       "id": "scwiki-h2-claim-scope-1",
       "sectionId": "scope",
-      "statement": "“Planckian” commonly describes a specified relaxation rate on the scale $k_BT/\\hbar$, with a dimensionless coefficient of order unity. It is not a theorem inferred from a resistivity curve that happens to be linear in temperature. Transport, optical, single-particle, thermalization and quantum-chaos times probe different correlation functions and need not be equal.",
+      "statement": "A Planckian-scale claim compares a defined relaxation rate with $k_BT/\\hbar$. It must identify the observable, residual subtraction and uncertainty. Charge transport, optical response, single-particle decay and quantum scrambling need not share one lifetime. An approximate coefficient near unity is an empirical observation within a model, not a universal theorem obtained from a straight resistivity curve.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-67da95cac5481029"
       ],
-      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
-      "verificationScope": "Conceptual distinction checked against Hartnoll-Mackenzie arXiv v3 sections 4-5; experimental universality is not established."
+      "conditions": "Defined transport/optical/event/chaos channel, residual subtraction, frequency units, fitting window and source version.",
+      "verificationScope": "Selected source passages and independent specified-model checks; not complete final-version or raw-data verification."
     },
     {
       "id": "scwiki-h2-claim-scope-2",
       "sectionId": "scope",
-      "statement": "A useful experimental statement names the channel, fitting range and assumptions. It also separates an empirical scale from a proposed universal bound. The phrase “of order one” must not become an exact $\\alpha=1$ assertion without uncertainties and a consistent convention.",
+      "statement": "The evidence has several levels: measured conductivity, an extracted rate, a cross-material scaling relation, and a proposed bound. Moving between them adds assumptions. Bruin's transport comparison, Legros's cuprate analysis, angular magnetoresistance and frequency-resolved film measurements test different parts of this chain. A useful comparison retains each experiment's conditions instead of pooling every quoted coefficient.",
       "evidenceType": "theory",
       "sourceIds": [
-        "source-67da95cac5481029",
-        "source-e6d342432f3409ae"
+        "source-e6d342432f3409ae",
+        "source-c1ae7869b672a8e8",
+        "source-05b2d5ff6757b5eb",
+        "source-374c8bc13ced83e8"
       ],
-      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
-      "verificationScope": "Conceptual distinction checked against Hartnoll-Mackenzie arXiv v3 sections 4-5; experimental universality is not established."
+      "conditions": "Defined transport/optical/event/chaos channel, residual subtraction, frequency units, fitting window and source version.",
+      "verificationScope": "Selected source passages and independent specified-model checks; not complete final-version or raw-data verification."
     },
     {
       "id": "scwiki-h2-claim-mathematical-assumptions-1",
       "sectionId": "mathematical-assumptions",
-      "statement": "The second coefficient describes the inelastic slope under this assumption; it is not the first ratio when a residual term is appreciable. This distinction is made explicit in converting the source's ASCII notation.",
+      "statement": "Write $\\gamma_{\\mathrm{tr}}=\\gamma_0+\\alpha_{\\mathrm{inel}}k_BT/\\hbar$. Then $\\alpha_{\\mathrm{tot}}=\\hbar\\gamma_{\\mathrm{tr}}/(k_BT)=\\alpha_{\\mathrm{inel}}+\\hbar\\gamma_0/(k_BT)$. A constant residual rate makes the total ratio temperature dependent even when the inelastic slope is fixed. Twenty-seven independent synthetic parameter checks verify this algebra; they do not justify additive scattering in a material.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-67da95cac5481029"
       ],
-      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
-      "verificationScope": "Residual subtraction discussed in Hartnoll-Mackenzie arXiv v3 section 1.4. The two alpha definitions are algebraically distinct; no fitted value is verified."
+      "conditions": "Defined transport/optical/event/chaos channel, residual subtraction, frequency units, fitting window and source version.",
+      "verificationScope": "Selected source passages and independent specified-model checks; not complete final-version or raw-data verification."
     },
     {
       "id": "scwiki-h2-claim-mathematical-assumptions-2",
       "sectionId": "mathematical-assumptions",
-      "statement": "The resistivity slope alone does not supply the carrier density $n$ or transport mass $m^\\ast$. Multiband conduction, changing spectral weight, angular scattering and vertex effects can invalidate this simple inversion. Sheet resistance and bulk resistivity must also use consistent thickness conventions.",
+      "statement": "With temperature-independent density and mass in a single-band Drude model, $\\rho=m^\\ast\\gamma_{\\mathrm{tr}}/(ne^2)$ gives $\\alpha_{\\mathrm{inel}}=(\\hbar ne^2/k_Bm^\\ast)d\\rho/dT$. A two-dimensional, spin-degenerate parabolic band instead uses sheet slope $A_1^\\square$, areal density $n_{2D}$ and $T_F=\\pi\\hbar^2n_{2D}/(m^\\ast k_B)$, yielding $A_1^\\square T_F=\\alpha_{\\mathrm{inel}}h/(2e^2)$. The geometric conversion and mass estimate are essential inputs, not outputs of a resistivity slope. Noncircular or multiple Fermi surfaces require additional analysis.",
       "evidenceType": "theory",
       "sourceIds": [
-        "source-67da95cac5481029",
-        "source-e6d342432f3409ae"
+        "source-c1ae7869b672a8e8"
       ],
-      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
-      "verificationScope": "Drude-inference limitations checked against Hartnoll-Mackenzie arXiv v3 sections 4 and 4.1; no material-specific lifetime extraction is verified."
+      "conditions": "Defined transport/optical/event/chaos channel, residual subtraction, frequency units, fitting window and source version.",
+      "verificationScope": "Selected source passages and independent specified-model checks; not complete final-version or raw-data verification."
+    },
+    {
+      "id": "scwiki-h2-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An independent angular-scattering illustration makes the lifetime distinction explicit. On a circular Fermi line, define an elastic event kernel $W(\\theta)=\\gamma[1+a\\cos\\theta]/(2\\pi)$ with $|a|\\leq1$. The event rate is $\\int_0^{2\\pi}W\\,d\\theta=\\gamma$, whereas current relaxation weights changes of direction: $\\int_0^{2\\pi}W(1-\\cos\\theta)\\,d\\theta=\\gamma(1-a/2)$. Fifteen numerical quadratures verify both integrals. Forward-weighted events therefore relax current less efficiently in this specified model. The event rate is explicitly defined; it is not silently identified with a spectral half-width. This elastic Boltzmann example proves neither a quantum bound nor a superconducting mechanism.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-67da95cac5481029"
+      ],
+      "conditions": "Defined transport/optical/event/chaos channel, residual subtraction, frequency units, fitting window and source version.",
+      "verificationScope": "Selected source passages and independent specified-model checks; not complete final-version or raw-data verification."
+    },
+    {
+      "id": "scwiki-h2-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a fitted Drude denominator $\\Gamma-i\\nu$, both variables use cycles per second. The corresponding decay rate is $\\gamma=2\\pi\\Gamma$, so $\\Gamma=\\alpha k_BT/h$ and $\\gamma=\\alpha k_BT/\\hbar$ have the same dimensionless coefficient after conversion. Mixing the conventions without converting the fitted width changes the apparent coefficient by $2\\pi$. Parallel channels add conductivities, further limiting inference from total resistance.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Defined transport/optical/event/chaos channel, residual subtraction, frequency units, fitting window and source version.",
+      "verificationScope": "Selected source passages and independent specified-model checks; not complete final-version or raw-data verification."
     },
     {
       "id": "scwiki-h2-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "Bruin and colleagues compared inferred rates across metals, while Legros and colleagues examined overdoped cuprates with a per-plane scaling analysis. Those studies provide important constraints within their transport assumptions. They do not measure one exact universal coefficient for every composition and every relaxation channel.",
+      "statement": "Bruin and colleagues report linear resistivity in Sr3Ru2O7 at 7.9 T and use independently characterized Fermi-surface inputs to estimate scattering. The retrieved opening page describes a 1.5–400 K transport study and a field-induced nematic region below 1.2 K near that field. Those boundaries matter: the available page does not justify extending the measured law through the intervening phase or verify every cross-material fit. The remaining article pages and supplementary tables are outside this check.",
       "evidenceType": "experiment",
       "sourceIds": [
-        "source-e6d342432f3409ae",
+        "source-e6d342432f3409ae"
+      ],
+      "conditions": "Defined transport/optical/event/chaos channel, residual subtraction, frequency units, fitting window and source version.",
+      "verificationScope": "Selected source passages and independent specified-model checks; not complete final-version or raw-data verification."
+    },
+    {
+      "id": "scwiki-h2-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Legros's author manuscript compares sheet-resistance slopes with Fermi-temperature estimates. Its electron-doped comparison gives $\\alpha=1.0\\pm0.3$; the hole-doped estimates require more approximate geometry and specific-heat masses, with temperature-dependent mass an explicit complication in Nd-LSCO. The displayed $\\alpha=1$ prediction is a tested assumption, not an independent lifetime measurement. This article uses selected author-version passages; a complete comparison with the final publication remains open.",
+      "evidenceType": "experiment",
+      "sourceIds": [
         "source-c1ae7869b672a8e8"
       ],
-      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Defined transport/optical/event/chaos channel, residual subtraction, frequency units, fitting window and source version.",
+      "verificationScope": "Selected source passages and independent specified-model checks; not complete final-version or raw-data verification."
+    },
+    {
+      "id": "scwiki-h2-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Grissonnanche's final Nd-LSCO analysis separates an isotropic temperature-dependent component from anisotropic elastic scattering and reports $\\alpha=1.2\\pm0.4$. The band-energy scale is constrained by specific heat, and the quoted uncertainty includes fitting and sample-geometry contributions. Measurements at 45 T include superconducting angular sectors at the lower temperatures; those sectors are excluded. Neither a large applied field nor the isotropic inelastic term makes every datum normal-state or the total scattering isotropic.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-374c8bc13ced83e8"
+      ],
+      "conditions": "Defined transport/optical/event/chaos channel, residual subtraction, frequency units, fitting window and source version.",
+      "verificationScope": "Selected source passages and independent specified-model checks; not complete final-version or raw-data verification."
+    },
+    {
+      "id": "scwiki-h2-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Romero's author manuscript fits two FeTe1−xSex films over 20–40 K using a narrow Drude contribution plus a broad background. It reports cycle-frequency coefficients 3.02 for $x=0.45$ and 2.42 for $x=0.35$, with widths below 0.2 THz unresolved in its spectral window. These are author-version fit values, not newly reproduced final-paper estimates. The published abstract confirms a parallel-channel interpretation; complete version comparison and fitting covariance remain open. A linear narrow-channel width can coexist with nonlinear total resistivity.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Defined transport/optical/event/chaos channel, residual subtraction, frequency units, fitting window and source version.",
+      "verificationScope": "Selected source passages and independent specified-model checks; not complete final-version or raw-data verification."
     },
     {
       "id": "scwiki-h2-claim-limits-and-disputes-1",
       "sectionId": "limits-and-disputes",
-      "statement": "Maldacena, Shenker and Stanford bound the growth of a regularized out-of-time-order correlator by $\\lambda_L\\leq 2\\pi k_BT/\\hbar$. Their argument assumes analyticity and boundedness in a thermal complex-time strip, controlled factorization errors, and a separation between dissipation and scrambling times. It constrains a quantum-chaos exponent, not a measured charge-transport relaxation rate. Identifying $\\lambda_L$ with $1/\\tau_{\\mathrm{tr}}$ requires additional model-specific justification; the bound does not establish a universal transport coefficient $\\alpha=1$.",
+      "statement": "The conditional chaos result $\\lambda_L\\leq2\\pi k_BT/\\hbar$ bounds exponential growth of a suitable regularized out-of-time-order correlator. Its argument requires thermal-strip analyticity and boundedness, controlled factorization errors and separated dissipation and scrambling scales. This is not a measured charge-transport rate; identifying the exponent with one requires another, model-specific argument. The theorem alone neither fixes a transport coefficient to one nor verifies a material's inferred mass.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-8339743a9f1c3239",
         "source-67da95cac5481029"
       ],
-      "conditions": "Thermal quantum systems with a suitable regularized correlator, analyticity/boundedness, controlled factorization error and separated dissipation/scrambling scales. The bound applies in the exponential-growth regime above the error; no transport-time identification is assumed.",
-      "verificationScope": "Selected primary passages: Maldacena-Shenker-Stanford Eq. (2.5), sections 4.1-4.2 and 4.3.3. Transport distinction cross-checked against Hartnoll-Mackenzie arXiv v3 section 5; no independent proof verification."
+      "conditions": "Thermal quantum systems with a suitable regularized correlator, thermal-strip analyticity and boundedness, controlled factorization error and separated dissipation/scrambling scales. Exponential growth must exceed the error; no transport-time identification is assumed.",
+      "verificationScope": "Selected published MSS Eq. (2.5), sections 4.1–4.2 and 4.3.3, printed pp.5,7–11, inherited from the earlier H2 audit; Hartnoll-Mackenzie author v3 Section5. No independent verification of the complete proof."
     },
     {
       "id": "scwiki-h2-claim-limits-and-disputes-2",
       "sectionId": "limits-and-disputes",
-      "statement": "The pinned chapter includes a 2026 FeTeSe frequency-domain report and a slow/fast-channel interpretation. That source's detailed sample and fitting claims are not independently re-extracted in this pilot. They are not used to prove a pairing mediator or to validate a separate multichannel theory. A fitted normal-state channel and a superconducting gap are different evidence objects.",
-      "evidenceType": "experiment",
+      "statement": "Complete scientific acceptance remains open. Selected primary passages, figures and independent model checks do not constitute raw-data reproduction. Distinguish published results from the author's interpretation of universality; preserve unresolved frequency coverage, final-version and calibration limits. Spectral weight entering a condensate also does not identify the pairing mediator.",
+      "evidenceType": "theory",
       "sourceIds": [
+        "source-e6d342432f3409ae",
+        "source-c1ae7869b672a8e8",
         "source-05b2d5ff6757b5eb"
       ],
-      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Defined transport/optical/event/chaos channel, residual subtraction, frequency units, fitting window and source version.",
+      "verificationScope": "Selected source passages and independent specified-model checks; not complete final-version or raw-data verification."
     },
     {
       "id": "scwiki-h2-claim-discovery-implications-1",
       "sectionId": "discovery-implications",
-      "statement": "Use a Planckian-scale observation to formulate a falsifiable normal-state model. Ask which spectral weight, carrier estimate and scattering anisotropy would support or reject the proposed interpretation. Proximity to superconductivity can motivate a mechanism study, but it does not establish that faster scattering raises the critical temperature.",
+      "statement": "Compare rates only after aligning channel definitions, sample conditions and frequency units. Test whether alternative band weights or a temperature-dependent mass can explain the same measured curve. Then seek independent optical or angle-dependent constraints. A connection between normal-state relaxation and superconductivity is a research hypothesis to test; faster scattering does not, by itself, predict a higher transition temperature.",
       "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-67da95cac5481029",
-        "source-c1ae7869b672a8e8"
+        "source-c1ae7869b672a8e8",
+        "source-05b2d5ff6757b5eb",
+        "source-374c8bc13ced83e8"
       ],
-      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Defined transport/optical/event/chaos channel, residual subtraction, frequency units, fitting window and source version.",
+      "verificationScope": "Selected source passages and independent specified-model checks; not complete final-version or raw-data verification."
     }
   ]
 }
