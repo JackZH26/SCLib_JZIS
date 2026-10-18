@@ -1079,8 +1079,8 @@
       "lineCount": 365,
       "topicId": "scwiki-topic-h5",
       "articleId": "scwiki-h5",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {

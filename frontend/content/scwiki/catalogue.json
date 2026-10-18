@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "20aeb49289f372b26556",
+  "revision": "101b53f1dd05611f0bf2",
   "articles": [
     {
       "id": "scwiki-a1",
@@ -37432,6 +37432,547 @@
       ],
       "markdown": "# Charge-density waves: observations, competition and reconstruction\n\nRead charge-order evidence with its material, wave vector, dimensionality and resolution limits; distinguish competition from a pairing mechanism.\n\n## Scope\n\nA charge-density wave (CDW) modulates the electronic density at a finite wave vector, often together with atomic displacements. Cuprates and kagome compounds exhibit several distinct charge-order patterns. Their coexistence or competition with superconductivity depends on composition, temperature, field, pressure and the probe's spatial and temporal resolution. Neither a density modulation nor a nearby superconducting dome identifies the pairing interaction. [R2](#ref-source-9ae65971bc3eb5b8) [R3](#ref-source-c4a9d4e1b52d95bb) [R8](#ref-source-80eda571fc6d710c) [R11](#ref-source-74169f2f9bc31219)\n\nThis page addresses observations and their interpretation. Pair-density waves instead modulate the superconducting pair field; spin-density waves modulate magnetization. Charge order, structural chirality, broken time-reversal symmetry and superconducting chirality are different claims. The retained source chapter's citation of Stahl for the conjoined-CDW paper is corrected: that paper is by Li and colleagues; Stahl's temperature-dependent stacking study has a different DOI. [R7](#ref-source-d773a884dacbd7c9) [R8](#ref-source-80eda571fc6d710c) [R9](#ref-source-484da7abcc165cd3) [R10](#ref-source-057c43c86174f961)\n\n## Mathematical assumptions\n\nA single-component modulation can be written as $\\rho(\\mathbf r)=\\rho_0+\\operatorname{Re}[\\rho_{\\mathbf Q}e^{i\\mathbf Q\\cdot\\mathbf r}]$. Peak position identifies periodicity, while width constrains correlations under a stated line-shape model. For the illustrative lattice correlation $C(n)=r^{|n|}$, with $r=e^{-1/\\xi}$ and $\\xi$ in lattice spacings, the Fourier sum is $S(q)=(1-r^2)/(1+r^2-2r\\cos q)$. Here $q$ is dimensionless radians per spacing, measured from the ordering wave vector. Finite $\\xi$ produces a finite-width peak; observing that peak does not establish infinite-range order. This is an independent correlation model, not a fit to the cited specimens. [R4](#ref-source-d9477b85392d03f9) [R5](#ref-source-b89f6bcf54acb4d8)\n\nCorrelation lengths also depend on resolution and conventions. If both intrinsic and instrumental profiles are Gaussian, $\\sigma_{\\rm obs}^2=\\sigma_{\\rm int}^2+\\sigma_R^2$. The convention $\\xi=1/\\sigma_{\\rm int}$ then requires momentum widths in inverse-length units. Reciprocal-lattice widths need the appropriate lattice conversion. Uncorrected $1/\\sigma_{\\rm obs}$ is a lower bound within this model. Gaussian standard deviations, Lorentzian half-widths and full widths are not interchangeable; a resolution-limited peak yields a bound rather than a precisely measured divergence. [R4](#ref-source-d9477b85392d03f9) [R5](#ref-source-b89f6bcf54acb4d8)\n\nA phenomenological free energy $F=a_s|\\Delta|^2+b_s|\\Delta|^4+a_c|\\rho_{\\mathbf Q}|^2+b_c|\\rho_{\\mathbf Q}|^4+g|\\Delta|^2|\\rho_{\\mathbf Q}|^2$ illustrates static competition when $g>0$. With positive quartic coefficients, a stable interior coexistence minimum additionally requires $4b_sb_c-g^2>0$ and positive equilibrium squared amplitudes. Competition alone neither guarantees coexistence nor determines the frequency-dependent pairing kernel. Charge fluctuations could contribute to an effective interaction in a specified microscopic model without making every observed CDW a pairing mechanism. [R3](#ref-source-c4a9d4e1b52d95bb) [R11](#ref-source-74169f2f9bc31219)\n\n## Experimental criteria\n\nTranquada's historical neutron result concerns Nd-substituted La1.6−xNd0.4SrxCuO4 at $x=0.12$. Its static stripe evidence and suppressed superconductivity should not be assigned indiscriminately to every one-eighth-doped cuprate. Ghiringhelli's resonant X-ray study adds an element-sensitive charge response in underdoped YBCO. The selected author text uses 130 meV instrumental resolution and argues for a much smaller energy bound; that bound is not a separately resolved sharp collective mode. [R1](#ref-source-b33aab72ae697f3a) [R2](#ref-source-9ae65971bc3eb5b8)\n\nChang's 2012 experiment on detwinned ortho-VIII YBa2Cu3O6.67 finds charge-order intensity suppressed on entering the superconducting regime and enhanced by magnetic field below it. Those controlled changes support competition in this specimen. They do not isolate every field-induced change in vortices or electronic structure, and do not identify a unique microscopic interaction. [R3](#ref-source-c4a9d4e1b52d95bb)\n\nGerber's high-field diffraction shows additional interlayer-correlated order developing above about 15 T at 10 K. The author Figure 3 separates peaks near integer and half-integer out-of-plane coordinates and extracts Gaussian widths. Its reported lengths are explicitly uncorrected for resolution. Chang's 2016 study instead reports resolution-corrected widths: for YBCO6.67, the c-axis scale reaches about four lattice periods within the measured field range. Finite three-dimensional correlations must remain distinct from unlimited long-range coherence. These analyses cannot be combined by silently treating corrected and uncorrected widths as equivalent. [R4](#ref-source-d9477b85392d03f9) [R5](#ref-source-b89f6bcf54acb4d8)\n\nKagome studies probe different structures and surfaces. Liang's STM step-edge phase shift suggests $2\\times2\\times2$ order. Stahl's bulk diffraction reports a low-temperature $2\\times2\\times2$ structure changing to $2\\times2\\times4$ near 60 K on warming; its null response to fields up to 10 T does not rule out broken time-reversal symmetry. Li's separate CsV3Sb5 study resolves conjoined $2\\times2\\times1$ and $2\\times2\\times2$ charge-order responses, with distinct resonant behavior and a roughly 4 K onset separation at 1 GPa. That separation concerns charge order, not two superconducting transitions. [R6](#ref-source-7746049011a0e640) [R7](#ref-source-d773a884dacbd7c9) [R8](#ref-source-80eda571fc6d710c)\n\n## Limits and disputes\n\nA scattering superlattice peak needs electronic, structural and instrumental interpretation; it is not by itself proof of an exclusively electronic instability. STM conductance modulations must be compared across bias, surface termination and bulk probes. Li's surface modulation and bulk-null comparison illustrates why a surface pattern cannot automatically be promoted to a universal bulk phase. The present review does not independently reproduce those sensitivity limits or resolve every reported stacking structure. [R6](#ref-source-7746049011a0e640) [R8](#ref-source-80eda571fc6d710c)\n\nMielke's accepted-manuscript abstract reports enhanced internal-field widths in KV3Sb5 below charge ordering, interpreted as time-reversal symmetry breaking. This is a normal-state charge-order claim, not a direct determination of chiral superconducting pairing. Chen's spatially modulated tunnelling signatures motivate a kagome PDW interpretation, but interpretation of the pair field requires additional evidence beyond ordinary charge contrast. Material identity, probe coupling and the superconducting transition must remain explicit. [R9](#ref-source-484da7abcc165cd3) [R10](#ref-source-057c43c86174f961)\n\nComplete scientific acceptance remains open. Selected methods and figures, historical abstracts and independent line-shape checks do not replace full source-version comparisons, raw diffraction reproduction, all supplementary calibrations or competing-structure assessment. A Hall anomaly, a Fermi-surface pocket or a charge onset below a pseudogap scale cannot alone specify which charge structure causes reconstruction or whether it mediates pairing. [R3](#ref-source-c4a9d4e1b52d95bb) [R4](#ref-source-d9477b85392d03f9) [R5](#ref-source-b89f6bcf54acb4d8)\n\n## Discovery implications\n\nPreserve the measured wave vector and reciprocal units, sample composition, oxygen order, field direction, pressure medium, line shape and resolution treatment. Compare competing-order amplitudes on characterized specimens and distinguish a static order parameter from dynamic spectral weight. Useful predictions should connect a particular charge structure to a testable electronic reconstruction and superconducting response, including results that could falsify the proposed connection. [R2](#ref-source-9ae65971bc3eb5b8) [R3](#ref-source-c4a9d4e1b52d95bb) [R5](#ref-source-b89f6bcf54acb4d8) [R11](#ref-source-74169f2f9bc31219)\n\n## Related topics\n\n[Pseudogap](/scwiki/pseudogap), [Charge-fluctuation pairing](/scwiki/charge-fluctuation-pairing), and [Pair-density waves](/scwiki/pair-density-wave).\n\n## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| YBa2Cu3O6.67 (aliases: YBCO); Gerber high-field YBCO6.67 diffraction series | 10 K; Diffraction at 10 K; not superconducting Tc. | measurement; diffraction-measurement | Pulsed-field X-ray diffraction | ambient; unknown GPa | unknown | experiment; [source](#ref-source-d9477b85392d03f9) |\n| CsV3Sb5 (aliases: CsV3Sb5); Li resonant scattering specimen at ambient pressure | 10 K; Resonant scattering at 10 K; not superconducting Tc. | measurement; REXS-measurement | Sb L1-edge resonant elastic X-ray scattering | ambient; unknown GPa | unknown | experiment; [source](#ref-source-80eda571fc6d710c) |\n| CsV3Sb5 (aliases: CsV3Sb5); Li high-pressure diffraction at 1 GPa | 61 K; Diffraction comparison temperature; separates charge-order peaks and is not superconducting Tc. | measurement; diffraction-measurement | High-pressure X-ray diffraction | high; 1 to 1 GPa | unknown | experiment; [source](#ref-source-80eda571fc6d710c) |\n\n## Sources\n\n### Ref source-b33aab72ae697f3a\n\n[R1] Evidence for stripe correlations of spins and holes in copper oxide superconductors (1995). [DOI 10.1038/375561a0](https://doi.org/10.1038/375561a0). Publication: journal-article. Check: publisher-abstract-check. Checked: 2026-10-18. Publisher abstract and identity checked: 15 June 1995, Nd-substituted compound x=0.12, neutron diffraction. Full paper and data not reviewed.\n### Ref source-9ae65971bc3eb5b8\n\n[R2] Long-Range Incommensurate Charge Fluctuations in (Y,Nd)Ba2Cu3O6+x (2012). [DOI 10.1126/science.1223532](https://doi.org/10.1126/science.1223532). Publication: journal-article. Check: author-manuscript-scoped-check. Checked: 2026-10-18. Ghiringhelli et al. selected PDF pp.4–6,20–21: resonance/polarization,130meV resolution, author20meV bound and competition. Bound is not a resolved mode. Final-version and raw-data review open.\n### Ref source-c4a9d4e1b52d95bb\n\n[R3] Direct observation of competition between superconductivity and charge density wave order in YBa2Cu3O6.67 (2012). [DOI 10.1038/nphys2456](https://doi.org/10.1038/nphys2456). Publication: journal-article. Check: author-manuscript-scoped-check. Checked: 2026-10-18. Chang et al. selected pp.1–2: detwinned ortho-VIII crystal,100keV,up to17T,67K versus135K; zero-field CDW and field enhancement below Tc. Transition criterion/raw data not fully audited; no sample Tc record created.\n### Ref source-d9477b85392d03f9\n\n[R4] Three-dimensional charge density wave order in YBa2Cu3O6.67 at high magnetic fields (2015). [DOI 10.1126/science.aac6257](https://doi.org/10.1126/science.aac6257). Publication: journal-article. Check: selected-author-methods-and-figure-check. Checked: 2026-10-19. Author v1 selected pp. 4, 10, 13 read; Figures 2 and 3 on pp. 9–10 visually checked. Gaussian correlation lengths are uncorrected lower bounds. Final-version comparison and raw-data reproduction remain open.\n### Ref source-b89f6bcf54acb4d8\n\n[R5] Magnetic field controlled charge density wave coupling in underdoped YBa2Cu3O6+x (2016). [DOI 10.1038/ncomms11494](https://doi.org/10.1038/ncomms11494). Publication: journal-article. Check: selected-final-methods-table-and-figure-check. Checked: 2026-10-19. Published 5 May 2016. Selected pp. 3, 5–6 read; Figures 4–5 on p. 5 and Table 1/methods on p. 6 visually checked. Resolution-corrected Gaussian widths, 16.9 T limit and absolute temperature uncertainty distinguished. Complete raw-profile and stacking-model reproduction remain open.\n### Ref source-7746049011a0e640\n\n[R6] Three-Dimensional Charge Density Wave and Surface-Dependent Vortex-Core States in a Kagome Superconductor CsV3Sb5 (2021). [DOI 10.1103/PhysRevX.11.031026](https://doi.org/10.1103/PhysRevX.11.031026). Publication: journal-article. Check: publisher-abstract-check. Checked: 2026-10-19. Published 2 August 2021. Surface step phase shift and suggested three-dimensional order checked at abstract scope; vortex-state identity and full STM data not independently established.\n### Ref source-d773a884dacbd7c9\n\n[R7] Temperature-driven reorganization of electronic order in CsV3Sb5 (2022). [DOI 10.1103/PhysRevB.105.195136](https://doi.org/10.1103/PhysRevB.105.195136). Publication: journal-article. Check: publisher-abstract-and-identity-check. Checked: 2026-10-19. Stahl et al., published 24 May 2022. Abstract reports temperature-dependent stacking and a null diffraction response up to 10 T. Full refinements not reviewed; distinguish this DOI from Li et al. conjoined-CDW work.\n### Ref source-80eda571fc6d710c\n\n[R8] Discovery of conjoined charge density waves in the kagome superconductor CsV3Sb5 (2022). [DOI 10.1038/s41467-022-33995-2](https://doi.org/10.1038/s41467-022-33995-2). Publication: journal-article. Check: selected-publisher-web-passages-check. Checked: 2026-10-19. Li et al., published 26 October 2022. Abstract, selected results and Figures 1–4 captions read as text; images and raw profiles not independently reviewed. Corrects the inherited attribution to Stahl. Measurements at 10 K and charge-order onsets are not superconducting Tc.\n### Ref source-484da7abcc165cd3\n\n[R9] Time-reversal symmetry-breaking charge order in a kagome superconductor (2022). [DOI 10.1038/s41586-021-04327-z](https://doi.org/10.1038/s41586-021-04327-z). Publication: journal-article. Check: accepted-manuscript-abstract-check. Checked: 2026-10-19. Accepted manuscript opening abstract read: KV3Sb5 muon field-width enhancement below charge ordering. Full background calibration, magnetic interpretation and superconducting gap fits remain open.\n### Ref source-057c43c86174f961\n\n[R10] Roton pair density wave in a strong-coupling kagome superconductor (2021). [DOI 10.1038/s41586-021-03983-5](https://doi.org/10.1038/s41586-021-03983-5). Publication: journal-article. Check: selected-author-manuscript-check. Checked: 2026-10-18. Selected pp. 3–7 and methods pp. 17–18; Fig. 3 on p. 14 visually checked. Author version 2 September 2021 has a different title and mistyped journal volume 559; publisher confirms Nature 599. Final-version/raw-data comparison open.\n### Ref source-74169f2f9bc31219\n\n[R11] Singular Quasiparticle Scattering in the Proximity of Charge Instabilities (1995). [DOI 10.1103/PhysRevLett.75.4650](https://doi.org/10.1103/PhysRevLett.75.4650). Publication: journal-article. Check: publisher-abstract-scoped-check. Checked: 2026-10-18. Castellani–Di Castro–Grilli abstract: infinite-U Hubbard–Holstein model and long-range Coulomb change from zero to finite wave vector. Full calculation not read or reproduced.\n\n## Claim evidence and conditions\n\n### scwiki-h4-claim-scope-1\n\nA charge-density wave (CDW) modulates the electronic density at a finite wave vector, often together with atomic displacements. Cuprates and kagome compounds exhibit several distinct charge-order patterns. Their coexistence or competition with superconductivity depends on composition, temperature, field, pressure and the probe's spatial and temporal resolution. Neither a density modulation nor a nearby superconducting dome identifies the pairing interaction.\n\nEvidence: hypothesis. Sources: source-9ae65971bc3eb5b8, source-c4a9d4e1b52d95bb, source-80eda571fc6d710c, source-74169f2f9bc31219.\n\nConditions: Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.\n\nVerification scope: Selected primary evidence and independent correlation models; full scientific acceptance remains open.\n\n### scwiki-h4-claim-scope-2\n\nThis page addresses observations and their interpretation. Pair-density waves instead modulate the superconducting pair field; spin-density waves modulate magnetization. Charge order, structural chirality, broken time-reversal symmetry and superconducting chirality are different claims. The retained source chapter's citation of Stahl for the conjoined-CDW paper is corrected: that paper is by Li and colleagues; Stahl's temperature-dependent stacking study has a different DOI.\n\nEvidence: hypothesis. Sources: source-d773a884dacbd7c9, source-80eda571fc6d710c, source-484da7abcc165cd3, source-057c43c86174f961.\n\nConditions: Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.\n\nVerification scope: Selected primary evidence and independent correlation models; full scientific acceptance remains open.\n\n### scwiki-h4-claim-mathematical-assumptions-1\n\nA single-component modulation can be written as $\\rho(\\mathbf r)=\\rho_0+\\operatorname{Re}[\\rho_{\\mathbf Q}e^{i\\mathbf Q\\cdot\\mathbf r}]$. Peak position identifies periodicity, while width constrains correlations under a stated line-shape model. For the illustrative lattice correlation $C(n)=r^{|n|}$, with $r=e^{-1/\\xi}$ and $\\xi$ in lattice spacings, the Fourier sum is $S(q)=(1-r^2)/(1+r^2-2r\\cos q)$. Here $q$ is dimensionless radians per spacing, measured from the ordering wave vector. Finite $\\xi$ produces a finite-width peak; observing that peak does not establish infinite-range order. This is an independent correlation model, not a fit to the cited specimens.\n\nEvidence: theory. Sources: source-d9477b85392d03f9, source-b89f6bcf54acb4d8.\n\nConditions: Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.\n\nVerification scope: Selected primary evidence and independent correlation models; full scientific acceptance remains open.\n\n### scwiki-h4-claim-mathematical-assumptions-2\n\nCorrelation lengths also depend on resolution and conventions. If both intrinsic and instrumental profiles are Gaussian, $\\sigma_{\\rm obs}^2=\\sigma_{\\rm int}^2+\\sigma_R^2$. The convention $\\xi=1/\\sigma_{\\rm int}$ then requires momentum widths in inverse-length units. Reciprocal-lattice widths need the appropriate lattice conversion. Uncorrected $1/\\sigma_{\\rm obs}$ is a lower bound within this model. Gaussian standard deviations, Lorentzian half-widths and full widths are not interchangeable; a resolution-limited peak yields a bound rather than a precisely measured divergence.\n\nEvidence: theory. Sources: source-d9477b85392d03f9, source-b89f6bcf54acb4d8.\n\nConditions: Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.\n\nVerification scope: Selected primary evidence and independent correlation models; full scientific acceptance remains open.\n\n### scwiki-h4-claim-mathematical-assumptions-3\n\nA phenomenological free energy $F=a_s|\\Delta|^2+b_s|\\Delta|^4+a_c|\\rho_{\\mathbf Q}|^2+b_c|\\rho_{\\mathbf Q}|^4+g|\\Delta|^2|\\rho_{\\mathbf Q}|^2$ illustrates static competition when $g>0$. With positive quartic coefficients, a stable interior coexistence minimum additionally requires $4b_sb_c-g^2>0$ and positive equilibrium squared amplitudes. Competition alone neither guarantees coexistence nor determines the frequency-dependent pairing kernel. Charge fluctuations could contribute to an effective interaction in a specified microscopic model without making every observed CDW a pairing mechanism.\n\nEvidence: theory. Sources: source-c4a9d4e1b52d95bb, source-74169f2f9bc31219.\n\nConditions: Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.\n\nVerification scope: Selected primary evidence and independent correlation models; full scientific acceptance remains open.\n\n### scwiki-h4-claim-experimental-criteria-1\n\nTranquada's historical neutron result concerns Nd-substituted La1.6−xNd0.4SrxCuO4 at $x=0.12$. Its static stripe evidence and suppressed superconductivity should not be assigned indiscriminately to every one-eighth-doped cuprate. Ghiringhelli's resonant X-ray study adds an element-sensitive charge response in underdoped YBCO. The selected author text uses 130 meV instrumental resolution and argues for a much smaller energy bound; that bound is not a separately resolved sharp collective mode.\n\nEvidence: experiment. Sources: source-b33aab72ae697f3a, source-9ae65971bc3eb5b8.\n\nConditions: Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.\n\nVerification scope: Selected primary evidence and independent correlation models; full scientific acceptance remains open.\n\n### scwiki-h4-claim-experimental-criteria-2\n\nChang's 2012 experiment on detwinned ortho-VIII YBa2Cu3O6.67 finds charge-order intensity suppressed on entering the superconducting regime and enhanced by magnetic field below it. Those controlled changes support competition in this specimen. They do not isolate every field-induced change in vortices or electronic structure, and do not identify a unique microscopic interaction.\n\nEvidence: experiment. Sources: source-c4a9d4e1b52d95bb.\n\nConditions: Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.\n\nVerification scope: Selected primary evidence and independent correlation models; full scientific acceptance remains open.\n\n### scwiki-h4-claim-experimental-criteria-3\n\nGerber's high-field diffraction shows additional interlayer-correlated order developing above about 15 T at 10 K. The author Figure 3 separates peaks near integer and half-integer out-of-plane coordinates and extracts Gaussian widths. Its reported lengths are explicitly uncorrected for resolution. Chang's 2016 study instead reports resolution-corrected widths: for YBCO6.67, the c-axis scale reaches about four lattice periods within the measured field range. Finite three-dimensional correlations must remain distinct from unlimited long-range coherence. These analyses cannot be combined by silently treating corrected and uncorrected widths as equivalent.\n\nEvidence: experiment. Sources: source-d9477b85392d03f9, source-b89f6bcf54acb4d8.\n\nConditions: Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.\n\nVerification scope: Selected primary evidence and independent correlation models; full scientific acceptance remains open.\n\n### scwiki-h4-claim-experimental-criteria-4\n\nKagome studies probe different structures and surfaces. Liang's STM step-edge phase shift suggests $2\\times2\\times2$ order. Stahl's bulk diffraction reports a low-temperature $2\\times2\\times2$ structure changing to $2\\times2\\times4$ near 60 K on warming; its null response to fields up to 10 T does not rule out broken time-reversal symmetry. Li's separate CsV3Sb5 study resolves conjoined $2\\times2\\times1$ and $2\\times2\\times2$ charge-order responses, with distinct resonant behavior and a roughly 4 K onset separation at 1 GPa. That separation concerns charge order, not two superconducting transitions.\n\nEvidence: experiment. Sources: source-7746049011a0e640, source-d773a884dacbd7c9, source-80eda571fc6d710c.\n\nConditions: Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.\n\nVerification scope: Selected primary evidence and independent correlation models; full scientific acceptance remains open.\n\n### scwiki-h4-claim-limits-and-disputes-1\n\nA scattering superlattice peak needs electronic, structural and instrumental interpretation; it is not by itself proof of an exclusively electronic instability. STM conductance modulations must be compared across bias, surface termination and bulk probes. Li's surface modulation and bulk-null comparison illustrates why a surface pattern cannot automatically be promoted to a universal bulk phase. The present review does not independently reproduce those sensitivity limits or resolve every reported stacking structure.\n\nEvidence: hypothesis. Sources: source-7746049011a0e640, source-80eda571fc6d710c.\n\nConditions: Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.\n\nVerification scope: Selected primary evidence and independent correlation models; full scientific acceptance remains open.\n\n### scwiki-h4-claim-limits-and-disputes-2\n\nMielke's accepted-manuscript abstract reports enhanced internal-field widths in KV3Sb5 below charge ordering, interpreted as time-reversal symmetry breaking. This is a normal-state charge-order claim, not a direct determination of chiral superconducting pairing. Chen's spatially modulated tunnelling signatures motivate a kagome PDW interpretation, but interpretation of the pair field requires additional evidence beyond ordinary charge contrast. Material identity, probe coupling and the superconducting transition must remain explicit.\n\nEvidence: hypothesis. Sources: source-484da7abcc165cd3, source-057c43c86174f961.\n\nConditions: Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.\n\nVerification scope: Selected primary evidence and independent correlation models; full scientific acceptance remains open.\n\n### scwiki-h4-claim-limits-and-disputes-3\n\nComplete scientific acceptance remains open. Selected methods and figures, historical abstracts and independent line-shape checks do not replace full source-version comparisons, raw diffraction reproduction, all supplementary calibrations or competing-structure assessment. A Hall anomaly, a Fermi-surface pocket or a charge onset below a pseudogap scale cannot alone specify which charge structure causes reconstruction or whether it mediates pairing.\n\nEvidence: hypothesis. Sources: source-c4a9d4e1b52d95bb, source-d9477b85392d03f9, source-b89f6bcf54acb4d8.\n\nConditions: Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.\n\nVerification scope: Selected primary evidence and independent correlation models; full scientific acceptance remains open.\n\n### scwiki-h4-claim-discovery-implications-1\n\nPreserve the measured wave vector and reciprocal units, sample composition, oxygen order, field direction, pressure medium, line shape and resolution treatment. Compare competing-order amplitudes on characterized specimens and distinguish a static order parameter from dynamic spectral weight. Useful predictions should connect a particular charge structure to a testable electronic reconstruction and superconducting response, including results that could falsify the proposed connection.\n\nEvidence: hypothesis. Sources: source-9ae65971bc3eb5b8, source-c4a9d4e1b52d95bb, source-b89f6bcf54acb4d8, source-74169f2f9bc31219.\n\nConditions: Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.\n\nVerification scope: Selected primary evidence and independent correlation models; full scientific acceptance remains open.\n\n## Revision and review\n\nArticle ID: scwiki-h4. Revision: 092d1a01d0e22c7c3549. Updated: 2026-10-18T16:48:09.729599+00:00.\n\nReview scope: Selected Gerber author methods and diffraction figures; Chang final methods, table and figures; primary kagome abstracts and Li publisher passages; inherited scoped B6/C8 evidence; independent correlation and Gaussian-width checks.\n\n- Complete scientific acceptance remains open.\n- Complete source-version, raw-data, supplementary calibration and competing-structure reviews remain open.\n- Selected abstracts do not establish a unique CDW mechanism, PDW or superconducting chirality.\n- Line-shape examples are models, not reanalyses of experimental profiles.\n\nSource: [H_anomalous_normal_state/H4_CDW.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/H_anomalous_normal_state/H4_CDW.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 cb5476fe2c7c2dea8b709ea989ffbb124b785c4437edb20dafaac852188af6b4.\n",
       "wordCount": 926
+    },
+    {
+      "id": "scwiki-h5",
+      "topicId": "scwiki-topic-h5",
+      "code": "H5",
+      "slug": "spin-density-waves",
+      "title": "Spin-density waves: static order, fluctuations and superconductivity",
+      "summary": "Distinguish magnetic order from dynamic spin response, preserve reciprocal coordinates, and compare iron arsenides with ambient-pressure FeSe.",
+      "aliases": [
+        "spin density wave",
+        "spin-density waves",
+        "SDW",
+        "自旋密度波"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory",
+        "hypothesis"
+      ],
+      "relatedCodes": [
+        "H4",
+        "B3",
+        "G1"
+      ],
+      "editorialStatus": "scoped-check",
+      "contentState": "pilot",
+      "modifiedAt": "2026-10-18T16:56:57.877476+00:00",
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Selected de la Cruz final text and figures; Lumsden/Böhmer author methods and figures; Wang final methods and figures; historical publisher abstracts and inherited scoped theory/coexistence checks.",
+        "limitations": [
+          "Complete scientific acceptance remains open.",
+          "Full source-version, erratum, raw-data and supplementary refinement reviews remain open.",
+          "NMR and neutron observations sample different energy windows; neither alone establishes the nematic driver.",
+          "Independent harmonic models are not experimental data reanalyses."
+        ]
+      },
+      "provenance": {
+        "repository": "JackZH26/jzis-superconductivity",
+        "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+        "path": "H_anomalous_normal_state/H5_SDW.md",
+        "sha256": "1ee04e1daaf7332c733b7e69412d8a6efbc8255789b145e109dd34e156f59109",
+        "sourceId": "file-2564b8d286b0ef90"
+      },
+      "sourceMap": [
+        {
+          "startLine": 1,
+          "endLine": 365,
+          "targetSections": [
+            "scope",
+            "mathematical-assumptions",
+            "experimental-criteria",
+            "limits-and-disputes",
+            "discovery-implications",
+            "related-topics"
+          ],
+          "decision": "edited-with-scoped-evidence",
+          "note": "Pinned chapter retained with corrected evidence boundaries, explicit reciprocal basis and FeSe probe comparison. Family-wide negative phase-experiment claim not reproduced."
+        }
+      ],
+      "corrections": [
+        {
+          "id": "scwiki-h5-correction-1",
+          "description": "Retain the parent BaFe2As2 study separately from the K-doped superconducting discovery, and qualify probe-dependent FeSe magnetism.",
+          "sourceId": "source-9ab5e43d0018f0b0",
+          "scope": "Material identity and interpretation; do not treat a resonance as static SDW order or a unique pairing proof."
+        }
+      ],
+      "equationChecks": [
+        {
+          "targetSectionId": "mathematical-assumptions",
+          "tex": "\\rho_{2\\mathbf Q}=-\\lambda(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})/\\kappa",
+          "check": "27 scalar harmonic Fourier cases and 216 positive energy perturbations independently checked; no raw magnetic data fit reproduced."
+        }
+      ],
+      "references": [
+        {
+          "id": "source-b957bb3d98eba2a8",
+          "doi": "10.1103/PhysRev.128.1437",
+          "title": "Spin Density Waves in an Electron Gas",
+          "year": 1962,
+          "url": "https://doi.org/10.1103/PhysRev.128.1437",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-abstract-check",
+            "checkedAt": "2026-10-19",
+            "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.128.1437",
+            "note": "Hartree–Fock instability near twice the Fermi wave vector; no claim of an exact correlated ground state. Full derivation remains open."
+          }
+        },
+        {
+          "id": "source-e29f9b7d08a70596",
+          "doi": "10.1103/RevModPhys.60.209",
+          "title": "Spin-density-wave antiferromagnetism in chromium",
+          "year": 1988,
+          "url": "https://doi.org/10.1103/RevModPhys.60.209",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "review-abstract-check",
+            "checkedAt": "2026-10-19",
+            "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.60.209",
+            "note": "Secondary review abstract only: spin, charge and strain waves in chromium. Original experimental data and full review not independently reviewed."
+          }
+        },
+        {
+          "id": "source-9ab5e43d0018f0b0",
+          "doi": "10.1103/PhysRevB.78.020503",
+          "title": "Spin-density-wave anomaly at 140 K in the ternary iron arsenide BaFe2As2",
+          "year": 2008,
+          "url": "https://doi.org/10.1103/PhysRevB.78.020503",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-abstract-check",
+            "checkedAt": "2026-10-19",
+            "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.78.020503",
+            "note": "Parent material, structural anomaly and 5.2 T hyperfine field at 77 K checked. Hyperfine field is not an applied superconducting critical field."
+          }
+        },
+        {
+          "id": "source-820cf342501963df",
+          "doi": "10.1103/PhysRevLett.101.257003",
+          "title": "Neutron-Diffraction Measurements of Magnetic Order and a Structural Transition in the Parent BaFe2As2 Compound of FeAs-Based High-Temperature Superconductors",
+          "year": 2008,
+          "url": "https://doi.org/10.1103/PhysRevLett.101.257003",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-original-abstract",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.257003",
+            "note": "Published 17 December 2008. Original abstract read for the parent compound magnetic order and coupled structural transition. This is a magnetic-structure source, distinct from the K-doped superconductivity discovery. Full refinement and sample comparison remain open."
+          }
+        },
+        {
+          "id": "source-d2760cbcecab6071",
+          "doi": "10.1038/nature07057",
+          "title": "Magnetic order close to superconductivity in the iron-based layered LaO1-xFxFeAs systems",
+          "year": 2008,
+          "url": "https://doi.org/10.1038/nature07057",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "final-main-text-and-selected-figure-check",
+            "checkedAt": "2026-10-19",
+            "evidenceUrl": "https://www.physics.rutgers.edu/~pchandra/physics681/morder_pnictides.pdf",
+            "note": "Main pp. 899–902 read; p. 901 Figures 2–3 visually checked. Parent and F0.08 are different specimens. Table 2 allows a constrained Cmma description. Figure 3 c-axis label differs from main text/Figure 4; no conversion inferred from that label. Supplementary refinements remain open."
+          }
+        },
+        {
+          "id": "source-7aa630cb9480eb85",
+          "doi": "10.1103/PhysRevLett.102.107005",
+          "title": "Two-dimensional resonant magnetic excitation in BaFe1.84Co0.16As2",
+          "year": 2009,
+          "url": "https://doi.org/10.1103/PhysRevLett.102.107005",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-author-methods-and-figure-check",
+            "checkedAt": "2026-10-19",
+            "evidenceUrl": "https://arxiv.org/pdf/0811.4755v2",
+            "note": "Author v2 pp. 1–3 read; p. 2 Figures 1–2 visually checked. Three co-aligned crystals, tetragonal versus Fe-square coordinates, 8.6 +/- 0.5 meV resonance and 10 K measurement distinguished. Final full-text comparison remains open."
+          }
+        },
+        {
+          "id": "source-229de7733ef6e2b5",
+          "doi": "10.1103/PhysRevLett.114.027001",
+          "title": "Origin of the Tetragonal-to-Orthorhombic Phase Transition in FeSe: A Combined Thermodynamic and NMR Study of Nematicity",
+          "year": 2015,
+          "url": "https://doi.org/10.1103/PhysRevLett.114.027001",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-author-methods-and-figure-check",
+            "checkedAt": "2026-10-19",
+            "evidenceUrl": "https://arxiv.org/pdf/1407.5497v1",
+            "note": "Only v1 listed in arXiv history. Selected pp. 1–4 text and p. 3 Figure 2 checked; 77Se NMR at 9 T and 73.28 MHz samples a low-frequency window. Authors infer a nonmagnetic driver; later neutron evidence must be considered. Old Kyoto URL returned HTML, not a final PDF."
+          }
+        },
+        {
+          "id": "source-3686ada319d8a30c",
+          "doi": "10.1038/nmat4492",
+          "title": "Strong interplay between stripe spin fluctuations, nematicity and superconductivity in FeSe",
+          "year": 2016,
+          "url": "https://doi.org/10.1038/nmat4492",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-final-methods-and-figure-check",
+            "checkedAt": "2026-10-19",
+            "evidenceUrl": "https://jzhao.fudan.edu.cn/pdfs/Strong%20interplay%20between%20stripe%20spin%20fluctuations%20nematicity%20and%20superconductivity%20in%20FeSe.pdf",
+            "note": "Published online 7 December 2015, 2016 issue. Selected pp. 1, 2, 4, 6 read; p. 2 Figures 1–2 visually checked. FeSe0.990(10), magnetic onset 8.7 K at 10 Oe in-plane; orthorhombic neutron coordinates. PDF notes correction online 15 December 2015. Exact erratum comparison remains open."
+          }
+        },
+        {
+          "id": "source-8792c0e7a8d3b7e3",
+          "doi": "10.1038/nmat4535",
+          "title": "Erratum: Strong interplay between stripe spin fluctuations, nematicity and superconductivity in FeSe",
+          "year": 2016,
+          "url": "https://doi.org/10.1038/nmat4535",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "correction-identity-only",
+            "checkedAt": "2026-10-19",
+            "evidenceUrl": "https://www.nature.com/articles/nmat4535",
+            "note": "Erratum identity and publication date 22 January 2016 checked. Exact correction text not retrieved; not evidence of a completed source-version audit."
+          }
+        },
+        {
+          "id": "source-7c2b55d128348e6c",
+          "doi": "10.1103/PhysRevLett.101.057003",
+          "title": "Unconventional Superconductivity with a Sign Reversal in the Order Parameter of LaFeAsO1−xFx",
+          "year": 2008,
+          "url": "https://doi.org/10.1103/PhysRevLett.101.057003",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-passages-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.057003",
+            "note": "Mazin et al. abstract and published note 8 checked. The note qualifies the initial identification of the magnetic instability; full electronic-structure calculation not reproduced."
+          }
+        },
+        {
+          "id": "source-8e3f1211aced222f",
+          "doi": "10.1103/PhysRevB.82.014521",
+          "title": "Competing order and nature of the pairing state in the iron pnictides",
+          "year": 2010,
+          "url": "https://doi.org/10.1103/PhysRevB.82.014521",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-author-landau-analysis",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://arxiv.org/pdf/1005.2437v3",
+            "note": "Published 16 July 2010; author v3 submitted 20 July 2010. Selected pages 1–4 read, page 3 visually checked. Quartic competition, coexistence, temperature slopes and assumptions behind pairing inference were inspected. The Wiki uses explicitly defined coefficients and independently derived stationary equations. The full microscopic calculation and final-version comparison remain open."
+          }
+        },
+        {
+          "id": "source-01629af670cc7358",
+          "doi": "10.1103/PhysRevLett.103.087001",
+          "title": "Coexistence of Competing Antiferromagnetic and Superconducting Phases in the Underdoped Ba(Fe0.953Co0.047)2As2 Compound Using X-ray and Neutron Scattering Techniques",
+          "year": 2009,
+          "url": "https://doi.org/10.1103/PhysRevLett.103.087001",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-author-methods-and-final-abstract",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://arxiv.org/pdf/0903.2833v1",
+            "note": "Published 19 August 2009; author v1 submitted 16 March 2009. Selected author pages 1–5 read. Final publisher abstract gives Tc 17 K and low-energy redistribution; author v1 gives 15 K and a 4 meV gap. Methods describe diffraction crystals grown under the same conditions as bulk-measurement specimens. Full final methods and figures have not been retrieved, so exact specimen identity and the reason for the changed Tc are unresolved."
+          }
+        },
+        {
+          "id": "source-b33aab72ae697f3a",
+          "doi": "10.1038/375561a0",
+          "title": "Evidence for stripe correlations of spins and holes in copper oxide superconductors",
+          "year": 1995,
+          "url": "https://doi.org/10.1038/375561a0",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-abstract-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.nature.com/articles/375561a0",
+            "note": "Publisher abstract and identity checked: 15 June 1995, Nd-substituted compound x=0.12, neutron diffraction. Full paper and data not reviewed."
+          }
+        }
+      ],
+      "materialCases": [
+        {
+          "recordType": "experiment",
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "id": "scwiki-h5-material-1",
+          "formula": "LaOFeAs",
+          "sample": "de la Cruz parent neutron powder specimen",
+          "reportedTemperatureK": 8,
+          "temperatureNote": "Ordered-moment measurement at 8 K; not superconducting Tc.",
+          "criterion": "neutron-diffraction-measurement",
+          "probe": "Elastic neutron diffraction",
+          "sourceId": "source-d2760cbcecab6071",
+          "aliases": [
+            "LaFeAsO"
+          ]
+        },
+        {
+          "recordType": "experiment",
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "id": "scwiki-h5-material-2",
+          "formula": "BaFe1.84Co0.16As2",
+          "sample": "Lumsden three co-aligned crystals",
+          "reportedTemperatureK": 10,
+          "temperatureNote": "Resonance measurement at 10 K; no independently reviewed bulk transition criterion extracted.",
+          "criterion": "INS-measurement",
+          "probe": "Inelastic neutron scattering",
+          "sourceId": "source-7aa630cb9480eb85",
+          "aliases": [
+            "Ba(Fe0.92Co0.08)2As2",
+            "Co-Ba122"
+          ]
+        },
+        {
+          "recordType": "experiment",
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "id": "scwiki-h5-material-3",
+          "formula": "FeSe",
+          "sample": "Böhmer 77Se NMR crystal assembly at 9 T",
+          "reportedTemperatureK": 10,
+          "temperatureNote": "Low-temperature NMR measurement in a 9 T field; not superconducting Tc.",
+          "criterion": "NMR-measurement",
+          "probe": "77Se NMR",
+          "sourceId": "source-229de7733ef6e2b5",
+          "aliases": [
+            "FeSe"
+          ]
+        },
+        {
+          "recordType": "experiment",
+          "tcK": 8.7,
+          "temperatureKind": "transition",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "id": "scwiki-h5-material-4",
+          "formula": "FeSe0.990(10)",
+          "sample": "Wang FeSe crystal characterization; Figure 1",
+          "reportedTemperatureK": 8.7,
+          "temperatureNote": "Magnetic onset in 10 Oe in-plane field; transition width about 0.3 K is not an uncertainty estimate for Tc.",
+          "criterion": "magnetic-onset",
+          "probe": "Zero-field-cooled magnetic susceptibility",
+          "sourceId": "source-3686ada319d8a30c",
+          "aliases": [
+            "FeSe"
+          ]
+        }
+      ],
+      "claims": [
+        {
+          "id": "scwiki-h5-claim-scope-1",
+          "sectionId": "scope",
+          "statement": "A spin-density wave (SDW) is a spatial modulation of magnetization. Static order, fluctuating magnetism and superconductivity are distinct observations. Chromium, iron arsenides and cuprate stripes supply different examples; their microscopic interactions need not be identical. A spin order parameter can couple to charge and lattice distortions. Calling a state magnetic does not imply that the lattice is uninvolved.",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "source-e29f9b7d08a70596",
+            "source-9ab5e43d0018f0b0",
+            "source-b33aab72ae697f3a"
+          ],
+          "conditions": "Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.",
+          "verificationScope": "Selected primary evidence and independent harmonic checks; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-h5-claim-scope-2",
+          "sectionId": "scope",
+          "statement": "Overhauser demonstrated an instability of the uniform electron gas within Hartree–Fock theory, near twice the Fermi wave vector. This is a foundational model result, not an exact solution for all interacting metals. Similarly, a spin-fluctuation calculation that favors a sign-changing superconducting gap establishes a candidate mechanism under its assumptions, not a measurement of the pairing phase.",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "source-b957bb3d98eba2a8",
+            "source-7c2b55d128348e6c"
+          ],
+          "conditions": "Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.",
+          "verificationScope": "Selected primary evidence and independent harmonic checks; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-h5-claim-mathematical-assumptions-1",
+          "sectionId": "mathematical-assumptions",
+          "statement": "Write $\\mathbf M(\\mathbf r)=\\operatorname{Re}[\\mathbf M_{\\mathbf Q}e^{i\\mathbf Q\\cdot\\mathbf r}]$. A complex vector amplitude describes either collinear or rotating magnetization. In a continuum single-harmonic example, the Fourier coefficient of $|\\mathbf M(\\mathbf r)|^2$ at $+2\\mathbf Q$ is $(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})/4$. This dot product has no complex conjugation. For $\\mathbf M_{\\mathbf Q}=m e^{i\\phi}(1,i\\epsilon,0)$ it is proportional to $1-\\epsilon^2$: a collinear wave has a scalar second harmonic, while a circular helix has constant magnitude. These independent algebraic examples illustrate possible couplings, not fits to chromium data.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-e29f9b7d08a70596"
+          ],
+          "conditions": "Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.",
+          "verificationScope": "Selected primary evidence and independent harmonic checks; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-h5-claim-mathematical-assumptions-2",
+          "sectionId": "mathematical-assumptions",
+          "statement": "For the illustrative free energy $F=\\kappa|\\rho_{2\\mathbf Q}|^2+\\lambda[\\rho_{2\\mathbf Q}^{*}(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})+\\mathrm{c.c.}]$, with $\\kappa>0$ and real $\\lambda$, minimization gives $\\rho_{2\\mathbf Q}=-\\lambda(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})/\\kappa$. The coupling absorbs normalization conventions. Vanishing of this particular scalar coupling for a circular helix does not exclude other spin–orbit or lattice responses. Commensurate harmonics that coincide modulo a reciprocal vector require a separate treatment.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-e29f9b7d08a70596"
+          ],
+          "conditions": "Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.",
+          "verificationScope": "Selected primary evidence and independent harmonic checks; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-h5-claim-mathematical-assumptions-3",
+          "sectionId": "mathematical-assumptions",
+          "statement": "Wave-vector notation is part of an experimental claim. Lumsden uses a tetragonal in-plane lattice spacing $a$, while the Fe square lattice has $\\tilde a=a/\\sqrt 2$ and rotated axes. Its tetragonal $(1/2,1/2)$ corresponds to square-lattice $(1/2,0)$ in reciprocal-lattice units, or $(\\pi/\\tilde a,0)$ in inverse-length coordinates. Huang's crystallographic $(101)$ and Wang's orthorhombic $(1,0,0)$ must retain their own basis and out-of-plane convention. Identical-looking tuples need not identify identical momenta.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-820cf342501963df",
+            "source-7aa630cb9480eb85",
+            "source-3686ada319d8a30c"
+          ],
+          "conditions": "Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.",
+          "verificationScope": "Selected primary evidence and independent harmonic checks; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-h5-claim-experimental-criteria-1",
+          "sectionId": "experimental-criteria",
+          "statement": "Rotter's parent BaFe2As2 study reports a magnetic/structural anomaly near 140 K. Its 5.2 T Mössbauer hyperfine field at 77 K is a local internal field, not an applied-field threshold for superconductivity. Huang's neutron abstract reports a $0.87(3)\\,\\mu_B$ ordered moment per Fe along the longer orthorhombic axis. These parent studies must remain separate from Rotter's K-doped superconducting discovery.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-9ab5e43d0018f0b0",
+            "source-820cf342501963df"
+          ],
+          "conditions": "Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.",
+          "verificationScope": "Selected primary evidence and independent harmonic checks; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-h5-claim-experimental-criteria-2",
+          "sectionId": "experimental-criteria",
+          "statement": "In de la Cruz's LaOFeAs parent specimen, the structural transition near 155 K precedes magnetic ordering at $137(3)$ K. Nuclear-normalized neutron intensities give $0.36(5)\\,\\mu_B$ per Fe at 8 K. The fluorinated superconducting specimen is separate. The paper's constrained structural refinement admits an orthorhombic description under specified atomic coordinates; its in-plane moment direction is not resolved. These qualifications prevent a structural label or moment direction from being transferred uncritically between compounds.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-d2760cbcecab6071"
+          ],
+          "conditions": "Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.",
+          "verificationScope": "Selected primary evidence and independent harmonic checks; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-h5-claim-experimental-criteria-3",
+          "sectionId": "experimental-criteria",
+          "statement": "Lumsden's BaFe1.84Co0.16As2 exhibits a superconducting-state resonance at $8.6\\pm0.5$ meV, compared at 10 K and 30 K, without detected long-range antiferromagnetic order. The dynamical peak is not a static magnetic Bragg peak. The composition is Ba(Fe0.92Co0.08)2As2: Co fractions in these two formula conventions differ by a factor of two. An intensity-onset fit is not an independently established bulk superconducting transition criterion.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-7aa630cb9480eb85"
+          ],
+          "conditions": "Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.",
+          "verificationScope": "Selected primary evidence and independent harmonic checks; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-h5-claim-experimental-criteria-4",
+          "sectionId": "experimental-criteria",
+          "statement": "FeSe makes the probe distinction concrete. Böhmer's low-frequency NMR relaxation increases below the structural transition; the authors argue against a magnetic driver of nematicity. Wang's later neutron study observes finite-energy stripe fluctuations already above that transition and enhanced below it. Its neutron spectra use orthorhombic coordinates and a different energy window from NMR. The results must be compared through probe sensitivity, not reduced to “magnetism absent” versus “magnetism present.” Wang interprets the enhancement as supporting spin-driven proposals; it does not uniquely prove causation.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-229de7733ef6e2b5",
+            "source-3686ada319d8a30c"
+          ],
+          "conditions": "Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.",
+          "verificationScope": "Selected primary evidence and independent harmonic checks; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-h5-claim-limits-and-disputes-1",
+          "sectionId": "limits-and-disputes",
+          "statement": "The absence of conventional static magnetic order in ambient-pressure FeSe does not exclude magnetic fluctuations or imply the same behavior under pressure. Conversely, a magnetic resonance supports particular coherence-factor interpretations only with a specified gap structure, continuum and susceptibility model. It does not uniquely establish the pairing interaction. This page makes no blanket claim that an entire materials family lacks phase-sensitive experiments.",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "source-7aa630cb9480eb85",
+            "source-3686ada319d8a30c",
+            "source-7c2b55d128348e6c"
+          ],
+          "conditions": "Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.",
+          "verificationScope": "Selected primary evidence and independent harmonic checks; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-h5-claim-limits-and-disputes-2",
+          "sectionId": "limits-and-disputes",
+          "statement": "Coexisting magnetic and superconducting signals require spatial and sample controls. Pratt's experiments and Fernandes's model address competition and coexistence under particular conditions; neither makes a bulk-average signal a universal microscopic-coexistence proof. Pratt's author manuscript and final abstract give different transition numbers, so this page imports no transition record from that unresolved comparison.",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "source-8e3f1211aced222f",
+            "source-01629af670cc7358"
+          ],
+          "conditions": "Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.",
+          "verificationScope": "Selected primary evidence and independent harmonic checks; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-h5-claim-limits-and-disputes-3",
+          "sectionId": "limits-and-disputes",
+          "statement": "Complete scientific acceptance remains open. Chromium is checked here at review-abstract scope; several historical sources remain abstract-only. Selected author manuscripts still require final-version comparisons. Wang's PDF states that it was corrected online, and an erratum is identified, but its exact changes have not been independently compared. The de la Cruz figure-label discrepancy also remains recorded. These limitations must travel with exported claims.",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "source-e29f9b7d08a70596",
+            "source-d2760cbcecab6071",
+            "source-7aa630cb9480eb85",
+            "source-229de7733ef6e2b5",
+            "source-8792c0e7a8d3b7e3"
+          ],
+          "conditions": "Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.",
+          "verificationScope": "Selected primary evidence and independent harmonic checks; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-h5-claim-discovery-implications-1",
+          "sectionId": "discovery-implications",
+          "statement": "Keep composition, coordinate basis, resolution, energy transfer, temperature, field direction and sample identity attached to each measurement. Compare static order and dynamical spectral weight separately while testing superconducting responses on characterized samples. A useful mechanism prediction should distinguish alternatives under controlled tuning, rather than infer a pairing interaction solely from neighboring magnetic and superconducting regions.",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "source-d2760cbcecab6071",
+            "source-7aa630cb9480eb85",
+            "source-3686ada319d8a30c",
+            "source-7c2b55d128348e6c"
+          ],
+          "conditions": "Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.",
+          "verificationScope": "Selected primary evidence and independent harmonic checks; full scientific acceptance remains open."
+        }
+      ],
+      "body": "## Scope\n\nA spin-density wave (SDW) is a spatial modulation of magnetization. Static order, fluctuating magnetism and superconductivity are distinct observations. Chromium, iron arsenides and cuprate stripes supply different examples; their microscopic interactions need not be identical. A spin order parameter can couple to charge and lattice distortions. Calling a state magnetic does not imply that the lattice is uninvolved. [R2](#ref-source-e29f9b7d08a70596) [R3](#ref-source-9ab5e43d0018f0b0) [R13](#ref-source-b33aab72ae697f3a)\n\nOverhauser demonstrated an instability of the uniform electron gas within Hartree–Fock theory, near twice the Fermi wave vector. This is a foundational model result, not an exact solution for all interacting metals. Similarly, a spin-fluctuation calculation that favors a sign-changing superconducting gap establishes a candidate mechanism under its assumptions, not a measurement of the pairing phase. [R1](#ref-source-b957bb3d98eba2a8) [R10](#ref-source-7c2b55d128348e6c)\n\n## Mathematical assumptions\n\nWrite $\\mathbf M(\\mathbf r)=\\operatorname{Re}[\\mathbf M_{\\mathbf Q}e^{i\\mathbf Q\\cdot\\mathbf r}]$. A complex vector amplitude describes either collinear or rotating magnetization. In a continuum single-harmonic example, the Fourier coefficient of $|\\mathbf M(\\mathbf r)|^2$ at $+2\\mathbf Q$ is $(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})/4$. This dot product has no complex conjugation. For $\\mathbf M_{\\mathbf Q}=m e^{i\\phi}(1,i\\epsilon,0)$ it is proportional to $1-\\epsilon^2$: a collinear wave has a scalar second harmonic, while a circular helix has constant magnitude. These independent algebraic examples illustrate possible couplings, not fits to chromium data. [R2](#ref-source-e29f9b7d08a70596)\n\nFor the illustrative free energy $F=\\kappa|\\rho_{2\\mathbf Q}|^2+\\lambda[\\rho_{2\\mathbf Q}^{*}(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})+\\mathrm{c.c.}]$, with $\\kappa>0$ and real $\\lambda$, minimization gives $\\rho_{2\\mathbf Q}=-\\lambda(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})/\\kappa$. The coupling absorbs normalization conventions. Vanishing of this particular scalar coupling for a circular helix does not exclude other spin–orbit or lattice responses. Commensurate harmonics that coincide modulo a reciprocal vector require a separate treatment. [R2](#ref-source-e29f9b7d08a70596)\n\nWave-vector notation is part of an experimental claim. Lumsden uses a tetragonal in-plane lattice spacing $a$, while the Fe square lattice has $\\tilde a=a/\\sqrt 2$ and rotated axes. Its tetragonal $(1/2,1/2)$ corresponds to square-lattice $(1/2,0)$ in reciprocal-lattice units, or $(\\pi/\\tilde a,0)$ in inverse-length coordinates. Huang's crystallographic $(101)$ and Wang's orthorhombic $(1,0,0)$ must retain their own basis and out-of-plane convention. Identical-looking tuples need not identify identical momenta. [R4](#ref-source-820cf342501963df) [R6](#ref-source-7aa630cb9480eb85) [R8](#ref-source-3686ada319d8a30c)\n\n## Experimental criteria\n\nRotter's parent BaFe2As2 study reports a magnetic/structural anomaly near 140 K. Its 5.2 T Mössbauer hyperfine field at 77 K is a local internal field, not an applied-field threshold for superconductivity. Huang's neutron abstract reports a $0.87(3)\\,\\mu_B$ ordered moment per Fe along the longer orthorhombic axis. These parent studies must remain separate from Rotter's K-doped superconducting discovery. [R3](#ref-source-9ab5e43d0018f0b0) [R4](#ref-source-820cf342501963df)\n\nIn de la Cruz's LaOFeAs parent specimen, the structural transition near 155 K precedes magnetic ordering at $137(3)$ K. Nuclear-normalized neutron intensities give $0.36(5)\\,\\mu_B$ per Fe at 8 K. The fluorinated superconducting specimen is separate. The paper's constrained structural refinement admits an orthorhombic description under specified atomic coordinates; its in-plane moment direction is not resolved. These qualifications prevent a structural label or moment direction from being transferred uncritically between compounds. [R5](#ref-source-d2760cbcecab6071)\n\nLumsden's BaFe1.84Co0.16As2 exhibits a superconducting-state resonance at $8.6\\pm0.5$ meV, compared at 10 K and 30 K, without detected long-range antiferromagnetic order. The dynamical peak is not a static magnetic Bragg peak. The composition is Ba(Fe0.92Co0.08)2As2: Co fractions in these two formula conventions differ by a factor of two. An intensity-onset fit is not an independently established bulk superconducting transition criterion. [R6](#ref-source-7aa630cb9480eb85)\n\nFeSe makes the probe distinction concrete. Böhmer's low-frequency NMR relaxation increases below the structural transition; the authors argue against a magnetic driver of nematicity. Wang's later neutron study observes finite-energy stripe fluctuations already above that transition and enhanced below it. Its neutron spectra use orthorhombic coordinates and a different energy window from NMR. The results must be compared through probe sensitivity, not reduced to “magnetism absent” versus “magnetism present.” Wang interprets the enhancement as supporting spin-driven proposals; it does not uniquely prove causation. [R7](#ref-source-229de7733ef6e2b5) [R8](#ref-source-3686ada319d8a30c)\n\n## Limits and disputes\n\nThe absence of conventional static magnetic order in ambient-pressure FeSe does not exclude magnetic fluctuations or imply the same behavior under pressure. Conversely, a magnetic resonance supports particular coherence-factor interpretations only with a specified gap structure, continuum and susceptibility model. It does not uniquely establish the pairing interaction. This page makes no blanket claim that an entire materials family lacks phase-sensitive experiments. [R6](#ref-source-7aa630cb9480eb85) [R8](#ref-source-3686ada319d8a30c) [R10](#ref-source-7c2b55d128348e6c)\n\nCoexisting magnetic and superconducting signals require spatial and sample controls. Pratt's experiments and Fernandes's model address competition and coexistence under particular conditions; neither makes a bulk-average signal a universal microscopic-coexistence proof. Pratt's author manuscript and final abstract give different transition numbers, so this page imports no transition record from that unresolved comparison. [R11](#ref-source-8e3f1211aced222f) [R12](#ref-source-01629af670cc7358)\n\nComplete scientific acceptance remains open. Chromium is checked here at review-abstract scope; several historical sources remain abstract-only. Selected author manuscripts still require final-version comparisons. Wang's PDF states that it was corrected online, and an erratum is identified, but its exact changes have not been independently compared. The de la Cruz figure-label discrepancy also remains recorded. These limitations must travel with exported claims. [R2](#ref-source-e29f9b7d08a70596) [R5](#ref-source-d2760cbcecab6071) [R6](#ref-source-7aa630cb9480eb85) [R7](#ref-source-229de7733ef6e2b5) [R9](#ref-source-8792c0e7a8d3b7e3)\n\n## Discovery implications\n\nKeep composition, coordinate basis, resolution, energy transfer, temperature, field direction and sample identity attached to each measurement. Compare static order and dynamical spectral weight separately while testing superconducting responses on characterized samples. A useful mechanism prediction should distinguish alternatives under controlled tuning, rather than infer a pairing interaction solely from neighboring magnetic and superconducting regions. [R5](#ref-source-d2760cbcecab6071) [R6](#ref-source-7aa630cb9480eb85) [R8](#ref-source-3686ada319d8a30c) [R10](#ref-source-7c2b55d128348e6c)\n\n## Related topics\n\n[Charge-density waves](/scwiki/charge-density-waves), [Antiferromagnetic spin fluctuations](/scwiki/spin-fluctuation-pairing), and [Superconductivity with antiferromagnetism](/scwiki/antiferromagnetism-and-superconductivity).",
+      "revision": "0af07fc225def2f32bf5",
+      "sections": [
+        {
+          "id": "scope",
+          "title": "Scope",
+          "markdown": "## Scope\n\nA spin-density wave (SDW) is a spatial modulation of magnetization. Static order, fluctuating magnetism and superconductivity are distinct observations. Chromium, iron arsenides and cuprate stripes supply different examples; their microscopic interactions need not be identical. A spin order parameter can couple to charge and lattice distortions. Calling a state magnetic does not imply that the lattice is uninvolved. [R2](#ref-source-e29f9b7d08a70596) [R3](#ref-source-9ab5e43d0018f0b0) [R13](#ref-source-b33aab72ae697f3a)\n\nOverhauser demonstrated an instability of the uniform electron gas within Hartree–Fock theory, near twice the Fermi wave vector. This is a foundational model result, not an exact solution for all interacting metals. Similarly, a spin-fluctuation calculation that favors a sign-changing superconducting gap establishes a candidate mechanism under its assumptions, not a measurement of the pairing phase. [R1](#ref-source-b957bb3d98eba2a8) [R10](#ref-source-7c2b55d128348e6c)"
+        },
+        {
+          "id": "mathematical-assumptions",
+          "title": "Mathematical assumptions",
+          "markdown": "## Mathematical assumptions\n\nWrite $\\mathbf M(\\mathbf r)=\\operatorname{Re}[\\mathbf M_{\\mathbf Q}e^{i\\mathbf Q\\cdot\\mathbf r}]$. A complex vector amplitude describes either collinear or rotating magnetization. In a continuum single-harmonic example, the Fourier coefficient of $|\\mathbf M(\\mathbf r)|^2$ at $+2\\mathbf Q$ is $(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})/4$. This dot product has no complex conjugation. For $\\mathbf M_{\\mathbf Q}=m e^{i\\phi}(1,i\\epsilon,0)$ it is proportional to $1-\\epsilon^2$: a collinear wave has a scalar second harmonic, while a circular helix has constant magnitude. These independent algebraic examples illustrate possible couplings, not fits to chromium data. [R2](#ref-source-e29f9b7d08a70596)\n\nFor the illustrative free energy $F=\\kappa|\\rho_{2\\mathbf Q}|^2+\\lambda[\\rho_{2\\mathbf Q}^{*}(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})+\\mathrm{c.c.}]$, with $\\kappa>0$ and real $\\lambda$, minimization gives $\\rho_{2\\mathbf Q}=-\\lambda(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})/\\kappa$. The coupling absorbs normalization conventions. Vanishing of this particular scalar coupling for a circular helix does not exclude other spin–orbit or lattice responses. Commensurate harmonics that coincide modulo a reciprocal vector require a separate treatment. [R2](#ref-source-e29f9b7d08a70596)\n\nWave-vector notation is part of an experimental claim. Lumsden uses a tetragonal in-plane lattice spacing $a$, while the Fe square lattice has $\\tilde a=a/\\sqrt 2$ and rotated axes. Its tetragonal $(1/2,1/2)$ corresponds to square-lattice $(1/2,0)$ in reciprocal-lattice units, or $(\\pi/\\tilde a,0)$ in inverse-length coordinates. Huang's crystallographic $(101)$ and Wang's orthorhombic $(1,0,0)$ must retain their own basis and out-of-plane convention. Identical-looking tuples need not identify identical momenta. [R4](#ref-source-820cf342501963df) [R6](#ref-source-7aa630cb9480eb85) [R8](#ref-source-3686ada319d8a30c)"
+        },
+        {
+          "id": "experimental-criteria",
+          "title": "Experimental criteria",
+          "markdown": "## Experimental criteria\n\nRotter's parent BaFe2As2 study reports a magnetic/structural anomaly near 140 K. Its 5.2 T Mössbauer hyperfine field at 77 K is a local internal field, not an applied-field threshold for superconductivity. Huang's neutron abstract reports a $0.87(3)\\,\\mu_B$ ordered moment per Fe along the longer orthorhombic axis. These parent studies must remain separate from Rotter's K-doped superconducting discovery. [R3](#ref-source-9ab5e43d0018f0b0) [R4](#ref-source-820cf342501963df)\n\nIn de la Cruz's LaOFeAs parent specimen, the structural transition near 155 K precedes magnetic ordering at $137(3)$ K. Nuclear-normalized neutron intensities give $0.36(5)\\,\\mu_B$ per Fe at 8 K. The fluorinated superconducting specimen is separate. The paper's constrained structural refinement admits an orthorhombic description under specified atomic coordinates; its in-plane moment direction is not resolved. These qualifications prevent a structural label or moment direction from being transferred uncritically between compounds. [R5](#ref-source-d2760cbcecab6071)\n\nLumsden's BaFe1.84Co0.16As2 exhibits a superconducting-state resonance at $8.6\\pm0.5$ meV, compared at 10 K and 30 K, without detected long-range antiferromagnetic order. The dynamical peak is not a static magnetic Bragg peak. The composition is Ba(Fe0.92Co0.08)2As2: Co fractions in these two formula conventions differ by a factor of two. An intensity-onset fit is not an independently established bulk superconducting transition criterion. [R6](#ref-source-7aa630cb9480eb85)\n\nFeSe makes the probe distinction concrete. Böhmer's low-frequency NMR relaxation increases below the structural transition; the authors argue against a magnetic driver of nematicity. Wang's later neutron study observes finite-energy stripe fluctuations already above that transition and enhanced below it. Its neutron spectra use orthorhombic coordinates and a different energy window from NMR. The results must be compared through probe sensitivity, not reduced to “magnetism absent” versus “magnetism present.” Wang interprets the enhancement as supporting spin-driven proposals; it does not uniquely prove causation. [R7](#ref-source-229de7733ef6e2b5) [R8](#ref-source-3686ada319d8a30c)"
+        },
+        {
+          "id": "limits-and-disputes",
+          "title": "Limits and disputes",
+          "markdown": "## Limits and disputes\n\nThe absence of conventional static magnetic order in ambient-pressure FeSe does not exclude magnetic fluctuations or imply the same behavior under pressure. Conversely, a magnetic resonance supports particular coherence-factor interpretations only with a specified gap structure, continuum and susceptibility model. It does not uniquely establish the pairing interaction. This page makes no blanket claim that an entire materials family lacks phase-sensitive experiments. [R6](#ref-source-7aa630cb9480eb85) [R8](#ref-source-3686ada319d8a30c) [R10](#ref-source-7c2b55d128348e6c)\n\nCoexisting magnetic and superconducting signals require spatial and sample controls. Pratt's experiments and Fernandes's model address competition and coexistence under particular conditions; neither makes a bulk-average signal a universal microscopic-coexistence proof. Pratt's author manuscript and final abstract give different transition numbers, so this page imports no transition record from that unresolved comparison. [R11](#ref-source-8e3f1211aced222f) [R12](#ref-source-01629af670cc7358)\n\nComplete scientific acceptance remains open. Chromium is checked here at review-abstract scope; several historical sources remain abstract-only. Selected author manuscripts still require final-version comparisons. Wang's PDF states that it was corrected online, and an erratum is identified, but its exact changes have not been independently compared. The de la Cruz figure-label discrepancy also remains recorded. These limitations must travel with exported claims. [R2](#ref-source-e29f9b7d08a70596) [R5](#ref-source-d2760cbcecab6071) [R6](#ref-source-7aa630cb9480eb85) [R7](#ref-source-229de7733ef6e2b5) [R9](#ref-source-8792c0e7a8d3b7e3)"
+        },
+        {
+          "id": "discovery-implications",
+          "title": "Discovery implications",
+          "markdown": "## Discovery implications\n\nKeep composition, coordinate basis, resolution, energy transfer, temperature, field direction and sample identity attached to each measurement. Compare static order and dynamical spectral weight separately while testing superconducting responses on characterized samples. A useful mechanism prediction should distinguish alternatives under controlled tuning, rather than infer a pairing interaction solely from neighboring magnetic and superconducting regions. [R5](#ref-source-d2760cbcecab6071) [R6](#ref-source-7aa630cb9480eb85) [R8](#ref-source-3686ada319d8a30c) [R10](#ref-source-7c2b55d128348e6c)"
+        },
+        {
+          "id": "related-topics",
+          "title": "Related topics",
+          "markdown": "## Related topics\n\n[Charge-density waves](/scwiki/charge-density-waves), [Antiferromagnetic spin fluctuations](/scwiki/spin-fluctuation-pairing), and [Superconductivity with antiferromagnetism](/scwiki/antiferromagnetism-and-superconductivity)."
+        },
+        {
+          "id": "material-cases",
+          "title": "Material cases",
+          "markdown": "## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| LaOFeAs (aliases: LaFeAsO); de la Cruz parent neutron powder specimen | 8 K; Ordered-moment measurement at 8 K; not superconducting Tc. | measurement; neutron-diffraction-measurement | Elastic neutron diffraction | ambient; unknown GPa | unknown | experiment; [source](#ref-source-d2760cbcecab6071) |\n| BaFe1.84Co0.16As2 (aliases: Ba(Fe0.92Co0.08)2As2, Co-Ba122); Lumsden three co-aligned crystals | 10 K; Resonance measurement at 10 K; no independently reviewed bulk transition criterion extracted. | measurement; INS-measurement | Inelastic neutron scattering | ambient; unknown GPa | unknown | experiment; [source](#ref-source-7aa630cb9480eb85) |\n| FeSe (aliases: FeSe); Böhmer 77Se NMR crystal assembly at 9 T | 10 K; Low-temperature NMR measurement in a 9 T field; not superconducting Tc. | measurement; NMR-measurement | 77Se NMR | ambient; unknown GPa | unknown | experiment; [source](#ref-source-229de7733ef6e2b5) |\n| FeSe0.990(10) (aliases: FeSe); Wang FeSe crystal characterization; Figure 1 | 8.7 K; Magnetic onset in 10 Oe in-plane field; transition width about 0.3 K is not an uncertainty estimate for Tc. | transition; magnetic-onset | Zero-field-cooled magnetic susceptibility | ambient; unknown GPa | unknown | experiment; [source](#ref-source-3686ada319d8a30c) |"
+        }
+      ],
+      "markdown": "# Spin-density waves: static order, fluctuations and superconductivity\n\nDistinguish magnetic order from dynamic spin response, preserve reciprocal coordinates, and compare iron arsenides with ambient-pressure FeSe.\n\n## Scope\n\nA spin-density wave (SDW) is a spatial modulation of magnetization. Static order, fluctuating magnetism and superconductivity are distinct observations. Chromium, iron arsenides and cuprate stripes supply different examples; their microscopic interactions need not be identical. A spin order parameter can couple to charge and lattice distortions. Calling a state magnetic does not imply that the lattice is uninvolved. [R2](#ref-source-e29f9b7d08a70596) [R3](#ref-source-9ab5e43d0018f0b0) [R13](#ref-source-b33aab72ae697f3a)\n\nOverhauser demonstrated an instability of the uniform electron gas within Hartree–Fock theory, near twice the Fermi wave vector. This is a foundational model result, not an exact solution for all interacting metals. Similarly, a spin-fluctuation calculation that favors a sign-changing superconducting gap establishes a candidate mechanism under its assumptions, not a measurement of the pairing phase. [R1](#ref-source-b957bb3d98eba2a8) [R10](#ref-source-7c2b55d128348e6c)\n\n## Mathematical assumptions\n\nWrite $\\mathbf M(\\mathbf r)=\\operatorname{Re}[\\mathbf M_{\\mathbf Q}e^{i\\mathbf Q\\cdot\\mathbf r}]$. A complex vector amplitude describes either collinear or rotating magnetization. In a continuum single-harmonic example, the Fourier coefficient of $|\\mathbf M(\\mathbf r)|^2$ at $+2\\mathbf Q$ is $(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})/4$. This dot product has no complex conjugation. For $\\mathbf M_{\\mathbf Q}=m e^{i\\phi}(1,i\\epsilon,0)$ it is proportional to $1-\\epsilon^2$: a collinear wave has a scalar second harmonic, while a circular helix has constant magnitude. These independent algebraic examples illustrate possible couplings, not fits to chromium data. [R2](#ref-source-e29f9b7d08a70596)\n\nFor the illustrative free energy $F=\\kappa|\\rho_{2\\mathbf Q}|^2+\\lambda[\\rho_{2\\mathbf Q}^{*}(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})+\\mathrm{c.c.}]$, with $\\kappa>0$ and real $\\lambda$, minimization gives $\\rho_{2\\mathbf Q}=-\\lambda(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})/\\kappa$. The coupling absorbs normalization conventions. Vanishing of this particular scalar coupling for a circular helix does not exclude other spin–orbit or lattice responses. Commensurate harmonics that coincide modulo a reciprocal vector require a separate treatment. [R2](#ref-source-e29f9b7d08a70596)\n\nWave-vector notation is part of an experimental claim. Lumsden uses a tetragonal in-plane lattice spacing $a$, while the Fe square lattice has $\\tilde a=a/\\sqrt 2$ and rotated axes. Its tetragonal $(1/2,1/2)$ corresponds to square-lattice $(1/2,0)$ in reciprocal-lattice units, or $(\\pi/\\tilde a,0)$ in inverse-length coordinates. Huang's crystallographic $(101)$ and Wang's orthorhombic $(1,0,0)$ must retain their own basis and out-of-plane convention. Identical-looking tuples need not identify identical momenta. [R4](#ref-source-820cf342501963df) [R6](#ref-source-7aa630cb9480eb85) [R8](#ref-source-3686ada319d8a30c)\n\n## Experimental criteria\n\nRotter's parent BaFe2As2 study reports a magnetic/structural anomaly near 140 K. Its 5.2 T Mössbauer hyperfine field at 77 K is a local internal field, not an applied-field threshold for superconductivity. Huang's neutron abstract reports a $0.87(3)\\,\\mu_B$ ordered moment per Fe along the longer orthorhombic axis. These parent studies must remain separate from Rotter's K-doped superconducting discovery. [R3](#ref-source-9ab5e43d0018f0b0) [R4](#ref-source-820cf342501963df)\n\nIn de la Cruz's LaOFeAs parent specimen, the structural transition near 155 K precedes magnetic ordering at $137(3)$ K. Nuclear-normalized neutron intensities give $0.36(5)\\,\\mu_B$ per Fe at 8 K. The fluorinated superconducting specimen is separate. The paper's constrained structural refinement admits an orthorhombic description under specified atomic coordinates; its in-plane moment direction is not resolved. These qualifications prevent a structural label or moment direction from being transferred uncritically between compounds. [R5](#ref-source-d2760cbcecab6071)\n\nLumsden's BaFe1.84Co0.16As2 exhibits a superconducting-state resonance at $8.6\\pm0.5$ meV, compared at 10 K and 30 K, without detected long-range antiferromagnetic order. The dynamical peak is not a static magnetic Bragg peak. The composition is Ba(Fe0.92Co0.08)2As2: Co fractions in these two formula conventions differ by a factor of two. An intensity-onset fit is not an independently established bulk superconducting transition criterion. [R6](#ref-source-7aa630cb9480eb85)\n\nFeSe makes the probe distinction concrete. Böhmer's low-frequency NMR relaxation increases below the structural transition; the authors argue against a magnetic driver of nematicity. Wang's later neutron study observes finite-energy stripe fluctuations already above that transition and enhanced below it. Its neutron spectra use orthorhombic coordinates and a different energy window from NMR. The results must be compared through probe sensitivity, not reduced to “magnetism absent” versus “magnetism present.” Wang interprets the enhancement as supporting spin-driven proposals; it does not uniquely prove causation. [R7](#ref-source-229de7733ef6e2b5) [R8](#ref-source-3686ada319d8a30c)\n\n## Limits and disputes\n\nThe absence of conventional static magnetic order in ambient-pressure FeSe does not exclude magnetic fluctuations or imply the same behavior under pressure. Conversely, a magnetic resonance supports particular coherence-factor interpretations only with a specified gap structure, continuum and susceptibility model. It does not uniquely establish the pairing interaction. This page makes no blanket claim that an entire materials family lacks phase-sensitive experiments. [R6](#ref-source-7aa630cb9480eb85) [R8](#ref-source-3686ada319d8a30c) [R10](#ref-source-7c2b55d128348e6c)\n\nCoexisting magnetic and superconducting signals require spatial and sample controls. Pratt's experiments and Fernandes's model address competition and coexistence under particular conditions; neither makes a bulk-average signal a universal microscopic-coexistence proof. Pratt's author manuscript and final abstract give different transition numbers, so this page imports no transition record from that unresolved comparison. [R11](#ref-source-8e3f1211aced222f) [R12](#ref-source-01629af670cc7358)\n\nComplete scientific acceptance remains open. Chromium is checked here at review-abstract scope; several historical sources remain abstract-only. Selected author manuscripts still require final-version comparisons. Wang's PDF states that it was corrected online, and an erratum is identified, but its exact changes have not been independently compared. The de la Cruz figure-label discrepancy also remains recorded. These limitations must travel with exported claims. [R2](#ref-source-e29f9b7d08a70596) [R5](#ref-source-d2760cbcecab6071) [R6](#ref-source-7aa630cb9480eb85) [R7](#ref-source-229de7733ef6e2b5) [R9](#ref-source-8792c0e7a8d3b7e3)\n\n## Discovery implications\n\nKeep composition, coordinate basis, resolution, energy transfer, temperature, field direction and sample identity attached to each measurement. Compare static order and dynamical spectral weight separately while testing superconducting responses on characterized samples. A useful mechanism prediction should distinguish alternatives under controlled tuning, rather than infer a pairing interaction solely from neighboring magnetic and superconducting regions. [R5](#ref-source-d2760cbcecab6071) [R6](#ref-source-7aa630cb9480eb85) [R8](#ref-source-3686ada319d8a30c) [R10](#ref-source-7c2b55d128348e6c)\n\n## Related topics\n\n[Charge-density waves](/scwiki/charge-density-waves), [Antiferromagnetic spin fluctuations](/scwiki/spin-fluctuation-pairing), and [Superconductivity with antiferromagnetism](/scwiki/antiferromagnetism-and-superconductivity).\n\n## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| LaOFeAs (aliases: LaFeAsO); de la Cruz parent neutron powder specimen | 8 K; Ordered-moment measurement at 8 K; not superconducting Tc. | measurement; neutron-diffraction-measurement | Elastic neutron diffraction | ambient; unknown GPa | unknown | experiment; [source](#ref-source-d2760cbcecab6071) |\n| BaFe1.84Co0.16As2 (aliases: Ba(Fe0.92Co0.08)2As2, Co-Ba122); Lumsden three co-aligned crystals | 10 K; Resonance measurement at 10 K; no independently reviewed bulk transition criterion extracted. | measurement; INS-measurement | Inelastic neutron scattering | ambient; unknown GPa | unknown | experiment; [source](#ref-source-7aa630cb9480eb85) |\n| FeSe (aliases: FeSe); Böhmer 77Se NMR crystal assembly at 9 T | 10 K; Low-temperature NMR measurement in a 9 T field; not superconducting Tc. | measurement; NMR-measurement | 77Se NMR | ambient; unknown GPa | unknown | experiment; [source](#ref-source-229de7733ef6e2b5) |\n| FeSe0.990(10) (aliases: FeSe); Wang FeSe crystal characterization; Figure 1 | 8.7 K; Magnetic onset in 10 Oe in-plane field; transition width about 0.3 K is not an uncertainty estimate for Tc. | transition; magnetic-onset | Zero-field-cooled magnetic susceptibility | ambient; unknown GPa | unknown | experiment; [source](#ref-source-3686ada319d8a30c) |\n\n## Sources\n\n### Ref source-b957bb3d98eba2a8\n\n[R1] Spin Density Waves in an Electron Gas (1962). [DOI 10.1103/PhysRev.128.1437](https://doi.org/10.1103/PhysRev.128.1437). Publication: journal-article. Check: publisher-abstract-check. Checked: 2026-10-19. Hartree–Fock instability near twice the Fermi wave vector; no claim of an exact correlated ground state. Full derivation remains open.\n### Ref source-e29f9b7d08a70596\n\n[R2] Spin-density-wave antiferromagnetism in chromium (1988). [DOI 10.1103/RevModPhys.60.209](https://doi.org/10.1103/RevModPhys.60.209). Publication: journal-article. Check: review-abstract-check. Checked: 2026-10-19. Secondary review abstract only: spin, charge and strain waves in chromium. Original experimental data and full review not independently reviewed.\n### Ref source-9ab5e43d0018f0b0\n\n[R3] Spin-density-wave anomaly at 140 K in the ternary iron arsenide BaFe2As2 (2008). [DOI 10.1103/PhysRevB.78.020503](https://doi.org/10.1103/PhysRevB.78.020503). Publication: journal-article. Check: publisher-abstract-check. Checked: 2026-10-19. Parent material, structural anomaly and 5.2 T hyperfine field at 77 K checked. Hyperfine field is not an applied superconducting critical field.\n### Ref source-820cf342501963df\n\n[R4] Neutron-Diffraction Measurements of Magnetic Order and a Structural Transition in the Parent BaFe2As2 Compound of FeAs-Based High-Temperature Superconductors (2008). [DOI 10.1103/PhysRevLett.101.257003](https://doi.org/10.1103/PhysRevLett.101.257003). Publication: journal-article. Check: publisher-original-abstract. Checked: 2026-10-18. Published 17 December 2008. Original abstract read for the parent compound magnetic order and coupled structural transition. This is a magnetic-structure source, distinct from the K-doped superconductivity discovery. Full refinement and sample comparison remain open.\n### Ref source-d2760cbcecab6071\n\n[R5] Magnetic order close to superconductivity in the iron-based layered LaO1-xFxFeAs systems (2008). [DOI 10.1038/nature07057](https://doi.org/10.1038/nature07057). Publication: journal-article. Check: final-main-text-and-selected-figure-check. Checked: 2026-10-19. Main pp. 899–902 read; p. 901 Figures 2–3 visually checked. Parent and F0.08 are different specimens. Table 2 allows a constrained Cmma description. Figure 3 c-axis label differs from main text/Figure 4; no conversion inferred from that label. Supplementary refinements remain open.\n### Ref source-7aa630cb9480eb85\n\n[R6] Two-dimensional resonant magnetic excitation in BaFe1.84Co0.16As2 (2009). [DOI 10.1103/PhysRevLett.102.107005](https://doi.org/10.1103/PhysRevLett.102.107005). Publication: journal-article. Check: selected-author-methods-and-figure-check. Checked: 2026-10-19. Author v2 pp. 1–3 read; p. 2 Figures 1–2 visually checked. Three co-aligned crystals, tetragonal versus Fe-square coordinates, 8.6 +/- 0.5 meV resonance and 10 K measurement distinguished. Final full-text comparison remains open.\n### Ref source-229de7733ef6e2b5\n\n[R7] Origin of the Tetragonal-to-Orthorhombic Phase Transition in FeSe: A Combined Thermodynamic and NMR Study of Nematicity (2015). [DOI 10.1103/PhysRevLett.114.027001](https://doi.org/10.1103/PhysRevLett.114.027001). Publication: journal-article. Check: selected-author-methods-and-figure-check. Checked: 2026-10-19. Only v1 listed in arXiv history. Selected pp. 1–4 text and p. 3 Figure 2 checked; 77Se NMR at 9 T and 73.28 MHz samples a low-frequency window. Authors infer a nonmagnetic driver; later neutron evidence must be considered. Old Kyoto URL returned HTML, not a final PDF.\n### Ref source-3686ada319d8a30c\n\n[R8] Strong interplay between stripe spin fluctuations, nematicity and superconductivity in FeSe (2016). [DOI 10.1038/nmat4492](https://doi.org/10.1038/nmat4492). Publication: journal-article. Check: selected-final-methods-and-figure-check. Checked: 2026-10-19. Published online 7 December 2015, 2016 issue. Selected pp. 1, 2, 4, 6 read; p. 2 Figures 1–2 visually checked. FeSe0.990(10), magnetic onset 8.7 K at 10 Oe in-plane; orthorhombic neutron coordinates. PDF notes correction online 15 December 2015. Exact erratum comparison remains open.\n### Ref source-8792c0e7a8d3b7e3\n\n[R9] Erratum: Strong interplay between stripe spin fluctuations, nematicity and superconductivity in FeSe (2016). [DOI 10.1038/nmat4535](https://doi.org/10.1038/nmat4535). Publication: journal-article. Check: correction-identity-only. Checked: 2026-10-19. Erratum identity and publication date 22 January 2016 checked. Exact correction text not retrieved; not evidence of a completed source-version audit.\n### Ref source-7c2b55d128348e6c\n\n[R10] Unconventional Superconductivity with a Sign Reversal in the Order Parameter of LaFeAsO1−xFx (2008). [DOI 10.1103/PhysRevLett.101.057003](https://doi.org/10.1103/PhysRevLett.101.057003). Publication: journal-article. Check: publisher-passages-scoped-check. Checked: 2026-10-18. Mazin et al. abstract and published note 8 checked. The note qualifies the initial identification of the magnetic instability; full electronic-structure calculation not reproduced.\n### Ref source-8e3f1211aced222f\n\n[R11] Competing order and nature of the pairing state in the iron pnictides (2010). [DOI 10.1103/PhysRevB.82.014521](https://doi.org/10.1103/PhysRevB.82.014521). Publication: journal-article. Check: selected-author-landau-analysis. Checked: 2026-10-18. Published 16 July 2010; author v3 submitted 20 July 2010. Selected pages 1–4 read, page 3 visually checked. Quartic competition, coexistence, temperature slopes and assumptions behind pairing inference were inspected. The Wiki uses explicitly defined coefficients and independently derived stationary equations. The full microscopic calculation and final-version comparison remain open.\n### Ref source-01629af670cc7358\n\n[R12] Coexistence of Competing Antiferromagnetic and Superconducting Phases in the Underdoped Ba(Fe0.953Co0.047)2As2 Compound Using X-ray and Neutron Scattering Techniques (2009). [DOI 10.1103/PhysRevLett.103.087001](https://doi.org/10.1103/PhysRevLett.103.087001). Publication: journal-article. Check: selected-author-methods-and-final-abstract. Checked: 2026-10-18. Published 19 August 2009; author v1 submitted 16 March 2009. Selected author pages 1–5 read. Final publisher abstract gives Tc 17 K and low-energy redistribution; author v1 gives 15 K and a 4 meV gap. Methods describe diffraction crystals grown under the same conditions as bulk-measurement specimens. Full final methods and figures have not been retrieved, so exact specimen identity and the reason for the changed Tc are unresolved.\n### Ref source-b33aab72ae697f3a\n\n[R13] Evidence for stripe correlations of spins and holes in copper oxide superconductors (1995). [DOI 10.1038/375561a0](https://doi.org/10.1038/375561a0). Publication: journal-article. Check: publisher-abstract-check. Checked: 2026-10-18. Publisher abstract and identity checked: 15 June 1995, Nd-substituted compound x=0.12, neutron diffraction. Full paper and data not reviewed.\n\n## Claim evidence and conditions\n\n### scwiki-h5-claim-scope-1\n\nA spin-density wave (SDW) is a spatial modulation of magnetization. Static order, fluctuating magnetism and superconductivity are distinct observations. Chromium, iron arsenides and cuprate stripes supply different examples; their microscopic interactions need not be identical. A spin order parameter can couple to charge and lattice distortions. Calling a state magnetic does not imply that the lattice is uninvolved.\n\nEvidence: hypothesis. Sources: source-e29f9b7d08a70596, source-9ab5e43d0018f0b0, source-b33aab72ae697f3a.\n\nConditions: Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.\n\nVerification scope: Selected primary evidence and independent harmonic checks; full scientific acceptance remains open.\n\n### scwiki-h5-claim-scope-2\n\nOverhauser demonstrated an instability of the uniform electron gas within Hartree–Fock theory, near twice the Fermi wave vector. This is a foundational model result, not an exact solution for all interacting metals. Similarly, a spin-fluctuation calculation that favors a sign-changing superconducting gap establishes a candidate mechanism under its assumptions, not a measurement of the pairing phase.\n\nEvidence: hypothesis. Sources: source-b957bb3d98eba2a8, source-7c2b55d128348e6c.\n\nConditions: Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.\n\nVerification scope: Selected primary evidence and independent harmonic checks; full scientific acceptance remains open.\n\n### scwiki-h5-claim-mathematical-assumptions-1\n\nWrite $\\mathbf M(\\mathbf r)=\\operatorname{Re}[\\mathbf M_{\\mathbf Q}e^{i\\mathbf Q\\cdot\\mathbf r}]$. A complex vector amplitude describes either collinear or rotating magnetization. In a continuum single-harmonic example, the Fourier coefficient of $|\\mathbf M(\\mathbf r)|^2$ at $+2\\mathbf Q$ is $(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})/4$. This dot product has no complex conjugation. For $\\mathbf M_{\\mathbf Q}=m e^{i\\phi}(1,i\\epsilon,0)$ it is proportional to $1-\\epsilon^2$: a collinear wave has a scalar second harmonic, while a circular helix has constant magnitude. These independent algebraic examples illustrate possible couplings, not fits to chromium data.\n\nEvidence: theory. Sources: source-e29f9b7d08a70596.\n\nConditions: Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.\n\nVerification scope: Selected primary evidence and independent harmonic checks; full scientific acceptance remains open.\n\n### scwiki-h5-claim-mathematical-assumptions-2\n\nFor the illustrative free energy $F=\\kappa|\\rho_{2\\mathbf Q}|^2+\\lambda[\\rho_{2\\mathbf Q}^{*}(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})+\\mathrm{c.c.}]$, with $\\kappa>0$ and real $\\lambda$, minimization gives $\\rho_{2\\mathbf Q}=-\\lambda(\\mathbf M_{\\mathbf Q}\\cdot\\mathbf M_{\\mathbf Q})/\\kappa$. The coupling absorbs normalization conventions. Vanishing of this particular scalar coupling for a circular helix does not exclude other spin–orbit or lattice responses. Commensurate harmonics that coincide modulo a reciprocal vector require a separate treatment.\n\nEvidence: theory. Sources: source-e29f9b7d08a70596.\n\nConditions: Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.\n\nVerification scope: Selected primary evidence and independent harmonic checks; full scientific acceptance remains open.\n\n### scwiki-h5-claim-mathematical-assumptions-3\n\nWave-vector notation is part of an experimental claim. Lumsden uses a tetragonal in-plane lattice spacing $a$, while the Fe square lattice has $\\tilde a=a/\\sqrt 2$ and rotated axes. Its tetragonal $(1/2,1/2)$ corresponds to square-lattice $(1/2,0)$ in reciprocal-lattice units, or $(\\pi/\\tilde a,0)$ in inverse-length coordinates. Huang's crystallographic $(101)$ and Wang's orthorhombic $(1,0,0)$ must retain their own basis and out-of-plane convention. Identical-looking tuples need not identify identical momenta.\n\nEvidence: theory. Sources: source-820cf342501963df, source-7aa630cb9480eb85, source-3686ada319d8a30c.\n\nConditions: Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.\n\nVerification scope: Selected primary evidence and independent harmonic checks; full scientific acceptance remains open.\n\n### scwiki-h5-claim-experimental-criteria-1\n\nRotter's parent BaFe2As2 study reports a magnetic/structural anomaly near 140 K. Its 5.2 T Mössbauer hyperfine field at 77 K is a local internal field, not an applied-field threshold for superconductivity. Huang's neutron abstract reports a $0.87(3)\\,\\mu_B$ ordered moment per Fe along the longer orthorhombic axis. These parent studies must remain separate from Rotter's K-doped superconducting discovery.\n\nEvidence: experiment. Sources: source-9ab5e43d0018f0b0, source-820cf342501963df.\n\nConditions: Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.\n\nVerification scope: Selected primary evidence and independent harmonic checks; full scientific acceptance remains open.\n\n### scwiki-h5-claim-experimental-criteria-2\n\nIn de la Cruz's LaOFeAs parent specimen, the structural transition near 155 K precedes magnetic ordering at $137(3)$ K. Nuclear-normalized neutron intensities give $0.36(5)\\,\\mu_B$ per Fe at 8 K. The fluorinated superconducting specimen is separate. The paper's constrained structural refinement admits an orthorhombic description under specified atomic coordinates; its in-plane moment direction is not resolved. These qualifications prevent a structural label or moment direction from being transferred uncritically between compounds.\n\nEvidence: experiment. Sources: source-d2760cbcecab6071.\n\nConditions: Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.\n\nVerification scope: Selected primary evidence and independent harmonic checks; full scientific acceptance remains open.\n\n### scwiki-h5-claim-experimental-criteria-3\n\nLumsden's BaFe1.84Co0.16As2 exhibits a superconducting-state resonance at $8.6\\pm0.5$ meV, compared at 10 K and 30 K, without detected long-range antiferromagnetic order. The dynamical peak is not a static magnetic Bragg peak. The composition is Ba(Fe0.92Co0.08)2As2: Co fractions in these two formula conventions differ by a factor of two. An intensity-onset fit is not an independently established bulk superconducting transition criterion.\n\nEvidence: experiment. Sources: source-7aa630cb9480eb85.\n\nConditions: Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.\n\nVerification scope: Selected primary evidence and independent harmonic checks; full scientific acceptance remains open.\n\n### scwiki-h5-claim-experimental-criteria-4\n\nFeSe makes the probe distinction concrete. Böhmer's low-frequency NMR relaxation increases below the structural transition; the authors argue against a magnetic driver of nematicity. Wang's later neutron study observes finite-energy stripe fluctuations already above that transition and enhanced below it. Its neutron spectra use orthorhombic coordinates and a different energy window from NMR. The results must be compared through probe sensitivity, not reduced to “magnetism absent” versus “magnetism present.” Wang interprets the enhancement as supporting spin-driven proposals; it does not uniquely prove causation.\n\nEvidence: experiment. Sources: source-229de7733ef6e2b5, source-3686ada319d8a30c.\n\nConditions: Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.\n\nVerification scope: Selected primary evidence and independent harmonic checks; full scientific acceptance remains open.\n\n### scwiki-h5-claim-limits-and-disputes-1\n\nThe absence of conventional static magnetic order in ambient-pressure FeSe does not exclude magnetic fluctuations or imply the same behavior under pressure. Conversely, a magnetic resonance supports particular coherence-factor interpretations only with a specified gap structure, continuum and susceptibility model. It does not uniquely establish the pairing interaction. This page makes no blanket claim that an entire materials family lacks phase-sensitive experiments.\n\nEvidence: hypothesis. Sources: source-7aa630cb9480eb85, source-3686ada319d8a30c, source-7c2b55d128348e6c.\n\nConditions: Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.\n\nVerification scope: Selected primary evidence and independent harmonic checks; full scientific acceptance remains open.\n\n### scwiki-h5-claim-limits-and-disputes-2\n\nCoexisting magnetic and superconducting signals require spatial and sample controls. Pratt's experiments and Fernandes's model address competition and coexistence under particular conditions; neither makes a bulk-average signal a universal microscopic-coexistence proof. Pratt's author manuscript and final abstract give different transition numbers, so this page imports no transition record from that unresolved comparison.\n\nEvidence: hypothesis. Sources: source-8e3f1211aced222f, source-01629af670cc7358.\n\nConditions: Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.\n\nVerification scope: Selected primary evidence and independent harmonic checks; full scientific acceptance remains open.\n\n### scwiki-h5-claim-limits-and-disputes-3\n\nComplete scientific acceptance remains open. Chromium is checked here at review-abstract scope; several historical sources remain abstract-only. Selected author manuscripts still require final-version comparisons. Wang's PDF states that it was corrected online, and an erratum is identified, but its exact changes have not been independently compared. The de la Cruz figure-label discrepancy also remains recorded. These limitations must travel with exported claims.\n\nEvidence: hypothesis. Sources: source-e29f9b7d08a70596, source-d2760cbcecab6071, source-7aa630cb9480eb85, source-229de7733ef6e2b5, source-8792c0e7a8d3b7e3.\n\nConditions: Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.\n\nVerification scope: Selected primary evidence and independent harmonic checks; full scientific acceptance remains open.\n\n### scwiki-h5-claim-discovery-implications-1\n\nKeep composition, coordinate basis, resolution, energy transfer, temperature, field direction and sample identity attached to each measurement. Compare static order and dynamical spectral weight separately while testing superconducting responses on characterized samples. A useful mechanism prediction should distinguish alternatives under controlled tuning, rather than infer a pairing interaction solely from neighboring magnetic and superconducting regions.\n\nEvidence: hypothesis. Sources: source-d2760cbcecab6071, source-7aa630cb9480eb85, source-3686ada319d8a30c, source-7c2b55d128348e6c.\n\nConditions: Retain composition, sample, reciprocal basis, probe energy window, temperature and source version. Static magnetism, dynamical scattering and superconducting transitions are distinct.\n\nVerification scope: Selected primary evidence and independent harmonic checks; full scientific acceptance remains open.\n\n## Revision and review\n\nArticle ID: scwiki-h5. Revision: 0af07fc225def2f32bf5. Updated: 2026-10-18T16:56:57.877476+00:00.\n\nReview scope: Selected de la Cruz final text and figures; Lumsden/Böhmer author methods and figures; Wang final methods and figures; historical publisher abstracts and inherited scoped theory/coexistence checks.\n\n- Complete scientific acceptance remains open.\n- Full source-version, erratum, raw-data and supplementary refinement reviews remain open.\n- NMR and neutron observations sample different energy windows; neither alone establishes the nematic driver.\n- Independent harmonic models are not experimental data reanalyses.\n\nSource: [H_anomalous_normal_state/H5_SDW.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/H_anomalous_normal_state/H5_SDW.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 1ee04e1daaf7332c733b7e69412d8a6efbc8255789b145e109dd34e156f59109.\n",
+      "wordCount": 881
     }
   ]
 }
