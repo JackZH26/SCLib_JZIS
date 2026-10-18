@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "38e0195c09d320263ec8",
+  "revision": "4ede372887dff9fcbc43",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -5788,6 +5788,100 @@
         "10.1103/PhysRevB.100.054501"
       ],
       "text": " Scope\n\nIntrinsic ferromagnetism and superconductivity coexist in the uranium compounds UGe2, URhGe and UCoGe under specific conditions. Establishing two orders in one material, establishing their spatial overlap, and determining the pairing wavefunction are separate tasks. This page concerns bulk materials; superconducting correlations induced across an engineered ferromagnet interface are a different problem. Pressure, composition, field direction and the experimental transition criterion belong with each result.    \n\nFerromagnetic fluctuations can provide an equal-spin pairing interaction in a model. Fay and Appel's longitudinal-fluctuation calculation predicts a nonmonotonic superconducting transition as the ferromagnetic boundary is approached. It does not imply that increasing magnetization always improves superconductivity. Static ordered moment, dynamic magnetic susceptibility and the electronic exchange splitting are different quantities. Their abstract supplies model motivation, not a measured pairing interaction for every uranium compound. \n\n Mathematical assumptions\n\nConsider an inversion-symmetric spin model with normal Hamiltonian H0=\\xi{\\mathbf k}I-h\\sigmaz. Here h is an energy, not a magnetic field in tesla. With an imposed singlet gap \\Delta0, the four Bogoliubov energies are \\pm\\sqrt{\\xi{\\mathbf k}^2+|\\Delta0|^2}\\pm h. The gap held fixed closes spectrally at |h|=|\\Delta0| when \\xi{\\mathbf k}=0. This spectral condition does not locate the thermodynamic transition of a self-consistent superconductor. \n\nAt zero temperature, a separate weak-coupling comparison with constant single-spin density of states N(0) gives Fs-Fn=N(0)(-\\Delta0^2/2+h^2). Its energy crossing occurs at |h|=\\Delta0/\\sqrt2, before that fixed-gap spectral closure. This reference assumes a homogeneous singlet state and a spin-only field. Orbital effects, finite-momentum pairing, strong coupling and spin-orbit coupling are outside it. The original Clogston paper's identity is verified; this explicit energy example is independently checked. \n\nFor diagonal equal-spin gaps, the positive branches instead read E\\uparrow=\\sqrt{(\\xi-h)^2+|\\Delta\\uparrow|^2} and E\\downarrow=\\sqrt{(\\xi+h)^2+|\\Delta\\downarrow|^2}. The imposed gaps pair states within their respective spin bands. Their spectra do not establish immunity to magnetic fields: the band populations, interaction, orbital motion and gap amplitudes can change. All 150 singlet and equal-spin matrix examples satisfy Hermiticity, the analytic spectra and particle-hole symmetry between opposite momenta. The triplet momentum factor is odd.  \n\nWrite \\Delta=(\\mathbf d\\cdot\\boldsymbol\\sigma)i\\sigmay. Then \\Delta\\Delta^\\dagger=|\\mathbf d|^2I+\\mathbf q\\cdot\\boldsymbol\\sigma, with \\mathbf q=i\\mathbf d\\times\\mathbf d^. A unitary gap has \\mathbf q=0. Equal-spin pairing can be unitary: \\mathbf d=(0,-i,0) gives \\Delta=I at the selected momentum. By contrast, \\mathbf d=(-1/2,-i/2,0) gives \\Delta=\\mathrm{diag}(1,0), a nonunitary example with one ungapped spin band. One hundred complex-vector checks verify the identity and nonnegative squared gaps. This spin-basis illustration is not a determination of total sample magnetization or a realistic spin-orbit-coupled band structure. \n\n Experimental criteria\n\nSaxena and colleagues' UGe2 discovery uses resistivity and ac susceptibility under pressure. The published phase-diagram caption defines the superconducting temperature by a 50-percent resistivity drop; it scales that axis by ten for display. Its susceptibility caption uses approximately 1.3 GPa for the main magnetic curve and 1.5 GPa for the superconducting inset. These are distinct conditions. The paper reports magnetic survival below the superconducting transition, but defers the detailed neutron analysis. Selected methods and captions are checked here; the original plots are not visually audited. \n\nAoki and colleagues' URhGe discovery adds a thermodynamic superconducting signature at ambient pressure. Its abstract explicitly leaves the pairing symmetry and dominant mechanism unidentified. Levy and colleagues subsequently report a second superconducting field pocket around a spin reorientation near 12 T for a field along the crystal b axis, above the field that suppresses the first pocket. This ties superconductivity to magnetic evolution without uniquely identifying a gap symmetry. The complete discovery curves and reentrant phase boundaries remain outside this selected review.  \n\nFor Huy and colleagues' UCoGe sample 3, the resistive onset is 0.82 K, while heat capacity and thermal expansion begin their broad anomalies near 0.66 K. An idealized equal-entropy construction places a sharp transition near 0.45 K. Those values represent different criteria, not three competing measurements of one exact universal constant. The approximately 3 K Curie temperature is magnetic and must not populate a superconducting-temperature filter. The thermodynamic anomalies support bulk superconductivity; the suggested triplet mechanism remains an inference. \n\nOhta and colleagues' separate polycrystalline UCoGe sample has a susceptibility onset near 0.7 K and midpoint near 0.55 K. At 95 mK, similar nuclear recovery at peaks with and without internal magnetic fields supports superconducting response in both regions. The slow relaxation component accounts for about 30 percent of the measured recovery, not a demonstrated uniform superconducting response at every site. Pulse-condition sensitivity and model assumptions matter. A self-induced vortex state is proposed to explain the components; this is not a direct vortex image. \n\n Limits and disputes\n\nUTe2 should not be inserted into the established ambient-pressure ferromagnetic-coexistence list simply because its discovery paper invokes nearly ferromagnetic fluctuations. That paper provides superconductivity and unconventional-pairing clues, without establishing static long-range ferromagnetism. Later neutron work reports antiferromagnetic fluctuations and a resonance; its absence of detected ferromagnetic scattering is restricted to the measured window. Neither result by itself fixes the full pairing interaction.  \n\nComplete scientific acceptance remains open. Selected source passages, local-probe figures and independent matrix checks support the discussion. Detailed magnetic and superconducting volume calibration, raw-data analysis, complete version comparisons and material-specific spin-orbit models remain unresolved. A large critical field, a small net moment or coexistence alone cannot replace a consistent set of spin, thermodynamic and phase-sensitive constraints.    \n\n Discovery implications\n\nKeep magnetic ordering temperature separate from superconducting onset, midpoint and bulk-anomaly criteria. Preserve specimen identity, field orientation and pressure for every observation. Test whether a pairing model accounts jointly for the measured magnetic response and superconducting evidence; do not turn one suggestive signature into a unique pairing assignment.    \n\n Related topics\n\n, , , and ."
+    },
+    {
+      "id": "scwiki-g3",
+      "topicId": "scwiki-topic-g3",
+      "code": "G3",
+      "slug": "field-induced-superconductivity",
+      "title": "Field-induced superconductivity: reentrance, compensation and evidence",
+      "summary": "Distinguish field-created superconductivity from high-field survival, with matched measurement criteria, orbital limits and recent nickelate evidence.",
+      "aliases": [
+        "field induced superconductivity",
+        "field enhanced superconductivity",
+        "field reentrant superconductivity",
+        "magnetic field compensation",
+        "Jaccarino Peter"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experimental"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "b065d6d5cc8405751f41",
+      "materialCases": [
+        {
+          "id": "scwiki-g3-material-1",
+          "formula": "Sm0.61Ca0.05Eu0.34NiO2",
+          "sample": "Yang SCE0.34 field sweep",
+          "recordType": "experiment",
+          "reportedTemperatureK": 2,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Fixed field-sweep temperature; reported zero resistance above6.23T for54unitcell sample. Not Tc.",
+          "criterion": "field-reentrant-zero-resistance",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Magnetotransport",
+          "sourceId": "source-3504ee9027165d0a",
+          "aliases": [
+            "nickelate",
+            "field reentrance"
+          ]
+        },
+        {
+          "id": "scwiki-g3-material-2",
+          "formula": "Sm0.63Ca0.05Eu0.32NiO2",
+          "sample": "Yang SCE0.32 field sweep",
+          "recordType": "experiment",
+          "reportedTemperatureK": 3,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Fixed field-sweep temperature; recovery13.04T. Not the1.7K persistence condition or Tc.",
+          "criterion": "field-reentrant-zero-resistance",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Magnetotransport",
+          "sourceId": "source-3504ee9027165d0a",
+          "aliases": [
+            "nickelate",
+            "field reentrance"
+          ]
+        },
+        {
+          "id": "scwiki-g3-material-3",
+          "formula": "Sm0.63Ca0.05Eu0.32NiO2",
+          "sample": "Yang SCE0.32 field sweep",
+          "recordType": "experiment",
+          "reportedTemperatureK": 1.7,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Fixed field-sweep temperature; persistence above32T is a lower bound on field survival, not a measured upper critical field or Tc.",
+          "criterion": "field-reentrant-zero-resistance",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Magnetotransport",
+          "sourceId": "source-3504ee9027165d0a",
+          "aliases": [
+            "nickelate",
+            "field reentrance"
+          ]
+        }
+      ],
+      "dois": [
+        "10.1103/PhysRevLett.9.290",
+        "10.1103/PhysRevLett.53.497",
+        "10.1126/science.1115498",
+        "10.1103/PhysRevLett.117.046401",
+        "10.1038/s41586-026-10547-y",
+        "10.1038/s41467-026-74065-1",
+        "10.6084/m9.figshare.31861684.v1",
+        "10.1038/35098048"
+      ],
+      "text": " Scope\n\nA large upper critical field means superconductivity survives a strong field; it does not establish that the field creates superconductivity. At fixed temperature, a field-induced state appears from a zero-field normal state. Field reentrance means a low-field superconducting regime is lost and subsequently recovered. Field enhancement means a specified observable improves over an interval. These distinctions require the same specimen, temperature, orientation and operational criterion throughout the comparison.  \n\nA resistive decrease can indicate reduced dissipation without demonstrating a new bulk phase. Zero resistance establishes a conducting path; diamagnetic screening or a thermodynamic anomaly provides complementary information. Record whether an intermediate state is demonstrably normal or simply dissipative. A field sweep and a temperature sweep trace different paths through a phase diagram, and must not be joined as though every point belongs to one isotherm.  \n\n Mathematical assumptions\n\nJaccarino–Peter compensation concerns an exchange contribution opposing the applied field in the electron spin sector. An illustrative effective Zeeman field is b{\\rm eff}=B-BJ(B,T), with every term expressed in tesla and positive BJ defined to oppose positive applied B. The exchange term does not automatically cancel orbital coupling to the physical field. The original 1962 paper's identity is verified here; the following threshold example is independently calculated, rather than presented as its complete theory.  \n\nAt a fixed temperature, impose the artificial conditions |b{\\rm eff}|\\lt BP and 0\\le B\\lt B{\\rm orb}. With a constant saturated exchange field J, the permitted interval is the intersection of (J-BP,J+BP) with the nonnegative orbital window. Its width is \\max[0,\\min(B{\\rm orb},J+BP)-\\max(0,J-BP)]. For J=8 T and BP=2 T, an orbital ceiling of 7 T leaves only 6\\lt B\\lt7 T; a ceiling of 5 T leaves no interval. A universal width of 2BP therefore fails even in this simplified model. \n\nA constant saturated exchange field is unsuitable near zero field if the moments are unpolarized there. For an explicitly synthetic alternative, take BJ=J\\tanh(B/Bs). With J=10 T, Bs=BP=1 T and B{\\rm orb}=15 T, the threshold model has a low-field interval ending near 0.112 T and a second interval approximately between 9 and 11 T. Reducing the orbital ceiling to 7 T removes the second interval. Reversing the exchange sign removes the compensation pocket. Root finding on monotonic segments agrees with 120,006 independent grid checks across six parameter sets. This is neither a material fit nor a self-consistent gap or free-energy calculation.  \n\n Experimental criteria\n\nMeul and colleagues reported magnetic-field-induced superconductivity in Eu-Sn molybdenum chalcogenides in 1984. Their original abstract interprets the phase-diagram shape through compensation. The detailed composition, measurement protocol and complete curves have not been checked in this review, so an exact stoichiometry or numerical field window is not assigned from that abstract alone. \n\nURhGe supplies a distinct magnetic setting. Its ambient-pressure discovery includes thermodynamic superconducting evidence; Levy and colleagues subsequently identify a second field pocket near the roughly 12 T spin reorientation for a field along the b axis. Gourgout and colleagues connect this region to transport and thermoelectric anomalies, a first-order magnetic transition and Fermi-surface changes. These observations constrain the mechanism without establishing a simple continuous quantum critical point or a unique pairing interaction. The original discovery abstracts and selected later author text support this limited comparison.   \n\nYang and colleagues' Sm0.95−xCa0.05EuxNiO2 study reports reentrance in Eu-rich films. For the 54-unit-cell x=0.34 specimen, resistance returns to zero above approximately 6.23 T at 2 K; mutual inductance on that specimen shows screening at 9 and 12 T, absent at 3 T. For x=0.32, the 13.04 T recovery is measured at 3 K, while persistence above 32 T refers to 1.7 K. Neither measurement temperature is a transition temperature for database filtering. \n\nVarbaro and colleagues investigate a separate Nd0.7Eu0.3NiO2 system. Their final Figure 3 combines two specimens using 20-percent and 50-percent normal-resistivity criteria; open and filled markers distinguish measurement facilities and specimens. These boundaries are not zero-resistance contours. The low-temperature Hall analysis uses a non-superconducting film on NdGaO3, whereas the superconducting transport uses LSAT-grown films. Their proposed competing Eu and Nd paramagnetic contributions should not be silently substituted for the magnetic interpretation of the Sm/Ca/Eu material. \n\n Limits and disputes\n\nThe Sm/Ca/Eu author's revised manuscript does not establish the long-range magnetic structure. Its angular reentrance extends nearly in-plane for some dopings, and the compared angular maps use different temperatures. The 50-percent resistance contours and phenomenological compensation fits do not prove triplet pairing. These qualifications replace stronger statements in the fixed planning source. \n\nThe public Sm/Ca/Eu dataset predates the checked manuscript revision. A read-only check of its Fig2 workbook preserves small negative baseline readings instead of clipping them to zero. Missing unit labels and an unverified noise floor prevent assigning an independently validated zero-resistance threshold from the spreadsheet alone. Complete correspondence between dataset and revised figures remains open. Separately, the URhGe author manuscript gives 12.75 T in its abstract but 11.75 T in its body; the published abstract gives 12.75 T. The discrepancy remains unresolved here.  \n\nComplete scientific acceptance remains open. Full historical methods, selected final-version comparisons, absolute screening calibration, supplementary-data checks and independent material-specific model fits remain outstanding. Distinguish evidence supporting a superconducting state from evidence selecting its mechanism, and a measured high-field survival point from a measured upper critical field.    \n\n Discovery implications\n\nCompare full field paths with matched criteria, preserve field direction and specimen identity, and test temperature control and sweep dependence. Evaluate compensation against magnetic response and orbital limitations; evaluate magnetic reorientation against relevant magnetic and electronic probes. Retain disagreements rather than averaging incompatible definitions. A useful candidate explains several measurements under their actual conditions, not merely a high-field resistance drop.   \n\n Related topics\n\n, , , and ."
     },
     {
       "id": "scwiki-g7",

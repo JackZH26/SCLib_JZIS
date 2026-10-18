@@ -1,0 +1,39 @@
+## Scope
+
+A large upper critical field means superconductivity survives a strong field; it does not establish that the field creates superconductivity. At fixed temperature, a field-induced state appears from a zero-field normal state. Field reentrance means a low-field superconducting regime is lost and subsequently recovered. Field enhancement means a specified observable improves over an interval. These distinctions require the same specimen, temperature, orientation and operational criterion throughout the comparison. [R2](#ref-source-d564bee026e788c7) [R3](#ref-source-e917adb251d93c59)
+
+A resistive decrease can indicate reduced dissipation without demonstrating a new bulk phase. Zero resistance establishes a conducting path; diamagnetic screening or a thermodynamic anomaly provides complementary information. Record whether an intermediate state is demonstrably normal or simply dissipative. A field sweep and a temperature sweep trace different paths through a phase diagram, and must not be joined as though every point belongs to one isotherm. [R5](#ref-source-3504ee9027165d0a) [R6](#ref-source-b57e3b2b5a90705f)
+
+## Mathematical assumptions
+
+Jaccarino–Peter compensation concerns an exchange contribution opposing the applied field in the electron spin sector. An illustrative effective Zeeman field is $b_{\rm eff}=B-B_J(B,T)$, with every term expressed in tesla and positive $B_J$ defined to oppose positive applied $B$. The exchange term does not automatically cancel orbital coupling to the physical field. The original 1962 paper's identity is verified here; the following threshold example is independently calculated, rather than presented as its complete theory. [R1](#ref-source-849f7f4f675464de) [R6](#ref-source-b57e3b2b5a90705f)
+
+At a fixed temperature, impose the artificial conditions $|b_{\rm eff}|\lt B_P$ and $0\le B\lt B_{\rm orb}$. With a constant saturated exchange field $J$, the permitted interval is the intersection of $(J-B_P,J+B_P)$ with the nonnegative orbital window. Its width is $\max[0,\min(B_{\rm orb},J+B_P)-\max(0,J-B_P)]$. For $J=8$ T and $B_P=2$ T, an orbital ceiling of 7 T leaves only $6\lt B\lt7$ T; a ceiling of 5 T leaves no interval. A universal width of $2B_P$ therefore fails even in this simplified model. [R1](#ref-source-849f7f4f675464de)
+
+A constant saturated exchange field is unsuitable near zero field if the moments are unpolarized there. For an explicitly synthetic alternative, take $B_J=J\tanh(B/B_s)$. With $J=10$ T, $B_s=B_P=1$ T and $B_{\rm orb}=15$ T, the threshold model has a low-field interval ending near 0.112 T and a second interval approximately between 9 and 11 T. Reducing the orbital ceiling to 7 T removes the second interval. Reversing the exchange sign removes the compensation pocket. Root finding on monotonic segments agrees with 120,006 independent grid checks across six parameter sets. This is neither a material fit nor a self-consistent gap or free-energy calculation. [R1](#ref-source-849f7f4f675464de) [R6](#ref-source-b57e3b2b5a90705f)
+
+## Experimental criteria
+
+Meul and colleagues reported magnetic-field-induced superconductivity in Eu-Sn molybdenum chalcogenides in 1984. Their original abstract interprets the phase-diagram shape through compensation. The detailed composition, measurement protocol and complete curves have not been checked in this review, so an exact stoichiometry or numerical field window is not assigned from that abstract alone. [R2](#ref-source-d564bee026e788c7)
+
+URhGe supplies a distinct magnetic setting. Its ambient-pressure discovery includes thermodynamic superconducting evidence; Levy and colleagues subsequently identify a second field pocket near the roughly 12 T spin reorientation for a field along the b axis. Gourgout and colleagues connect this region to transport and thermoelectric anomalies, a first-order magnetic transition and Fermi-surface changes. These observations constrain the mechanism without establishing a simple continuous quantum critical point or a unique pairing interaction. The original discovery abstracts and selected later author text support this limited comparison. [R8](#ref-source-15aec45a868e9fb9) [R3](#ref-source-e917adb251d93c59) [R4](#ref-source-c690ee5b95521000)
+
+Yang and colleagues' Sm0.95−xCa0.05EuxNiO2 study reports reentrance in Eu-rich films. For the 54-unit-cell x=0.34 specimen, resistance returns to zero above approximately 6.23 T at 2 K; mutual inductance on that specimen shows screening at 9 and 12 T, absent at 3 T. For x=0.32, the 13.04 T recovery is measured at 3 K, while persistence above 32 T refers to 1.7 K. Neither measurement temperature is a transition temperature for database filtering. [R5](#ref-source-3504ee9027165d0a)
+
+Varbaro and colleagues investigate a separate Nd0.7Eu0.3NiO2 system. Their final Figure 3 combines two specimens using 20-percent and 50-percent normal-resistivity criteria; open and filled markers distinguish measurement facilities and specimens. These boundaries are not zero-resistance contours. The low-temperature Hall analysis uses a non-superconducting film on NdGaO3, whereas the superconducting transport uses LSAT-grown films. Their proposed competing Eu and Nd paramagnetic contributions should not be silently substituted for the magnetic interpretation of the Sm/Ca/Eu material. [R6](#ref-source-b57e3b2b5a90705f)
+
+## Limits and disputes
+
+The Sm/Ca/Eu author's revised manuscript does not establish the long-range magnetic structure. Its angular reentrance extends nearly in-plane for some dopings, and the compared angular maps use different temperatures. The 50-percent resistance contours and phenomenological compensation fits do not prove triplet pairing. These qualifications replace stronger statements in the fixed planning source. [R5](#ref-source-3504ee9027165d0a)
+
+The public Sm/Ca/Eu dataset predates the checked manuscript revision. A read-only check of its Fig2 workbook preserves small negative baseline readings instead of clipping them to zero. Missing unit labels and an unverified noise floor prevent assigning an independently validated zero-resistance threshold from the spreadsheet alone. Complete correspondence between dataset and revised figures remains open. Separately, the URhGe author manuscript gives 12.75 T in its abstract but 11.75 T in its body; the published abstract gives 12.75 T. The discrepancy remains unresolved here. [R7](#ref-source-3481aee691b9bf14) [R4](#ref-source-c690ee5b95521000)
+
+Complete scientific acceptance remains open. Full historical methods, selected final-version comparisons, absolute screening calibration, supplementary-data checks and independent material-specific model fits remain outstanding. Distinguish evidence supporting a superconducting state from evidence selecting its mechanism, and a measured high-field survival point from a measured upper critical field. [R2](#ref-source-d564bee026e788c7) [R3](#ref-source-e917adb251d93c59) [R5](#ref-source-3504ee9027165d0a) [R6](#ref-source-b57e3b2b5a90705f)
+
+## Discovery implications
+
+Compare full field paths with matched criteria, preserve field direction and specimen identity, and test temperature control and sweep dependence. Evaluate compensation against magnetic response and orbital limitations; evaluate magnetic reorientation against relevant magnetic and electronic probes. Retain disagreements rather than averaging incompatible definitions. A useful candidate explains several measurements under their actual conditions, not merely a high-field resistance drop. [R2](#ref-source-d564bee026e788c7) [R4](#ref-source-c690ee5b95521000) [R6](#ref-source-b57e3b2b5a90705f)
+
+## Related topics
+
+[Magnetic field](/scwiki/magnetic-field), [ferromagnetism and superconductivity](/scwiki/ferromagnetism-and-superconductivity), [nickelates](/scwiki/nickelates), and [singlet and triplet pairing](/scwiki/singlet-and-triplet-pairing).

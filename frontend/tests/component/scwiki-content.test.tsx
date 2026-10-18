@@ -14,6 +14,22 @@ import {legacyDestination} from "@/lib/site-routes";
 import {GET} from "@/app/api/scwiki/v1/[[...segments]]/route";
 const get=(segments:string[],query="")=>GET(new NextRequest("http://localhost/api/scwiki/v1/"+segments.join("/")+query),{params:Promise.resolve({segments})});
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("exports versioned research datasets without promoting field-sweep temperatures to transition Tc",async()=>{
+  const a=articles().find(a=>a.code==="G3")!;
+  const dataset=a.references.find(r=>r.doi==="10.6084/m9.figshare.31861684.v1")!;
+  const schema=await (await get(["openapi.json"])).json();
+  expect(schema.components.schemas.Source.properties.publicationStatus.enum).toContain("dataset");
+  const section=await (await get(["articles",a.id,"sections","limits-and-disputes"])).json();
+  expect(section.sources.find((r:{id:string})=>r.id===dataset.id).publicationStatus).toBe("dataset");
+  const md=await (await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+  expect(md).toContain(dataset.doi);expect(md).toContain("Publication: dataset");
+  expect(md).toContain("noise floor");expect(md).toContain("Complete scientific acceptance remains open");
+  expect(a.materialCases.map(r=>r.reportedTemperatureK)).toEqual([2,3,1.7]);
+  expect(a.materialCases.every(r=>r.tcK===null&&r.temperatureKind==="measurement")).toBe(true);
+  expect(searchArticles(searchIndex().entries,"field reentrance").some(r=>r.code==="G3")).toBe(true);
+  expect(searchArticles(searchIndex().entries,"field reentrance",{tcMin:1}).some(r=>r.code==="G3")).toBe(false);
+ });
+
  it("attributes the A1 film-transport theory to Halperin-Nelson without promoting abstract review to full verification",()=>{
   const a=articles().find(a=>a.code==="A1")!;
   const ref=a.references.find(r=>r.doi==="10.1007/BF00116988")!;
