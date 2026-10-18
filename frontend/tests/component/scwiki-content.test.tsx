@@ -1142,3 +1142,18 @@ it("keeps post-quench onsets separate from magnetic specimens, storage and unass
  for(const phrase of ["78% estimate applies at 70 K","multiplies the post-quench curve by ten","Liangzi Deng","no searchable superconducting transition temperature","not a reported confidence interval"])expect(md).toContain(phrase);
  expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
 });
+
+it("preserves quantum-metric conventions and does not promote measurement conditions into Tc",async()=>{
+ const a=articles().find(a=>a.code==="F1")!;
+ expect(a.materialCases).toHaveLength(1);
+ expect(a.materialCases[0]).toMatchObject({reportedTemperatureK:.04,tcK:null,temperatureKind:"measurement"});
+ expect(searchArticles(searchIndex().entries,"quantum metric",{}).some(a=>a.code==="F1")).toBe(true);
+ expect(searchArticles(searchIndex().entries,"MATBG",{tcMin:.01}).some(a=>a.code==="F1")).toBe(false);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ for(const phrase of ["g^{\\rm Liang}=2g","momentum-dependent change","minimal quantum metric","order-parameter-response","zero Chern number without introducing pairing","Tanaka and colleagues"])expect(md).toContain(phrase);
+ expect(a.references.some(r=>r.doi==="10.1103/PhysRevB.106.014518")).toBe(true);
+ expect(a.references.find(r=>r.doi==="10.1007/BF02193559")?.verification.scope).toBe("publisher-abstract-and-bibliography");
+ const section=await(await get(["articles",a.id,"sections","mathematical-assumptions"])).json();
+ expect(section.section.markdown).toContain("factor of one half");
+ expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
+});
