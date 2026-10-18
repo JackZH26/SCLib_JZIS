@@ -82,7 +82,8 @@ test("homepage research, topic links and search stay usable at mobile, tablet an
   expect(await page.locator('.scwiki-research-item').count()).toBe(3);
   const links=await page.locator('.scwiki-topic-group a').all();
   expect(links.length).toBe(catalogue.articles.length);
-  for(const link of links)expect(await link.getAttribute('href')).toMatch(/^\/scwiki\/[a-z-]+$/);
+  const destinations=await Promise.all(links.map(link=>link.getAttribute('href')));
+  expect(destinations.sort()).toEqual(catalogue.articles.map(article=>'/scwiki/'+article.slug).sort());
  }
  await page.locator('.scwiki-topic-group').getByRole('link',{name:'Meissner effect',exact:true}).click();
  await expect(page).toHaveURL(/\/scwiki\/meissner-effect$/);
