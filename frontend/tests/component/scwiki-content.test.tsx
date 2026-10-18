@@ -102,6 +102,23 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(bcs.articleChecks.find((c:{articleId:string})=>c.articleId==="scwiki-a1").verification.scope).toBe("crossref-metadata-only");
   expect(bcs.articleChecks.find((c:{articleId:string})=>c.articleId==="scwiki-b1").verification.scope).toBe("primary-full-text-scoped-check");
  });
+ it("corrects the unrelated biology DOI and separates calculated MgB2 gaps from experiments",()=>{
+  const a=articles().find(a=>a.code==="B12")!;
+  expect(a.references.some(r=>r.doi==="10.1038/nature00992")).toBe(false);
+  const ref=a.references.find(r=>r.doi==="10.1038/nature00898")!;
+  expect(ref.title).toContain("MgB2");
+  expect(ref.verification.scope).toBe("primary-full-text-scoped-check");
+  const computed=a.claims.find(c=>c.id==="scwiki-b12-claim-experimental-criteria-2")!;
+  expect(computed.evidenceType).toBe("theory");
+  expect(computed.sourceIds).toEqual([ref.id]);
+  expect(a.body).toContain(computed.statement);
+  const experimental=a.claims.find(c=>c.id==="scwiki-b12-claim-experimental-criteria-1")!;
+  expect(experimental.evidenceType).toBe("experiment");
+  expect(experimental.sourceIds).not.toContain(ref.id);
+  expect(a.corrections.some(c=>c.id==="scwiki-b12-correction-2")).toBe(true);
+  const manifest=JSON.parse(readFileSync("content/scwiki/source-manifest.json","utf8"));
+  expect(manifest.correctionRegister.find((c:{id:string})=>c.id==="correction-nature00992-mgb2-doi").affectedTopics).toEqual(["A5","B2","B12","B14","C1","D7"]);
+ });
  it("disposes all 282 pinned files and keeps unpublished topics out of the catalogue",()=>{
   const m=JSON.parse(readFileSync("content/scwiki/source-manifest.json","utf8"));
   expect(m.commit).toBe("0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf");

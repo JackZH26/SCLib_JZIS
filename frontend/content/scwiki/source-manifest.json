@@ -3412,6 +3412,32 @@
       "correctMaterial": "Ba0.6K0.4Fe2As2",
       "scope": "Bibliographic title/material identity; no new pairing assignment.",
       "checkedAt": "2026-10-17"
+    },
+    {
+      "id": "correction-nature00992-mgb2-doi",
+      "affectedTopics": [
+        "A5",
+        "B2",
+        "B12",
+        "B14",
+        "C1",
+        "D7"
+      ],
+      "affectedSourcePaths": [
+        "A_phenomenology/A5_gap_features.md",
+        "papers/D1_D3_D6_D7_D9_D10_MATERIALS_SOURCE_AUDIT.md",
+        "papers/B12_B14_PAIRING_MECHANISM_SOURCE_AUDIT.md",
+        "B_mechanisms/B14_mottness.md",
+        "B_mechanisms/B2_Eliashberg_strong_coupling.md",
+        "B_mechanisms/B12_multi_channel_superposition.md",
+        "C_pairing_symmetry/C1_s_wave.md",
+        "D_material_families/D7_MgB2.md"
+      ],
+      "incorrectDoi": "10.1038/nature00992",
+      "correctDoi": "10.1038/nature00898",
+      "evidenceUrl": "https://www.nature.com/articles/nature00898",
+      "checkedAt": "2026-10-18",
+      "scope": "Publisher title/authors/pages and laboratory-hosted primary text identify Choi et al. MgB2 calculation. The incorrect DOI identifies an unrelated MscL biology paper. Fixed published B12; other pinned chapters remain unchanged and must apply this correction before publication."
     }
   ]
 }

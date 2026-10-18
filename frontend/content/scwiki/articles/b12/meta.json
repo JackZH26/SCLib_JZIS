@@ -22,10 +22,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-17T12:13:01Z",
+  "modifiedAt": "2026-10-18T06:09:50.849181+00:00",
   "review": {
-    "checkedAt": "2026-10-17",
-    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "checkedAt": "2026-10-18",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below. Corrected a mismatched MgB2 DOI and checked selected Choi et al. primary passages; other references retain their individual review limits.",
     "limitations": [
       "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
       "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
@@ -146,6 +146,12 @@
       "description": "The source's ASCII cutoff formula is written using a cutoff energy E_c and an explicit k_B, avoiding an unstated frequency-versus-energy convention.",
       "sourceId": "source-e6ac5c48a0e11fe3",
       "scope": "Notation and dimensions; no fitted coupling values were introduced."
+    },
+    {
+      "id": "scwiki-b12-correction-2",
+      "description": "The pinned chapter assigned Choi et al. (Nature 418, 758-760, 2002) DOI 10.1038/nature00992, which identifies a mechanosensitive-channel biology paper. The MgB2 calculation is DOI 10.1038/nature00898. Replaced the source identity and separated the calculated-gap claim from the experimental discovery report.",
+      "sourceId": "source-7c4eac077ae5e221",
+      "scope": "Publisher identity and selected primary calculation passages; not a blanket validation of all multichannel claims."
     }
   ],
   "equationChecks": [
@@ -185,17 +191,17 @@
       }
     },
     {
-      "id": "source-d7ac492f79e0915b",
-      "doi": "10.1038/nature00992",
-      "title": "Open channel structure of MscL and the gating mechanism of mechanosensitive channels",
+      "id": "source-7c4eac077ae5e221",
+      "doi": "10.1038/nature00898",
+      "title": "The origin of the anomalous superconducting properties of MgB2",
       "year": 2002,
-      "url": "https://doi.org/10.1038/nature00992",
+      "url": "https://doi.org/10.1038/nature00898",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnature00992",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "primary-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www2.lbl.gov/Science-Articles/Archive/assets/images/2002/Aug-14-2002/MgB2Nature.pdf",
+        "note": "Selected passages on pp. 758-759 and Fig. 3: anisotropic Eliashberg calculation, band-dependent gaps and a common calculated transition temperature. Calculated gaps are theory, not direct measurements. Numerical convergence, raw experiments and general multichannel enhancement claims are not verified here."
       }
     },
     {
@@ -255,10 +261,10 @@
       "evidenceType": "theory",
       "sourceIds": [
         "source-e6ac5c48a0e11fe3",
-        "source-d7ac492f79e0915b"
+        "source-7c4eac077ae5e221"
       ],
       "conditions": "The common-cutoff equation is a weak-coupling illustration in a declared band basis. Real spectra, self-energy, Coulomb terms and interband scattering need an explicit kernel.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "verificationScope": "The Choi source identity is corrected; its selected MgB2 calculation does not independently establish every general statement in this paragraph. Broader claim-level primary support remains pending."
     },
     {
       "id": "scwiki-b12-claim-mathematical-assumptions-1",
@@ -277,22 +283,32 @@
       "statement": "The full problem can have different frequency spectra, momentum structure, repulsive terms, Coulomb effects and normal self-energy renormalization. Combining a pairing attraction and a mass enhancement into one positive scalar can give a misleading temperature estimate. Interactions can cooperate, compete or favor different gap structures after projection into the pairing channel.",
       "evidenceType": "theory",
       "sourceIds": [
-        "source-d7ac492f79e0915b"
+        "source-7c4eac077ae5e221"
       ],
       "conditions": "The common-cutoff equation is a weak-coupling illustration in a declared band basis. Real spectra, self-energy, Coulomb terms and interband scattering need an explicit kernel.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "verificationScope": "The Choi source identity is corrected; its selected MgB2 calculation does not independently establish every general statement in this paragraph. Broader claim-level primary support remains pending."
     },
     {
       "id": "scwiki-b12-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "MgB2 provides a benchmark: the discovery report established a transition near 39 K, and anisotropic first-principles Eliashberg calculations addressed different gaps on sigma and pi bands. Two gaps in this setting do not require two unrelated pairing glues. Quantitative comparison depends on the actual band-resolved calculation and sample, not a coupling budget borrowed from another compound.",
+      "statement": "The MgB2 discovery paper reports superconductivity near 39 K. The detailed sample and transition criterion have not been re-extracted in this review, so the material record keeps its criterion explicitly unknown.",
       "evidenceType": "experiment",
       "sourceIds": [
-        "source-fade6558e7eafb2b",
-        "source-d7ac492f79e0915b"
+        "source-fade6558e7eafb2b"
       ],
-      "conditions": "The common-cutoff equation is a weak-coupling illustration in a declared band basis. Real spectra, self-energy, Coulomb terms and interband scattering need an explicit kernel.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "MgB2 discovery report. The approximate transition is retained from the pinned source; sample-specific criterion and raw measurements remain unreviewed.",
+      "verificationScope": "Discovery bibliographic identity only; Choi calculation is recorded separately as theory."
+    },
+    {
+      "id": "scwiki-b12-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Choi and colleagues calculated band-dependent gaps in MgB2 using an anisotropic Eliashberg treatment of electron-phonon pairing. Their sigma- and pi-band gaps vanish at a common calculated transition temperature. This is a theoretical result consistent with multiple gaps within that model; it is not a direct measurement of two independent pairing mediators.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7c4eac077ae5e221"
+      ],
+      "conditions": "Band-resolved anisotropic Eliashberg calculation for MgB2 with its electron-phonon model; not an experimental determination of separate pairing glues or a universal result for all multiband materials.",
+      "verificationScope": "Choi et al., Nature 418, 758-760 (2002), pp. 758-759 and Fig. 3. Selected model/result passages checked, not independent numerical reproduction."
     },
     {
       "id": "scwiki-b12-claim-material-interpretation-1",
@@ -323,10 +339,10 @@
       "evidenceType": "theory",
       "sourceIds": [
         "source-e6ac5c48a0e11fe3",
-        "source-d7ac492f79e0915b"
+        "source-7c4eac077ae5e221"
       ],
       "conditions": "The common-cutoff equation is a weak-coupling illustration in a declared band basis. Real spectra, self-energy, Coulomb terms and interband scattering need an explicit kernel.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "verificationScope": "The Choi source identity is corrected; its selected MgB2 calculation does not independently establish every general statement in this paragraph. Broader claim-level primary support remains pending."
     },
     {
       "id": "scwiki-b12-claim-discovery-implications-1",
@@ -335,10 +351,10 @@
       "evidenceType": "theory",
       "sourceIds": [
         "source-e6ac5c48a0e11fe3",
-        "source-d7ac492f79e0915b"
+        "source-7c4eac077ae5e221"
       ],
       "conditions": "The common-cutoff equation is a weak-coupling illustration in a declared band basis. Real spectra, self-energy, Coulomb terms and interband scattering need an explicit kernel.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "verificationScope": "The Choi source identity is corrected; its selected MgB2 calculation does not independently establish every general statement in this paragraph. Broader claim-level primary support remains pending."
     }
   ]
 }
