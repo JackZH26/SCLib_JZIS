@@ -39,8 +39,8 @@ describe("SCWiki home discovery and research provenance",()=>{
   const fetch=vi.fn().mockResolvedValue({ok:true,json:async()=>searchIndex()});vi.stubGlobal("fetch",fetch);
   render(<SearchCatalogue initial={initial}><h2>Latest research</h2></SearchCatalogue>);
   expect(fetch).not.toHaveBeenCalled();
-  expect(initial.some(a=>[a.title,a.summary].join(" ").toLowerCase().includes("filaments"))).toBe(false);
-  fireEvent.change(screen.getByRole("searchbox",{name:"Search SCWiki"}),{target:{value:"filaments"}});
+  expect(initial.some(a=>[a.title,a.summary].join(" ").toLowerCase().includes("current-even"))).toBe(false);
+  fireEvent.change(screen.getByRole("searchbox",{name:"Search SCWiki"}),{target:{value:"current-even"}});
   await screen.findByRole("link",{name:"Read article: "+initial.find(a=>a.code==="A1")!.title});
   expect(fetch).toHaveBeenCalledTimes(1);expect(screen.queryByRole("heading",{name:"Latest research"})).not.toBeInTheDocument();
   fireEvent.click(screen.getByRole("button",{name:"Clear filters"}));

@@ -13,24 +13,28 @@
   ],
   "evidenceTypes": [
     "experiment",
-    "theory"
+    "theory",
+    "hypothesis"
   ],
   "relatedCodes": [
     "A2",
+    "A3",
+    "A7",
+    "B1",
     "D11",
     "H2"
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18",
+  "modifiedAt": "2026-10-18T06:57:31.390654+00:00",
   "review": {
     "checkedAt": "2026-10-18",
-    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below. A1 film-transport attribution corrected using the 1979 publisher abstract on 2026-10-18; other primary-review debts remain.",
+    "scope": "Operational transport bounds and model checks; selected NIST metrology report passages, earlier optical/electrical K3C60 manuscript passages and existing Halperin–Nelson abstract check.",
     "limitations": [
-      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
-      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
-      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
-      "Historical audit scores and file presence are not evidence that a proposition is correct."
+      "No full scientific acceptance, experimental replication or instrument calibration is claimed.",
+      "Input uncertainty intervals and response models must be justified for the actual apparatus; mathematical checks do not establish their experimental validity.",
+      "Mitrano publisher update details remain unresolved; earlier manuscripts are identified explicitly and no exhaustive final-version comparison was performed.",
+      "Driven K3C60 observations are not equilibrium transition-temperature records; BCS remains a background reference in this entry."
     ]
   },
   "provenance": {
@@ -45,66 +49,69 @@
       "startLine": 1,
       "endLine": 5,
       "targetSections": [
-        "experimental-criteria"
+        "scope"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "Transport-only scope retained."
     },
     {
       "startLine": 6,
       "endLine": 16,
       "targetSections": [
-        "mathematical-assumptions"
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "Operational threshold refined to conditional uncertainty bound; volume/path distinction explicit."
     },
     {
       "startLine": 17,
       "endLine": 22,
       "targetSections": [
-        "scope",
-        "limits-and-disputes"
+        "mathematical-assumptions"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "Finite resolution and loop-decay bounds conditional on stated models."
     },
     {
       "startLine": 23,
       "endLine": 28,
       "targetSections": [
+        "experimental-criteria",
         "limits-and-disputes"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "Keep corrected film-theory DOI; identify optical versus calibrated two-terminal driven response and manuscript versions."
     },
     {
       "startLine": 29,
       "endLine": 36,
       "targetSections": [
-        "experimental-criteria"
+        "experimental-criteria",
+        "discovery-implications"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "Editorial measurement requirements distinguished from experimental claims."
     },
     {
       "startLine": 37,
       "endLine": 44,
       "targetSections": [
-        "sources"
+        "discovery-implications",
+        "limits-and-disputes"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "BCS background retained; methodological reports added, no unverified historical Onnes numeric claim."
     },
     {
       "startLine": 45,
       "endLine": 47,
       "targetSections": [
-        "scope",
-        "limits-and-disputes"
+        "discovery-implications"
       ],
-      "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "decision": "edited-with-scoped-evidence",
+      "note": "Preserve inference limits and separated criteria."
     }
   ],
   "corrections": [
@@ -115,18 +122,35 @@
       "scope": "Publisher abstracts and bibliographic identity only; no full derivation review.",
       "originalSourceLines": [],
       "targetSectionId": "experimental-criteria"
+    },
+    {
+      "id": "scwiki-a1-correction-2",
+      "description": "Separated display/decision threshold from uncertainty bounds and qualified current reversal by its constant-offset assumptions.",
+      "sourceId": "source-0c63f38b6789c792",
+      "scope": "Measurement interpretation; conditional local checks, not an instrument calibration."
+    },
+    {
+      "id": "scwiki-a1-correction-3",
+      "description": "Specified the driven electrical experiment as transient two-terminal transport calibrated with static four-terminal measurements.",
+      "sourceId": "source-07be806c0002c690",
+      "scope": "Selected earlier manuscript methods; no equilibrium Tc inferred."
     }
   ],
   "equationChecks": [
     {
       "targetSectionId": "mathematical-assumptions",
-      "tex": "V_{\\mathrm{res}}",
-      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+      "tex": "|V/I|\\le (|\\hat V|+U_V)/(|\\hat I|-U_I)",
+      "check": "Interval corner checks; lower current magnitude positive. No confidence interpretation without input coverage model."
     },
     {
       "targetSectionId": "mathematical-assumptions",
-      "tex": "I",
-      "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+      "tex": "\\hat R=(V_+-V_-)/(2I)",
+      "check": "Nine constant-offset cases; drift/current-odd offsets explicitly fail to cancel; three covariance cases verified independently."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "R\\le -L_{loop}\\ln(1-\\varepsilon)/t",
+      "check": "Constant-L passive RL decay identity checked; excludes vortex/inductance changes."
     }
   ],
   "references": [
@@ -141,7 +165,7 @@
         "scope": "crossref-metadata-only",
         "checkedAt": "2026-10-17",
         "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRev.108.1175",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "note": "Bibliographic identity only in A1. Retained as microscopic background; operational bounds and measurement guidance are separate. Selected BCS primary passages checked in B1 must not silently upgrade A1 claims."
       }
     },
     {
@@ -166,10 +190,10 @@
       "url": "https://doi.org/10.1038/nature16522",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnature16522",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "earlier-author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1505.04529v1",
+        "note": "Selected pp. 1–2 and 4–6 of 2015 v1: transient optical response, high-mobility alternative and finite probe window. Earlier version with different title; final publisher record marks an update, details unresolved. No full version comparison, raw-data reproduction or equilibrium Tc extraction."
       }
     },
     {
@@ -180,10 +204,38 @@
       "url": "https://doi.org/10.1038/s41567-020-01148-1",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fs41567-020-01148-1",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2002.12835v1",
+        "note": "Selected p. 9/Fig. 4 and supplement S7 pp. 29–31: 1 ns two-terminal probe, static four-terminal contact calibration, 100 K driven sample and calibration uncertainty. Earlier v1 Feb 2020 linked to 2021 journal article; final methods and data not exhaustively compared."
+      }
+    },
+    {
+      "id": "source-c8143afdf96ce96f",
+      "doi": "10.6028/NIST.TN.1462",
+      "title": "A Four-Terminal Current Shunt with Calculable AC Response",
+      "year": 2004,
+      "url": "https://doi.org/10.6028/NIST.TN.1462",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "scope": "primary-report-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=31690",
+        "note": "Selected section 2.5, printed p. 11, and section 5.7, p. 28: thermoelectric effects can reverse with current and survive averaging; constant offsets treated separately. Calibration-shunt methodology, not a superconducting-material study."
+      }
+    },
+    {
+      "id": "source-0c63f38b6789c792",
+      "doi": "10.6028/NIST.TN.1297",
+      "title": "Guidelines for Evaluating and Expressing the Uncertainty of NIST Measurement Results, 1994 Edition",
+      "year": 1994,
+      "url": "https://doi.org/10.6028/NIST.TN.1297",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "scope": "primary-report-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://nvlpubs.nist.gov/nistpubs/Legacy/TN/nbstechnicalnote1297.pdf",
+        "note": "Selected sections 5–6 and Appendix A: uncertainty propagation including covariance, systematic corrections and coverage factors. Local interval/circuit examples are independent deductions, not an instrument-specific calibration."
       }
     }
   ],
@@ -203,87 +255,222 @@
       "sourceId": "source-6ee3670220e24ff1",
       "reportedTemperatureK": null,
       "temperatureKind": "transient-response"
+    },
+    {
+      "id": "scwiki-a1-material-2",
+      "formula": "K3C60",
+      "sample": "driven pellet in Budden et al. earlier manuscript v1, Fig. 4 and supplement S7",
+      "recordType": "experiment",
+      "tcK": null,
+      "reportedTemperatureK": 100,
+      "temperatureKind": "transient-response",
+      "temperatureNote": "base temperature during driven measurement, not equilibrium Tc",
+      "criterion": "transient-two-terminal-response",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "transient",
+      "probe": "1 ns electrical probe; contact calibration from static four-terminal measurement; systematic calibration uncertainty retained",
+      "sourceId": "source-07be806c0002c690"
     }
   ],
   "claims": [
     {
       "id": "scwiki-a1-claim-scope-1",
       "sectionId": "scope",
-      "statement": "A reported zero resistance is an operational result: the voltage is below the detection threshold for a specified current and contact geometry. The experiment establishes a bound on resistance rather than a mathematical proof that it is exactly zero. This article concerns electrical transport; magnetic expulsion and thermodynamic anomalies require separate measurements. The superconducting condensate provides the theoretical setting, but a microscopic model does not replace the experimental controls.",
-      "evidenceType": "experiment",
+      "statement": "A reported zero resistance means that a specified measurement cannot resolve a resistive voltage under its current, geometry and acquisition conditions. It is evidence within a detection limit, not a measurement of a mathematically exact zero. Keep the measured signal, correction and uncertainty together; a display reading of zero does not specify all three. The uncertainty framework below is separate from a microscopic theory of superconductivity.",
+      "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-ba10e800a1246bf6"
+        "source-0c63f38b6789c792"
       ],
-      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Editorial measurement/inference guidance; actual specimen, contacts, time window, uncertainty and controls required. No newly acquired experimental data.",
+      "verificationScope": "Pinned chapter edited with specific methodological references; no broad attribution of procedures to BCS theory."
     },
     {
       "id": "scwiki-a1-claim-scope-2",
       "sectionId": "scope",
-      "statement": "Record resistance onset, midpoint and zero separately. An onset can identify a small superconducting region, whereas a connected path may determine the zero-resistance result. Neither number alone measures the superconducting volume fraction. Filaments, an interface or a second phase can dominate a four-terminal path even when most of the specimen remains normal. This distinction is central when comparing bulk crystals, films and high-pressure samples.",
-      "evidenceType": "experiment",
+      "statement": "Record transition onset, midpoint and the operational zero criterion separately. A conducting path need not occupy the whole specimen. As a simple counterexample, two ideal parallel channels have $R_{\\mathrm{eff}}=R_1R_2/(R_1+R_2)$: one zero-resistance channel shorts a finite-resistance channel. This circuit result establishes no volume fraction or material identity. Magnetic and thermodynamic probes answer complementary questions.",
+      "evidenceType": "theory",
       "sourceIds": [
-        "source-ba10e800a1246bf6"
+        "source-0c63f38b6789c792"
       ],
-      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Conditional interval bounds require valid voltage/current intervals and nonzero lower current magnitude. Reversal assumes equal opposite currents and unchanged linear R; covariance expression fixes I. Circuit and constant-L passive loop examples are ideal models.",
+      "verificationScope": "Independent algebra, interval-corner, finite-outcome covariance and circuit checks; NIST methodological passages support uncertainty/offset limits, not specimen validation."
     },
     {
       "id": "scwiki-a1-claim-mathematical-assumptions-1",
       "sectionId": "mathematical-assumptions",
-      "statement": "This expression is a measurement definition, not a universal material law. It assumes a meaningful current path, stable contacts and a noise floor evaluated under the actual acquisition conditions. In a homogeneous specimen, converting resistance to resistivity further requires the sample dimensions. The ideal condensate response is a limiting statement about frequency, temperature, field and current; a finite experiment cannot take every limit simultaneously.",
+      "statement": "Suppose a corrected voltage estimate is $\\hat V$ and the applied current estimate is $\\hat I$. If independently justified intervals satisfy $|V-\\hat V|\\le U_V$ and $|I-\\hat I|\\le U_I<|\\hat I|$, the triangle inequality gives a conditional bound:",
       "evidenceType": "theory",
       "sourceIds": [
-        "source-ba10e800a1246bf6"
+        "source-0c63f38b6789c792"
       ],
-      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Conditional interval bounds require valid voltage/current intervals and nonzero lower current magnitude. Reversal assumes equal opposite currents and unchanged linear R; covariance expression fixes I. Circuit and constant-L passive loop examples are ideal models.",
+      "verificationScope": "Independent algebra, interval-corner, finite-outcome covariance and circuit checks; NIST methodological passages support uncertainty/offset limits, not specimen validation."
+    },
+    {
+      "id": "scwiki-a1-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\left|\\frac{V}{I}\\right|\\le\\frac{|\\hat V|+U_V}{|\\hat I|-U_I}.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0c63f38b6789c792"
+      ],
+      "conditions": "Conditional interval bounds require valid voltage/current intervals and nonzero lower current magnitude. Reversal assumes equal opposite currents and unchanged linear R; covariance expression fixes I. Circuit and constant-L passive loop examples are ideal models.",
+      "verificationScope": "Independent algebra, interval-corner, finite-outcome covariance and circuit checks; NIST methodological passages support uncertainty/offset limits, not specimen validation."
+    },
+    {
+      "id": "scwiki-a1-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "This is a local interval calculation, not an automatically calibrated confidence statement. If the input intervals have probabilistic coverage, the output statement must retain that coverage model and their dependence. An operational threshold $|\\hat V|<V_{\\mathrm{cut}}$ alone does not establish $|V|<V_{\\mathrm{cut}}$. Do not substitute a display digit or a noise standard deviation for a validated bound without explaining the choice. NIST's uncertainty guidance distinguishes uncertainty components, applied corrections and coverage.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0c63f38b6789c792"
+      ],
+      "conditions": "Conditional interval bounds require valid voltage/current intervals and nonzero lower current magnitude. Reversal assumes equal opposite currents and unchanged linear R; covariance expression fixes I. Circuit and constant-L passive loop examples are ideal models.",
+      "verificationScope": "Independent algebra, interval-corner, finite-outcome covariance and circuit checks; NIST methodological passages support uncertainty/offset limits, not specimen validation."
+    },
+    {
+      "id": "scwiki-a1-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a fixed linear resistance and equal opposite currents, model the readings as $V_+=IR+V_{0,+}+\\epsilon_+$ and $V_-=-IR+V_{0,-}+\\epsilon_-$. Then",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0c63f38b6789c792"
+      ],
+      "conditions": "Conditional interval bounds require valid voltage/current intervals and nonzero lower current magnitude. Reversal assumes equal opposite currents and unchanged linear R; covariance expression fixes I. Circuit and constant-L passive loop examples are ideal models.",
+      "verificationScope": "Independent algebra, interval-corner, finite-outcome covariance and circuit checks; NIST methodological passages support uncertainty/offset limits, not specimen validation."
+    },
+    {
+      "id": "scwiki-a1-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\hat R=\\frac{V_+-V_-}{2I}=R+\\frac{V_{0,+}-V_{0,-}+\\epsilon_+-\\epsilon_-}{2I}.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0c63f38b6789c792"
+      ],
+      "conditions": "Conditional interval bounds require valid voltage/current intervals and nonzero lower current magnitude. Reversal assumes equal opposite currents and unchanged linear R; covariance expression fixes I. Circuit and constant-L passive loop examples are ideal models.",
+      "verificationScope": "Independent algebra, interval-corner, finite-outcome covariance and circuit checks; NIST methodological passages support uncertainty/offset limits, not specimen validation."
+    },
+    {
+      "id": "scwiki-a1-claim-mathematical-assumptions-6",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A constant current-even offset cancels. Drift, a current-odd voltage, unequal currents or a changing specimen do not satisfy that cancellation. NIST's shunt report describes a thermoelectric contribution that reverses with the current and therefore survives ordinary reversal averaging. Its apparatus-specific thermal treatment is not a universal correction for superconducting samples.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-c8143afdf96ce96f"
+      ],
+      "conditions": "Conditional interval bounds require valid voltage/current intervals and nonzero lower current magnitude. Reversal assumes equal opposite currents and unchanged linear R; covariance expression fixes I. Circuit and constant-L passive loop examples are ideal models.",
+      "verificationScope": "Independent algebra, interval-corner, finite-outcome covariance and circuit checks; NIST methodological passages support uncertainty/offset limits, not specimen validation."
+    },
+    {
+      "id": "scwiki-a1-claim-mathematical-assumptions-7",
+      "sectionId": "mathematical-assumptions",
+      "statement": "With fixed known $I$, the voltage contribution to standard uncertainty is $u_R^2=[u_+^2+u_-^2-2\\operatorname{cov}(V_+,V_-)]/(4I^2)$. Current uncertainty and model/systematic contributions must be included separately when present. Independent algebra and finite-outcome checks verify this conditional variance and show why assuming uncorrelated errors can fail. The check is not an instrument calibration.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0c63f38b6789c792"
+      ],
+      "conditions": "Conditional interval bounds require valid voltage/current intervals and nonzero lower current magnitude. Reversal assumes equal opposite currents and unchanged linear R; covariance expression fixes I. Circuit and constant-L passive loop examples are ideal models.",
+      "verificationScope": "Independent algebra, interval-corner, finite-outcome covariance and circuit checks; NIST methodological passages support uncertainty/offset limits, not specimen validation."
+    },
+    {
+      "id": "scwiki-a1-claim-mathematical-assumptions-8",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Converting resistance to resistivity as $\\rho=RA/L$ additionally assumes the appropriate homogeneous current path, area $A$ and voltage-contact separation $L$. Four-terminal geometry does not by itself establish uniform current density. Conversely, a passive lumped loop with constant inductance $L_{\\mathrm{loop}}$ and resistance obeys $I(t)=I_0e^{-Rt/L_{\\mathrm{loop}}}$. A measured fractional decay no larger than $\\varepsilon$ gives $R\\le-L_{\\mathrm{loop}}\\ln(1-\\varepsilon)/t$ only under that loop model. Vortex relaxation or changing inductance needs a different treatment.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0c63f38b6789c792"
+      ],
+      "conditions": "Conditional interval bounds require valid voltage/current intervals and nonzero lower current magnitude. Reversal assumes equal opposite currents and unchanged linear R; covariance expression fixes I. Circuit and constant-L passive loop examples are ideal models.",
+      "verificationScope": "Independent algebra, interval-corner, finite-outcome covariance and circuit checks; NIST methodological passages support uncertainty/offset limits, not specimen validation."
     },
     {
       "id": "scwiki-a1-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "Halperin and Nelson developed a vortex-unbinding description of resistive behavior in dirty superconducting films, including fluctuation conductivity above an effective vortex-unbinding temperature and nonlinear resistivity below it. This is a theoretical treatment of a specified film regime, not a measurement of pairing symmetry. When applying it to data, this article requires independent checks of the model assumptions and sample conditions; a fit alone is not treated as a unique diagnosis. The publisher abstract supports this limited description; its full derivation has not yet been reviewed here.",
+      "statement": "Halperin and Nelson's 1979 superconducting-film theory describes a vortex-unbinding regime, fluctuation conductivity and nonlinear resistivity. This supports a limited theoretical reference for thin-film analysis, not a universal fit or a pairing-symmetry test. The publisher abstract was checked; its full derivation has not yet been reviewed here.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-9e55a4505d9de546"
       ],
-      "conditions": "Dirty two-dimensional superconducting films in the vortex-unbinding treatment; effective transition and fluctuation regime. Applying a fit requires sample-specific assumptions; no pairing-symmetry inference.",
-      "verificationScope": "Publisher abstract of Halperin and Nelson (1979), DOI 10.1007/BF00116988, checked 2026-10-18. Full derivation not accessed; diagnostic requirements are editorial guidance."
+      "conditions": "Dirty superconducting-film vortex-unbinding regime; fit assumptions and sample conditions must be checked independently.",
+      "verificationScope": "Publisher abstract only; full derivation not accessed."
+    },
+    {
+      "id": "scwiki-a1-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Use four-terminal measurements where the time scale and apparatus permit them, and state the actual geometry when they do not. Publish the voltage/current data, detection criterion, field orientation, temperature sweep, bandwidth or integration time and contact configuration. Check current dependence, contact stability and thermal response. Treat these as editorial evidence requirements rather than a claim that one fixed protocol fits every apparatus.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-0c63f38b6789c792"
+      ],
+      "conditions": "Editorial measurement/inference guidance; actual specimen, contacts, time window, uncertainty and controls required. No newly acquired experimental data.",
+      "verificationScope": "Pinned chapter edited with specific methodological references; no broad attribution of procedures to BCS theory."
+    },
+    {
+      "id": "scwiki-a1-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "If contacts or backgrounds are subtracted, preserve the original reading and propagate the uncertainty of the subtraction. An independent magnetic or heat-capacity result on a comparable sample helps test a bulk interpretation. A low transport reading alone cannot exclude a connected minority phase, a short or an instrument limitation.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-0c63f38b6789c792"
+      ],
+      "conditions": "Editorial measurement/inference guidance; actual specimen, contacts, time window, uncertainty and controls required. No newly acquired experimental data.",
+      "verificationScope": "Pinned chapter edited with specific methodological references; no broad attribution of procedures to BCS theory."
     },
     {
       "id": "scwiki-a1-claim-limits-and-disputes-1",
       "sectionId": "limits-and-disputes",
-      "statement": "Light-driven optical signatures must remain in a different evidence category from an equilibrium transport transition. Mitrano and colleagues reported a transient superconducting-like response in driven K3C60. The source chapter itself retains the ambiguity of assigning superconductivity from optics alone. Budden and colleagues investigated a longer-lived driven state with transport observations; those observations do not define an equilibrium zero-resistance critical temperature. This pilot does not promote either optical scale into a bulk temperature ranking.",
+      "statement": "Mitrano and colleagues' earlier author manuscript reports transient optical signatures in driven K3C60 and discusses a high-mobility alternative interpretation. Such spectra do not constitute a direct DC transport measurement. This check covers selected 2015 manuscript passages; the publisher record flags an update whose details have not been verified here. No optical crossover temperature is entered as an equilibrium transition.",
       "evidenceType": "experiment",
       "sourceIds": [
-        "source-6ee3670220e24ff1",
-        "source-07be806c0002c690"
+        "source-6ee3670220e24ff1"
       ],
-      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Driven K3C60, explicitly limited manuscript version. Optical signatures are distinct from the 100 K two-terminal transient electrical measurement with static four-terminal calibration; neither defines equilibrium Tc.",
+      "verificationScope": "Selected Mitrano v1 pp. 1–2/4–6 or Budden v1 p. 9 and supplement S7 pp. 29–31; full final data/version comparison remains open."
     },
     {
       "id": "scwiki-a1-claim-limits-and-disputes-2",
       "sectionId": "limits-and-disputes",
-      "statement": "A persistent current can be complementary evidence, but its interpretation needs the loop geometry and decay time. A single low-resistance reading cannot supply those quantities. Likewise, magnetic-field suppression supports a superconducting interpretation without uniquely identifying the pairing interaction.",
+      "statement": "Budden and colleagues complement optics with a 1 ns electrical probe of a driven K3C60 pellet at 100 K. The checked manuscript uses a two-terminal transient measurement with contact resistance calibrated against static four-terminal measurements. Figure 4 explicitly includes a calibration-related systematic uncertainty. A resistance compatible with zero in this driven experiment is not an equilibrium $T_{c,\\mathrm{zero}}$. The numerical waveform and complete final journal version were not independently reanalyzed.",
       "evidenceType": "experiment",
       "sourceIds": [
-        "source-ba10e800a1246bf6"
+        "source-07be806c0002c690"
       ],
-      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Driven K3C60, explicitly limited manuscript version. Optical signatures are distinct from the 100 K two-terminal transient electrical measurement with static four-terminal calibration; neither defines equilibrium Tc.",
+      "verificationScope": "Selected Mitrano v1 pp. 1–2/4–6 or Budden v1 p. 9 and supplement S7 pp. 29–31; full final data/version comparison remains open."
+    },
+    {
+      "id": "scwiki-a1-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "These methods probe different observables and time windows. Keep optical extrapolation to zero frequency separate from electrical response, and distinguish either from long-time equilibrium transport. A very large photoconductivity can motivate further tests without resolving every question about phase coherence or magnetic expulsion.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-0c63f38b6789c792"
+      ],
+      "conditions": "Editorial measurement/inference guidance; actual specimen, contacts, time window, uncertainty and controls required. No newly acquired experimental data.",
+      "verificationScope": "Pinned chapter edited with specific methodological references; no broad attribution of procedures to BCS theory."
     },
     {
       "id": "scwiki-a1-claim-discovery-implications-1",
       "sectionId": "discovery-implications",
-      "statement": "Treat zero resistance as one part of an evidence chain. A useful candidate report specifies a measurable threshold, demonstrates repeatability and connects transport to other probes. Preserve negative controls and the possibility of a minority superconducting path. This approach makes a discovery claim more testable while keeping unresolved volume fraction, phase identity and mechanism explicitly open.",
-      "evidenceType": "experiment",
+      "statement": "A useful discovery report states which observations would distinguish a superconducting path from a contact artifact, minority phase or alternative conducting state. Repeat under controlled current and magnetic field, retain unsuccessful controls, and seek independent probes of the claimed phase. Field suppression supports an interpretation but does not uniquely identify a pairing interaction.",
+      "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-ba10e800a1246bf6",
-        "source-9e55a4505d9de546"
+        "source-0c63f38b6789c792"
       ],
-      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Editorial measurement/inference guidance; actual specimen, contacts, time window, uncertainty and controls required. No newly acquired experimental data.",
+      "verificationScope": "Pinned chapter edited with specific methodological references; no broad attribution of procedures to BCS theory."
+    },
+    {
+      "id": "scwiki-a1-claim-discovery-implications-2",
+      "sectionId": "discovery-implications",
+      "statement": "BCS theory is retained as a microscopic background reference, with its detailed treatment in the linked BCS entry. It is not the source for the measurement bounds or procedural requirements developed here. Keep operational transport evidence, theoretical interpretation and claims of bulk superconductivity distinct.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Editorial measurement/inference guidance; actual specimen, contacts, time window, uncertainty and controls required. No newly acquired experimental data.",
+      "verificationScope": "Pinned chapter edited with specific methodological references; no broad attribution of procedures to BCS theory."
     }
   ]
 }

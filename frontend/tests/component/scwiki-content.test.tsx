@@ -345,3 +345,18 @@ it("keeps Meissner geometry and source-check boundaries in the article and evide
  expect(section).toContain("Bozovic LSCO is a bibliographic pointer");
  expect(a.claims.filter(c=>c.evidenceType==="experiment")).toHaveLength(2);
 });
+
+it("separates transport thresholds, uncertainty and driven measurements in exports",async()=>{
+ const a=articles().find(a=>a.code==="A1")!;
+ expect(a.body).toContain("constant current-even offset cancels");
+ expect(a.body).toContain("current-odd voltage");
+ expect(a.body).toContain("not an automatically calibrated confidence statement");
+ const driven=a.materialCases.find(c=>c.criterion==="transient-two-terminal-response")!;
+ expect(driven.reportedTemperatureK).toBe(100);expect(driven.tcK).toBeNull();expect(driven.equilibrium).toBe("transient");expect(driven.probe).toContain("static four-terminal");
+ expect(searchArticles(searchIndex().entries,"K3C60",{tcMin:90}).some(a=>a.code==="A1")).toBe(false);
+ const md=await (await get(["articles",a.id,"markdown"])).text();expect(md).toContain("contact calibration from static four-terminal");expect(md).toContain("Mitrano publisher update details remain unresolved");
+ const schema=await (await get(["openapi.json"])).json();const statuses=schema.components.schemas.Source.properties.publicationStatus.enum;
+ expect(statuses).toContain("technical-report");
+ for(const a of articles())for(const r of a.references)expect(statuses).toContain(r.publicationStatus);
+ expect(a.references.filter(r=>r.publicationStatus==="technical-report")).toHaveLength(2);
+});
