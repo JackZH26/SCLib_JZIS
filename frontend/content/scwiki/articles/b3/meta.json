@@ -28,10 +28,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T07:41:36.487323+00:00",
+  "modifiedAt": "2026-10-19",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected pairing-vertex and NMR response equations, primary abstracts and published erratum text; independent two-patch and square-lattice checks.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected pairing-vertex and NMR response equations, primary abstracts and published erratum text; independent two-patch and square-lattice checks. Follow-up selected Scalapino pp. 39-42 and p. 41 equation image, explicit local-derivation mapping, and 432 weighted-kernel cases with zero-coupling boundary.",
     "limitations": [
       "Complete scientific acceptance, raw-data checks and material-model reproduction remain open.",
       "Review summaries of phase-sensitive evidence do not replace a primary-experiment audit. No sample-specific Tc is extracted.",
@@ -253,7 +253,9 @@
         "source-eaa3beeed4368f46"
       ],
       "conditions": "Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.",
-      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open."
+      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Scalapino author v1 p. 41 Eq. (13) supplies the dressed particle-particle eigenproblem, with p. 39 Eq. (12) distinguishing vertex channels. The entry uses Lambda for the eigenvalue and explicitly limits the instability interpretation to that treatment; no material transition is measured."
     },
     {
       "id": "scwiki-b3-claim-mathematical-assumptions-2",
@@ -264,7 +266,9 @@
         "source-eaa3beeed4368f46"
       ],
       "conditions": "Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.",
-      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open."
+      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Scalapino author v1 p. 41 Eq. (13) supplies the dressed particle-particle eigenproblem, with p. 39 Eq. (12) distinguishing vertex channels. The entry uses Lambda for the eigenvalue and explicitly limits the instability interpretation to that treatment; no material transition is measured."
     },
     {
       "id": "scwiki-b3-claim-mathematical-assumptions-3",
@@ -275,18 +279,22 @@
         "source-eaa3beeed4368f46"
       ],
       "conditions": "Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.",
-      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open."
+      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Scalapino author v1 p. 41 Eq. (13) supplies the dressed particle-particle eigenproblem, with p. 39 Eq. (12) distinguishing vertex channels. The entry uses Lambda for the eigenvalue and explicitly limits the instability interpretation to that treatment; no material transition is measured."
     },
     {
       "id": "scwiki-b3-claim-mathematical-assumptions-4",
       "sectionId": "mathematical-assumptions",
-      "statement": "An independently checked static illustration uses two patches with positive single-spin density-of-states weights $N_h,N_e$, a common pairing cutoff, constant gaps and repulsive interactions $U_h,U_e,V$. After the common energy logarithm is factored out, define $\\eta\\Delta_i=-\\sum_jV_{ij}N_j\\Delta_j$. The rescaling $x_i=\\sqrt{N_i}\\Delta_i$ gives a symmetric matrix with diagonal elements $-U_iN_i$ and off-diagonal element $-V\\sqrt{N_hN_e}$.",
+      "statement": "A local static illustration, checked by separate matrix calculations, uses two patches with positive single-spin density-of-states weights $N_h,N_e$, a common pairing cutoff, constant gaps and real reciprocal interactions $U_h,U_e,V\\ge0$. After the common energy logarithm is factored out, define $\\eta\\Delta_i=-\\sum_jV_{ij}N_j\\Delta_j$, with $V_{he}=V_{eh}=V$. The rescaling $x_i=\\sqrt{N_i}\\Delta_i$ gives a symmetric matrix with diagonal elements $-U_iN_i$ and off-diagonal element $-V\\sqrt{N_hN_e}$. This is a separate static model, not a reduction validated against the review's dynamical calculation.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-eaa3beeed4368f46"
       ],
       "conditions": "Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.",
-      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open."
+      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Scalapino pp. 39-42 provide pairing-vertex/eigenvalue context. The reciprocal two-patch static model, DOS-weighted similarity transform, trace/determinant criterion, pure-interpatch ratio and square-lattice sign/rotation examples are local illustrations, not quoted results or a reproduction of the review's dynamic Hubbard calculation. Positive DOS weights, a common cutoff and constant gaps are explicit assumptions; the gap ratio needs nonzero interpatch coupling."
     },
     {
       "id": "scwiki-b3-claim-mathematical-assumptions-5",
@@ -297,7 +305,9 @@
         "source-eaa3beeed4368f46"
       ],
       "conditions": "Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.",
-      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open."
+      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Scalapino pp. 39-42 provide pairing-vertex/eigenvalue context. The reciprocal two-patch static model, DOS-weighted similarity transform, trace/determinant criterion, pure-interpatch ratio and square-lattice sign/rotation examples are local illustrations, not quoted results or a reproduction of the review's dynamic Hubbard calculation. Positive DOS weights, a common cutoff and constant gaps are explicit assumptions; the gap ratio needs nonzero interpatch coupling."
     },
     {
       "id": "scwiki-b3-claim-mathematical-assumptions-6",
@@ -308,18 +318,22 @@
         "source-eaa3beeed4368f46"
       ],
       "conditions": "Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.",
-      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open."
+      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Scalapino pp. 39-42 provide pairing-vertex/eigenvalue context. The reciprocal two-patch static model, DOS-weighted similarity transform, trace/determinant criterion, pure-interpatch ratio and square-lattice sign/rotation examples are local illustrations, not quoted results or a reproduction of the review's dynamic Hubbard calculation. Positive DOS weights, a common cutoff and constant gaps are explicit assumptions; the gap ratio needs nonzero interpatch coupling."
     },
     {
       "id": "scwiki-b3-claim-mathematical-assumptions-7",
       "sectionId": "mathematical-assumptions",
-      "statement": "For nonnegative intrapatch repulsions it is positive precisely when $V^2>U_hU_e$. If both $U_i$ vanish, $\\eta_+=V\\sqrt{N_hN_e}$ and $\\Delta_h/\\Delta_e=-\\sqrt{N_e/N_h}$. Five numerical checks verify the original and symmetrized equations, including unequal weights and the zero-eigenvalue boundary. These are illustrative pairing strengths, not the phonon spectral coupling $\\lambda$, a calculated transition temperature, or a fit to any material.",
+      "statement": "For nonnegative intrapatch repulsions it is positive precisely when $V^2>U_hU_e$. The trace is nonpositive and the determinant is $(U_hU_e-V^2)N_hN_e$, establishing this threshold within the two-dimensional model. If both $U_i$ vanish and $V>0$, $\\eta_+=V\\sqrt{N_hN_e}$ and $\\Delta_h/\\Delta_e=-\\sqrt{N_e/N_h}$. If all interactions vanish, the kernel is zero and no preferred gap ratio is selected. A 432-case check compares direct and symmetrized eigensolvers, exact rational determinants and threshold cases. These are illustrative pairing strengths, not the phonon spectral coupling $\\lambda$, a calculated transition temperature, or a fit to any material.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-eaa3beeed4368f46"
       ],
       "conditions": "Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.",
-      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open."
+      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Scalapino pp. 39-42 provide pairing-vertex/eigenvalue context. The reciprocal two-patch static model, DOS-weighted similarity transform, trace/determinant criterion, pure-interpatch ratio and square-lattice sign/rotation examples are local illustrations, not quoted results or a reproduction of the review's dynamic Hubbard calculation. Positive DOS weights, a common cutoff and constant gaps are explicit assumptions; the gap ratio needs nonzero interpatch coupling."
     },
     {
       "id": "scwiki-b3-claim-mathematical-assumptions-8",
@@ -330,7 +344,9 @@
         "source-eaa3beeed4368f46"
       ],
       "conditions": "Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.",
-      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open."
+      "verificationScope": "Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Scalapino pp. 39-42 provide pairing-vertex/eigenvalue context. The reciprocal two-patch static model, DOS-weighted similarity transform, trace/determinant criterion, pure-interpatch ratio and square-lattice sign/rotation examples are local illustrations, not quoted results or a reproduction of the review's dynamic Hubbard calculation. Positive DOS weights, a common cutoff and constant gaps are explicit assumptions; the gap ratio needs nonzero interpatch coupling."
     },
     {
       "id": "scwiki-b3-claim-experimental-criteria-1",
@@ -452,7 +468,7 @@
     {
       "targetSectionId": "mathematical-assumptions",
       "tex": "\\eta_+",
-      "check": "Five two-patch eigenvalue, original/symmetric residual and threshold checks; unequal density weights and zero boundary."
+      "check": "Five two-patch eigenvalue, original/symmetric residual and threshold checks; unequal density weights and zero boundary. Follow-up: 432 direct/symmetric matrix cases, 324 rational determinant checks and explicit all-zero coupling degeneracy; not an experimental or dynamical-model reproduction."
     },
     {
       "targetSectionId": "mathematical-assumptions",
