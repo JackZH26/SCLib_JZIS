@@ -604,3 +604,20 @@ it("preserves Mottness model limits and the nickelate specimen-specific onset in
  expect(out).toContain("separate measurement at 25.2 GPa");
  expect(out).toContain("must not be relabeled as zero resistance");
 });
+
+it("keeps s-wave symmetry and imposed-gap checks separate from measured transition criteria",async()=>{
+ const a=articles().find(a=>a.code==="C1")!;
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("four zeros touch the Fermi surface without sign reversal");
+ expect(md).toContain("not a disorder simulation");expect(md).toContain("does not prove an unchanged self-consistent");
+ expect(md).toContain("a measurement range, not a range of transition temperatures");
+ expect(a.claims.find(c=>c.id==="scwiki-c1-claim-experimental-criteria-1")?.evidenceType).toBe("theory");
+ expect(a.claims.find(c=>c.statement.startsWith("Choi"))?.evidenceType).toBe("theory");
+ expect(a.materialCases).toHaveLength(1);expect(a.materialCases[0].tcK).toBe(39);expect(a.materialCases[0].criterion).toBe("resistance-onset");
+ expect(searchArticles(searchIndex().entries,"s-wave",{tcMin:39,pressure:"ambient",criterion:"resistance-onset"}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"s-wave",{tcMin:40}).some(r=>r.id===a.id)).toBe(false);
+ expect(searchArticles(searchIndex().entries,"s-wave",{tcMin:39,criterion:"zero-resistance"}).some(r=>r.id===a.id)).toBe(false);
+ expect(a.references.some(r=>r.doi==="10.1038/nature00992")).toBe(false);
+ expect(md).toContain("pressure at the resistance change was not directly measured");
+ expect(md).toContain("magnetization of its small samples remained unresolved");
+});

@@ -28,7 +28,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T07:31:20.973880+00:00",
+  "modifiedAt": "2026-10-18T09:12:49.280284+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected historical text and review equations; independent spectral, Coulomb-cutoff and linearized-kernel checks; scoped primary material abstracts and inherited MgB2 passage check.",
@@ -195,10 +195,10 @@
       "url": "https://doi.org/10.1103/PhysRevLett.122.027001",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "primary-abstract-scoped-check",
+        "scope": "selected-published-primary-passages-check",
         "checkedAt": "2026-10-18",
-        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.122.027001",
-        "note": "Somayazulu et al., not Drozdov. Publisher abstract describes four-probe transport at 180–200 GPa and supporting characterization. No individual transition curve reanalyzed."
+        "evidenceUrl": "https://physics.aps.org/featured-article-pdf/10.1103/PhysRevLett.122.027001",
+        "note": "Somayazulu et al., not Drozdov. Selected published pp2–4: sample A four-probe geometry, pressure before/after cycling, instrument floor and mixed-phase/pseudo-four-probe caveats. Transition pressure not directly measured. Full supplement/raw-data review pending."
       }
     },
     {
