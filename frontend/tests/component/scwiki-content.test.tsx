@@ -377,3 +377,22 @@ it("keeps A8 normal-state transport and channel fits separate from transition te
  expect(a.body).toContain("g=2");expect(a.body).toContain("2\\pi\\Gamma");
  expect(a.references.find(r=>r.doi==="10.1126/science.1165015")!.verification.scope).toBe("crossref-metadata-only");
 });
+
+it("exports historical sources without invented DOIs and separates A9 theory from contact evidence",async()=>{
+ const a=articles().find(a=>a.code==="A9")!,historical=a.references.find(r=>r.doi===null)!;
+ expect(historical.title).toContain("Thermal Conductivity");expect(historical.url).toContain("jetp.ras.ru");
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ const sec=await(await get(["articles",a.id,"sections","scope"],"?format=markdown")).text();
+ for(const text of [md,sec]){expect(text).toContain("[Source publication]("+historical.url+")");expect(text).not.toContain("DOI null");}
+ const source=await(await get(["sources"])).json();expect(source.sources.find((r:{id:string})=>r.id===historical.id).doi).toBeNull();
+ const spec=await(await get(["openapi.json"])).json();expect(spec.components.schemas.Source.properties.doi.type).toContain("null");
+ expect(searchIndex().entries.find(e=>e.id===a.id)!.dois.every(d=>typeof d==="string")).toBe(true);
+ const Page=(await import("@/app/scwiki/[slug]/page")).default;
+ const html=renderToStaticMarkup(await Page({params:Promise.resolve({slug:a.slug})}));
+ expect(html).toContain('href="'+historical.url+'">Source publication</a>');
+ expect(html).toContain('"identifier":"'+historical.url+'"');expect(html).not.toContain("DOI null");
+ expect(a.claims.filter(c=>c.evidenceType==="experiment")).toHaveLength(1);
+ expect(a.materialCases[0].tcK).toBeNull();
+ expect(a.references.find(r=>r.doi==="10.1103/PhysRevB.46.12841")!.verification.scope).toBe("primary-abstract-scoped-check");
+ expect(a.body).toContain("zero temperature, bias and magnetic field");
+});

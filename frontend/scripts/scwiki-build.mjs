@@ -38,8 +38,8 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  const refIds=new Set(meta.references.map(r=>r.id));
  // Known identity corrections must also protect future migrations of pinned chapters.
  const incorrectDois=new Set((manifest.correctionRegister??[]).filter(c=>c.incorrectDoi&&c.correctDoi).map(c=>c.incorrectDoi.toLowerCase()));
- for(const ref of meta.references)if(incorrectDois.has(ref.doi.toLowerCase()))fail(folder+" known incorrect DOI "+ref.doi);
- for(const ref of meta.references)if(!/^source-[a-f0-9]{16}$/.test(ref.id)||!/^https:\/\//.test(ref.url)||!ref.verification?.scope)fail(folder+" reference schema");
+ for(const ref of meta.references)if((ref.doi!==null&&(typeof ref.doi!=="string"||!/^10\.\d{4,9}\/\S+$/.test(ref.doi)))||!/^source-[a-f0-9]{16}$/.test(ref.id)||!/^https:\/\//.test(ref.url)||!ref.verification?.scope)fail(folder+" reference schema");
+ for(const ref of meta.references)if(ref.doi!==null&&incorrectDois.has(ref.doi.toLowerCase()))fail(folder+" known incorrect DOI "+ref.doi);
  for(const claim of meta.claims)if(!sectionIds.has(claim.sectionId)||!claim.sourceIds.length||claim.sourceIds.some(id=>!refIds.has(id))||!claim.conditions)fail(folder+" claim mapping "+claim.id);
  for(const match of body.matchAll(/\]\(#ref-([a-z0-9-]+)\)/g))if(!refIds.has(match[1]))fail(folder+" unresolved citation");
  for(const match of body.matchAll(/\$\$([\s\S]+?)\$\$|\$([^\n$]+)\$/g)){
@@ -55,7 +55,7 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  const conditions=meta.materialCases.length===0?"## Material cases\n\nNo sample-specific material records are included in this article. Model results are not experimental transition temperatures.":"## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n"+
  "| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n"+
  meta.materialCases.map(r=>"| "+r.formula+"; "+r.sample+" | "+(r.reportedTemperatureK===null?r.temperatureNote:r.reportedTemperatureK+" K; "+r.temperatureNote)+" | "+r.temperatureKind+"; "+r.criterion+" | "+r.probe+" | "+r.pressureRegime+"; "+(r.pressureGPa?r.pressureGPa.min+" to "+r.pressureGPa.max+" GPa":"unknown GPa")+" | "+r.equilibrium+" | "+r.recordType+"; [source](#ref-"+r.sourceId+") |").join("\n");
- const referenceText=meta.references.map((r,i)=>"### Ref "+r.id+"\n\n[R"+(i+1)+"] "+r.title+" ("+r.year+"). [DOI "+r.doi+"]("+r.url+"). Publication: "+r.publicationStatus+". Check: "+r.verification.scope+". Checked: "+r.verification.checkedAt+". "+(r.verification.note??"")).join("\n");
+ const referenceText=meta.references.map((r,i)=>"### Ref "+r.id+"\n\n[R"+(i+1)+"] "+r.title+" ("+r.year+"). ["+(r.doi?"DOI "+r.doi:"Source publication")+"]("+r.url+"). Publication: "+r.publicationStatus+". Check: "+r.verification.scope+". Checked: "+r.verification.checkedAt+". "+(r.verification.note??"")).join("\n");
  // Export v4 also retains each material record's probe and measurement protocol.
  const revision=sha("scwiki-export-v4\n"+JSON.stringify(meta)+"\n"+body).slice(0,20);
  const provenance="## Revision and review\n\nArticle ID: "+meta.id+". Revision: "+revision+". Updated: "+meta.modifiedAt+".\n\nReview scope: "+meta.review.scope+"\n\n"+meta.review.limitations.map(x=>"- "+x).join("\n")+"\n\nSource: ["+meta.provenance.path+"](https://github.com/"+meta.provenance.repository+"/blob/"+meta.provenance.commit+"/"+meta.provenance.path+"), commit "+meta.provenance.commit+", SHA-256 "+meta.provenance.sha256+".";
@@ -67,7 +67,7 @@ if(articles.length!==expectedIds.size||articles.some(a=>!expectedIds.has(a.id)))
 for(const a of articles)for(const code of a.relatedCodes)if(!articles.some(other=>other.code===code))fail("unpublished related article "+code);
 const revision=sha(articles.map(a=>a.revision).join("\n")).slice(0,20);
 const catalogue={schemaVersion:"1.0",revision,articles};
-const entries=articles.map(({id,topicId,code,slug,title,summary,aliases,evidenceTypes,editorialStatus,revision,materialCases,references,body})=>({id,topicId,code,slug,title,summary,aliases,evidenceTypes,editorialStatus,revision,materialCases,dois:references.map(r=>r.doi),text:body.replace(/\[[^\]]+\]\([^)]+\)/g,"").replace(/[$#*_\x60]/g,"")}));
+const entries=articles.map(({id,topicId,code,slug,title,summary,aliases,evidenceTypes,editorialStatus,revision,materialCases,references,body})=>({id,topicId,code,slug,title,summary,aliases,evidenceTypes,editorialStatus,revision,materialCases,dois:references.map(r=>r.doi).filter(doi=>typeof doi==="string"),text:body.replace(/\[[^\]]+\]\([^)]+\)/g,"").replace(/[$#*_\x60]/g,"")}));
 for(const[name,value]of[["catalogue.json",catalogue],["search-index.json",{schemaVersion:"1.0",revision,entries}]]){
  const data=JSON.stringify(value,null,2)+"\n",filename=path.join(directory,name);
  if(process.argv.includes("--check")){if(readFileSync(filename,"utf8")!==data)fail(name+" is stale");}

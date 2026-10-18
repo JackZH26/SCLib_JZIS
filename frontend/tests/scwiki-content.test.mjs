@@ -83,3 +83,15 @@ test("non-transition temperatures cannot become searchable transition records",a
   });
  }
 });
+
+test("DOI fields distinguish a canonical historical link from malformed identifiers",async t=>{
+ for(const value of [null,"", "not-a-doi", 123]){
+  await t.test(String(value),t=>{
+   const f=inventoryFixture(t),filename=path.join(f.directory,"articles/a1/meta.json");
+   const meta=JSON.parse(readFileSync(filename,"utf8"));meta.references[0].doi=value;
+   writeFileSync(filename,JSON.stringify(meta));const result=f.build();
+   if(value===null){assert.equal(result.status,0,result.stderr);const cat=JSON.parse(readFileSync(path.join(f.directory,"catalogue.json"),"utf8"));assert.ok(cat.articles.find(a=>a.code==="A1").markdown.includes("[Source publication]"));}
+   else {assert.notEqual(result.status,0);assert.match(result.stderr,/reference schema/);}
+  });
+ }
+});
