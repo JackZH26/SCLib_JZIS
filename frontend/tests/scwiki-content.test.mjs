@@ -40,8 +40,12 @@ test("pressure ranges reject malformed values before rendering material conditio
 test("publication inventory permits an explicitly approved additional core article",t=>{
  const f=inventoryFixture(t);
  const published=f.manifest.files.filter(x=>x.publicBody).length;
- const source=f.manifest.files.find(x=>x.topicId&&!x.publicBody);
- assert.ok(source,"fixture needs one unpublished approved core topic");
+ // Keep this independent of production editorial progress: all real topics
+ // may already be published. Approval is exercised only in this temp fixture.
+ const source={...f.manifest.files.find(x=>x.articleId==="scwiki-a1"),
+  id:"file-inventory-fixture",path:"synthetic/fixture.md",
+  articleId:"scwiki-h999",topicId:"scwiki-topic-h999",publicBody:false};
+ f.manifest.files.push(source);
  const code=source.articleId.replace("scwiki-","");
  const meta=JSON.parse(readFileSync(path.join(f.directory,"articles/a1/meta.json"),"utf8"));
  Object.assign(meta,{id:source.articleId,topicId:source.topicId,code:code.toUpperCase(),slug:"synthetic-inventory-fixture",provenance:{...meta.provenance,path:source.path,sha256:source.sha256,sourceId:source.id}});
