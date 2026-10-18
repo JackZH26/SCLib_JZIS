@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "dfda7f2af94a89e19f6f",
+  "revision": "67885cd98c5028a5bcfd",
   "articles": [
     {
       "id": "scwiki-a1",
@@ -24421,6 +24421,588 @@
       ],
       "markdown": "# Strain tuning: calibrated deformation and superconducting criteria\n\nSeparate nominal mismatch from measured strain, retain mechanical boundary conditions, and distinguish magnetic midpoints from resistive transitions.\n\n## Scope\n\nStrain is a directional deformation relative to a stated reference structure. A uniaxially loaded crystal, a clamped epitaxial film and a hydrostatically compressed sample follow different mechanical paths. Applied displacement is not necessarily sample strain: mounting adhesive, thermal contraction, bending and fracture can all intervene. The useful control variable is the calibrated deformation in the region probed, together with its uncertainty and history. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62)\n\nSeparate the early Sr2RuO4 experiments. Hicks's 2014 Science study reported different responses for loading along the crystallographic ⟨100⟩ and ⟨110⟩ directions, within an approximately 0.23% accessible range. The later Steppke study reached the much larger compressive strain associated with a transition near 3.4 K. These are distinct measurements, not interchangeable references for one apparatus or peak. The earlier result is checked here only through the authors' institutional abstract. [R2](#ref-source-2c98c9257f2c4d46) [R3](#ref-source-c9a97c501c718b62)\n\n## Mathematical assumptions\n\nFor a lattice parameter relative to a relaxed reference, engineering strain is $\\epsilon=(a-a_0)/a_0$. Nominal epitaxial mismatch uses $f=(a_{\\rm sub}-a_{\\rm ref})/a_{\\rm ref}$ instead. Neither a substrate name nor this calculation establishes the strain remaining after relaxation. Report reference composition, phase, temperature and orientation; compare actual film lattice parameters with that same reference. [R4](#ref-source-4b5b65a5047eb1a9)\n\nIn small-deformation elasticity, $\\epsilon_{ij}=(\\partial_i u_j+\\partial_j u_i)/2$ and $\\sigma_{ij}=C_{ijkl}\\epsilon_{kl}$. As an explicitly isotropic illustration, a film with equal in-plane strains $\\epsilon_{xx}=\\epsilon_{yy}=f$ and a traction-free surface has $\\epsilon_{zz}=-2\\nu f/(1-\\nu)$. Positive Poisson ratio therefore permits out-of-plane expansion under in-plane compression. This illustration is not an anisotropic nickelate fit, and it does not convert epitaxial mismatch into an equivalent hydrostatic pressure. [R1](#ref-source-363388aa03563c00) [R4](#ref-source-4b5b65a5047eb1a9)\n\nHicks's simplified adhesive model gives a load-transfer length $\\lambda=\\sqrt{Etd/(nG_e)}$, with sample Young's modulus $E$, sample thickness $t$, adhesive thickness $d$, adhesive shear modulus $G_e$, and one or two bonded faces $n$. For symmetric ends, displacement is distributed over approximately $L+2\\lambda$, not just the exposed length $L$. The stated illustrative parameters give about 90 micrometres. Rigid plates, a much softer adhesive and uniform sample strain across its section are assumptions; finite-element bending and real adhesive failure require additional treatment. [R1](#ref-source-363388aa03563c00)\n\n## Experimental criteria\n\nSteppke measured magnetic transitions using mutual inductance, with approximately 0.2 Oe excitation at 1–20 kHz, and used a capacitive displacement sensor. Figure 4 defines the plotted transition temperatures at 50% of the magnetic response; the 20% and 80% levels show transition width. The reported peak strain is approximately −0.60% with a ±0.06 percentage-point uncertainty from four samples, while individual strain calibration was estimated to have roughly 20% uncertainty. These are different uncertainty statements. [R3](#ref-source-c9a97c501c718b62)\n\nThe often-quoted 3.4 K scale is not a universal sample maximum: sample 5 reached approximately 3.5 K. Resistive transitions in the two contacted specimens did not exceed the highest magnetic transition by more than 0.08 K. That comparison does not redefine a magnetic midpoint as zero resistance. A flat feature near zero strain in sample 1 arose after the sample broke during cooling and needed compression to re-engage; it should not be fitted as an intrinsic phase boundary. [R3](#ref-source-c9a97c501c718b62)\n\nBhatt's final Figure 1 labels nominal/measured mismatch pairs, respectively, as SLAO −2.0%/−1.6%, LAO −1.2%/−0.9%, NGO +0.7%/+0.6% and STO +1.9%/+1.8%. These final labels replace several different measured values in the inherited chapter. The SLAO film has a broad resistive transition, with onset near 42 K and zero near 2 K; those endpoints cannot be merged into a 42 K zero-resistance claim. [R4](#ref-source-4b5b65a5047eb1a9)\n\nKo's original thin-film report also distinguishes onset and zero resistance. Its March 2026 correction fixes resistivity-axis units to mΩ cm and the Figure 3d horizontal label to temperature $T$, not $T_c$. The correction was read in full; the original paper's detailed methods were not retrieved here. The source-linked temperature records below therefore cite Bhatt's checked final passage, rather than implying a complete reanalysis of Ko's experiment. [R4](#ref-source-4b5b65a5047eb1a9) [R5](#ref-source-98849f3ad0a2df49) [R6](#ref-source-acee7fe0af86cc44)\n\n## Limits and disputes\n\nBhatt's films on SLAO used pulsed-laser deposition, whereas the other substrate films used molecular-beam epitaxy. Oxygen annealing and uncertain oxygen occupancy remain relevant covariates. Figure 3 supports out-of-plane expansion under in-plane compression, contrasting with hydrostatic contraction. It does not support the inherited universal superlative that the SLAO film has the largest c-axis: the plotted LAO values are comparable or higher. Avoid turning a qualitative structural contrast into an unsupported ranking. [R4](#ref-source-4b5b65a5047eb1a9)\n\nA peak near a calculated Lifshitz transition constrains possible models without uniquely identifying pairing symmetry. Steppke's electronic-structure and order-parameter calculations are model-dependent; their discussion should not be read as a present-day determination of Sr2RuO4's order parameter. This scoped review checked selected experimental passages and a figure, not the full multiband calculation, all supplements or experimental raw data. [R3](#ref-source-c9a97c501c718b62)\n\n## Discovery implications\n\nDesign a strain study around a measured mechanical path and a defined superconducting criterion. Retain loading direction, reference state, adhesive or substrate constraints, thermal history and reversibility. Check whether a broadened transition tracks strain inhomogeneity or a changed specimen, and compare transport with magnetic or thermodynamic evidence where feasible. Local arithmetic here verifies mismatch, ideal elastic identities and the adhesive model; it neither predicts a superconducting transition nor establishes a unique strain mechanism. [R1](#ref-source-363388aa03563c00) [R3](#ref-source-c9a97c501c718b62) [R4](#ref-source-4b5b65a5047eb1a9)\n\n## Related topics\n\nCompare [pressure tuning](/scwiki/pressure-tuning), [chemical doping](/scwiki/chemical-doping), [electrostatic gating](/scwiki/electrostatic-gating), [nickelates](/scwiki/nickelates) and [two-dimensional interfaces](/scwiki/two-dimensional-interfaces).\n\n## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| Sr2RuO4; Steppke representative peak under approximately0.6percent a-axis compression | 3.4 K; Representative magnetic midpoint, not resistive zero or universal maximum. | transition; magnetic-susceptibility-50-percent | Mutual inductance | unknown; unknown GPa | equilibrium | experiment; [source](#ref-source-c9a97c501c718b62) |\n| Sr2RuO4; Steppke sample5 peak | 3.5 K; Approximate sample5 peak; strain scale normalized in Fig4. Not a hydrostatic-pressure record. | transition; magnetic-susceptibility-50-percent | Mutual inductance | unknown; unknown GPa | equilibrium | experiment; [source](#ref-source-c9a97c501c718b62) |\n| La3Ni2O7 (aliases: nickelate, nickelates); SLAO thin film; Bhatt final-journal passage citing Ko | 42 K; Approximate onset; exact original operational onset algorithm not independently reviewed. Film geometry,not bulk. | transition; resistive-onset | Resistivity | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-4b5b65a5047eb1a9) |\n| La3Ni2O7 (aliases: nickelate, nickelates); SLAO thin film; Bhatt final-journal passage citing Ko | 2 K; Approximate zero-resistance endpoint, distinct from42Konset. Does not reproduce raw measurement uncertainty. | transition; zero-resistance | Resistivity | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-4b5b65a5047eb1a9) |\n\n## Sources\n\n### Ref source-363388aa03563c00\n\n[R1] Piezoelectric-based apparatus for strain tuning (2014). [DOI 10.1063/1.4881611](https://doi.org/10.1063/1.4881611). Publication: journal-article. Check: selected-author-apparatus-and-adhesive-model. Checked: 2026-10-18. Author v2 revised8August2014; selected apparatus passages and AppendixA pp6–7 read, p6Fig5/equation visually checked. Transfer-length assumptions retained. No finite-element replication or complete final-version comparison.\n### Ref source-2c98c9257f2c4d46\n\n[R2] Strong Increase of Tc of Sr2RuO4 Under Both Tensile and Compressive Strain (2014). [DOI 10.1126/science.1248292](https://doi.org/10.1126/science.1248292). Publication: journal-article. Check: author-institution-abstract-only. Checked: 2026-10-18. Issue18April2014. Authors institutional abstract supports directional responses and0.23percent range. Full methods and curves not reviewed.\n### Ref source-c9a97c501c718b62\n\n[R3] Strong peak in Tc of Sr2RuO4 under uniaxial pressure (2017). [DOI 10.1126/science.aaf9398](https://doi.org/10.1126/science.aaf9398). Publication: journal-article. Check: selected-accepted-author-methods-and-figure. Checked: 2026-10-18. Accepted authorv2 revised14December2016; journal13January2017. Selected pp6–8 experimental methods/calibration and p32Fig4 checked visually. Magnetic50percent criterion,20/80width,distinct sample5peak and broken-sample artefact retained. Full supplement, final comparison, multiband calculation and raw-data reproduction remain open.\n### Ref source-4b5b65a5047eb1a9\n\n[R4] Structural modifications in strain-engineered bilayer nickelate thin films (2026). [DOI 10.1038/s41586-026-10446-2](https://doi.org/10.1038/s41586-026-10446-2). Publication: journal-article. Check: selected-final-journal-figures-and-methods. Checked: 2026-10-18. Online1April2026,issue7May. Selected final pp2,4,8 and Figs1/3 visually checked. Final measured labels differ from inherited draft. Growth-method/oxygen covariates and c-axis contrast retained. Complete supplement and raw-data analysis remain open.\n### Ref source-98849f3ad0a2df49\n\n[R5] Signatures of ambient pressure superconductivity in thin film La3Ni2O7 (2025). [DOI 10.1038/s41586-024-08525-3](https://doi.org/10.1038/s41586-024-08525-3). Publication: journal-article. Check: publisher-metadata-and-author-institution-summary. Checked: 2026-10-18. Online19December2024; issue27February2025. Author institutional summary supports onset26–42K versuszeroaround2K. Final-PDF request returned non-PDF and OSTIaccepted download timed out; full methods not read. March2026correction accompanies this reference.\n### Ref source-acee7fe0af86cc44\n\n[R6] Author Correction: Signatures of ambient pressure superconductivity in thin film La3Ni2O7 (2026). [DOI 10.1038/s41586-026-10335-8](https://doi.org/10.1038/s41586-026-10335-8). Publication: journal-article. Check: complete-correction-text. Checked: 2026-10-18. Complete one-page correction read. Published31March2026,issue16April. Resistivity unit mOhm cm replaces mOhm cm^-1; Fig3dx-axisT replacesTc. Not a retraction or new transition measurement.\n\n## Claim evidence and conditions\n\n### scwiki-e4-claim-scope-1\n\nStrain is a directional deformation relative to a stated reference structure. A uniaxially loaded crystal, a clamped epitaxial film and a hydrostatically compressed sample follow different mechanical paths. Applied displacement is not necessarily sample strain: mounting adhesive, thermal contraction, bending and fracture can all intervene. The useful control variable is the calibrated deformation in the region probed, together with its uncertainty and history.\n\nEvidence: experiment. Sources: source-363388aa03563c00, source-c9a97c501c718b62.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-scope-2\n\nSeparate the early Sr2RuO4 experiments. Hicks's 2014 Science study reported different responses for loading along the crystallographic ⟨100⟩ and ⟨110⟩ directions, within an approximately 0.23% accessible range. The later Steppke study reached the much larger compressive strain associated with a transition near 3.4 K. These are distinct measurements, not interchangeable references for one apparatus or peak. The earlier result is checked here only through the authors' institutional abstract.\n\nEvidence: experiment. Sources: source-2c98c9257f2c4d46, source-c9a97c501c718b62.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-mathematical-assumptions-1\n\nFor a lattice parameter relative to a relaxed reference, engineering strain is $\\epsilon=(a-a_0)/a_0$. Nominal epitaxial mismatch uses $f=(a_{\\rm sub}-a_{\\rm ref})/a_{\\rm ref}$ instead. Neither a substrate name nor this calculation establishes the strain remaining after relaxation. Report reference composition, phase, temperature and orientation; compare actual film lattice parameters with that same reference.\n\nEvidence: theory. Sources: source-4b5b65a5047eb1a9.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-mathematical-assumptions-2\n\nIn small-deformation elasticity, $\\epsilon_{ij}=(\\partial_i u_j+\\partial_j u_i)/2$ and $\\sigma_{ij}=C_{ijkl}\\epsilon_{kl}$. As an explicitly isotropic illustration, a film with equal in-plane strains $\\epsilon_{xx}=\\epsilon_{yy}=f$ and a traction-free surface has $\\epsilon_{zz}=-2\\nu f/(1-\\nu)$. Positive Poisson ratio therefore permits out-of-plane expansion under in-plane compression. This illustration is not an anisotropic nickelate fit, and it does not convert epitaxial mismatch into an equivalent hydrostatic pressure.\n\nEvidence: theory. Sources: source-363388aa03563c00, source-4b5b65a5047eb1a9.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-mathematical-assumptions-3\n\nHicks's simplified adhesive model gives a load-transfer length $\\lambda=\\sqrt{Etd/(nG_e)}$, with sample Young's modulus $E$, sample thickness $t$, adhesive thickness $d$, adhesive shear modulus $G_e$, and one or two bonded faces $n$. For symmetric ends, displacement is distributed over approximately $L+2\\lambda$, not just the exposed length $L$. The stated illustrative parameters give about 90 micrometres. Rigid plates, a much softer adhesive and uniform sample strain across its section are assumptions; finite-element bending and real adhesive failure require additional treatment.\n\nEvidence: theory. Sources: source-363388aa03563c00.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-experimental-criteria-1\n\nSteppke measured magnetic transitions using mutual inductance, with approximately 0.2 Oe excitation at 1–20 kHz, and used a capacitive displacement sensor. Figure 4 defines the plotted transition temperatures at 50% of the magnetic response; the 20% and 80% levels show transition width. The reported peak strain is approximately −0.60% with a ±0.06 percentage-point uncertainty from four samples, while individual strain calibration was estimated to have roughly 20% uncertainty. These are different uncertainty statements.\n\nEvidence: experiment. Sources: source-c9a97c501c718b62.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-experimental-criteria-2\n\nThe often-quoted 3.4 K scale is not a universal sample maximum: sample 5 reached approximately 3.5 K. Resistive transitions in the two contacted specimens did not exceed the highest magnetic transition by more than 0.08 K. That comparison does not redefine a magnetic midpoint as zero resistance. A flat feature near zero strain in sample 1 arose after the sample broke during cooling and needed compression to re-engage; it should not be fitted as an intrinsic phase boundary.\n\nEvidence: experiment. Sources: source-c9a97c501c718b62.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-experimental-criteria-3\n\nBhatt's final Figure 1 labels nominal/measured mismatch pairs, respectively, as SLAO −2.0%/−1.6%, LAO −1.2%/−0.9%, NGO +0.7%/+0.6% and STO +1.9%/+1.8%. These final labels replace several different measured values in the inherited chapter. The SLAO film has a broad resistive transition, with onset near 42 K and zero near 2 K; those endpoints cannot be merged into a 42 K zero-resistance claim.\n\nEvidence: experiment. Sources: source-4b5b65a5047eb1a9.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-experimental-criteria-4\n\nKo's original thin-film report also distinguishes onset and zero resistance. Its March 2026 correction fixes resistivity-axis units to mΩ cm and the Figure 3d horizontal label to temperature $T$, not $T_c$. The correction was read in full; the original paper's detailed methods were not retrieved here. The source-linked temperature records below therefore cite Bhatt's checked final passage, rather than implying a complete reanalysis of Ko's experiment.\n\nEvidence: experiment. Sources: source-4b5b65a5047eb1a9, source-98849f3ad0a2df49, source-acee7fe0af86cc44.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-limits-and-disputes-1\n\nBhatt's films on SLAO used pulsed-laser deposition, whereas the other substrate films used molecular-beam epitaxy. Oxygen annealing and uncertain oxygen occupancy remain relevant covariates. Figure 3 supports out-of-plane expansion under in-plane compression, contrasting with hydrostatic contraction. It does not support the inherited universal superlative that the SLAO film has the largest c-axis: the plotted LAO values are comparable or higher. Avoid turning a qualitative structural contrast into an unsupported ranking.\n\nEvidence: experiment. Sources: source-4b5b65a5047eb1a9.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-limits-and-disputes-2\n\nA peak near a calculated Lifshitz transition constrains possible models without uniquely identifying pairing symmetry. Steppke's electronic-structure and order-parameter calculations are model-dependent; their discussion should not be read as a present-day determination of Sr2RuO4's order parameter. This scoped review checked selected experimental passages and a figure, not the full multiband calculation, all supplements or experimental raw data.\n\nEvidence: experiment. Sources: source-c9a97c501c718b62.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n### scwiki-e4-claim-discovery-implications-1\n\nDesign a strain study around a measured mechanical path and a defined superconducting criterion. Retain loading direction, reference state, adhesive or substrate constraints, thermal history and reversibility. Check whether a broadened transition tracks strain inhomogeneity or a changed specimen, and compare transport with magnetic or thermodynamic evidence where feasible. Local arithmetic here verifies mismatch, ideal elastic identities and the adhesive model; it neither predicts a superconducting transition nor establishes a unique strain mechanism.\n\nEvidence: theory. Sources: source-363388aa03563c00, source-c9a97c501c718b62, source-4b5b65a5047eb1a9.\n\nConditions: Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.\n\nVerification scope: Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.\n\n## Revision and review\n\nArticle ID: scwiki-e4. Revision: 138b5d11d4ac9c9142d7. Updated: 2026-10-18T12:38:59.945312+00:00.\n\nReview scope: Selected Hicks apparatus and Steppke accepted-manuscript methods/figures; Bhatt final-journal structure/growth passages and figures; complete Ko correction; bounded elastic checks.\n\n- Complete scientific acceptance, remaining final-version comparisons, full supplements and raw-data reproduction remain open.\n- Hicks2014Science and Ko original methods remain abstract/institution-summary scope; Bhatt final passage supplies film temperature records.\n- Isotropic elasticity and ideal adhesive calculations are illustrations, not anisotropic film fits or an equivalent-pressure calibration.\n\nSource: [E_tuning_parameters/E4_strain.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/E_tuning_parameters/E4_strain.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 cf37f577788e1dc80462cb7daac3a80d34e9656910b6a6e879440554376b99ab.\n",
       "wordCount": 842
+    },
+    {
+      "id": "scwiki-e5",
+      "topicId": "scwiki-topic-e5",
+      "code": "E5",
+      "slug": "magnetic-field",
+      "title": "Magnetic field: pair breaking, phase boundaries and re-entrant states",
+      "summary": "Separate orbital and Zeeman references from measured field-angle phase boundaries, and distinguish finite-momentum candidates from direct evidence.",
+      "aliases": [
+        "magnetic field",
+        "FFLO",
+        "Maki parameter",
+        "Pauli limit",
+        "orbital limit",
+        "re-entrant superconductivity",
+        "field-induced superconductivity",
+        "magnetotropic susceptibility"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory"
+      ],
+      "relatedCodes": [
+        "A6",
+        "C8",
+        "D8",
+        "E3",
+        "E4"
+      ],
+      "editorialStatus": "scoped-check",
+      "contentState": "pilot",
+      "modifiedAt": "2026-10-18T12:50:46.072481+00:00",
+      "review": {
+        "checkedAt": "2026-10-18",
+        "scope": "Selected Gurevich final equations/version comparison, Bianchi author calorimetry/figure, Petrovic discovery passages, Lewin final pulsed-field passages and Zambra final results/figure; bounded Zeeman/orbital/entropy checks.",
+        "limitations": [
+          "Complete scientific acceptance, remaining final-version comparisons, full supplements and raw-data reproduction remain open.",
+          "WHH, Maki and Kenzelmann retain abstract-level scopes; Clogston historical identity is not a complete original derivation audit.",
+          "Kinematic wavevector mismatch does not determine optimum FFLO momentum or phase stability.",
+          "A 4K normal-state response or an internal superconducting-phase anomaly is not a new zero-field Tc."
+        ]
+      },
+      "provenance": {
+        "repository": "JackZH26/jzis-superconductivity",
+        "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+        "path": "E_tuning_parameters/E5_magnetic_field.md",
+        "sha256": "e95bc5d022e6dbdc433f274536762ad4d93e9e6b19005b40e0a37ff41ee41eeb",
+        "sourceId": "file-4433f5a0b3f7cbdf"
+      },
+      "references": [
+        {
+          "id": "source-7ba854cc57960377",
+          "doi": "10.1103/PhysRevB.67.184515",
+          "title": "Enhancement of the upper critical field by nonmagnetic impurities in dirty two-gap superconductors",
+          "year": 2003,
+          "url": "https://doi.org/10.1103/PhysRevB.67.184515",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-final-equations-and-author-version-comparison",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://nationalmaglab.org/library/publications/nhmfl_publication-3151.pdf",
+            "note": "Final journal16May2003; selected pp4–5 equal-diffusivity limit, Eq31 and asymptotes read; p4 visually compared with arXiv0212129v1 p4. Final U(x) has minus; v1 prints plus. Detailed Usadel solution, full curves and experimental fits not reproduced."
+          }
+        },
+        {
+          "id": "source-16926b3817cff55d",
+          "doi": "10.1103/PhysRev.147.295",
+          "title": "Temperature and Purity Dependence of the Superconducting Critical Field, Hc2. III. Electron Spin and Spin-Orbit Effects",
+          "year": 1966,
+          "url": "https://doi.org/10.1103/PhysRev.147.295",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "reused-publisher-abstract-scope",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.147.295",
+            "note": "A6 original publisher-abstract check reused: orbital, Pauli and spin-orbit treatment. Full WHH derivation and experimental fits not independently reviewed. The restricted orbital coefficient is checked separately through Gurevich final text and explicit asymptote."
+          }
+        },
+        {
+          "id": "source-a1695d99aaf064c8",
+          "doi": "10.1103/PhysRev.148.362",
+          "title": "Effect of Pauli Paramagnetism on Magnetic Properties of High-Field Superconductors",
+          "year": 1966,
+          "url": "https://doi.org/10.1103/PhysRev.148.362",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-abstract-only",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.148.362",
+            "note": "Published5August1966. Abstract read: Pauli and spin-orbit assumptions affect first/second-order behavior. Extracted symbols incomplete; no numeric FFLO threshold or full derivation audited."
+          }
+        },
+        {
+          "id": "source-5962cf8038597944",
+          "doi": "10.1088/0953-8984/13/17/103",
+          "title": "Heavy-fermion superconductivity in CeCoIn5 at 2.3 K",
+          "year": 2001,
+          "url": "https://doi.org/10.1088/0953-8984/13/17/103",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-author-discovery-and-field-comparison",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0103168v1",
+            "note": "D8 selected authorv1 pp2–5 discovery/growth/heat-capacity scope reused; zero-resistance/full-shielding and field-temperature paragraphs re-read for E5. Final comparison and raw-data analysis remain open."
+          }
+        },
+        {
+          "id": "source-a626e7fcb17b94fa",
+          "doi": "10.1103/PhysRevLett.91.187004",
+          "title": "Possible Fulde-Ferrell-Larkin-Ovchinnikov Superconducting State in CeCoIn5",
+          "year": 2003,
+          "url": "https://doi.org/10.1103/PhysRevLett.91.187004",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-author-calorimetry-and-final-abstract",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0304420v1",
+            "note": "Authorv1 submitted18April2003; selected pp1–4 text and p2Fig1 visual checked. Final publisher title/abstract and28October2003 publication checked; final adds Possible and authorlist differs. Internal PDF typesettingdate2018 is not publication. Full final comparison/rawdata remain open."
+          }
+        },
+        {
+          "id": "source-fda01ade7737b638",
+          "doi": "10.1126/science.1161818",
+          "title": "Coupled Superconducting and Magnetic Order in CeCoIn5",
+          "year": 2008,
+          "url": "https://doi.org/10.1126/science.1161818",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "original-abstract-only",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/18719250/",
+            "note": "Online21August2008,issue19September. Original abstract via PubMed and authors LANL record read; magnetic order and symmetry interpretation distinct. Full methods and supplement not retrieved."
+          }
+        },
+        {
+          "id": "source-0c4d7cebb12a0d5b",
+          "doi": "10.1126/science.adn7673",
+          "title": "High-field superconducting halo in UTe2",
+          "year": 2025,
+          "url": "https://doi.org/10.1126/science.adn7673",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-final-pulsed-field-and-angle-methods",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.vector.umd.edu/images/publications/Science389_5122025.pdf",
+            "note": "Online31July2025; selected final pp512–513 methods/angle/resistance/PDO discussion re-read, plus selected model discussion. Prior D8 p512 visual retained. Typical60/73T pulses,0.63K measurement and2.09K normal reference distinguished. Full supplement/rawdata/orderparameter reconstruction open."
+          }
+        },
+        {
+          "id": "source-15cfc4a2f9587af0",
+          "doi": "10.1038/s41467-026-71899-7",
+          "title": "Giant transverse magnetic fluctuations at the edge of re-entrant superconductivity in UTe2",
+          "year": 2026,
+          "url": "https://doi.org/10.1038/s41467-026-71899-7",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-final-results-methods-and-figure",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://research-explorer.ista.ac.at/download/21845/21850/2026_NatureComm_Zambra.pdf",
+            "note": "Published29April2026; NatCommun17,3742. Selected final pp1–3 and5–6 discussion/methods read, p2Fig1 visual checked.4K measurements versus borrowed300mK/1.4K panels; below15T displaymask and calibration/orientation limits retained. Full supplement and pairing-kernel reconstruction open."
+          }
+        },
+        {
+          "id": "source-d32df19524b2a1c8",
+          "doi": "10.1103/PhysRevLett.9.266",
+          "title": "Upper Limit for the Critical Field in Hard Superconductors",
+          "year": 1962,
+          "url": "https://doi.org/10.1103/PhysRevLett.9.266",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "reused-publisher-identity-only",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.9.266",
+            "note": "A6 identity check reused; complete original derivation not retrieved. Pauli calculation uses explicit weak-coupling assumptions and separately checked perspective."
+          }
+        },
+        {
+          "id": "source-b717fb1db41e9f29",
+          "doi": "10.1063/5.0153345",
+          "title": "Ising superconductivity: A first-principles perspective",
+          "year": 2023,
+          "url": "https://doi.org/10.1063/5.0153345",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "reused-selected-perspective-free-energy-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://mason.gmu.edu/~imazin2/list/Isingreview.pdf",
+            "note": "A6 selected sectionII pp240503-2 to-3 susceptibility/free-energy and orientation check reused. Not a complete material or Ising-mechanism audit."
+          }
+        }
+      ],
+      "claims": [
+        {
+          "id": "scwiki-e5-claim-scope-1",
+          "sectionId": "scope",
+          "statement": "Magnetic field is both a control parameter and a probe of superconductivity. Orbital currents, Zeeman splitting, vortex motion and changes in the magnetic background can produce different boundaries. A resistive onset, loss of zero resistance, heat-capacity anomaly and magnetic transition need not coincide. Retain temperature, crystal orientation, sample history, sweep direction and pulse conditions when comparing field scales.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-7ba854cc57960377",
+            "source-a626e7fcb17b94fa",
+            "source-0c4d7cebb12a0d5b"
+          ],
+          "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
+          "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e5-claim-scope-2",
+          "sectionId": "scope",
+          "statement": "This article uses $B$ in tesla for the field scale; experimental papers often label that axis $H$ while reporting tesla, meaning an applied $\\mu_0H$ scale. Converting an applied field to local induction requires the magnetization and demagnetizing geometry. Neither an unusually large upper critical field nor field-induced superconductivity alone identifies a pairing symmetry.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-16926b3817cff55d",
+            "source-0c4d7cebb12a0d5b",
+            "source-b717fb1db41e9f29"
+          ],
+          "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
+          "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e5-claim-mathematical-assumptions-1",
+          "sectionId": "mathematical-assumptions",
+          "statement": "For a weak-coupling singlet reference with Zeeman levels shifted by $\\pm g\\mu_B B/2$, zero residual superconducting spin susceptibility and no orbital cost, condensation-energy balance gives $B_P=\\sqrt{2}\\Delta_0/(g\\mu_B)$. Using $\\Delta_0=\\pi e^{-\\gamma_E}k_BT_c$ and $g=2$ gives about $1.86\\,T_c$ tesla when $T_c$ is in kelvin. This is a conditional reference, not a universal upper bound. Spin-orbit coupling, anisotropic spin response and strong coupling change the comparison. Clogston's historical identity is retained; its complete original derivation was not retrieved here.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-d32df19524b2a1c8",
+            "source-b717fb1db41e9f29"
+          ],
+          "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
+          "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e5-claim-mathematical-assumptions-2",
+          "sectionId": "mathematical-assumptions",
+          "statement": "A second restricted reference is the dirty, single-band, purely orbital result $B_{c2}^{\\rm orb}(0)\\simeq0.693\\,T_c|dB_{c2}/dT|_{T_c}$. Gurevich's final paper recovers it when the two diffusivities are equal. Its Eq. (31) defines $U(x)=\\psi(1/2+x)-\\psi(1/2)$, satisfying $U(0)=0$. The early author v1 prints a plus sign at that location; use the final definition. Unequal diffusivities produce different curves. This check does not validate a full WHH fit with Zeeman and spin-orbit terms, or a multiband fit to a particular material.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-7ba854cc57960377",
+            "source-16926b3817cff55d"
+          ],
+          "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
+          "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e5-claim-mathematical-assumptions-3",
+          "sectionId": "mathematical-assumptions",
+          "statement": "The Maki parameter compares those reference scales, $\\alpha_M=\\sqrt{2}B_{c2}^{\\rm orb}(0)/B_P$; it is not by itself an FFLO detection criterion. In a parabolic band with small splitting, the Fermi-wavevector mismatch is $\\delta k\\simeq g\\mu_B B/(\\hbar v_F)$. The inherited expression contains an extra factor of two under the stated Zeeman convention. This kinematic estimate does not solve for the optimum finite-momentum pair wavevector or establish the stability of a Fulde–Ferrell–Larkin–Ovchinnikov state. Disorder, orbital effects, dimensionality and competing orders matter.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-a1695d99aaf064c8",
+            "source-a626e7fcb17b94fa"
+          ],
+          "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
+          "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e5-claim-experimental-criteria-1",
+          "sectionId": "experimental-criteria",
+          "statement": "Petrovic's discovery report describes zero resistance and full diamagnetic shielding at approximately 2.3 K in CeCoIn5. Its field–temperature paragraph compares specific heat with zero resistance for field along the c-axis. That zero-field transition is distinct from lower-temperature anomalies inside the superconducting phase.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-5962cf8038597944"
+          ],
+          "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
+          "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e5-claim-experimental-criteria-2",
+          "sectionId": "experimental-criteria",
+          "statement": "Bianchi's selected author-manuscript passages describe heat-pulse and temperature-decay calorimetry, including subtraction of the In/Co nuclear Schottky contribution. Figure 1 uses different vertical quantities in its panels: $(C-C_{\\rm Sch})/T$ and $C$, with a $C/T$ inset. Equal-entropy construction concerns the integral of $C/T$, not equal areas under an unconverted $C$ curve. At high in-plane fields the report finds a first-order upper boundary and an internal anomaly around 0.3 K. These are not new zero-field transition temperatures. Its final title explicitly says “Possible” FFLO state; calorimetry does not directly measure pair momentum.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-a626e7fcb17b94fa"
+          ],
+          "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
+          "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e5-claim-experimental-criteria-3",
+          "sectionId": "experimental-criteria",
+          "statement": "The later Kenzelmann neutron-scattering report finds magnetic order coupled to superconductivity in this high-field region. Its symmetry interpretation suggests a modulated superconducting state, while the observed magnetic order does not alone reconstruct the spatial pair field. This article checked that paper's original abstract, not its complete neutron methods or supplementary analysis.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-fda01ade7737b638"
+          ],
+          "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
+          "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e5-claim-experimental-criteria-4",
+          "sectionId": "experimental-criteria",
+          "statement": "Lewin's UTe2 experiments combine pulsed-field resistance and proximity-detector-oscillator measurements. Typical pulses reached 60 T or, in a different magnet, 73 T; the common measurement temperature was about 0.63 K. The high-field zero-resistance region depends strongly on both field angles. The oscillator frequency is a conductivity-sensitive proxy, and a comparison at 2.09 K without the superconducting feature is a normal-state measurement, not a 2.09 K transition determination. A measured field extent is not necessarily an observed upper critical field.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-0c4d7cebb12a0d5b"
+          ],
+          "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
+          "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e5-claim-experimental-criteria-5",
+          "sectionId": "experimental-criteria",
+          "statement": "Zambra's April 2026 study measures magnetotropic response at 4 K, where the superconducting phases are suppressed. Its Figure 1 separately reproduces a 300 mK superconducting phase diagram and 1.4 K magnetization from earlier work. These temperatures must not be merged into a claim of superconductivity at 4 K. “Transverse” refers to response perpendicular to the static field, not automatically an off-diagonal susceptibility element. The final article number is 3742, correcting the inherited 3814.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-15cfc4a2f9587af0"
+          ],
+          "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
+          "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e5-claim-limits-and-disputes-1",
+          "sectionId": "limits-and-disputes",
+          "statement": "Magnetotropic susceptibility, an angular derivative of torque measured through a cantilever frequency shift, probes a different response from longitudinal magnetization. Zambra's long-wavelength result supports an inference of enhanced transverse ferromagnetic fluctuations; it does not measure a complete frequency-dependent pairing interaction. Values below 15 T in one normalized color map were set to zero to suppress amplified noise, rather than demonstrating a physically vanishing susceptibility. Alignment and calibration details remain relevant to comparisons with phase boundaries.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-15cfc4a2f9587af0"
+          ],
+          "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
+          "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e5-claim-limits-and-disputes-2",
+          "sectionId": "limits-and-disputes",
+          "statement": "Keep measured phenomena separate from candidate explanations. A heat-capacity anomaly, magnetic Q phase and proposed FFLO modulation are distinct statements. Likewise, the multicomponent triplet model discussed for the UTe2 field-angle halo is an interpretation, not a direct determination of topology. Selected original passages and figures were checked here; remaining final-version comparisons, full supplements, raw-data reproduction and complete scientific acceptance remain open.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-a626e7fcb17b94fa",
+            "source-fda01ade7737b638",
+            "source-0c4d7cebb12a0d5b"
+          ],
+          "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
+          "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+        },
+        {
+          "id": "scwiki-e5-claim-discovery-implications-1",
+          "sectionId": "discovery-implications",
+          "statement": "Construct a field–temperature–angle map with explicit criteria and uncertainties. Compare transport with thermodynamic or magnetic probes where possible, retain pulsed-field heating and alignment controls, and distinguish re-entrant regions from a simple monotonic critical field. The local equation checks verify declared Zeeman conventions, an orbital asymptote and an illustrative entropy construction. They do not establish a new superconducting phase, fit an experimental boundary or certify a universal pairing mechanism.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-7ba854cc57960377",
+            "source-a626e7fcb17b94fa",
+            "source-0c4d7cebb12a0d5b",
+            "source-15cfc4a2f9587af0"
+          ],
+          "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
+          "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+        }
+      ],
+      "corrections": [
+        {
+          "id": "scwiki-e5-correction-1",
+          "description": "With Zeeman shifts +/-g muB B/2, small-splitting mismatch is g muB B/(hbar vF), not the inherited2g expression. This does not solve an optimal FFLO wavevector.",
+          "sourceId": "source-a1695d99aaf064c8",
+          "scope": "Explicit independent parabolic-band calculation; not a claim that the full Maki derivation was read.",
+          "originalSourceLines": [],
+          "targetSectionId": "mathematical-assumptions"
+        },
+        {
+          "id": "scwiki-e5-correction-2",
+          "description": "Zambra2026 final article number is3742, not inherited3814; its4K data are normal-state measurements.",
+          "sourceId": "source-15cfc4a2f9587af0",
+          "scope": "Final journalPDF and authorinstitution record.",
+          "originalSourceLines": [],
+          "targetSectionId": "experimental-criteria"
+        }
+      ],
+      "equationChecks": [
+        {
+          "targetSectionId": "mathematical-assumptions",
+          "tex": "B_P=\\sqrt{2}\\Delta_0/(g\\mu_B)",
+          "check": "Four g conventions and weak-coupling gap ratio; g2 yields approximately1.856T/K."
+        },
+        {
+          "targetSectionId": "mathematical-assumptions",
+          "tex": "\\delta k\\simeq g\\mu_B B/(\\hbar v_F)",
+          "check": "Four exact parabolic-band splittings compared with small-splitting expansion; not optimal FFLO momentum."
+        },
+        {
+          "targetSectionId": "mathematical-assumptions",
+          "tex": "B_{c2}^{\\rm orb}(0)\\simeq0.693T_c|B_{c2}^{\\prime}(T_c)|",
+          "check": "Restricted orbital single-band dirty-limit asymptotic coefficient pi²exp(-EulerGamma)/8, not a full WHH curve or fit."
+        }
+      ],
+      "materialCases": [
+        {
+          "id": "scwiki-e5-material-1",
+          "formula": "CeCoIn5",
+          "sample": "Petrovic zero-field discovery sample",
+          "recordType": "experiment",
+          "reportedTemperatureK": 2.3,
+          "tcK": 2.3,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate zero-resistance/full-shielding scale, distinct from high-field internal anomalies.",
+          "criterion": "zero-resistance",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Resistivity with accompanying diamagnetic shielding",
+          "sourceId": "source-5962cf8038597944",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
+        },
+        {
+          "id": "scwiki-e5-material-2",
+          "formula": "CeCoIn5",
+          "sample": "Bianchi high in-plane field internal anomaly",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.3,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Approximate internal superconducting-phase anomaly; not onset from normal state or a new zero-fieldTc.",
+          "criterion": "internal-phase-anomaly",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Specific heat",
+          "sourceId": "source-a626e7fcb17b94fa",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
+        },
+        {
+          "id": "scwiki-e5-material-3",
+          "formula": "CeCoIn5",
+          "sample": "Bianchi field along[110] first/second-order crossover",
+          "recordType": "experiment",
+          "reportedTemperatureK": 1.1,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Reported T0=1.1+/-0.1K at change of boundary order, not independent zero-fieldTc.",
+          "criterion": "transition-order-crossover",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Specific heat",
+          "sourceId": "source-a626e7fcb17b94fa",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
+        },
+        {
+          "id": "scwiki-e5-material-4",
+          "formula": "UTe2",
+          "sample": "Lewin typical pulsed-field measurement",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.63,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Typical measurement temperature unless otherwise stated; no Tc assigned from temperature held during field sweep.",
+          "criterion": "pulsed-field-measurement",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Resistance",
+          "sourceId": "source-0c4d7cebb12a0d5b",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
+        },
+        {
+          "id": "scwiki-e5-material-5",
+          "formula": "UTe2",
+          "sample": "Lewin PDO low-temperature example",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.64,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Frequency shift probes conductivity; fixed measurement temperature notTc.",
+          "criterion": "conductivity-proxy-measurement",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Proximity detector oscillator",
+          "sourceId": "source-0c4d7cebb12a0d5b",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
+        },
+        {
+          "id": "scwiki-e5-material-6",
+          "formula": "UTe2",
+          "sample": "Lewin PDO normal-state comparison",
+          "recordType": "experiment",
+          "reportedTemperatureK": 2.09,
+          "tcK": null,
+          "temperatureKind": "normal-state",
+          "temperatureNote": "Superconducting feature absent in this comparison; must not become a2.09K transition record.",
+          "criterion": "normal-state-comparison",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Proximity detector oscillator",
+          "sourceId": "source-0c4d7cebb12a0d5b",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
+        },
+        {
+          "id": "scwiki-e5-material-7",
+          "formula": "UTe2",
+          "sample": "Zambra magnetotropic field-angle scans",
+          "recordType": "experiment",
+          "reportedTemperatureK": 4,
+          "tcK": null,
+          "temperatureKind": "normal-state",
+          "temperatureNote": "All superconducting phases suppressed at4K; borrowed300mK phase diagram is a separate dataset.",
+          "criterion": "normal-state-magnetotropic-response",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Cantilever frequency shift",
+          "sourceId": "source-15cfc4a2f9587af0",
+          "aliases": [
+            "heavy fermion",
+            "heavy fermions"
+          ]
+        }
+      ],
+      "sourceMap": [
+        {
+          "startLine": 1,
+          "endLine": 282,
+          "targetSections": [
+            "scope",
+            "mathematical-assumptions",
+            "experimental-criteria",
+            "limits-and-disputes",
+            "discovery-implications",
+            "related-topics"
+          ],
+          "decision": "edited-with-scoped-evidence",
+          "note": "Pinned source bytes preserved; Zeeman factor and article number corrected; final Gurevich minus sign used, temperatures/probes/model assumptions distinguished."
+        }
+      ],
+      "body": "## Scope\n\nMagnetic field is both a control parameter and a probe of superconductivity. Orbital currents, Zeeman splitting, vortex motion and changes in the magnetic background can produce different boundaries. A resistive onset, loss of zero resistance, heat-capacity anomaly and magnetic transition need not coincide. Retain temperature, crystal orientation, sample history, sweep direction and pulse conditions when comparing field scales. [R1](#ref-source-7ba854cc57960377) [R5](#ref-source-a626e7fcb17b94fa) [R7](#ref-source-0c4d7cebb12a0d5b)\n\nThis article uses $B$ in tesla for the field scale; experimental papers often label that axis $H$ while reporting tesla, meaning an applied $\\mu_0H$ scale. Converting an applied field to local induction requires the magnetization and demagnetizing geometry. Neither an unusually large upper critical field nor field-induced superconductivity alone identifies a pairing symmetry. [R2](#ref-source-16926b3817cff55d) [R7](#ref-source-0c4d7cebb12a0d5b) [R10](#ref-source-b717fb1db41e9f29)\n\n## Mathematical assumptions\n\nFor a weak-coupling singlet reference with Zeeman levels shifted by $\\pm g\\mu_B B/2$, zero residual superconducting spin susceptibility and no orbital cost, condensation-energy balance gives $B_P=\\sqrt{2}\\Delta_0/(g\\mu_B)$. Using $\\Delta_0=\\pi e^{-\\gamma_E}k_BT_c$ and $g=2$ gives about $1.86\\,T_c$ tesla when $T_c$ is in kelvin. This is a conditional reference, not a universal upper bound. Spin-orbit coupling, anisotropic spin response and strong coupling change the comparison. Clogston's historical identity is retained; its complete original derivation was not retrieved here. [R9](#ref-source-d32df19524b2a1c8) [R10](#ref-source-b717fb1db41e9f29)\n\nA second restricted reference is the dirty, single-band, purely orbital result $B_{c2}^{\\rm orb}(0)\\simeq0.693\\,T_c|dB_{c2}/dT|_{T_c}$. Gurevich's final paper recovers it when the two diffusivities are equal. Its Eq. (31) defines $U(x)=\\psi(1/2+x)-\\psi(1/2)$, satisfying $U(0)=0$. The early author v1 prints a plus sign at that location; use the final definition. Unequal diffusivities produce different curves. This check does not validate a full WHH fit with Zeeman and spin-orbit terms, or a multiband fit to a particular material. [R1](#ref-source-7ba854cc57960377) [R2](#ref-source-16926b3817cff55d)\n\nThe Maki parameter compares those reference scales, $\\alpha_M=\\sqrt{2}B_{c2}^{\\rm orb}(0)/B_P$; it is not by itself an FFLO detection criterion. In a parabolic band with small splitting, the Fermi-wavevector mismatch is $\\delta k\\simeq g\\mu_B B/(\\hbar v_F)$. The inherited expression contains an extra factor of two under the stated Zeeman convention. This kinematic estimate does not solve for the optimum finite-momentum pair wavevector or establish the stability of a Fulde–Ferrell–Larkin–Ovchinnikov state. Disorder, orbital effects, dimensionality and competing orders matter. [R3](#ref-source-a1695d99aaf064c8) [R5](#ref-source-a626e7fcb17b94fa)\n\n## Experimental criteria\n\nPetrovic's discovery report describes zero resistance and full diamagnetic shielding at approximately 2.3 K in CeCoIn5. Its field–temperature paragraph compares specific heat with zero resistance for field along the c-axis. That zero-field transition is distinct from lower-temperature anomalies inside the superconducting phase. [R4](#ref-source-5962cf8038597944)\n\nBianchi's selected author-manuscript passages describe heat-pulse and temperature-decay calorimetry, including subtraction of the In/Co nuclear Schottky contribution. Figure 1 uses different vertical quantities in its panels: $(C-C_{\\rm Sch})/T$ and $C$, with a $C/T$ inset. Equal-entropy construction concerns the integral of $C/T$, not equal areas under an unconverted $C$ curve. At high in-plane fields the report finds a first-order upper boundary and an internal anomaly around 0.3 K. These are not new zero-field transition temperatures. Its final title explicitly says “Possible” FFLO state; calorimetry does not directly measure pair momentum. [R5](#ref-source-a626e7fcb17b94fa)\n\nThe later Kenzelmann neutron-scattering report finds magnetic order coupled to superconductivity in this high-field region. Its symmetry interpretation suggests a modulated superconducting state, while the observed magnetic order does not alone reconstruct the spatial pair field. This article checked that paper's original abstract, not its complete neutron methods or supplementary analysis. [R6](#ref-source-fda01ade7737b638)\n\nLewin's UTe2 experiments combine pulsed-field resistance and proximity-detector-oscillator measurements. Typical pulses reached 60 T or, in a different magnet, 73 T; the common measurement temperature was about 0.63 K. The high-field zero-resistance region depends strongly on both field angles. The oscillator frequency is a conductivity-sensitive proxy, and a comparison at 2.09 K without the superconducting feature is a normal-state measurement, not a 2.09 K transition determination. A measured field extent is not necessarily an observed upper critical field. [R7](#ref-source-0c4d7cebb12a0d5b)\n\nZambra's April 2026 study measures magnetotropic response at 4 K, where the superconducting phases are suppressed. Its Figure 1 separately reproduces a 300 mK superconducting phase diagram and 1.4 K magnetization from earlier work. These temperatures must not be merged into a claim of superconductivity at 4 K. “Transverse” refers to response perpendicular to the static field, not automatically an off-diagonal susceptibility element. The final article number is 3742, correcting the inherited 3814. [R8](#ref-source-15cfc4a2f9587af0)\n\n## Limits and disputes\n\nMagnetotropic susceptibility, an angular derivative of torque measured through a cantilever frequency shift, probes a different response from longitudinal magnetization. Zambra's long-wavelength result supports an inference of enhanced transverse ferromagnetic fluctuations; it does not measure a complete frequency-dependent pairing interaction. Values below 15 T in one normalized color map were set to zero to suppress amplified noise, rather than demonstrating a physically vanishing susceptibility. Alignment and calibration details remain relevant to comparisons with phase boundaries. [R8](#ref-source-15cfc4a2f9587af0)\n\nKeep measured phenomena separate from candidate explanations. A heat-capacity anomaly, magnetic Q phase and proposed FFLO modulation are distinct statements. Likewise, the multicomponent triplet model discussed for the UTe2 field-angle halo is an interpretation, not a direct determination of topology. Selected original passages and figures were checked here; remaining final-version comparisons, full supplements, raw-data reproduction and complete scientific acceptance remain open. [R5](#ref-source-a626e7fcb17b94fa) [R6](#ref-source-fda01ade7737b638) [R7](#ref-source-0c4d7cebb12a0d5b)\n\n## Discovery implications\n\nConstruct a field–temperature–angle map with explicit criteria and uncertainties. Compare transport with thermodynamic or magnetic probes where possible, retain pulsed-field heating and alignment controls, and distinguish re-entrant regions from a simple monotonic critical field. The local equation checks verify declared Zeeman conventions, an orbital asymptote and an illustrative entropy construction. They do not establish a new superconducting phase, fit an experimental boundary or certify a universal pairing mechanism. [R1](#ref-source-7ba854cc57960377) [R5](#ref-source-a626e7fcb17b94fa) [R7](#ref-source-0c4d7cebb12a0d5b) [R8](#ref-source-15cfc4a2f9587af0)\n\n## Related topics\n\nCompare [critical fields](/scwiki/critical-fields), [pair-density waves](/scwiki/pair-density-wave), [heavy-fermion superconductors](/scwiki/heavy-fermion-superconductors), [electrostatic gating](/scwiki/electrostatic-gating) and [strain tuning](/scwiki/strain).",
+      "revision": "52731a2450075d87db2e",
+      "sections": [
+        {
+          "id": "scope",
+          "title": "Scope",
+          "markdown": "## Scope\n\nMagnetic field is both a control parameter and a probe of superconductivity. Orbital currents, Zeeman splitting, vortex motion and changes in the magnetic background can produce different boundaries. A resistive onset, loss of zero resistance, heat-capacity anomaly and magnetic transition need not coincide. Retain temperature, crystal orientation, sample history, sweep direction and pulse conditions when comparing field scales. [R1](#ref-source-7ba854cc57960377) [R5](#ref-source-a626e7fcb17b94fa) [R7](#ref-source-0c4d7cebb12a0d5b)\n\nThis article uses $B$ in tesla for the field scale; experimental papers often label that axis $H$ while reporting tesla, meaning an applied $\\mu_0H$ scale. Converting an applied field to local induction requires the magnetization and demagnetizing geometry. Neither an unusually large upper critical field nor field-induced superconductivity alone identifies a pairing symmetry. [R2](#ref-source-16926b3817cff55d) [R7](#ref-source-0c4d7cebb12a0d5b) [R10](#ref-source-b717fb1db41e9f29)"
+        },
+        {
+          "id": "mathematical-assumptions",
+          "title": "Mathematical assumptions",
+          "markdown": "## Mathematical assumptions\n\nFor a weak-coupling singlet reference with Zeeman levels shifted by $\\pm g\\mu_B B/2$, zero residual superconducting spin susceptibility and no orbital cost, condensation-energy balance gives $B_P=\\sqrt{2}\\Delta_0/(g\\mu_B)$. Using $\\Delta_0=\\pi e^{-\\gamma_E}k_BT_c$ and $g=2$ gives about $1.86\\,T_c$ tesla when $T_c$ is in kelvin. This is a conditional reference, not a universal upper bound. Spin-orbit coupling, anisotropic spin response and strong coupling change the comparison. Clogston's historical identity is retained; its complete original derivation was not retrieved here. [R9](#ref-source-d32df19524b2a1c8) [R10](#ref-source-b717fb1db41e9f29)\n\nA second restricted reference is the dirty, single-band, purely orbital result $B_{c2}^{\\rm orb}(0)\\simeq0.693\\,T_c|dB_{c2}/dT|_{T_c}$. Gurevich's final paper recovers it when the two diffusivities are equal. Its Eq. (31) defines $U(x)=\\psi(1/2+x)-\\psi(1/2)$, satisfying $U(0)=0$. The early author v1 prints a plus sign at that location; use the final definition. Unequal diffusivities produce different curves. This check does not validate a full WHH fit with Zeeman and spin-orbit terms, or a multiband fit to a particular material. [R1](#ref-source-7ba854cc57960377) [R2](#ref-source-16926b3817cff55d)\n\nThe Maki parameter compares those reference scales, $\\alpha_M=\\sqrt{2}B_{c2}^{\\rm orb}(0)/B_P$; it is not by itself an FFLO detection criterion. In a parabolic band with small splitting, the Fermi-wavevector mismatch is $\\delta k\\simeq g\\mu_B B/(\\hbar v_F)$. The inherited expression contains an extra factor of two under the stated Zeeman convention. This kinematic estimate does not solve for the optimum finite-momentum pair wavevector or establish the stability of a Fulde–Ferrell–Larkin–Ovchinnikov state. Disorder, orbital effects, dimensionality and competing orders matter. [R3](#ref-source-a1695d99aaf064c8) [R5](#ref-source-a626e7fcb17b94fa)"
+        },
+        {
+          "id": "experimental-criteria",
+          "title": "Experimental criteria",
+          "markdown": "## Experimental criteria\n\nPetrovic's discovery report describes zero resistance and full diamagnetic shielding at approximately 2.3 K in CeCoIn5. Its field–temperature paragraph compares specific heat with zero resistance for field along the c-axis. That zero-field transition is distinct from lower-temperature anomalies inside the superconducting phase. [R4](#ref-source-5962cf8038597944)\n\nBianchi's selected author-manuscript passages describe heat-pulse and temperature-decay calorimetry, including subtraction of the In/Co nuclear Schottky contribution. Figure 1 uses different vertical quantities in its panels: $(C-C_{\\rm Sch})/T$ and $C$, with a $C/T$ inset. Equal-entropy construction concerns the integral of $C/T$, not equal areas under an unconverted $C$ curve. At high in-plane fields the report finds a first-order upper boundary and an internal anomaly around 0.3 K. These are not new zero-field transition temperatures. Its final title explicitly says “Possible” FFLO state; calorimetry does not directly measure pair momentum. [R5](#ref-source-a626e7fcb17b94fa)\n\nThe later Kenzelmann neutron-scattering report finds magnetic order coupled to superconductivity in this high-field region. Its symmetry interpretation suggests a modulated superconducting state, while the observed magnetic order does not alone reconstruct the spatial pair field. This article checked that paper's original abstract, not its complete neutron methods or supplementary analysis. [R6](#ref-source-fda01ade7737b638)\n\nLewin's UTe2 experiments combine pulsed-field resistance and proximity-detector-oscillator measurements. Typical pulses reached 60 T or, in a different magnet, 73 T; the common measurement temperature was about 0.63 K. The high-field zero-resistance region depends strongly on both field angles. The oscillator frequency is a conductivity-sensitive proxy, and a comparison at 2.09 K without the superconducting feature is a normal-state measurement, not a 2.09 K transition determination. A measured field extent is not necessarily an observed upper critical field. [R7](#ref-source-0c4d7cebb12a0d5b)\n\nZambra's April 2026 study measures magnetotropic response at 4 K, where the superconducting phases are suppressed. Its Figure 1 separately reproduces a 300 mK superconducting phase diagram and 1.4 K magnetization from earlier work. These temperatures must not be merged into a claim of superconductivity at 4 K. “Transverse” refers to response perpendicular to the static field, not automatically an off-diagonal susceptibility element. The final article number is 3742, correcting the inherited 3814. [R8](#ref-source-15cfc4a2f9587af0)"
+        },
+        {
+          "id": "limits-and-disputes",
+          "title": "Limits and disputes",
+          "markdown": "## Limits and disputes\n\nMagnetotropic susceptibility, an angular derivative of torque measured through a cantilever frequency shift, probes a different response from longitudinal magnetization. Zambra's long-wavelength result supports an inference of enhanced transverse ferromagnetic fluctuations; it does not measure a complete frequency-dependent pairing interaction. Values below 15 T in one normalized color map were set to zero to suppress amplified noise, rather than demonstrating a physically vanishing susceptibility. Alignment and calibration details remain relevant to comparisons with phase boundaries. [R8](#ref-source-15cfc4a2f9587af0)\n\nKeep measured phenomena separate from candidate explanations. A heat-capacity anomaly, magnetic Q phase and proposed FFLO modulation are distinct statements. Likewise, the multicomponent triplet model discussed for the UTe2 field-angle halo is an interpretation, not a direct determination of topology. Selected original passages and figures were checked here; remaining final-version comparisons, full supplements, raw-data reproduction and complete scientific acceptance remain open. [R5](#ref-source-a626e7fcb17b94fa) [R6](#ref-source-fda01ade7737b638) [R7](#ref-source-0c4d7cebb12a0d5b)"
+        },
+        {
+          "id": "discovery-implications",
+          "title": "Discovery implications",
+          "markdown": "## Discovery implications\n\nConstruct a field–temperature–angle map with explicit criteria and uncertainties. Compare transport with thermodynamic or magnetic probes where possible, retain pulsed-field heating and alignment controls, and distinguish re-entrant regions from a simple monotonic critical field. The local equation checks verify declared Zeeman conventions, an orbital asymptote and an illustrative entropy construction. They do not establish a new superconducting phase, fit an experimental boundary or certify a universal pairing mechanism. [R1](#ref-source-7ba854cc57960377) [R5](#ref-source-a626e7fcb17b94fa) [R7](#ref-source-0c4d7cebb12a0d5b) [R8](#ref-source-15cfc4a2f9587af0)"
+        },
+        {
+          "id": "related-topics",
+          "title": "Related topics",
+          "markdown": "## Related topics\n\nCompare [critical fields](/scwiki/critical-fields), [pair-density waves](/scwiki/pair-density-wave), [heavy-fermion superconductors](/scwiki/heavy-fermion-superconductors), [electrostatic gating](/scwiki/electrostatic-gating) and [strain tuning](/scwiki/strain)."
+        },
+        {
+          "id": "material-cases",
+          "title": "Material cases",
+          "markdown": "## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| CeCoIn5 (aliases: heavy fermion, heavy fermions); Petrovic zero-field discovery sample | 2.3 K; Approximate zero-resistance/full-shielding scale, distinct from high-field internal anomalies. | transition; zero-resistance | Resistivity with accompanying diamagnetic shielding | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-5962cf8038597944) |\n| CeCoIn5 (aliases: heavy fermion, heavy fermions); Bianchi high in-plane field internal anomaly | 0.3 K; Approximate internal superconducting-phase anomaly; not onset from normal state or a new zero-fieldTc. | measurement; internal-phase-anomaly | Specific heat | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-a626e7fcb17b94fa) |\n| CeCoIn5 (aliases: heavy fermion, heavy fermions); Bianchi field along[110] first/second-order crossover | 1.1 K; Reported T0=1.1+/-0.1K at change of boundary order, not independent zero-fieldTc. | measurement; transition-order-crossover | Specific heat | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-a626e7fcb17b94fa) |\n| UTe2 (aliases: heavy fermion, heavy fermions); Lewin typical pulsed-field measurement | 0.63 K; Typical measurement temperature unless otherwise stated; no Tc assigned from temperature held during field sweep. | measurement; pulsed-field-measurement | Resistance | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-0c4d7cebb12a0d5b) |\n| UTe2 (aliases: heavy fermion, heavy fermions); Lewin PDO low-temperature example | 0.64 K; Frequency shift probes conductivity; fixed measurement temperature notTc. | measurement; conductivity-proxy-measurement | Proximity detector oscillator | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-0c4d7cebb12a0d5b) |\n| UTe2 (aliases: heavy fermion, heavy fermions); Lewin PDO normal-state comparison | 2.09 K; Superconducting feature absent in this comparison; must not become a2.09K transition record. | normal-state; normal-state-comparison | Proximity detector oscillator | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-0c4d7cebb12a0d5b) |\n| UTe2 (aliases: heavy fermion, heavy fermions); Zambra magnetotropic field-angle scans | 4 K; All superconducting phases suppressed at4K; borrowed300mK phase diagram is a separate dataset. | normal-state; normal-state-magnetotropic-response | Cantilever frequency shift | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-15cfc4a2f9587af0) |"
+        }
+      ],
+      "markdown": "# Magnetic field: pair breaking, phase boundaries and re-entrant states\n\nSeparate orbital and Zeeman references from measured field-angle phase boundaries, and distinguish finite-momentum candidates from direct evidence.\n\n## Scope\n\nMagnetic field is both a control parameter and a probe of superconductivity. Orbital currents, Zeeman splitting, vortex motion and changes in the magnetic background can produce different boundaries. A resistive onset, loss of zero resistance, heat-capacity anomaly and magnetic transition need not coincide. Retain temperature, crystal orientation, sample history, sweep direction and pulse conditions when comparing field scales. [R1](#ref-source-7ba854cc57960377) [R5](#ref-source-a626e7fcb17b94fa) [R7](#ref-source-0c4d7cebb12a0d5b)\n\nThis article uses $B$ in tesla for the field scale; experimental papers often label that axis $H$ while reporting tesla, meaning an applied $\\mu_0H$ scale. Converting an applied field to local induction requires the magnetization and demagnetizing geometry. Neither an unusually large upper critical field nor field-induced superconductivity alone identifies a pairing symmetry. [R2](#ref-source-16926b3817cff55d) [R7](#ref-source-0c4d7cebb12a0d5b) [R10](#ref-source-b717fb1db41e9f29)\n\n## Mathematical assumptions\n\nFor a weak-coupling singlet reference with Zeeman levels shifted by $\\pm g\\mu_B B/2$, zero residual superconducting spin susceptibility and no orbital cost, condensation-energy balance gives $B_P=\\sqrt{2}\\Delta_0/(g\\mu_B)$. Using $\\Delta_0=\\pi e^{-\\gamma_E}k_BT_c$ and $g=2$ gives about $1.86\\,T_c$ tesla when $T_c$ is in kelvin. This is a conditional reference, not a universal upper bound. Spin-orbit coupling, anisotropic spin response and strong coupling change the comparison. Clogston's historical identity is retained; its complete original derivation was not retrieved here. [R9](#ref-source-d32df19524b2a1c8) [R10](#ref-source-b717fb1db41e9f29)\n\nA second restricted reference is the dirty, single-band, purely orbital result $B_{c2}^{\\rm orb}(0)\\simeq0.693\\,T_c|dB_{c2}/dT|_{T_c}$. Gurevich's final paper recovers it when the two diffusivities are equal. Its Eq. (31) defines $U(x)=\\psi(1/2+x)-\\psi(1/2)$, satisfying $U(0)=0$. The early author v1 prints a plus sign at that location; use the final definition. Unequal diffusivities produce different curves. This check does not validate a full WHH fit with Zeeman and spin-orbit terms, or a multiband fit to a particular material. [R1](#ref-source-7ba854cc57960377) [R2](#ref-source-16926b3817cff55d)\n\nThe Maki parameter compares those reference scales, $\\alpha_M=\\sqrt{2}B_{c2}^{\\rm orb}(0)/B_P$; it is not by itself an FFLO detection criterion. In a parabolic band with small splitting, the Fermi-wavevector mismatch is $\\delta k\\simeq g\\mu_B B/(\\hbar v_F)$. The inherited expression contains an extra factor of two under the stated Zeeman convention. This kinematic estimate does not solve for the optimum finite-momentum pair wavevector or establish the stability of a Fulde–Ferrell–Larkin–Ovchinnikov state. Disorder, orbital effects, dimensionality and competing orders matter. [R3](#ref-source-a1695d99aaf064c8) [R5](#ref-source-a626e7fcb17b94fa)\n\n## Experimental criteria\n\nPetrovic's discovery report describes zero resistance and full diamagnetic shielding at approximately 2.3 K in CeCoIn5. Its field–temperature paragraph compares specific heat with zero resistance for field along the c-axis. That zero-field transition is distinct from lower-temperature anomalies inside the superconducting phase. [R4](#ref-source-5962cf8038597944)\n\nBianchi's selected author-manuscript passages describe heat-pulse and temperature-decay calorimetry, including subtraction of the In/Co nuclear Schottky contribution. Figure 1 uses different vertical quantities in its panels: $(C-C_{\\rm Sch})/T$ and $C$, with a $C/T$ inset. Equal-entropy construction concerns the integral of $C/T$, not equal areas under an unconverted $C$ curve. At high in-plane fields the report finds a first-order upper boundary and an internal anomaly around 0.3 K. These are not new zero-field transition temperatures. Its final title explicitly says “Possible” FFLO state; calorimetry does not directly measure pair momentum. [R5](#ref-source-a626e7fcb17b94fa)\n\nThe later Kenzelmann neutron-scattering report finds magnetic order coupled to superconductivity in this high-field region. Its symmetry interpretation suggests a modulated superconducting state, while the observed magnetic order does not alone reconstruct the spatial pair field. This article checked that paper's original abstract, not its complete neutron methods or supplementary analysis. [R6](#ref-source-fda01ade7737b638)\n\nLewin's UTe2 experiments combine pulsed-field resistance and proximity-detector-oscillator measurements. Typical pulses reached 60 T or, in a different magnet, 73 T; the common measurement temperature was about 0.63 K. The high-field zero-resistance region depends strongly on both field angles. The oscillator frequency is a conductivity-sensitive proxy, and a comparison at 2.09 K without the superconducting feature is a normal-state measurement, not a 2.09 K transition determination. A measured field extent is not necessarily an observed upper critical field. [R7](#ref-source-0c4d7cebb12a0d5b)\n\nZambra's April 2026 study measures magnetotropic response at 4 K, where the superconducting phases are suppressed. Its Figure 1 separately reproduces a 300 mK superconducting phase diagram and 1.4 K magnetization from earlier work. These temperatures must not be merged into a claim of superconductivity at 4 K. “Transverse” refers to response perpendicular to the static field, not automatically an off-diagonal susceptibility element. The final article number is 3742, correcting the inherited 3814. [R8](#ref-source-15cfc4a2f9587af0)\n\n## Limits and disputes\n\nMagnetotropic susceptibility, an angular derivative of torque measured through a cantilever frequency shift, probes a different response from longitudinal magnetization. Zambra's long-wavelength result supports an inference of enhanced transverse ferromagnetic fluctuations; it does not measure a complete frequency-dependent pairing interaction. Values below 15 T in one normalized color map were set to zero to suppress amplified noise, rather than demonstrating a physically vanishing susceptibility. Alignment and calibration details remain relevant to comparisons with phase boundaries. [R8](#ref-source-15cfc4a2f9587af0)\n\nKeep measured phenomena separate from candidate explanations. A heat-capacity anomaly, magnetic Q phase and proposed FFLO modulation are distinct statements. Likewise, the multicomponent triplet model discussed for the UTe2 field-angle halo is an interpretation, not a direct determination of topology. Selected original passages and figures were checked here; remaining final-version comparisons, full supplements, raw-data reproduction and complete scientific acceptance remain open. [R5](#ref-source-a626e7fcb17b94fa) [R6](#ref-source-fda01ade7737b638) [R7](#ref-source-0c4d7cebb12a0d5b)\n\n## Discovery implications\n\nConstruct a field–temperature–angle map with explicit criteria and uncertainties. Compare transport with thermodynamic or magnetic probes where possible, retain pulsed-field heating and alignment controls, and distinguish re-entrant regions from a simple monotonic critical field. The local equation checks verify declared Zeeman conventions, an orbital asymptote and an illustrative entropy construction. They do not establish a new superconducting phase, fit an experimental boundary or certify a universal pairing mechanism. [R1](#ref-source-7ba854cc57960377) [R5](#ref-source-a626e7fcb17b94fa) [R7](#ref-source-0c4d7cebb12a0d5b) [R8](#ref-source-15cfc4a2f9587af0)\n\n## Related topics\n\nCompare [critical fields](/scwiki/critical-fields), [pair-density waves](/scwiki/pair-density-wave), [heavy-fermion superconductors](/scwiki/heavy-fermion-superconductors), [electrostatic gating](/scwiki/electrostatic-gating) and [strain tuning](/scwiki/strain).\n\n## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| CeCoIn5 (aliases: heavy fermion, heavy fermions); Petrovic zero-field discovery sample | 2.3 K; Approximate zero-resistance/full-shielding scale, distinct from high-field internal anomalies. | transition; zero-resistance | Resistivity with accompanying diamagnetic shielding | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-5962cf8038597944) |\n| CeCoIn5 (aliases: heavy fermion, heavy fermions); Bianchi high in-plane field internal anomaly | 0.3 K; Approximate internal superconducting-phase anomaly; not onset from normal state or a new zero-fieldTc. | measurement; internal-phase-anomaly | Specific heat | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-a626e7fcb17b94fa) |\n| CeCoIn5 (aliases: heavy fermion, heavy fermions); Bianchi field along[110] first/second-order crossover | 1.1 K; Reported T0=1.1+/-0.1K at change of boundary order, not independent zero-fieldTc. | measurement; transition-order-crossover | Specific heat | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-a626e7fcb17b94fa) |\n| UTe2 (aliases: heavy fermion, heavy fermions); Lewin typical pulsed-field measurement | 0.63 K; Typical measurement temperature unless otherwise stated; no Tc assigned from temperature held during field sweep. | measurement; pulsed-field-measurement | Resistance | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-0c4d7cebb12a0d5b) |\n| UTe2 (aliases: heavy fermion, heavy fermions); Lewin PDO low-temperature example | 0.64 K; Frequency shift probes conductivity; fixed measurement temperature notTc. | measurement; conductivity-proxy-measurement | Proximity detector oscillator | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-0c4d7cebb12a0d5b) |\n| UTe2 (aliases: heavy fermion, heavy fermions); Lewin PDO normal-state comparison | 2.09 K; Superconducting feature absent in this comparison; must not become a2.09K transition record. | normal-state; normal-state-comparison | Proximity detector oscillator | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-0c4d7cebb12a0d5b) |\n| UTe2 (aliases: heavy fermion, heavy fermions); Zambra magnetotropic field-angle scans | 4 K; All superconducting phases suppressed at4K; borrowed300mK phase diagram is a separate dataset. | normal-state; normal-state-magnetotropic-response | Cantilever frequency shift | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-15cfc4a2f9587af0) |\n\n## Sources\n\n### Ref source-7ba854cc57960377\n\n[R1] Enhancement of the upper critical field by nonmagnetic impurities in dirty two-gap superconductors (2003). [DOI 10.1103/PhysRevB.67.184515](https://doi.org/10.1103/PhysRevB.67.184515). Publication: journal-article. Check: selected-final-equations-and-author-version-comparison. Checked: 2026-10-18. Final journal16May2003; selected pp4–5 equal-diffusivity limit, Eq31 and asymptotes read; p4 visually compared with arXiv0212129v1 p4. Final U(x) has minus; v1 prints plus. Detailed Usadel solution, full curves and experimental fits not reproduced.\n### Ref source-16926b3817cff55d\n\n[R2] Temperature and Purity Dependence of the Superconducting Critical Field, Hc2. III. Electron Spin and Spin-Orbit Effects (1966). [DOI 10.1103/PhysRev.147.295](https://doi.org/10.1103/PhysRev.147.295). Publication: journal-article. Check: reused-publisher-abstract-scope. Checked: 2026-10-18. A6 original publisher-abstract check reused: orbital, Pauli and spin-orbit treatment. Full WHH derivation and experimental fits not independently reviewed. The restricted orbital coefficient is checked separately through Gurevich final text and explicit asymptote.\n### Ref source-a1695d99aaf064c8\n\n[R3] Effect of Pauli Paramagnetism on Magnetic Properties of High-Field Superconductors (1966). [DOI 10.1103/PhysRev.148.362](https://doi.org/10.1103/PhysRev.148.362). Publication: journal-article. Check: publisher-abstract-only. Checked: 2026-10-18. Published5August1966. Abstract read: Pauli and spin-orbit assumptions affect first/second-order behavior. Extracted symbols incomplete; no numeric FFLO threshold or full derivation audited.\n### Ref source-5962cf8038597944\n\n[R4] Heavy-fermion superconductivity in CeCoIn5 at 2.3 K (2001). [DOI 10.1088/0953-8984/13/17/103](https://doi.org/10.1088/0953-8984/13/17/103). Publication: journal-article. Check: selected-author-discovery-and-field-comparison. Checked: 2026-10-18. D8 selected authorv1 pp2–5 discovery/growth/heat-capacity scope reused; zero-resistance/full-shielding and field-temperature paragraphs re-read for E5. Final comparison and raw-data analysis remain open.\n### Ref source-a626e7fcb17b94fa\n\n[R5] Possible Fulde-Ferrell-Larkin-Ovchinnikov Superconducting State in CeCoIn5 (2003). [DOI 10.1103/PhysRevLett.91.187004](https://doi.org/10.1103/PhysRevLett.91.187004). Publication: journal-article. Check: selected-author-calorimetry-and-final-abstract. Checked: 2026-10-18. Authorv1 submitted18April2003; selected pp1–4 text and p2Fig1 visual checked. Final publisher title/abstract and28October2003 publication checked; final adds Possible and authorlist differs. Internal PDF typesettingdate2018 is not publication. Full final comparison/rawdata remain open.\n### Ref source-fda01ade7737b638\n\n[R6] Coupled Superconducting and Magnetic Order in CeCoIn5 (2008). [DOI 10.1126/science.1161818](https://doi.org/10.1126/science.1161818). Publication: journal-article. Check: original-abstract-only. Checked: 2026-10-18. Online21August2008,issue19September. Original abstract via PubMed and authors LANL record read; magnetic order and symmetry interpretation distinct. Full methods and supplement not retrieved.\n### Ref source-0c4d7cebb12a0d5b\n\n[R7] High-field superconducting halo in UTe2 (2025). [DOI 10.1126/science.adn7673](https://doi.org/10.1126/science.adn7673). Publication: journal-article. Check: selected-final-pulsed-field-and-angle-methods. Checked: 2026-10-18. Online31July2025; selected final pp512–513 methods/angle/resistance/PDO discussion re-read, plus selected model discussion. Prior D8 p512 visual retained. Typical60/73T pulses,0.63K measurement and2.09K normal reference distinguished. Full supplement/rawdata/orderparameter reconstruction open.\n### Ref source-15cfc4a2f9587af0\n\n[R8] Giant transverse magnetic fluctuations at the edge of re-entrant superconductivity in UTe2 (2026). [DOI 10.1038/s41467-026-71899-7](https://doi.org/10.1038/s41467-026-71899-7). Publication: journal-article. Check: selected-final-results-methods-and-figure. Checked: 2026-10-18. Published29April2026; NatCommun17,3742. Selected final pp1–3 and5–6 discussion/methods read, p2Fig1 visual checked.4K measurements versus borrowed300mK/1.4K panels; below15T displaymask and calibration/orientation limits retained. Full supplement and pairing-kernel reconstruction open.\n### Ref source-d32df19524b2a1c8\n\n[R9] Upper Limit for the Critical Field in Hard Superconductors (1962). [DOI 10.1103/PhysRevLett.9.266](https://doi.org/10.1103/PhysRevLett.9.266). Publication: journal-article. Check: reused-publisher-identity-only. Checked: 2026-10-18. A6 identity check reused; complete original derivation not retrieved. Pauli calculation uses explicit weak-coupling assumptions and separately checked perspective.\n### Ref source-b717fb1db41e9f29\n\n[R10] Ising superconductivity: A first-principles perspective (2023). [DOI 10.1063/5.0153345](https://doi.org/10.1063/5.0153345). Publication: journal-article. Check: reused-selected-perspective-free-energy-check. Checked: 2026-10-18. A6 selected sectionII pp240503-2 to-3 susceptibility/free-energy and orientation check reused. Not a complete material or Ising-mechanism audit.\n\n## Claim evidence and conditions\n\n### scwiki-e5-claim-scope-1\n\nMagnetic field is both a control parameter and a probe of superconductivity. Orbital currents, Zeeman splitting, vortex motion and changes in the magnetic background can produce different boundaries. A resistive onset, loss of zero resistance, heat-capacity anomaly and magnetic transition need not coincide. Retain temperature, crystal orientation, sample history, sweep direction and pulse conditions when comparing field scales.\n\nEvidence: experiment. Sources: source-7ba854cc57960377, source-a626e7fcb17b94fa, source-0c4d7cebb12a0d5b.\n\nConditions: Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.\n\nVerification scope: Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.\n\n### scwiki-e5-claim-scope-2\n\nThis article uses $B$ in tesla for the field scale; experimental papers often label that axis $H$ while reporting tesla, meaning an applied $\\mu_0H$ scale. Converting an applied field to local induction requires the magnetization and demagnetizing geometry. Neither an unusually large upper critical field nor field-induced superconductivity alone identifies a pairing symmetry.\n\nEvidence: experiment. Sources: source-16926b3817cff55d, source-0c4d7cebb12a0d5b, source-b717fb1db41e9f29.\n\nConditions: Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.\n\nVerification scope: Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.\n\n### scwiki-e5-claim-mathematical-assumptions-1\n\nFor a weak-coupling singlet reference with Zeeman levels shifted by $\\pm g\\mu_B B/2$, zero residual superconducting spin susceptibility and no orbital cost, condensation-energy balance gives $B_P=\\sqrt{2}\\Delta_0/(g\\mu_B)$. Using $\\Delta_0=\\pi e^{-\\gamma_E}k_BT_c$ and $g=2$ gives about $1.86\\,T_c$ tesla when $T_c$ is in kelvin. This is a conditional reference, not a universal upper bound. Spin-orbit coupling, anisotropic spin response and strong coupling change the comparison. Clogston's historical identity is retained; its complete original derivation was not retrieved here.\n\nEvidence: theory. Sources: source-d32df19524b2a1c8, source-b717fb1db41e9f29.\n\nConditions: Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.\n\nVerification scope: Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.\n\n### scwiki-e5-claim-mathematical-assumptions-2\n\nA second restricted reference is the dirty, single-band, purely orbital result $B_{c2}^{\\rm orb}(0)\\simeq0.693\\,T_c|dB_{c2}/dT|_{T_c}$. Gurevich's final paper recovers it when the two diffusivities are equal. Its Eq. (31) defines $U(x)=\\psi(1/2+x)-\\psi(1/2)$, satisfying $U(0)=0$. The early author v1 prints a plus sign at that location; use the final definition. Unequal diffusivities produce different curves. This check does not validate a full WHH fit with Zeeman and spin-orbit terms, or a multiband fit to a particular material.\n\nEvidence: theory. Sources: source-7ba854cc57960377, source-16926b3817cff55d.\n\nConditions: Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.\n\nVerification scope: Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.\n\n### scwiki-e5-claim-mathematical-assumptions-3\n\nThe Maki parameter compares those reference scales, $\\alpha_M=\\sqrt{2}B_{c2}^{\\rm orb}(0)/B_P$; it is not by itself an FFLO detection criterion. In a parabolic band with small splitting, the Fermi-wavevector mismatch is $\\delta k\\simeq g\\mu_B B/(\\hbar v_F)$. The inherited expression contains an extra factor of two under the stated Zeeman convention. This kinematic estimate does not solve for the optimum finite-momentum pair wavevector or establish the stability of a Fulde–Ferrell–Larkin–Ovchinnikov state. Disorder, orbital effects, dimensionality and competing orders matter.\n\nEvidence: theory. Sources: source-a1695d99aaf064c8, source-a626e7fcb17b94fa.\n\nConditions: Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.\n\nVerification scope: Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.\n\n### scwiki-e5-claim-experimental-criteria-1\n\nPetrovic's discovery report describes zero resistance and full diamagnetic shielding at approximately 2.3 K in CeCoIn5. Its field–temperature paragraph compares specific heat with zero resistance for field along the c-axis. That zero-field transition is distinct from lower-temperature anomalies inside the superconducting phase.\n\nEvidence: experiment. Sources: source-5962cf8038597944.\n\nConditions: Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.\n\nVerification scope: Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.\n\n### scwiki-e5-claim-experimental-criteria-2\n\nBianchi's selected author-manuscript passages describe heat-pulse and temperature-decay calorimetry, including subtraction of the In/Co nuclear Schottky contribution. Figure 1 uses different vertical quantities in its panels: $(C-C_{\\rm Sch})/T$ and $C$, with a $C/T$ inset. Equal-entropy construction concerns the integral of $C/T$, not equal areas under an unconverted $C$ curve. At high in-plane fields the report finds a first-order upper boundary and an internal anomaly around 0.3 K. These are not new zero-field transition temperatures. Its final title explicitly says “Possible” FFLO state; calorimetry does not directly measure pair momentum.\n\nEvidence: experiment. Sources: source-a626e7fcb17b94fa.\n\nConditions: Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.\n\nVerification scope: Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.\n\n### scwiki-e5-claim-experimental-criteria-3\n\nThe later Kenzelmann neutron-scattering report finds magnetic order coupled to superconductivity in this high-field region. Its symmetry interpretation suggests a modulated superconducting state, while the observed magnetic order does not alone reconstruct the spatial pair field. This article checked that paper's original abstract, not its complete neutron methods or supplementary analysis.\n\nEvidence: experiment. Sources: source-fda01ade7737b638.\n\nConditions: Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.\n\nVerification scope: Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.\n\n### scwiki-e5-claim-experimental-criteria-4\n\nLewin's UTe2 experiments combine pulsed-field resistance and proximity-detector-oscillator measurements. Typical pulses reached 60 T or, in a different magnet, 73 T; the common measurement temperature was about 0.63 K. The high-field zero-resistance region depends strongly on both field angles. The oscillator frequency is a conductivity-sensitive proxy, and a comparison at 2.09 K without the superconducting feature is a normal-state measurement, not a 2.09 K transition determination. A measured field extent is not necessarily an observed upper critical field.\n\nEvidence: experiment. Sources: source-0c4d7cebb12a0d5b.\n\nConditions: Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.\n\nVerification scope: Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.\n\n### scwiki-e5-claim-experimental-criteria-5\n\nZambra's April 2026 study measures magnetotropic response at 4 K, where the superconducting phases are suppressed. Its Figure 1 separately reproduces a 300 mK superconducting phase diagram and 1.4 K magnetization from earlier work. These temperatures must not be merged into a claim of superconductivity at 4 K. “Transverse” refers to response perpendicular to the static field, not automatically an off-diagonal susceptibility element. The final article number is 3742, correcting the inherited 3814.\n\nEvidence: experiment. Sources: source-15cfc4a2f9587af0.\n\nConditions: Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.\n\nVerification scope: Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.\n\n### scwiki-e5-claim-limits-and-disputes-1\n\nMagnetotropic susceptibility, an angular derivative of torque measured through a cantilever frequency shift, probes a different response from longitudinal magnetization. Zambra's long-wavelength result supports an inference of enhanced transverse ferromagnetic fluctuations; it does not measure a complete frequency-dependent pairing interaction. Values below 15 T in one normalized color map were set to zero to suppress amplified noise, rather than demonstrating a physically vanishing susceptibility. Alignment and calibration details remain relevant to comparisons with phase boundaries.\n\nEvidence: experiment. Sources: source-15cfc4a2f9587af0.\n\nConditions: Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.\n\nVerification scope: Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.\n\n### scwiki-e5-claim-limits-and-disputes-2\n\nKeep measured phenomena separate from candidate explanations. A heat-capacity anomaly, magnetic Q phase and proposed FFLO modulation are distinct statements. Likewise, the multicomponent triplet model discussed for the UTe2 field-angle halo is an interpretation, not a direct determination of topology. Selected original passages and figures were checked here; remaining final-version comparisons, full supplements, raw-data reproduction and complete scientific acceptance remain open.\n\nEvidence: experiment. Sources: source-a626e7fcb17b94fa, source-fda01ade7737b638, source-0c4d7cebb12a0d5b.\n\nConditions: Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.\n\nVerification scope: Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.\n\n### scwiki-e5-claim-discovery-implications-1\n\nConstruct a field–temperature–angle map with explicit criteria and uncertainties. Compare transport with thermodynamic or magnetic probes where possible, retain pulsed-field heating and alignment controls, and distinguish re-entrant regions from a simple monotonic critical field. The local equation checks verify declared Zeeman conventions, an orbital asymptote and an illustrative entropy construction. They do not establish a new superconducting phase, fit an experimental boundary or certify a universal pairing mechanism.\n\nEvidence: theory. Sources: source-7ba854cc57960377, source-a626e7fcb17b94fa, source-0c4d7cebb12a0d5b, source-15cfc4a2f9587af0.\n\nConditions: Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.\n\nVerification scope: Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.\n\n## Revision and review\n\nArticle ID: scwiki-e5. Revision: 52731a2450075d87db2e. Updated: 2026-10-18T12:50:46.072481+00:00.\n\nReview scope: Selected Gurevich final equations/version comparison, Bianchi author calorimetry/figure, Petrovic discovery passages, Lewin final pulsed-field passages and Zambra final results/figure; bounded Zeeman/orbital/entropy checks.\n\n- Complete scientific acceptance, remaining final-version comparisons, full supplements and raw-data reproduction remain open.\n- WHH, Maki and Kenzelmann retain abstract-level scopes; Clogston historical identity is not a complete original derivation audit.\n- Kinematic wavevector mismatch does not determine optimum FFLO momentum or phase stability.\n- A 4K normal-state response or an internal superconducting-phase anomaly is not a new zero-field Tc.\n\nSource: [E_tuning_parameters/E5_magnetic_field.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/E_tuning_parameters/E5_magnetic_field.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 e95bc5d022e6dbdc433f274536762ad4d93e9e6b19005b40e0a37ff41ee41eeb.\n",
+      "wordCount": 926
     },
     {
       "id": "scwiki-f7",

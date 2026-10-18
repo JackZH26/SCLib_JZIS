@@ -1038,3 +1038,22 @@ it("separates calibrated strain, magnetic midpoints and film resistive endpoints
  const data=await(await get(["search"],"?q=nickelate&tcMin=40&criterion=zero-resistance&pressure=ambient")).json();
  expect(data.results.some((r:{code:string})=>r.code==="E4")).toBe(false);
 });
+
+it("keeps high-field measurement temperatures and internal anomalies out of Tc filters",async()=>{
+ const a=articles().find(a=>a.code==="E5")!;
+ const index=searchIndex().entries;
+ expect(a.materialCases.filter(c=>c.formula==="UTe2").every(c=>c.tcK===null)).toBe(true);
+ expect(a.materialCases.find(c=>c.reportedTemperatureK===4)?.temperatureKind).toBe("normal-state");
+ expect(a.materialCases.find(c=>c.reportedTemperatureK===.3)?.tcK).toBeNull();
+ expect(a.materialCases.find(c=>c.reportedTemperatureK===1.1)?.tcK).toBeNull();
+ expect(searchArticles(index,"UTe2",{tcMin:2}).some(a=>a.code==="E5")).toBe(false);
+ expect(searchArticles(index,"CeCoIn5",{tcMin:2,criterion:"zero-resistance",pressure:"ambient"}).some(a=>a.code==="E5")).toBe(true);
+ expect(searchArticles(index,"CeCoIn5",{tcMin:3}).some(a=>a.code==="E5")).toBe(false);
+ expect(searchArticles(index,"heavy fermion",{tcMin:3}).some(a=>a.code==="E5")).toBe(false);
+ const data=await(await get(["search"],"?q=UTe2&tcMin=2")).json();
+ expect(data.results.some((r:{code:string})=>r.code==="E5")).toBe(false);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("3742");expect(md).toContain("extra factor of two");expect(md).toContain("normal-state measurement");
+ expect(md).toContain("final definition");expect(md).toContain("10.1038/s41467-026-71899-7");
+ expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
+});
