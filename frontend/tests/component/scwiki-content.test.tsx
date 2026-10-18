@@ -76,6 +76,28 @@ describe("SCWiki source and scientific-content contracts",()=>{
    for(const citation of section.markdown.matchAll(/\]\(#ref-([a-z0-9-]+)\)/g))expect(data.sources.some((r:{id:string})=>r.id===citation[1])).toBe(true);
   }
  });
+ it("retains each material probe in both article and section Markdown",async()=>{
+  for(const a of articles()){
+   const section=await (await get(["articles",a.id,"sections","material-cases"],"?format=markdown")).text();
+   for(const record of a.materialCases){expect(a.markdown).toContain(record.probe);expect(section).toContain(record.probe);}
+  }
+ });
+ it("preserves partial-isotope scope, magnetic criteria and unknown conditions",async()=>{
+  const a=articles().find(a=>a.code==="A4")!;
+  expect(a.body).toContain("not the total");
+  expect(a.body).toContain("not a fit to MgB2");
+  expect(a.body).toContain("Shared calibration errors");
+  expect(a.materialCases.map(r=>r.tcK)).toEqual([40.2,39.2]);
+  expect(a.materialCases.every(r=>r.pressureRegime==="unknown"&&r.equilibrium==="unknown"&&r.criterion==="diamagnetic")).toBe(true);
+  const cases=await (await get(["articles",a.id,"sections","material-cases"],"?format=markdown")).text();
+  expect(cases).toContain("2% of low-temperature diamagnetic signal");
+  expect(cases).toContain("25 G");
+  expect(searchArticles(searchIndex().entries,"isotope",{tcMin:40,evidence:"experiment"}).some(x=>x.id===a.id)).toBe(true);
+  expect(searchArticles(searchIndex().entries,"isotope",{tcMin:40.3}).some(x=>x.id===a.id)).toBe(false);
+  expect(searchArticles(searchIndex().entries,"isotope",{pressure:"ambient"}).some(x=>x.id===a.id)).toBe(false);
+  expect(searchArticles(searchIndex().entries,"isotope",{evidence:"theory",tcMin:1}).some(x=>x.id===a.id)).toBe(false);
+  expect(a.references.filter(r=>r.year===1950).every(r=>r.verification.scope==="publisher-metadata-only")).toBe(true);
+ });
  it("publishes BCS as a conditional theory entry without inventing experimental Tc records",async()=>{
   const a=articles().find(a=>a.code==="B1")!;
   expect(a.evidenceTypes).toEqual(["theory","hypothesis"]);
@@ -175,7 +197,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(a.review.limitations.join(" ")).toContain("not");
    expect(a.references.every(r=>r.publicationStatus && r.verification.scope)).toBe(true);
    const {revision,body,markdown,sections,wordCount,...meta}=a;
-   expect(createHash("sha256").update("scwiki-export-v3\n"+JSON.stringify(meta)+"\n"+body).digest("hex").slice(0,20)).toBe(revision);
+   expect(createHash("sha256").update("scwiki-export-v4\n"+JSON.stringify(meta)+"\n"+body).digest("hex").slice(0,20)).toBe(revision);
   }
  });
  it("resolves every claim, citation and published article link without treating rendering as proof",()=>{

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "61f766dfc1047137299e",
+  "revision": "32e53d383d4dd53016d2",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -20,7 +20,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "b9231aa39fd8c4aa669a",
+      "revision": "4ee1e4ed008540ee9f43",
       "materialCases": [
         {
           "formula": "K3C60",
@@ -65,7 +65,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "85e07997e6284c9ba7a6",
+      "revision": "dce6b77c727399448641",
       "materialCases": [
         {
           "formula": "YBa2Cu3O7-delta",
@@ -114,7 +114,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "9e0d8ad579fac937e60f",
+      "revision": "5cdd22236f8ff447c033",
       "materialCases": [],
       "dois": [
         "10.1088/0953-2048/26/11/115011",
@@ -122,6 +122,70 @@
         "10.1103/PhysRevB.79.220516"
       ],
       "text": " Scope\n\nHeat capacity probes the change of entropy with temperature. A superconducting anomaly can therefore provide a bulk thermodynamic check that complements resistance and magnetic screening. A peak alone does not identify its cause: magnetic, structural and charge-order transitions can also produce anomalies. This article separates an ideal electronic heat-capacity jump from the measured total signal and from an empirical trend across different samples.\n\nUse C on a declared basis: per mole, per unit mass, per volume or for the entire sample. The normalization of the normal-state electronic coefficient \\gamman must match. Experiments often measure Cp, while a simple electronic model evaluates heat capacity with a fixed spectrum and volume. Their difference may be small for an appropriate low-temperature solid, but that approximation should be justified when quantitative precision matters.\n\n Mathematical assumptions\n\nFor an isotropic single-band weak-coupling BCS model with a smooth density of states, define the electronic jump on cooling as \\Delta Ce=C{es}(Tc^-)-C{en}(Tc^+). Its limiting value is\n\n\n\\frac{\\Delta Ce}{\\gammanTc}=\\frac{12}{7\\zeta(3)}\\simeq1.426.\n\n\nHere C{en}=\\gammanT in the assumed low-temperature normal state. The number is a model benchmark, not a threshold that every superconductor must pass. Johnston gives the limiting expression in Eq. (22) of the cited author manuscript. \n\nEntropy follows from dS=C\\,dT/T under the specified thermodynamic constraints. For a continuous transition with equal extrapolated zero-temperature entropies in the compared phases,\n\n\nSs(Tc)-Sn(Tc)=\\int0^{Tc}\\frac{Cs(T)-Cn(T)}{T}\\,dT=0.\n\n\nThe normal curve below Tc is a defined reference, not a directly accessible zero-field equilibrium phase. Background subtraction and low-temperature extrapolation therefore affect the test. A first-order transition has latent heat and requires a different treatment. Do not force this continuous-transition construction onto such a dataset.\n\nAn independent numerical check for this entry solved the constant-density-of-states gap equation, integrated the quasiparticle entropy and differentiated it near Tc. The normalized jump approaches 1.426 as the cutoff and numerical step are controlled; the normalized entropy reaches the normal-state value at the transition. This checks the stated model and conventions, not a material dataset. The entropy and heat-capacity relations are consistent with the selected manuscript equations. \n\n Experimental criteria\n\nStart from the measured heat capacity and report addenda, sample mass and calibration uncertainty. A fit such as Cn/T=\\gamman+\\beta T^2 assumes a linear electronic term and a low-temperature lattice contribution. It can fail if extra excitations or nearby transitions matter. State the temperature interval and uncertainty of the background, and show how another reasonable background changes the inferred anomaly.\n\nA field used to suppress superconductivity is not automatically a perfect normal-state reference. Check whether it reaches the normal state over the relevant range and whether it changes magnetic or other contributions. Use the same units and sample basis in the field and zero-field curves. Show transition width, the chosen thermodynamic Tc and the entropy comparison, rather than only a peak height.\n\nCompare with resistance and screening on the same or demonstrably comparable specimen. A consistent anomaly with the expected field response strengthens the case for bulk superconductivity. Failure to resolve an anomaly may instead reflect sensitivity, sample size, a small superconducting fraction or an incorrect baseline. It leaves thermodynamic confirmation incomplete; it does not by itself establish absence of superconductivity. These are reporting and interpretation criteria from the pinned chapter, not independently verified measurements.\n\n Limits and disputes\n\nThe phenomenological alpha model retains the BCS normalized gap shape while varying \\alpha=\\Delta(0)/(kBTc) in the thermodynamic calculation. Padamsee and colleagues describe its quasiparticle construction in their abstract. A successful fit is not a microscopic derivation of the interaction. \n\nWithin that model the jump scales as 1.426(\\alpha/\\alpha{\\rm BCS})^2. This does not mean that the entire entropy or heat-capacity curve can simply be multiplied by that factor: the occupation functions also change. Gap anisotropy or multiple coupled bands can alter the normalized jump. Multiple bands do not necessarily broaden a single sharp transition; disorder, phase mixtures and a distribution of local transition temperatures are separate issues. \n\nBud'ko, Ni and Canfield report an empirical relation \\Delta Cp/Tc\\propto Tc^2 for their substituted Ba122 series together with specified literature samples. Equivalently, the jump itself scales as Tc^3 within that comparison. This is a dataset-dependent observation, not a fundamental law or a stand-alone proof of a pairing mechanism. The current check covers the publisher abstract, not a reanalysis of the data. \n\n Discovery implications\n\nUse an anomaly to constrain a proposed state together with independent probes. Ask which part of the temperature dependence is reliable, how much of the sample participates, and whether competing backgrounds could produce the same result. Preserve disagreement between probes and the uncertainty in extrapolated quantities.\n\nA useful next experiment resolves a specific ambiguity: a field-dependent background, an uncertain phase fraction, a residual low-temperature term or an alternative gap distribution. Comparing a single normalized jump to 1.426 cannot uniquely select gap symmetry, coupling strength or a mediator. These are model-discrimination questions, not new experimental findings.\n\n Related topics\n\nConnect heat capacity to , , , , and ."
+    },
+    {
+      "id": "scwiki-a4",
+      "topicId": "scwiki-topic-a4",
+      "code": "A4",
+      "slug": "isotope-effect",
+      "title": "Isotope effect: mass response and pairing constraints",
+      "summary": "Separate partial and total isotope coefficients, preserve experimental criteria, and test the assumptions behind the one-half benchmark.",
+      "aliases": [
+        "isotope exponent",
+        "partial isotope coefficient",
+        "boron isotope",
+        "isotope substitution",
+        "phonon mass"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experiment",
+        "hypothesis"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "693fdc0beaba4ba68bb3",
+      "materialCases": [
+        {
+          "id": "scwiki-a4-material-1",
+          "formula": "MgB2",
+          "sample": "boron-10 sample, solid piece from reacted pellet",
+          "recordType": "experiment",
+          "tcK": 40.2,
+          "reportedTemperatureK": 40.2,
+          "temperatureKind": "transition",
+          "temperatureNote": "Magnetic onset in 25 G; not zero resistance or a zero-field thermodynamic Tc",
+          "criterion": "diamagnetic",
+          "pressureRegime": "unknown",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "SQUID magnetization, warming after zero-field cooling; 2% of low-temperature diamagnetic signal",
+          "sourceId": "source-22ad55507a1e49c5"
+        },
+        {
+          "id": "scwiki-a4-material-2",
+          "formula": "MgB2",
+          "sample": "boron-11 sample, solid piece from reacted pellet",
+          "recordType": "experiment",
+          "tcK": 39.2,
+          "reportedTemperatureK": 39.2,
+          "temperatureKind": "transition",
+          "temperatureNote": "Magnetic onset in 25 G; not zero resistance or a zero-field thermodynamic Tc",
+          "criterion": "diamagnetic",
+          "pressureRegime": "unknown",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "SQUID magnetization, warming after zero-field cooling; 2% of low-temperature diamagnetic signal",
+          "sourceId": "source-22ad55507a1e49c5"
+        }
+      ],
+      "dois": [
+        "10.1103/PhysRevLett.86.1877",
+        "10.1038/35078037",
+        "10.1103/PhysRev.78.477",
+        "10.1103/PhysRev.78.487",
+        "10.1103/PhysRev.79.845"
+      ],
+      "text": " Scope\n\nIsotope substitution changes nuclear mass while keeping the element the same. The resulting response of a transition temperature can constrain lattice involvement, provided the compared samples have controlled chemistry and structure. It does not, by itself, identify the complete pairing interaction. This entry distinguishes a mass derivative, a finite comparison between samples and a microscopic explanation.\n\nThe classic mercury reports by Maxwell and Reynolds and colleagues, and Fröhlich's early theory paper, are historical starting points. Their bibliographic identities are checked here; their original experimental curves and derivations are not. No mercury exponent is extracted from those metadata records.   \n\n Mathematical assumptions\n\nFor element i, with other masses and specified sample conditions held fixed, define\n\n\\alphai=-\\frac{\\partial\\ln Tc}{\\partial\\ln Mi},\\qquad \\widehat\\alphai=-\\frac{\\ln(T{c,2}/T{c,1})}{\\ln(M{i,2}/M{i,1})}.\n\nThe finite estimate averages a slope over the chosen interval; it equals the local derivative only for an appropriate limiting interval or a power law. Use the mean mass implied by measured isotope abundances, not automatically an integer isotope label. A partial coefficient is not the total \\alpha{\\rm tot}=\\sumi\\alphai. This sum describes a common logarithmic scaling of all component masses under the same constraints. \n\nFor a harmonic mode with fixed force constant, \\omega\\propto M^{-1/2}. If the transition scale is proportional to that frequency and all dimensionless interaction parameters remain mass independent, differentiation gives \\alpha=1/2. The fixed-parameter condition is essential. A measured deviation challenges that restricted model, not every possible electron–phonon theory. \n\nAn illustrative two-mass optical oscillator makes the distinction concrete. If \\omega^2=K(1/M1+1/M2) and Tc\\propto\\omega, direct differentiation gives\n\n\\alpha1=\\frac{M2}{2(M1+M2)},\\qquad \\alpha2=\\frac{M1}{2(M1+M2)},\\qquad \\alpha1+\\alpha2=\\frac12.\n\nEach partial coefficient can be below one half even in this harmonic construction. These equations are a local illustrative derivation, checked against numerical mass derivatives; they are not a fit to MgB2 or a microscopic pairing calculation.\n\nFor uncertainty propagation let N=\\ln(T{c,2}/T{c,1}) and D=\\ln(M{i,2}/M{i,1}). First-order propagation for \\widehat\\alpha=-N/D gives\n\n\\sigma\\alpha^2\\simeq\\frac{\\operatorname{Var}(N)}{D^2}+\\frac{N^2\\operatorname{Var}(D)}{D^4}-\\frac{2N\\operatorname{Cov}(N,D)}{D^3}.\n\nThis linear approximation requires small uncertainties relative to the resolved mass interval. Shared calibration errors can be correlated; treating all temperatures as independent can misstate the uncertainty. The analytic gradient was checked against finite differences. Those arithmetic checks do not establish experimental precision.\n\n Experimental criteria\n\nBud'ko and colleagues report MgB2 isotope samples with magnetic onsets at 40.2 K for boron-10 and 39.2 K for boron-11. They use 25 G, warming after zero-field cooling, and a 2% onset of the low-temperature diamagnetic signal. Heat capacity also shows the shift. Their reported boron coefficient is 0.26\\pm0.03, a partial coefficient. Using nominal masses 10 and 11 gives about 0.264 from the stated temperatures; this only checks arithmetic, not enrichment or their error estimate. \n\nA separate study by Hinks, Claus and Jorgensen measures both components. Its author manuscript reports partial coefficients of 0.30(1) for boron and 0.02(1) for magnesium, with total 0.32(1). Its magnetic protocol uses 1 G and compares extrapolated onset with a 10% criterion. These values belong to that study and must not be assembled from unrelated samples or criteria. The authors explicitly discuss possible impurity effects in their magnesium comparison. \n\nFor a new comparison, report enrichment, composition, structure, defects, preparation history and the exact temperature criterion. Characterize spectral frequency shifts where feasible. Back-exchange can test reversibility, but annealing itself may change the specimen. Repeat controls and uncertainty estimates are needed before assigning a shift exclusively to mass. These are editorial reporting recommendations, not claims that every cited study performed every control.\n\n Limits and disputes\n\nA small response for one element does not exclude its contribution to a coupled vibrational system. Conversely, a nonzero response does not reconstruct the full electron–phonon spectral function or uniquely determine a mediator. Mass-dependent interactions, anharmonicity and structural changes require explicit models; the sign or size alone cannot settle them. The cited Hinks manuscript discusses alternatives to its own interaction-parameter interpretation. \n\nDo not merge resistive onset, zero resistance, magnetic screening and a calorimetric transition into one unqualified temperature. The material records below preserve the magnetic criterion actually checked. Pressure and equilibrium classifications not established in the selected passages remain unknown. Comparing isotope coefficients from different studies also requires their sample preparation and systematic uncertainties.\n\n Discovery implications\n\nAsk which controlled observation would separate a direct mass dependence from a changed sample. Joint measurements of structure, composition, vibrational spectra and independent superconducting probes can narrow the interpretation. Preserve null results and disagreements rather than treating the isotope exponent as a pass/fail label.\n\nA quantitative theory should predict the response of the same observable under the same substitution and constraints. Agreement with one coefficient is a consistency check; a credible explanation must also confront the remaining measurements. These are model-discrimination criteria, not a new material discovery.\n\n Related topics\n\nRead the , , , , and  alongside an isotope comparison."
     },
     {
       "id": "scwiki-a6",
@@ -145,7 +209,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "ae2e0cc952e1edc8236e",
+      "revision": "884c5be2585dc88338db",
       "materialCases": [],
       "dois": [
         "10.1103/RevModPhys.76.975",
@@ -177,7 +241,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "f44954a8fbc66d2fb5d1",
+      "revision": "f3016ba47af384bf3e2a",
       "materialCases": [],
       "dois": [
         "10.1103/PhysRev.108.1175",
@@ -203,7 +267,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "eadc52f287d74c62e5ab",
+      "revision": "6220568a397fe22f262c",
       "materialCases": [
         {
           "formula": "MgB2",
@@ -266,7 +330,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "0ec0bfa61f5b4e11d916",
+      "revision": "278dd2ba2e658011c450",
       "materialCases": [
         {
           "formula": "KFe2As2",
@@ -329,7 +393,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "25ee27d1b9c13aef6243",
+      "revision": "1a1ab554e26e9b738215",
       "materialCases": [
         {
           "formula": "LaAlO3/SrTiO3",
@@ -394,7 +458,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "8b8a93709467223e272d",
+      "revision": "05ac57742146da037e74",
       "materialCases": [
         {
           "formula": "HgBa2Ca2Cu3O8+delta",
@@ -462,7 +526,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "6d6d6da5226f729c0aa7",
+      "revision": "d7db6b564c8d3b1d2119",
       "materialCases": [
         {
           "formula": "LaFeAsO1-xFx",
@@ -545,7 +609,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "8e4c86675b92764040c0",
+      "revision": "0ff487afce43ca5c1a95",
       "materialCases": [
         {
           "formula": "Nd0.8Sr0.2NiO2",
@@ -609,7 +673,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "93b4800c8de6ad1e7682",
+      "revision": "b71381ed038e598f3a6e",
       "materialCases": [
         {
           "formula": "Sr2RuO4",
@@ -655,7 +719,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "57e00683b3a07d5cd53d",
+      "revision": "a49bb29da100a71165e9",
       "materialCases": [
         {
           "formula": "twisted bilayer graphene",
@@ -704,7 +768,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "3be3da5e0a427964925a",
+      "revision": "d90e2d7b1432fe8f7be8",
       "materialCases": [
         {
           "formula": "κ-(BEDT-TTF)2Cu2(CN)3",
@@ -752,7 +816,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "e908b42349a109b36297",
+      "revision": "1013209bafda03572182",
       "materialCases": [
         {
           "formula": "overdoped cuprates",
