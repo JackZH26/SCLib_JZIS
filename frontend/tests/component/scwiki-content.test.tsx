@@ -14,6 +14,25 @@ import {legacyDestination} from "@/lib/site-routes";
 import {GET} from "@/app/api/scwiki/v1/[[...segments]]/route";
 const get=(segments:string[],query="")=>GET(new NextRequest("http://localhost/api/scwiki/v1/"+segments.join("/")+query),{params:Promise.resolve({segments})});
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("separates interface noise-floor zero, BKT analysis and spectroscopic temperatures through API exports",async()=>{
+  const a=articles().find(a=>a.code==="D11")!;
+  const zero=a.materialCases.filter(c=>c.criterion==="zero-resistance");
+  expect(zero.map(c=>c.tcK)).toEqual([0.2,0.1]);
+  const bkt=a.materialCases.find(c=>c.criterion==="bkt-iv-alpha-three")!;
+  expect(bkt.tcK).toBe(0.188);
+  const gap=a.materialCases.find(c=>c.criterion==="spectroscopic-gap")!;
+  expect(gap.tcK).toBeNull();expect(gap.reportedTemperatureK).toBe(65);
+  for(const q of ["二维超导","interface superconductivity"]){
+   expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
+   expect(searchArticles(searchIndex().entries,q,{tcMin:1}).some(x=>x.id===a.id)).toBe(false);
+  }
+  const data=await(await get(["articles",a.id,"sections","oxide-interface-controls"])).json();
+  const logvenov=data.sources.find((x:{doi:string})=>x.doi==="10.1126/science.1178863");
+  expect(logvenov.verification.scope).toBe("original-abstract-only");
+  const md=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+  expect(md).toContain("model conversion");expect(md).toContain("Complete scientific acceptance remains open");
+ });
+
  it("exposes the approved overview through discovery and exports without inventing material transitions",async()=>{
   const response=await get(["articles","scwiki-overview"]);
   expect(response.status).toBe(200);
