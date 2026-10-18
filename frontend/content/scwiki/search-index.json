@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "09f2f2d22eaf86300b6e",
+  "revision": "e24fb0290d16e1a7f050",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -6791,6 +6791,103 @@
         "10.1126/science.aab0103"
       ],
       "text": " Scope\n\nElectronic nematic order makes symmetry-related directions inequivalent without requiring a new translation period. For a tetragonal crystal, a common example is spontaneous fourfold-to-twofold symmetry reduction. Resistivity anisotropy is a possible response, not a universal definition of the order parameter: external strain, pre-existing orthorhombicity and domain populations can also make transport anisotropic. Establishing spontaneous order requires identifying the symmetry-breaking field and its zero-field limit.   \n\nElectronic and lattice degrees of freedom with the same symmetry couple. Evidence for an electronic instability does not make the lattice irrelevant, and the small size of a distortion alone does not prove which subsystem drives the transition. Orbital polarization, unequal fluctuations at two magnetic wave vectors and structural strain are candidate coupled variables; their appearance together is not a causal ranking.  \n\n Mathematical assumptions\n\nA uniform illustrative free energy is F=a\\phi^2/2+b\\phi^4/4+C0\\epsilon^2/2-\\lambda\\phi\\epsilon-\\sigma\\epsilon, with nematic variable \\phi, symmetry-matched strain \\epsilon and stress \\sigma. In the stable symmetric regime, the relaxed modulus is C=C0-\\lambda^2/a. At fixed strain, \\partial\\phi/\\partial\\epsilon=\\lambda/a; stress control instead allows the lattice to relax. For a=A(T-T0), a continuous mean-field coupled instability occurs at Ts=T0+\\lambda^2/(AC0). The extrapolated bare scale T0 is neither automatically the measured transition nor a superconducting temperature. Positive quartic stabilization and explicit strain conventions are required.  \n\nBand splitting also needs a symmetry test. At a symmetry point, the independent two-orbital illustration H=\\lambda{\\rm so}\\tauy\\sigmaz+\\phi\\tauz has energies E\\pm=\\pm\\sqrt{\\lambda{\\rm so}^2+\\phi^2}, each twice degenerate. Pauli matrices \\tau and \\sigma act on orbital and spin space. The spin–orbit term can preserve fourfold and time-reversal symmetries even when the bands are split; the nematic term reverses sign under a quarter rotation. Thus an observed splitting alone is not a symmetry-breaking diagnosis. This minimal model omits realistic dispersions and is not a fit to FeSe. \n\nFor pre-existing nematic order, symmetry can permit \\phi(\\Deltas^\\Deltad+\\mathrm{c.c.}) when the chosen d-wave component transforms like \\phi. In the illustrative quadratic matrix with diagonal entries as(T-T{s0}), ad(T-T{d0}) and real off-diagonal h=g\\phi, the highest instability is Tc=(T{s0}+T{d0})/2+\\sqrt{(T{s0}-T{d0})^2/4+h^2/(asad)}, for positive slopes. The mixed gap has a common onset; anisotropic gap magnitude or critical fields do not imply separate a-axis and b-axis thermodynamic transition temperatures. Quartic terms can permit additional lower-temperature phases, which this calculation does not solve. \n\n Experimental criteria\n\nChu's detwinned Co-substituted Ba122 crystals show larger resistivity along the shorter orthorhombic b axis. Above the structural transition, applied uniaxial stress already induces anisotropy, consistent with a substantial susceptibility. That induced response must not be relabelled spontaneous high-temperature order. Differential elastoresistance adds a strain-response measurement, with geometric backgrounds, strain transfer and residual bias requiring control.  \n\nBöhmer's three-point bending experiment measures a normalized Young modulus along tetragonal [110]. Inferring the shear modulus uses an approximation, a noncritical background and normalization choices. Its thermodynamic treatment cannot by itself distinguish spin-driven from orbital-driven order. The Co- and K-substituted series show different Curie–Weiss behavior; the study does not establish an identical quantum critical point beneath every superconducting dome. \n\nShimojima's FeSe ARPES assigns a roughly 50 meV zone-corner separation to orbital order in detwinned samples. The experiment uses different photon energies and resolutions for zone-center, zone-corner and detwinned measurements; these are not interchangeable spectra. Watson's later zone-center study resolves a spin–orbit contribution above the structural transition and additional splitting below it. Its constrained peak fits have larger uncertainty for a band partly above the Fermi cutoff. Momentum location, orbital assignment and fitting assumptions must accompany each energy scale.  \n\nFeSe also separates static magnetism from dynamical evidence. Böhmer's NMR interpretation and Wang's later finite-energy neutron results sample different frequency windows. The absence of conventional ambient-pressure magnetic order does not exclude spin fluctuations or settle the microscopic nematic driver. Neither a structural onset nor an ARPES measurement temperature is a superconducting transition record.  \n\nCuprates require their own controls. Ando reports anisotropic transport in untwinned crystals and interprets it in terms of conducting stripes. Lawler analyzes intra-unit-cell STM contrast near the pseudogap energy, with oxygen-site differences and precise lattice registration. This is not an ARPES image of Fermi arcs. Existing lattice anisotropy, chain contributions where present, spatial inhomogeneity and charge modulation must be assessed before inferring a distinct bulk nematic transition from any one signal.  \n\n Limits and disputes\n\nA susceptibility enhancement or extrapolated Curie–Weiss scale supports a proposed instability within its analysis model; it is not direct observation of an uncovered zero-temperature critical point. A superconducting dome near that scale does not establish the pairing interaction. Controlled theories of nematic fluctuation enhancement remain distinct from a unique material-level mechanism, and composition-dependent deviations must stay visible.   \n\nComplete scientific acceptance remains open. Chu's correction text still needs primary verification. Selected author manuscripts require final-version comparisons, including Watson's abstract/body difference in the quoted splitting increase and Shimojima's transition labels. Full strain calibration, ARPES fitting and STM registration have not been independently reproduced. No precise transition record is extracted from unresolved version differences.    \n\n Discovery implications\n\nCombine symmetry-resolved strain response with structural, magnetic and momentum-resolved measurements on documented samples. Track domain history, mechanical boundary conditions, energy resolution and the reference axes used for symmetry-channel names. Predictions should specify which measurement distinguishes a primary instability from a coupled response, and whether the proposed tuning changes static order, fluctuations or both. Keep proposed pairing benefits separate from demonstrated superconducting transition shifts.    \n\n Related topics\n\n, , and ."
+    },
+    {
+      "id": "scwiki-h7",
+      "topicId": "scwiki-topic-h7",
+      "code": "H7",
+      "slug": "nonlinear-hall-effect",
+      "title": "Nonlinear Hall effect: response order, symmetry and hysteresis",
+      "summary": "Distinguish second-order Hall transport from ordinary field nonlinearity, anomalous Hall response, hysteresis and superconducting diode signals.",
+      "aliases": [
+        "nonlinear Hall effect",
+        "NLHE",
+        "AHE",
+        "Berry curvature dipole",
+        "非线性霍尔",
+        "磁滞"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory",
+        "hypothesis"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "7a533f27669fb530776e",
+      "materialCases": [
+        {
+          "recordType": "experiment",
+          "formula": "WTe2",
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "criterion": "nonlinear-Hall-measurement",
+          "probe": "Second-harmonic electrical transport",
+          "aliases": [
+            "WTe2",
+            "tungsten ditelluride"
+          ],
+          "id": "scwiki-h7-material-1",
+          "sample": "Ma bilayer device; Figure2d",
+          "reportedTemperatureK": 50,
+          "temperatureNote": "Transverse/longitudinal second harmonic at50K/177.77Hz; not Tc.",
+          "sourceId": "source-44bfe8a945b93dfd"
+        },
+        {
+          "recordType": "experiment",
+          "formula": "WTe2",
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "criterion": "nonlinear-Hall-measurement",
+          "probe": "Second-harmonic electrical transport",
+          "aliases": [
+            "WTe2",
+            "tungsten ditelluride"
+          ],
+          "id": "scwiki-h7-material-2",
+          "sample": "Ma bilayer gate maps; Figure3",
+          "reportedTemperatureK": 10,
+          "temperatureNote": "Systematic gate map at10K; not Tc.",
+          "sourceId": "source-44bfe8a945b93dfd"
+        },
+        {
+          "recordType": "experiment",
+          "formula": "WTe2",
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "criterion": "nonlinear-Hall-measurement",
+          "probe": "Second-harmonic electrical transport",
+          "aliases": [
+            "WTe2",
+            "tungsten ditelluride"
+          ],
+          "id": "scwiki-h7-material-3",
+          "sample": "Kang five-layer Hall bar; authorv2 Figure2",
+          "reportedTemperatureK": 1.8,
+          "temperatureNote": "Zero-field nonlinear Hall at1.8K/137Hz; not Tc.",
+          "sourceId": "source-72e6507348216a06"
+        }
+      ],
+      "dois": [
+        "10.1103/PhysRevLett.115.216806",
+        "10.1038/s41586-018-0807-6",
+        "10.1038/s41563-019-0294-7",
+        "10.1103/RevModPhys.82.1539",
+        "10.1038/s41586-020-2590-4",
+        "10.1038/s41567-026-03266-8",
+        "10.1038/s41586-026-10547-y",
+        "10.1038/nature15723",
+        "10.1103/PhysRevLett.131.027001"
+      ],
+      "text": " Scope\n\nA nonlinear Hall effect is a transverse response beyond first order in the driving electric field. A curved Hall-resistivity trace versus magnetic field can instead arise within ordinary linear-response transport. An anomalous Hall effect, a second-order Hall response, magnetic hysteresis and a superconducting diode signal therefore require separate measurement definitions. The second-order effect can appear in time-reversal-symmetric conductors; a zero-field linear Hall conductivity requires the relevant time-reversal symmetry to be broken.   \n\nThe familiar empirical separation into ordinary Hall and a term proportional to magnetization is not a universal definition of anomalous Hall physics. Noncollinear Mn3Sn provides a counterexample to requiring a large net ferromagnetic moment. Its magnetic symmetry matters even though the net moment is small. A hysteresis loop alone establishes history dependence, not the microscopic origin of a Hall signal.  \n\n Mathematical assumptions\n\nIn a fixed laboratory frame, write ja=\\sigma{ab}Eb+\\chi{abc}EbEc+\\cdots, summing repeated indices. The spatially uniform electric-dipole second-order tensor vanishes when inversion symmetry is present. Breaking inversion is necessary for this contribution but does not guarantee an allowed nonzero component. Boundaries, finite-wave-vector effects and other response mechanisms require separate treatment. \n\nFor the illustrative voltage law Vy=\\alpha I+\\beta I^2 and peak-amplitude drive I=I0\\cos\\omega t, the quadratic contribution is \\beta I0^2[1+\\cos(2\\omega t)]/2. A controlled quadratic DC measurement can also establish second-order transport; detecting 2\\omega is not an exclusive definition. Conversely, a thermal voltage proportional to dissipated power has the same harmonic structure, so a second harmonic is not sufficient evidence for a Berry-curvature mechanism. Phase and peak-versus-RMS conventions must be reported.  \n\nIn the two-dimensional semiclassical constant-relaxation-time model, Da=\\sumn\\int d^2k/(2\\pi)^2\\,f{n0}\\partial{ka}\\Omega{n,z} has dimensions of length. Time reversal makes Berry curvature odd in momentum, allowing its occupied-state integral to vanish while its dipole remains finite. The model gives a second-harmonic current proportional to (\\mathbf{D}\\cdot\\mathcal{E}). Here \\mathcal{E} is a complex field amplitude; omitted charge and Planck-constant factors must be restored consistently before numerical comparison. This is a model contribution, not the complete measured nonlinear conductivity.  \n\nIn this two-dimensional setting, a surviving mirror permits a dipole perpendicular to the mirror line, whereas an in-plane twofold rotation forces it to vanish. Thus fourfold-to-twofold nematic symmetry reduction alone does not establish a finite dipole, even before checking inversion. These two-dimensional vector rules should not be transferred unchanged to the three-dimensional dipole tensor. \n\n Experimental criteria\n\nMa's bilayer WTe2 experiment measures transverse second-harmonic voltages while independently tuning two gates. Figure 2d compares transverse and longitudinal contacts at 50 K and 177.77 Hz; Figure 2e uses 100 K, and the systematic Figure 3 gate maps use 10 K. Those temperatures describe different measurements, not superconducting transitions. The methods test several low frequencies and specify a sine-reference phase convention. The gate-dependent hysteresis associated with ferroelectric switching is not a magnetic-field hysteresis measurement. \n\nKang's few-layer WTe2 work combines Hall bars with circular devices for angular measurements. Its five-layer example is measured at 1.8 K and 137 Hz, while an eight-layer disk maps the angular response. Longitudinal and transverse first-harmonic signals help identify geometric mixing, and the disk analysis antisymmetrizes opposing injection angles. Temperature-dependent scaling suggests both intrinsic and extrinsic contributions; layer number, scattering and device geometry prevent assigning one universal nonlinear coefficient to all WTe2 samples. \n\nA credible identification records raw longitudinal and transverse channels, amplitude and frequency dependence, contact permutations, crystal axes, thermal stability and sweep history. Quadratic current scaling and allowed angular symmetry are necessary consistency checks for the proposed second-order contribution, but they do not alone eliminate heating or separate every scattering mechanism. Keep fixed-axis current reversal distinct from rotating the injection and voltage-measurement frame; the latter can change a reported transverse component's sign without changing the quadratic field law.   \n\n Limits and disputes\n\nThe superconducting diode effect concerns unequal positive- and negative-direction critical-current magnitudes. Ando's Nb/V/Ta superlattice demonstrates this through DC resistance–current measurements, rather than a transverse Hall channel. A zero-resistance window in one direction does not make the whole switching cycle lossless. Later conventional-film work identifies asymmetric vortex barriers and screening currents as possible diode mechanisms, so nonreciprocity alone does not establish exotic pairing.  \n\nRomero's longitudinal terahertz/DC study and Yang's high-field re-entrant nickelate measurements do not supply nonlinear Hall evidence in the portions checked here. A scattering rate, nematic motivation or re-entrant zero-resistance field must not be relabelled a Hall coefficient or Hall switching field. Magnetic history can motivate additional measurements but cannot fill a missing transverse dataset.  \n\nComplete scientific acceptance remains open. Selected Ma final figures and methods, Kang author-manuscript methods and figures, and Sodemann's theory were checked; full artifact controls, final-version comparisons and raw-data reproduction remain incomplete. Kang's current-reversal wording additionally requires complete wiring and reference-frame reconciliation before a sign rule is exported. Ando, Nakatsuji and Hou are used at primary-abstract scope.      \n\n Discovery implications\n\nDesign a discrimination experiment before assigning a mechanism: state which response order is measured, which symmetry allows it, and which contact or thermal control could falsify the interpretation. When magnetic or superconducting states coexist, compare magnetization, longitudinal resistance, transverse harmonics and field history on the same documented device. Preserve two-dimensional versus bulk units and distinguish a calculated Berry-curvature dipole from the total experimental response.    \n\n Related topics\n\n, , and ."
     }
   ]
 }

@@ -1,0 +1,435 @@
+{
+  "id": "scwiki-h7",
+  "topicId": "scwiki-topic-h7",
+  "code": "H7",
+  "slug": "nonlinear-hall-effect",
+  "title": "Nonlinear Hall effect: response order, symmetry and hysteresis",
+  "summary": "Distinguish second-order Hall transport from ordinary field nonlinearity, anomalous Hall response, hysteresis and superconducting diode signals.",
+  "aliases": [
+    "nonlinear Hall effect",
+    "NLHE",
+    "AHE",
+    "Berry curvature dipole",
+    "非线性霍尔",
+    "磁滞"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "F2",
+    "H6",
+    "G3"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T17:13:55.102648+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Sodemann author theory, Ma final response figures/methods, Kang author methods/figures, primary Ando/Nakatsuji/Hou abstracts and inherited Romero/Yang scoped evidence.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Full supplement artifact controls, source-version comparison and raw-data reproduction remain open.",
+      "Kang current-direction sign wording requires complete wiring/reference-frame reconciliation.",
+      "Independent harmonic and Berry-curvature examples are not reproductions of a material experiment."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "H_anomalous_normal_state/H7_nonlinear_Hall_hysteresis.md",
+    "sha256": "c633899c7f2502b7e7c44695785cb7f847c776a0c16188dd06d25698fc0c2693",
+    "sourceId": "file-93e502fcea2647e4"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 127,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Retain pinned signal distinctions; correct exclusive2omega and universalM criteria, add actual temperatures/geometry and explicit unresolved author sign conventions. Source audit badges are not acceptance."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-h7-correction-1",
+      "description": "A controlled quadratic DC response can be second order without lock-in detection; a second harmonic alone does not establish a Berry-curvature mechanism.",
+      "sourceId": "source-8c7527f0a5a94d1f",
+      "scope": "Correct inherited exclusive2omega criterion."
+    },
+    {
+      "id": "scwiki-h7-correction-2",
+      "description": "Large bulk ferromagnetic magnetization and matching magnetization coercivity are not universal defining requirements for anomalous Hall response.",
+      "sourceId": "source-40175a38d94ec950",
+      "scope": "Distinguish magnetic symmetry from a simple empirical proportional-to-M fit."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "V_y=\\alpha I+\\beta I^2",
+      "check": "27 harmonic cases,6 periodic Berry integration cases and2 point-group controls passed; thermal power has identical quadratic harmonics, not a unique mechanism diagnosis."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-8c7527f0a5a94d1f",
+      "doi": "10.1103/PhysRevLett.115.216806",
+      "title": "Quantum Nonlinear Hall Effect Induced by Berry Curvature Dipole in Time-Reversal Invariant Materials",
+      "year": 2015,
+      "url": "https://doi.org/10.1103/PhysRevLett.115.216806",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-theory-and-equation-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1508.00571v1",
+        "note": "Author v1 pp.1–3 read; p.2 equations visually checked. Constant relaxation time, hbar=1 and complex peak-field convention; two-dimensional dipole has length units, three-dimensional tensor is dimensionless. Full final-version comparison remains open."
+      }
+    },
+    {
+      "id": "source-44bfe8a945b93dfd",
+      "doi": "10.1038/s41586-018-0807-6",
+      "title": "Observation of the nonlinear Hall effect under time-reversal-symmetric conditions",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41586-018-0807-6",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://ciqm.harvard.edu/uploads/2/3/3/4/23349210/ma_xu2019.pdf",
+        "note": "Final pp.1–3 and selected p.4 extrinsic-control/p.7 methods text read; pp.3/7 visually checked. Figure2d at50K/177.77Hz,2e at100K,Figure3 maps10K. Online17December2018,issue17January2019. Full supplementary II.1/VIII artifact controls remain open; methods sine phase convention differs from independent cosine illustration."
+      }
+    },
+    {
+      "id": "source-72e6507348216a06",
+      "doi": "10.1038/s41563-019-0294-7",
+      "title": "Nonlinear anomalous Hall effect in few-layer WTe2",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41563-019-0294-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1809.08744v2",
+        "note": "Author v2 dated8October2018, pp.1–6 text and p.10 Figures2/3 visually checked; publisher abstract/date checked. Five-layer Hall bar1.8K/137Hz; eight-layer disk angular scan and angle-pair antisymmetrization. Author wording about current-direction sign requires explicit voltage-lead/rotating-frame conventions; full wiring and final supplement review remains open. DOI final published25February2019."
+      }
+    },
+    {
+      "id": "source-7faba5d556864a32",
+      "doi": "10.1103/RevModPhys.82.1539",
+      "title": "Anomalous Hall effect",
+      "year": 2010,
+      "url": "https://doi.org/10.1103/RevModPhys.82.1539",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-abstract-background-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/abs/0904.4154",
+        "note": "Author review abstract checked; intrinsic Berry curvature and extrinsic scattering mechanisms. Background only, not a complete primary experimental audit."
+      }
+    },
+    {
+      "id": "source-a39214fe64a9445d",
+      "doi": "10.1038/s41586-020-2590-4",
+      "title": "Observation of superconducting diode effect",
+      "year": 2020,
+      "url": "https://doi.org/10.1038/s41586-020-2590-4",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-and-publication-date-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/32814888/",
+        "note": "Primary abstract reproduced in PubMed and publisher date checked: DC resistance–current asymmetry in noncentrosymmetric Nb/V/Ta superlattice; critical-current difference. Online19August2020,issue20August2020. Full methods and device controls not reviewed; no temperature or efficiency extracted."
+      }
+    },
+    {
+      "id": "source-05b2d5ff6757b5eb",
+      "doi": "10.1038/s41567-026-03266-8",
+      "title": "Planckian scattering and parallel conduction channels in an iron chalcogenide superconductor",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41567-026-03266-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-figure-and-final-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/2505.00623v1",
+        "note": "Author v1, 1 May 2025: selected methods and results, pages 1–4, read; page 4 Figure 3 visually checked. Final publisher abstract and publication date, 23 April 2026, checked. Final full text requires access; the attempted PDF returned HTML. Complete version comparison and spectral-weight calibration remain open."
+      }
+    },
+    {
+      "id": "source-3504ee9027165d0a",
+      "doi": "10.1038/s41586-026-10547-y",
+      "title": "Field re-entrant superconductivity in Eu-doped infinite-layer nickelates",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10547-y",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2508.14666v3",
+        "note": "Published23April2026; read authorv3 dated25April2026, selectedpp2–8, captionsp12, methodsp13–14; Fig2p19/Fig3p20 visually checked. Full final equivalence, calibration and all raw data remain open."
+      }
+    },
+    {
+      "id": "source-40175a38d94ec950",
+      "doi": "10.1038/nature15723",
+      "title": "Large anomalous Hall effect in a non-collinear antiferromagnet at room temperature",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/nature15723",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-institution-primary-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://keio.elsevierpure.com/en/publications/large-anomalous-hall-effect-in-a-non-collinear-antiferromagnet-at/",
+        "note": "Primary abstract reproduced at coauthor institution checked. Mn3Sn noncollinear antiferromagnet has large AHE despite very small net magnetization. No precise conductivity or moment extracted; full magnetic/transport methods remain open."
+      }
+    },
+    {
+      "id": "source-b5ffaf6a410b9a65",
+      "doi": "10.1103/PhysRevLett.131.027001",
+      "title": "Ubiquitous Superconducting Diode Effect in Superconductor Thin Films",
+      "year": 2023,
+      "url": "https://doi.org/10.1103/PhysRevLett.131.027001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.131.027001",
+        "note": "Published13July2023. Publisher abstract identifies asymmetric vortex barriers and Meissner screening as diode mechanisms in conventional thin films. Full controls/model not reviewed, no efficiency or field record extracted."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "recordType": "experiment",
+      "formula": "WTe2",
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "criterion": "nonlinear-Hall-measurement",
+      "probe": "Second-harmonic electrical transport",
+      "aliases": [
+        "WTe2",
+        "tungsten ditelluride"
+      ],
+      "id": "scwiki-h7-material-1",
+      "sample": "Ma bilayer device; Figure2d",
+      "reportedTemperatureK": 50,
+      "temperatureNote": "Transverse/longitudinal second harmonic at50K/177.77Hz; not Tc.",
+      "sourceId": "source-44bfe8a945b93dfd"
+    },
+    {
+      "recordType": "experiment",
+      "formula": "WTe2",
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "criterion": "nonlinear-Hall-measurement",
+      "probe": "Second-harmonic electrical transport",
+      "aliases": [
+        "WTe2",
+        "tungsten ditelluride"
+      ],
+      "id": "scwiki-h7-material-2",
+      "sample": "Ma bilayer gate maps; Figure3",
+      "reportedTemperatureK": 10,
+      "temperatureNote": "Systematic gate map at10K; not Tc.",
+      "sourceId": "source-44bfe8a945b93dfd"
+    },
+    {
+      "recordType": "experiment",
+      "formula": "WTe2",
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "criterion": "nonlinear-Hall-measurement",
+      "probe": "Second-harmonic electrical transport",
+      "aliases": [
+        "WTe2",
+        "tungsten ditelluride"
+      ],
+      "id": "scwiki-h7-material-3",
+      "sample": "Kang five-layer Hall bar; authorv2 Figure2",
+      "reportedTemperatureK": 1.8,
+      "temperatureNote": "Zero-field nonlinear Hall at1.8K/137Hz; not Tc.",
+      "sourceId": "source-72e6507348216a06"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-h7-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A nonlinear Hall effect is a transverse response beyond first order in the driving electric field. A curved Hall-resistivity trace versus magnetic field can instead arise within ordinary linear-response transport. An anomalous Hall effect, a second-order Hall response, magnetic hysteresis and a superconducting diode signal therefore require separate measurement definitions. The second-order effect can appear in time-reversal-symmetric conductors; a zero-field linear Hall conductivity requires the relevant time-reversal symmetry to be broken.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-8c7527f0a5a94d1f",
+        "source-72e6507348216a06",
+        "source-7faba5d556864a32"
+      ],
+      "conditions": "Retain response order, fixed/rotating axes, contact polarity, phase convention, layer number, temperature, field history and source version. A measurement temperature is not Tc.",
+      "verificationScope": "Selected primary text/figures and independent harmonic, Berry-integral and symmetry models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h7-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The familiar empirical separation into ordinary Hall and a term proportional to magnetization is not a universal definition of anomalous Hall physics. Noncollinear Mn3Sn provides a counterexample to requiring a large net ferromagnetic moment. Its magnetic symmetry matters even though the net moment is small. A hysteresis loop alone establishes history dependence, not the microscopic origin of a Hall signal.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-7faba5d556864a32",
+        "source-40175a38d94ec950"
+      ],
+      "conditions": "Retain response order, fixed/rotating axes, contact polarity, phase convention, layer number, temperature, field history and source version. A measurement temperature is not Tc.",
+      "verificationScope": "Selected primary text/figures and independent harmonic, Berry-integral and symmetry models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h7-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In a fixed laboratory frame, write $j_a=\\sigma_{ab}E_b+\\chi_{abc}E_bE_c+\\cdots$, summing repeated indices. The spatially uniform electric-dipole second-order tensor vanishes when inversion symmetry is present. Breaking inversion is necessary for this contribution but does not guarantee an allowed nonzero component. Boundaries, finite-wave-vector effects and other response mechanisms require separate treatment.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8c7527f0a5a94d1f"
+      ],
+      "conditions": "Retain response order, fixed/rotating axes, contact polarity, phase convention, layer number, temperature, field history and source version. A measurement temperature is not Tc.",
+      "verificationScope": "Selected primary text/figures and independent harmonic, Berry-integral and symmetry models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h7-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For the illustrative voltage law $V_y=\\alpha I+\\beta I^2$ and peak-amplitude drive $I=I_0\\cos\\omega t$, the quadratic contribution is $\\beta I_0^2[1+\\cos(2\\omega t)]/2$. A controlled quadratic DC measurement can also establish second-order transport; detecting $2\\omega$ is not an exclusive definition. Conversely, a thermal voltage proportional to dissipated power has the same harmonic structure, so a second harmonic is not sufficient evidence for a Berry-curvature mechanism. Phase and peak-versus-RMS conventions must be reported.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8c7527f0a5a94d1f",
+        "source-44bfe8a945b93dfd"
+      ],
+      "conditions": "Retain response order, fixed/rotating axes, contact polarity, phase convention, layer number, temperature, field history and source version. A measurement temperature is not Tc.",
+      "verificationScope": "Selected primary text/figures and independent harmonic, Berry-integral and symmetry models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h7-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In the two-dimensional semiclassical constant-relaxation-time model, $D_a=\\sum_n\\int d^2k/(2\\pi)^2\\,f_{n0}\\partial_{k_a}\\Omega_{n,z}$ has dimensions of length. Time reversal makes Berry curvature odd in momentum, allowing its occupied-state integral to vanish while its dipole remains finite. The model gives a second-harmonic current proportional to $[\\tau/(1+i\\omega\\tau)](\\hat{z}\\times\\mathcal{E})(\\mathbf{D}\\cdot\\mathcal{E})$. Here $\\mathcal{E}$ is a complex field amplitude; omitted charge and Planck-constant factors must be restored consistently before numerical comparison. This is a model contribution, not the complete measured nonlinear conductivity.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8c7527f0a5a94d1f",
+        "source-72e6507348216a06"
+      ],
+      "conditions": "Retain response order, fixed/rotating axes, contact polarity, phase convention, layer number, temperature, field history and source version. A measurement temperature is not Tc.",
+      "verificationScope": "Selected primary text/figures and independent harmonic, Berry-integral and symmetry models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h7-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In this two-dimensional setting, a surviving mirror permits a dipole perpendicular to the mirror line, whereas an in-plane twofold rotation forces it to vanish. Thus fourfold-to-twofold nematic symmetry reduction alone does not establish a finite dipole, even before checking inversion. These two-dimensional vector rules should not be transferred unchanged to the three-dimensional dipole tensor.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8c7527f0a5a94d1f"
+      ],
+      "conditions": "Retain response order, fixed/rotating axes, contact polarity, phase convention, layer number, temperature, field history and source version. A measurement temperature is not Tc.",
+      "verificationScope": "Selected primary text/figures and independent harmonic, Berry-integral and symmetry models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h7-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Ma's bilayer WTe2 experiment measures transverse second-harmonic voltages while independently tuning two gates. Figure 2d compares transverse and longitudinal contacts at 50 K and 177.77 Hz; Figure 2e uses 100 K, and the systematic Figure 3 gate maps use 10 K. Those temperatures describe different measurements, not superconducting transitions. The methods test several low frequencies and specify a sine-reference phase convention. The gate-dependent hysteresis associated with ferroelectric switching is not a magnetic-field hysteresis measurement.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-44bfe8a945b93dfd"
+      ],
+      "conditions": "Retain response order, fixed/rotating axes, contact polarity, phase convention, layer number, temperature, field history and source version. A measurement temperature is not Tc.",
+      "verificationScope": "Selected primary text/figures and independent harmonic, Berry-integral and symmetry models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h7-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Kang's few-layer WTe2 work combines Hall bars with circular devices for angular measurements. Its five-layer example is measured at 1.8 K and 137 Hz, while an eight-layer disk maps the angular response. Longitudinal and transverse first-harmonic signals help identify geometric mixing, and the disk analysis antisymmetrizes opposing injection angles. Temperature-dependent scaling suggests both intrinsic and extrinsic contributions; layer number, scattering and device geometry prevent assigning one universal nonlinear coefficient to all WTe2 samples.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-72e6507348216a06"
+      ],
+      "conditions": "Retain response order, fixed/rotating axes, contact polarity, phase convention, layer number, temperature, field history and source version. A measurement temperature is not Tc.",
+      "verificationScope": "Selected primary text/figures and independent harmonic, Berry-integral and symmetry models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h7-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "A credible identification records raw longitudinal and transverse channels, amplitude and frequency dependence, contact permutations, crystal axes, thermal stability and sweep history. Quadratic current scaling and allowed angular symmetry are necessary consistency checks for the proposed second-order contribution, but they do not alone eliminate heating or separate every scattering mechanism. Keep fixed-axis current reversal distinct from rotating the injection and voltage-measurement frame; the latter can change a reported transverse component's sign without changing the quadratic field law.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8c7527f0a5a94d1f",
+        "source-44bfe8a945b93dfd",
+        "source-72e6507348216a06"
+      ],
+      "conditions": "Retain response order, fixed/rotating axes, contact polarity, phase convention, layer number, temperature, field history and source version. A measurement temperature is not Tc.",
+      "verificationScope": "Selected primary text/figures and independent harmonic, Berry-integral and symmetry models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h7-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The superconducting diode effect concerns unequal positive- and negative-direction critical-current magnitudes. Ando's Nb/V/Ta superlattice demonstrates this through DC resistance–current measurements, rather than a transverse Hall channel. A zero-resistance window in one direction does not make the whole switching cycle lossless. Later conventional-film work identifies asymmetric vortex barriers and screening currents as possible diode mechanisms, so nonreciprocity alone does not establish exotic pairing.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-a39214fe64a9445d",
+        "source-b5ffaf6a410b9a65"
+      ],
+      "conditions": "Retain response order, fixed/rotating axes, contact polarity, phase convention, layer number, temperature, field history and source version. A measurement temperature is not Tc.",
+      "verificationScope": "Selected primary text/figures and independent harmonic, Berry-integral and symmetry models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h7-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Romero's longitudinal terahertz/DC study and Yang's high-field re-entrant nickelate measurements do not supply nonlinear Hall evidence in the portions checked here. A scattering rate, nematic motivation or re-entrant zero-resistance field must not be relabelled a Hall coefficient or Hall switching field. Magnetic history can motivate additional measurements but cannot fill a missing transverse dataset.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-05b2d5ff6757b5eb",
+        "source-3504ee9027165d0a"
+      ],
+      "conditions": "Retain response order, fixed/rotating axes, contact polarity, phase convention, layer number, temperature, field history and source version. A measurement temperature is not Tc.",
+      "verificationScope": "Selected primary text/figures and independent harmonic, Berry-integral and symmetry models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h7-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. Selected Ma final figures and methods, Kang author-manuscript methods and figures, and Sodemann's theory were checked; full artifact controls, final-version comparisons and raw-data reproduction remain incomplete. Kang's current-reversal wording additionally requires complete wiring and reference-frame reconciliation before a sign rule is exported. Ando, Nakatsuji and Hou are used at primary-abstract scope.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-8c7527f0a5a94d1f",
+        "source-44bfe8a945b93dfd",
+        "source-72e6507348216a06",
+        "source-a39214fe64a9445d",
+        "source-40175a38d94ec950",
+        "source-b5ffaf6a410b9a65"
+      ],
+      "conditions": "Retain response order, fixed/rotating axes, contact polarity, phase convention, layer number, temperature, field history and source version. A measurement temperature is not Tc.",
+      "verificationScope": "Selected primary text/figures and independent harmonic, Berry-integral and symmetry models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h7-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Design a discrimination experiment before assigning a mechanism: state which response order is measured, which symmetry allows it, and which contact or thermal control could falsify the interpretation. When magnetic or superconducting states coexist, compare magnetization, longitudinal resistance, transverse harmonics and field history on the same documented device. Preserve two-dimensional versus bulk units and distinguish a calculated Berry-curvature dipole from the total experimental response.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-8c7527f0a5a94d1f",
+        "source-44bfe8a945b93dfd",
+        "source-72e6507348216a06",
+        "source-b5ffaf6a410b9a65"
+      ],
+      "conditions": "Retain response order, fixed/rotating axes, contact polarity, phase convention, layer number, temperature, field history and source version. A measurement temperature is not Tc.",
+      "verificationScope": "Selected primary text/figures and independent harmonic, Berry-integral and symmetry models; full scientific acceptance remains open."
+    }
+  ]
+}
