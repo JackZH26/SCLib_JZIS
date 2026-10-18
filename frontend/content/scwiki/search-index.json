@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "226813fb78133d901d5f",
+  "revision": "32742a1c3c9d1c29c901",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -3518,6 +3518,243 @@
         "10.1103/PhysRevLett.84.5900"
       ],
       "text": " Scope\n\nChemical doping changes a material's composition; it does not supply a universal carrier counter. Distinguish the starting mixture, measured site occupancy, formal ionic charge and mobile carriers. Substitution can also change disorder, bond geometry and competing order. Oxygen removal or chain ordering adds another control variable. A superconducting dome is therefore a relationship among specified samples and criteria, not a recipe transferable between families.    \n\nNotation matters even before measurement. Takagi's 1989 paper uses (\\mathrm{La}{1-x}\\mathrm{Sr}x)2\\mathrm{CuO}4 and studies x\\leq0.175. In the alternative formula \\mathrm{La}{2-y}\\mathrm{Sr}y\\mathrm{CuO}4, the same composition has y=2x, reaching 0.35. The inherited draft attached 0.175 to the latter convention without converting it. This page corrects that factor-of-two mismatch; the original abstract, not its inaccessible full methods, was checked. \n\n Mathematical assumptions\n\nCharge neutrality is useful bookkeeping under explicit ionic assumptions. Taking La/Nd as 3+, Sr as 2+, Ce as 4+ and O as 2- gives formal average Cu valence 2+x+2\\delta in \\mathrm{La}{2-x}\\mathrm{Sr}x\\mathrm{CuO}{4+\\delta}, and 2-x-2y in \\mathrm{Nd}{2-x}\\mathrm{Ce}x\\mathrm{CuO}{4-y}. Stoichiometric infinite-layer \\mathrm{Nd}{1-x}\\mathrm{Sr}x\\mathrm{NiO}2 gives formal Ni valence 1+x. These balances do not locate holes among orbitals or establish an itinerant carrier density. Oxygen deviations and compensating defects change the balance.  \n\nEven the elementary weak-field two-band Drude model yields RH=(nh\\muh^2-ne\\mue^2)/[e(nh\\muh+ne\\mue)^2], with e>0. Mobilities weight the response. For compensation, ne=nh=n, this becomes (\\muh-\\mue)/[en(\\muh+\\mue)]; its sign can reverse at fixed density. This illustrative identity is not a fit to correlated transport. Kasahara explicitly discusses why that simple model fails for the magnitude of the observed Hall response. \n\nLiang's empirical YBCO calibration uses p=11.491u+5.17\\times10^9u^6, u=1-c/c0, with c0=1.18447\\,\\mathrm{nm} and c measured at 22°C. It depends on chain-order assumptions and reference compositions. The relation Tc/T{c,\\max}=1-82.6(p-0.16)^2 has two algebraic branches and fails near the material's suppressed one-eighth region. Neither expression is a universal oxygen-to-hole conversion; a fitted lattice parameter and a directly measured carrier density are different evidence. \n\n Experimental criteria\n\nMeasure composition on the specimens whose transitions are compared. Ni's Co-substituted Ba122 series used wavelength-dispersive spectroscopy (WDS): actual Co fraction was about 0.74 times the nominal fraction for that growth series. A nominal 0.10 batch averaged approximately 0.074. Its phase diagram distinguishes resistance, magnetization and heat capacity. Resistive offset means maximum-slope extrapolation to zero, rather than an independently established instrumental zero. The reported maximum near 23 K spans measured fractions approximately 0.058–0.074. \n\nFor YBCO, oxygen content alone omits chain configuration. Liang combined oxygen control, ordered-chain preparations and room-temperature lattice measurements; Tc was the midpoint of field-cooled magnetization in 1 Oe along the c axis. Fully oxygenated material's 85.3 K transition anchors the overdoped calibration through the empirical parabola. It is not a new direct measurement of p. Record thermal history, chain order, calibration assumptions and their uncertainty alongside oxygen stoichiometry. \n\nIn the P-substituted Ba122 author manuscript, composition was measured by energy-dispersive X-ray analysis. Figure 2 separates onset and zero-resistivity temperatures. Version 3 reports zero resistance from x\\geq0.20 and a maximum transition around 31 K, while observing a narrow transition at x=0.33. Do not turn “isovalent” into proof of unchanged Fermi surfaces, scattering or carrier populations. Nor does a similar phase diagram make chemical substitution physically identical to applied pressure. \n\nLi's nickelate study concerns 8–10 nm films on SrTiO3, capped and reduced from perovskite precursors. Its superconducting compositions lie inside 0.125<x<0.25. Figure 2 defines two temperatures at 10% and 90% of each sample's resistance at 20 K; symbols average multiple samples and error bars show extrema. The comparison cuprate curve instead uses 50%. These are unequal criteria. The 20 K normalization is not a superconducting transition, and the sign-changing Hall response is interpreted through multiple bands. \n\n Limits and disputes\n\nChanging composition and introducing pair-breaking disorder can occur together. Sidis's original abstract reports different neutron-resonance responses to Ni and Zn impurities in YBCO. That comparison does not justify a universal impurity ranking across pairing states or substitution sites. Separate scattering, magnetic moments, charge redistribution, structural effects and phase purity before inferring the origin of a Tc trend. Abstract-only evidence cannot support a detailed impurity-dose reconstruction. \n\nVersion and specimen checks remain necessary. Ni's author manuscript mentions 0.078 in its specific-heat discussion while the phase-summary maximum uses 0.074; this page does not silently identify them as one specimen. Kasahara's earlier and later manuscripts differ in the composition range and reported zero-resistance boundary, and the later figure's color description conflicts with the displayed onset/zero labels. Use the labeled criteria, not color alone. Final journal comparisons and raw-data reproduction remain open.  \n\nA dome does not establish a unique pairing mechanism, homogeneous microscopic coexistence or a universal optimal carrier concentration. The nickelate manuscript notes sample-to-sample resistivity variations associated with microstructure and does not establish the origin of its small dip within the dome. Preserve that uncertainty; numerical resemblance to a cuprate anomaly is not an ordering measurement. \n\n Discovery implications\n\nStore nominal and measured composition separately, including the chemical formula convention, analytical method, uncertainty and spatial variation. Link each transition to its specimen, phase, oxygen/reduction history, substrate or strain, measurement criterion and source version. Keep Hall-derived model parameters separate from valence arithmetic. Prioritize reproducible composition–structure–property relationships and independent magnetic or thermodynamic checks before ranking a tuning series. The calculations here verify notation and algebra, not an optimal synthesis or a carrier-density calibration.    \n\n Related topics\n\nCompare , , , ,  and ."
+    },
+    {
+      "id": "scwiki-e3",
+      "topicId": "scwiki-topic-e3",
+      "code": "E3",
+      "slug": "electrostatic-gating",
+      "title": "Electrostatic gating: charge control and chemical changes",
+      "summary": "Read gate-tuned superconductivity through device history, capacitance, chemical controls and the actual transition criterion.",
+      "aliases": [
+        "electrostatic gating",
+        "gate tuning",
+        "ionic liquid",
+        "electric double layer",
+        "EDLT",
+        "quantum capacitance",
+        "field effect",
+        "electrochemical gating"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experiment"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "7cd4aee41b6718f9d648",
+      "materialCases": [
+        {
+          "id": "scwiki-e3-material-1",
+          "formula": "LaAlO3/SrTiO3",
+          "sample": "Caviglia gate-tuned dome maximum",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.31,
+          "tcK": 0.31,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate maximum from a BKT fit; not an onset or measured-zero temperature.",
+          "criterion": "BKT-resistance-fit",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Four-point sheet resistance",
+          "sourceId": "source-e9e3a49b753191bc"
+        },
+        {
+          "id": "scwiki-e3-material-2",
+          "formula": "WTe2",
+          "sample": "Fatemi device1 Vbg4V/Vtg5V",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.82,
+          "tcK": 0.82,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate onset at90percent normal resistance; same device transition has lower midpoint and zero.",
+          "criterion": "resistance-90-percent-normal",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Four-probe resistance",
+          "sourceId": "source-117f1ab64b772ff1",
+          "aliases": [
+            "tungsten ditelluride"
+          ]
+        },
+        {
+          "id": "scwiki-e3-material-3",
+          "formula": "WTe2",
+          "sample": "Fatemi device1 Vbg4V/Vtg5V",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.58,
+          "tcK": 0.58,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate midpoint, distinct from onset and zero.",
+          "criterion": "resistance-50-percent-normal",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Four-probe resistance",
+          "sourceId": "source-117f1ab64b772ff1",
+          "aliases": [
+            "tungsten ditelluride"
+          ]
+        },
+        {
+          "id": "scwiki-e3-material-4",
+          "formula": "WTe2",
+          "sample": "Fatemi device1 Vbg4V/Vtg5V",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.35,
+          "tcK": 0.35,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate measured zero; not mathematical proof of zero uncertainty.",
+          "criterion": "zero-resistance",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Four-probe resistance",
+          "sourceId": "source-117f1ab64b772ff1",
+          "aliases": [
+            "tungsten ditelluride"
+          ]
+        },
+        {
+          "id": "scwiki-e3-material-5",
+          "formula": "WTe2",
+          "sample": "Fatemi device2 maximum midpoint",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.95,
+          "tcK": 0.95,
+          "temperatureKind": "transition",
+          "temperatureNote": "Residual resistance persists due to reported device imperfection; not zero-resistance at0.95K.",
+          "criterion": "resistance-50-percent-normal",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Four-probe resistance",
+          "sourceId": "source-117f1ab64b772ff1",
+          "aliases": [
+            "tungsten ditelluride"
+          ]
+        },
+        {
+          "id": "scwiki-e3-material-6",
+          "formula": "MoS2",
+          "sample": "Lu D1 low-temperature state; authorv2 Fig1D",
+          "recordType": "experiment",
+          "reportedTemperatureK": 2.63,
+          "tcK": 2.63,
+          "temperatureKind": "transition",
+          "temperatureNote": "Phase-diagram criterion relative to normal resistance at15K; same state midpoint2.37K.",
+          "criterion": "resistance-90-percent-normal",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Gate-induced sheet resistance",
+          "sourceId": "source-cba51ab2111ccf0a",
+          "aliases": [
+            "molybdenum disulfide"
+          ]
+        },
+        {
+          "id": "scwiki-e3-material-7",
+          "formula": "MoS2",
+          "sample": "Lu D1 low-temperature state; authorv2 Fig1E",
+          "recordType": "experiment",
+          "reportedTemperatureK": 2.37,
+          "tcK": 2.37,
+          "temperatureKind": "transition",
+          "temperatureNote": "Midpoint criterion used for subsequent field analysis; not the90percent phase-diagram label.",
+          "criterion": "resistance-50-percent-normal",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Gate-induced sheet resistance",
+          "sourceId": "source-cba51ab2111ccf0a",
+          "aliases": [
+            "molybdenum disulfide"
+          ]
+        },
+        {
+          "id": "scwiki-e3-material-8",
+          "formula": "ZrNCl",
+          "sample": "Ye liquid-gated atomically flat film",
+          "recordType": "experiment",
+          "reportedTemperatureK": 15.2,
+          "tcK": 15.2,
+          "temperatureKind": "transition",
+          "temperatureNote": "Exact onset/midpoint/zero criterion not independently reviewed. Not Ueno2008SrTiO3.",
+          "criterion": "transition-unspecified",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Field-induced superconductivity; abstract-level evidence",
+          "sourceId": "source-831c3a9c5619ac1d"
+        },
+        {
+          "id": "scwiki-e3-material-9",
+          "formula": "WTe2",
+          "sample": "Sajadi M1 noise-floor observation",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.02,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "At20mK resistance reaches approximately0.3ohm noise floor for specified gate density; measurement temperature is not Tc.",
+          "criterion": "resistance-noise-floor-observation",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Four-terminal differential resistance",
+          "sourceId": "source-e8160470a5b03301",
+          "aliases": [
+            "tungsten ditelluride"
+          ]
+        },
+        {
+          "id": "scwiki-e3-material-10",
+          "formula": "MoS2",
+          "sample": "Lu normal resistance reference",
+          "recordType": "experiment",
+          "reportedTemperatureK": 15,
+          "tcK": null,
+          "temperatureKind": "normal-state",
+          "temperatureNote": "Normalization reference used in the90percent criterion, not superconducting Tc.",
+          "criterion": "normal-resistance-reference",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Sheet resistance",
+          "sourceId": "source-cba51ab2111ccf0a",
+          "aliases": [
+            "molybdenum disulfide"
+          ]
+        },
+        {
+          "id": "scwiki-e3-material-11",
+          "formula": "VO2",
+          "sample": "Jeong reversible-gating chemical control",
+          "recordType": "experiment",
+          "reportedTemperatureK": 300,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Gating temperature for the Fig2protocol; no superconducting transition reported.",
+          "criterion": "gate-application-temperature",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Transport, XPS and isotope/SIMS controls",
+          "sourceId": "source-cd5c2b85b8e3a53c"
+        }
+      ],
+      "dois": [
+        "10.1038/nature07576",
+        "10.1038/nmat2298",
+        "10.1038/nmat2587",
+        "10.1126/science.1228006",
+        "10.1126/science.aab2277",
+        "10.1126/science.aar4642",
+        "10.1126/science.aar4426",
+        "10.1126/science.1230512"
+      ],
+      "text": " Scope\n\nGating specifies an applied-voltage protocol, not its microscopic mechanism. A solid dielectric can accumulate interfacial charge; an electrolyte can also change oxygen content, drive redox or move ions. Whether a particular experiment is predominantly electrostatic requires evidence about the actual material, temperature, time and voltage history. Reversible resistance alone is insufficient: Jeong's VO2 study demonstrated reversible conductance switching associated with oxygen-vacancy formation. That experiment is a mechanism control, not a superconducting discovery. \n\nKeep the early platforms separate. Ueno's 2008 work concerned SrTiO3. The 15.2 K ZrNCl report was by Ye and colleagues, published online in November 2009 and in the February 2010 issue. The inherited draft conflated their attribution. This page corrects it while retaining the limited review scope: the ZrNCl institutional abstract supplies the reported temperature but not an independently checked onset, midpoint or zero-resistance definition.  \n\n Mathematical assumptions\n\nFor a uniform planar device with constant areal capacitance CA, an electron-accumulation convention gives \\Delta n{2D}=CA\\Delta V/e, where e>0. If the measured total differential capacitance C(V)=dQ/dV varies with voltage, use \\Delta n{2D}=(Ae)^{-1}\\int C(V)\\,dV for gated area A. Multiplying the endpoint capacitance by the entire voltage interval is generally wrong. Caviglia explicitly integrated the nonlinear response of the SrTiO3 dielectric. \n\nIn a simple positive-capacitance model, CA^{-1}=C{g,A}^{-1}+C{q,A}^{-1} accounts for geometric and quantum capacitances in series, with C{q,A}=e^2\\partial n{2D}/\\partial\\mu. Traps, leakage, negative compressibility and spatially nonuniform channels require a richer treatment. For two gates, the ideal charge estimate is en{2D}=C{t,A}(Vt-V{t0})+C{b,A}(Vb-V{b0}). Offset voltages and dielectric calibration are assumptions to report, not quantities fixed by the formula.   \n\nThe distinction between induced charge and mobile carriers survives accurate capacitance arithmetic. Sajadi explicitly calls the gate-derived quantity a doping density rather than a carrier density; correlated insulating behavior and edge conduction complicate that interpretation. Likewise, integrating a gate current gives transferred charge, Q=\\int Igdt, without proving how much enters the conducting channel or participates in chemistry. Local calculations here check units, integration and illustrative circuit identities; they do not measure charge transfer in a sample.  \n\n Experimental criteria\n\nCaviglia's LaAlO3/SrTiO3 device used the substrate as a back-gate dielectric. Its capacitance depended on sweep history; conditioning at the highest positive voltage produced reproducible sweeps, and the resulting zero-voltage state was not the as-grown state. The superconducting dome used temperatures extracted from a BKT resistance model, reaching approximately 0.310 K. The 0.400 K normal-state resistance and 1.5 K capacitance measurements are separate observables. Preserve the fit model and preparation history when comparing this dome with other systems. \n\nFatemi's monolayer WTe2 device 1 illustrates why one transition has several temperatures. At bottom/top gate voltages 4/5 V, resistance reached 90% of its normal value near 0.820 K, 50% near 0.580 K and zero near 0.350 K. Device 2 reached a midpoint near 0.950 K but retained residual resistance attributed to a device imperfection. The two devices and criteria must not be collapsed into “zero resistance at 1 K.” Their Hall and capacitance estimates broadly agreed, with low-density deviations discussed as possibly inhomogeneous transport. \n\nMoS2 provides a related criterion warning. Ye established a gate-controlled dome in a band insulator. In Lu's later author manuscript, the phase-diagram panel uses 90% of the normal resistance at 15 K, whereas the remaining analysis uses 50%. A corresponding low-temperature state is labeled 2.63 K by the former criterion and 2.37 K by the latter. Keep those labels distinct from BKT temperatures or high-field boundaries. The layer-localization and spin–orbit interpretation also depends on the device model and field orientation.  \n\nSajadi's WTe2 manuscript instead defines a characteristic temperature at half the resistance measured at 1 K. A reported noise floor around 0.3 ohm at 20 mK is an instrumental bound at a measurement temperature, not an exact superconducting transition. Record contact geometry, current distribution and residual resistance alongside nominal four-terminal measurements; a poorly known current path can affect the inferred sheet resistance. \n\n Limits and disputes\n\nJeong's VO2 evidence went beyond reversible transport: conductance persisted after the ionic liquid was removed, vanadium core-level spectra changed, and reverse gating in oxygen-18 produced an isotope depth profile measured by secondary-ion mass spectrometry. Ungated regions receiving the same isotope exposure served as controls. These results support chemical modification in those devices; they do not prove that every ionic-liquid-gated superconductor follows the same mechanism. Full supplementary procedures and quantitative vacancy reconstruction remain outside this scoped review. \n\nA useful electrostatic interpretation therefore compares leakage and dwell-time behavior, sweep recovery, independent charge estimates, thickness dependence and before/after structural or chemical evidence. No single low-leakage threshold or unchanged spectrum proves the absence of all reactions. State the sensitivity and spatial sampling of each control. Conversely, hysteresis can arise from trapping in a dielectric and is not by itself proof of electrochemistry.  \n\nA gate-induced dome does not uniquely identify a pairing mechanism or a quantum critical point. Strong in-plane critical fields require analysis of orbital geometry, spin–orbit coupling and the chosen resistive threshold; they do not automatically establish triplet pairing. Switching a quantum spin Hall material into a superconducting regime creates an opportunity to investigate topology, but does not by itself demonstrate a topological superconducting gap or Majorana modes.    \n\n Discovery implications\n\nTreat the device and voltage history as part of the material record: dielectric or electrolyte, thickness, gate geometry, charging temperature, dwell time, leakage, reset protocol and independent carrier estimate. Separate superconducting onset, midpoint, measured zero and model-extracted BKT temperatures. Use chemistry-sensitive controls to decide whether a changed state belongs under electrostatic tuning or compositional modification. The source-linked records below preserve reported observations and explicit unknowns; they are not a ranking of intrinsic material performance.    \n\n Related topics\n\nContinue with , , ,  and ."
     },
     {
       "id": "scwiki-e4",

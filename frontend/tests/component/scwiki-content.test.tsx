@@ -995,3 +995,28 @@ it("binds curated material families to their own transitions in a mixed-material
  const md=await(await get(["articles","scwiki-e2","markdown"])).text();
  expect(md).toContain("aliases: nickelate, nickelates");
 });
+
+
+it("keeps gate-dependent device thresholds and chemical controls separate in search and exports",async()=>{
+ const a=articles().find(a=>a.code==="E3")!;
+ const index=searchIndex().entries;
+ const cases:[string,number,string|undefined,boolean][]=[
+  ["WTe2",.9,"zero-resistance",false],["WTe2",.9,"resistance-50-percent-normal",true],
+  ["WTe2",.3,"zero-resistance",true],["ZrNCl",15,undefined,true],
+  ["ZrNCl",15,"zero-resistance",false],["MoS2",2.5,"resistance-90-percent-normal",true],
+  ["MoS2",2.5,"resistance-50-percent-normal",false],["VO2",1,undefined,false]
+ ];
+ for(const [q,tcMin,criterion,expected] of cases){
+  expect(searchArticles(index,q,{tcMin,criterion}).some(x=>x.code==="E3"),q+" "+criterion).toBe(expected);
+ }
+ for(const t of [.020,15,300])expect(a.materialCases.find(c=>c.reportedTemperatureK===t)?.tcK).toBeNull();
+ const zr=a.materialCases.find(c=>c.formula==="ZrNCl")!;
+ expect(a.references.find(r=>r.id===zr.sourceId)?.doi).toBe("10.1038/nmat2587");
+ expect(zr.criterion).toBe("transition-unspecified");
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("0.950 K");expect(md).toContain("residual resistance");
+ expect(md).toContain("oxygen-vacancy");expect(md).toContain("15.2 K");
+ expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
+ const negative=await(await get(["search"],"?q=VO2&tcMin=1")).json();
+ expect(negative.results.some((r:{code:string})=>r.code==="E3")).toBe(false);
+});

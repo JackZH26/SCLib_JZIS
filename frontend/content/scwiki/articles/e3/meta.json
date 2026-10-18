@@ -1,0 +1,565 @@
+{
+  "id": "scwiki-e3",
+  "topicId": "scwiki-topic-e3",
+  "code": "E3",
+  "slug": "electrostatic-gating",
+  "title": "Electrostatic gating: charge control and chemical changes",
+  "summary": "Read gate-tuned superconductivity through device history, capacitance, chemical controls and the actual transition criterion.",
+  "aliases": [
+    "electrostatic gating",
+    "gate tuning",
+    "ionic liquid",
+    "electric double layer",
+    "EDLT",
+    "quantum capacitance",
+    "field effect",
+    "electrochemical gating"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "E2",
+    "A1",
+    "A6",
+    "D11",
+    "B11"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T12:29:08.051872+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Caviglia, Lu and Sajadi author passages; Fatemi and Jeong final-journal passages and figures; limited Ueno and Ye source checks; bounded capacitance algebra.",
+    "limitations": [
+      "Complete scientific acceptance, full supplements, remaining final-version comparisons and raw-data reproduction remain open.",
+      "Ueno identity and author summary do not supply a checked transition criterion; ZrNCl15.2K retains an unspecified criterion from an abstract.",
+      "Simple capacitance calculations do not establish mobile-carrier density or the absence of electrochemistry.",
+      "Device thresholds, BKT fits and normal-state reference temperatures cannot be treated as equivalent Tc values."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "E_tuning_parameters/E3_electrostatic_gating.md",
+    "sha256": "d2e5458129cccb307c7914380872fd66475978d4d43cb2f8e3851c26b4ca6608",
+    "sourceId": "file-514aa65d9361ea11"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 67,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; corrected Ueno/Ye attribution, distinguished gate chemistry and capacitance assumptions, retained device-specific criteria and limited review scopes."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-e9e3a49b753191bc",
+      "doi": "10.1038/nature07576",
+      "title": "Electric field control of the LaAlO3/SrTiO3 interface ground state",
+      "year": 2008,
+      "url": "https://doi.org/10.1038/nature07576",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-capacitance-history-and-BKT",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0807.0585v1",
+        "note": "Author v1 submitted 3 July 2008; journal issue 4 December 2008. Selected pp. 3–8 and notes pp. 10–11 read; Fig. 3 p. 6 visually checked. Nonlinear capacitance integration, conditioning, BKT fit and normal-state temperatures retained. Final-version comparison and raw-data fits remain open."
+      }
+    },
+    {
+      "id": "source-3c6933981eaa417d",
+      "doi": "10.1038/nmat2298",
+      "title": "Electric-field-induced superconductivity in an insulator",
+      "year": 2008,
+      "url": "https://doi.org/10.1038/nmat2298",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-identity-and-author-institute-summary",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.imr.tohoku.ac.jp/en/news/results/detail---id-817.html",
+        "note": "Published online 12 October 2008. Publisher metadata and authors institute summary identify SrTiO3, not ZrNCl. Original full methods and transition criterion were not read; no exact Tc is assigned here."
+      }
+    },
+    {
+      "id": "source-831c3a9c5619ac1d",
+      "doi": "10.1038/nmat2587",
+      "title": "Liquid-gated interface superconductivity on an atomically flat film",
+      "year": 2010,
+      "url": "https://doi.org/10.1038/nmat2587",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-institution-abstract-and-publisher-dates",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://research.rug.nl/en/publications/liquid-gated-interface-superconductivity-on-an-atomically-flat-fi/",
+        "note": "Ye et al.; online 22 November 2009, issue February 2010. Authors institutional abstract identifies ZrNCl and 15.2 K; publisher confirms dates. Full methods and exact onset/midpoint/zero criterion not reviewed."
+      }
+    },
+    {
+      "id": "source-e8b9a66d143832fb",
+      "doi": "10.1126/science.1228006",
+      "title": "Superconducting Dome in a Gate-Tuned Band Insulator",
+      "year": 2012,
+      "url": "https://doi.org/10.1126/science.1228006",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-institution-abstract-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://research.rug.nl/en/publications/superconducting-dome-in-a-gate-tuned-band-insulator/",
+        "note": "Published 30 November 2012. Authors institutional abstract supports a MoS2 dome using liquid and solid gating. Final PDF is embargoed there; full methods and raw data were not read."
+      }
+    },
+    {
+      "id": "source-cba51ab2111ccf0a",
+      "doi": "10.1126/science.aab2277",
+      "title": "Evidence for two-dimensional Ising superconductivity in gated MoS2",
+      "year": 2015,
+      "url": "https://doi.org/10.1126/science.aab2277",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-v2-criteria-and-figure",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1506.07620v2",
+        "note": "Author v2 submitted 5 August 2015; Science 350, 1353–1357. Selected v1 p. 3 and captions pp. 11–12, v2 captions pp. 11–13 and Fig. 1 p. 17 checked visually. Distinct 90%/50% criteria and model context retained; no complete spin-orbit derivation, supplement, final-version comparison or raw-data fit."
+      }
+    },
+    {
+      "id": "source-117f1ab64b772ff1",
+      "doi": "10.1126/science.aar4642",
+      "title": "Electrically tunable low-density superconductivity in a monolayer topological insulator",
+      "year": 2018,
+      "url": "https://doi.org/10.1126/science.aar4642",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-journal-device-and-transition-criteria",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://ciqm.harvard.edu/uploads/2/3/3/4/23349210/fatemi2018.pdf",
+        "note": "Online 25 October 2018; issue 23 November. Selected final journal pp. 1–3 read; p. 2 Figs. 1–2 visually checked. Device-specific thresholds and capacitance/Hall limits retained. Supplement, raw data and topological-gap verification not reviewed."
+      }
+    },
+    {
+      "id": "source-e8160470a5b03301",
+      "doi": "10.1126/science.aar4426",
+      "title": "Gate-induced superconductivity in a monolayer topological insulator",
+      "year": 2018,
+      "url": "https://doi.org/10.1126/science.aar4426",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-density-definition-and-resistance-criteria",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1809.04691v1",
+        "note": "Author v1 submitted 12 September 2018; journal online 25 October, issue 23 November. Selected pp. 1–3 read and p. 3 Fig. 2 visually checked. Capacitive doping is not automatically carrier density; half-1K criterion and finite noise floor retained. NSF final PDF download timed out; remaining methods/supplement and final comparison open."
+      }
+    },
+    {
+      "id": "source-cd5c2b85b8e3a53c",
+      "doi": "10.1126/science.1230512",
+      "title": "Suppression of Metal-Insulator Transition in VO2 by Electric Field–Induced Oxygen Vacancy Formation",
+      "year": 2013,
+      "url": "https://doi.org/10.1126/science.1230512",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-journal-chemical-controls",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://bdt.semi.ac.cn/download/0.4525887994927481.pdf",
+        "note": "Published 22 March 2013. Selected PDF pp. 2–4 (journal pp. 1402–1404) and p. 3 Figs. 2–3 visually checked: reversible transport, liquid removal, XPS, isotope/SIMS controls and oxygen dependence. Full supplement and vacancy quantification not reviewed. This is not a superconducting Tc report."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-e3-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Gating specifies an applied-voltage protocol, not its microscopic mechanism. A solid dielectric can accumulate interfacial charge; an electrolyte can also change oxygen content, drive redox or move ions. Whether a particular experiment is predominantly electrostatic requires evidence about the actual material, temperature, time and voltage history. Reversible resistance alone is insufficient: Jeong's VO2 study demonstrated reversible conductance switching associated with oxygen-vacancy formation. That experiment is a mechanism control, not a superconducting discovery.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-cd5c2b85b8e3a53c"
+      ],
+      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e3-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Keep the early platforms separate. Ueno's 2008 work concerned SrTiO3. The 15.2 K ZrNCl report was by Ye and colleagues, published online in November 2009 and in the February 2010 issue. The inherited draft conflated their attribution. This page corrects it while retaining the limited review scope: the ZrNCl institutional abstract supplies the reported temperature but not an independently checked onset, midpoint or zero-resistance definition.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-3c6933981eaa417d",
+        "source-831c3a9c5619ac1d"
+      ],
+      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e3-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a uniform planar device with constant areal capacitance $C_A$, an electron-accumulation convention gives $\\Delta n_{2D}=C_A\\Delta V/e$, where $e>0$. If the measured total differential capacitance $C(V)=dQ/dV$ varies with voltage, use $\\Delta n_{2D}=(Ae)^{-1}\\int C(V)\\,dV$ for gated area $A$. Multiplying the endpoint capacitance by the entire voltage interval is generally wrong. Caviglia explicitly integrated the nonlinear response of the SrTiO3 dielectric.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e9e3a49b753191bc"
+      ],
+      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e3-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In a simple positive-capacitance model, $C_A^{-1}=C_{g,A}^{-1}+C_{q,A}^{-1}$ accounts for geometric and quantum capacitances in series, with $C_{q,A}=e^2\\partial n_{2D}/\\partial\\mu$. Traps, leakage, negative compressibility and spatially nonuniform channels require a richer treatment. For two gates, the ideal charge estimate is $en_{2D}=C_{t,A}(V_t-V_{t0})+C_{b,A}(V_b-V_{b0})$. Offset voltages and dielectric calibration are assumptions to report, not quantities fixed by the formula.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e9e3a49b753191bc",
+        "source-117f1ab64b772ff1",
+        "source-e8160470a5b03301"
+      ],
+      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e3-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The distinction between induced charge and mobile carriers survives accurate capacitance arithmetic. Sajadi explicitly calls the gate-derived quantity a doping density rather than a carrier density; correlated insulating behavior and edge conduction complicate that interpretation. Likewise, integrating a gate current gives transferred charge, $Q=\\int I_gdt$, without proving how much enters the conducting channel or participates in chemistry. Local calculations here check units, integration and illustrative circuit identities; they do not measure charge transfer in a sample.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e8160470a5b03301",
+        "source-cd5c2b85b8e3a53c"
+      ],
+      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e3-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Caviglia's LaAlO3/SrTiO3 device used the substrate as a back-gate dielectric. Its capacitance depended on sweep history; conditioning at the highest positive voltage produced reproducible sweeps, and the resulting zero-voltage state was not the as-grown state. The superconducting dome used temperatures extracted from a BKT resistance model, reaching approximately 0.310 K. The 0.400 K normal-state resistance and 1.5 K capacitance measurements are separate observables. Preserve the fit model and preparation history when comparing this dome with other systems.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e9e3a49b753191bc"
+      ],
+      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e3-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Fatemi's monolayer WTe2 device 1 illustrates why one transition has several temperatures. At bottom/top gate voltages 4/5 V, resistance reached 90% of its normal value near 0.820 K, 50% near 0.580 K and zero near 0.350 K. Device 2 reached a midpoint near 0.950 K but retained residual resistance attributed to a device imperfection. The two devices and criteria must not be collapsed into “zero resistance at 1 K.” Their Hall and capacitance estimates broadly agreed, with low-density deviations discussed as possibly inhomogeneous transport.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-117f1ab64b772ff1"
+      ],
+      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e3-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "MoS2 provides a related criterion warning. Ye established a gate-controlled dome in a band insulator. In Lu's later author manuscript, the phase-diagram panel uses 90% of the normal resistance at 15 K, whereas the remaining analysis uses 50%. A corresponding low-temperature state is labeled 2.63 K by the former criterion and 2.37 K by the latter. Keep those labels distinct from BKT temperatures or high-field boundaries. The layer-localization and spin–orbit interpretation also depends on the device model and field orientation.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e8b9a66d143832fb",
+        "source-cba51ab2111ccf0a"
+      ],
+      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e3-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Sajadi's WTe2 manuscript instead defines a characteristic temperature at half the resistance measured at 1 K. A reported noise floor around 0.3 ohm at 20 mK is an instrumental bound at a measurement temperature, not an exact superconducting transition. Record contact geometry, current distribution and residual resistance alongside nominal four-terminal measurements; a poorly known current path can affect the inferred sheet resistance.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e8160470a5b03301"
+      ],
+      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e3-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Jeong's VO2 evidence went beyond reversible transport: conductance persisted after the ionic liquid was removed, vanadium core-level spectra changed, and reverse gating in oxygen-18 produced an isotope depth profile measured by secondary-ion mass spectrometry. Ungated regions receiving the same isotope exposure served as controls. These results support chemical modification in those devices; they do not prove that every ionic-liquid-gated superconductor follows the same mechanism. Full supplementary procedures and quantitative vacancy reconstruction remain outside this scoped review.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-cd5c2b85b8e3a53c"
+      ],
+      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e3-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "A useful electrostatic interpretation therefore compares leakage and dwell-time behavior, sweep recovery, independent charge estimates, thickness dependence and before/after structural or chemical evidence. No single low-leakage threshold or unchanged spectrum proves the absence of all reactions. State the sensitivity and spatial sampling of each control. Conversely, hysteresis can arise from trapping in a dielectric and is not by itself proof of electrochemistry.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e9e3a49b753191bc",
+        "source-cd5c2b85b8e3a53c"
+      ],
+      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e3-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "A gate-induced dome does not uniquely identify a pairing mechanism or a quantum critical point. Strong in-plane critical fields require analysis of orbital geometry, spin–orbit coupling and the chosen resistive threshold; they do not automatically establish triplet pairing. Switching a quantum spin Hall material into a superconducting regime creates an opportunity to investigate topology, but does not by itself demonstrate a topological superconducting gap or Majorana modes.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e8b9a66d143832fb",
+        "source-cba51ab2111ccf0a",
+        "source-117f1ab64b772ff1",
+        "source-e8160470a5b03301"
+      ],
+      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e3-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Treat the device and voltage history as part of the material record: dielectric or electrolyte, thickness, gate geometry, charging temperature, dwell time, leakage, reset protocol and independent carrier estimate. Separate superconducting onset, midpoint, measured zero and model-extracted BKT temperatures. Use chemistry-sensitive controls to decide whether a changed state belongs under electrostatic tuning or compositional modification. The source-linked records below preserve reported observations and explicit unknowns; they are not a ranking of intrinsic material performance.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e9e3a49b753191bc",
+        "source-cba51ab2111ccf0a",
+        "source-117f1ab64b772ff1",
+        "source-cd5c2b85b8e3a53c"
+      ],
+      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-e3-correction-1",
+      "description": "The inherited draft attributed ZrNCl near15K to Ueno2008 (nmat2298), which concerns SrTiO3. The ZrNCl15.2K source is Ye et al (nmat2587), online2009 and issue2010; both references remain with distinct material identities.",
+      "sourceId": "source-831c3a9c5619ac1d",
+      "scope": "Original bibliographic identity and authors institutional abstracts/summaries; ZrNCl full criterion not checked.",
+      "originalSourceLines": [],
+      "targetSectionId": "scope"
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta n_{2D}=\\frac{1}{Ae}\\int C(V)dV",
+      "check": "Analytic nonlinear-capacitance integral versus10000midpoint steps; endpoint product differs."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "C_A^{-1}=C_{g,A}^{-1}+C_{q,A}^{-1}",
+      "check": "Four positive series-capacitance examples and unit conversions; no negative-compressibility model."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "en_{2D}=C_{t,A}V_t+C_{b,A}V_b",
+      "check": "Rounded Fatemi15/8nm BN geometry with epsilonR3.5 and zero offsets yields density near5e12cm^-2; illustration, not a measured density."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-e3-material-1",
+      "formula": "LaAlO3/SrTiO3",
+      "sample": "Caviglia gate-tuned dome maximum",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.31,
+      "tcK": 0.31,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate maximum from a BKT fit; not an onset or measured-zero temperature.",
+      "criterion": "BKT-resistance-fit",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Four-point sheet resistance",
+      "sourceId": "source-e9e3a49b753191bc"
+    },
+    {
+      "id": "scwiki-e3-material-2",
+      "formula": "WTe2",
+      "sample": "Fatemi device1 Vbg4V/Vtg5V",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.82,
+      "tcK": 0.82,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate onset at90percent normal resistance; same device transition has lower midpoint and zero.",
+      "criterion": "resistance-90-percent-normal",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Four-probe resistance",
+      "sourceId": "source-117f1ab64b772ff1",
+      "aliases": [
+        "tungsten ditelluride"
+      ]
+    },
+    {
+      "id": "scwiki-e3-material-3",
+      "formula": "WTe2",
+      "sample": "Fatemi device1 Vbg4V/Vtg5V",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.58,
+      "tcK": 0.58,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate midpoint, distinct from onset and zero.",
+      "criterion": "resistance-50-percent-normal",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Four-probe resistance",
+      "sourceId": "source-117f1ab64b772ff1",
+      "aliases": [
+        "tungsten ditelluride"
+      ]
+    },
+    {
+      "id": "scwiki-e3-material-4",
+      "formula": "WTe2",
+      "sample": "Fatemi device1 Vbg4V/Vtg5V",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.35,
+      "tcK": 0.35,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate measured zero; not mathematical proof of zero uncertainty.",
+      "criterion": "zero-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Four-probe resistance",
+      "sourceId": "source-117f1ab64b772ff1",
+      "aliases": [
+        "tungsten ditelluride"
+      ]
+    },
+    {
+      "id": "scwiki-e3-material-5",
+      "formula": "WTe2",
+      "sample": "Fatemi device2 maximum midpoint",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.95,
+      "tcK": 0.95,
+      "temperatureKind": "transition",
+      "temperatureNote": "Residual resistance persists due to reported device imperfection; not zero-resistance at0.95K.",
+      "criterion": "resistance-50-percent-normal",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Four-probe resistance",
+      "sourceId": "source-117f1ab64b772ff1",
+      "aliases": [
+        "tungsten ditelluride"
+      ]
+    },
+    {
+      "id": "scwiki-e3-material-6",
+      "formula": "MoS2",
+      "sample": "Lu D1 low-temperature state; authorv2 Fig1D",
+      "recordType": "experiment",
+      "reportedTemperatureK": 2.63,
+      "tcK": 2.63,
+      "temperatureKind": "transition",
+      "temperatureNote": "Phase-diagram criterion relative to normal resistance at15K; same state midpoint2.37K.",
+      "criterion": "resistance-90-percent-normal",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Gate-induced sheet resistance",
+      "sourceId": "source-cba51ab2111ccf0a",
+      "aliases": [
+        "molybdenum disulfide"
+      ]
+    },
+    {
+      "id": "scwiki-e3-material-7",
+      "formula": "MoS2",
+      "sample": "Lu D1 low-temperature state; authorv2 Fig1E",
+      "recordType": "experiment",
+      "reportedTemperatureK": 2.37,
+      "tcK": 2.37,
+      "temperatureKind": "transition",
+      "temperatureNote": "Midpoint criterion used for subsequent field analysis; not the90percent phase-diagram label.",
+      "criterion": "resistance-50-percent-normal",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Gate-induced sheet resistance",
+      "sourceId": "source-cba51ab2111ccf0a",
+      "aliases": [
+        "molybdenum disulfide"
+      ]
+    },
+    {
+      "id": "scwiki-e3-material-8",
+      "formula": "ZrNCl",
+      "sample": "Ye liquid-gated atomically flat film",
+      "recordType": "experiment",
+      "reportedTemperatureK": 15.2,
+      "tcK": 15.2,
+      "temperatureKind": "transition",
+      "temperatureNote": "Exact onset/midpoint/zero criterion not independently reviewed. Not Ueno2008SrTiO3.",
+      "criterion": "transition-unspecified",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Field-induced superconductivity; abstract-level evidence",
+      "sourceId": "source-831c3a9c5619ac1d"
+    },
+    {
+      "id": "scwiki-e3-material-9",
+      "formula": "WTe2",
+      "sample": "Sajadi M1 noise-floor observation",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.02,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "At20mK resistance reaches approximately0.3ohm noise floor for specified gate density; measurement temperature is not Tc.",
+      "criterion": "resistance-noise-floor-observation",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Four-terminal differential resistance",
+      "sourceId": "source-e8160470a5b03301",
+      "aliases": [
+        "tungsten ditelluride"
+      ]
+    },
+    {
+      "id": "scwiki-e3-material-10",
+      "formula": "MoS2",
+      "sample": "Lu normal resistance reference",
+      "recordType": "experiment",
+      "reportedTemperatureK": 15,
+      "tcK": null,
+      "temperatureKind": "normal-state",
+      "temperatureNote": "Normalization reference used in the90percent criterion, not superconducting Tc.",
+      "criterion": "normal-resistance-reference",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Sheet resistance",
+      "sourceId": "source-cba51ab2111ccf0a",
+      "aliases": [
+        "molybdenum disulfide"
+      ]
+    },
+    {
+      "id": "scwiki-e3-material-11",
+      "formula": "VO2",
+      "sample": "Jeong reversible-gating chemical control",
+      "recordType": "experiment",
+      "reportedTemperatureK": 300,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Gating temperature for the Fig2protocol; no superconducting transition reported.",
+      "criterion": "gate-application-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Transport, XPS and isotope/SIMS controls",
+      "sourceId": "source-cd5c2b85b8e3a53c"
+    }
+  ]
+}
