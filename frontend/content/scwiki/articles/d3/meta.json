@@ -10,7 +10,10 @@
     "YBCO",
     "LSCO",
     "Hg1223",
-    "CuO2"
+    "CuO2",
+    "铜氧化物超导体",
+    "铜基超导",
+    "cuprate superconductors"
   ],
   "evidenceTypes": [
     "experiment",
@@ -19,20 +22,25 @@
   ],
   "relatedCodes": [
     "A2",
+    "C3",
+    "C10",
+    "E1",
+    "E10",
+    "F9",
     "G7",
     "H2"
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.208456+00:00",
+  "modifiedAt": "2026-10-18T18:30:36.998991+00:00",
   "review": {
-    "checkedAt": "2026-10-17",
-    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "checkedAt": "2026-10-19",
+    "scope": "Wu1987 final selected methods/results and p909 figures; Liang2005 author v1 selected doping methods/Figure1; original discovery abstracts and inherited E10 pressure-quench source checks; bounded doping/charge algebra.",
     "limitations": [
-      "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
-      "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
-      "New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.",
-      "Historical audit scores and file presence are not evidence that a proposition is correct."
+      "Complete scientific acceptance remains open.",
+      "Bednorz, Grant, Schilling, Gao, Tsuei and Hardy remain original-abstract checks; full methods/raw analyses are not certified.",
+      "Liang is an earlier author version; final comparison and numerical calibration reproduction remain open.",
+      "Deng selected final text/author figures do not establish independent replication, full final supplementary agreement or room-temperature stability."
     ]
   },
   "provenance": {
@@ -47,10 +55,11 @@
       "startLine": 1,
       "endLine": 9,
       "targetSections": [
+        "pressure-and-recovered-samples",
         "limits-and-disputes"
       ],
       "decision": "condensed-and-structured",
-      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+      "note": "Pressure-quench claims revisited with named E10 selected primary evidence; sample and onset criteria retained; no complete acceptance."
     },
     {
       "startLine": 10,
@@ -120,21 +129,40 @@
       "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
     }
   ],
-  "corrections": [],
-  "equationChecks": [],
+  "corrections": [
+    {
+      "id": "scwiki-d3-correction-1",
+      "description": "Wu1987 discovery used nominal mixed-phase Y1.2Ba0.8CuO4-y, not an independently identified pure Y123 sample; retain93K deviation/80K zero/91K magnetic criteria.",
+      "sourceId": "source-9350a30b2eabe27e",
+      "scope": "Selected final pp908–909 and p909 figures; no phase refinement."
+    },
+    {
+      "id": "scwiki-d3-correction-2",
+      "description": "Remove unverified exact31GPa from the164K comparison. Selected E10 primary checks now support separately labelled pressure-quenched onset and anomaly records; supersedes the earlier complete omission.",
+      "sourceId": "source-6d09a24a26a15997",
+      "scope": "Gao abstract only; Deng E10 scope inherited, not complete acceptance."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "p=(3-2\\delta-v_c)/2",
+      "check": "Ten formal charge allocations show nonunique plane/chain partition; five two-branch empirical-dome inversion controls. No measured valence, ligand-hole density or validated doping calibration."
+    }
+  ],
   "references": [
     {
       "id": "source-ad4ee05105f93caf",
       "doi": "10.1007/BF01303701",
-      "title": "Possible highT c superconductivity in the Ba?La?Cu?O system",
+      "title": "Possible high Tc superconductivity in the Ba–La–Cu–O system",
       "year": 1986,
       "url": "https://doi.org/10.1007/BF01303701",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1007%2FBF01303701",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "publisher-original-abstract-and-date",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://link.springer.com/article/10.1007/BF01303701",
+        "note": "Publisher lists June1986. Original abstract: three-phase polycrystals, current-dependent percolative resistive onset in30K range. Full methods/figures not read: archive download406 and web screenshot returned no pixels. Do not infer a bulk magnetic transition from this abstract."
       }
     },
     {
@@ -145,10 +173,10 @@
       "url": "https://doi.org/10.1103/PhysRevLett.58.908",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.58.908",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "selected-final-history-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.58.908",
+        "note": "Published2March1987. Final pp908–909 selected text and p909 Figures1–3 visually checked locally. Mixed-phase nominal Y1.2Ba0.8CuO4-y; resistive deviation93K, sharp drop92K, zero80K, diamagnetic onset91K; 24% Pb signal at4.2K is not a bulk volume fraction. Field extrapolation80–180T is not measured critical field; maximal reported applied field5.7T. No raw data or independent phase assignment."
       }
     },
     {
@@ -159,24 +187,24 @@
       "url": "https://doi.org/10.1038/363056a0",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1038%2F363056a0",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "publisher-abstract-and-bibliography",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/363056a0",
+        "note": "Published6May1993,Nature363,56–58. Original abstract magnetic/resistive context only; full methods not reviewed."
       }
     },
     {
       "id": "source-6d09a24a26a15997",
       "doi": "10.1103/PhysRevB.50.4260",
-      "title": "Superconductivity up to 164 K in\n                    \n                      \n                        \n                          \n                            HgBa\n                          \n                          \n                            2\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            Ca\n                          \n                          \n                            m\n                            −\n                            1\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            Cu\n                          \n                          \n                            m\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            O\n                          \n                          \n                            2\n                            m\n                            +\n                            2\n                            +\n                            δ\n                          \n                        \n                      \n                    \n                    (\n                    m\n                    =1, 2, and 3) under quasihydrostatic pressures",
+      "title": "Superconductivity up to 164 K in HgBa2Cam−1CumO2m+2+δ (m = 1, 2, and 3) under quasihydrostatic pressures",
       "year": 1994,
       "url": "https://doi.org/10.1103/PhysRevB.50.4260",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevB.50.4260",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "publisher-abstract-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.50.4260",
+        "note": "Published 1 August 1994. Original abstract checked: resistive quasihydrostatic measurements up to 45 GPa and 164 K maximum for m = 3. Full PDF requires authorization; exact onset/zero criterion and point pressure not independently read."
       }
     },
     {
@@ -187,10 +215,10 @@
       "url": "https://doi.org/10.1103/PhysRevLett.73.593",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.73.593",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.73.593",
+        "note": "Published 25 July 1994. The original abstract reports scanning SQUID observations at 4.2 K in rings with different junction counts. The complete original article and raw flux maps have not been reviewed here."
       }
     },
     {
@@ -205,6 +233,62 @@
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://arxiv.org/pdf/1409.4673v1",
         "note": "Selected pp3–4 localization and competing-order context; September2014 author version precedes February2015 journal publication. No universal numerical doping or gap threshold inferred."
+      }
+    },
+    {
+      "id": "source-14d1e9e0097f7ffb",
+      "doi": "10.1073/pnas.2536178123",
+      "title": "Ambient-pressure 151-K superconductivity in HgBa2Ca2Cu3O8+δ via pressure quench",
+      "year": 2026,
+      "url": "https://doi.org/10.1073/pnas.2536178123",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-text-and-author-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12993975/",
+        "note": "Final selected PMC methods/results checked; author2603.12437v1 pp9,15,21,24,25 visually checked. Online9March2026; authorv1 12March2026. Final SI comparison,rawdata and replication remain open."
+      }
+    },
+    {
+      "id": "source-e24ef58054ac9b71",
+      "doi": "10.1103/PhysRevB.73.180505",
+      "title": "Evaluation of CuO2 plane hole doping in YBa2Cu3O6+x single crystals",
+      "year": 2006,
+      "url": "https://doi.org/10.1103/PhysRevB.73.180505",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-earlier-author-doping-calibration-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0510674v1",
+        "note": "Author v1 submitted25October2005, related2006 journal DOI. Selected pp1–3 and p2Figure1 visually checked: oxygen ordering,1Oe c-axis field-cooled magnetic midpoint,22C diffraction and empirical calibration limitations. Publisher fulltext401; no full final comparison or fitted raw dataset reproduction."
+      }
+    },
+    {
+      "id": "source-82098193516b8d9a",
+      "doi": "10.1103/PhysRevB.35.7242",
+      "title": "Superconductivity above 90 K in the compound YBa2Cu3Ox: Structural, transport, and magnetic properties",
+      "year": 1987,
+      "url": "https://doi.org/10.1103/PhysRevB.35.7242",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-and-date",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.35.7242",
+        "note": "Published1May1987. Abstract identifies study of principal superconducting phase and structural/transport/magnetic properties. Full refinement and methods not reviewed; this separate follow-up must not be back-attributed to Wu discovery paper."
+      }
+    },
+    {
+      "id": "source-b7bc48c845a47b53",
+      "doi": "10.1103/PhysRevLett.70.3999",
+      "title": "Precision measurements of the temperature dependence of lambda in YBa2Cu3O6.95: Strong evidence for nodes in the gap function",
+      "year": 1993,
+      "url": "https://doi.org/10.1103/PhysRevLett.70.3999",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.70.3999",
+        "note": "900 MHz resonator and 3–25 K linear term checked in abstract. Full traces, calibration and sample comparison not reviewed."
       }
     }
   ],
@@ -234,13 +318,10 @@
       "sample": "quasihydrostatic high-pressure experiment",
       "recordType": "experiment",
       "tcK": 164,
-      "temperatureNote": "approximate reported high-pressure scale",
+      "temperatureNote": "Reported maximum164K; exact point pressure and onset/zero criterion not re-extracted from original. Study maximum45GPa is not assigned to this point.",
       "criterion": "unknown",
       "pressureRegime": "high",
-      "pressureGPa": {
-        "min": 31,
-        "max": 31
-      },
+      "pressureGPa": null,
       "equilibrium": "unknown",
       "probe": "high-pressure resistance",
       "id": "scwiki-d3-material-2",
@@ -251,88 +332,295 @@
         "cuprate",
         "cuprates"
       ]
+    },
+    {
+      "id": "scwiki-d3-material-3",
+      "formula": "Y1.2Ba0.8CuO4-y",
+      "sample": "Wu1987 nominal mixed-phase polycrystalline sample",
+      "recordType": "experiment",
+      "reportedTemperatureK": 93,
+      "tcK": 93,
+      "temperatureKind": "transition",
+      "temperatureNote": "Selected final p909; nominal mixed-phase composition, not a phase-pure Y123 assignment.",
+      "criterion": "resistive-deviation-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Four-lead resistance",
+      "sourceId": "source-9350a30b2eabe27e",
+      "aliases": [
+        "Y-Ba-Cu-O discovery",
+        "cuprate",
+        "cuprates"
+      ]
+    },
+    {
+      "id": "scwiki-d3-material-4",
+      "formula": "Y1.2Ba0.8CuO4-y",
+      "sample": "Wu1987 nominal mixed-phase polycrystalline sample",
+      "recordType": "experiment",
+      "reportedTemperatureK": 80,
+      "tcK": 80,
+      "temperatureKind": "transition",
+      "temperatureNote": "Selected final p909; nominal mixed-phase composition, not a phase-pure Y123 assignment.",
+      "criterion": "zero-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Four-lead resistance",
+      "sourceId": "source-9350a30b2eabe27e",
+      "aliases": [
+        "Y-Ba-Cu-O discovery",
+        "cuprate",
+        "cuprates"
+      ]
+    },
+    {
+      "id": "scwiki-d3-material-5",
+      "formula": "Y1.2Ba0.8CuO4-y",
+      "sample": "Wu1987 nominal mixed-phase polycrystalline sample",
+      "recordType": "experiment",
+      "reportedTemperatureK": 91,
+      "tcK": 91,
+      "temperatureKind": "transition",
+      "temperatureNote": "Selected final p909; nominal mixed-phase composition, not a phase-pure Y123 assignment.",
+      "criterion": "magnetic-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "AC inductance susceptibility",
+      "sourceId": "source-9350a30b2eabe27e",
+      "aliases": [
+        "Y-Ba-Cu-O discovery",
+        "cuprate",
+        "cuprates"
+      ]
+    },
+    {
+      "id": "scwiki-d3-material-6",
+      "formula": "HgBa2Ca2Cu3O8+δ",
+      "sample": "Deng S4 experiment5; PQ18.9GPa at4.2K",
+      "recordType": "experiment",
+      "reportedTemperatureK": 151.0,
+      "tcK": 151.0,
+      "temperatureKind": "transition",
+      "temperatureNote": "Ambient onset after pressure quench; warming151.0K/cooling150.0K. Not zero resistance.",
+      "criterion": "resistive-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "metastable",
+      "probe": "Resistance derivative",
+      "sourceId": "source-14d1e9e0097f7ffb",
+      "aliases": [
+        "Hg-1223",
+        "Hg1223",
+        "Deng S4"
+      ]
+    },
+    {
+      "id": "scwiki-d3-material-7",
+      "formula": "HgBa2Ca2Cu3O8+δ",
+      "sample": "Deng S2 retrieved after PQ10.1GPa/4.2K",
+      "recordType": "experiment",
+      "reportedTemperatureK": 140.0,
+      "tcK": 140.0,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate magnetic transition after retrieval; separate from S4 transport.",
+      "criterion": "magnetic-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "metastable",
+      "probe": "Magnetization at10Oe",
+      "sourceId": "source-14d1e9e0097f7ffb",
+      "aliases": [
+        "Hg-1223",
+        "Hg1223",
+        "Deng S2 magnetization"
+      ]
+    },
+    {
+      "id": "scwiki-d3-material-8",
+      "formula": "HgBa2Ca2Cu3O8+δ",
+      "sample": "Deng S5 after PQ29.7GPa/4.2K",
+      "recordType": "experiment",
+      "reportedTemperatureK": 172.0,
+      "tcK": null,
+      "temperatureKind": "unassigned",
+      "temperatureNote": "Broad one-time anomaly not reproduced; no confirmedTc.",
+      "criterion": "unreproduced-resistive-anomaly",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Resistance on warming",
+      "sourceId": "source-14d1e9e0097f7ffb",
+      "aliases": [
+        "Hg-1223",
+        "Hg1223",
+        "Deng S5"
+      ]
     }
   ],
   "claims": [
     {
       "id": "scwiki-d3-claim-scope-1",
       "sectionId": "scope",
-      "statement": "Cuprates share CuO2 planes as a central electronic motif, but they do not share one complete phase diagram. Layer count, apical oxygen, charge-reservoir blocks, disorder and the sign and amount of doping vary across families. The La-Ba-Cu-O discovery and the subsequent Y-Ba-Cu-O work established the high-temperature cuprate research platform; they do not make every later composition equivalent.",
-      "evidenceType": "experiment",
+      "statement": "Cuprates contain electronically important CuO2 planes, but layer count, oxygen coordination, charge reservoirs, disorder and doping differ across families. Many parent compounds are correlated antiferromagnetic insulators. Superconductivity, pseudogap behavior and competing orders do not define one universal phase diagram or establish a unique pairing interaction. A schematic dome organizes observations; its coordinates require a material-specific calibration.",
+      "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-ad4ee05105f93caf",
-        "source-9350a30b2eabe27e"
+        "source-6c1991333d4a6fed"
       ],
-      "conditions": "Cuprate families differ in doping, oxygen content, layer count and disorder. Reported temperatures retain their pressure and measurement criterion; symmetry evidence is material-specific.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
     },
     {
       "id": "scwiki-d3-claim-scope-2",
       "sectionId": "scope",
-      "statement": "Many parent compounds are antiferromagnetic correlated insulators. Doping can produce superconductivity together with pseudogap behavior, charge correlations and unusual normal-state transport. A schematic dome is an organizing picture rather than a universal quantitative equation for all compounds. A weak-coupling phonon-only explanation is not a complete account of the family, while Cooper pairing and broken-symmetry descriptions remain useful.",
-      "evidenceType": "experiment",
+      "statement": "The discovery sequence also needs that specificity. Bednorz and Müller's 1986 original abstract describes three-phase Ba–La–Cu–O polycrystals with a current-dependent resistivity decrease in the 30 K range, interpreted as possible percolative superconductivity. It is not a complete bulk magnetic characterization of a modern, homogeneous composition.",
+      "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-6c1991333d4a6fed"
+        "source-ad4ee05105f93caf"
       ],
-      "conditions": "Cuprate families differ in doping, oxygen content, layer count and disorder. Reported temperatures retain their pressure and measurement criterion; symmetry evidence is material-specific.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d3-claim-scope-3",
+      "sectionId": "scope",
+      "statement": "Wu and colleagues' 1987 discovery studied mixed-phase material with nominal composition Y1.2Ba0.8CuO4−y. It established a reproducible transition above liquid-nitrogen temperature using transport and magnetic measurements, while detailed phase identification remained open. The later Grant study of the principal YBa2Cu3Ox superconducting phase is a separate publication. Do not replace the original sample composition with a retrospectively assigned pure Y123 crystal.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-9350a30b2eabe27e",
+        "source-82098193516b8d9a"
+      ],
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
     },
     {
       "id": "scwiki-d3-claim-mathematical-assumptions-1",
       "sectionId": "mathematical-assumptions",
-      "statement": "This lattice expression represents a symmetry structure in an appropriate square-lattice description. It is not a fit to every Fermi surface, and it does not specify a pairing mediator or an absolute gap magnitude. The significance of a sign change must be connected to phase-sensitive and momentum-resolved evidence in the named material.",
+      "statement": "Oxygen content is not automatically the hole density in a CuO2 plane. As an explicitly formal ionic exercise for YBa2Cu3O7−δ, assign Y charge +3, Ba +2, O −2, two plane Cu sites charge $2+p$, and one chain site charge $v_c$. Neutrality gives $2(2+p)+v_c=7-2\\delta$, or $p=(3-2\\delta-v_c)/2$. Ten checked allocations show that the same oxygen count admits different plane/chain charge partitions. This exercise illustrates missing information; it does not measure actual orbital occupation or include ligand-hole covalency.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e24ef58054ac9b71"
+      ],
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d3-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Liang, Bonn and Hardy's author manuscript explicitly distinguishes chain oxygen ordering from total oxygen content. Its empirical dome, $T_c/T_{c,\\max}=1-82.6(p-0.16)^2$, has two inverse branches away from its peak. Five independent algebra controls confirm that a single transition temperature cannot choose underdoping versus overdoping. The authors also discuss deviations near one-eighth doping, so treating this relation as a universal carrier-density measurement is unjustified.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e24ef58054ac9b71"
+      ],
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d3-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The familiar square-lattice expression $\\Delta(\\mathbf{k})\\propto\\cos k_x-\\cos k_y$ illustrates a d-wave sign structure. Its symmetry does not supply a gap magnitude, a material's exact Fermi surface or a pairing mediator. Orthorhombicity, disorder and the measurement geometry must remain part of a material-specific interpretation. See the dedicated [d-wave pairing](/scwiki/d-wave) and [gap-node](/scwiki/superconducting-node-structure) pages for the model boundaries.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-2e4d7fdb6c1797b7",
         "source-6c1991333d4a6fed"
       ],
-      "conditions": "Cuprate families differ in doping, oxygen content, layer count and disorder. Reported temperatures retain their pressure and measurement criterion; symmetry evidence is material-specific.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
     },
     {
       "id": "scwiki-d3-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "Keep a transport onset, zero-resistance point, magnetic response and thermodynamic anomaly in separate fields. Record pressure, medium, oxygen content, preparation route and sample form. For a gap-symmetry claim, combine phase-sensitive tests with complementary spectroscopy and low-energy response. Tricrystal experiments provide an important phase-sensitive cuprate constraint; their interpretation should not be extended automatically to every electron-doped, highly disordered or pressure-treated sample.",
+      "statement": "Wu's selected final text distinguishes a resistive deviation at 93 K, a sharp drop beginning at 92 K, zero resistance at 80 K and a diamagnetic onset at 91 K. The diamagnetic signal at 4.2 K was compared with a similarly sized lead sample; that relative signal is not an independently corrected superconducting volume fraction. Its 80–180 T upper-critical-field estimate is an extrapolation, whereas the reported field measurements reached 5.7 T. Preserve these criteria and scales separately.",
       "evidenceType": "experiment",
       "sourceIds": [
-        "source-2e4d7fdb6c1797b7"
+        "source-9350a30b2eabe27e"
       ],
-      "conditions": "Cuprate families differ in doping, oxygen content, layer count and disorder. Reported temperatures retain their pressure and measurement criterion; symmetry evidence is material-specific.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
     },
     {
       "id": "scwiki-d3-claim-experimental-criteria-2",
       "sectionId": "experimental-criteria",
-      "statement": "The familiar Hg-1223 examples illustrate the danger of unconditioned comparisons: the historical ambient-pressure transition near 133 K and a high-pressure scale near 164 K around 31 GPa concern different conditions. The pilot leaves an individual onset-versus-zero criterion unknown where this scoped review has not re-extracted it. That missing field must not be silently supplied by a search or an agent.",
+      "statement": "A later doping-calibration experiment used a different operational criterion: Liang and colleagues chose the midpoint of the field-cooled magnetic transition with 1 Oe along the c axis. Their lattice parameter was measured by room-temperature diffraction. Temperature, field direction, oxygen ordering and the selected calibration therefore belong with the inferred doping, rather than being discarded after assigning a number to a phase diagram. Only the named author-version passages and figure have been checked here.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e24ef58054ac9b71"
+      ],
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d3-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Phase-sensitive and magnitude-sensitive probes answer different questions. Tsuei and colleagues' original abstract reports scanning-SQUID measurements of tricrystal rings at 4.2 K, providing a phase-sensitive constraint. Hardy and colleagues' penetration-depth abstract describes a low-temperature linear term in YBa2Cu3O6.95, constraining low-energy excitations. Neither abstract alone verifies all junction assumptions, sample comparisons or raw traces; combine complementary evidence without turning a nodal observation into an unconditional mechanism verdict.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-2e4d7fdb6c1797b7",
+        "source-b7bc48c845a47b53"
+      ],
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d3-claim-pressure-and-recovered-samples-1",
+      "sectionId": "pressure-and-recovered-samples",
+      "statement": "Schilling's historical Hg-based report concerns superconductivity above 130 K at ambient pressure. Gao's original abstract reports resistive measurements under quasihydrostatic pressure up to 45 GPa and a maximum of 164 K for the three-layer member. The often-quoted 31 GPa point and its onset-versus-zero criterion have not been re-extracted from the full original in this review. The comparison record therefore leaves the exact pressure unknown; a study's maximum applied pressure is not the pressure of every reported transition.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-d95477ebe515f481",
         "source-6d09a24a26a15997"
       ],
-      "conditions": "Cuprate families differ in doping, oxygen content, layer count and disorder. Reported temperatures retain their pressure and measurement criterion; symmetry evidence is material-specific.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d3-claim-pressure-and-recovered-samples-2",
+      "sectionId": "pressure-and-recovered-samples",
+      "statement": "The 2026 pressure-quench report now has a selected primary-text and author-figure check inherited from the [pressure-quench](/scwiki/pressure-quenching) page. Sample S4, released from 18.9 GPa at 4.2 K, showed an ambient-pressure resistive onset of 151 K on warming and 150 K on cooling. This is a reported onset in a recovered metastable sample, not a zero-resistance criterion or an equilibrium ambient-pressure phase.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-14d1e9e0097f7ffb"
+      ],
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d3-claim-pressure-and-recovered-samples-3",
+      "sectionId": "pressure-and-recovered-samples",
+      "statement": "The magnetic onset near 140 K came from retrieved sample S2, not the S4 transport sample. The estimated shielding at 70 K, the separate cold-storage protocol, and an unreproduced broad 172 K anomaly are distinct observations. The latter has no accepted transition-temperature value in this catalogue. Complete final supplementary comparison, raw-data reanalysis and independent replication remain open.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-14d1e9e0097f7ffb"
+      ],
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
     },
     {
       "id": "scwiki-d3-claim-limits-and-disputes-1",
       "sectionId": "limits-and-disputes",
-      "statement": "Antiferromagnetic correlations, a pseudogap and charge order constrain a microscopic theory without selecting one unique pairing glue. A charge-density modulation is not by itself evidence of a pair-density wave. Likewise, a linear-temperature resistivity is not an automatic measurement of a Planckian scattering time. The observable and the inference must remain separate.",
-      "evidenceType": "experiment",
+      "statement": "A charge-density modulation does not alone establish a pair-density wave; a linear resistivity does not alone determine a scattering time. Pseudogap, magnetic and charge correlations constrain theories without selecting one unique glue. Oxygen rearrangement and pressure history can alter more than carrier concentration, so a changed transition temperature does not by itself identify the causal variable. Complete scientific acceptance remains open for this article and the associated materials.",
+      "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-6c1991333d4a6fed"
+        "source-6c1991333d4a6fed",
+        "source-14d1e9e0097f7ffb",
+        "source-e24ef58054ac9b71"
       ],
-      "conditions": "Cuprate families differ in doping, oxygen content, layer count and disorder. Reported temperatures retain their pressure and measurement criterion; symmetry evidence is material-specific.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
     },
     {
       "id": "scwiki-d3-claim-discovery-implications-1",
       "sectionId": "discovery-implications",
-      "statement": "A useful mechanism predicts more than a plausible energy scale: it should connect an interaction model to gap symmetry, a material trend and a falsifiable observation. Spin-fluctuation, RVB and lattice-related approaches have different assumptions and outstanding tests. Treat their coexistence in a review as competing explanations, not a combined proof.",
-      "evidenceType": "experiment",
+      "statement": "Compare matched compositions, preparation histories and criteria. Record what each probe measures, what a model infers and what alternative explanation survives. A mechanism proposal should connect an interaction to a symmetry prediction and a falsifiable material trend. For recovered samples, add decompression temperature, storage and subsequent measurement history before comparing them with equilibrium materials. The site preserves those conditions in searchable records and section exports.",
+      "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-6c1991333d4a6fed"
+        "source-6c1991333d4a6fed",
+        "source-14d1e9e0097f7ffb"
       ],
-      "conditions": "Cuprate families differ in doping, oxygen content, layer count and disorder. Reported temperatures retain their pressure and measurement criterion; symmetry evidence is material-specific.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
     }
   ]
 }

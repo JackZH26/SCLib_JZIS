@@ -291,6 +291,18 @@ describe("SCWiki source and scientific-content contracts",()=>{
    if(a.body.includes("$$"))expect(html).toContain('class="katex"');
   }
  });
+ it("keeps cuprate discovery criteria and recovered sample temperature filters distinct",async()=>{
+  const a=articles().find(a=>a.code==="D3")!;
+  expect(a.materialCases.find(r=>r.id==="scwiki-d3-material-2")?.pressureGPa).toBeNull();
+  expect(a.materialCases.find(r=>r.id==="scwiki-d3-material-3")?.criterion).toBe("resistive-deviation-onset");
+  expect(a.materialCases.find(r=>r.id==="scwiki-d3-material-4")?.tcK).toBe(80);
+  for(const [q,filters,expected] of [["Deng S4","&tcMin=150&pressure=ambient&criterion=resistive-onset",true],["Deng S4","&tcMin=150&pressure=high",false],["Deng S5","&tcMin=170",false],["Y1.2Ba0.8CuO4-y","&tcMin=90&criterion=zero-resistance",false],["Y1.2Ba0.8CuO4-y","&tcMin=90&criterion=resistive-deviation-onset",true]] as const){
+   const response=await get(["search"],"?q="+encodeURIComponent(q)+filters);const data=await response.json();expect(data.results.some((r:{code:string})=>r.code==="D3")).toBe(expected);
+  }
+  const exported=await(await get(["articles",a.id,"sections","pressure-and-recovered-samples"],"?format=markdown")).text();
+  expect(exported).toContain("metastable");expect(exported).toContain("Complete scientific acceptance remains open");
+  expect(searchArticles(searchIndex().entries,"铜氧化物超导体").some(r=>r.code==="D3")).toBe(true);
+ });
  it("carries C2 preprint limitations through section exports and excludes neutron measurement temperatures",async()=>{
   const a=articles().find(a=>a.code==="C2")!;
   const neutron=a.materialCases.find(r=>r.formula==="Ba0.6K0.4Fe2As2")!;
