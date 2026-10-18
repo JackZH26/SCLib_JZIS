@@ -1648,3 +1648,24 @@ it("preserves strange-metal evidence limits through search and section exports",
  expect(md).toContain("does not adjudicate the dispute");
  expect(md).toContain("not a microscopic Hamiltonian construction");
 });
+
+
+it("keeps UTe2 inference boundaries in section exports and excludes model quantities from Tc filters",async()=>{
+ const a=articles().find(a=>a.code==="N6")!;
+ expect(a.materialCases).toEqual([]);
+ for(const id of a.scopeItems![0].sectionIds){
+  const data=await(await get(["articles",a.id,"sections",id])).json();
+  expect(data.scopeItems.map((i:{id:string})=>i.id)).toEqual(["N6"]);
+  const md=await(await get(["articles",a.id,"sections",id],"?format=markdown")).text();
+  expect(md).toContain(data.section.markdown);
+  for(const limit of a.review!.limitations)expect(md).toContain(limit);
+ }
+ for(const q of ["UTe2三重态","two-site Knight shift","nearly equal hyperfine slopes"]){
+  expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
+  expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
+ }
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ for(const phrase of ["single-component even-parity states","not an exact measurement of zero","zero-field temperature dependence alone","not a refit of the spectra"])expect(md).toContain(phrase);
+ expect(a.references.find(r=>r.doi==="10.1038/s41567-024-02493-1")!.verification.note).toContain("Online 9 May 2024");
+ expect(a.references.find(r=>r.doi==="10.7566/JPSJ.93.123701")!.verification.evidenceUrl).toMatch(/v1$/);
+});
