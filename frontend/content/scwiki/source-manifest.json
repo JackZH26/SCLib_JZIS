@@ -491,8 +491,8 @@
       "lineCount": 68,
       "topicId": "scwiki-topic-d10",
       "articleId": "scwiki-d10",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3647,6 +3647,18 @@
       "retractionNoticeDoi": "10.1038/nature01466",
       "retractedAt": "2003-03-06",
       "reason": "Withdrawn52K field-effect claim must retain original notice and cannot supply accepted experimental Tc."
+    },
+    {
+      "id": "correction-kini-organic-doi",
+      "incorrectDoi": "10.1021/ic00331a012",
+      "correctDoi": "10.1021/ic00339a004",
+      "affectedTopics": [
+        "D10"
+      ],
+      "sourcePaths": [
+        "D_material_families/D10_organic.md"
+      ],
+      "reason": "Original organic discovery title andissue verified; wrong DOI identifies unrelated metal-complex structures."
     }
   ]
 }

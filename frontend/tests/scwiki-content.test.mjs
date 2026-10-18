@@ -221,3 +221,10 @@ test("material condition enums cannot silently bypass search filters",async t=>{
   });
  }
 });
+
+test("organic discovery citation rejects the inherited unrelated structural-analysis DOI",t=>{
+ const f=inventoryFixture(t),filename=path.join(f.directory,"articles/d10/meta.json"),meta=JSON.parse(readFileSync(filename,"utf8"));
+ meta.references.find(r=>r.doi==="10.1021/ic00339a004").doi="10.1021/ic00331a012";
+ writeFileSync(filename,JSON.stringify(meta));const result=f.build();
+ assert.notEqual(result.status,0);assert.match(result.stderr,/known incorrect DOI 10\.1021\/ic00331a012/);
+});
