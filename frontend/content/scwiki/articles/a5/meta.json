@@ -32,13 +32,13 @@
   "modifiedAt": "2026-10-19",
   "review": {
     "checkedAt": "2026-10-19",
-    "scope": "Edited pinned A5 chapter, selected BCS/Choi and phase-sensitive primary passages, review passages, Hardy/Carbotte abstracts and an independent ideal-DOS state-counting check.",
+    "scope": "Edited pinned A5 chapter, selected BCS/Choi and phase-sensitive primary passages, review passages, Hardy/Carbotte abstracts and an independent ideal-DOS state-counting check. Selected Fischer tunneling, Dressel optical review and Seibold disordered-response author-version passages; identified manuscript dates retained.",
     "limitations": [
       "Selected source checks do not constitute full scientific validation or independent experimental replication.",
       "Hardy is abstract-scoped; tricrystal image fits, uncertainties and all underlying review citations were not independently reproduced.",
       "No sample-specific gap amplitude or transition temperature was re-extracted; calculated gaps are not experimental records.",
       "The DOS check assumes a clean isotropic constant-DOS mean-field model, not a universal tunneling spectrum.",
-      "The reporting table still needs row-specific primary-source mapping; selected review passages do not verify all listed controls."
+      "The reporting table remains only partly mapped to source passages: tunneling and optical cautions have scoped support; point-contact controls and complete control-by-control verification remain open. Final-version comparisons of the three added sources are pending."
     ]
   },
   "provenance": {
@@ -208,6 +208,48 @@
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0002341v2",
         "note": "Selected pp. 1–3 and Fig. 3 caption: NCCO/PCCO tricrystals, scanning SQUID, frustrated geometry and two unfrustrated NCCO controls. Raw images, Josephson-vortex fits and uncertainty not independently reproduced. arXiv v2 May 2000; typeset 2018 date is not a new publication. No universal claim across all compositions."
       }
+    },
+    {
+      "id": "source-d687e60f83e71f36",
+      "doi": "10.1103/RevModPhys.79.353",
+      "title": "Scanning tunneling spectroscopy of high-temperature superconductors",
+      "year": 2007,
+      "url": "https://doi.org/10.1103/RevModPhys.79.353",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-author-manuscript-scoped-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0610672v1",
+        "note": "Author review v1, submitted 24 October 2006; associated journal publication 2007. Selected pp. 6-8 and 11: lock-in modulation, two-electrode spectra, thermal convolution and matrix-element/surface limits. Pages 6 and 8 visually checked. Final-version comparison, cited original experiments and raw spectra remain unchecked; typeset 2008 header is not submission history."
+      }
+    },
+    {
+      "id": "source-aa5ec58b03d1a3ef",
+      "doi": "10.1016/j.jpcs.2010.10.004",
+      "title": "Looking at the superconducting gap of iron pnictides",
+      "year": 2011,
+      "url": "https://doi.org/10.1016/j.jpcs.2010.10.004",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-author-manuscript-scoped-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1004.2962v1",
+        "note": "Author review v1, submitted 17 April 2010; associated journal publication 2011. Selected pp. 1-2 discuss alternative gap fits, distinct scattering contributions and film/substrate reflectance; p. 2 visually checked. No re-fitting or review of all underlying experiments; final-version comparison remains open. Typeset 2018 footer is not a new study date."
+      }
+    },
+    {
+      "id": "source-9394f6a65db2d109",
+      "doi": "10.1103/PhysRevB.96.144507",
+      "title": "Application of the Mattis-Bardeen theory in strongly disordered superconductors",
+      "year": 2017,
+      "url": "https://doi.org/10.1103/PhysRevB.96.144507",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1702.01610v1",
+        "note": "Publisher abstract and author v1, submitted 6 February 2017, selected pp. 1-2 and Fig. 1 checked; p. 2 visually inspected. Distinguishes DOS peak/threshold and collective optical response in a disordered attractive-Hubbard framework. Full numerical calculation, raw experimental data and final-version comparison were not reproduced."
+      }
     }
   ],
   "materialCases": [],
@@ -317,15 +359,18 @@
     {
       "id": "scwiki-a5-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. The selected review passages provide context for ARPES, heat capacity, penetration depth and thermal transport; row-by-row source verification of the complete checklist remains open.",
+      "statement": "Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. Selected review and theory passages now support tunneling and optical interpretation limits, alongside the earlier ARPES and bulk-probe context. Complete control-by-control verification, including the point-contact row, remains open.",
       "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-e933e3bbd4beade6"
+        "source-e933e3bbd4beade6",
+        "source-d687e60f83e71f36",
+        "source-aa5ec58b03d1a3ef",
+        "source-9394f6a65db2d109"
       ],
       "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
       "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset.",
       "sourceRelationship": "context-for-local-derivation",
-      "derivationNote": "This is a local editorial reporting map. Tsuei-Kirtley pp. 974-976 support selected probe interpretation limits, not every STS/optical/THz/interface control in the complete checklist. Row-specific primary references and remaining control checks are pending."
+      "derivationNote": "Local editorial reporting map with selected source support: Fischer author v1 pp. 6-8 and 11 for tunneling; Dressel author v1 pp. 1-2 and Seibold author v1 pp. 1-2 for optical models; Tsuei-Kirtley pp. 974-976 for other selected probes. These readings do not certify all controls or any material dataset. Point-contact and remaining control-level checks are pending."
     },
     {
       "id": "scwiki-a5-claim-experimental-criteria-2",
@@ -333,23 +378,31 @@
       "statement": "| Probe | Recorded quantity | What must be controlled |\n|---|---|---|\n| Tunneling or STS | Differential conductance versus bias | Tip and sample spectra, thermal/instrumental broadening, matrix elements and surface variation |\n| ARPES | Momentum-resolved photoemission intensity | Occupation, resolution, matrix elements and surface state; a leading edge is not automatically a gap amplitude |\n| Optical or THz spectroscopy | Frequency-dependent electrodynamic response | Scattering, multiple bands and the model linking absorption to an excitation threshold |\n| Heat capacity | Entropy and bulk excitation contribution | Lattice/magnetic backgrounds and normalization; no direct phase measurement |\n| Penetration depth or thermal transport | Low-energy electromagnetic or heat response | Disorder, nonlocality, background and multiple excitation channels |\n| Andreev or point-contact spectroscopy | Interface current and conductance | Barrier transparency, heating, contact regime and channel mixing |",
       "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-e933e3bbd4beade6"
+        "source-e933e3bbd4beade6",
+        "source-d687e60f83e71f36",
+        "source-aa5ec58b03d1a3ef",
+        "source-9394f6a65db2d109"
       ],
       "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
       "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset.",
       "sourceRelationship": "context-for-local-derivation",
-      "derivationNote": "This is a local editorial reporting map. Tsuei-Kirtley pp. 974-976 support selected probe interpretation limits, not every STS/optical/THz/interface control in the complete checklist. Row-specific primary references and remaining control checks are pending."
+      "derivationNote": "Local editorial reporting map with selected source support: Fischer author v1 pp. 6-8 and 11 for tunneling; Dressel author v1 pp. 1-2 and Seibold author v1 pp. 1-2 for optical models; Tsuei-Kirtley pp. 974-976 for other selected probes. These readings do not certify all controls or any material dataset. Point-contact and remaining control-level checks are pending."
     },
     {
       "id": "scwiki-a5-claim-experimental-criteria-3",
       "sectionId": "experimental-criteria",
-      "statement": "A tunnel conductance resembles the sample density of states only with suitable assumptions about the counterelectrode and tunneling matrix element, and after accounting for the thermal convolution. Do not identify every conductance peak with $\\Delta$. Photoemission and thermodynamic measurements constrain different aspects of the state; the selected review discusses why magnitude-sensitive probes alone do not measure the relative phase.",
+      "statement": "A tunnel conductance resembles the sample density of states only under counterelectrode and matrix-element assumptions; the selected Fischer review gives the thermal convolution and explains the resolution role of lock-in modulation. Do not identify every conductance peak with $\\Delta$. Optical interpretation also depends on scattering and multiband weights: the selected Dressel review compares competing fits, while Seibold and colleagues distinguish DOS peaks, excitation thresholds and collective absorption within a disordered model. These are source-scoped cautions, not a new fit to any specimen. Photoemission and thermodynamic probes constrain other aspects; magnitude-sensitive measurements alone do not determine relative phase.",
       "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-e933e3bbd4beade6"
+        "source-e933e3bbd4beade6",
+        "source-d687e60f83e71f36",
+        "source-aa5ec58b03d1a3ef",
+        "source-9394f6a65db2d109"
       ],
       "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
-      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset."
+      "verificationScope": "Selected author-version pages and publisher abstract only; final versions and underlying experiments remain outside this follow-up.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Selected review/model passages support stated interpretation cautions; the combined reporting guidance is editorial. No raw-spectrum fit, universal gap identification or full theory reproduction is claimed."
     },
     {
       "id": "scwiki-a5-claim-experimental-criteria-4",

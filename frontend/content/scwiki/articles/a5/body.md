@@ -22,18 +22,18 @@ In this magnitude-only model, replacing a gap by its negative leaves the excitat
 
 ## Experimental criteria
 
-Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. The selected review passages provide context for ARPES, heat capacity, penetration depth and thermal transport; row-by-row source verification of the complete checklist remains open.
+Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. Selected review and theory passages now support tunneling and optical interpretation limits, alongside the earlier ARPES and bulk-probe context. Complete control-by-control verification, including the point-contact row, remains open.
 
 | Probe | Recorded quantity | What must be controlled |
 |---|---|---|
-| Tunneling or STS | Differential conductance versus bias | Tip and sample spectra, thermal/instrumental broadening, matrix elements and surface variation |
+| Tunneling or STS | Differential conductance versus bias | Tip and sample spectra, thermal/instrumental broadening, matrix elements and surface variation [R7](#ref-source-d687e60f83e71f36) |
 | ARPES | Momentum-resolved photoemission intensity | Occupation, resolution, matrix elements and surface state; a leading edge is not automatically a gap amplitude |
-| Optical or THz spectroscopy | Frequency-dependent electrodynamic response | Scattering, multiple bands and the model linking absorption to an excitation threshold |
+| Optical or THz spectroscopy | Frequency-dependent electrodynamic response | Scattering, multiple bands and the model linking absorption to an excitation threshold [R8](#ref-source-aa5ec58b03d1a3ef) [R9](#ref-source-9394f6a65db2d109) |
 | Heat capacity | Entropy and bulk excitation contribution | Lattice/magnetic backgrounds and normalization; no direct phase measurement |
 | Penetration depth or thermal transport | Low-energy electromagnetic or heat response | Disorder, nonlocality, background and multiple excitation channels |
 | Andreev or point-contact spectroscopy | Interface current and conductance | Barrier transparency, heating, contact regime and channel mixing |
 
-A tunnel conductance resembles the sample density of states only with suitable assumptions about the counterelectrode and tunneling matrix element, and after accounting for the thermal convolution. Do not identify every conductance peak with $\Delta$. Photoemission and thermodynamic measurements constrain different aspects of the state; the selected review discusses why magnitude-sensitive probes alone do not measure the relative phase. [R3](#ref-source-e933e3bbd4beade6)
+A tunnel conductance resembles the sample density of states only under counterelectrode and matrix-element assumptions; the selected Fischer review gives the thermal convolution and explains the resolution role of lock-in modulation. Do not identify every conductance peak with $\Delta$. Optical interpretation also depends on scattering and multiband weights: the selected Dressel review compares competing fits, while Seibold and colleagues distinguish DOS peaks, excitation thresholds and collective absorption within a disordered model. These are source-scoped cautions, not a new fit to any specimen. Photoemission and thermodynamic probes constrain other aspects; magnitude-sensitive measurements alone do not determine relative phase. [R3](#ref-source-e933e3bbd4beade6) [R7](#ref-source-d687e60f83e71f36) [R8](#ref-source-aa5ec58b03d1a3ef) [R9](#ref-source-9394f6a65db2d109)
 
 Hardy and colleagues report a strong linear term in the penetration-depth change of YBa2Cu3O6.95 single crystals over approximately 3–25 K using a 900 MHz resonator. This is evidence relevant to low-energy excitations under their sample conditions, not a direct measurement of gap phase. The present check covers the publisher abstract. [R4](#ref-source-b7bc48c845a47b53)
 
