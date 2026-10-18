@@ -52,10 +52,37 @@ describe("SCWiki source and scientific-content contracts",()=>{
    }
   }
  });
+ it("retains claim conditions and article/source review limits in every section export",async()=>{
+  for(const a of articles())for(const section of a.sections){
+   const route=["articles",a.id,"sections",section.id];
+   const data=await (await get(route)).json();
+   const response=await get(route,"?format=markdown");
+   const markdown=await response.text();
+   expect(response.headers.get("X-SCWiki-Revision")).toBe(a.revision);
+   expect(markdown).toContain(section.markdown);
+   expect(markdown).toContain(a.review.scope);
+   for(const limit of a.review.limitations)expect(markdown).toContain(limit);
+   for(const c of data.claims){
+    expect(markdown).toContain(c.conditions);
+    expect(markdown).toContain("Evidence: "+c.evidenceType);
+    if(c.verificationScope)expect(markdown).toContain(c.verificationScope);
+    expect(a.markdown).toContain(c.conditions);
+   }
+   for(const ref of data.sources){
+    expect(markdown).toContain("Check: "+ref.verification.scope);
+    expect(markdown).toContain("Checked: "+ref.verification.checkedAt);
+    if(ref.verification.note)expect(markdown).toContain(ref.verification.note);
+   }
+   for(const citation of section.markdown.matchAll(/\]\(#ref-([a-z0-9-]+)\)/g))expect(data.sources.some((r:{id:string})=>r.id===citation[1])).toBe(true);
+  }
+ });
  it("publishes BCS as a conditional theory entry without inventing experimental Tc records",async()=>{
   const a=articles().find(a=>a.code==="B1")!;
   expect(a.evidenceTypes).toEqual(["theory","hypothesis"]);
   expect(a.materialCases).toEqual([]);
+  const cases=a.sections.find(s=>s.id==="material-cases")!;
+  expect(cases.markdown).toContain("No sample-specific material records");
+  expect(renderToStaticMarkup(<ScientificMarkdown markdown={cases.markdown}/>)).not.toContain("<table");
   expect(a.body).toContain("**one spin**");
   expect(a.body).toContain("angular frequency");
   expect(a.body).toContain("3.528");
@@ -98,7 +125,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(a.review.limitations.join(" ")).toContain("not");
    expect(a.references.every(r=>r.publicationStatus && r.verification.scope)).toBe(true);
    const {revision,body,markdown,sections,wordCount,...meta}=a;
-   expect(createHash("sha256").update("scwiki-export-v2\n"+JSON.stringify(meta)+"\n"+body).digest("hex").slice(0,20)).toBe(revision);
+   expect(createHash("sha256").update("scwiki-export-v3\n"+JSON.stringify(meta)+"\n"+body).digest("hex").slice(0,20)).toBe(revision);
   }
  });
  it("resolves every claim, citation and published article link without treating rendering as proof",()=>{

@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "09ddcecde49472da6457",
+  "revision": "f005eefdee58bd5e5084",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -20,7 +20,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "ba2cf0c3d6ba3295b79d",
+      "revision": "b9231aa39fd8c4aa669a",
       "materialCases": [
         {
           "formula": "K3C60",
@@ -65,7 +65,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "a0c09d808b8998fc9544",
+      "revision": "85e07997e6284c9ba7a6",
       "materialCases": [
         {
           "formula": "YBa2Cu3O7-delta",
@@ -112,7 +112,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "c793eaf02358c66ca094",
+      "revision": "f44954a8fbc66d2fb5d1",
       "materialCases": [],
       "dois": [
         "10.1103/PhysRev.108.1175",
@@ -138,7 +138,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "7c5cdb8a321b4232d578",
+      "revision": "3864951b463a13ba0563",
       "materialCases": [
         {
           "formula": "MgB2",
@@ -201,7 +201,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "461223f417c4849b2508",
+      "revision": "0ec0bfa61f5b4e11d916",
       "materialCases": [
         {
           "formula": "KFe2As2",
@@ -264,7 +264,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "0d6976321f43cf32778f",
+      "revision": "25ee27d1b9c13aef6243",
       "materialCases": [
         {
           "formula": "LaAlO3/SrTiO3",
@@ -329,7 +329,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "65101565b3f4a22d3ea2",
+      "revision": "8b8a93709467223e272d",
       "materialCases": [
         {
           "formula": "HgBa2Ca2Cu3O8+delta",
@@ -397,7 +397,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "a4811bebbd5e88139944",
+      "revision": "6d6d6da5226f729c0aa7",
       "materialCases": [
         {
           "formula": "LaFeAsO1-xFx",
@@ -480,7 +480,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "590929a3f3c1a77c3bfd",
+      "revision": "8e4c86675b92764040c0",
       "materialCases": [
         {
           "formula": "Nd0.8Sr0.2NiO2",
@@ -544,7 +544,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "f0779eb52a157cad3291",
+      "revision": "93b4800c8de6ad1e7682",
       "materialCases": [
         {
           "formula": "Sr2RuO4",
@@ -590,7 +590,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "b1793b1f64085155f4a4",
+      "revision": "57e00683b3a07d5cd53d",
       "materialCases": [
         {
           "formula": "twisted bilayer graphene",
@@ -639,7 +639,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "bb7eb48e8976ec478ecb",
+      "revision": "3be3da5e0a427964925a",
       "materialCases": [
         {
           "formula": "κ-(BEDT-TTF)2Cu2(CN)3",
@@ -687,7 +687,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "06df502ffb2828775690",
+      "revision": "e908b42349a109b36297",
       "materialCases": [
         {
           "formula": "overdoped cuprates",
