@@ -1,0 +1,502 @@
+{
+  "id": "scwiki-d13",
+  "topicId": "scwiki-topic-d13",
+  "code": "D13",
+  "slug": "two-dimensional-semiconductor-superconductors",
+  "title": "Two-dimensional semiconductor and TMD superconductors",
+  "summary": "Compare gated MoS2 and WS2 with metallic NbSe2 and TaS2, separating Ising protection, resistive criteria, charge order and device-dependent evidence.",
+  "aliases": [
+    "two-dimensional semiconductor superconductors",
+    "TMD superconductors",
+    "Ising superconductivity",
+    "二维半导体超导",
+    "伊辛超导"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "E3",
+    "G6",
+    "G8",
+    "F8",
+    "D12"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T17:48:26.313761+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Saito,Costanzo and XiCDW author passages/figures; selected final WS2 HTML and Qi discussion; inherited E3/G6/F8 checks; current Marini2026original abstract; independent spinor normalization and Pauli scale.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Ye2012 and Marini2026 retain abstract-only scopes; full simulations and methods are not established by those checks.",
+      "Final-version/supplement/raw-data, chemical controls, field alignment and finite-size acceptance remain open.",
+      "Normal-state spinor algebra does not determine Tc,Hc2,topology or pairing dominance."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D13_2D_semiconductors.md",
+    "sha256": "8f59bc3dfacc46058dd8c367de6edd88f63a534a4e34b5aa57a3f7bf06857bd3",
+    "sourceId": "file-829e90b85fa2d49e"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 257,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Retain gated/intrinsicTMD,Ising,BKT,CDW andtopologicalboundarytopics; correctXi attribution/causality, devicecriteria and familygeneralizations. Unverified universal quantitative claims excluded;2026theory classifiedasmodel."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-d13-correction-1",
+      "description": "Xi Ising-pairing nphys3538 and enhanced-CDW nnano.2015.143 are distinct papers. 145K CDW is not superconducting Tc; causal suppression is not established by anticorrelation.",
+      "sourceId": "source-43488891372a9f8e",
+      "scope": "Correct pinned single-paper attribution and causal overstatement."
+    },
+    {
+      "id": "scwiki-d13-correction-2",
+      "description": "Saito52T uses75%normal-resistance criterion on a nonzero-resistance sample. Preserve separate low-field50%criterion and measurement temperature.",
+      "sourceId": "source-ec4b77f9e011c26e",
+      "scope": "Prevent high-field/zero-resistance and sample/temperature conflation."
+    },
+    {
+      "id": "scwiki-d13-correction-3",
+      "description": "Ising protection does not prove pure triplet or exclude mixed components. Metallic TMDs and polytypes are not all semiconductors.",
+      "sourceId": "source-804e0c9690bde4d8",
+      "scope": "Restrict family-wide pairing and material-class generalization."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "|u_+^T i\\sigma_yu_-|^2=\\lambda^2/(\\lambda^2+b^2)",
+      "check": "12two-valley spinor diagonalizations,spin directions,pairing amplitude versus normalized-product singlet probability,factor2 distinction; weakcouplingg2Pauli coefficient1.85695T/K. No gap equation or material reproduction."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-e8b9a66d143832fb",
+      "doi": "10.1126/science.1228006",
+      "title": "Superconducting Dome in a Gate-Tuned Band Insulator",
+      "year": 2012,
+      "url": "https://doi.org/10.1126/science.1228006",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-institution-abstract-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://research.rug.nl/en/publications/superconducting-dome-in-a-gate-tuned-band-insulator/",
+        "note": "Published 30 November 2012. Authors institutional abstract supports a MoS2 dome using liquid and solid gating. Final PDF is embargoed there; full methods and raw data were not read."
+      }
+    },
+    {
+      "id": "source-cba51ab2111ccf0a",
+      "doi": "10.1126/science.aab2277",
+      "title": "Evidence for two-dimensional Ising superconductivity in gated MoS2",
+      "year": 2015,
+      "url": "https://doi.org/10.1126/science.aab2277",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-v2-criteria-and-figure",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1506.07620v2",
+        "note": "Author v2 submitted 5 August 2015; Science 350, 1353–1357. Selected v1 p. 3 and captions pp. 11–12, v2 captions pp. 11–13 and Fig. 1 p. 17 checked visually. Distinct 90%/50% criteria and model context retained; no complete spin-orbit derivation, supplement, final-version comparison or raw-data fit."
+      }
+    },
+    {
+      "id": "source-ec4b77f9e011c26e",
+      "doi": "10.1038/nphys3580",
+      "title": "Superconductivity protected by spin–valley locking in ion-gated MoS2",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nphys3580",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-high-field-criteria-and-methods",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1506.04146v3",
+        "note": "Author v3, 11 June 2016; published online 7 December 2015. Selected pp4–5, p20 Figure3/caption and p22 methods read; p20 visually checked. High-field device 6.5K/52T uses 75% normal resistance and did not reach zero resistance; separate low-field sample 9.7K uses 50%. 1.5K is measurement temperature, not Tc. Full pulse/supplement/final comparison open."
+      }
+    },
+    {
+      "id": "source-c80fb39cdf748a83",
+      "doi": "10.1038/nphys3538",
+      "title": "Ising pairing in superconducting NbSe2 atomic layers",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nphys3538",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1507.08731v1",
+        "note": "Authorv1 dated31July2015; selectedpp4–5,10methods,12Figure4 visually checked. Crossref publisher-depositedonline9November2015 versus February2016issue. Body0.3K versuscaption0.36K keptdistinct; fullfinal/supplement/noise calibration open. D13 additionally read selected author p3 AL-fit/50% versus BKT/1% criteria and weak-CDW-competition interpretation; the separate CDW experiment is not this paper."
+      }
+    },
+    {
+      "id": "source-43488891372a9f8e",
+      "doi": "10.1038/nnano.2015.143",
+      "title": "Strongly enhanced charge-density-wave order in monolayer NbSe2",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/nnano.2015.143",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-Raman-criterion-and-phase-diagram",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1507.05595v1",
+        "note": "Author v1 and publication 20 July 2015. Selected pp2–3 Raman/transition extraction and p8 Figure3 read; p8 visually checked. 145±3K is CDW scale; mode intensity crosses zero with mean-field guides, not superconducting Tc. Full supplement, final comparison and cause of SC suppression not established here."
+      }
+    },
+    {
+      "id": "source-804e0c9690bde4d8",
+      "doi": "10.1038/s41467-018-03888-4",
+      "title": "Tuning Ising superconductivity with layer and spin–orbit coupling in two-dimensional transition-metal dichalcogenides",
+      "year": 2018,
+      "url": "https://doi.org/10.1038/s41467-018-03888-4",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-methods-results-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-018-03888-4.pdf",
+        "note": "Published12April2018. Selectedfinalpp3–5 and6–7methods read, p4Figures3–4 visually checked. 50%Rn,34.5Tinstrumentceiling,65.6TnearTcfitparameter andseparatecryostatlimits retained. Fullsupplement/rawdata/DFT not reproduced."
+      }
+    },
+    {
+      "id": "source-03aca3bf939d3e53",
+      "doi": "10.1038/nnano.2015.314",
+      "title": "Gate-induced superconductivity in atomically thin MoS2 crystals",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nnano.2015.314",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-contact-inhomogeneity-and-methods",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1512.03222v1",
+        "note": "Author v1,10 December2015; journal online11January2016. Selected pp3–4,6–7 and p13 Figure2 read;p13 visually checked. Monolayer zero resistance only contacts7–8, onset just above2K; other devices no transition down1.5K; critical field50%normal resistance. Frozen-liquid detachment/density inhomogeneity,220Kgating/leakage<1nA. Complete final/supplement/chemical proof open."
+      }
+    },
+    {
+      "id": "source-8fbffce60f5c5245",
+      "doi": "10.1073/pnas.1716781115",
+      "title": "Full superconducting dome of strong Ising protection in gated monolayer WS2",
+      "year": 2018,
+      "url": "https://doi.org/10.1073/pnas.1716781115",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-HTML-gating-and-critical-field-criteria",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC5889638/",
+        "note": "Final HTML Methods, selected Results and Figures1–3captions read. Effective gate coordinate concatenates back-gate traces; Hall density nonmonotonic. SampleB optimal3.15K uses50%Rn, distinct from low-edge1.54K state shifted0.08K at35T. Figure images/supplement/calibration not audited. PNAS PDF403."
+      }
+    },
+    {
+      "id": "source-e8160470a5b03301",
+      "doi": "10.1126/science.aar4426",
+      "title": "Gate-induced superconductivity in a monolayer topological insulator",
+      "year": 2018,
+      "url": "https://doi.org/10.1126/science.aar4426",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-density-definition-and-resistance-criteria",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1809.04691v1",
+        "note": "Author v1 submitted 12 September 2018; journal online 25 October, issue 23 November. Selected pp. 1–3 read and p. 3 Fig. 2 visually checked. Capacitive doping is not automatically carrier density; half-1K criterion and finite noise floor retained. NSF final PDF download timed out; remaining methods/supplement and final comparison open."
+      }
+    },
+    {
+      "id": "source-9ec8f69fb4323ea6",
+      "doi": "10.1038/ncomms11038",
+      "title": "Superconductivity in Weyl semimetal candidate MoTe2",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/ncomms11038",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-selected-discussion-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.nature.com/articles/ncomms11038",
+        "note": "Published14March2016; selected publisher discussion read via indexed primary text. Low-pressure Td/structural instability differs from high-pressure1T-prime regime; no quantitative pressure/Tc or methods/raw audit claimed."
+      }
+    },
+    {
+      "id": "source-d32df19524b2a1c8",
+      "doi": "10.1103/PhysRevLett.9.266",
+      "title": "Upper Limit for the Critical Field in Hard Superconductors",
+      "year": 1962,
+      "url": "https://doi.org/10.1103/PhysRevLett.9.266",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "reused-publisher-identity-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.9.266",
+        "note": "A6 identity check reused; complete original derivation not retrieved. Pauli calculation uses explicit weak-coupling assumptions and separately checked perspective."
+      }
+    },
+    {
+      "id": "source-1ebdfccc067bc6a7",
+      "doi": "10.1103/PhysRevB.80.214506",
+      "title": "Broadening of the Berezinskii-Kosterlitz-Thouless superconducting transition by inhomogeneity and finite-size effects",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevB.80.214506",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-response-and-fitting-limits",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0909.0479v2",
+        "note": "Journal publication 7 December 2009; arXiv version 2 submitted 11 January 2010. Selected pages 3–5 and 7–9 were read: response conventions, dilute RG equations, restricted BKT regime and current-window limitations. Page 7, Eq. (26), was visually checked. The PDF internal typesetting date says 30 October 2018; it is not the publication date. Full final-version comparison and numerical material fits remain open."
+      }
+    },
+    {
+      "id": "source-55a6c270d113228e",
+      "doi": "10.1103/ld98-qv7p",
+      "title": "Disorder-Driven Enhancement of Coulomb Repulsion Governs the Superconducting Dome in Ionic-Liquid-Gated Quasi-2D Materials",
+      "year": 2026,
+      "url": "https://doi.org/10.1103/ld98-qv7p",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-and-date",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/ld98-qv7p",
+        "note": "Published14September2026, Marini,Cudazzo,Calandra. Original abstract checked: many-body/disorder plus first-principles proposed explanation of gated-TMD domes and tunneling spectra. Full equations, computational assumptions and numerical reproduction remain open; not independent experimental confirmation."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-d13-material-1",
+      "recordType": "experiment",
+      "formula": "MoS2",
+      "sample": "Saito high-field device,55T pulsed-field apparatus;52T boundary at75%Rn",
+      "tcK": null,
+      "reportedTemperatureK": 1.5,
+      "temperatureKind": "measurement",
+      "temperatureNote": "1.5K measurement temperature; high-field sample did not reach zero resistance.",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "criterion": "pulsed-field-measurement",
+      "probe": "Pulsed-field resistivity",
+      "sourceId": "source-ec4b77f9e011c26e",
+      "aliases": [
+        "molybdenum disulfide"
+      ]
+    },
+    {
+      "id": "scwiki-d13-material-2",
+      "recordType": "experiment",
+      "formula": "WS2",
+      "sample": "Lu CVD monolayer sampleB,optimal dome state; separate from1.54Klow-edge35T state",
+      "tcK": 3.15,
+      "reportedTemperatureK": 3.15,
+      "temperatureKind": "transition",
+      "temperatureNote": "Optimal sampleB transition at50%normal resistance; sample-specific,not generic WS2 Tc.",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "criterion": "midpoint",
+      "probe": "Four-terminal transport",
+      "sourceId": "source-8fbffce60f5c5245",
+      "aliases": [
+        "tungsten disulfide"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d13-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Two-dimensional transition-metal dichalcogenide superconductivity includes gate-doped semiconductors such as MoS2 and WS2, as well as intrinsically metallic NbSe2 and TaS2. They should not all be described as semiconductors or assigned one pairing mechanism. Atomic thickness, the thickness of an accumulated conducting layer and the dimensionality relevant to superconducting coherence are also different properties. Preserve polytype, substrate, layer count and preparation before comparing experiments.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e8b9a66d143832fb",
+        "source-ec4b77f9e011c26e",
+        "source-804e0c9690bde4d8",
+        "source-03aca3bf939d3e53",
+        "source-8fbffce60f5c5245"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Ising protection refers to the influence of spin–orbit coupling on the response of Cooper pairs to an applied field. It does not mean that every paired state is purely singlet, or that a large in-plane critical field proves triplet pairing. Broken inversion can admit mixed components, while additional Fermi pockets, interlayer coupling, scattering and geometry change the interpretation. Topological superconductivity is a further classification, not a synonym for strong spin–orbit coupling.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ec4b77f9e011c26e",
+        "source-c80fb39cdf748a83",
+        "source-804e0c9690bde4d8"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A restricted normal-state illustration uses $H_\\eta=\\eta\\lambda\\sigma_z+b\\sigma_x$, where $\\eta=\\pm1$ labels opposite valleys, $\\sigma$ acts on spin, $\\lambda$ is an Ising spin–orbit energy and $b$ an in-plane Zeeman energy. Its eigenvalues are $\\pm\\sqrt{\\lambda^2+b^2}$. On the positive branch the spin directions are $\\mathbf n_\\eta=(b,0,\\eta\\lambda)/\\sqrt{\\lambda^2+b^2}$: opposite out-of-plane components persist while the field cants both spins in-plane. This two-level model omits momentum-dependent bands, Rashba terms and other pockets.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ec4b77f9e011c26e",
+        "source-804e0c9690bde4d8"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For corresponding spinors, $|u_+^T i\\sigma_yu_-|^2=\\lambda^2/(\\lambda^2+b^2)$ is the squared singlet pairing matrix element. It is twice the singlet probability of the normalized tensor-product state, so those quantities must not be confused. Twelve independent diagonalizations check this distinction and spin orientations. This normal-state calculation neither solves a superconducting gap equation nor establishes singlet dominance, a critical field or a material pairing mechanism.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ec4b77f9e011c26e",
+        "source-804e0c9690bde4d8"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The weak-coupling reference $B_P=\\Delta_0/(\\sqrt2\\mu_B)\\simeq1.86\\,T_c$ uses tesla for field and kelvin for temperature, with $g=2$, negligible spin–orbit effects and $\\Delta_0\\simeq1.764k_BT_c$. This is a paramagnetic benchmark, not a universal upper bound including orbital effects. Similarly, the BKT transport signature $V\\propto I^3$ has a restricted dynamical regime; finite size, heating and inhomogeneity can invalidate a naive exponent-only diagnosis. Neither comparison identifies the pairing interaction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d32df19524b2a1c8",
+        "source-1ebdfccc067bc6a7"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Ye's MoS2 study established a gate-controlled superconducting dome in a band insulator. Lu's later Ising study illustrates why the chosen threshold matters: its checked author manuscript uses 90% of normal resistance for the phase diagram and 50% elsewhere. Those temperatures cannot be silently substituted for one another, for a measured zero-resistance temperature or for a fitted BKT temperature. The dome itself is not evidence selecting a unique pairing mechanism.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e8b9a66d143832fb",
+        "source-cba51ab2111ccf0a"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Saito's high-field MoS2 device gives a particularly clear warning. Its reported transition near 6.5 K and in-plane critical field near 52 T at 1.5 K use a 75%-of-normal-resistance criterion; that device did not reach zero resistance. The separate low-field sample's 9.7 K transition uses 50%. The 55 T pulsed-field ceiling is not identical to the extracted 52 T boundary. The experiment and band calculations support spin–valley protection, while neither these criteria nor the measurement temperature establish triplet order.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ec4b77f9e011c26e"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Costanzo's atomically thin MoS2 experiments demonstrate a monolayer resistance drop to the measured zero level, but only one contact pair in the illustrated device shows it. Other monolayers show no transition down to the 1.5 K base temperature. Different contact regions reveal substantial density variation, associated with frozen-liquid detachment. A tendency toward weaker monolayer superconductivity in this set of devices is therefore not a universal prohibition on strong two-dimensional pairing. The critical-field comparison uses half the normal resistance.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-03aca3bf939d3e53"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "In NbSe2, Xi's Ising paper extracts an Aslamazov–Larkin fit scale close to half the normal resistance; its current-excitation BKT estimate lies closer to the one-percent criterion. The roughly 3 K monolayer fit scale must not be relabelled as a direct BKT temperature. The paper considers reduced interlayer pairing and argues that the competing CDW effect on this trend is likely weak. That interpretation differs from asserting that enhanced CDW necessarily causes the superconducting suppression.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c80fb39cdf748a83"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "The frequently quoted monolayer CDW scale of $145\\pm3$ K comes from a separate Xi Raman/transport paper. The selected analysis follows a CDW amplitude mode and extrapolates its intensity to zero, with mean-field fits used as guides. This is neither a superconducting transition nor an independent direct measurement of the pairing interaction. Contrasting thickness trends of CDW and superconductivity motivate competing-order tests; a correlation alone does not determine their causal coupling.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-43488891372a9f8e"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-experimental-criteria-6",
+      "sectionId": "experimental-criteria",
+      "statement": "De la Barrera compares metallic 2H-TaS2 and NbSe2 down to atomic thickness. The resistive curves use 50% criteria; the reported monolayer TaS2 boundary remains above the 34.5 T instrument limit below 2 K. A 65.6 T coefficient fitted near the transition is not a measured zero-temperature critical field. Even-layer enhancement also survives despite restored inversion symmetry, emphasizing the balance of interlayer and spin–orbit coupling. Encapsulation, aging and distinct thickness trends remain part of the sample record.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-804e0c9690bde4d8"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-experimental-criteria-7",
+      "sectionId": "experimental-criteria",
+      "statement": "Lu's CVD monolayer WS2 dome uses an effective gate coordinate assembled from ionic-gate states and back-gate sweeps. It is not a directly applied kilovolt voltage across the ionic liquid, and Hall carrier density is nonmonotonic across the dome. The high-field study uses a separate sample B, whose optimal 50%-resistance transition is 3.15 K. Its low-edge 1.54 K state changes by only 0.08 K at 35 T. Neither number supplies a universal WS2 transition or proves that all tungsten dichalcogenides behave alike.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8fbffce60f5c5245"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Sajadi's monolayer WTe2 device connects gate-controlled superconductivity with a quantum-spin-Hall material platform, while retaining resistance thresholds and a finite measurement floor. Qi's pressure-dependent MoTe2 study instead follows bulk structural regimes, including low-pressure Td and high-pressure 1T-prime behavior. These are distinct geometries and phases. A topological normal-state description plus superconductivity is a reason to investigate the paired state, not sufficient demonstration of a topological superconducting gap or Majorana modes.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e8160470a5b03301",
+        "source-9ec8f69fb4323ea6"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "A September 2026 theory by Marini, Cudazzo and Calandra attributes gated-TMD domes to ionic disorder, reduced screening and enhanced Coulomb repulsion, comparing its calculations with experiment. This is a model explanation, not a new experimental transition or universal proof about every superconducting dome. Complete scientific acceptance remains open here: its full equations, other cited final-version comparisons, supplements, chemical controls and raw-data analyses are unfinished. The present checks are restricted to the named primary passages, figures and spinor model.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e8b9a66d143832fb",
+        "source-ec4b77f9e011c26e",
+        "source-43488891372a9f8e",
+        "source-03aca3bf939d3e53",
+        "source-8fbffce60f5c5245",
+        "source-55a6c270d113228e"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d13-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Treat the device as part of the material: record layer count, polytype, contacts, electrolyte, gating temperature, voltage history and field orientation. Compare onset, midpoint, measured zero, phase-ordering and spectroscopic scales separately. Establish whether charge tuning also changes disorder or chemistry, and test proposed spin protection against the actual bands and geometry. The strongest next experiment distinguishes competing explanations on characterized devices instead of ranking isolated critical-field or transition-temperature numbers.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-cba51ab2111ccf0a",
+        "source-ec4b77f9e011c26e",
+        "source-804e0c9690bde4d8",
+        "source-03aca3bf939d3e53",
+        "source-8fbffce60f5c5245",
+        "source-1ebdfccc067bc6a7"
+      ],
+      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
+      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+    }
+  ]
+}
