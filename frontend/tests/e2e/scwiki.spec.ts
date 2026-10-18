@@ -164,3 +164,18 @@ test("long desktop handbook contents keep the final links reachable within a sho
  const filtered=await(await request.get('/api/scwiki/v1/search?q='+encodeURIComponent(query)+'&tcMin=0.01')).json();
  expect(filtered.results.some((x:{id:string})=>x.id===a.id)).toBe(false);
  });
+
+test("SCWiki API pages, conditional requests and write rejection work through the server",async({request})=>{
+ const first=await request.get('/api/scwiki/v1/topics?limit=2');expect(first.status()).toBe(200);
+ const data=await first.json();expect(data.topics).toHaveLength(2);expect(data.total).toBe(catalogue.articles.length);
+ const second=await request.get(data.page.next);expect(second.status()).toBe(200);
+ expect((await second.json()).topics.map((x:{id:string})=>x.id)).not.toEqual(data.topics.map((x:{id:string})=>x.id));
+ const unchanged=await request.get('/api/scwiki/v1/topics?limit=2',{headers:{'If-None-Match':first.headers().etag}});
+ expect(unchanged.status()).toBe(304);expect(await unchanged.text()).toBe('');
+ const changedPage=await request.get(data.page.next,{headers:{'If-None-Match':first.headers().etag}});expect(changedPage.status()).toBe(200);
+ const head=await request.head('/api/scwiki/v1/topics?limit=2');expect(head.status()).toBe(200);expect(await head.text()).toBe('');expect(head.headers().etag).toBe(first.headers().etag);
+ for(const method of ['POST','PUT','PATCH','DELETE']){
+  const response=await request.fetch('/api/scwiki/v1/topics',{method});expect(response.status()).toBe(405);expect(response.headers().allow).toBe('GET, HEAD, OPTIONS');expect((await response.json()).code).toBe('METHOD_NOT_ALLOWED');
+ }
+ const invalid=await request.get('/api/scwiki/v1/search?q=a&q=b');expect(invalid.status()).toBe(400);expect(invalid.headers()['cache-control']).toBe('no-store');
+});

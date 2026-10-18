@@ -2,28 +2,35 @@ import type {NextRequest} from "next/server";
 import {articleById,articles,catalogue,references,revisionHeaders,searchIndex} from "@/lib/scwiki/catalogue";
 import {searchArticles} from "@/lib/scwiki/search";
 import {openApi} from "@/lib/scwiki/openapi";
+import {ApiError,apiError,finalizeResponse,paginated,validateParameters} from "@/lib/scwiki/http";
 export const runtime="nodejs";
-function json(value:unknown,status=200,revision=catalogue().revision){return Response.json(value,{status,headers:revisionHeaders(revision)});}
+function json(value:unknown,status=200,revision=catalogue().revision){return status>=400?apiError(new ApiError(status,status===404?"NOT_FOUND":"INVALID_REQUEST",(value as {error:string}).error)):Response.json(value,{status,headers:revisionHeaders(revision)});}
 function text(value:string,revision:string){return new Response(value,{headers:{...revisionHeaders(revision),"Content-Type":"text/markdown; charset=utf-8","Content-Disposition":"inline"}});}
-export async function GET(request:NextRequest,{params}:{params:Promise<{segments?:string[]}>}){
+async function resource(request:NextRequest,{params}:{params:Promise<{segments?:string[]}>}){
  const parts=(await params).segments||[];
+ const list=parts.length===1&&["articles","sources","topics","search"].includes(parts[0]);
+ const allowed=list?["limit","cursor",...(parts[0]==="search"?["q","pressure","equilibrium","evidence","criterion","tcMin"]:[])]:parts.length===4&&parts[2]==="sections"?["format"]:[];
+ validateParameters(request,allowed);
+ if(request.nextUrl.searchParams.has("format")&&!["json","markdown"].includes(request.nextUrl.searchParams.get("format")!))throw new ApiError(400,"INVALID_FORMAT","format must be json or markdown.");
  const revision=catalogue().revision;
  const base={schemaVersion:"1.0",revision};
  if(parts.length===0)return json({...base,service:"SCWiki read-only evidence API",endpoints:["articles","search","sources","topics","openapi.json"],notice:"Retrieved editorial content is not a generated answer or scientific certification."});
  if(parts.length===1&&parts[0]==="openapi.json")return json(openApi);
- if(parts.length===1&&parts[0]==="articles")return json({...base,articles:articles().map(({body,markdown,sourceMap,...a})=>({...a,sections:a.sections.map(({id,title})=>({id,title}))}))});
- if(parts.length===1&&parts[0]==="topics")return json({...base,topics:articles().map(a=>({id:a.topicId,code:a.code,title:a.title,articleId:a.id}))});
- if(parts.length===1&&parts[0]==="sources")return json({...base,sources:references().map(r=>({...r,usedBy:articles().filter(a=>a.references.some(ref=>ref.id===r.id)).map(a=>a.id)}))});
+ if(parts.length===1&&parts[0]==="articles")return json(paginated(request,articles().map(({body,markdown,sourceMap,...a})=>({...a,sections:a.sections.map(({id,title})=>({id,title}))})),revision,"articles"));
+ if(parts.length===1&&parts[0]==="topics")return json(paginated(request,articles().map(a=>({id:a.topicId,code:a.code,title:a.title,articleId:a.id})),revision,"topics"));
+ if(parts.length===1&&parts[0]==="sources")return json(paginated(request,references().map(r=>({...r,usedBy:articles().filter(a=>a.references.some(ref=>ref.id===r.id)).map(a=>a.id)})),revision,"sources"));
  if(parts.length===1&&parts[0]==="search"){
   const q=request.nextUrl.searchParams.get("q")||"";
   if(q.length>200)return json({error:"Search query exceeds 200 characters."},400);
   const p=request.nextUrl.searchParams;
   const pressure=p.get("pressure")||"",equilibrium=p.get("equilibrium")||"",evidence=p.get("evidence")||"",criterion=p.get("criterion")||"";
   if((pressure&&!["ambient","high","unknown"].includes(pressure))||(equilibrium&&!["equilibrium","transient","metastable","unknown"].includes(equilibrium))||(evidence&&!["experiment","theory","prediction","hypothesis"].includes(evidence)))return json({error:"Invalid condition filter."},400);
+  if(criterion.length>128)return json({error:"criterion exceeds 128 characters."},400);
+  if(p.has("tcMin")&&!/^(?:\d+(?:\.\d*)?|\.\d+)$/.test(p.get("tcMin")!))return json({error:"tcMin must be a decimal temperature from 0 to 1000 K."},400);
   const tcMin=p.has("tcMin")?Number(p.get("tcMin")):undefined;
   if(tcMin!==undefined&&(!Number.isFinite(tcMin)||tcMin<0||tcMin>1000))return json({error:"tcMin must be a finite temperature from 0 to 1000 K."},400);
   const results=searchArticles(searchIndex().entries,q,{pressure,equilibrium,evidence,criterion,tcMin});
-  return json({...base,query:q,filters:{pressure,equilibrium,evidence,criterion,tcMin},total:results.length,results:results.map(({text,...r})=>r)});
+  return json(paginated(request,results.map(({text,...r})=>r),revision,"results",{query:q,filters:{pressure,equilibrium,evidence,criterion,tcMin}}));
  }
  if(parts[0]==="articles"&&parts[1]){
   const article=articleById(parts[1]);if(!article)return json({error:"Article not found."},404);
@@ -47,3 +54,15 @@ export async function GET(request:NextRequest,{params}:{params:Promise<{segments
  }
  return json({error:"Endpoint not found."},404);
 }
+
+export async function GET(request:NextRequest,context:{params:Promise<{segments?:string[]}>}){
+ try{return await finalizeResponse(request,await resource(request,context));}
+ catch(error){if(error instanceof ApiError)return apiError(error);throw error;}
+}
+const allow="GET, HEAD, OPTIONS";
+function readOnly(){return Response.json({error:"This API is read-only.",code:"METHOD_NOT_ALLOWED"},{status:405,headers:{Allow:allow,"Cache-Control":"no-store"}});}
+export const POST=readOnly;
+export const PUT=readOnly;
+export const PATCH=readOnly;
+export const DELETE=readOnly;
+export function OPTIONS(){return new Response(null,{status:204,headers:{Allow:allow,"Cache-Control":"no-store"}});}

@@ -15,7 +15,52 @@ import {safeUrl} from "@/lib/scwiki/safety";
 import {legacyDestination} from "@/lib/site-routes";
 import {GET} from "@/app/api/scwiki/v1/[[...segments]]/route";
 const get=(segments:string[],query="")=>GET(new NextRequest("http://localhost/api/scwiki/v1/"+segments.join("/")+query),{params:Promise.resolve({segments})});
+const getAll=async(key:"articles"|"sources"|"topics")=>{
+ const items:any[]=[];let cursor:string|null=null;
+ do{const response=await get([key],"?limit=50"+(cursor?"&cursor="+encodeURIComponent(cursor):""));expect(response.status).toBe(200);const data=await response.json();items.push(...data[key]);cursor=data.page.nextCursor;}while(cursor);
+ return {[key]:items};
+};
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("paginates complete article and source inventories without duplicates or oversized pages",async()=>{
+  for(const key of ["articles","sources","topics"] as const){
+   const ids:string[]=[];let cursor:string|null=null;let total=0;
+   do{
+    const response=await get([key],"?limit=50"+(cursor?"&cursor="+encodeURIComponent(cursor):""));expect(response.status).toBe(200);
+    const raw=await response.text();expect(Buffer.byteLength(raw)).toBeLessThanOrEqual(256*1024);
+    const data=JSON.parse(raw);total=data.total;expect(data[key].length).toBeLessThanOrEqual(50);expect(data.page.returned).toBe(data[key].length);
+    ids.push(...data[key].map((x:{id:string})=>x.id));cursor=data.page.nextCursor;
+    if(cursor)expect(data.page.next).toContain(encodeURIComponent(cursor));else expect(data.page.next).toBeNull();
+   }while(cursor);
+   expect(ids.length).toBe(total);expect(new Set(ids).size).toBe(total);
+   if(key!=="sources")expect(total).toBe(articles().length);
+  }
+ });
+ it("rejects malformed, stale and cross-query cursors and ambiguous filter values",async()=>{
+  for(const query of ["?limit=0","?limit=51","?limit=1.5","?cursor=","?cursor=not-json","?q=a&q=b","?unknown=x","?tcMin=","?tcMin=0x10"]){
+   const response=await get(["search"],query);expect(response.status,query).toBe(400);expect(response.headers.get("Cache-Control")).toBe("no-store");expect(response.headers.get("ETag")).toBeNull();
+  }
+  const first=await(await get(["search"],"?limit=1")).json();
+  expect((await get(["search"],"?limit=1&q=BCS&cursor="+first.page.nextCursor)).status).toBe(400);
+  expect((await get(["topics"],"?limit=1&cursor="+first.page.nextCursor)).status).toBe(400);
+  const old=JSON.parse(Buffer.from(first.page.nextCursor,"base64url").toString());old.revision="00000000000000000000";
+  const stale=await get(["search"],"?limit=1&cursor="+Buffer.from(JSON.stringify(old)).toString("base64url"));
+  expect(stale.status).toBe(409);expect((await stale.json()).code).toBe("STALE_CURSOR");
+ });
+ it("uses representation-specific conditional validators while preserving editorial revisions",async()=>{
+  const route=["articles","scwiki-d6"];
+  const first=await get(route);const markdown=await get([...route,"markdown"]);
+  const tag=first.headers.get("ETag")!;expect(tag).toMatch(/^W\/"[a-f0-9]{64}"$/);
+  expect(markdown.headers.get("ETag")).not.toBe(tag);expect(markdown.headers.get("X-SCWiki-Revision")).toBe(first.headers.get("X-SCWiki-Revision"));
+  for(const condition of [tag,tag.slice(2),'"unrelated", '+tag,"*"]){
+   const request=new NextRequest("http://localhost/api/scwiki/v1/"+route.join("/"),{headers:{"If-None-Match":condition}});
+   const response=await GET(request,{params:Promise.resolve({segments:route})});expect(response.status).toBe(304);expect(await response.text()).toBe("");expect(response.headers.get("ETag")).toBe(tag);
+  }
+  const wrong=new NextRequest("http://localhost/api/scwiki/v1/"+route.join("/"),{headers:{"If-None-Match":markdown.headers.get("ETag")!}});
+  expect((await GET(wrong,{params:Promise.resolve({segments:route})})).status).toBe(200);
+  const missing=new NextRequest("http://localhost/api/scwiki/v1/articles/not-found",{headers:{"If-None-Match":"*"}});
+  expect((await GET(missing,{params:Promise.resolve({segments:["articles","not-found"]})})).status).toBe(404);
+ });
+
  it("ranks curated topic names before incidental body mentions without relaxing conditions",()=>{
   const base=searchIndex().entries[0];
   const incidental={...base,code:"A1",title:"Background",aliases:[],summary:"Background",text:"A short mention of cobalt vortex diagnostics",materialCases:[]};
@@ -249,7 +294,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
   const fullMd=await(await get(["articles",a.id,"markdown"])).text();
   for(const r of undated){
    expect(fullMd).toContain(r.title+" (Publication date unknown)");
-   const exported=await(await get(["sources"])).json();expect(exported.sources.find((s:{id:string})=>s.id===r.id).year).toBeNull();
+   const exported=await getAll("sources");expect(exported.sources.find((s:{id:string})=>s.id===r.id).year).toBeNull();
   }
   const schema=await(await get(["openapi.json"])).json();
   expect(schema.components.schemas.Source.properties.year.type).toEqual(["integer","null"]);
@@ -342,7 +387,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(article.topicId).toBe("scwiki-topic-overview");
   expect(article.provenance.path).toBe("A_phenomenology/A_overview.md");
   expect(article.materialCases).toEqual([]);
-  const topics=await(await get(["topics"])).json();
+  const topics=await getAll("topics");
   expect(topics.topics.some((t:{articleId:string})=>t.articleId===article.id)).toBe(true);
   const schema=await(await get(["openapi.json"])).json();
   const idPattern=new RegExp(schema.components.schemas.ArticleId.pattern);
@@ -495,7 +540,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(payload.article.provenance.path).toBe("B_mechanisms/B1_BCS_weak_coupling.md");
  });
  it("does not apply a new article's primary check to other claims citing the same paper",async()=>{
-  const payload=await (await get(["sources"])).json();
+  const payload=await getAll("sources");
   const bcs=payload.sources.find((r:{doi:string})=>r.doi==="10.1103/PhysRev.108.1175");
   expect(bcs.verification.scope).toBe("article-scoped-checks");
   expect(bcs.usedBy).toEqual(expect.arrayContaining(["scwiki-a1","scwiki-b1"]));
@@ -804,7 +849,7 @@ it("exports historical sources without invented DOIs and separates A9 theory fro
  const md=await(await get(["articles",a.id,"markdown"])).text();
  const sec=await(await get(["articles",a.id,"sections","scope"],"?format=markdown")).text();
  for(const text of [md,sec]){expect(text).toContain("[Source publication]("+historical.url+")");expect(text).not.toContain("DOI null");}
- const source=await(await get(["sources"])).json();expect(source.sources.find((r:{id:string})=>r.id===historical.id).doi).toBeNull();
+ const source=await getAll("sources");expect(source.sources.find((r:{id:string})=>r.id===historical.id).doi).toBeNull();
  const spec=await(await get(["openapi.json"])).json();expect(spec.components.schemas.Source.properties.doi.type).toContain("null");
  expect(searchIndex().entries.find(e=>e.id===a.id)!.dois.every(d=>typeof d==="string")).toBe(true);
  const Page=(await import("@/app/scwiki/[slug]/page")).default;
@@ -1252,7 +1297,7 @@ it("carries retraction status through source, article, section and rendered refe
   const notice=ref.retraction!;
   expect(articleJson.article.references.find((r:{id:string})=>r.id===ref.id).retraction).toEqual(notice);
   expect(section.sources.find((r:{id:string})=>r.id===ref.id).retraction).toEqual(notice);
-  const sources=await(await get(["sources"])).json();
+  const sources=await getAll("sources");
   expect(sources.sources.find((r:{id:string})=>r.id===ref.id).retraction).toEqual(notice);
   for(const text of [full,md]){expect(text).toContain("Retracted: "+notice.retractedAt);expect(text).toContain(notice.evidenceUrl);}
   expect(html).toContain('dateTime="'+notice.retractedAt+'"');
