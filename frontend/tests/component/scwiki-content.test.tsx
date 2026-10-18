@@ -800,3 +800,21 @@ it("keeps elemental pressure cases and calculated temperatures distinct",async()
  const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
  expect(math).toContain("exact reproduction needs unrounded inputs");
 });
+
+it("keeps A15 transitions separate from operating and structural temperatures",async()=>{
+ const a=articles().find(a=>a.code==="D2")!;
+ const v3si=a.materialCases.find(m=>m.formula==="V3Si")!;
+ expect(v3si.tcK).toBe(12.8);expect(v3si.sample).toContain("6.67T");
+ expect(a.materialCases.filter(m=>m.temperatureKind==="measurement").every(m=>m.tcK===null)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"Kramer",{tcMin:22}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"Kramer",{tcMin:23}).some(r=>r.id===a.id)).toBe(false);
+ const dissertation=a.references.find(r=>r.url.includes("2605.03171"))!;
+ expect(dissertation.publicationStatus).toBe("preprint");
+ const cavity=a.materialCases.find(m=>m.sourceId===dissertation.id)!;
+ expect(cavity.reportedTemperatureK).toBe(.05);expect(cavity.tcK).toBeNull();
+ const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(math).toContain("2888.01");expect(math).toContain("2883");
+ expect(math).toContain("Neither improved value was measured");expect(math).toContain("Full scientific acceptance");
+ expect(a.references.find(r=>r.doi==="10.1063/1.1890447")?.verification.evidenceUrl).toMatch(/v2$/);
+ expect(a.relatedCodes).toContain("A6");
+});

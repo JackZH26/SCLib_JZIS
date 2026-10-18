@@ -1,0 +1,39 @@
+## Scope
+
+A15 is a crystal-structure family, usually written $A_3B$, with cubic space group $Pm\bar{3}n$ before any distortion. Three orthogonal chains of A atoms help organize its electronic structure. They do not guarantee a high transition temperature: composition, site ordering, phonons and strain all matter. The brittle Nb–Sn A15 phase illustrates why a favorable electronic structure must also survive fabrication and mechanical loading. [R5](#ref-source-29d0a9915f8b6c0e)
+
+Nb3Sn, V3Si and Nb3Ge are distinct examples, not one table of universal constants. Matthias and colleagues reported Nb3Sn near 18 K in 1954. Gavaler's 1973 abstract reports sputtered Nb–Ge films remaining superconducting up to 22.3 K. That historical film result is neither an equilibrium bulk value nor a strict A15 temperature ceiling. “High pressure” in the deposition description refers to sputtering conditions, not a high-pressure superconductivity measurement. [R1](#ref-source-830f887afcf548c4) [R2](#ref-source-82a0df3d764cd0bc)
+
+Near-stoichiometric Nb3Sn is a conventional strong-coupling benchmark, but even its coupling classification depends on composition and how the gap and transition are sampled. Godeke's review discusses interface-gap and inhomogeneity effects that can bias a gap-to-temperature ratio. A full gap is not proof that all samples have the same coupling, and a large upper critical field alone is not evidence for triplet pairing. [R5](#ref-source-29d0a9915f8b6c0e) [R9](#ref-source-0620df96ebbf2a66)
+
+## Mathematical assumptions
+
+For an orbital dirty-limit description, write $B_{c2}=\mu_0H_{c2}$ and $\ln(T/T_c)=\psi(1/2)-\psi[1/2+\hbar D B_{c2}(T)/(2\Phi_0k_BT)]$, where $D$ is an effective diffusion parameter and $\psi$ the digamma function. The Maki–de Gennes form omits Pauli, spin–orbit, strong-coupling and Fermi-surface anisotropy corrections. A useful fit to an inhomogeneous wire does not measure a unique microscopic $D$. Independent numerical roots recover the model ratio $B_{c2}(0)/(T_c|dB_{c2}/dT|_{T_c})=\pi^2e^{-\gamma}/8\simeq0.693$; this is not a universal material relation. [R7](#ref-source-d27a049f764be753)
+
+For current perpendicular to field, the pinning-force magnitude is $F_p=J_cB$. A common fixed-temperature field shape is $f(h)=h^{1/2}(1-h)^2$, with $h=B/B_{c2}$. It peaks at $h=0.2$ and produces a linear Kramer plot of $J_c^{1/2}B^{1/4}$ only under the model's assumptions. A triangular vortex lattice has $a_\Delta=(4/3)^{1/4}\sqrt{\Phi_0/B}$; the flux-shear expression includes $(1-a_\Delta/d)^{-2}$ for mean grain size $d$. At 12 T and $d=100$ nm, this factor is about 1.36, so neglecting it requires a stated tolerance. Neither the pinning peak nor a fitted Kramer intercept independently identifies the thermodynamic upper critical field. [R6](#ref-source-c4b57e9e8e5aa3d7)
+
+A two-component illustrative sum of currents, with imposed critical fields of 20 and 28 T, gives Kramer intercepts of 25.06 and 26.35 T over different finite field windows. This is a numerical counterexample to treating every extrapolated intercept as the largest component field; it is not a fitted wire network. Separately, Godeke's hypothetical uniform-wire comparison holds the prefactor fixed in $J_c=C B_{c2}^{2}h^{1/2}(1-h)^2/B$. Its printed 24.9-to-26.9 T inputs give 2888.01 A/mm² from 2250 A/mm² at 12 T and 4.2 K, versus the paper's 2883 A/mm². The latter lies within input-field rounding bounds. Neither improved value was measured. [R6](#ref-source-c4b57e9e8e5aa3d7) [R7](#ref-source-d27a049f764be753)
+
+## Experimental criteria
+
+Godeke and colleagues measured small-current resistive transitions of filamentary Nb3Sn, using approximately 0.2–0.6 A/mm² and fields up to 30 T. Their 10%, 50% and 90% normal-resistance criteria probe different parts of a broadened transition. At high field, the 99% criterion was extrapolated from the less noisy 10–90% region under a width assumption. The study also retained an unresolved interlaboratory offset of about 4%, treated as approximately ±2% uncertainty. Its highest-quality fractions are not every part of the conductor. [R7](#ref-source-d27a049f764be753)
+
+The B34 wire reacted for 64 hours at 675 °C provides a concrete comparison: transport at a 10 µV/m criterion gave non-Cu $J_c=2250$ A/mm² at 12 T and 4.2 K. The Kramer field was 24.9 T, while the 99% resistive field was 26.9 T at the same temperature. Keep the non-Cu area normalization, voltage criterion and heat treatment attached to those numbers. They are not interchangeable measures of performance. [R7](#ref-source-d27a049f764be753)
+
+Gapud and colleagues studied a floating-zone V3Si single crystal, MP3, with residual-resistivity ratio 47. Their 51V NMR experiment used 6.67 T, where the reported superconducting transition was 12.8 K and the structural transition 21.1 K. Cubic and tetragonal spectra coexisted around the structural transition. The authors found no conclusive cubic-phase spectrum below the zero-field transition scale of 17 K; that is distinct from the 12.8 K transition in the actual NMR field. These observations do not establish that a martensitic transition is necessary for every A15 superconductor. [R8](#ref-source-9fe69d0a6cecbb0c)
+
+## Limits and disputes
+
+Elastic softening, anharmonicity and superconductivity can be correlated without a universal rule that moving closer to structural instability always improves $T_c$. Testardi's papers motivate this coupled problem; they do not remove the need for sample-specific structural and thermodynamic evidence. Changes in composition or disorder can alter several electronic and phonon parameters together. Increasing a density-of-states peak or an estimated coupling constant alone is not a validated optimization strategy. [R3](#ref-source-33f4444a5825b443) [R4](#ref-source-509b869080567558) [R9](#ref-source-0620df96ebbf2a66)
+
+The V3Si NMR assignments depend on orientation, spectral resolution and a model of local electric-field gradients. Absence of a resolved line is not a proof of literally zero phase fraction, and zero-field and finite-field transition temperatures must not be conflated. Similarly, a Nb3Sn resistive onset, a pinning-derived extrapolation and a magnetic transition need their own criteria and uncertainty. Record strain state and mounting as well as nominal composition. [R7](#ref-source-d27a049f764be753) [R8](#ref-source-9fe69d0a6cecbb0c)
+
+A May 2026 doctoral-dissertation preprint explores Cu–Sn routes to Nb3Sn films for microwave dark-matter cavities. Its abstract describes a chosen cavity tested at 50 mK and 9 T, but reports a quality-factor decline in field. Neither the operating temperature nor the maximum applied field is a measured transition temperature or a demonstrated upper critical field. This is an abstract-level research pointer, not a peer-reviewed performance certification. [R10](#ref-source-3633507cd1108d10)
+
+## Discovery implications
+
+Optimize a complete, conditional objective: transition temperature, useful field range, current density, mechanical tolerance and manufacturability. Preserve measured and predicted quantities separately. Compare transition criteria, composition gradients, annealing, strain, grain structure and area normalization before ranking conductors. For a proposed material, check phase stability and the coupling-weighted phonon spectrum; for a working wire or cavity, test the actual operating condition and retain negative results. [R5](#ref-source-29d0a9915f8b6c0e) [R6](#ref-source-c4b57e9e8e5aa3d7) [R9](#ref-source-0620df96ebbf2a66) [R10](#ref-source-3633507cd1108d10)
+
+## Related topics
+
+Continue with [elemental superconductors](/scwiki/elemental-superconductors), [Eliashberg theory](/scwiki/eliashberg-strong-coupling), [s-wave pairing](/scwiki/s-wave), [critical fields](/scwiki/critical-fields) and [critical current](/scwiki/critical-current).
