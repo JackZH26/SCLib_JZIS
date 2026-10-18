@@ -136,6 +136,22 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(result).toContain("g=2");
   expect(result).toContain("not full scientific validation");
  });
+ it("distinguishes heat-capacity models, entropy assumptions and experimental scaling",async()=>{
+  const a=articles().find(a=>a.code==="A3")!;
+  expect(a.body).toContain("equal extrapolated zero-temperature entropies");
+  expect(a.body).toContain("first-order transition has latent heat");
+  expect(a.body).toContain("Multiple bands do not necessarily broaden");
+  expect(a.body).toContain("jump itself scales as $T_c^3$");
+  const empirical=a.claims.find(c=>c.statement.startsWith("Bud'ko"))!;
+  expect(empirical.evidenceType).toBe("experiment");
+  expect(empirical.verificationScope).toContain("Publisher abstract only");
+  expect(a.materialCases).toEqual([]);
+  expect(searchArticles(searchIndex().entries,"entropy balance").some(r=>r.id===a.id)).toBe(true);
+  expect(searchArticles(searchIndex().entries,"heat capacity",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+  const section=await (await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+  expect(section).toContain("residual entropies");
+  expect(section).toContain("No sample-specific heat-capacity curves");
+ });
  it("disposes all 282 pinned files and keeps unpublished topics out of the catalogue",()=>{
   const m=JSON.parse(readFileSync("content/scwiki/source-manifest.json","utf8"));
   expect(m.commit).toBe("0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf");

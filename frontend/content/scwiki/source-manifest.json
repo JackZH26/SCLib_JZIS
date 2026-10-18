@@ -107,9 +107,9 @@
       "lineCount": 52,
       "topicId": "scwiki-topic-a3",
       "articleId": "scwiki-a3",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
-      "scientificVerification": "not-established-by-file-presence-or-historical-audit"
+      "disposition": "published-scoped-check",
+      "publicBody": true,
+      "scientificVerification": "scoped-model-and-source-passages-not-full-validation"
     },
     {
       "id": "file-6fe492ebf6aa0895",
