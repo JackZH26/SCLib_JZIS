@@ -1,3 +1,4 @@
+import {libraryNotes,libraryNote,libraryRevision,librarySearchEntries,libraryMarkdown} from "@/lib/scwiki/library";
 import type {NextRequest} from "next/server";
 import {articleById,articles,catalogue,references,revisionHeaders,searchIndex} from "@/lib/scwiki/catalogue";
 import {searchArticles} from "@/lib/scwiki/search";
@@ -10,15 +11,28 @@ function json(value:unknown,status=200,revision=catalogue().revision){return sta
 function text(value:string,revision:string){return new Response(value,{headers:{...revisionHeaders(revision),"Content-Type":"text/markdown; charset=utf-8","Content-Disposition":"inline"}});}
 async function resource(request:NextRequest,{params}:{params:Promise<{segments?:string[]}>}){
  const parts=(await params).segments||[];
- const list=parts.length===1&&["articles","sources","topics","search","revisions"].includes(parts[0]);
- const allowed=list?["limit","cursor",...(parts[0]==="articles"?["fields"]:[]),...(parts[0]==="search"?["q","pressure","equilibrium","evidence","criterion","tcMin"]:[])]:parts.length===2&&parts[0]==="articles"?["fields"]:parts.length===4&&parts[2]==="sections"?["format"]:[];
+ const list=parts.length===1&&["articles","sources","topics","search","revisions","library"].includes(parts[0]);
+ const allowed=list?["limit","cursor",...(parts[0]==="articles"?["fields"]:[]),...(parts[0]==="library"?["q"]:[]),...(parts[0]==="search"?["q","pressure","equilibrium","evidence","criterion","tcMin"]:[])]:parts.length===2&&parts[0]==="articles"?["fields"]:parts.length===4&&parts[2]==="sections"?["format"]:[];
  validateParameters(request,allowed);
  if(request.nextUrl.searchParams.has("format")&&!["json","markdown"].includes(request.nextUrl.searchParams.get("format")!))throw new ApiError(400,"INVALID_FORMAT","format must be json or markdown.");
  const fields=parseArticleFields(request.nextUrl.searchParams.get("fields"));
  const revision=catalogue().revision;
  const base={schemaVersion:"1.0",revision};
- if(parts.length===0)return json({...base,service:"SCWiki read-only evidence API",endpoints:["articles","search","sources","topics","revisions","openapi.json"],notice:"Retrieved editorial content is not a generated answer or scientific certification."});
+ if(parts.length===0)return json({...base,service:"SCWiki read-only evidence API",endpoints:["articles","search","sources","topics","revisions","library","openapi.json"],notice:"Retrieved editorial content is not a generated answer or scientific certification."});
  if(parts.length===1&&parts[0]==="openapi.json")return json(openApi);
+ if(parts[0]==="library"){
+  if(parts.length===1){
+   const q=request.nextUrl.searchParams.get("q")||"";
+   if(q.length>200)throw new ApiError(400,"INVALID_REQUEST","Search query exceeds 200 characters.");
+   const ids=new Set(searchArticles(librarySearchEntries(),q).map(n=>n.id));
+   return json(paginated(request,libraryNotes.filter(n=>ids.has(n.id)),libraryRevision,"notes",{query:q,collection:"research-library",notice:"Separate from the core article inventory; selected source review, not independent scientific acceptance."}),200,libraryRevision);
+  }
+  const note=libraryNote(parts[1]);
+  if(!note)throw new ApiError(404,"NOT_FOUND","Research note not found.");
+  if(parts.length===2)return json({schemaVersion:"1.0",revision:libraryRevision,note},200,note.revision);
+  if(parts.length===3&&parts[2]==="markdown")return text(libraryMarkdown(note),note.revision);
+  throw new ApiError(404,"NOT_FOUND","Library endpoint not found.");
+ }
  if(parts.length===1&&parts[0]==="articles")return json(paginated(request,fields?articles().map(a=>projectArticle(a,fields)):articles().map(({body,markdown,sourceMap,...a})=>({...a,sections:a.sections.map(({id,title})=>({id,title}))})),revision,"articles",fields?{projection:{requested:fields,evidenceContextRetained:true}}:{}));
  if(parts.length===1&&parts[0]==="revisions")return json(paginated(request,revisionEntries(articles()),revision,"records",{snapshotKind:"complete-current-inventory",notice:"Collect every page at one revision before comparing with your prior complete snapshot. Absence from one page never proves removal. This is not a historical event log."}));
  if(parts.length===1&&parts[0]==="topics")return json(paginated(request,articles().map(a=>({id:a.topicId,code:a.code,title:a.title,articleId:a.id})),revision,"topics"));

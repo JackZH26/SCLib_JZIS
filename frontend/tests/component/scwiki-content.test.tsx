@@ -21,6 +21,23 @@ const getAll=async(key:"articles"|"sources"|"topics")=>{
  return {[key]:items};
 };
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("exports separate research notes with source versions, local derivations and review limits",async()=>{
+  const list=await(await get(["library"],"?q=missing-area&limit=1")).json();
+  expect(list.total).toBe(1);expect(list.page.next).toBeNull();expect(articles()).toHaveLength(104);
+  const note=list.notes[0];const detail=await get(["library",note.id]);
+  expect((await detail.json()).note.revision).toBe(note.revision);
+  const md=await(await get(["library",note.id,"markdown"])).text();
+  expect(md).toContain("Selected preprint passages");expect(md).toContain("context-for-local-derivation");expect(md).toContain("SHA-256");expect(md).toContain("missing-area");
+  for(const s of note.sources)expect(md).toContain(s.url);
+  for(const p of note.provenance)expect(createHash("sha256").update(readFileSync("../../sources/"+p.path)).digest("hex")).toBe(p.sha256);
+  const conditional=new NextRequest("http://localhost/api/scwiki/v1/library/"+note.id,{headers:{"If-None-Match":detail.headers.get("ETag")!}});
+  expect((await GET(conditional,{params:Promise.resolve({segments:["library",note.id]})})).status).toBe(304);
+  expect((await get(["library"],"?q=absentunique987")).status).toBe(200);
+  expect((await get(["library"],"?pressure=ambient")).status).toBe(400);
+  expect((await get(["library"],"?q=a&q=b")).status).toBe(400);
+  expect((await get(["library","absent"])).status).toBe(404);
+  const spec=await(await get(["openapi.json"])).json();expect(spec.paths["/library/{noteId}/markdown"]).toBeDefined();
+ });
  it("exports local derivations without presenting contextual sources as direct evidence",async()=>{
   const data=await(await get(["articles","scwiki-a4"])).json();
   const article=data.article??data;

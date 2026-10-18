@@ -2,6 +2,28 @@ import {expect,test} from "./public-site-fixture";
 import {readFileSync} from "node:fs";
 const catalogue=JSON.parse(readFileSync("content/scwiki/catalogue.json","utf8"));
 const extensions=JSON.parse(readFileSync("content/scwiki/extension-inventory.json","utf8"));
+test("research library connects homepage search, evidence notes and bounded read-only exports",async({page,request})=>{
+ await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
+ await page.getByRole("searchbox",{name:"Search SCWiki"}).fill("missing-area");
+ await page.getByRole("link",{name:"Read article: Parallel conduction and Planckian scattering in FeTeSe"}).click();
+ await expect(page).toHaveURL(/\/scwiki\/library\/romero-parallel-conduction$/);
+ await expect(page.getByRole("heading",{name:"Parallel conduction and Planckian scattering in FeTeSe",exact:true})).toBeVisible();
+ await expect(page.locator("main.scwiki")).toContainText("independent scientific review");
+ await expect(page.locator(".katex-error")).toHaveCount(0);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+ const broken=await page.locator('main.scwiki a[href^="#"]').evaluateAll(links=>links.map(a=>a.getAttribute("href")!.slice(1)).filter(id=>!document.getElementById(id)));
+ expect(broken).toEqual([]);
+ const path="/api/scwiki/v1/library/romero-parallel-conduction";
+ const response=await request.get(path),detail=await response.json();
+ await expect(page.locator("main.scwiki")).toHaveAttribute("data-revision",detail.note.revision);
+ expect((await request.get(path,{headers:{"If-None-Match":response.headers().etag}})).status()).toBe(304);
+ expect(await(await request.get(path+"/markdown")).text()).toContain("no third-party");
+ expect((await request.post(path)).status()).toBe(405);
+ expect((await request.get("/api/scwiki/v1/library/absent")).status()).toBe(404);
+ expect((await request.get("/scwiki/library/absent")).status()).toBe(404);
+ const sitemap=await(await request.get("/sitemaps/static.xml")).text();expect(sitemap).toContain("/scwiki/library/romero-parallel-conduction");
+ await page.screenshot({path:"test-results/scwiki-library-390.png",fullPage:true});
+});
 test("SCWiki ships complete server-rendered English content and lazy search",async({page,request})=>{
  const response=await request.get("/scwiki");expect(response.status()).toBe(200);
  const html=await response.text();for(const a of catalogue.articles)expect(html).toContain("/scwiki/"+a.slug);

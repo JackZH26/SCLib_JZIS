@@ -1,3 +1,4 @@
+import {libraryNotes} from "@/lib/scwiki/library";
 import type {Metadata} from "next";
 import Link from "@/components/AppLink";
 import {SearchCatalogue} from "@/components/scwiki/SearchCatalogue";
@@ -21,7 +22,7 @@ export default function SCWikiPage(){
    <h1>SCWiki<span className="scwiki-title-dot" aria-hidden="true">.</span></h1>
    <p>Explore the concepts, materials and discoveries behind superconductivity.<br className="scwiki-desktop-break"/> Follow the connections. Go back to the evidence.</p>
   </header>
-  <SearchCatalogue initial={entries.map(({id,code,slug,title,summary,evidenceTypes})=>({id,code,slug,title,summary,evidenceTypes}))}>
+  <SearchCatalogue researchCount={libraryNotes.length} initial={entries.map(({id,code,slug,title,summary,evidenceTypes})=>({id,code,slug,title,summary,evidenceTypes}))}>
    <section className="scwiki-research" aria-labelledby="scwiki-research-heading">
     <div className="scwiki-section-heading"><div><p className="scwiki-eyebrow">From the literature</p><h2 id="scwiki-research-heading">Latest research</h2></div><p className="scwiki-updated">Selected papers · checked <time dateTime={highlights.checkedAt}>{formatResearchDate(highlights.checkedAt)}</time></p></div>
     <div className="scwiki-research-grid">
@@ -47,7 +48,7 @@ export default function SCWikiPage(){
   </SearchCatalogue>
   <aside className="scwiki-home-editorial" aria-labelledby="scwiki-editorial-heading">
    <div><p className="scwiki-eyebrow">A growing, source-linked reference</p><h2 id="scwiki-editorial-heading">Read with the evidence in view.</h2><p>{entries.length} articles are available in this editorial pilot. Each records its sources, review scope and open questions. Coverage and scientific review are still expanding.</p></div>
-   <div className="scwiki-editorial-links"><Link href="/scwiki/using-sclib">How to use SCWiki <span aria-hidden="true">→</span></Link><Link href="/scwiki/agent-guide">For researchers &amp; agents <span aria-hidden="true">→</span></Link><Link href="/docs/data">Data &amp; methodology <span aria-hidden="true">→</span></Link><a href="/api/scwiki/v1/openapi.json">OpenAPI <span aria-hidden="true">→</span></a></div>
+   <div className="scwiki-editorial-links"><Link href="/scwiki/library">Research library &amp; cross-topic analyses <span aria-hidden="true">→</span></Link><Link href="/scwiki/using-sclib">How to use SCWiki <span aria-hidden="true">→</span></Link><Link href="/scwiki/agent-guide">For researchers &amp; agents <span aria-hidden="true">→</span></Link><Link href="/docs/data">Data &amp; methodology <span aria-hidden="true">→</span></Link><a href="/api/scwiki/v1/openapi.json">OpenAPI <span aria-hidden="true">→</span></a></div>
   </aside>
  </main>;
 }

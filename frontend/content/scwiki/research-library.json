@@ -1,0 +1,139 @@
+{
+  "schemaVersion": "1.0",
+  "notes": [
+    {
+      "id": "romero-parallel-conduction",
+      "title": "Parallel conduction and Planckian scattering in FeTeSe",
+      "summary": "Connect optical parallel-channel fits with Planckian rate conventions and nonlinear resistance, while keeping the pairing mechanism unresolved.",
+      "kind": "research-note-and-cross-topic-analysis",
+      "modifiedAt": "2026-10-18T23:45:17.620470+00:00",
+      "aliases": [
+        "Romero",
+        "FeTeSe",
+        "parallel conduction channels",
+        "Planckian scattering",
+        "arXiv:2505.00623"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory",
+        "hypothesis"
+      ],
+      "relatedCodes": [
+        "A8",
+        "H2",
+        "H8",
+        "B5",
+        "D4"
+      ],
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Selected author-version passages; final-version comparison and independent review pending.",
+        "limitations": [
+          "Author self-review; no independent scientific review or raw-data reproduction.",
+          "Selected preprint passages, not a complete final published-version comparison.",
+          "The missing-area normalization and precise condensate fractions remain unresolved."
+        ]
+      },
+      "sections": [
+        {
+          "id": "measurement",
+          "title": "What was measured",
+          "markdown": "Romero and colleagues analyzed complex terahertz conductivity alongside DC resistance in two FeTe1−xSex films. Their model separates a narrow Drude response from a much broader background. Within the measured frequency window, the narrow-channel width is approximately linear in temperature, while the total resistance need not be. The inferred condensate weight is mainly associated with that channel. This is an author-version interpretation, not a unique determination of the pairing interaction.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "romero-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "frequency-convention",
+          "title": "Keep the frequency convention explicit",
+          "markdown": "For a Drude denominator $\\Gamma-i\\nu$, both variables use ordinary frequency. The corresponding pole decay rate is $\\gamma=2\\pi\\Gamma$. Thus $\\Gamma=\\alpha k_BT/h$ and $\\gamma=\\alpha k_BT/\\hbar$ express the same coefficient after conversion. The inherited reading note mixed these conventions. Its numerical expressions must not be copied unchanged.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "romero-v1"
+          ],
+          "sourceRelationship": "context-for-local-derivation"
+        },
+        {
+          "id": "parallel-channels",
+          "title": "Why parallel channels matter",
+          "markdown": "As a separate local illustration, take fixed $S>0$, $\\sigma_0\\geq0$, $c>0$, $\\Gamma_0\\geq0$ and $T>0$:\n\n$$\\sigma_{\\rm DC}=\\sigma_0+\\frac{S}{\\Gamma_0+cT},\\qquad \\rho_{\\rm DC}=\\frac{\\Gamma_0+cT}{S+\\sigma_0(\\Gamma_0+cT)}.$$\n\nDifferentiation gives $d\\rho_{\\rm DC}/dT=cS/[S+\\sigma_0(\\Gamma_0+cT)]^2$. A linear narrow-channel rate therefore need not give linear total resistivity. When $\\sigma_0=0$, this model does recover a linear resistivity. The approximation $\\sigma_{\\rm DC}=a+b/T$ additionally neglects $\\Gamma_0$ and assumes sufficiently constant amplitudes. This algebra is not a fit to the experimental data.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "romero-v1"
+          ],
+          "sourceRelationship": "context-for-local-derivation"
+        },
+        {
+          "id": "limits",
+          "title": "What remains unresolved",
+          "markdown": "The broad contribution is not resolved as an independent complete Drude peak. Its microscopic origin and a unique relaxation coefficient are therefore not established by this fit. The manuscript discusses nematic pairing qualitatively and leaves the mechanism open. Its printed missing-area prefactor requires comparison with the final paper and normalization before precise condensate fractions are imported. No third-party figures or full text are reproduced here.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "romero-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        }
+      ],
+      "sources": [
+        {
+          "id": "romero-v1",
+          "title": "Planckian scattering and parallel conduction channels in the iron chalcogenide superconductors FeTe1−xSex",
+          "url": "https://arxiv.org/abs/2505.00623v1",
+          "publicationStatus": "preprint",
+          "submittedAt": "2025-05-01",
+          "version": "v1; manuscript dated 2 May 2025",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected PDF pages 1–5; page 4 figure and equations inspected visually. Final-version comparison pending.",
+          "doi": null
+        }
+      ],
+      "provenance": [
+        {
+          "path": "papers/CROSS_H2_H8_RomeroPlanckian.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "aef4a2f9efe186b0fc094ab424bba412128be75bae28d4c15fe6ad1797ba478e",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity"
+        },
+        {
+          "path": "papers/library/Romero_Planckian-FeTeSe_READING_NOTES.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "c26198323fa69f7603870d26b455aca4ee4ae4edbbf7aa9a94ce6bb8f7f4acd5",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity"
+        }
+      ],
+      "corrections": [
+        {
+          "issue": "Frequency convention",
+          "inherited": "Gamma denominator uses ordinary frequency nu but slope uses kBT/hbar.",
+          "resolution": "Use Gamma=Gamma0+alpha*kBT/h; gamma=2*pi*Gamma is the angular pole decay rate. Manuscript p3 and p4 Fig3."
+        },
+        {
+          "issue": "Composition label",
+          "inherited": "x labelled Se/Te ratio.",
+          "resolution": "x is Se fraction in FeTe(1-x)Se(x); the Se/Te ratio would be x/(1-x)."
+        },
+        {
+          "issue": "Residual-rate omission",
+          "inherited": "sigmaDC=sigma0+S/Gamma immediately equals a+b/T.",
+          "resolution": "Retain Gamma0; a+b/T is approximate when Gamma0 is negligible and S/background are sufficiently constant."
+        },
+        {
+          "issue": "Condensate attribution",
+          "inherited": "All condensate spectral weight and nematic pairing asserted too strongly.",
+          "resolution": "Author claims mainly slow-channel origin; pairing mechanism remains open on p4. Treat nematic comparison as qualitative."
+        },
+        {
+          "issue": "Sum-rule normalization",
+          "inherited": "Unqualified exact condensate fractions imported.",
+          "resolution": "Author p2 numerator implies integral pi*S/2, whereas p4 printed SU=pi/2*integral creates inconsistent normalization. Final-version/calibration comparison unresolved. Do not import fractions as validated measurements."
+        }
+      ],
+      "rights": "Original editorial summary and local explanatory calculations. Linked papers retain their own rights; no third-party figures or full text are reproduced."
+    }
+  ]
+}
