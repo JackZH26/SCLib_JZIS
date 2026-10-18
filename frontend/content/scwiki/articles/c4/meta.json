@@ -1,0 +1,407 @@
+{
+  "id": "scwiki-c4",
+  "topicId": "scwiki-topic-c4",
+  "code": "C4",
+  "slug": "dxy-pairing",
+  "title": "dxy pairing: B2g symmetry and directional evidence",
+  "summary": "Distinguish orbital names, coordinate conventions and pairing representations, and test what directional measurements can establish.",
+  "aliases": [
+    "dxy",
+    "d_xy",
+    "B2g",
+    "d xy pairing",
+    "orbital versus gap",
+    "rotating magnetic field",
+    "specific heat anisotropy"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "C3",
+    "C1",
+    "C2",
+    "B3",
+    "B12"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T09:29:35.585048+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Graser and Vorontsov–Vekhter author manuscripts, Kuroki erratum text, scoped historical sources and independent symmetry, angular-spectrum, pairing-kernel and thermal-weight checks.",
+    "limitations": [
+      "Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
+      "No sample is classified as established B2g at this review scope; this is not a global nonexistence claim.",
+      "Chosen separable couplings and spectral differences do not reproduce RPA or vortex calculations.",
+      "Circular angular equivalence and real orbital rotations have explicit restricted assumptions."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "C_pairing_symmetry/C4_d_xy.md",
+    "sha256": "dc76b4ec7d0f6612ce34977169db17b044b78eaed662a70c13435a47638e9e51",
+    "sourceId": "file-73e66d0806bfd1a6"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 17,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; coordinate, orbital and response-model distinctions expanded with scoped sources."
+    },
+    {
+      "startLine": 18,
+      "endLine": 29,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; coordinate, orbital and response-model distinctions expanded with scoped sources."
+    },
+    {
+      "startLine": 30,
+      "endLine": 39,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; coordinate, orbital and response-model distinctions expanded with scoped sources."
+    },
+    {
+      "startLine": 40,
+      "endLine": 49,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; coordinate, orbital and response-model distinctions expanded with scoped sources."
+    },
+    {
+      "startLine": 50,
+      "endLine": 61,
+      "targetSections": [
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; coordinate, orbital and response-model distinctions expanded with scoped sources."
+    },
+    {
+      "startLine": 62,
+      "endLine": 71,
+      "targetSections": [
+        "related-topics",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; coordinate, orbital and response-model distinctions expanded with scoped sources."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-8d1b859d5ffcad9f",
+      "doi": "10.1103/RevModPhys.63.239",
+      "title": "Phenomenological theory of unconventional superconductivity",
+      "year": 1991,
+      "url": "https://doi.org/10.1103/RevModPhys.63.239",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.63.239",
+        "note": "Identity and abstract scope checked. Full review not obtained; explicit angular illustrations are independently evaluated, not attributed as a reproduction of this review."
+      }
+    },
+    {
+      "id": "source-4bdcd96b3b93d462",
+      "doi": "10.1088/1367-2630/11/2/025016",
+      "title": "Near-degeneracy of several pairing channels in multiorbital models for the Fe-pnictides",
+      "year": 2009,
+      "url": "https://doi.org/10.1088/1367-2630/11/2/025016",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0812.0343v2",
+        "note": "Selected pp. 3 and 8–10, Eqs. (27)–(34), and Fig. 13: Fe–Fe coordinates, orbital-to-band projection, channel classification and parameter-dependent ordering. Page 9 visually checked. Version 2 submitted March 2009; internal 2018 date is typesetting. Full journal comparison and numerical reproduction remain open."
+      }
+    },
+    {
+      "id": "source-822deb97a8e9dde0",
+      "doi": "10.1103/PhysRevLett.62.961",
+      "title": "Conserving Approximations for Strongly Correlated Electron Systems: Bethe-Salpeter Equation and Dynamics for the Two-Dimensional Hubbard Model",
+      "year": 1989,
+      "url": "https://doi.org/10.1103/PhysRevLett.62.961",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.62.961",
+        "note": "Conserving-approximation/Hubbard framework abstract checked; no B2g-specific result established at this scope."
+      }
+    },
+    {
+      "id": "source-f80a18149666bd31",
+      "doi": "10.1103/PhysRevLett.101.087004",
+      "title": "Unconventional Pairing Originating from the Disconnected Fermi Surfaces of Superconducting LaFeAsO1−xFx",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevLett.101.087004",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-with-erratum-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.087004",
+        "note": "Kuroki et al. five-orbital RPA abstract checked alongside 2009 erratum 10.1103/PhysRevLett.102.109902. The original gap plot must not be used without its correction; full model not reproduced."
+      }
+    },
+    {
+      "id": "source-6570d4401413e026",
+      "doi": "10.1103/PhysRevLett.102.109902",
+      "title": "Erratum: Unconventional Pairing Originating from the Disconnected Fermi Surfaces of Superconducting LaFeAsO1−xFx [Phys. Rev. Lett. 101, 087004 (2008)]",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevLett.102.109902",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-erratum-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.102.109902",
+        "note": "Complete one-page text read via web: orbital-to-band transformation correction, fully open diagonal gap for displayed parameters, parameter-dependent nodal competition retained. Direct download returned 403; figure was not visually audited or numerically reproduced."
+      }
+    },
+    {
+      "id": "source-6c82ca23c0fda096",
+      "doi": "10.1103/PhysRevLett.96.237001",
+      "title": "Nodal Structure of Quasi-Two-Dimensional Superconductors Probed by a Magnetic Field",
+      "year": 2006,
+      "url": "https://doi.org/10.1103/PhysRevLett.96.237001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0601126v1",
+        "note": "Selected pp. 1–3 and Fig. 2 visually checked: finite-energy vortex scattering, anisotropy reversal and BPT/low-field/Zeeman limitations. Publisher identity checked. Full journal comparison and vortex calculation not reproduced."
+      }
+    },
+    {
+      "id": "source-7700f02a5390b1cf",
+      "doi": "10.1103/PhysRevLett.85.182",
+      "title": "Phase-sensitive Evidence for d-wave Pairing Symmetry in Electron-doped Cuprate Superconductors",
+      "year": 2000,
+      "url": "https://doi.org/10.1103/PhysRevLett.85.182",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0002341v2",
+        "note": "Selected pp. 1–4: sample ranges, frustrated/control geometries, sensor model, variable-flux uncertainty convention and figure captions. Version 2 submitted May 2000; internal 2018 typesetting date is not a new version. Full journal comparison and raw data remain open."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-c4-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "In a tetragonal D4h crystal, a single-component $d_{xy}$ gap transforms as B2g. It is distinct from the B1g $d_{x^2-y^2}$ state when both are described using the same crystallographic axes. Both are even under inversion; the usual spin-singlet interpretation assumes the corresponding centrosymmetric spin or pseudospin setting. This entry covers symmetry and tests of a B2g candidate, not a claim that every material with line nodes realizes it.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "No sample in this entry is classified as experimentally established B2g. This describes the present review's evidence, not a proof that no such material exists. A calculated pairing channel, an Fe dxy orbital contribution and an experimentally determined gap representation are three different statements.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-4bdcd96b3b93d462"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "With lattice spacing one, an illustrative harmonic is $\\Delta(\\mathbf k)=\\Delta_0\\sin k_x\\sin k_y$. It changes sign under either axial reflection and under a quarter turn, but is unchanged by inversion or interchange of $k_x$ and $k_y$. These transformations give B2g for the stated axes. Gap zeros lie on axial lines, including their periodic zone-boundary counterparts; quasiparticle nodes require intersections with the Fermi surface. Higher harmonics can add zeros without changing the representation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-4bdcd96b3b93d462"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Coordinate conventions matter. For a unit circular contour, $2xy=\\sin2\\phi$ and $x^2-y^2=\\cos2\\phi$. Under the passive coordinate change $x'=(x+y)/\\sqrt2$, $y'=(-x+y)/\\sqrt2$, one finds $x'^2-y'^2=2xy$. The polynomial name changes while the physical pattern relative to the crystal is unchanged. Four direct checks verify this identity. A comparison between Fe–Fe and Fe–As coordinate conventions must therefore include the axes and symmetry operations, rather than matching the word “d-wave” alone.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-4bdcd96b3b93d462"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "On an ideal circular contour with uniform weight, replacing $\\cos2\\phi$ by $\\sin2\\phi$ is an angular shift. Four independent broadened-density-of-states integrals coincide for the two gaps; both also have $\\langle f^2\\rangle=1/2$ and $\\langle f^4\\rangle=3/8$. Consequently an angularly averaged spectrum or a clean nodal power law can fail to distinguish these orientations. The checks assume identical amplitudes and broadening. Real velocity weights, multiple sheets and selective probes can break this equivalence.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "To isolate what a pairing eigenvalue does, define normalized basis functions $u_s=1$, $u_1=\\sqrt2\\cos2\\phi$, $u_2=\\sqrt2\\sin2\\phi$ and a deliberately separable operator $K(\\phi,\\phi')=\\sum_a\\lambda_a u_a(\\phi)u_a(\\phi')$, integrated with $d\\phi'/(2\\pi)$. Numerical application confirms the prescribed eigenvalues for three choices: $(0.3,0.4,0.1)$ selects B1g, $(0.3,0.2,0.45)$ selects B2g, and $(0.3,0.4,0.4)$ makes the two d channels degenerate. These couplings were chosen, not inferred from a material. The equality is accidental within this example: D4h does not require its two distinct one-dimensional representations to have equal pairing strength. The calculation illustrates model selection, not an RPA reproduction or a measured transition temperature.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-4bdcd96b3b93d462"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An orbital basis change must act on both electrons of a pair: $\\Delta_{\\rm band}(\\mathbf k)=U^\\dagger(\\mathbf k)\\Delta_{\\rm orbital}(\\mathbf k)U^*(-\\mathbf k)$. Four real, momentum-independent two-orbital examples change matrix entries while preserving the imposed gap-matrix eigenvalues. This limited check does not replace the full momentum-dependent transformation. Likewise, two electrons in the same dxy orbital contribute the product of the orbital's symmetry characters; an orbital sign squared is positive. The orbital name alone therefore does not assign a B2g momentum dependence to the pair.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-4bdcd96b3b93d462",
+        "source-6570d4401413e026"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Momentum-resolved measurements must locate a gap minimum or node relative to measured crystal axes and Fermi sheets. Distinguish insufficient energy resolution from a true zero and compare temperatures within the same superconducting state. Thermodynamic power laws can motivate a nodal hypothesis, but without directional information they do not distinguish B1g from B2g in the circular example above.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Rotating-field measurements also require a response model. Vorontsov and Vekhter calculate a reversal of specific-heat anisotropy with temperature or field while the imposed nodal directions remain fixed. Their quasiclassical treatment includes vortex scattering, a corrugated quasi-two-dimensional Fermi surface and impurity scattering; the selected manuscript neglects Zeeman splitting. The authors caution that their spatial-averaging approximation can overestimate vortex scattering at low fields. Thus a heat-capacity minimum is not universally a node locator. Their comparison with CeCoIn5 favors B1g within that analysis; this is not evidence establishing B2g.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6c82ca23c0fda096"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "The thermal weighting itself can be checked without reproducing that calculation. In units $k_B=1$, the factor $w(x)=x^2e^{-x}/(1+e^{-x})^2$, with $x=E/T$, peaks near $2.399$. For a deliberately chosen bounded spectral difference $\\delta N(E)=0.1[1-(E/E_*)^2]e^{-(E/E_*)^2}$, five converged integrals of $w(x)\\delta N(Tx)$ change sign as temperature increases. The total spectra can remain positive by adding this small difference to a unit background. This illustrates finite-energy weighting; it does not calculate vortices, assign a physical inversion temperature or validate a material symmetry.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6c82ca23c0fda096"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Phase-sensitive junction tests need a geometry that distinguishes the candidate representations, with calibrated crystal orientations and controls for trapped flux and interfaces. The reviewed electron-doped cuprate tricrystal experiment demonstrates why frustrated and unfrustrated control geometries matter. Its result concerns those samples and the tested $d_{x^2-y^2}$ pattern; it cannot simply be relabeled as a dxy measurement.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-7700f02a5390b1cf"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Graser and colleagues explicitly align their orbital basis with nearest-neighbor Fe–Fe directions. In their five-orbital model, the principal competition discussed is anisotropic s-wave versus $d_{x^2-y^2}$. Equation (33) separately defines dxy by its reflection characters, and Figure 13 includes it as a subleading channel for the displayed electron-doped, zero-Hund-coupling case. That calculated ordering depends on parameters; it neither establishes a B2g material nor justifies reading an orbital-weight plot as a gap-symmetry plot.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-4bdcd96b3b93d462"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Bickers, Scalapino and White provide an early conserving-approximation framework for the two-dimensional Hubbard model. The abstract checked here does not establish a B2g-specific result. Kuroki and colleagues' later five-orbital work must be read with its 2009 erratum: an orbital-to-band transformation error changed the original gap plot. The corrected displayed diagonal band gaps are fully open, while parameter-dependent nodal competition remains. This correction is retained as a required companion citation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-822deb97a8e9dde0",
+        "source-f80a18149666bd31",
+        "source-6570d4401413e026"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "A complex combination of two d components is a separate state, not the single-component B2g case covered here. Likewise, changing to an orthorhombic or hexagonal crystal requires a new symmetry classification. Do not assume that a familiar polynomial name carries the same representation, enforced zeros or degeneracy into a different point group.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c4-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "For a proposed dxy candidate, specify the crystal axes, point group, band or orbital basis, and the sample state. Compare competing representations using both directional and phase information, with temperature, field and interface assumptions attached. Keep the present absence of an accepted material record separate from the existence of a theoretical channel. Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-4bdcd96b3b93d462",
+        "source-7700f02a5390b1cf"
+      ],
+      "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-c4-correction-1",
+      "description": "Graser includes a subleading dxy channel in the displayed case; the principal near-degeneracy discussed is s versus dx2-y2, not established B2g superconductivity.",
+      "sourceId": "source-4bdcd96b3b93d462",
+      "scope": "Selected manuscript Eqs. (31)–(34) and Fig. 13."
+    },
+    {
+      "id": "scwiki-c4-correction-2",
+      "description": "Kuroki original gap plot requires the 2009 orbital-to-band transformation erratum.",
+      "sourceId": "source-6570d4401413e026",
+      "scope": "Complete erratum text; figure reproduction remains open."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta(\\mathbf k)=\\Delta_0\\sin k_x\\sin k_y",
+      "check": "Four symmetry and coordinate cases, angular DOS/moments and three separable pairing kernels."
+    },
+    {
+      "targetSectionId": "experimental-criteria",
+      "tex": "w(x)=x^2e^{-x}/(1+e^{-x})^2",
+      "check": "Peak near2.399; five converged illustrative spectral-difference integrals. No vortex model reproduction."
+    }
+  ],
+  "materialCases": []
+}

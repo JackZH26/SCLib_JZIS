@@ -640,3 +640,21 @@ it("preserves d-wave phase controls and excludes imaging temperatures from trans
  expect(section).toContain("no single transition criterion is invented");
  expect(section).toContain("Full scientific acceptance");
 });
+
+it("keeps dxy orbital weights, model channels and directional evidence distinct",async()=>{
+ const a=articles().find(a=>a.code==="C4")!;
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("not a proof that no such material exists");
+ expect(md).toContain("including their periodic zone-boundary counterparts");
+ expect(md).toContain("not an RPA reproduction or a measured transition temperature");
+ expect(md).toContain("does not calculate vortices");
+ expect(md).toContain("as a subleading channel");
+ expect(md).toContain("required companion citation");
+ expect(a.references.some(r=>r.doi==="10.1103/PhysRevLett.102.109902")).toBe(true);
+ expect(a.claims.find(c=>c.statement.startsWith("Rotating-field"))?.evidenceType).toBe("theory");
+ expect(a.materialCases).toHaveLength(0);
+ expect(searchArticles(searchIndex().entries,"B2g",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"B2g",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const out=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+ expect(out).toContain("orbital-to-band transformation error");expect(out).toContain("Full scientific acceptance");
+});

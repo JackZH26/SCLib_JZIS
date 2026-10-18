@@ -419,8 +419,8 @@
       "lineCount": 71,
       "topicId": "scwiki-topic-c4",
       "articleId": "scwiki-c4",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3501,11 +3501,13 @@
       "id": "correction-kuroki-gap-plot-erratum",
       "affectedTopics": [
         "B3",
-        "C2"
+        "C2",
+        "C4"
       ],
       "affectedSourcePaths": [
         "B_mechanisms/B3_spin_fluctuation_AFM.md",
-        "C_pairing_symmetry/C2_s_plus_minus.md"
+        "C_pairing_symmetry/C2_s_plus_minus.md",
+        "C_pairing_symmetry/C4_d_xy.md"
       ],
       "articleDoi": "10.1103/PhysRevLett.101.087004",
       "requiredCompanionDoi": "10.1103/PhysRevLett.102.109902",

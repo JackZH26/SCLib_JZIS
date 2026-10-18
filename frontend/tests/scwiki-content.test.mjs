@@ -125,7 +125,7 @@ test("wrong DOI correction remains enforced when the replacement is a historical
 });
 
 test("known Kuroki erratum accompanies the original in newly authored and existing pages",t=>{
- for(const folder of ["b3","c2"]){
+ for(const folder of ["b3","c2","c4"]){
   const f=inventoryFixture(t),filename=path.join(f.directory,"articles",folder,"meta.json");
   const meta=JSON.parse(readFileSync(filename,"utf8"));
   assert.ok(meta.references.some(r=>r.doi==="10.1103/PhysRevLett.101.087004"));
