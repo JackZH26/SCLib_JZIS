@@ -12,7 +12,7 @@ $$g'(\mathbf r,E)=g(\mathbf r-\mathbf r_0,E),\qquad\tilde g'=e^{-i\mathbf q\cdot
 
 Its Fourier magnitude is unchanged, while its real and imaginary parts generally change. A real map satisfies $\tilde g(-\mathbf q)=\tilde g(\mathbf q)^*$. Independent discrete-transform checks verify both identities, an exactly sampled cosine and sampling aliases. Finite cropping can also change amplitudes; the exact translation identity assumes the whole pattern or periodic data, not two differently cropped fields.
 
-For a periodic lattice with $N$ sites and one defect at the origin, define an ideal electron-block response
+For a periodic lattice with $N$ sites and one static, local defect at the origin, define an ideal electron-block response
 
 $$\Lambda(\mathbf q,E)=\frac{1}{N}\sum_{\mathbf k}[G_0(\mathbf k,E)\,T(E)\,G_0(\mathbf k-\mathbf q,E)]_{11}.$$
 
@@ -20,7 +20,7 @@ Here $G_0$ is a retarded Nambu Green function and $T=[1-Vg_0]^{-1}V$, with $g_0=
 
 $$\delta\tilde\rho(\mathbf q,E)=-\frac{\Lambda(\mathbf q,E)-\Lambda(-\mathbf q,E)^*}{2\pi i}.$$
 
-Taking just $-\operatorname{Im}\Lambda(\mathbf q)/\pi$ is insufficient for a general complex Fourier map. It becomes valid with the additional even-in-momentum response condition. Six independent checks compare full real-space resolvent inversion with the scattering expression on a ten-site, fixed-gap model; displaced defects expose the lost phase. This is a normalization and response check, not a cuprate or FeSe simulation. The selected Wang–Lee manuscript supplies the broader scattering framework and explicitly discusses off-shell and matrix-element limits. [R2](#ref-source-6e0b3a25ead07f3c)
+Taking just $-\operatorname{Im}\Lambda(\mathbf q)/\pi$ is insufficient for a general complex Fourier map. It becomes valid with the additional even-in-momentum response condition. Six independent checks compare full real-space resolvent inversion with the scattering expression on a ten-site, fixed-gap model; displaced defects expose the lost phase. This is a normalization and response check, not a cuprate or FeSe simulation. The selected Wang–Lee manuscript supplies the broader scattering framework and explicitly discusses off-shell and matrix-element limits. Its Eq. (1) includes both Nambu diagonal blocks; the expression here uses an explicitly spin-resolved electron block and a discrete lattice normalization. These local conventions and their checks are not a verbatim reproduction of the full source formula. [R2](#ref-source-6e0b3a25ead07f3c)
 
 A joint-density-of-states construction counts candidate equal-energy connections but omits scattering amplitudes and coherence factors. In an ideal equal-magnitude, real-gap Fermi-surface limit, scalar and magnetic Born amplitudes contain $uu'-vv'$ and $uu'+vv'$. Setting $u=u'=1/\sqrt2$ and $v=\operatorname{sgn}(\Delta)/\sqrt2$ interchanges their zero/nonzero weights when the relative gap sign changes. This conditional example explains sensitivity to the impurity channel; it does not identify a real defect from one bright peak. [R2](#ref-source-6e0b3a25ead07f3c)
 

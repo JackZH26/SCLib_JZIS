@@ -28,15 +28,16 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.190835+00:00",
+  "modifiedAt": "2026-10-18T22:51:56.579986+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
+    "checkedAt": "2026-10-19",
     "scope": "Selected Hoffman, Wang–Lee and Sprau author-manuscript passages; bibliographic identity corrections; independent finite-model and Fourier calculations.",
     "limitations": [
       "Scoped passage checks are not complete scientific acceptance or experimental replication.",
       "McElroy and the vortex-core paper remain bibliographic pointers; earlier manuscript checks do not certify final-version equivalence.",
       "FeSe sign inference retains defect, phase origin, band and model assumptions; no universal pairing state assigned.",
-      "Measurement temperatures are not transition temperatures; no Tc values are extracted here."
+      "Measurement temperatures are not transition temperatures; no Tc values are extracted here.",
+      "The displayed spin-resolved, finite-lattice response specializes the source framework; its local synthetic checks do not reproduce the complete published calculation."
     ]
   },
   "provenance": {
@@ -132,9 +133,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "author-manuscript-scoped-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0205118v3",
-        "note": "Selected pp. 1–2; p. 2 visually checked for off-shell/coherence-factor limits. August 2002 manuscript linked to 2003 journal paper; full published numerical calculation not reproduced."
+        "note": "Author v3 dated 20 August 2002, associated journal 2003. Selected pp. 1-2; p. 1 Eq. (1) pixels rechecked for both Nambu diagonal blocks, p. 2 previously viewed for off-shell/coherence-factor limits. Site spin-resolved block and discrete normalization are explicit local conventions. Full published calculation and final-version comparison remain open."
       }
     },
     {
@@ -212,7 +213,9 @@
         "source-6e0b3a25ead07f3c"
       ],
       "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
-      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local discrete-Fourier definition and translation/conjugation identities; exact algebra and sampled periodic examples. Wang–Lee supplies scattering context, not a separate experiment supporting the chosen convention."
     },
     {
       "id": "scwiki-a10-claim-mathematical-assumptions-2",
@@ -223,7 +226,9 @@
         "source-6e0b3a25ead07f3c"
       ],
       "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
-      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local discrete-Fourier definition and translation/conjugation identities; exact algebra and sampled periodic examples. Wang–Lee supplies scattering context, not a separate experiment supporting the chosen convention."
     },
     {
       "id": "scwiki-a10-claim-mathematical-assumptions-3",
@@ -234,18 +239,22 @@
         "source-6e0b3a25ead07f3c"
       ],
       "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
-      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local discrete-Fourier definition and translation/conjugation identities; exact algebra and sampled periodic examples. Wang–Lee supplies scattering context, not a separate experiment supporting the chosen convention."
     },
     {
       "id": "scwiki-a10-claim-mathematical-assumptions-4",
       "sectionId": "mathematical-assumptions",
-      "statement": "For a periodic lattice with $N$ sites and one defect at the origin, define an ideal electron-block response",
+      "statement": "For a periodic lattice with $N$ sites and one static, local defect at the origin, define an ideal electron-block response",
       "evidenceType": "theory",
       "sourceIds": [
         "source-6e0b3a25ead07f3c"
       ],
       "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
-      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Wang–Lee author v3 p. 1 Eq. (1) supplies the scattering-response framework with both Nambu diagonal blocks. This entry locally specializes to one spin-resolved electron block, N-site normalization and a static local defect; T follows from T=V+Vg0T when the inverse exists. Six finite-model resolvent comparisons check these conventions, not material data."
     },
     {
       "id": "scwiki-a10-claim-mathematical-assumptions-5",
@@ -256,7 +265,9 @@
         "source-6e0b3a25ead07f3c"
       ],
       "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
-      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Wang–Lee author v3 p. 1 Eq. (1) supplies the scattering-response framework with both Nambu diagonal blocks. This entry locally specializes to one spin-resolved electron block, N-site normalization and a static local defect; T follows from T=V+Vg0T when the inverse exists. Six finite-model resolvent comparisons check these conventions, not material data."
     },
     {
       "id": "scwiki-a10-claim-mathematical-assumptions-6",
@@ -267,7 +278,9 @@
         "source-6e0b3a25ead07f3c"
       ],
       "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
-      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Wang–Lee author v3 p. 1 Eq. (1) supplies the scattering-response framework with both Nambu diagonal blocks. This entry locally specializes to one spin-resolved electron block, N-site normalization and a static local defect; T follows from T=V+Vg0T when the inverse exists. Six finite-model resolvent comparisons check these conventions, not material data."
     },
     {
       "id": "scwiki-a10-claim-mathematical-assumptions-7",
@@ -278,18 +291,22 @@
         "source-6e0b3a25ead07f3c"
       ],
       "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
-      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Wang–Lee author v3 p. 1 Eq. (1) supplies the scattering-response framework with both Nambu diagonal blocks. This entry locally specializes to one spin-resolved electron block, N-site normalization and a static local defect; T follows from T=V+Vg0T when the inverse exists. Six finite-model resolvent comparisons check these conventions, not material data."
     },
     {
       "id": "scwiki-a10-claim-mathematical-assumptions-8",
       "sectionId": "mathematical-assumptions",
-      "statement": "Taking just $-\\operatorname{Im}\\Lambda(\\mathbf q)/\\pi$ is insufficient for a general complex Fourier map. It becomes valid with the additional even-in-momentum response condition. Six independent checks compare full real-space resolvent inversion with the scattering expression on a ten-site, fixed-gap model; displaced defects expose the lost phase. This is a normalization and response check, not a cuprate or FeSe simulation. The selected Wang–Lee manuscript supplies the broader scattering framework and explicitly discusses off-shell and matrix-element limits.",
+      "statement": "Taking just $-\\operatorname{Im}\\Lambda(\\mathbf q)/\\pi$ is insufficient for a general complex Fourier map. It becomes valid with the additional even-in-momentum response condition. Six independent checks compare full real-space resolvent inversion with the scattering expression on a ten-site, fixed-gap model; displaced defects expose the lost phase. This is a normalization and response check, not a cuprate or FeSe simulation. The selected Wang–Lee manuscript supplies the broader scattering framework and explicitly discusses off-shell and matrix-element limits. Its Eq. (1) includes both Nambu diagonal blocks; the expression here uses an explicitly spin-resolved electron block and a discrete lattice normalization. These local conventions and their checks are not a verbatim reproduction of the full source formula.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-6e0b3a25ead07f3c"
       ],
       "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
-      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source v3 pp. 1-2 supports the scattering framework and off-shell/matrix-element caution. The complex-Fourier conjugation argument and six fixed-gap finite-model checks are local; source Eq. (1) and this spin-resolved form are explicitly distinguished."
     },
     {
       "id": "scwiki-a10-claim-mathematical-assumptions-9",
@@ -300,7 +317,9 @@
         "source-6e0b3a25ead07f3c"
       ],
       "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
-      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source v3 p. 2 gives scalar/magnetic coherence-factor dependence. The equal-magnitude, real-gap, xi=0 weights are a local ideal-limit evaluation, not identification of an experimental defect."
     },
     {
       "id": "scwiki-a10-claim-experimental-criteria-1",
