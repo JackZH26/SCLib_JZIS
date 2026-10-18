@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "3041e79e19dc6f0a5947",
+  "revision": "392afbca4007e28a54a3",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -6943,6 +6943,81 @@
         "10.1103/PhysRevLett.2.331"
       ],
       "text": " Scope\n\nTwo bands, two Drude components, two scattering processes and two pairing channels are different claims. Independent channels experiencing the same electric field add their conductivities. Scattering events within one channel instead enter a collision problem and can add as rates only under appropriate approximations. A good fit to DC resistivity alone rarely identifies which microscopic description is correct. MgB2 illustrates why band-resolved superconducting gaps must also be distinguished from independently conducting subsystems.    \n\nThis entry concerns transport decomposition and spectral-weight accounting. A fitted component can represent a band, an orbital sector, a spatial layer or an effective relaxation scale; the label must be justified with additional evidence. Identifying carriers that contribute to the condensate does not by itself identify the interaction responsible for pairing.  \n\n Mathematical assumptions\n\nFor independent isotropic channels, use angular frequency \\omega and the convention e^{-i\\omega t}: \\sigma(\\omega)=\\sumj Sj/(\\Gammaj-i\\omega), where Sj=nje^2/mj and \\Gammaj>0 in the elementary Drude model. At zero field, \\rho{\\rm DC}=1/\\sumj(Sj/\\Gammaj), not the sum of channel resistivities. A broad component has \\sigmaj\\simeq Sj/\\Gammaj only within a window where \\omega\\ll\\Gammaj; its constant approximation cannot be integrated to infinite frequency. \n\nEven exact DC data admit infinitely many positive pairs with the same total conductivity. Frequency information helps, but if two linewidths are identical, their sum is exactly a single Drude peak with weight S1+S2 at every frequency. A finite frequency window can also leave a very broad component's weight and linewidth strongly correlated. Report uncertainty and competing models, not just a residual sum of squares.  \n\nIndependent scattering contributions can approximately give \\Gamma=\\Gamma{\\rm imp}+\\Gamma{\\rm ph}+\\cdots within one relaxation model. This Matthiessen approximation is not a prescription for adding the resistivities of parallel bands. Interchannel momentum exchange generally couples their kinetic equations: an illustrative positive relaxation matrix has diagonals \\gamma1+g,\\gamma2+g and off-diagonals -g. In normalized equal-density units its conductivity is \\mathbf{1}^{T}C^{-1}\\mathbf{1}, reducing to 1/\\gamma1+1/\\gamma2 at g=0. This toy model exposes the independence assumption; it is not a material fit. \n\nNormalization matters in spectral-weight sums. For one Drude term, \\int0^\\infty\\sigma1(\\omega)d\\omega=\\pi S/2. With condensate response \\sigma{2,s}=Ss/\\omega, the positive-frequency missing area is \\pi Ss/2, provided the relevant total optical weight is conserved and backgrounds are treated consistently. Thus Ss=(2/\\pi)\\int0^\\infty[\\sigma{1,N}-\\sigma{1,S}^{\\rm reg}]d\\omega in this convention. Cyclic frequency \\nu=\\omega/(2\\pi) requires \\Gamma\\nu=\\Gamma/(2\\pi) and S\\nu=S/(2\\pi) in the same Drude form. Delta-function boundary conventions must also be stated. The numerical checks establish these model identities, not the complete historical derivation or experimental sum-rule saturation.   \n\n Experimental criteria\n\nRomero's FeTe1−xSex study uses complex terahertz conductivity with a DC constraint to distinguish a narrow response from a broad background. The checked author version covers two films, x=0.45 and x=0.35, over 0.2–3 THz. The broad component is not resolved as a second complete peak, so assigning it a unique scattering rate or a second Planckian coefficient would exceed the measurement. Its displayed rate uses cycle frequency and a thermal scale proportional to kBT/h; substituting \\hbar without conversion changes the convention. \n\nThe same study compares a fitted superconducting term, a low-frequency extrapolation of \\nu\\sigma2, and a missing-area analysis. These are useful consistency comparisons but share measured spectra and modeling assumptions; they are not three independent experimental replications. Near the transition, a finite-width low-frequency response complicates extrapolation to zero frequency. The normal reference temperature, unmeasured low-frequency region and residual background must remain part of any condensate-weight claim. \n\nQazilbash's LaFePO experiment combines in-plane reflectance with ellipsometry and Kramers–Kronig-compatible optical extraction. The final paper analyzes a low-frequency Drude response, higher-energy interband transitions and an extended-Drude scattering rate. Its comparison of integrated optical weight with band theory supports a correlation interpretation under that analysis; it does not establish exactly two independent Drude carriers throughout the iron-based family. The reported kinetic-energy ratio has extraction bounds, rather than being an exact universal one-half. \n\nMgB2 supplies a complementary comparison. Liu and Choi calculate band-dependent electron–phonon pairing, while Souma resolves different superconducting gaps on sigma and pi bands by photoemission. Choi's coupled calculation has a common transition. These results do not authorize treating the bands as two unrelated superconductors with separately assigned transition temperatures, or translating gap values into Drude scattering rates. Surface-sensitive spectroscopy and bulk optical transport retain different measurement conditions.   \n\n Limits and disputes\n\nA spectral decomposition is not unique simply because it is causal or fits both real and imaginary conductivity. Independent Fermi-surface, mass, Hall and magnetoresistance constraints can narrow possibilities, while interband optical transitions and coupled scattering can invalidate a simple channel interpretation. Optical spectral weight, a transport lifetime and a superconducting gap are different quantities; no universal cross-material conversion is justified here.    \n\nComplete scientific acceptance remains open. The Romero author manuscript's printed missing-area prefactor differs from the normalization implied by its Drude numerator; the final paper and calibration must be compared before importing precise condensate fractions. The LaFePO supplement and complete historical sum-rule derivations have not been checked. Independent model integrations do not resolve those source-version questions or reproduce the experimental data.    \n\n Discovery implications\n\nFirst specify what would distinguish two physical channels from an effective two-component fit. Extend the measurement window where possible, constrain the DC limit, document tensor geometry, and test whether fitted weights and rates remain stable when backgrounds or cutoffs change. For superconducting spectral transfer, compare a justified normal-state reference with the regular superconducting response and quantify missing bandwidth. A successful transport decomposition constrains candidate mechanisms; it does not identify a unique pairing interaction.  \n\n Related topics\n\n, , and ."
+    },
+    {
+      "id": "scwiki-h9",
+      "topicId": "scwiki-topic-h9",
+      "code": "H9",
+      "slug": "hall-coefficient-sign-reversal",
+      "title": "Hall-coefficient sign reversal: carriers, mobility and evidence",
+      "summary": "Separate a Hall sign change from a Hall-number inference, account for multiband mobility and anomalous terms, and retain each experiment's normal-state boundary.",
+      "aliases": [
+        "Hall coefficient sign reversal",
+        "Hall number",
+        "ordinary Hall effect",
+        "霍尔系数变号",
+        "霍尔数"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory",
+        "hypothesis"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "85ed19f928fa45dc6c34",
+      "materialCases": [
+        {
+          "id": "scwiki-h9-material-1",
+          "recordType": "experiment",
+          "formula": "La2-xSrxCuO4",
+          "sample": "Tsukada epitaxial LSCO films on SrTiO3; room-temperature doping series",
+          "tcK": null,
+          "reportedTemperatureK": 300,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Hall measurement temperature, not a superconducting transition temperature.",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "criterion": "normal-state-hall-measurement",
+          "probe": "Transverse transport with applied field",
+          "sourceId": "source-7acbaed4e62141d9",
+          "aliases": [
+            "LSCO",
+            "La2-xSrxCuO4"
+          ]
+        },
+        {
+          "id": "scwiki-h9-material-2",
+          "recordType": "experiment",
+          "formula": "Ba(Fe1-xCox)2As2",
+          "sample": "Mun WDS-characterized Co-substituted crystals; Figure5",
+          "tcK": null,
+          "reportedTemperatureK": 25,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Hall measurement temperature, not a superconducting transition temperature.",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "criterion": "normal-state-hall-measurement",
+          "probe": "Transverse transport with applied field",
+          "sourceId": "source-e24f6678715b4917",
+          "aliases": [
+            "Co-doped Ba122",
+            "Ba(Fe1-xCox)2As2"
+          ]
+        }
+      ],
+      "dois": [
+        "10.1103/PhysRevB.74.134508",
+        "10.1103/PhysRevLett.105.087001",
+        "10.1103/PhysRevB.80.054517",
+        "10.1038/srep28390",
+        "10.1038/nature16983",
+        "10.1103/RevModPhys.82.1539",
+        "10.1103/PhysRevB.43.193",
+        "10.1038/s41586-026-10547-y"
+      ],
+      "text": " Scope\n\nA Hall-coefficient sign reversal is a change in the sign of the transverse response under a declared wiring and field convention. It is distinct from a change in Hall magnitude, a peak, or an inferred Hall number. Electron and hole contributions can exchange transport weight without either Fermi-surface pocket disappearing. Neither a sign change nor a Hall anomaly by itself proves superconductivity, a Lifshitz transition or a particular pairing mechanism.    \n\nHere Ey=RHJxBz defines the sign. The elementary single-band Drude values are RH=-1/(ne e) for electrons and RH=1/(nh e) for holes, with e>0. These density interpretations require restrictive assumptions. Even a single crystalline band can have a complicated Hall response because Fermi-surface curvature and a momentum-dependent mean free path affect the weak-field conductivity. A temperature-dependent Hall coefficient is therefore not sufficient evidence for multiple bands. \n\n Mathematical assumptions\n\nFor independent isotropic electron and hole Drude channels with positive mobilities and \\mui B\\ll1, RH=(nh\\muh^2-ne\\mue^2)/[e(nh\\muh+ne\\mue)^2]. The sign changes when the mobility-squared weights cross. Fixed carrier densities can therefore produce a reversal as the mobility ratio varies. At zero field \\sigma0=e(nh\\muh+ne\\mue); even simultaneous values of \\sigma0 and weak-field RH do not uniquely determine four density/mobility parameters. Independent tensor-inversion checks illustrate this degeneracy without fitting a material.  \n\nBeyond weak field, add conductivity tensors and invert the sum. In the same classical model, when both \\muiB\\gg1 and nh\\ne ne, the asymptotic slope is \\rho{yx}/B\\to1/[e(nh-ne)]. Exact compensation is a different limit: for nh=ne=n, \\rho{yx}/B=(\\muh-\\mue)/[en(\\muh+\\mue)] at all fields in this model. A large laboratory field alone establishes neither of these asymptotic conditions. Quantum effects, coupled scattering and reconstructed bands may require a different model.  \n\nOrdinary and anomalous contributions must also be distinguished. A schematic \\rho{yx}=R0B+\\rho{yx}^{A} is not a universal fit, and an anomalous term need not be proportional to magnetization with a constant coefficient. Intrinsic Berry curvature, skew scattering and side jump are distinct mechanisms. Field antisymmetrization, [\\rho{yx}(B)-\\rho{yx}(-B)]/2, removes even longitudinal contact leakage but retains an odd anomalous Hall contribution. It does not isolate ordinary Hall transport by itself. \n\n Experimental criteria\n\nTsukada and Ono studied epitaxial La2−xSrxCuO4 films on SrTiO3 with residual tensile strain. Their room-temperature Hall coefficient changes from positive to negative between x=0.28 and x=0.32. The heavily overdoped samples used field sweeps to ±6 T. This is a sample-series result at 300 K, not a universal cuprate doping boundary. The x=0.32 film lacks zero resistance but has a reported resistive onset, which the authors discuss in relation to possible oxygen inhomogeneity. Describing it simply as having no superconducting evidence would erase that distinction. \n\nBrouet's Ba(Fe0.65Ru0.35)2As2 study reports a temperature-dependent Hall sign together with electron and hole pockets. The checked primary abstract supports that limited statement; complete transport methods and a precise reversal temperature remain unreviewed here. Mun's Co- and Cu-substituted BaFe2As2 crystals provide a separate comparison: thermopower and Hall changes occur at comparable added-electron counts, but the Cu comparison does not show the corresponding resistive superconductivity. These Hall anomalies are not a superconductivity criterion or a universal sign-change threshold.  \n\nMun's experiment measured composition by wavelength-dispersive spectroscopy and applied the Hall field along the crystal c axis, reversing field polarity to reduce contact offsets. Its 25 K comparison is a measurement temperature, not a transition temperature. Sample exfoliation can alter geometric factors, so normalized trends and absolute Hall magnitudes carry different uncertainties. Co/Cu substitution fraction and inferred added-electron count are also different horizontal axes. \n\nIida's strained Ba(Fe1−xCox)2As2 films used MgO and CaF2 substrates and Hall measurements at 9 T. Their effective Hall number nH=V/(4e|RH|), with unit-cell volume V, is positive by construction and expressed per Fe. It discards the Hall sign and is not a direct count of all mobile carriers in a multiband metal. The reported phase-diagram alignment concerns the studied strained films and selected bulk comparisons. The superconducting temperature uses a resistive onset criterion, rather than silently substituting zero resistance or magnetic shielding. \n\nBadoux's YBa2Cu3Oy experiment distinguishes a charge-order reconstruction endpoint near p=0.16 from a pseudogap endpoint near p=0.19. The Hall-number interpretation changes from approximately 1+p toward p; this is not evidence for a mandatory Hall-sign reversal at the latter point. Pulsed fields reached 88 T, with a 50 K, 80 T cross-sample comparison. The author manuscript establishes normal-state access down to at least 40 K and explicitly leaves the lower-temperature p=0.16 behavior unresolved. Its vortex-melting field is not automatically the upper critical field. \n\n Limits and disputes\n\nNormal-state extraction needs more than a high-field label. Retain temperature, current, field direction, hysteresis branch and the independently justified superconducting boundary; vortex motion and magnetic contributions can contaminate a transverse signal. Yang's field-induced superconductivity study is a boundary example, not a source of an ordinary-Hall reversal field. Its superconducting phase-diagram scales must not be relabeled as Hall or anomalous-Hall thresholds.   \n\nComplete scientific acceptance remains open. Most experimental checks here cover selected author-manuscript methods, results and figures, not complete final articles or raw-data reproduction. Brouet remains abstract-scoped; Ong's full geometric derivation and the anomalous-Hall review remain incompletely read. Apparent numeric typographical inconsistencies in the Mun and Iida author versions require final-version comparison; those uncertain composition values are not adopted. The independent Drude checks establish model algebra, not a unique interpretation of any experimental Hall curve.       \n\n Discovery implications\n\nTreat a sign change as a prompt to test competing transport explanations. Combine field-dependent longitudinal and transverse resistivity, magnetoresistance, magnetic characterization and independent Fermi-surface information. Compare constrained models and retain geometry, strain, oxygen content and uncertainty. A mobility crossover, reconstructed Fermi surface and anomalous contribution can produce different predictions beyond a single Hall slope; a defensible conclusion specifies which alternatives the measurements actually exclude.     \n\n Related topics\n\n, , and ."
     }
   ]
 }

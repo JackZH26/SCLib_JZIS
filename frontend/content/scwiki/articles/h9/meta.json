@@ -1,0 +1,401 @@
+{
+  "id": "scwiki-h9",
+  "topicId": "scwiki-topic-h9",
+  "code": "H9",
+  "slug": "hall-coefficient-sign-reversal",
+  "title": "Hall-coefficient sign reversal: carriers, mobility and evidence",
+  "summary": "Separate a Hall sign change from a Hall-number inference, account for multiband mobility and anomalous terms, and retain each experiment's normal-state boundary.",
+  "aliases": [
+    "Hall coefficient sign reversal",
+    "Hall number",
+    "ordinary Hall effect",
+    "霍尔系数变号",
+    "霍尔数"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "H8",
+    "H7",
+    "G3"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T17:26:39.189322+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Tsukada,Mun,Iida,Badoux author methods/results and figures; Ong final first page; Brouet primary abstract; inherited anomalous-Hall and Yang scopes; independent two-band tensor checks.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Complete final-version comparison, supplementary controls, calibration and raw-data reproduction remain open.",
+      "Brouet is abstract-scoped; Ong complete derivation and anomalous-Hall review not fully checked.",
+      "Mun/Iida apparent author-version composition typos are recorded but not silently repaired or used."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "H_anomalous_normal_state/H9_Hall_sign_reversal.md",
+    "sha256": "34e045c73f1a28ec7177001c5fcf0edbced1a63d2ce2f2c8c5e6722f4ed19613",
+    "sourceId": "file-02b313a904214e63"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 199,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Preserve five material comparisons, correct onset/zero-resistance wording, distinguish Hall sign/number and normal-state criteria, and retain incomplete primary-review limits."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-h9-correction-1",
+      "description": "Tsukada x=0.32 film shows no zero resistance but a reported resistive onset; categorical absence of all superconducting evidence is too strong.",
+      "sourceId": "source-7acbaed4e62141d9",
+      "scope": "Preserve onset versus zero-resistance distinction and sample-specific oxygen uncertainty."
+    },
+    {
+      "id": "scwiki-h9-correction-2",
+      "description": "Iida effective Hall number uses absolute RH; Badoux pseudogap Hall-number change is not a mandatory Hall-sign reversal.",
+      "sourceId": "source-362cf0fd861683c3",
+      "scope": "Retain signed transverse response versus inferred positive Hall number; normal-state and transition criteria."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "R_H=(n_h\\mu_h^2-n_e\\mu_e^2)/[e(n_h\\mu_h+n_e\\mu_e)^2]",
+      "check": "16 weak-field tensor inversions, fixed-density sign crossover,6 uncompensated and3 compensated high-field cases,4 identical DC/Hall parameter sets with distinct MR, and even-leakage/odd-AHE antisymmetrization passed. No experimental fitting."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-7acbaed4e62141d9",
+      "doi": "10.1103/PhysRevB.74.134508",
+      "title": "Negative Hall coefficients of heavily overdoped La2-xSrxCuO4",
+      "year": 2006,
+      "url": "https://doi.org/10.1103/PhysRevB.74.134508",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0605720v2",
+        "note": "Author v2,25August2006: selected pp1–6 andp10caption read;p11Figure2 visually checked. Tensile-strained epitaxial films on SrTiO3(100); Hall sweeps ±1T forx.08–.22 and ±6T forx.24–.40. Atx.32 no zero resistance but onset is reported, possibly from oxygen inhomogeneity. Final comparison/raw data remain open."
+      }
+    },
+    {
+      "id": "source-8c3b378d8802f683",
+      "doi": "10.1103/PhysRevLett.105.087001",
+      "title": "Significant reduction of electronic correlations upon isovalent Ru substitution of BaFe2As2",
+      "year": 2010,
+      "url": "https://doi.org/10.1103/PhysRevLett.105.087001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.105.087001",
+        "note": "Publisher abstract checked: Ba(Fe0.65Ru0.35)2As2 electron/hole pockets and temperature-dependent Hall sign. Full sample/transport methods not read; no precise sign-change temperature extracted."
+      }
+    },
+    {
+      "id": "source-e24f6678715b4917",
+      "doi": "10.1103/PhysRevB.80.054517",
+      "title": "Thermoelectric power and Hall coefficient measurements on Ba(Fe1-xTMx)2As2 (TM=Co and Cu)",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevB.80.054517",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/0906.1548v2",
+        "note": "Author v2,7August2009: selected pp1–6 read;p15Figure5 visually checked. WDS compositions, FeAs-flux crystals; AC four-wire Hall, field alongc, polarity reversed;25KFigure5 and90kOe temperature series. Exfoliation geometry uncertainty noted. p4 printed x>=0.38 conflicts with nearby0.038 scale: final-version comparison pending, numeric threshold not adopted."
+      }
+    },
+    {
+      "id": "source-362cf0fd861683c3",
+      "doi": "10.1038/srep28390",
+      "title": "Hall-plot of the phase diagram for Ba(Fe1-xCox)2As2",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/srep28390",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1606.02865v2",
+        "note": "Author v2,10June2016; published22June2016. Selected p7Hall analysis, pp9–10methods,p18supplement Tc definition read; pp4Figure2 and9methods visually checked. Hall measured9T;14T belongs to separate MR/available field range. nH=V/(4e|RH|) perFe is positive by definition. p9prints0.74±0.017 for nominal0.08, an unresolved apparent typo; no measured concentration imported."
+      }
+    },
+    {
+      "id": "source-fae77f2c38d4cf72",
+      "doi": "10.1038/nature16983",
+      "title": "Change of carrier density at the pseudogap critical point of a cuprate superconductor",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nature16983",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1511.08162v1",
+        "note": "Author v1,25November2015: selected pp1–5,pp28–29methods/errors read;p11Figure2 visually checked. Pulses to88T; normal-state coverage at least40K, lower-temperature p=.16 limit explicit. Figure2 uses vortex melting Hvs, not Hc2. Absolute geometry error up to15percent distinct from relative temperature uncertainty. Published online22February2016. Final/supplement/raw analysis incomplete."
+      }
+    },
+    {
+      "id": "source-7faba5d556864a32",
+      "doi": "10.1103/RevModPhys.82.1539",
+      "title": "Anomalous Hall effect",
+      "year": 2010,
+      "url": "https://doi.org/10.1103/RevModPhys.82.1539",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-abstract-background-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/abs/0904.4154",
+        "note": "Author review abstract checked; intrinsic Berry curvature and extrinsic scattering mechanisms. Background only, not a complete primary experimental audit."
+      }
+    },
+    {
+      "id": "source-fd33407c49db2caf",
+      "doi": "10.1103/PhysRevB.43.193",
+      "title": "Geometric interpretation of the weak-field Hall conductivity in two-dimensional metals with arbitrary Fermi surface",
+      "year": 1991,
+      "url": "https://doi.org/10.1103/PhysRevB.43.193",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-first-page-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://scalettar.physics.ucdavis.edu/p298/HallGeometryOng.pdf",
+        "note": "Printedp193 scanned final page visually checked: abstract,introduction and startSectionII. Weak-field Boltzmann regime, mean-free-path curve l=v tau and Fermi-surface curvature; magnetic skew scattering and magnetic breakdown excluded. Complete geometric derivation not read."
+      }
+    },
+    {
+      "id": "source-3504ee9027165d0a",
+      "doi": "10.1038/s41586-026-10547-y",
+      "title": "Field re-entrant superconductivity in Eu-doped infinite-layer nickelates",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10547-y",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2508.14666v3",
+        "note": "Published23April2026; read authorv3 dated25April2026, selectedpp2–8, captionsp12, methodsp13–14; Fig2p19/Fig3p20 visually checked. Full final equivalence, calibration and all raw data remain open."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-h9-material-1",
+      "recordType": "experiment",
+      "formula": "La2-xSrxCuO4",
+      "sample": "Tsukada epitaxial LSCO films on SrTiO3; room-temperature doping series",
+      "tcK": null,
+      "reportedTemperatureK": 300,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Hall measurement temperature, not a superconducting transition temperature.",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "criterion": "normal-state-hall-measurement",
+      "probe": "Transverse transport with applied field",
+      "sourceId": "source-7acbaed4e62141d9",
+      "aliases": [
+        "LSCO",
+        "La2-xSrxCuO4"
+      ]
+    },
+    {
+      "id": "scwiki-h9-material-2",
+      "recordType": "experiment",
+      "formula": "Ba(Fe1-xCox)2As2",
+      "sample": "Mun WDS-characterized Co-substituted crystals; Figure5",
+      "tcK": null,
+      "reportedTemperatureK": 25,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Hall measurement temperature, not a superconducting transition temperature.",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "criterion": "normal-state-hall-measurement",
+      "probe": "Transverse transport with applied field",
+      "sourceId": "source-e24f6678715b4917",
+      "aliases": [
+        "Co-doped Ba122",
+        "Ba(Fe1-xCox)2As2"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-h9-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A Hall-coefficient sign reversal is a change in the sign of the transverse response under a declared wiring and field convention. It is distinct from a change in Hall magnitude, a peak, or an inferred Hall number. Electron and hole contributions can exchange transport weight without either Fermi-surface pocket disappearing. Neither a sign change nor a Hall anomaly by itself proves superconductivity, a Lifshitz transition or a particular pairing mechanism.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-7acbaed4e62141d9",
+        "source-8c3b378d8802f683",
+        "source-e24f6678715b4917",
+        "source-fae77f2c38d4cf72"
+      ],
+      "conditions": "Retain sign convention, field and temperature, normal-state criterion, composition/strain, tensor model, geometry and source version. Hall number and sign are distinct.",
+      "verificationScope": "Selected primary text/figures and independent Drude tensor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h9-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Here $E_y=R_HJ_xB_z$ defines the sign. The elementary single-band Drude values are $R_H=-1/(n_e e)$ for electrons and $R_H=1/(n_h e)$ for holes, with $e>0$. These density interpretations require restrictive assumptions. Even a single crystalline band can have a complicated Hall response because Fermi-surface curvature and a momentum-dependent mean free path affect the weak-field conductivity. A temperature-dependent Hall coefficient is therefore not sufficient evidence for multiple bands.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-fd33407c49db2caf"
+      ],
+      "conditions": "Retain sign convention, field and temperature, normal-state criterion, composition/strain, tensor model, geometry and source version. Hall number and sign are distinct.",
+      "verificationScope": "Selected primary text/figures and independent Drude tensor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h9-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For independent isotropic electron and hole Drude channels with positive mobilities and $\\mu_i B\\ll1$, $R_H=(n_h\\mu_h^2-n_e\\mu_e^2)/[e(n_h\\mu_h+n_e\\mu_e)^2]$. The sign changes when the mobility-squared weights cross. Fixed carrier densities can therefore produce a reversal as the mobility ratio varies. At zero field $\\sigma_0=e(n_h\\mu_h+n_e\\mu_e)$; even simultaneous values of $\\sigma_0$ and weak-field $R_H$ do not uniquely determine four density/mobility parameters. Independent tensor-inversion checks illustrate this degeneracy without fitting a material.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-362cf0fd861683c3",
+        "source-fd33407c49db2caf"
+      ],
+      "conditions": "Retain sign convention, field and temperature, normal-state criterion, composition/strain, tensor model, geometry and source version. Hall number and sign are distinct.",
+      "verificationScope": "Selected primary text/figures and independent Drude tensor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h9-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Beyond weak field, add conductivity tensors and invert the sum. In the same classical model, when both $\\mu_iB\\gg1$ and $n_h\\ne n_e$, the asymptotic slope is $\\rho_{yx}/B\\to1/[e(n_h-n_e)]$. Exact compensation is a different limit: for $n_h=n_e=n$, $\\rho_{yx}/B=(\\mu_h-\\mu_e)/[en(\\mu_h+\\mu_e)]$ at all fields in this model. A large laboratory field alone establishes neither of these asymptotic conditions. Quantum effects, coupled scattering and reconstructed bands may require a different model.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-362cf0fd861683c3",
+        "source-fd33407c49db2caf"
+      ],
+      "conditions": "Retain sign convention, field and temperature, normal-state criterion, composition/strain, tensor model, geometry and source version. Hall number and sign are distinct.",
+      "verificationScope": "Selected primary text/figures and independent Drude tensor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h9-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Ordinary and anomalous contributions must also be distinguished. A schematic $\\rho_{yx}=R_0B+\\rho_{yx}^{A}$ is not a universal fit, and an anomalous term need not be proportional to magnetization with a constant coefficient. Intrinsic Berry curvature, skew scattering and side jump are distinct mechanisms. Field antisymmetrization, $[\\rho_{yx}(B)-\\rho_{yx}(-B)]/2$, removes even longitudinal contact leakage but retains an odd anomalous Hall contribution. It does not isolate ordinary Hall transport by itself.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7faba5d556864a32"
+      ],
+      "conditions": "Retain sign convention, field and temperature, normal-state criterion, composition/strain, tensor model, geometry and source version. Hall number and sign are distinct.",
+      "verificationScope": "Selected primary text/figures and independent Drude tensor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h9-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Tsukada and Ono studied epitaxial La2−xSrxCuO4 films on SrTiO3 with residual tensile strain. Their room-temperature Hall coefficient changes from positive to negative between x=0.28 and x=0.32. The heavily overdoped samples used field sweeps to ±6 T. This is a sample-series result at 300 K, not a universal cuprate doping boundary. The x=0.32 film lacks zero resistance but has a reported resistive onset, which the authors discuss in relation to possible oxygen inhomogeneity. Describing it simply as having no superconducting evidence would erase that distinction.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-7acbaed4e62141d9"
+      ],
+      "conditions": "Retain sign convention, field and temperature, normal-state criterion, composition/strain, tensor model, geometry and source version. Hall number and sign are distinct.",
+      "verificationScope": "Selected primary text/figures and independent Drude tensor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h9-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Brouet's Ba(Fe0.65Ru0.35)2As2 study reports a temperature-dependent Hall sign together with electron and hole pockets. The checked primary abstract supports that limited statement; complete transport methods and a precise reversal temperature remain unreviewed here. Mun's Co- and Cu-substituted BaFe2As2 crystals provide a separate comparison: thermopower and Hall changes occur at comparable added-electron counts, but the Cu comparison does not show the corresponding resistive superconductivity. These Hall anomalies are not a superconductivity criterion or a universal sign-change threshold.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8c3b378d8802f683",
+        "source-e24f6678715b4917"
+      ],
+      "conditions": "Retain sign convention, field and temperature, normal-state criterion, composition/strain, tensor model, geometry and source version. Hall number and sign are distinct.",
+      "verificationScope": "Selected primary text/figures and independent Drude tensor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h9-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Mun's experiment measured composition by wavelength-dispersive spectroscopy and applied the Hall field along the crystal c axis, reversing field polarity to reduce contact offsets. Its 25 K comparison is a measurement temperature, not a transition temperature. Sample exfoliation can alter geometric factors, so normalized trends and absolute Hall magnitudes carry different uncertainties. Co/Cu substitution fraction and inferred added-electron count are also different horizontal axes.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e24f6678715b4917"
+      ],
+      "conditions": "Retain sign convention, field and temperature, normal-state criterion, composition/strain, tensor model, geometry and source version. Hall number and sign are distinct.",
+      "verificationScope": "Selected primary text/figures and independent Drude tensor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h9-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Iida's strained Ba(Fe1−xCox)2As2 films used MgO and CaF2 substrates and Hall measurements at 9 T. Their effective Hall number $n_H=V/(4e|R_H|)$, with unit-cell volume $V$, is positive by construction and expressed per Fe. It discards the Hall sign and is not a direct count of all mobile carriers in a multiband metal. The reported phase-diagram alignment concerns the studied strained films and selected bulk comparisons. The superconducting temperature uses a resistive onset criterion, rather than silently substituting zero resistance or magnetic shielding.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-362cf0fd861683c3"
+      ],
+      "conditions": "Retain sign convention, field and temperature, normal-state criterion, composition/strain, tensor model, geometry and source version. Hall number and sign are distinct.",
+      "verificationScope": "Selected primary text/figures and independent Drude tensor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h9-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "Badoux's YBa2Cu3Oy experiment distinguishes a charge-order reconstruction endpoint near p=0.16 from a pseudogap endpoint near p=0.19. The Hall-number interpretation changes from approximately 1+p toward p; this is not evidence for a mandatory Hall-sign reversal at the latter point. Pulsed fields reached 88 T, with a 50 K, 80 T cross-sample comparison. The author manuscript establishes normal-state access down to at least 40 K and explicitly leaves the lower-temperature p=0.16 behavior unresolved. Its vortex-melting field is not automatically the upper critical field.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-fae77f2c38d4cf72"
+      ],
+      "conditions": "Retain sign convention, field and temperature, normal-state criterion, composition/strain, tensor model, geometry and source version. Hall number and sign are distinct.",
+      "verificationScope": "Selected primary text/figures and independent Drude tensor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h9-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Normal-state extraction needs more than a high-field label. Retain temperature, current, field direction, hysteresis branch and the independently justified superconducting boundary; vortex motion and magnetic contributions can contaminate a transverse signal. Yang's field-induced superconductivity study is a boundary example, not a source of an ordinary-Hall reversal field. Its superconducting phase-diagram scales must not be relabeled as Hall or anomalous-Hall thresholds.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-fae77f2c38d4cf72",
+        "source-7faba5d556864a32",
+        "source-3504ee9027165d0a"
+      ],
+      "conditions": "Retain sign convention, field and temperature, normal-state criterion, composition/strain, tensor model, geometry and source version. Hall number and sign are distinct.",
+      "verificationScope": "Selected primary text/figures and independent Drude tensor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h9-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. Most experimental checks here cover selected author-manuscript methods, results and figures, not complete final articles or raw-data reproduction. Brouet remains abstract-scoped; Ong's full geometric derivation and the anomalous-Hall review remain incompletely read. Apparent numeric typographical inconsistencies in the Mun and Iida author versions require final-version comparison; those uncertain composition values are not adopted. The independent Drude checks establish model algebra, not a unique interpretation of any experimental Hall curve.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-7acbaed4e62141d9",
+        "source-8c3b378d8802f683",
+        "source-e24f6678715b4917",
+        "source-362cf0fd861683c3",
+        "source-fae77f2c38d4cf72",
+        "source-7faba5d556864a32",
+        "source-fd33407c49db2caf"
+      ],
+      "conditions": "Retain sign convention, field and temperature, normal-state criterion, composition/strain, tensor model, geometry and source version. Hall number and sign are distinct.",
+      "verificationScope": "Selected primary text/figures and independent Drude tensor checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h9-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Treat a sign change as a prompt to test competing transport explanations. Combine field-dependent longitudinal and transverse resistivity, magnetoresistance, magnetic characterization and independent Fermi-surface information. Compare constrained models and retain geometry, strain, oxygen content and uncertainty. A mobility crossover, reconstructed Fermi surface and anomalous contribution can produce different predictions beyond a single Hall slope; a defensible conclusion specifies which alternatives the measurements actually exclude.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-7acbaed4e62141d9",
+        "source-8c3b378d8802f683",
+        "source-362cf0fd861683c3",
+        "source-fae77f2c38d4cf72",
+        "source-fd33407c49db2caf"
+      ],
+      "conditions": "Retain sign convention, field and temperature, normal-state criterion, composition/strain, tensor model, geometry and source version. Hall number and sign are distinct.",
+      "verificationScope": "Selected primary text/figures and independent Drude tensor checks; full scientific acceptance remains open."
+    }
+  ]
+}
