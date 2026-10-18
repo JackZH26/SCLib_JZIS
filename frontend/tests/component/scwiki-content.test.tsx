@@ -782,3 +782,21 @@ it("keeps node studies linked to their actual materials and measurement temperat
  const out=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
  expect(out).toContain("KFe2As2, not P-substituted");expect(out).toContain("Full scientific acceptance");
 });
+
+it("keeps elemental pressure cases and calculated temperatures distinct",async()=>{
+ const a=articles().find(a=>a.code==="D1")!;
+ const sc=a.materialCases.find(m=>m.formula==="Sc"&&m.recordType==="experiment")!;
+ expect(sc.tcK).toBe(37.6);expect(sc.pressureGPa).toEqual({min:243,max:243});
+ const predicted=a.materialCases.find(m=>m.recordType==="prediction")!;
+ expect(predicted.reportedTemperatureK).toBe(30.1);expect(predicted.tcK).toBeNull();
+ expect(predicted.pressureGPa).toEqual({min:260,max:260});
+ expect(a.materialCases.find(m=>m.formula==="Li")!.tcK).toBe(.0004);
+ expect(searchArticles(searchIndex().entries,"scandium",{evidence:"prediction"}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"scandium",{evidence:"prediction",tcMin:30}).some(r=>r.id===a.id)).toBe(false);
+ expect(searchArticles(searchIndex().entries,"scandium",{tcMin:37}).some(r=>r.id===a.id)).toBe(true);
+ const md=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(md).toContain("no Meissner measurement was supplied");
+ expect(md).toContain("0.0004 K, not 0.4 K");expect(md).toContain("Full scientific acceptance");
+ const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(math).toContain("exact reproduction needs unrounded inputs");
+});

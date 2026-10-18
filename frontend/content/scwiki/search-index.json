@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "be48ea6973a6cf7847a5",
+  "revision": "c32b040540e31da56f68",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -1683,6 +1683,107 @@
         "10.1103/PhysRevB.104.104512"
       ],
       "text": " Scope\n\nSpin singlet and spin triplet describe antisymmetric and symmetric two-electron spin states. They do not, by themselves, identify a crystal representation, a pairing mechanism, chirality or topology. The familiar even-parity singlet / odd-parity triplet rule assumes even-frequency pairing and a symmetric orbital or band exchange sector. State these assumptions before applying it to a material.  \n\nSpin–orbit coupling (SOC) makes physical spin different from a band label. In a time-reversal-invariant centrosymmetric normal state, inversion combined with time reversal produces a degenerate pair at each momentum. Such a doublet need not transform under crystal rotations as an ordinary spin-1/2 pseudospin: Samokhin identifies exceptional twofold bands where the usual axial-vector transformation of the triplet component fails. His classification retains even/odd intraband components in its static convention; the exception concerns crystal transformation rules, not the Pauli principle. \n\n Mathematical assumptions\n\nFor a homogeneous pair correlation with combined spin and orbital indices a,b, fermion exchange requires F{ab}(\\mathbf k,i\\omegan)=-F{ba}(-\\mathbf k,-i\\omegan). If spin, momentum, orbital and frequency exchange can each be diagonalized, their signs obey sSsPsOs\\omega=-1. Here frequency exchange is not the physical time-reversal operation. For sO=s\\omega=+1, spin singlet implies even momentum parity and triplet implies odd momentum parity. Reversing either the orbital or frequency sign reverses that implication. An independent matrix check tests all 16 sign combinations, accepting eight and rejecting eight. These are allowed symmetry sectors, not evidence that all are stable phases. \n\nIn a chosen spin-1/2 basis, write the static gap matrix \\Delta=(\\psi+\\mathbf d\\cdot\\boldsymbol\\sigma)i\\sigmay. The scalar is the spin-antisymmetric component; the vector multiplies symmetric spin matrices. An analogous decomposition in a band doublet must retain that basis's actual symmetry matrices. In higher-angular-momentum low-energy bands, coupled angular-momentum sectors replace a simple singlet/triplet classification; microscopic fermion antisymmetry still applies. Leggett's helium framework and crystal symmetry classifications are useful references, with their respective physical settings kept separate. The 1976 Leggett correction withdraws a historical factor-of-two discrepancy claim.     \n\nFor the illustrative noncentrosymmetric Hamiltonian h=\\xi I+\\alpha\\mathbf g\\cdot\\boldsymbol\\sigma, take real odd \\mathbf g(-\\mathbf k)=-\\mathbf g(\\mathbf k) and an imposed even singlet gap \\psi i\\sigmay. The anomalous Green function can contain a triplet component even though the imposed triplet gap is zero. Twelve independent matrix inversions reproduce the helicity-projector expression, in the specified Nambu convention, F=-\\sum{\\lambda=\\pm}\\psi P\\lambda i\\sigmay/[\\omegan^2+(\\xi+\\lambda\\alpha|\\mathbf g|)^2+|\\psi|^2], where P\\lambda=(I+\\lambda\\hat{\\mathbf g}\\cdot\\boldsymbol\\sigma)/2. Different denominators generate a triplet correlation; they coincide at the particle-hole-symmetric test point. This distinguishes a pair correlation from a self-consistent triplet order parameter. The calculation is an imposed mean-field example, not a prediction of a material's mixing ratio. \n\nWith an imposed aligned component \\mathbf d=d\\hat{\\mathbf g}, the two gap magnitudes are |\\psi+d| and |\\psi-d| in this simple model. Five direct gap-matrix checks recover the squared magnitudes, including complex relative phase. A zero in one branch requires the appropriate cancellation, not merely the absence of inversion symmetry. The interaction, band structure and gap equation must determine the actual amplitudes. At points where \\mathbf g=0, its unit vector and this helicity construction require separate treatment.  \n\nFrigeri and colleagues' weak-coupling calculation neglects small singlet–triplet coupling terms associated with particle-hole asymmetry and analyzes the channels separately. Its leading triplet suppression contains |\\mathbf d|^2-|\\hat{\\mathbf g}\\cdot\\mathbf d|^2: alignment avoids this particular suppression. The erratum adds an omitted linear term to the MnSi SOC vector, \\mathbf g=\\alpha1\\mathbf k+\\alpha2[kx(ky^2-kz^2),ky(kz^2-kx^2),kz(kx^2-ky^2)]. Thus a conclusion about suppression of a p-wave component depends on the relative coefficients; alignment alone does not choose the stable state. Three independent angular examples check that dependence without calculating a transition temperature. The erratum also rescales the original Fig. 2 SOC parameter by dividing it by \\sqrt{3/2}.  \n\n Experimental criteria\n\nA Knight shift includes spin and orbital contributions and depends on field direction, SOC, hyperfine coupling and the superconducting measurement conditions. Pustogow and colleagues' 2019 Sr2RuO4 study used reduced radio-frequency excitation to address heating and reported a spin-susceptibility reduction. The selected author-version passages checked here do not establish every possible representation. The 2026 muon result adds a low-field constraint, with a finite temperature floor and extrapolation assumptions; it also does not constitute a complete order-parameter identification. Compare the actual susceptibility tensor and conditions with competing states.  \n\nAn upper critical field above a simple weak-coupling Pauli estimate is not a stand-alone triplet test. Orbital depairing, SOC, strong coupling, multiband effects and field direction must be addressed. In particular, Frigeri's field calculation neglects orbital depairing and considers a continuous instability: its formally large paramagnetic limit is not an unlimited physical upper critical field. In UTe2, the discovery paper's measured field range and higher extrapolated scale must remain distinct.  \n\nUGe2, URhGe and UCoGe motivate triplet and equal-spin pairing through superconductivity associated with ferromagnetism, but discovery evidence does not determine a complete odd-parity representation. Check microscopic coexistence and sample volume rather than infer them solely from two transition anomalies. UTe2 must not be placed in the same category of established long-range ferromagnetic superconductors; its historical interpretation is not a substitute for a current material-specific review. The uranium discovery abstracts and selected UTe2 text have different review depths here.    \n\nPhase-sensitive junctions, impurity response and spin-sensitive probes can provide complementary constraints, but interfaces can select or generate correlations absent from the bulk gap. Tanaka and Golubov's proximity theory explicitly permits odd-frequency, even-parity triplet correlations in a diffusive normal metal. That is not by itself an intrinsic odd-frequency bulk superconducting phase. The publisher abstract has been checked; the full junction derivation remains open. \n\n Limits and disputes\n\nDo not infer a singlet–triplet mixing fraction from crystal inversion breaking. Symmetry permits compatible components; microscopic interactions decide their magnitude. Conversely, an orbital-antisymmetric spin-triplet sector can have even momentum parity at even frequency. Physical-spin pairing and the intraband pseudospin gap can therefore carry different descriptions after projection. Clepkens and colleagues' interorbital “shadowed-triplet” construction illustrates this distinction as a model proposed for Sr2RuO4, not an experimentally established assignment. Only its author abstract and publication identity are checked here.   \n\nNeither an unchanged Knight shift nor a measured decrease alone fixes all SOC-coupled possibilities. A ferromagnetic background, a large critical field, nodes or broken time reversal similarly fails to identify a unique representation. Keep spin structure, momentum parity, orbital exchange, frequency dependence, crystal representation and topology as separate questions. The finite tests on this page validate specified algebra; they do not establish energetic stability or reproduce susceptibility data.    \n\n Discovery implications\n\nFor each candidate, record inversion and magnetic symmetries, the electronic basis, orbital or band indices, frequency convention, field direction, temperature, heating controls, measured observables and alternative explanations. Report a proposed gap only at the level supported by mutually consistent probes and a stated response model. Retain both Frigeri papers when using the corrected SOC argument. Full scientific acceptance, complete version comparisons and experimental reproduction remain open.    \n\n Related topics\n\nContinue with , ,  and ."
+    },
+    {
+      "id": "scwiki-d1",
+      "topicId": "scwiki-topic-d1",
+      "code": "D1",
+      "slug": "elemental-superconductors",
+      "title": "Elemental superconductors: benchmarks, phases and pressure",
+      "summary": "Compare elemental systems without confusing chemical identity, crystal phase, measured transitions and theoretical estimates.",
+      "aliases": [
+        "elemental superconductors",
+        "mercury",
+        "lead",
+        "niobium",
+        "scandium",
+        "lithium",
+        "calcium",
+        "compressed iron",
+        "monatomic superconductors"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experiment",
+        "prediction"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "8aa816ff1023535e19a8",
+      "materialCases": [
+        {
+          "id": "scwiki-d1-material-1",
+          "formula": "Sc",
+          "sample": "Wang2023 compressed Sc; maximum reported onset",
+          "recordType": "experiment",
+          "reportedTemperatureK": 37.6,
+          "tcK": 37.6,
+          "temperatureKind": "transition",
+          "temperatureNote": "Authors report onset at243GPa; magnetic-volume validation not supplied.",
+          "criterion": "resistive-onset",
+          "pressureRegime": "high",
+          "pressureGPa": {
+            "min": 243,
+            "max": 243
+          },
+          "equilibrium": "unknown",
+          "probe": "Four-probe warming resistance; diamond Raman pressure; field/current follow-up",
+          "sourceId": "source-dc73a11d591aebd0"
+        },
+        {
+          "id": "scwiki-d1-material-2",
+          "formula": "Sc",
+          "sample": "Sc-V TableI at260GPa, mu*=.10",
+          "recordType": "prediction",
+          "reportedTemperatureK": 30.1,
+          "tcK": null,
+          "temperatureKind": "transition",
+          "temperatureNote": "Printed model estimate; not an experimental transition record.",
+          "criterion": "calculated-transition",
+          "pressureRegime": "high",
+          "pressureGPa": {
+            "min": 260,
+            "max": 260
+          },
+          "equilibrium": "unknown",
+          "probe": "Electron–phonon calculation plus modified McMillan estimate; no DFT reproduction",
+          "sourceId": "source-dc73a11d591aebd0"
+        },
+        {
+          "id": "scwiki-d1-material-3",
+          "formula": "Li",
+          "sample": "Tuoriniemi2007 ambient natural lithium",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.0004,
+          "tcK": 0.0004,
+          "temperatureKind": "transition",
+          "temperatureNote": "Abstract-level report of0.4mK; not0.4K; full methods review pending.",
+          "criterion": "reported-magnetic-transition",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Meissner-state figure caption and publisher abstract",
+          "sourceId": "source-61e8b60fcacfb53b"
+        }
+      ],
+      "dois": [
+        "10.1103/PhysRev.78.477",
+        "10.1103/PhysRev.78.487",
+        "10.1103/PhysRevLett.14.108",
+        "10.1103/PhysRev.167.331",
+        "10.1103/PhysRevB.12.905",
+        "10.6028/jres.074A.046",
+        "10.1038/nature01098",
+        "10.1038/nature05820",
+        "10.1103/PhysRevResearch.5.043248",
+        "10.1103/PhysRevB.83.220512",
+        "10.1103/PhysRevB.84.216501",
+        "10.1038/35085536",
+        "10.1103/v5j2-9bv6",
+        "10.1103/PhysRevAccelBeams.27.062001",
+        "10.1016/j.aop.2020.168102",
+        "10.1103/PhysRev.108.1175"
+      ],
+      "text": " Scope\n\nAn elemental superconductor contains one chemical element, but that label does not specify its crystal structure, bands, coupling strength or pressure history. Elemental systems provide useful benchmarks for electron–phonon theory; they do not all reduce to one weak-coupling model. Niobium's approximately 9.2 K transition is a useful conventional scale, not a ceiling on elemental superconductivity or a certified value for every sample.  \n\nThe mercury discovery is associated with Onnes's 1911 report. His later Nobel lecture describes the abrupt resistance decrease near 4.2 K, explicitly qualified by measurement accuracy, and a current threshold above which voltage reappeared. The lecture scan includes subsequent notes and a 1914 addendum; those later observations should not be dated to 1911. It is a firsthand account, not a substitute for a modern magnetic-volume or heat-capacity measurement. \n\n Mathematical assumptions\n\nThe isotope coefficient is \\alpha=-d\\ln Tc/d\\ln M. If harmonic frequencies scale as M^{-1/2} while the dimensionless pairing parameters remain fixed, the corresponding transition scale has \\alpha=1/2. This is a conditional model statement, not a value certified here for the original mercury datasets. Maxwell and Reynolds are retained as the historical experimental sources; their full datasets still require direct review. An isotope substitution may also change structure or anharmonic motion, so a measured coefficient must retain its sample and phase conditions.   \n\nThe weak-coupling isotropic BCS benchmark is 2\\Delta(0)/(kBTc)\\simeq3.53. Lead is a strong-coupling benchmark, so that number is not a compulsory fit to its tunneling spectrum. Retardation makes the gap energy dependent; a full gap alone does not establish its sign structure or the microscopic pairing interaction.  \n\nFor an illustrative McMillan-type estimate, write Tc=(\\omega{\\log}/1.2)\\exp[-A/D], with A=1.04(1+\\lambda) and D=\\lambda-\\mu^(1+0.62\\lambda)>0, taking \\omega{\\log} in kelvin. If \\mu^=\\mu/[1+\\mu\\ln(E{\\mathrm{el}}/\\omega{\\log})], with the two cutoff scales in the same units, fixed \\lambda,\\mu,E{\\mathrm{el}} give \\alpha=\\tfrac12[1-A(1+0.62\\lambda)(\\mu^)^2/D^2]. Three finite-difference mass substitutions independently confirm this derivative and its difference from the fixed-\\mu^ limit. These examples are not mercury fits. The estimate omits the full Allen–Dynes shape factors and is not a universal upper bound.   \n\nIn the Sc paper's Table I, six printed estimates are consistent with the input rounding intervals. Sc-IV printed inputs yield 21.37/18.72 K, versus listed 21.5/18.8 K; exact reproduction needs unrounded inputs. Sc-V at 260 GPa gives 30.07/26.38 K for \\mu^=0.10/0.13. These are calculations, not the measured 37.6 K onset at a different pressure. The reported extrapolated B{c2}(0)=21.3 T implies \\xi=\\sqrt{\\Phi0/(2\\pi B{c2})}=39.31 angstrom; this checks units, not the extrapolation model. \n\n Experimental criteria\n\nTunneling is valuable when the measured superconducting conductance is normalized by an appropriate normal reference. Rowell's 1970 account states the crucial conditions: the current must be tunneling current and the barrier must remain effectively unchanged through the transition. Unnormalized structure can instead reflect the barrier or its excitations. The 1965 McMillan–Rowell paper establishes the historical lead inversion reference, but its original quantitative inversion has not been independently rerun here. A phonon density of states alone is not the coupling-weighted spectrum \\alpha^2F.   \n\nLithium illustrates why conditions cannot be dropped from a material label. Shimizu and colleagues reported compressed Li reaching about 20 K at 48 GPa in 2002; Tuoriniemi and colleagues reported an ambient-pressure transition around 0.4 mK in 2007, with a Meissner-state figure. The latter is 0.0004 K, not 0.4 K. These source checks cover abstracts and selected captions; they do not establish an entire phase diagram or independently validate the underlying data.  \n\nWang and colleagues reported Sc onset at 37.6 K and 243 GPa, distinct from the plotted 37.3 K at 244 GPa. Four-probe warming measurements used diamond Raman pressure calibration; onset means departure from the normal-state line. Field/current suppression supports the transport assignment, but no Meissner measurement was supplied. Phase boundaries were inferred from transition trends and compared with earlier diffraction. Applied fields reached 9 T; 21.3 T is an extrapolation. \n\nSakata and colleagues reported Ca-VII near 29 K at 216 GPa. Their selected methods describe room-temperature diffraction and transport; a room-temperature structure measurement does not automatically determine the low-temperature phase. An Andersson comment is part of the source trail, but its contents have not yet been obtained in this review. The reported result remains attributed to its authors, with that reconciliation open.  \n\nIron is another warning against classification by ambient behavior. Shimizu and colleagues reported a resistance drop and Meissner signal below 2 K under 15–30 GPa in the non-magnetic state. This abstract-level evidence does not identify the pairing interaction or justify transferring a simple weak-coupling description from an unrelated element. Magnetic history, structure and purity need their own assessment. \n\n Limits and disputes\n\nA finite resistive transition, instrument-limited zero resistance, field suppression, magnetic shielding and a bulk thermodynamic anomaly answer different questions. Compare them on the same sample or explain why samples differ. Report the thermometer, onset/midpoint/zero criterion, pressure calibration, pressure medium, compression path and structural measurement temperature. Missing information stays unknown rather than being inferred from the chemical formula.    \n\nThe September 2026 Sc theory paper connects compression, increasing overlap of 3d orbitals and band broadening to stronger electron–phonon coupling. Its phrase “electronic mechanism” does not mean a demonstrated nonphonon pairing glue. This page has checked the publisher abstract only: no new experimental transition, full calculation or universal elemental record is inferred from that description. Historical “highest” claims must be dated to the publication and its comparison set. \n\n Discovery implications\n\nTreat an element as a collection of phase-specific test cases. Useful screening combines a dynamically and thermodynamically plausible structure, electron–phonon matrix elements, electronic energy scales and a stated Coulomb treatment, then asks which experimental observable could falsify the prediction. Agreement with one transition temperature does not validate the whole spectral function, numerical convergence or phase assignment. Keep calculated values separate from experimental transition records and preserve negative or incomplete evidence.   \n\n Related topics\n\nContinue with , , ,  and ."
     },
     {
       "id": "scwiki-d11",

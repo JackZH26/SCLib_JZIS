@@ -1,0 +1,559 @@
+{
+  "id": "scwiki-d1",
+  "topicId": "scwiki-topic-d1",
+  "code": "D1",
+  "slug": "elemental-superconductors",
+  "title": "Elemental superconductors: benchmarks, phases and pressure",
+  "summary": "Compare elemental systems without confusing chemical identity, crystal phase, measured transitions and theoretical estimates.",
+  "aliases": [
+    "elemental superconductors",
+    "mercury",
+    "lead",
+    "niobium",
+    "scandium",
+    "lithium",
+    "calcium",
+    "compressed iron",
+    "monatomic superconductors"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "prediction"
+  ],
+  "relatedCodes": [
+    "A4",
+    "A5",
+    "A6",
+    "B1",
+    "B2"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T10:39:49.901462+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Onnes lecture scan, Rowell normalization conditions, Sc published methods/table and Nb contextual methods; explicitly limited Li/Fe/Ca/2026 theory checks. Independent isotope derivatives, printed-parameter estimates and SI field-length check.",
+    "limitations": [
+      "Full scientific acceptance and raw-data/convergence reviews remain open.",
+      "Original mercury isotope datasets and lead inversion are metadata-level references only; original1911 scan not obtained.",
+      "Ca comment identity recorded but its argument and reconciliation remain unread.",
+      "2026 Sc theory is abstract-only; numerical consistency does not reproduce DFT or establish bulk magnetic evidence."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D1_elemental_metals.md",
+    "sha256": "09606dedbf321b1f5b231ea0c8061a0ab7adda20be151994b8b459ab34257fbe",
+    "sourceId": "file-caeb99b1a050e5f2"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 64,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "All pinned lines retained in source repository; conditional theory and named phase/probe examples expanded with explicit review boundaries."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-d36e5a81b57e823f",
+      "doi": null,
+      "title": "Investigations into the properties of substances at low temperatures (Nobel lecture, 11 December 1913; later notes included)",
+      "year": 1913,
+      "url": "https://www.nevis.columbia.edu/~haas/documents/physics_nobel_lectures/physics01-21-2.pdf",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "scope": "selected-primary-lecture-scan-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nevis.columbia.edu/~haas/documents/physics_nobel_lectures/physics01-21-2.pdf",
+        "note": "Selected printed pp.330–336 (PDF pp.76–82), mercury apparatus/resolution and current threshold. PDF pp.79–80 visually checked. Later 1914 addendum distinguished; original 1911 communication scan remains unavailable."
+      }
+    },
+    {
+      "id": "source-eff5a2a1c455e7f6",
+      "doi": "10.1103/PhysRev.78.477",
+      "title": "Isotope Effect in the Superconductivity of Mercury",
+      "year": 1950,
+      "url": "https://doi.org/10.1103/PhysRev.78.477",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-metadata-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.78.477",
+        "note": "Title, author and publication date checked. Original full text unavailable at attempted endpoint; no mercury isotope exponent or dataset certified."
+      }
+    },
+    {
+      "id": "source-e8a489943f13c9f8",
+      "doi": "10.1103/PhysRev.78.487",
+      "title": "Superconductivity of Isotopes of Mercury",
+      "year": 1950,
+      "url": "https://doi.org/10.1103/PhysRev.78.487",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-metadata-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.78.487",
+        "note": "Title, authors and publication date checked. Original full text unavailable at attempted endpoint; no mercury isotope exponent or dataset certified."
+      }
+    },
+    {
+      "id": "source-b66885f8fdc58181",
+      "doi": "10.1103/PhysRevLett.14.108",
+      "title": "Lead Phonon Spectrum Calculated from Superconducting Density of States",
+      "year": 1965,
+      "url": "https://doi.org/10.1103/PhysRevLett.14.108",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-metadata-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.14.108",
+        "note": "Published 25 January 1965. Identity only; original inversion not reviewed or reproduced."
+      }
+    },
+    {
+      "id": "source-aa8182fe7a3d8d0c",
+      "doi": "10.1103/PhysRev.167.331",
+      "title": "Transition Temperature of Strong-Coupled Superconductors",
+      "year": 1968,
+      "url": "https://doi.org/10.1103/PhysRev.167.331",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.167.331",
+        "note": "Publisher abstract: strong-coupling calculations and empirical parameters. Full original formula fit and dataset not reviewed."
+      }
+    },
+    {
+      "id": "source-0620df96ebbf2a66",
+      "doi": "10.1103/PhysRevB.12.905",
+      "title": "Transition temperature of strong-coupled superconductors reanalyzed",
+      "year": 1975,
+      "url": "https://doi.org/10.1103/PhysRevB.12.905",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.12.905",
+        "note": "Publisher abstract: modified prefactor, spectral moment/shape corrections and large-coupling limits within Eliashberg theory. Full derivation and Pb-Bi data not reanalyzed."
+      }
+    },
+    {
+      "id": "source-27b24b231ced1ec3",
+      "doi": "10.6028/jres.074A.046",
+      "title": "Tunneling Measurements of Superconducting Quasi-Particle Density of States and Calculation of Phonon Spectra",
+      "year": 1970,
+      "url": "https://doi.org/10.6028/jres.074A.046",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://nvlpubs.nist.gov/nistpubs/jres/74A/jresv74An4p559_A1b.pdf",
+        "note": "Selected pp.559–561 and565 via web text: barrier limitations and Section5 normal-reference conditions. July–August1970 publication, not1969 receipt date. No original lead inversion reproduced."
+      }
+    },
+    {
+      "id": "source-cc7115129638a171",
+      "doi": "10.1038/nature01098",
+      "title": "Superconductivity in compressed lithium at 20 K",
+      "year": 2002,
+      "url": "https://doi.org/10.1038/nature01098",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-and-caption-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/nature01098",
+        "note": "Published10 October2002. Selected abstract/figure captions only; full phase/probe/raw data review open."
+      }
+    },
+    {
+      "id": "source-61e8b60fcacfb53b",
+      "doi": "10.1038/nature05820",
+      "title": "Superconductivity in lithium below 0.4 millikelvin at ambient pressure",
+      "year": 2007,
+      "url": "https://doi.org/10.1038/nature05820",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-indexed-abstract-and-caption-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/nature05820",
+        "note": "Published10 May2007; indexed abstract and Meissner figure caption checked. Direct page retrieval later redirected to sign-in; full methods not reviewed. 0.4mK=.0004K."
+      }
+    },
+    {
+      "id": "source-dc73a11d591aebd0",
+      "doi": "10.1103/PhysRevResearch.5.043248",
+      "title": "Superconductivity up to 37.6 K in compressed scandium",
+      "year": 2023,
+      "url": "https://doi.org/10.1103/PhysRevResearch.5.043248",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-text-and-table-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://harvest.aps.org/v2/journals/articles/10.1103/PhysRevResearch.5.043248/fulltext",
+        "note": "Published15 December2023. Selected pp.1–4 and TableI; pp.2/4 visually checked. Six formula estimates checked with input-rounding bounds; no raw-data, DFT or full supplement reproduction."
+      }
+    },
+    {
+      "id": "source-bc42a3144ddb335e",
+      "doi": "10.1103/PhysRevB.83.220512",
+      "title": "Superconducting state of Ca-VII below a critical temperature of 29 K at a pressure of 216 GPa",
+      "year": 2011,
+      "url": "https://doi.org/10.1103/PhysRevB.83.220512",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-and-selected-methods-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://harvest.aps.org/v2/journals/articles/10.1103/PhysRevB.83.220512/fulltext",
+        "note": "Published22 June2011. Abstract and selected first-page methods via web text. Full comment10.1103/PhysRevB.84.216501 reconciliation remains open; no independent curve analysis."
+      }
+    },
+    {
+      "id": "source-c563fd6be7dd9167",
+      "doi": "10.1103/PhysRevB.84.216501",
+      "title": "Comment on “Superconducting state of Ca-VII below a critical temperature of 29 K at a pressure of 216 GPa”",
+      "year": 2011,
+      "url": "https://doi.org/10.1103/PhysRevB.84.216501",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-registration-metadata-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://api.crossref.org/works/10.1103/PhysRevB.84.216501",
+        "note": "Crossref primary registration confirms M. Andersson and 6 December 2011 publication. Full comment unavailable; its argument and reconciliation remain unreviewed."
+      }
+    },
+    {
+      "id": "source-7301d50108f9de56",
+      "doi": "10.1038/35085536",
+      "title": "Superconductivity in the non-magnetic state of iron under pressure",
+      "year": 2001,
+      "url": "https://doi.org/10.1038/35085536",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-via-PubMed",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/11460158/",
+        "note": "Published19 July2001. Abstract only: resistance and Meissner report below2K under15–30GPa. Full methods and pairing analysis not reviewed."
+      }
+    },
+    {
+      "id": "source-29962a8944db57fa",
+      "doi": "10.1103/v5j2-9bv6",
+      "title": "Electronic mechanism of pressure-enhanced superconductivity in scandium",
+      "year": 2026,
+      "url": "https://doi.org/10.1103/v5j2-9bv6",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/v5j2-9bv6",
+        "note": "Published8 September2026, distinct from issue1 September. Band broadening and overlap linked to electron–phonon coupling; full text subscription required, no calculation reproduced."
+      }
+    },
+    {
+      "id": "source-835031575efae07a",
+      "doi": "10.1103/PhysRevAccelBeams.27.062001",
+      "title": "Field, frequency, and temperature dependencies of the surface resistance of nitrogen diffused niobium superconducting radio frequency cavities",
+      "year": 2024,
+      "url": "https://doi.org/10.1103/PhysRevAccelBeams.27.062001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-background-methods-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prab/pdf/10.1103/PhysRevAccelBeams.27.062001",
+        "note": "Published12 June2024. Selected pp.1–2: high-purity Nb cavity surface treatments and approximate9.25K cooldown reference. Used only as contextual Nb scale, not pristine-element dataset or acceptance of all cavity models."
+      }
+    },
+    {
+      "id": "source-d56b04dc0b32c796",
+      "doi": "10.1016/j.aop.2020.168102",
+      "title": "Eliashberg Theory: a short review",
+      "year": 2020,
+      "url": "https://doi.org/10.1016/j.aop.2020.168102",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-review-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1911.05065v1",
+        "note": "Selected v1 pp. 1–5 and p. 8 model benchmark; p. 5 equations visually checked. Separate independent linearized Einstein-model computation agrees with the approximately 13.3 K benchmark. Full review/final-version equivalence not audited."
+      }
+    },
+    {
+      "id": "source-ba10e800a1246bf6",
+      "doi": "10.1103/PhysRev.108.1175",
+      "title": "Theory of Superconductivity",
+      "year": 1957,
+      "url": "https://doi.org/10.1103/PhysRev.108.1175",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/pdf/10.1103/PhysRev.108.1175",
+        "note": "Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d1-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "An elemental superconductor contains one chemical element, but that label does not specify its crystal structure, bands, coupling strength or pressure history. Elemental systems provide useful benchmarks for electron–phonon theory; they do not all reduce to one weak-coupling model. Niobium's approximately 9.2 K transition is a useful conventional scale, not a ceiling on elemental superconductivity or a certified value for every sample.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-aa8182fe7a3d8d0c",
+        "source-835031575efae07a"
+      ],
+      "conditions": "Element, phase and sample conditions; historical lecture dates separated.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d1-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The mercury discovery is associated with Onnes's 1911 report. His later Nobel lecture describes the abrupt resistance decrease near 4.2 K, explicitly qualified by measurement accuracy, and a current threshold above which voltage reappeared. The lecture scan includes subsequent notes and a 1914 addendum; those later observations should not be dated to 1911. It is a firsthand account, not a substitute for a modern magnetic-volume or heat-capacity measurement.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d36e5a81b57e823f"
+      ],
+      "conditions": "Element, phase and sample conditions; historical lecture dates separated.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d1-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The isotope coefficient is $\\alpha=-d\\ln T_c/d\\ln M$. If harmonic frequencies scale as $M^{-1/2}$ while the dimensionless pairing parameters remain fixed, the corresponding transition scale has $\\alpha=1/2$. This is a conditional model statement, not a value certified here for the original mercury datasets. Maxwell and Reynolds are retained as the historical experimental sources; their full datasets still require direct review. An isotope substitution may also change structure or anharmonic motion, so a measured coefficient must retain its sample and phase conditions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-eff5a2a1c455e7f6",
+        "source-e8a489943f13c9f8",
+        "source-0620df96ebbf2a66"
+      ],
+      "conditions": "Finite imposed isotope model and printed-parameter formula check; no DFT, stability or experimental replication.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d1-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The weak-coupling isotropic BCS benchmark is $2\\Delta(0)/(k_BT_c)\\simeq3.53$. Lead is a strong-coupling benchmark, so that number is not a compulsory fit to its tunneling spectrum. Retardation makes the gap energy dependent; a full gap alone does not establish its sign structure or the microscopic pairing interaction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d56b04dc0b32c796",
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Finite imposed isotope model and printed-parameter formula check; no DFT, stability or experimental replication.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d1-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For an illustrative McMillan-type estimate, write $T_c=(\\omega_{\\log}/1.2)\\exp[-A/D]$, with $A=1.04(1+\\lambda)$ and $D=\\lambda-\\mu^*(1+0.62\\lambda)>0$, taking $\\omega_{\\log}$ in kelvin. If $\\mu^*=\\mu/[1+\\mu\\ln(E_{\\mathrm{el}}/\\omega_{\\log})]$, with the two cutoff scales in the same units, fixed $\\lambda,\\mu,E_{\\mathrm{el}}$ give $\\alpha=\\tfrac12[1-A(1+0.62\\lambda)(\\mu^*)^2/D^2]$. Three finite-difference mass substitutions independently confirm this derivative and its difference from the fixed-$\\mu^*$ limit. These examples are not mercury fits. The estimate omits the full Allen–Dynes shape factors and is not a universal upper bound.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-aa8182fe7a3d8d0c",
+        "source-0620df96ebbf2a66",
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Finite imposed isotope model and printed-parameter formula check; no DFT, stability or experimental replication.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d1-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In the Sc paper's Table I, six printed estimates are consistent with the input rounding intervals. Sc-IV printed inputs yield 21.37/18.72 K, versus listed 21.5/18.8 K; exact reproduction needs unrounded inputs. Sc-V at 260 GPa gives 30.07/26.38 K for $\\mu^*=0.10/0.13$. These are calculations, not the measured 37.6 K onset at a different pressure. The reported extrapolated $B_{c2}(0)=21.3$ T implies $\\xi=\\sqrt{\\Phi_0/(2\\pi B_{c2})}=39.31$ angstrom; this checks units, not the extrapolation model.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-dc73a11d591aebd0"
+      ],
+      "conditions": "Finite imposed isotope model and printed-parameter formula check; no DFT, stability or experimental replication.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d1-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Tunneling is valuable when the measured superconducting conductance is normalized by an appropriate normal reference. Rowell's 1970 account states the crucial conditions: the current must be tunneling current and the barrier must remain effectively unchanged through the transition. Unnormalized structure can instead reflect the barrier or its excitations. The 1965 McMillan–Rowell paper establishes the historical lead inversion reference, but its original quantitative inversion has not been independently rerun here. A phonon density of states alone is not the coupling-weighted spectrum $\\alpha^2F$.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-b66885f8fdc58181",
+        "source-27b24b231ced1ec3",
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Keep named source, phase, pressure and measurement criteria; abstract-only and inaccessible-comment scopes explicit.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d1-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Lithium illustrates why conditions cannot be dropped from a material label. Shimizu and colleagues reported compressed Li reaching about 20 K at 48 GPa in 2002; Tuoriniemi and colleagues reported an ambient-pressure transition around 0.4 mK in 2007, with a Meissner-state figure. The latter is 0.0004 K, not 0.4 K. These source checks cover abstracts and selected captions; they do not establish an entire phase diagram or independently validate the underlying data.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-cc7115129638a171",
+        "source-61e8b60fcacfb53b"
+      ],
+      "conditions": "Keep named source, phase, pressure and measurement criteria; abstract-only and inaccessible-comment scopes explicit.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d1-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Wang and colleagues reported Sc onset at 37.6 K and 243 GPa, distinct from the plotted 37.3 K at 244 GPa. Four-probe warming measurements used diamond Raman pressure calibration; onset means departure from the normal-state line. Field/current suppression supports the transport assignment, but no Meissner measurement was supplied. Phase boundaries were inferred from transition trends and compared with earlier diffraction. Applied fields reached 9 T; 21.3 T is an extrapolation.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-dc73a11d591aebd0"
+      ],
+      "conditions": "Keep named source, phase, pressure and measurement criteria; abstract-only and inaccessible-comment scopes explicit.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d1-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Sakata and colleagues reported Ca-VII near 29 K at 216 GPa. Their selected methods describe room-temperature diffraction and transport; a room-temperature structure measurement does not automatically determine the low-temperature phase. An Andersson comment is part of the source trail, but its contents have not yet been obtained in this review. The reported result remains attributed to its authors, with that reconciliation open.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-bc42a3144ddb335e",
+        "source-c563fd6be7dd9167"
+      ],
+      "conditions": "Keep named source, phase, pressure and measurement criteria; abstract-only and inaccessible-comment scopes explicit.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d1-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "Iron is another warning against classification by ambient behavior. Shimizu and colleagues reported a resistance drop and Meissner signal below 2 K under 15–30 GPa in the non-magnetic state. This abstract-level evidence does not identify the pairing interaction or justify transferring a simple weak-coupling description from an unrelated element. Magnetic history, structure and purity need their own assessment.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-7301d50108f9de56"
+      ],
+      "conditions": "Keep named source, phase, pressure and measurement criteria; abstract-only and inaccessible-comment scopes explicit.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d1-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A finite resistive transition, instrument-limited zero resistance, field suppression, magnetic shielding and a bulk thermodynamic anomaly answer different questions. Compare them on the same sample or explain why samples differ. Report the thermometer, onset/midpoint/zero criterion, pressure calibration, pressure medium, compression path and structural measurement temperature. Missing information stays unknown rather than being inferred from the chemical formula.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d36e5a81b57e823f",
+        "source-cc7115129638a171",
+        "source-dc73a11d591aebd0",
+        "source-bc42a3144ddb335e"
+      ],
+      "conditions": "Probe-specific inference; no unsupported bulk-volume, mechanism or world-record certification.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d1-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "The September 2026 Sc theory paper connects compression, increasing overlap of 3d orbitals and band broadening to stronger electron–phonon coupling. Its phrase “electronic mechanism” does not mean a demonstrated nonphonon pairing glue. This page has checked the publisher abstract only: no new experimental transition, full calculation or universal elemental record is inferred from that description. Historical “highest” claims must be dated to the publication and its comparison set.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-29962a8944db57fa"
+      ],
+      "conditions": "Probe-specific inference; no unsupported bulk-volume, mechanism or world-record certification.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-d1-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Treat an element as a collection of phase-specific test cases. Useful screening combines a dynamically and thermodynamically plausible structure, electron–phonon matrix elements, electronic energy scales and a stated Coulomb treatment, then asks which experimental observable could falsify the prediction. Agreement with one transition temperature does not validate the whole spectral function, numerical convergence or phase assignment. Keep calculated values separate from experimental transition records and preserve negative or incomplete evidence.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-aa8182fe7a3d8d0c",
+        "source-0620df96ebbf2a66",
+        "source-d56b04dc0b32c796"
+      ],
+      "conditions": "Screening logic only; full scientific acceptance remains open.",
+      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-d1-correction-1",
+      "description": "Separated historical dates, conditional isotope scaling, transition criteria and model estimates; contemporary Sc evidence added without a current-record claim.",
+      "sourceId": "source-dc73a11d591aebd0",
+      "scope": "Evidence conditions and scope, not a change to pinned source bytes."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\alpha=-d\\ln T_c/d\\ln M",
+      "check": "Three finite-difference mass substitutions against analytic derivative, plus three fixed-mu-star limits."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "T_c=(\\omega_{\\log}/1.2)\\exp[-A/D]",
+      "check": "Six Sc TableI estimates and input rounding intervals; two exact rounding mismatches explicitly retained."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\xi=\\sqrt{\\Phi_0/(2\\pi B_{c2})}",
+      "check": "SI conversion from extrapolated21.3T gives39.31angstrom; no field fit replicated."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-d1-material-1",
+      "formula": "Sc",
+      "sample": "Wang2023 compressed Sc; maximum reported onset",
+      "recordType": "experiment",
+      "reportedTemperatureK": 37.6,
+      "tcK": 37.6,
+      "temperatureKind": "transition",
+      "temperatureNote": "Authors report onset at243GPa; magnetic-volume validation not supplied.",
+      "criterion": "resistive-onset",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 243,
+        "max": 243
+      },
+      "equilibrium": "unknown",
+      "probe": "Four-probe warming resistance; diamond Raman pressure; field/current follow-up",
+      "sourceId": "source-dc73a11d591aebd0"
+    },
+    {
+      "id": "scwiki-d1-material-2",
+      "formula": "Sc",
+      "sample": "Sc-V TableI at260GPa, mu*=.10",
+      "recordType": "prediction",
+      "reportedTemperatureK": 30.1,
+      "tcK": null,
+      "temperatureKind": "transition",
+      "temperatureNote": "Printed model estimate; not an experimental transition record.",
+      "criterion": "calculated-transition",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 260,
+        "max": 260
+      },
+      "equilibrium": "unknown",
+      "probe": "Electron–phonon calculation plus modified McMillan estimate; no DFT reproduction",
+      "sourceId": "source-dc73a11d591aebd0"
+    },
+    {
+      "id": "scwiki-d1-material-3",
+      "formula": "Li",
+      "sample": "Tuoriniemi2007 ambient natural lithium",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.0004,
+      "tcK": 0.0004,
+      "temperatureKind": "transition",
+      "temperatureNote": "Abstract-level report of0.4mK; not0.4K; full methods review pending.",
+      "criterion": "reported-magnetic-transition",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Meissner-state figure caption and publisher abstract",
+      "sourceId": "source-61e8b60fcacfb53b"
+    }
+  ]
+}
