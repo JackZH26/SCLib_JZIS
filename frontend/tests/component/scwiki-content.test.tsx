@@ -61,7 +61,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
    expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
   }
-  for(const id of ["scwiki-n3","scwiki-n9"]){expect((await get(["articles",id])).status).toBe(404);}
+  for(const id of ["scwiki-n4","scwiki-n9"]){expect((await get(["articles",id])).status).toBe(404);}
  });
 
  it("exports the room-temperature question without treating conditional energy scales as measured Tc",async()=>{
@@ -104,6 +104,26 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(a.markdown).toContain("Publication: preprint");
   expect(a.references.some(r=>r.doi==="10.1126/science.adh7691")).toBe(true);
   expect(a.references.some(r=>r.doi==="10.1126/science.ade9194")).toBe(false);
+ });
+
+ it("exports correlated-material prediction limits without promoting mesh temperatures into material measurements",async()=>{
+  const a=articles().find(a=>a.code==="N3")!;
+  expect(a.slug).toBe("open-questions/n3");expect(a.materialCases).toEqual([]);
+  expect(a.scopeItems?.[0].id).toBe("N3");
+  for(const id of a.scopeItems![0].sectionIds){
+   const data=await(await get(["articles",a.id,"sections",id])).json();
+   expect(data.scopeItems.map((i:{id:string})=>i.id)).toEqual(["N3"]);
+   const md=await(await get(["articles",a.id,"sections",id],"?format=markdown")).text();
+   expect(md).toContain(data.section.markdown);
+   for(const limit of a.review!.limitations)expect(md).toContain(limit);
+  }
+  for(const q of ["强关联Tc预测","ab initio Tc prediction","a fictitious temperature sets a Matsubara mesh"]){
+   expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
+   expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
+  }
+  expect(a.body).toContain("auxiliary bulk gap is not the interacting bulk excitation gap");
+  expect(a.body).toContain("mesh temperature is not a computed transition");
+  expect(a.references.find(r=>r.doi==="10.1103/PhysRevX.15.021071")!.verification.evidenceUrl).toMatch(/v2$/);
  });
 
  it("publishes all fifteen experimental-method sections with individual evidence limits",async()=>{

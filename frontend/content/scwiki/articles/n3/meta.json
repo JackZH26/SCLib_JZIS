@@ -1,0 +1,372 @@
+{
+  "id": "scwiki-n3",
+  "topicId": "scwiki-topic-n3",
+  "code": "N3",
+  "slug": "open-questions/n3",
+  "publicationKind": "open-question",
+  "title": "Can first-principles calculations predict Tc in strongly correlated materials?",
+  "summary": "Separate material-specific pairing trends from transition-temperature predictions, and examine embedding, solver and phase-coherence limits.",
+  "aliases": [
+    "ab initio Tc prediction",
+    "first principles strongly correlated superconductivity",
+    "strong correlation transition temperature",
+    "强关联Tc预测",
+    "第一性原理超导预测",
+    "从头计算临界温度"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "J",
+    "D3",
+    "B9",
+    "N2",
+    "N10"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T20:28:26.066288+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected SCDFT final methods/benchmark, two cuprate embedding studies with explicit temperature limits, 60 independent block-elimination examples and previously checked finite-dimer arithmetic.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "The cluster-DMFT author manuscript still needs a full final-version comparison; complete supplements and raw computations were not reproduced.",
+      "This is a selected methodological review, not an exhaustive benchmark of all strongly correlated superconductors.",
+      "Finite normal-state matrices and dimer splittings do not predict material Tc."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "02_BATCH_2_IN_PLAN.md",
+    "sha256": "502293e5ed2fe8463b61a6c5b78a2c33bc33f3265bd36fe534fa2c469e42ff48",
+    "sourceId": "file-49326006ac2c2636"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 139,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    },
+    {
+      "startLine": 140,
+      "endLine": 140,
+      "targetSections": [
+        "scope",
+        "what-conventional-calculations-demonstrate",
+        "two-cuprate-advances-and-their-boundaries",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "decision": "new-research-for-approved-question",
+      "note": "Planning identifies N3 but supplies no evidence of a predictive material calculation."
+    },
+    {
+      "startLine": 141,
+      "endLine": 177,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "G_{dd}(z)=\\left[z-\\epsilon_d-V^\\dagger(z-H_p)^{-1}V\\right]^{-1}",
+      "check": "60 independent direct inversions agree with frequency-dependent Schur elimination; static replacement is separately tested. No interacting or material Tc calculation."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "J_{\\rm dimer}=(\\sqrt{U^2+16t^2}-U)/2",
+      "check": "Inherited B9 finite-dimer diagonalization checks at U/t=4,8,16,32; leading superexchange is asymptotic, not a material transition."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-f9aa25c4ae4f8b5d",
+      "doi": "10.1103/PhysRevLett.125.057001",
+      "title": "Combining Eliashberg Theory with Density Functional Theory for the Accurate Prediction of Superconducting Transition Temperatures and Gap Functions",
+      "year": 2020,
+      "url": "https://doi.org/10.1103/PhysRevLett.125.057001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-functional-and-benchmark-check",
+        "evidenceUrl": "https://pure.mpg.de/rest/items/item_3314270_3/component/file_3324927/content",
+        "note": "Published 27 July 2020. Selected final pp. 1–5; p. 4 equations and Figures 2–3 visually checked. Model calibration, static RPA and KS-gap limits retained. No supplement or full computational reproduction."
+      }
+    },
+    {
+      "id": "source-809aa49ee911889b",
+      "doi": "10.1038/s41467-025-56883-x",
+      "title": "Ab initio quantum many-body description of superconducting trends in the cuprates",
+      "year": 2025,
+      "url": "https://doi.org/10.1038/s41467-025-56883-x",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-ground-state-methods-and-limits",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-025-56883-x.pdf",
+        "note": "Selected final pp. 1–5; p. 3 method and limitations visually checked. Auxiliary gap, finite-cell and charge-self-consistency limits retained. Full supplement and solver reproduction remain open."
+      }
+    },
+    {
+      "id": "source-0fac414ae312f585",
+      "doi": "10.1103/PhysRevX.15.021071",
+      "title": "Toward an Ab Initio Theory of High-Temperature Superconductors: A Study of Multilayer Cuprates",
+      "year": 2025,
+      "url": "https://doi.org/10.1103/PhysRevX.15.021071",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-solver-postprocessing-and-temperature-check",
+        "evidenceUrl": "https://arxiv.org/pdf/2410.10019v2",
+        "note": "Journal published 28 May 2025. Author v2 submitted 7 March 2025: selected pp. 9–12 and 28–29; p. 11 visually checked. Fictitious temperature and post-processing restrictions retained. Final-version comparison, complete appendices and reproduction remain open."
+      }
+    },
+    {
+      "id": "source-51a15c56a9ac1472",
+      "doi": "10.1103/PhysRevX.5.041041",
+      "title": "Solutions of the Two-Dimensional Hubbard Model: Benchmarks and Results from a Wide Range of Numerical Algorithms",
+      "year": 2015,
+      "url": "https://doi.org/10.1103/PhysRevX.5.041041",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-published-qmc-dmrg-convergence-check",
+        "evidenceUrl": "https://journals.aps.org/prx/pdf/10.1103/PhysRevX.5.041041",
+        "note": "Published 14 December 2015. Selected pages 1–4, 7–8 and 10; the DMRG convergence discussion on page 8 visually checked. The review retains constrained-path and particle-hole conditions, finite-cylinder limits and method-specific errors. Full tables, datasets and all algorithms have not been reproduced."
+      }
+    },
+    {
+      "id": "source-12f2513b257d7194",
+      "doi": "10.1103/RevModPhys.68.13",
+      "title": "Dynamical mean-field theory of strongly correlated fermion systems and the limit of infinite dimensions",
+      "year": 1996,
+      "url": "https://doi.org/10.1103/RevModPhys.68.13",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-published-self-consistency-and-limits-check",
+        "evidenceUrl": "https://www.physics.rutgers.edu/~udo/qmc/rmp68_13.pdf",
+        "note": "Selected printed pages 15–18 and 20; equations 6–13 on page 18 visually checked. Local temporal fluctuations, bath self-consistency, large-coordination scaling and atomic/noninteracting limits were reviewed. An independent four-state atomic Green function was checked; no interacting impurity solver or lattice DMFT calculation was reproduced."
+      }
+    },
+    {
+      "id": "source-2b331df83384bc5c",
+      "doi": "10.1103/RevModPhys.84.1419",
+      "title": "Maximally localized Wannier functions: Theory and applications",
+      "year": 2012,
+      "url": "https://doi.org/10.1103/RevModPhys.84.1419",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-gauge-window-interpolation-check",
+        "evidenceUrl": "https://arxiv.org/pdf/1112.5411v2",
+        "note": "Author version 2, dated 12 May 2012; journal publication 10 October 2012. Selected pages 4–5, 11–13 and 36–37; Figure 5 and the frozen-window explanation on page 13 visually checked. Gauge versus subspace selection, Chern obstruction and interpolation conditions were reviewed. The independent finite-range Fourier example is not a material wannierization. Full final-version comparison remains open."
+      }
+    },
+    {
+      "id": "source-a57ef549f45fe74c",
+      "doi": "10.1103/PhysRevX.9.031049",
+      "title": "Bounds on the Superconducting Transition Temperature: Applications to Twisted Bilayer Graphene and Cold Atoms",
+      "year": 2019,
+      "url": "https://doi.org/10.1103/PhysRevX.9.031049",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-bounds-and-anisotropy",
+        "evidenceUrl": "https://journals.aps.org/prx/pdf/10.1103/PhysRevX.9.031049",
+        "note": "Final published 17 September 2019. Selected pp. 2–6 and 10–11; p. 3 equations and conditions visually checked. Peierls coupling, BKT thermodynamic limit, parabolic density convention, monotonicity assumption and input-dependent multiband estimates retained. Appendices A–G and original QMC data not fully reproduced."
+      }
+    },
+    {
+      "id": "source-2f6a1c773323226a",
+      "doi": "10.1103/RevModPhys.78.17",
+      "title": "Doping a Mott insulator: Physics of high-temperature superconductivity",
+      "year": 2006,
+      "url": "https://doi.org/10.1103/RevModPhys.78.17",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "earlier-author-manuscript-selected-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0410445v1",
+        "note": "Selected manuscript pp.27–28 projected Hilbert space and constraint, p.33 Gaussian response and experimental mismatch, p.45 representation versus emergent gauge group. Page33 equations visually inspected. Full final-version comparison pending."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-n3-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Material-specific first-principles calculations have made substantial progress, but the reviewed studies do not establish a generally reliable, uncertainty-calibrated prediction of $T_c$ across strongly correlated superconductors. A useful answer must identify the predicted observable: a pairing tendency, zero-temperature order, excitation gap, mean-field instability, or thermodynamic transition. These are different targets. Predicting a trend can be valuable without already predicting an absolute transition temperature.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-51a15c56a9ac1472",
+        "source-12f2513b257d7194",
+        "source-a57ef549f45fe74c"
+      ],
+      "conditions": "Keep zero-temperature order, auxiliary gap, numerical mesh temperature and actual material transition distinct. Retain version, orbital space, solver and phase-fluctuation limits.",
+      "verificationScope": "Selected primary passages/figures, named inherited reviews and a finite normal-state block-elimination check. No many-body/material calculation reproduced."
+    },
+    {
+      "id": "scwiki-n3-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Here, **ab initio** concerns how the Hamiltonian and interactions are constructed; it does not remove approximations from their solution. A calculation should disclose fitted inputs, the correlated orbital space, screened interactions, treatment of double counting, solver limitations and convergence. A declared absence of material-by-material fitting is distinct from a proof that the chosen functional or embedding is exact.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-12f2513b257d7194",
+        "source-2b331df83384bc5c"
+      ],
+      "conditions": "Keep zero-temperature order, auxiliary gap, numerical mesh temperature and actual material transition distinct. Retain version, orbital space, solver and phase-fluctuation limits.",
+      "verificationScope": "Selected primary passages/figures, named inherited reviews and a finite normal-state block-elimination check. No many-body/material calculation reproduced."
+    },
+    {
+      "id": "scwiki-n3-claim-what-conventional-calculations-demonstrate-1",
+      "sectionId": "what-conventional-calculations-demonstrate",
+      "statement": "Sanna, Pellegrini and Gross developed a superconducting density-functional approximation informed by an Einstein-phonon Eliashberg reference system. Their final paper compares transition temperatures and gaps with measurements for selected conventional superconductors. The calculation uses phonons from density-functional perturbation theory and static-RPA Coulomb screening. Its constants are calibrated to the reference model, rather than fitted separately to each compound. This is a concrete computational achievement within stated approximations, not a universal benchmark for strongly correlated pairing.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f9aa25c4ae4f8b5d"
+      ],
+      "conditions": "Keep zero-temperature order, auxiliary gap, numerical mesh temperature and actual material transition distinct. Retain version, orbital space, solver and phase-fluctuation limits.",
+      "verificationScope": "Selected primary passages/figures, named inherited reviews and a finite normal-state block-elimination check. No many-body/material calculation reproduced."
+    },
+    {
+      "id": "scwiki-n3-claim-what-conventional-calculations-demonstrate-2",
+      "sectionId": "what-conventional-calculations-demonstrate",
+      "statement": "The same paper distinguishes the auxiliary Kohn–Sham pairing potential from a physical excitation gap. Agreement of an approximate gap equation with a reference calculation must therefore be tied to the quantity actually compared. A plotted auxiliary gap should not silently become an experimental gap or a measured $T_c$ in a database.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f9aa25c4ae4f8b5d"
+      ],
+      "conditions": "Keep zero-temperature order, auxiliary gap, numerical mesh temperature and actual material transition distinct. Retain version, orbital space, solver and phase-fluctuation limits.",
+      "verificationScope": "Selected primary passages/figures, named inherited reviews and a finite normal-state block-elimination check. No many-body/material calculation reproduced."
+    },
+    {
+      "id": "scwiki-n3-claim-two-cuprate-advances-and-their-boundaries-1",
+      "sectionId": "two-cuprate-advances-and-their-boundaries",
+      "statement": "Cui and colleagues calculate ground-state pairing using ab initio density-matrix embedding, with a finite $2\\times2$ impurity and primarily a coupled-cluster solver. They recover selected pressure and layer trends. Phonons and temperature effects are omitted; the reported auxiliary bulk gap is not the interacting bulk excitation gap. Their conversion to a temperature invokes a weak-coupling relationship whose applicability is explicitly qualified. Incomplete charge self-consistency, implicit doping and omitted long-wavelength orders remain limitations. This work supports progress in material-specific pairing calculations, rather than an independently established finite-temperature prediction protocol.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-809aa49ee911889b"
+      ],
+      "conditions": "Keep zero-temperature order, auxiliary gap, numerical mesh temperature and actual material transition distinct. Retain version, orbital space, solver and phase-fluctuation limits.",
+      "verificationScope": "Selected primary passages/figures, named inherited reviews and a finite normal-state block-elimination check. No many-body/material calculation reproduced."
+    },
+    {
+      "id": "scwiki-n3-claim-two-cuprate-advances-and-their-boundaries-2",
+      "sectionId": "two-cuprate-advances-and-their-boundaries",
+      "statement": "Bacq-Labreuil and colleagues combine charge-self-consistent DFT with cluster DMFT. Their selected author manuscript uses zero-temperature exact diagonalization with a discrete bath; a fictitious temperature sets a Matsubara mesh. Superconductivity is then evaluated in a post-processing step with other orbitals frozen in their normal state. The authors explicitly distinguish zero-temperature order from $T_c$ and leave calculation of the actual transition, including phase fluctuations, for further work. Thus the mesh temperature is not a computed transition. The local solver's name also does not make the finite-bath embedding exact for the entire material.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0fac414ae312f585"
+      ],
+      "conditions": "Keep zero-temperature order, auxiliary gap, numerical mesh temperature and actual material transition distinct. Retain version, orbital space, solver and phase-fluctuation limits.",
+      "verificationScope": "Selected primary passages/figures, named inherited reviews and a finite normal-state block-elimination check. No many-body/material calculation reproduced."
+    },
+    {
+      "id": "scwiki-n3-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Here $z$ is complex energy, $\\epsilon_d$ a scalar energy, $H_p$ a Hermitian auxiliary block and $V$ a coupling column. The term $V^\\dagger(z-H_p)^{-1}V$ retains frequency dependence. This algebraic identity explains one reason a static reduced Hamiltonian needs justification; it is not a derivation of an interacting pairing vertex. Choices of orbital space and retained energy window matter when constructing practical effective descriptions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2b331df83384bc5c"
+      ],
+      "conditions": "Keep zero-temperature order, auxiliary gap, numerical mesh temperature and actual material transition distinct. Retain version, orbital space, solver and phase-fluctuation limits.",
+      "verificationScope": "Selected primary passages/figures, named inherited reviews and a finite normal-state block-elimination check. No many-body/material calculation reproduced."
+    },
+    {
+      "id": "scwiki-n3-claim-mathematical-assumptions-7",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The previously checked finite-dimer calculation gives about 21% and 6% overestimation by the leading term at $U/t=4$ and $8$, respectively. Neither the exact finite-system splitting nor its asymptotic approximation establishes superconductivity. The example illustrates why a descriptor, its approximation and a bulk ordering temperature require separate validation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2f6a1c773323226a"
+      ],
+      "conditions": "Keep zero-temperature order, auxiliary gap, numerical mesh temperature and actual material transition distinct. Retain version, orbital space, solver and phase-fluctuation limits.",
+      "verificationScope": "Selected primary passages/figures, named inherited reviews and a finite normal-state block-elimination check. No many-body/material calculation reproduced."
+    },
+    {
+      "id": "scwiki-n3-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "A useful validation chain connects specified crystal structure and composition to electronic inputs, an adequately controlled many-body calculation and the intended experimental observable. Report convergence with orbital basis, cluster size, bath discretization or sampling where applicable; separate numerical convergence from errors in the physical model. Cross-method agreement on a matched Hamiltonian is evidence about that Hamiltonian, not automatic validation of its correspondence to a compound.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-51a15c56a9ac1472",
+        "source-12f2513b257d7194",
+        "source-2b331df83384bc5c"
+      ],
+      "conditions": "Keep zero-temperature order, auxiliary gap, numerical mesh temperature and actual material transition distinct. Retain version, orbital space, solver and phase-fluctuation limits.",
+      "verificationScope": "Selected primary passages/figures, named inherited reviews and a finite normal-state block-elimination check. No many-body/material calculation reproduced."
+    },
+    {
+      "id": "scwiki-n3-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "The temperature question adds another layer. A nonzero pairing amplitude or a mean-field instability can occur without the phase coherence required for a thermodynamic superconducting transition. Dimensionality, superfluid stiffness and long-distance fluctuations must be addressed in the applicable regime. A two-dimensional phase-stiffness bound is neither a three-dimensional universal formula nor a procedure that turns any calculated gap into $T_c$.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a57ef549f45fe74c"
+      ],
+      "conditions": "Keep zero-temperature order, auxiliary gap, numerical mesh temperature and actual material transition distinct. Retain version, orbital space, solver and phase-fluctuation limits.",
+      "verificationScope": "Selected primary passages/figures, named inherited reviews and a finite normal-state block-elimination check. No many-body/material calculation reproduced."
+    },
+    {
+      "id": "scwiki-n3-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "This selected review does not rank every available method, exclude successful calculations in particular correlated families, or independently reproduce the quoted ab initio studies. Final-version comparison of the cluster-DMFT author manuscript, complete supplements and broad material benchmarks remain open. The underlying methodological question is quantitative: how much do plausible changes in input structure, screening, correlated subspace and solver treatment move the predicted observable? A single successful comparison cannot answer this for an entire material class.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-51a15c56a9ac1472",
+        "source-12f2513b257d7194",
+        "source-2b331df83384bc5c"
+      ],
+      "conditions": "Keep zero-temperature order, auxiliary gap, numerical mesh temperature and actual material transition distinct. Retain version, orbital space, solver and phase-fluctuation limits.",
+      "verificationScope": "Selected primary passages/figures, named inherited reviews and a finite normal-state block-elimination check. No many-body/material calculation reproduced."
+    },
+    {
+      "id": "scwiki-n3-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Use calculations to generate testable candidates with an explicit evidence level. Store the structure, conditions, method and predicted quantity together; compare against measurements on the corresponding sample and distinguish onset, bulk magnetic and zero-resistance criteria. Favor prospective checks on withheld materials and preserve failed predictions. This is a proposed validation standard: the aim is increasingly reliable material prediction, while retaining the difference between a promising pairing trend and a demonstrated transition temperature.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-51a15c56a9ac1472",
+        "source-a57ef549f45fe74c"
+      ],
+      "conditions": "Keep zero-temperature order, auxiliary gap, numerical mesh temperature and actual material transition distinct. Retain version, orbital space, solver and phase-fluctuation limits.",
+      "verificationScope": "Selected primary passages/figures, named inherited reviews and a finite normal-state block-elimination check. No many-body/material calculation reproduced."
+    }
+  ],
+  "scopeItems": [
+    {
+      "id": "N3",
+      "sectionIds": [
+        "scope",
+        "what-conventional-calculations-demonstrate",
+        "two-cuprate-advances-and-their-boundaries",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Selected SCDFT final methods/benchmark, two cuprate embedding studies with explicit temperature limits, 60 independent block-elimination examples and previously checked finite-dimer arithmetic.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "The cluster-DMFT author manuscript still needs a full final-version comparison; complete supplements and raw computations were not reproduced.",
+        "This is a selected methodological review, not an exhaustive benchmark of all strongly correlated superconductors.",
+        "Finite normal-state matrices and dimer splittings do not predict material Tc."
+      ]
+    }
+  ]
+}

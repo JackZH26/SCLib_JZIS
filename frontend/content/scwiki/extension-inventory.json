@@ -464,7 +464,7 @@
       "code": "N3",
       "slug": "open-questions/n3",
       "kind": "open-question",
-      "publicBody": false,
+      "publicBody": true,
       "sourceId": "file-49326006ac2c2636",
       "items": [
         {
