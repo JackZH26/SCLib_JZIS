@@ -1,0 +1,384 @@
+{
+  "id": "scwiki-g8",
+  "topicId": "scwiki-topic-g8",
+  "code": "G8",
+  "slug": "spin-orbit-coupling",
+  "title": "Spin–orbit coupling and superconductivity",
+  "summary": "Distinguish spin textures, gap components and pair amplitudes, with measured conditions and competing interpretations for noncentrosymmetric superconductors.",
+  "aliases": [
+    "spin orbit coupling",
+    "SOC",
+    "antisymmetric spin orbit coupling",
+    "ASOC",
+    "Rashba",
+    "Ising superconductivity",
+    "noncentrosymmetric",
+    "parity mixing"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experimental"
+  ],
+  "relatedCodes": [
+    "C9",
+    "G6",
+    "F5"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T16:09:01.092267+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected original Rashba model text, Frigeri theory with erratum, NMR methods/figures, muon/calorimetry finaltext andauthorfigure, inherited TMD evidence and independent BdG checks.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Full final-version comparisons, raw-data reproduction and subsequent material literature remain incomplete.",
+      "Pair amplitude is not identical to the gap interaction; finite matrices do not establish a bulk topology.",
+      "Conflicting Li2Pt3B interpretations remain unresolved; no numerical triplet fraction assigned."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "G_magnetism_interplay/G8_SOC_superconductivity.md",
+    "sha256": "93d4439976b4d071e7b1706b304d835f138bde2fff8e3fa357cb8ed50a556793",
+    "sourceId": "file-3f3ab3d90bdfd6f8"
+  },
+  "references": [
+    {
+      "id": "source-81c0e16fd118df22",
+      "doi": "10.1103/PhysRevLett.87.037004",
+      "title": "Superconducting 2D System with Lifted Spin Degeneracy: Mixed Singlet-Triplet State",
+      "year": 2001,
+      "url": "https://doi.org/10.1103/PhysRevLett.87.037004",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-text-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://dash.harvard.edu/bitstreams/7312037d-c0c7-6bd4-e053-0100007fdf3b/download",
+        "note": "Web-extracted finalpp1–3 selected model and anomalous-amplitude passages read; published2July2001. Native downloadrefused,screenshot405,latertext429; no finalfigureinspection or complete susceptibilityderivation claimed."
+      }
+    },
+    {
+      "id": "source-6c944305286c9cad",
+      "doi": "10.1103/PhysRevLett.92.097001",
+      "title": "Superconductivity without Inversion Symmetry: MnSi versus CePt3Si",
+      "year": 2004,
+      "url": "https://doi.org/10.1103/PhysRevLett.92.097001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-and-erratum-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0311354v3",
+        "note": "Author v3, 28 July 2004: selected pp.1–4 and appended erratum p.5 read, pp.2/5 visually checked. Mixing terms of order alpha/EF neglected; field calculation excludes orbital depairing and considers continuous onset. Complete data/version reproduction open."
+      }
+    },
+    {
+      "id": "source-46e49166d702226d",
+      "doi": "10.1103/PhysRevLett.93.099903",
+      "title": "Erratum: Superconductivity without Inversion Symmetry: MnSi versus CePt3Si",
+      "year": 2004,
+      "url": "https://doi.org/10.1103/PhysRevLett.93.099903",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "published-erratum-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.93.099903",
+        "note": "Published 27 August 2004. Complete one-page publisher text checked; matching author appendix p.5 visually checked. Adds linear MnSi SOC term and divides Fig.2 alphaR by sqrt(3/2)."
+      }
+    },
+    {
+      "id": "source-876de9124496abcb",
+      "doi": "10.1103/PhysRevLett.98.047002",
+      "title": "Spin Triplet Superconducting State due to Broken Inversion Symmetry in Li2Pt3B",
+      "year": 2007,
+      "url": "https://doi.org/10.1103/PhysRevLett.98.047002",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figures",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0702130v1",
+        "note": "Authorv1 posted6February2007; publisherdate23January2007 confirmed separately. Selectedpp1–3, p3Figures2–3 visuallychecked; zero-field2.68K, B11.26T2.1K/.35T1.8K, Pt195.396T and.1K spectrum floor distinguished. Finalversion/calibration andrawdata remainopen."
+      }
+    },
+    {
+      "id": "source-30ad27b0f37b6baf",
+      "doi": "10.1007/s10948-008-0440-y",
+      "title": "Muon-Spin Rotation Study of the Ternary Noncentrosymmetric Superconductors Li2PdxPt3−xB",
+      "year": 2009,
+      "url": "https://doi.org/10.1007/s10948-008-0440-y",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-text-and-author-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.dora.lib4ri.ch/psi/islandora/object/psi%3A17344/datastream/PDF/H%C3%A4fliger-2009-Muon-Spin_rotation_study_of_the-%28published_version%29.pdf",
+        "note": "Final web-extractedpp338–341 methods/results/discussion checked; publication13January2009. Author0709.3777v1pp2–8 selectedtext,p6Fig2 visuallychecked; finalFig3sameconcept butfinalscreenshot timedout,notclaimed. Authors cannotexclude triplet; homogeneoussingle-gapfitlimitations,normalinclusions andNMRbulk-sensitivity retained. Rawdata andfullversion audit open."
+      }
+    },
+    {
+      "id": "source-c80fb39cdf748a83",
+      "doi": "10.1038/nphys3538",
+      "title": "Ising pairing in superconducting NbSe2 atomic layers",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nphys3538",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1507.08731v1",
+        "note": "Authorv1 dated31July2015; selectedpp4–5,10methods,12Figure4 visually checked. Crossref publisher-depositedonline9November2015 versus February2016issue. Body0.3K versuscaption0.36K keptdistinct; fullfinal/supplement/noise calibration open."
+      }
+    },
+    {
+      "id": "source-804e0c9690bde4d8",
+      "doi": "10.1038/s41467-018-03888-4",
+      "title": "Tuning Ising superconductivity with layer and spin–orbit coupling in two-dimensional transition-metal dichalcogenides",
+      "year": 2018,
+      "url": "https://doi.org/10.1038/s41467-018-03888-4",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-methods-results-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-018-03888-4.pdf",
+        "note": "Published12April2018. Selectedfinalpp3–5 and6–7methods read, p4Figures3–4 visually checked. 50%Rn,34.5Tinstrumentceiling,65.6TnearTcfitparameter andseparatecryostatlimits retained. Fullsupplement/rawdata/DFT not reproduced."
+      }
+    },
+    {
+      "id": "source-5eb9e7b0c0c3b0cf",
+      "doi": "10.1103/PhysRevLett.102.187001",
+      "title": "Time-Reversal-Invariant Topological Superconductors and Superfluids in Two and Three Dimensions",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevLett.102.187001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-helical-and-defect-construction",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0803.3614v1",
+        "note": "Only author v1,25 March2008, titled Topological Superconductivity and Superfluidity. Published4May2009 under final title. Selected pp.1–3 helical blocks, edge mass and vortex/antivortex defect read; full final comparison open."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-g8-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Spin–orbit coupling links electronic motion to spin and changes the normal-state band structure and magnetic response. It does not, by itself, specify the attractive interaction responsible for superconductivity. In a nonmagnetic system without inversion symmetry, antisymmetric spin–orbit coupling can split bands and allow pairing components that inversion would separate. Permission by symmetry is not a measurement of their relative weights. Gor'kov and Rashba's two-dimensional model explicitly leaves the pairing mechanism unspecified and assumes its spin–orbit splitting remains small compared with the Fermi energy.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-81c0e16fd118df22",
+        "source-6c944305286c9cad"
+      ],
+      "conditions": "Two-spin model basis and interaction assumptions; material-specific fields, measurement versus transition temperatures and competing probes remain distinct.",
+      "verificationScope": "Selected primary texts/figures and independent finite BdG checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g8-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "In an ideal Rashba model, the spin texture lies in the plane and winds perpendicular to momentum. In the Ising description used for monolayer NbSe2, opposite valleys have predominantly opposite out-of-plane spin orientations. These are different textures and give different directional responses. A spin–orbit energy expressed as an equivalent field is not an applied laboratory field. Strong spin–orbit coupling and a large upper critical field do not independently certify triplet pairing or topological superconductivity.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-81c0e16fd118df22",
+        "source-c80fb39cdf748a83",
+        "source-5eb9e7b0c0c3b0cf"
+      ],
+      "conditions": "Two-spin model basis and interaction assumptions; material-specific fields, measurement versus transition temperatures and competing probes remain distinct.",
+      "verificationScope": "Selected primary texts/figures and independent finite BdG checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g8-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a two-spin effective model, write $h(\\mathbf k)=\\xi(\\mathbf k)I+\\mathbf g(\\mathbf k)\\cdot\\boldsymbol\\sigma$, with even $\\xi$ and odd $\\mathbf g$ under momentum reversal. Its normal energies are $\\xi\\pm|\\mathbf g|$. An even-frequency gap may be written $\\widehat\\Delta=[\\psi+\\mathbf d\\cdot\\boldsymbol\\sigma]i\\sigma_y$, with even singlet component $\\psi$ and odd triplet vector $\\mathbf d$. The chosen spin or pseudospin basis matters; this two-component model is not a complete multiorbital classification. Neither the normal splitting nor the algebraic gap decomposition determines a self-consistent interaction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-81c0e16fd118df22",
+        "source-6c944305286c9cad"
+      ],
+      "conditions": "Two-spin model basis and interaction assumptions; material-specific fields, measurement versus transition temperatures and competing probes remain distinct.",
+      "verificationScope": "Selected primary texts/figures and independent finite BdG checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g8-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An independent calculation imposes a real, purely singlet gap $\\widehat\\Delta=\\psi i\\sigma_y$. Its Bogoliubov excitation energies are $E_\\pm=\\sqrt{(\\xi\\pm g)^2+\\psi^2}$, where $g=|\\mathbf g|$. For a nonzero Matsubara frequency, define $f_\\pm=-\\psi/(\\omega^2+E_\\pm^2)$. The anomalous propagator decomposes as $F=[f_s+\\mathbf f_t\\cdot\\boldsymbol\\sigma]i\\sigma_y$, with $f_s=(f_++f_-)/2$ and $\\mathbf f_t=(f_+-f_-)\\hat{\\mathbf g}/2$. Thus a momentum-resolved triplet pair amplitude can be nonzero although the imposed gap has no triplet component. These quantities should not both be labeled an experimental “triplet fraction.”",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-81c0e16fd118df22"
+      ],
+      "conditions": "Two-spin model basis and interaction assumptions; material-specific fields, measurement versus transition temperatures and competing probes remain distinct.",
+      "verificationScope": "Selected primary texts/figures and independent finite BdG checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g8-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "One hundred independently assembled matrices reproduce the spectra and fermionic relation $F(\\mathbf k,i\\omega)=-F^T(-\\mathbf k,-i\\omega)$; one hundred decompositions match the analytic amplitudes. Three controls check cancellation at zero spin–orbit coupling or at $\\xi=0$, and a nonzero amplitude at generic parameters. The result distinguishes a propagator from a gap interaction. It does not compute a momentum-integrated mixing ratio, susceptibility, transition temperature or topological invariant.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-81c0e16fd118df22"
+      ],
+      "conditions": "Two-spin model basis and interaction assumptions; material-specific fields, measurement versus transition temperatures and competing probes remain distinct.",
+      "verificationScope": "Selected primary texts/figures and independent finite BdG checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g8-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Frigeri and colleagues' weak-coupling treatment neglects small particle-hole-asymmetry mixing terms and studies pairing channels separately. Alignment of $\\mathbf d$ with $\\mathbf g$ avoids a leading suppression term; it does not select the stable material state. Their erratum adds an omitted linear contribution to the MnSi spin–orbit vector and rescales the original Figure 2 parameter by dividing by $\\sqrt{3/2}$. Claims about which p-wave component is suppressed therefore require the corrected vector and its relative coefficients.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6c944305286c9cad",
+        "source-46e49166d702226d"
+      ],
+      "conditions": "Two-spin model basis and interaction assumptions; material-specific fields, measurement versus transition temperatures and competing probes remain distinct.",
+      "verificationScope": "Selected primary texts/figures and independent finite BdG checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g8-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Nishiyama and colleagues report a nearly unchanged Knight shift and approximately cubic temperature dependence of the relaxation rate in Li2Pt3B, interpreted as evidence for triplet pairing with nodes. Their crushed polycrystalline sample has a zero-field susceptibility transition at 2.68 K. For boron NMR, 0.26 T gives a transition near 2.1 K, while 0.35 T gives approximately 1.8 K. The 0.1 K spectrum is a measurement temperature, not a transition. The Li2Pd3B comparison uses a different field, 1.46 T, and the Knight-shift interpretation includes an orbital contribution and a fitted gap model.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-876de9124496abcb"
+      ],
+      "conditions": "Two-spin model basis and interaction assumptions; material-specific fields, measurement versus transition temperatures and competing probes remain distinct.",
+      "verificationScope": "Selected primary texts/figures and independent finite BdG checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g8-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Häfliger and colleagues instead find low-temperature saturation in μSR-derived penetration depth and activated specific heat in Li2Pt3B, favoring a fully gapped interpretation. Their final text nevertheless notes that a simple single-gap fit to the penetration-depth data is unsatisfactory and that triplet states cannot be excluded. The low-field temperature scans extend to 30 mK, while the field-dependent comparison is made at 1 K; calorimetry reaches 0.1 K and uses a 4 T normal-state reference. These different probes and protocols must remain separately identifiable.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-30ad27b0f37b6baf"
+      ],
+      "conditions": "Two-spin model basis and interaction assumptions; material-specific fields, measurement versus transition temperatures and competing probes remain distinct.",
+      "verificationScope": "Selected primary texts/figures and independent finite BdG checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g8-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Ising-protected superconductivity provides another route to an enhanced field scale. In the NbSe2 study, the approximately 35 T scale is fitted, whereas contact-conductance data extend to 31.5 T. In the TaS2 study, 34.5 T is an experimental ceiling and 65.6 T is a fit parameter. Orbital geometry, alignment, gap scale and the resistance criterion accompany any comparison with a weak-coupling Pauli estimate. A larger ratio alone does not determine the spin structure of the gap.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c80fb39cdf748a83",
+        "source-804e0c9690bde4d8"
+      ],
+      "conditions": "Two-spin model basis and interaction assumptions; material-specific fields, measurement versus transition temperatures and competing probes remain distinct.",
+      "verificationScope": "Selected primary texts/figures and independent finite BdG checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g8-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The Li2Pt3B disagreement cannot be settled by labeling one result “bulk” and another “surface”: NMR also probes bulk material. The μSR/calorimetry paper discusses sample inhomogeneity and metallic inclusions, but those possibilities are not independently demonstrated explanations for every contrasting measurement. Retain both experimental interpretations and their assumptions. Absence of a coherence peak is not, by itself, a unique nodal or triplet diagnostic. Complete scientific acceptance remains open, including raw-data comparisons, final-version checks and the wider subsequent literature.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-876de9124496abcb",
+        "source-30ad27b0f37b6baf"
+      ],
+      "conditions": "Two-spin model basis and interaction assumptions; material-specific fields, measurement versus transition temperatures and competing probes remain distinct.",
+      "verificationScope": "Selected primary texts/figures and independent finite BdG checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g8-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "A topological assignment requires a specified superconducting Hamiltonian, symmetry class and appropriate invariant, together with evidence that the physical system realizes the assumed state. Normal-state spin splitting, absence of inversion and a superconducting transition do not supply those steps. Likewise, a crystal's effective spin–orbit texture cannot be inferred quantitatively from a simple atomic-number scaling rule. Use a material-specific band model and experimentally constrained parameters before proposing a pairing mechanism or device advantage.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-81c0e16fd118df22",
+        "source-5eb9e7b0c0c3b0cf"
+      ],
+      "conditions": "Two-spin model basis and interaction assumptions; material-specific fields, measurement versus transition temperatures and competing probes remain distinct.",
+      "verificationScope": "Selected primary texts/figures and independent finite BdG checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g8-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Separate normal-state texture, superconducting gap, pair correlations and measured magnetic response in both language and data records. Compare field directions and sample conditions; retain corrections to theoretical papers and competing experimental interpretations. Useful spin–orbit engineering should predict an observable change under controlled gating, thickness or symmetry changes, then test it against alternatives such as orbital depairing and multiband response. An adjustable model parameter is a research hypothesis until the same model explains independent observations.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-6c944305286c9cad",
+        "source-46e49166d702226d",
+        "source-c80fb39cdf748a83",
+        "source-804e0c9690bde4d8"
+      ],
+      "conditions": "Two-spin model basis and interaction assumptions; material-specific fields, measurement versus transition temperatures and competing probes remain distinct.",
+      "verificationScope": "Selected primary texts/figures and independent finite BdG checks; full scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-g8-correction-1",
+      "description": "Do not equate broken inversion or SOC with a measured triplet fraction. Include the Frigeri erratum and competing Li2Pt3B muon/calorimetry evidence alongside NMR.",
+      "sourceId": "source-46e49166d702226d",
+      "scope": "Selected theory corrections and conflicting primary experimental interpretations."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "E_\\pm=\\sqrt{(\\xi\\pm g)^2+\\psi^2}",
+      "check": "100independentlyassembled BdGspectra andfermionicchecks passed withpure singletimposedgap."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\mathbf f_t=(f_+-f_-)\\hat{\\mathbf g}/2",
+      "check": "100anomalousmatrixdecompositions plus3zero/nonzero controls passed. Not a self-consistent mixingratio or materialfit."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-g8-material-1",
+      "formula": "Li2Pt3B",
+      "sample": "Nishiyama arc-melted sample, zero applied field",
+      "recordType": "experiment",
+      "reportedTemperatureK": 2.68,
+      "tcK": 2.68,
+      "temperatureKind": "transition",
+      "temperatureNote": "Zero-field AC susceptibility transition; distinct from field-suppressed NMR transitions2.1K/.26T and1.8K/.35T.",
+      "criterion": "AC-susceptibility",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "In-situ NMR-coil AC susceptibility",
+      "sourceId": "source-876de9124496abcb",
+      "aliases": [
+        "noncentrosymmetric",
+        "SOC"
+      ]
+    },
+    {
+      "id": "scwiki-g8-material-2",
+      "formula": "Li2Pt3B",
+      "sample": "Hafliger field-cooled low-field muon temperature scans",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.03,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "30mK measurement floor, not superconducting Tc. Field-dependent comparisonat1K andspecificheatfloor.1K distinct.",
+      "criterion": "muon-temperature-scan",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Transverse-field muon spin rotation",
+      "sourceId": "source-30ad27b0f37b6baf",
+      "aliases": [
+        "muSR",
+        "spin orbit coupling"
+      ]
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 318,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinnedsource bytes retained; independent gap-versus-amplitude example andcompetingmaterialevidence added; historical auditclaims notscientificvalidation."
+    }
+  ]
+}
