@@ -1125,3 +1125,20 @@ it("binds moire transition values to the device, pressure and operational criter
  for(const phrase of ["carbon–carbon bond length","factor of three","10-ohm noise floor","solvent cleaning","Randeria","Tanaka"])expect(md).toContain(phrase);
  expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
 });
+
+it("keeps post-quench onsets separate from magnetic specimens, storage and unassigned anomalies",async()=>{
+ const a=articles().find(a=>a.code==="E10")!;
+ const index=searchIndex().entries;
+ expect(a.materialCases.every(c=>c.pressureRegime==="ambient"&&c.pressureGPa===null)).toBe(true);
+ expect(a.materialCases.filter(c=>c.temperatureKind!=="transition").every(c=>c.tcK===null)).toBe(true);
+ expect(searchArticles(index,"Deng S4",{tcMin:150,criterion:"resistive-onset",pressure:"ambient"}).some(a=>a.code==="E10")).toBe(true);
+ expect(searchArticles(index,"Deng S4",{tcMin:150,criterion:"magnetic-onset"}).some(a=>a.code==="E10")).toBe(false);
+ expect(searchArticles(index,"Deng S2",{tcMin:150}).some(a=>a.code==="E10")).toBe(false);
+ expect(searchArticles(index,"Deng S2 magnetization",{tcMin:139,criterion:"magnetic-onset"}).some(a=>a.code==="E10")).toBe(true);
+ expect(searchArticles(index,"Deng S5",{tcMin:160}).some(a=>a.code==="E10")).toBe(false);
+ expect(searchArticles(index,"Hg1223",{tcMin:150,criterion:"zero-resistance"}).some(a=>a.code==="E10")).toBe(false);
+ expect(searchArticles(index,"Hg1223",{tcMin:150,pressure:"high"}).some(a=>a.code==="E10")).toBe(false);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ for(const phrase of ["78% estimate applies at 70 K","multiplies the post-quench curve by ten","Liangzi Deng","no searchable superconducting transition temperature","not a reported confidence interval"])expect(md).toContain(phrase);
+ expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
+});

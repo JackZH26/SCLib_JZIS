@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "b2482c2e30a81f43334c",
+  "revision": "f330e96658823ef57b2e",
   "articles": [
     {
       "id": "scwiki-a1",
@@ -22925,6 +22925,509 @@
       ],
       "markdown": "# Pressure tuning: stress, phase stability and transition criteria\n\nRead pressure-dependent superconductivity through the actual stress state, temperature calibration, structural phase and measurement criterion.\n\n## Scope\n\nPressure changes interatomic distances, electronic bandwidths, lattice vibrations and phase stability. It can also change the material itself through structural conversion or chemical reaction. A diamond anvil cell identifies an apparatus; it does not establish a purely hydrostatic stress state at the sample. Pressure medium, temperature, loading history and sample geometry belong to every quantitative comparison. [R1](#ref-source-c1c9ef4bc5cf71dd) [R2](#ref-source-a631bcd83d23567b) [R5](#ref-source-8b901b9c6008c434)\n\nThis article concerns measurements while pressure is applied. A state retained after rapid pressure release has a different thermodynamic and kinetic history. Deng's 2026 pressure-quench paper explicitly separates creating a phase under load, releasing pressure and characterizing the recovered state. Its reported 151 K scale must not be pooled with an in-situ pressure curve. Here only its abstract and introductory protocol are checked; the detailed transition criterion and recovery evidence require a separate review. [R7](#ref-source-14d1e9e0097f7ffb)\n\n## Mathematical assumptions\n\nWith tensile stress positive, define $P=-\\mathrm{tr}(\\sigma)/3$ and $s_{ij}=\\sigma_{ij}+P\\delta_{ij}$. Then $\\sigma_{ij}=-P\\delta_{ij}+s_{ij}$ with $\\mathrm{tr}(s)=0$. Hydrostatic stress has $s=0$; equal mean pressure does not imply equal deviatoric stress. For a symmetric stress tensor, $\\sqrt{3s_{ij}s_{ij}/2}$ is a rotationally invariant scalar measure of deviatoric magnitude. It summarizes stress anisotropy, but does not identify its orientation or predict superconductivity. These definitions and rotation identities were checked on illustrative tensors. [R1](#ref-source-c1c9ef4bc5cf71dd)\n\nA measured pressure dependence is a path through several changing variables. Within a differentiable single phase, $dT_c/dP=\\sum_a(\\partial T_c/\\partial x_a)(dx_a/dP)$ is a chain rule, not evidence that any one variable causes pairing. Phase conversion, hysteresis or a changed resistance criterion can invalidate a single smooth derivative across the whole dataset. Even an ideal dome has different local slopes on opposite sides of its maximum. [R2](#ref-source-a631bcd83d23567b) [R4](#ref-source-df0c15d62982f853)\n\nIn the simplified weak-coupling expression $T_c=A\\omega\\exp(-1/\\lambda)$, holding A fixed gives $d\\ln T_c/dP=d\\ln\\omega/dP+\\lambda^{-2}d\\lambda/dP$. A rising frequency can therefore compete with decreasing coupling. This illustration neglects the Coulomb term, strong-coupling corrections, multiple bands and structural changes; it is not a quantitative model for the hydrides or FeSe. Numerical differentiation checks the stated algebra only. [R8](#ref-source-ba10e800a1246bf6) [R5](#ref-source-8b901b9c6008c434)\n\n## Experimental criteria\n\nTorikachvili and colleagues used sample-resistance anomalies, cross-checked against manganin, to locate freezing-related changes in pressure media. Their room-temperature manganin calibration and low-temperature Pb manometer are distinct measurements. Between 300 and 90 K, pressure was estimated by interpolation; below 90 K it was assumed constant. Data used for the anomaly analysis came from slow warming near 0.35 K per minute. These details prevent the loading pressure from silently becoming the pressure at every temperature. The silicone-oil freezing points were not unambiguously determined. [R1](#ref-source-c1c9ef4bc5cf71dd)\n\nMedvedev's Fe1.01Se study reports an approximately 36.7 K resistive transition at 8.9 GPa and a decrease at higher pressures. At 15 GPa the roughly 25 K transition did not reach zero resistance, in a mixed-phase regime. The selected transport Methods describe DC van der Pauw measurements, ruby checks at both room and low temperature and a reported spatial pressure spread no greater than 0.05 GPa. Silicone oil is specified in the separate Mössbauer paragraph; this review does not assign that medium to transport without evidence. [R2](#ref-source-a631bcd83d23567b)\n\nGao's original abstract reports resistive measurements of mercury cuprates under quasihydrostatic pressures and a maximum of 164 K for the three-layer member. It does not, at this checked scope, establish a zero-resistance or thermodynamic criterion. The full 1994 methods remain inaccessible here, so no more precise criterion is manufactured for the material record. A family trend in that report is not a universal positive pressure coefficient for superconductors. [R3](#ref-source-6d09a24a26a15997)\n\nThe bilayer nickelate report combines resistance signatures with a separate magnetic experiment. Its checked methods use KBr and room-temperature ruby calibration; residual resistance and sample-specific onset criteria remain explicit. In sulfur and lanthanum hydrides, pressure also helps produce or stabilize the hydrogen-rich phases being measured. Pairing a transport curve with a proposed structure requires attention to synthesis history, phase fractions and the conditions of each probe. [R4](#ref-source-df0c15d62982f853) [R5](#ref-source-8b901b9c6008c434) [R6](#ref-source-1e6e868a12cdd34f)\n\n## Limits and disputes\n\nA small spread in pressure inferred from calibrant readings does not reconstruct the full sample stress tensor. Conversely, a frozen medium need not produce the same shear stress in every geometry. Hydrostaticity is an experimental condition to assess, not a binary quality label inferred solely from the material name. The freezing study's calibration assumptions and unresolved oil anomalies should remain attached to any reuse of its data. [R1](#ref-source-c1c9ef4bc5cf71dd)\n\nOnset, midpoint, zero resistance and magnetic or thermodynamic signatures answer different questions. The high-pressure FeSe curves broaden and coexist with a structurally transformed fraction; a surviving conducting path is not a direct bulk-volume measurement. Likewise, a structural measurement at room temperature cannot by itself establish the complete structure at a low-temperature transition. This entry retains the historical report's conditions without generalizing its magnetic conclusions to every later FeSe experiment. [R2](#ref-source-a631bcd83d23567b) [R4](#ref-source-df0c15d62982f853)\n\n## Discovery implications\n\nDesign a pressure series around explicit alternatives: distinguish an electronic crossover from a structural transformation, a pressure gradient from intrinsic broadening, and a reversible response from kinetic trapping. Combine loading and unloading curves with pressure calibration near the measurement temperature, and compare transport with structural or magnetic probes wherever feasible. Differences between probes are evidence to explain, not numbers to average away. [R1](#ref-source-c1c9ef4bc5cf71dd) [R2](#ref-source-a631bcd83d23567b) [R4](#ref-source-df0c15d62982f853)\n\nFor transferable discovery records, preserve composition, pressure interval, medium, calibrant, temperature, protocol and transition criterion. Quote a slope only over its stated phase and pressure interval. Keep ambient recovered states, in-situ high-pressure phases and theoretical estimates separately searchable. Pressure can expose useful physics without guaranteeing a recoverable ambient material or a technologically useful conductor. [R5](#ref-source-8b901b9c6008c434) [R6](#ref-source-1e6e868a12cdd34f) [R7](#ref-source-14d1e9e0097f7ffb)\n\n## Related topics\n\nContinue with [strain engineering](/scwiki/strain), [organic superconductors](/scwiki/organic-charge-transfer-superconductors), [hydride superconductors](/scwiki/hydride-superconductors), [iron-based superconductors](/scwiki/iron-based-superconductors) and [zero-resistance criteria](/scwiki/zero-resistance).\n\n## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| Fe1.01Se (aliases: FeSe, iron selenide, iron-based, iron based superconductors); Medvedev low-pressure transport | 18.6 K; Onset at 0.8 GPa, followed by a sharp drop to zero; zero criterion is not assigned the onset value. | transition; resistive-onset | DC van der Pauw resistance; low- and room-temperature ruby | high; 0.8 to 0.8 GPa | equilibrium | experiment; [source](#ref-source-a631bcd83d23567b) |\n| Fe1.01Se (aliases: FeSe, iron selenide, iron-based, iron based superconductors); Medvedev dome maximum | 36.7 K; Reported high-pressure maximum; no thermodynamic or exact zero-resistance temperature inferred. | transition; resistive-onset | DC van der Pauw resistance; low- and room-temperature ruby | high; 8.9 to 8.9 GPa | equilibrium | experiment; [source](#ref-source-a631bcd83d23567b) |\n| Fe1.01Se (aliases: FeSe, iron selenide, iron-based, iron based superconductors); Medvedev mixed-phase high-pressure specimen | 25 K; Approximate transition; resistance did not reach zero at this pressure. | transition; resistive-onset | DC van der Pauw resistance | high; 15 to 15 GPa | equilibrium | experiment; [source](#ref-source-a631bcd83d23567b) |\n| HgBa2Ca2Cu3O8+δ (aliases: cuprate, cuprates); Gao optimally doped m = 3 material | 164 K; Exact point pressure and onset/zero criterion remain unknown at this review scope; 45 GPa is the study range, not the assigned pressure. | transition; resistive-transition-unspecified | Resistance under quasihydrostatic pressure; original abstract | high; unknown GPa | equilibrium | experiment; [source](#ref-source-6d09a24a26a15997) |\n| 1:1 isopentane/n-pentane; Torikachvili pressure-medium anomaly | 96.9 K; Freezing-related anomaly, not superconducting Tc; pressure near 0.28 GPa estimated by interpolation. | measurement; pressure-medium-freezing-proxy | Sample derivative anomaly cross-checked against manganin | high; 0.28 to 0.28 GPa | equilibrium | experiment; [source](#ref-source-c1c9ef4bc5cf71dd) |\n\n## Sources\n\n### Ref source-c1c9ef4bc5cf71dd\n\n[R1] Solidification and loss of hydrostaticity in liquid media used for pressure measurements (2015). [DOI 10.1063/1.4937478](https://doi.org/10.1063/1.4937478). Publication: journal-article. Check: selected-author-calibration-and-freezing-methods. Checked: 2026-10-18. Author v1 submitted 30 November 2015; journal online 16 December 2015. Selected pp. 1–7 read, Fig. 1 on p. 6 visually checked. Manganin/Pb calibration, warming protocol, interpolation and unresolved oil freezing retained. Full results/final-version comparison and raw-data refits remain open.\n### Ref source-a631bcd83d23567b\n\n[R2] Electronic and magnetic phase diagram of β-Fe1.01Se with superconductivity at 36.7 K under pressure (2009). [DOI 10.1038/nmat2491](https://doi.org/10.1038/nmat2491). Publication: journal-article. Check: selected-author-transport-structure-and-methods. Checked: 2026-10-18. Author v1 submitted 12 March 2009; journal 14 June 2009. Selected pp. 1–5, Methods pp. 12–13 and Fig. 2 p. 15 read; figure visually checked. Resistive maximum, broadening, nonzero resistance at 15 GPa, separate Mössbauer medium and transport ruby conditions retained. Final-version comparison and raw data not reviewed.\n### Ref source-6d09a24a26a15997\n\n[R3] Superconductivity up to 164 K in HgBa2Cam−1CumO2m+2+δ (m = 1, 2, and 3) under quasihydrostatic pressures (1994). [DOI 10.1103/PhysRevB.50.4260](https://doi.org/10.1103/PhysRevB.50.4260). Publication: journal-article. Check: publisher-abstract-only. Checked: 2026-10-18. Published 1 August 1994. Original abstract checked: resistive quasihydrostatic measurements up to 45 GPa and 164 K maximum for m = 3. Full PDF requires authorization; exact onset/zero criterion and point pressure not independently read.\n### Ref source-df0c15d62982f853\n\n[R4] Signatures of superconductivity near 80 K in a nickelate under high pressure (2023). [DOI 10.1038/s41586-023-06408-7](https://doi.org/10.1038/s41586-023-06408-7). Publication: journal-article. Check: selected-published-primary-passages-check. Checked: 2026-10-18. Reused D5 scoped primary reading with unchanged limitations. Selected published p496 Fig3/caption and text, plus Methods PDFp7. Resistance onset, residual resistance, separate magnetic measurement, KBr and room-temperature ruby calibration retained. Raw-data/replication review remains open.\n### Ref source-8b901b9c6008c434\n\n[R5] Conventional superconductivity at 203 kelvin at high pressures in the sulfur hydride system (2015). [DOI 10.1038/nature14964](https://doi.org/10.1038/nature14964). Publication: journal-article. Check: selected-author-text-and-published-caption-check. Checked: 2026-10-18. Reused D6 scoped primary reading with unchanged limitations. Published 17 August 2015. Author v1 of 26 June 2015: selected pp. 3/5 and Fig. 4 pp. 11–12, visually checked; publisher abstract and extended captions also checked. Magnetization raw data and background subtraction not independently reproduced.\n### Ref source-1e6e868a12cdd34f\n\n[R6] Superconductivity at 250 K in lanthanum hydride under high pressures (2019). [DOI 10.1038/s41586-019-1201-8](https://doi.org/10.1038/s41586-019-1201-8). Publication: journal-article. Check: selected-published-methods-figures-check. Checked: 2026-10-18. Reused D6 scoped primary reading with unchanged limitations. Published online 22 May 2019. Selected printed pp. 528–529, Fig. 4p.531, Methods and deuteride assignment; PDF p. 2 visually checked. Final 249/180 K comparison replaces early 250/168 K; rounded ratio 0.468 differs from stated 0.46. Measured 9 T versus extrapolated 95–136 T; no SQUID measurement.\n### Ref source-14d1e9e0097f7ffb\n\n[R7] Ambient-pressure 151-K superconductivity in HgBa2Ca2Cu3O8+δ via pressure quench (2026). [DOI 10.1073/pnas.2536178123](https://doi.org/10.1073/pnas.2536178123). Publication: journal-article. Check: published-abstract-and-introductory-protocol-only. Checked: 2026-10-18. Published online 9 March 2026; issue 17 March. Abstract and introduction through three-stage pressure-quench protocol read. Subsequent access returned a browser challenge; detailed transition criterion, figures and recovery data were not checked. No accepted transition-temperature record is added from this limited reading.\n### Ref source-ba10e800a1246bf6\n\n[R8] Theory of Superconductivity (1957). [DOI 10.1103/PhysRev.108.1175](https://doi.org/10.1103/PhysRev.108.1175). Publication: journal-article. Check: primary-full-text-scoped-check. Checked: 2026-10-18. Reused B1 scoped primary reading with unchanged limitations. Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review.\n\n## Claim evidence and conditions\n\n### scwiki-e1-claim-scope-1\n\nPressure changes interatomic distances, electronic bandwidths, lattice vibrations and phase stability. It can also change the material itself through structural conversion or chemical reaction. A diamond anvil cell identifies an apparatus; it does not establish a purely hydrostatic stress state at the sample. Pressure medium, temperature, loading history and sample geometry belong to every quantitative comparison.\n\nEvidence: experiment. Sources: source-c1c9ef4bc5cf71dd, source-a631bcd83d23567b, source-8b901b9c6008c434.\n\nConditions: Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.\n\nVerification scope: Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open.\n\n### scwiki-e1-claim-scope-2\n\nThis article concerns measurements while pressure is applied. A state retained after rapid pressure release has a different thermodynamic and kinetic history. Deng's 2026 pressure-quench paper explicitly separates creating a phase under load, releasing pressure and characterizing the recovered state. Its reported 151 K scale must not be pooled with an in-situ pressure curve. Here only its abstract and introductory protocol are checked; the detailed transition criterion and recovery evidence require a separate review.\n\nEvidence: experiment. Sources: source-14d1e9e0097f7ffb.\n\nConditions: Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.\n\nVerification scope: Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open.\n\n### scwiki-e1-claim-mathematical-assumptions-1\n\nWith tensile stress positive, define $P=-\\mathrm{tr}(\\sigma)/3$ and $s_{ij}=\\sigma_{ij}+P\\delta_{ij}$. Then $\\sigma_{ij}=-P\\delta_{ij}+s_{ij}$ with $\\mathrm{tr}(s)=0$. Hydrostatic stress has $s=0$; equal mean pressure does not imply equal deviatoric stress. For a symmetric stress tensor, $\\sqrt{3s_{ij}s_{ij}/2}$ is a rotationally invariant scalar measure of deviatoric magnitude. It summarizes stress anisotropy, but does not identify its orientation or predict superconductivity. These definitions and rotation identities were checked on illustrative tensors.\n\nEvidence: theory. Sources: source-c1c9ef4bc5cf71dd.\n\nConditions: Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.\n\nVerification scope: Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open.\n\n### scwiki-e1-claim-mathematical-assumptions-2\n\nA measured pressure dependence is a path through several changing variables. Within a differentiable single phase, $dT_c/dP=\\sum_a(\\partial T_c/\\partial x_a)(dx_a/dP)$ is a chain rule, not evidence that any one variable causes pairing. Phase conversion, hysteresis or a changed resistance criterion can invalidate a single smooth derivative across the whole dataset. Even an ideal dome has different local slopes on opposite sides of its maximum.\n\nEvidence: theory. Sources: source-a631bcd83d23567b, source-df0c15d62982f853.\n\nConditions: Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.\n\nVerification scope: Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open.\n\n### scwiki-e1-claim-mathematical-assumptions-3\n\nIn the simplified weak-coupling expression $T_c=A\\omega\\exp(-1/\\lambda)$, holding A fixed gives $d\\ln T_c/dP=d\\ln\\omega/dP+\\lambda^{-2}d\\lambda/dP$. A rising frequency can therefore compete with decreasing coupling. This illustration neglects the Coulomb term, strong-coupling corrections, multiple bands and structural changes; it is not a quantitative model for the hydrides or FeSe. Numerical differentiation checks the stated algebra only.\n\nEvidence: theory. Sources: source-ba10e800a1246bf6, source-8b901b9c6008c434.\n\nConditions: Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.\n\nVerification scope: Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open.\n\n### scwiki-e1-claim-experimental-criteria-1\n\nTorikachvili and colleagues used sample-resistance anomalies, cross-checked against manganin, to locate freezing-related changes in pressure media. Their room-temperature manganin calibration and low-temperature Pb manometer are distinct measurements. Between 300 and 90 K, pressure was estimated by interpolation; below 90 K it was assumed constant. Data used for the anomaly analysis came from slow warming near 0.35 K per minute. These details prevent the loading pressure from silently becoming the pressure at every temperature. The silicone-oil freezing points were not unambiguously determined.\n\nEvidence: experiment. Sources: source-c1c9ef4bc5cf71dd.\n\nConditions: Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.\n\nVerification scope: Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open.\n\n### scwiki-e1-claim-experimental-criteria-2\n\nMedvedev's Fe1.01Se study reports an approximately 36.7 K resistive transition at 8.9 GPa and a decrease at higher pressures. At 15 GPa the roughly 25 K transition did not reach zero resistance, in a mixed-phase regime. The selected transport Methods describe DC van der Pauw measurements, ruby checks at both room and low temperature and a reported spatial pressure spread no greater than 0.05 GPa. Silicone oil is specified in the separate Mössbauer paragraph; this review does not assign that medium to transport without evidence.\n\nEvidence: experiment. Sources: source-a631bcd83d23567b.\n\nConditions: Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.\n\nVerification scope: Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open.\n\n### scwiki-e1-claim-experimental-criteria-3\n\nGao's original abstract reports resistive measurements of mercury cuprates under quasihydrostatic pressures and a maximum of 164 K for the three-layer member. It does not, at this checked scope, establish a zero-resistance or thermodynamic criterion. The full 1994 methods remain inaccessible here, so no more precise criterion is manufactured for the material record. A family trend in that report is not a universal positive pressure coefficient for superconductors.\n\nEvidence: experiment. Sources: source-6d09a24a26a15997.\n\nConditions: Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.\n\nVerification scope: Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open.\n\n### scwiki-e1-claim-experimental-criteria-4\n\nThe bilayer nickelate report combines resistance signatures with a separate magnetic experiment. Its checked methods use KBr and room-temperature ruby calibration; residual resistance and sample-specific onset criteria remain explicit. In sulfur and lanthanum hydrides, pressure also helps produce or stabilize the hydrogen-rich phases being measured. Pairing a transport curve with a proposed structure requires attention to synthesis history, phase fractions and the conditions of each probe.\n\nEvidence: experiment. Sources: source-df0c15d62982f853, source-8b901b9c6008c434, source-1e6e868a12cdd34f.\n\nConditions: Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.\n\nVerification scope: Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open.\n\n### scwiki-e1-claim-limits-and-disputes-1\n\nA small spread in pressure inferred from calibrant readings does not reconstruct the full sample stress tensor. Conversely, a frozen medium need not produce the same shear stress in every geometry. Hydrostaticity is an experimental condition to assess, not a binary quality label inferred solely from the material name. The freezing study's calibration assumptions and unresolved oil anomalies should remain attached to any reuse of its data.\n\nEvidence: experiment. Sources: source-c1c9ef4bc5cf71dd.\n\nConditions: Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.\n\nVerification scope: Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open.\n\n### scwiki-e1-claim-limits-and-disputes-2\n\nOnset, midpoint, zero resistance and magnetic or thermodynamic signatures answer different questions. The high-pressure FeSe curves broaden and coexist with a structurally transformed fraction; a surviving conducting path is not a direct bulk-volume measurement. Likewise, a structural measurement at room temperature cannot by itself establish the complete structure at a low-temperature transition. This entry retains the historical report's conditions without generalizing its magnetic conclusions to every later FeSe experiment.\n\nEvidence: experiment. Sources: source-a631bcd83d23567b, source-df0c15d62982f853.\n\nConditions: Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.\n\nVerification scope: Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open.\n\n### scwiki-e1-claim-discovery-implications-1\n\nDesign a pressure series around explicit alternatives: distinguish an electronic crossover from a structural transformation, a pressure gradient from intrinsic broadening, and a reversible response from kinetic trapping. Combine loading and unloading curves with pressure calibration near the measurement temperature, and compare transport with structural or magnetic probes wherever feasible. Differences between probes are evidence to explain, not numbers to average away.\n\nEvidence: theory. Sources: source-c1c9ef4bc5cf71dd, source-a631bcd83d23567b, source-df0c15d62982f853.\n\nConditions: Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.\n\nVerification scope: Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open.\n\n### scwiki-e1-claim-discovery-implications-2\n\nFor transferable discovery records, preserve composition, pressure interval, medium, calibrant, temperature, protocol and transition criterion. Quote a slope only over its stated phase and pressure interval. Keep ambient recovered states, in-situ high-pressure phases and theoretical estimates separately searchable. Pressure can expose useful physics without guaranteeing a recoverable ambient material or a technologically useful conductor.\n\nEvidence: theory. Sources: source-8b901b9c6008c434, source-1e6e868a12cdd34f, source-14d1e9e0097f7ffb.\n\nConditions: Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.\n\nVerification scope: Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open.\n\n## Revision and review\n\nArticle ID: scwiki-e1. Revision: 3f6c6b21076f8357faf1. Updated: 2026-10-18T12:19:32.213972+00:00.\n\nReview scope: Selected pressure-medium calibration and FeSe author passages, original Gao abstract, prior nickelate/hydride checks and the introductory pressure-quench protocol.\n\n- Complete scientific acceptance, final-version comparisons and raw-data reproduction remain open.\n- Gao1994 full methods remain inaccessible; no exact onset/zero criterion is assigned from the abstract.\n- Deng2026 detailed criterion and recovered-state data were not checked after access became unavailable.\n- Tensor and derivative calculations are illustrative identities, not sample-stress reconstruction or material predictions.\n\nSource: [E_tuning_parameters/E1_hydrostatic_pressure.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/E_tuning_parameters/E1_hydrostatic_pressure.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 7e3bee876841b6c7d2d11307300d31835641b8458d7c0c9f3e874860a35c9852.\n",
       "wordCount": 915
+    },
+    {
+      "id": "scwiki-e10",
+      "topicId": "scwiki-topic-e10",
+      "code": "E10",
+      "slug": "pressure-quenching",
+      "title": "Pressure quenching: retained states and evidence thresholds",
+      "summary": "Evaluate decompressed metastable states using sample-specific transport, magnetization, preparation paths and storage histories.",
+      "aliases": [
+        "pressure quench",
+        "PQP",
+        "pressure quenching",
+        "metastability",
+        "Hg1223",
+        "Hg-1223"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory"
+      ],
+      "relatedCodes": [
+        "E1",
+        "E2",
+        "E4",
+        "D3",
+        "D5",
+        "D6"
+      ],
+      "editorialStatus": "scoped-check",
+      "contentState": "pilot",
+      "modifiedAt": "2026-10-18T13:41:32.040544+00:00",
+      "review": {
+        "checkedAt": "2026-10-18",
+        "scope": "Selected final Hg1223 text and author figures; cgs disk estimate and illustrative kinetic integration; historical publisher abstracts and selected Kramers original.",
+        "limitations": [
+          "Complete scientific acceptance, raw-data and final supplementary comparison remain open.",
+          "Independent replication has not been verified in this review.",
+          "Gao and Schilling are publisher-abstract checks, not full primary methods audits.",
+          "No material-specific retention barrier, lifetime or universal pressure-quench mechanism is calculated."
+        ]
+      },
+      "provenance": {
+        "repository": "JackZH26/jzis-superconductivity",
+        "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+        "path": "E_tuning_parameters/E10_pressure_quenching.md",
+        "sha256": "9012460f69dd462da21bd90202c820c8c26289398853363b7a09ba7f2f67260b",
+        "sourceId": "file-9d3d58e8e6e047b4"
+      },
+      "references": [
+        {
+          "id": "source-6d09a24a26a15997",
+          "doi": "10.1103/PhysRevB.50.4260",
+          "title": "Superconductivity up to 164 K in HgBa2Cam−1CumO2m+2+δ (m=1, 2, and 3) under quasihydrostatic pressures",
+          "year": 1994,
+          "url": "https://doi.org/10.1103/PhysRevB.50.4260",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-abstract",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.50.4260",
+            "note": "Resistive maximum164K under pressure; exact31GPa point and transition criterion not checked in full original."
+          }
+        },
+        {
+          "id": "source-d95477ebe515f481",
+          "doi": "10.1038/363056a0",
+          "title": "Superconductivity above 130 K in the Hg–Ba–Ca–Cu–O system",
+          "year": 1993,
+          "url": "https://doi.org/10.1038/363056a0",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-abstract-and-bibliography",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.nature.com/articles/363056a0",
+            "note": "Published6May1993,Nature363,56–58. Original abstract magnetic/resistive context only; full methods not reviewed."
+          }
+        },
+        {
+          "id": "source-14d1e9e0097f7ffb",
+          "doi": "10.1073/pnas.2536178123",
+          "title": "Ambient-pressure 151-K superconductivity in HgBa2Ca2Cu3O8+δ via pressure quench",
+          "year": 2026,
+          "url": "https://doi.org/10.1073/pnas.2536178123",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-final-text-and-author-figures",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12993975/",
+            "note": "Final selected PMC methods/results checked; author2603.12437v1 pp9,15,21,24,25 visually checked. Online9March2026; authorv1 12March2026. Final SI comparison,rawdata and replication remain open."
+          }
+        },
+        {
+          "id": "source-26d03be9d47579df",
+          "doi": "10.1016/S0031-8914(40)90098-2",
+          "title": "Brownian motion in a field of force and the diffusion model of chemical reactions",
+          "year": 1940,
+          "url": "https://doi.org/10.1016/S0031-8914(40)90098-2",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-original-classical-escape-analysis",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.mit.edu/~kardar/research/seminars/translocation/Kramers1940.pdf",
+            "note": "Original introduction and selected sections5–6 pp291–293,299–301 read as extracted text. Large-barrier classical escape and damping limits; no material-specific application validated."
+          }
+        }
+      ],
+      "claims": [
+        {
+          "id": "scwiki-e10-claim-scope-1",
+          "sectionId": "scope",
+          "statement": "Pressure quenching is a preparation path: establish a state under pressure, cool while maintaining load, release pressure at a chosen temperature, then measure the recovered specimen. Quench pressure and measurement pressure are different fields. A retained state may be metastable, and its properties depend on unloading, defects and subsequent temperature excursions. This topic concerns decompressed specimens; superconductivity measured under load belongs to pressure tuning.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-14d1e9e0097f7ffb"
+          ],
+          "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
+          "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+        },
+        {
+          "id": "scwiki-e10-claim-scope-2",
+          "sectionId": "scope",
+          "statement": "Schilling's 1993 discovery paper reports magnetic and resistive evidence around 133 K in Hg-based cuprates. Gao's 1994 study reports resistive superconductivity up to 164 K under quasihydrostatic pressure. Those publisher abstracts establish historical context here, not a verified pressure-specific zero-resistance criterion. They do not establish that the high-pressure state survives unloading.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-6d09a24a26a15997",
+            "source-d95477ebe515f481"
+          ],
+          "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
+          "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+        },
+        {
+          "id": "scwiki-e10-claim-mathematical-assumptions-1",
+          "sectionId": "mathematical-assumptions",
+          "statement": "An illustrative kinetic model assigns a retained fraction $x$ a one-way escape rate $\\Gamma$: $\\dot x=-\\Gamma x$, hence $x(t)=x(0)\\exp[-\\int_0^t\\Gamma(P(t'),T(t'))dt']$. A thermally activated approximation is $\\Gamma=\\Gamma_0\\exp[-\\Delta G^\\ddagger/(k_BT)]$. The prefactor has units of inverse time; the integral is dimensionless. This assumes a single effective barrier and negligible repopulation. Kramers' classical escape analysis also makes the prefactor depend on damping; it does not justify ignoring tunneling, barrier distributions or transformations involving nucleation and growth. No Hg-1223 barrier or lifetime is extracted here.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-26d03be9d47579df"
+          ],
+          "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
+          "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+        },
+        {
+          "id": "scwiki-e10-claim-mathematical-assumptions-2",
+          "sectionId": "mathematical-assumptions",
+          "statement": "For the retrieved Hg-1223 specimen, the authors estimate a shielding fraction using a thin-disk geometry: $f\\simeq\\pi|M|/(Hr^3)$ with their cgs moment/field convention. Taking $|M|/H=1.9\\times10^{-8}$ emu/Oe and effective radius $r=42.5$ micrometres gives $f\\approx0.778$. This reproduces the reported arithmetic, not an independent volume measurement. Because $f\\propto r^{-3}$, a hypothetical radius change of ±5% gives roughly 67–91%; that sensitivity interval is not a reported confidence interval. Thickness cancels only within the stated disk approximation. Background subtraction, irregular shape, penetration and flux pinning still matter.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-14d1e9e0097f7ffb"
+          ],
+          "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
+          "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+        },
+        {
+          "id": "scwiki-e10-claim-experimental-criteria-1",
+          "sectionId": "experimental-criteria",
+          "statement": "Deng and colleagues' 2026 paper defines its quoted transition temperatures as resistive onsets using the temperature derivative. Author Figure 2 compares five quench experiments: S1 at 26.0 GPa/77 K retained 139 K; S1 at 28.4 GPa/4.2 K retained 147 K; S2 at 10.1 GPa/4.2 K retained 147 K; S3 at 10.9 GPa/4.2 K retained 149 K on warming and 148 K on cooling; S4 at 18.9 GPa/4.2 K retained 151 K on warming and 150 K on cooling. These are ambient-pressure measurements after quenching, with broad transitions. The highest onset is not a measured 151 K zero-resistance threshold. Multiple runs from this group are not independent laboratory replication.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-14d1e9e0097f7ffb"
+          ],
+          "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
+          "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+        },
+        {
+          "id": "scwiki-e10-claim-experimental-criteria-2",
+          "sectionId": "experimental-criteria",
+          "statement": "Magnetization was measured on retrieved S2 after its 10.1 GPa/4.2 K preparation and subsequent handling. Its magnetic transition was near 140 K in a 10 Oe field; the approximately 78% estimate applies at 70 K. It must not be transferred to S4 at 151 K. Author Figure S6 multiplies the post-quench curve by ten for display; its specimen photograph is approximately 104 by 66 micrometres. Comparing plotted amplitudes without the scale correction would give a misleading fraction.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-14d1e9e0097f7ffb"
+          ],
+          "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
+          "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+        },
+        {
+          "id": "scwiki-e10-claim-experimental-criteria-3",
+          "sectionId": "experimental-criteria",
+          "statement": "The stability experiment used S3, initially near 149 K: storage at 77 K for up to three days and excursions to 160–170 K caused a slight decrease. A separate S2 cycle to 293 K lowered its onset from about 147 K to 143 K. Cold-storage survival does not establish a room-temperature shelf life for the 151 K specimen. In S5 after a 29.7 GPa/4.2 K quench, a broad warming anomaly extended to about 172 K, disappeared on subsequent cooling after a 180–193 K excursion, and was not reproduced. This entry records 172 K as an unassigned anomaly, with no searchable superconducting transition temperature.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-14d1e9e0097f7ffb"
+          ],
+          "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
+          "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+        },
+        {
+          "id": "scwiki-e10-claim-experimental-criteria-4",
+          "sectionId": "experimental-criteria",
+          "statement": "The transport methods use van der Pauw contacts, a solid cubic-boron-nitride pressure medium and room-temperature ruby-fluorescence/diamond-Raman pressure calibration. Screws were released while cold. These details should accompany the preparation path; a generic label such as hydrostatic pressure is insufficient for the actual stress environment. The release rate has not been quantitatively reconstructed in this review.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-14d1e9e0097f7ffb"
+          ],
+          "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
+          "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+        },
+        {
+          "id": "scwiki-e10-claim-limits-and-disputes-1",
+          "sectionId": "limits-and-disputes",
+          "statement": "The reported tetragonal structure persists in diffraction measurements up to 15 GPa, while recovered peaks broaden and lattice parameters change slightly. Those observations do not establish identical microscopic states before and after quenching. Calculated phonon stability in the tested model and a possible electronic Lifshitz feature are candidate explanations, not a measurement of the pairing cause or proof of global thermodynamic stability. No independent replication has been verified in this review; that is a review limitation, not proof that none exists.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-14d1e9e0097f7ffb"
+          ],
+          "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
+          "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+        },
+        {
+          "id": "scwiki-e10-claim-limits-and-disputes-2",
+          "sectionId": "limits-and-disputes",
+          "statement": "The journal article was published online on 9 March 2026; the checked author manuscript is arXiv v1 dated 12 March. Selected final PMC text was compared with author transport/magnetization methods and Figures 2, S2, S5 and S6. Final supplementary-file comparison, raw-data reanalysis and complete scientific acceptance remain open. The inherited bibliography names X. Deng; the published first author is Liangzi Deng. Gao and Schilling remain abstract-level checks here. Kramers supplies a simplified classical model, not a validated mechanism for this material.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-6d09a24a26a15997",
+            "source-d95477ebe515f481",
+            "source-14d1e9e0097f7ffb",
+            "source-26d03be9d47579df"
+          ],
+          "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
+          "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+        },
+        {
+          "id": "scwiki-e10-claim-discovery-implications-1",
+          "sectionId": "discovery-implications",
+          "statement": "A useful follow-up tracks the same specimen before loading, under load and after release, combining transport, magnetism, composition and structure. Publish the complete pressure–temperature–time path, repeat cycles and failure cases, and measure retention versus temperature and time. Search records should distinguish preparation pressure from observation pressure and retain onset, zero-resistance, magnetic and unassigned-anomaly criteria separately. Applying this strategy to a different material is a proposal requiring new evidence; success in Hg-1223 does not guarantee a retained hydride or nickelate phase.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-14d1e9e0097f7ffb",
+            "source-26d03be9d47579df"
+          ],
+          "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
+          "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+        }
+      ],
+      "corrections": [
+        {
+          "id": "scwiki-e10-correction-1",
+          "description": "The inherited bibliography attributes the2026 paper to X.Deng; the published first author is Liangzi Deng. Original pinned bytes retained.",
+          "sourceId": "source-14d1e9e0097f7ffb",
+          "scope": "Published author identity.",
+          "targetSectionId": "limits-and-disputes"
+        }
+      ],
+      "equationChecks": [
+        {
+          "targetSectionId": "mathematical-assumptions",
+          "tex": "x(t)=x(0)\\exp[-\\int_0^t\\Gamma(t\\prime)dt\\prime]",
+          "check": "Three illustrative piecewise hazard histories checked against independent RK4 integration; no fitted material lifetime."
+        },
+        {
+          "targetSectionId": "mathematical-assumptions",
+          "tex": "f\\simeq\\pi|M|/(Hr^3)",
+          "check": "Three thickness/volume reconstructions and hypothetical radius sensitivity; reported cgs convention only."
+        }
+      ],
+      "materialCases": [
+        {
+          "id": "scwiki-e10-material-1",
+          "formula": "HgBa2Ca2Cu3O8+δ",
+          "sample": "Deng S1 experiment1; PQ26.0GPa at77.0K",
+          "recordType": "experiment",
+          "reportedTemperatureK": 139,
+          "tcK": 139,
+          "temperatureKind": "transition",
+          "temperatureNote": "Ambient onset after pressure quench; reported retained onset. Not zero resistance.",
+          "criterion": "resistive-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "metastable",
+          "probe": "Resistance derivative",
+          "sourceId": "source-14d1e9e0097f7ffb",
+          "aliases": [
+            "Hg-1223",
+            "Hg1223",
+            "Deng S1"
+          ]
+        },
+        {
+          "id": "scwiki-e10-material-2",
+          "formula": "HgBa2Ca2Cu3O8+δ",
+          "sample": "Deng S1 experiment2; PQ28.4GPa at4.2K",
+          "recordType": "experiment",
+          "reportedTemperatureK": 147,
+          "tcK": 147,
+          "temperatureKind": "transition",
+          "temperatureNote": "Ambient onset after pressure quench; reported retained onset. Not zero resistance.",
+          "criterion": "resistive-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "metastable",
+          "probe": "Resistance derivative",
+          "sourceId": "source-14d1e9e0097f7ffb",
+          "aliases": [
+            "Hg-1223",
+            "Hg1223",
+            "Deng S1"
+          ]
+        },
+        {
+          "id": "scwiki-e10-material-3",
+          "formula": "HgBa2Ca2Cu3O8+δ",
+          "sample": "Deng S2 experiment3; PQ10.1GPa at4.2K",
+          "recordType": "experiment",
+          "reportedTemperatureK": 147,
+          "tcK": 147,
+          "temperatureKind": "transition",
+          "temperatureNote": "Ambient onset after pressure quench; reported retained onset. Not zero resistance.",
+          "criterion": "resistive-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "metastable",
+          "probe": "Resistance derivative",
+          "sourceId": "source-14d1e9e0097f7ffb",
+          "aliases": [
+            "Hg-1223",
+            "Hg1223",
+            "Deng S2"
+          ]
+        },
+        {
+          "id": "scwiki-e10-material-4",
+          "formula": "HgBa2Ca2Cu3O8+δ",
+          "sample": "Deng S3 experiment4; PQ10.9GPa at4.2K",
+          "recordType": "experiment",
+          "reportedTemperatureK": 149,
+          "tcK": 149,
+          "temperatureKind": "transition",
+          "temperatureNote": "Ambient onset after pressure quench; warming149.0K/cooling148.0K. Not zero resistance.",
+          "criterion": "resistive-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "metastable",
+          "probe": "Resistance derivative",
+          "sourceId": "source-14d1e9e0097f7ffb",
+          "aliases": [
+            "Hg-1223",
+            "Hg1223",
+            "Deng S3"
+          ]
+        },
+        {
+          "id": "scwiki-e10-material-5",
+          "formula": "HgBa2Ca2Cu3O8+δ",
+          "sample": "Deng S4 experiment5; PQ18.9GPa at4.2K",
+          "recordType": "experiment",
+          "reportedTemperatureK": 151,
+          "tcK": 151,
+          "temperatureKind": "transition",
+          "temperatureNote": "Ambient onset after pressure quench; warming151.0K/cooling150.0K. Not zero resistance.",
+          "criterion": "resistive-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "metastable",
+          "probe": "Resistance derivative",
+          "sourceId": "source-14d1e9e0097f7ffb",
+          "aliases": [
+            "Hg-1223",
+            "Hg1223",
+            "Deng S4"
+          ]
+        },
+        {
+          "id": "scwiki-e10-material-6",
+          "formula": "HgBa2Ca2Cu3O8+δ",
+          "sample": "Deng S2 retrieved after PQ10.1GPa/4.2K",
+          "recordType": "experiment",
+          "reportedTemperatureK": 140,
+          "tcK": 140,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate magnetic transition after retrieval; separate from S4 transport.",
+          "criterion": "magnetic-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "metastable",
+          "probe": "Magnetization at10Oe",
+          "sourceId": "source-14d1e9e0097f7ffb",
+          "aliases": [
+            "Hg-1223",
+            "Hg1223",
+            "Deng S2 magnetization"
+          ]
+        },
+        {
+          "id": "scwiki-e10-material-7",
+          "formula": "HgBa2Ca2Cu3O8+δ",
+          "sample": "Deng S2 shielding estimate",
+          "recordType": "experiment",
+          "reportedTemperatureK": 70,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Estimated78% at70K,not at151K; disk approximation.",
+          "criterion": "shielding-estimate-temperature",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "metastable",
+          "probe": "Magnetization at10Oe",
+          "sourceId": "source-14d1e9e0097f7ffb",
+          "aliases": [
+            "Hg-1223",
+            "Hg1223",
+            "Deng S2 magnetization"
+          ]
+        },
+        {
+          "id": "scwiki-e10-material-8",
+          "formula": "HgBa2Ca2Cu3O8+δ",
+          "sample": "Deng S5 after PQ29.7GPa/4.2K",
+          "recordType": "experiment",
+          "reportedTemperatureK": 172,
+          "tcK": null,
+          "temperatureKind": "unassigned",
+          "temperatureNote": "Broad one-time anomaly not reproduced; no confirmedTc.",
+          "criterion": "unreproduced-resistive-anomaly",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Resistance on warming",
+          "sourceId": "source-14d1e9e0097f7ffb",
+          "aliases": [
+            "Hg-1223",
+            "Hg1223",
+            "Deng S5"
+          ]
+        },
+        {
+          "id": "scwiki-e10-material-9",
+          "formula": "HgBa2Ca2Cu3O8+δ",
+          "sample": "Deng S3 storage protocol",
+          "recordType": "experiment",
+          "reportedTemperatureK": 77,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Up to3days at77K; not room-temperature lifetime.",
+          "criterion": "storage-temperature",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "metastable",
+          "probe": "Resistance after cold storage",
+          "sourceId": "source-14d1e9e0097f7ffb",
+          "aliases": [
+            "Hg-1223",
+            "Hg1223",
+            "Deng S3"
+          ]
+        }
+      ],
+      "sourceMap": [
+        {
+          "startLine": 1,
+          "endLine": 75,
+          "targetSections": [
+            "scope",
+            "mathematical-assumptions",
+            "experimental-criteria",
+            "limits-and-disputes",
+            "discovery-implications",
+            "related-topics"
+          ],
+          "decision": "edited-with-scoped-evidence",
+          "note": "Pinned source preserved; corrected author identity and bound temperature/pressure/storage to measured specimens."
+        }
+      ],
+      "body": "## Scope\n\nPressure quenching is a preparation path: establish a state under pressure, cool while maintaining load, release pressure at a chosen temperature, then measure the recovered specimen. Quench pressure and measurement pressure are different fields. A retained state may be metastable, and its properties depend on unloading, defects and subsequent temperature excursions. This topic concerns decompressed specimens; superconductivity measured under load belongs to pressure tuning. [R3](#ref-source-14d1e9e0097f7ffb)\n\nSchilling's 1993 discovery paper reports magnetic and resistive evidence around 133 K in Hg-based cuprates. Gao's 1994 study reports resistive superconductivity up to 164 K under quasihydrostatic pressure. Those publisher abstracts establish historical context here, not a verified pressure-specific zero-resistance criterion. They do not establish that the high-pressure state survives unloading. [R1](#ref-source-6d09a24a26a15997) [R2](#ref-source-d95477ebe515f481)\n\n## Mathematical assumptions\n\nAn illustrative kinetic model assigns a retained fraction $x$ a one-way escape rate $\\Gamma$: $\\dot x=-\\Gamma x$, hence $x(t)=x(0)\\exp[-\\int_0^t\\Gamma(P(t'),T(t'))dt']$. A thermally activated approximation is $\\Gamma=\\Gamma_0\\exp[-\\Delta G^\\ddagger/(k_BT)]$. The prefactor has units of inverse time; the integral is dimensionless. This assumes a single effective barrier and negligible repopulation. Kramers' classical escape analysis also makes the prefactor depend on damping; it does not justify ignoring tunneling, barrier distributions or transformations involving nucleation and growth. No Hg-1223 barrier or lifetime is extracted here. [R4](#ref-source-26d03be9d47579df)\n\nFor the retrieved Hg-1223 specimen, the authors estimate a shielding fraction using a thin-disk geometry: $f\\simeq\\pi|M|/(Hr^3)$ with their cgs moment/field convention. Taking $|M|/H=1.9\\times10^{-8}$ emu/Oe and effective radius $r=42.5$ micrometres gives $f\\approx0.778$. This reproduces the reported arithmetic, not an independent volume measurement. Because $f\\propto r^{-3}$, a hypothetical radius change of ±5% gives roughly 67–91%; that sensitivity interval is not a reported confidence interval. Thickness cancels only within the stated disk approximation. Background subtraction, irregular shape, penetration and flux pinning still matter. [R3](#ref-source-14d1e9e0097f7ffb)\n\n## Experimental criteria\n\nDeng and colleagues' 2026 paper defines its quoted transition temperatures as resistive onsets using the temperature derivative. Author Figure 2 compares five quench experiments: S1 at 26.0 GPa/77 K retained 139 K; S1 at 28.4 GPa/4.2 K retained 147 K; S2 at 10.1 GPa/4.2 K retained 147 K; S3 at 10.9 GPa/4.2 K retained 149 K on warming and 148 K on cooling; S4 at 18.9 GPa/4.2 K retained 151 K on warming and 150 K on cooling. These are ambient-pressure measurements after quenching, with broad transitions. The highest onset is not a measured 151 K zero-resistance threshold. Multiple runs from this group are not independent laboratory replication. [R3](#ref-source-14d1e9e0097f7ffb)\n\nMagnetization was measured on retrieved S2 after its 10.1 GPa/4.2 K preparation and subsequent handling. Its magnetic transition was near 140 K in a 10 Oe field; the approximately 78% estimate applies at 70 K. It must not be transferred to S4 at 151 K. Author Figure S6 multiplies the post-quench curve by ten for display; its specimen photograph is approximately 104 by 66 micrometres. Comparing plotted amplitudes without the scale correction would give a misleading fraction. [R3](#ref-source-14d1e9e0097f7ffb)\n\nThe stability experiment used S3, initially near 149 K: storage at 77 K for up to three days and excursions to 160–170 K caused a slight decrease. A separate S2 cycle to 293 K lowered its onset from about 147 K to 143 K. Cold-storage survival does not establish a room-temperature shelf life for the 151 K specimen. In S5 after a 29.7 GPa/4.2 K quench, a broad warming anomaly extended to about 172 K, disappeared on subsequent cooling after a 180–193 K excursion, and was not reproduced. This entry records 172 K as an unassigned anomaly, with no searchable superconducting transition temperature. [R3](#ref-source-14d1e9e0097f7ffb)\n\nThe transport methods use van der Pauw contacts, a solid cubic-boron-nitride pressure medium and room-temperature ruby-fluorescence/diamond-Raman pressure calibration. Screws were released while cold. These details should accompany the preparation path; a generic label such as hydrostatic pressure is insufficient for the actual stress environment. The release rate has not been quantitatively reconstructed in this review. [R3](#ref-source-14d1e9e0097f7ffb)\n\n## Limits and disputes\n\nThe reported tetragonal structure persists in diffraction measurements up to 15 GPa, while recovered peaks broaden and lattice parameters change slightly. Those observations do not establish identical microscopic states before and after quenching. Calculated phonon stability in the tested model and a possible electronic Lifshitz feature are candidate explanations, not a measurement of the pairing cause or proof of global thermodynamic stability. No independent replication has been verified in this review; that is a review limitation, not proof that none exists. [R3](#ref-source-14d1e9e0097f7ffb)\n\nThe journal article was published online on 9 March 2026; the checked author manuscript is arXiv v1 dated 12 March. Selected final PMC text was compared with author transport/magnetization methods and Figures 2, S2, S5 and S6. Final supplementary-file comparison, raw-data reanalysis and complete scientific acceptance remain open. The inherited bibliography names X. Deng; the published first author is Liangzi Deng. Gao and Schilling remain abstract-level checks here. Kramers supplies a simplified classical model, not a validated mechanism for this material. [R1](#ref-source-6d09a24a26a15997) [R2](#ref-source-d95477ebe515f481) [R3](#ref-source-14d1e9e0097f7ffb) [R4](#ref-source-26d03be9d47579df)\n\n## Discovery implications\n\nA useful follow-up tracks the same specimen before loading, under load and after release, combining transport, magnetism, composition and structure. Publish the complete pressure–temperature–time path, repeat cycles and failure cases, and measure retention versus temperature and time. Search records should distinguish preparation pressure from observation pressure and retain onset, zero-resistance, magnetic and unassigned-anomaly criteria separately. Applying this strategy to a different material is a proposal requiring new evidence; success in Hg-1223 does not guarantee a retained hydride or nickelate phase. [R3](#ref-source-14d1e9e0097f7ffb) [R4](#ref-source-26d03be9d47579df)\n\n## Related topics\n\nCompare [pressure tuning](/scwiki/pressure-tuning), [strain](/scwiki/strain), [chemical pressure](/scwiki/chemical-doping) and [cuprates](/scwiki/cuprates).",
+      "revision": "019c6cc0cd0d595e2ee7",
+      "sections": [
+        {
+          "id": "scope",
+          "title": "Scope",
+          "markdown": "## Scope\n\nPressure quenching is a preparation path: establish a state under pressure, cool while maintaining load, release pressure at a chosen temperature, then measure the recovered specimen. Quench pressure and measurement pressure are different fields. A retained state may be metastable, and its properties depend on unloading, defects and subsequent temperature excursions. This topic concerns decompressed specimens; superconductivity measured under load belongs to pressure tuning. [R3](#ref-source-14d1e9e0097f7ffb)\n\nSchilling's 1993 discovery paper reports magnetic and resistive evidence around 133 K in Hg-based cuprates. Gao's 1994 study reports resistive superconductivity up to 164 K under quasihydrostatic pressure. Those publisher abstracts establish historical context here, not a verified pressure-specific zero-resistance criterion. They do not establish that the high-pressure state survives unloading. [R1](#ref-source-6d09a24a26a15997) [R2](#ref-source-d95477ebe515f481)"
+        },
+        {
+          "id": "mathematical-assumptions",
+          "title": "Mathematical assumptions",
+          "markdown": "## Mathematical assumptions\n\nAn illustrative kinetic model assigns a retained fraction $x$ a one-way escape rate $\\Gamma$: $\\dot x=-\\Gamma x$, hence $x(t)=x(0)\\exp[-\\int_0^t\\Gamma(P(t'),T(t'))dt']$. A thermally activated approximation is $\\Gamma=\\Gamma_0\\exp[-\\Delta G^\\ddagger/(k_BT)]$. The prefactor has units of inverse time; the integral is dimensionless. This assumes a single effective barrier and negligible repopulation. Kramers' classical escape analysis also makes the prefactor depend on damping; it does not justify ignoring tunneling, barrier distributions or transformations involving nucleation and growth. No Hg-1223 barrier or lifetime is extracted here. [R4](#ref-source-26d03be9d47579df)\n\nFor the retrieved Hg-1223 specimen, the authors estimate a shielding fraction using a thin-disk geometry: $f\\simeq\\pi|M|/(Hr^3)$ with their cgs moment/field convention. Taking $|M|/H=1.9\\times10^{-8}$ emu/Oe and effective radius $r=42.5$ micrometres gives $f\\approx0.778$. This reproduces the reported arithmetic, not an independent volume measurement. Because $f\\propto r^{-3}$, a hypothetical radius change of ±5% gives roughly 67–91%; that sensitivity interval is not a reported confidence interval. Thickness cancels only within the stated disk approximation. Background subtraction, irregular shape, penetration and flux pinning still matter. [R3](#ref-source-14d1e9e0097f7ffb)"
+        },
+        {
+          "id": "experimental-criteria",
+          "title": "Experimental criteria",
+          "markdown": "## Experimental criteria\n\nDeng and colleagues' 2026 paper defines its quoted transition temperatures as resistive onsets using the temperature derivative. Author Figure 2 compares five quench experiments: S1 at 26.0 GPa/77 K retained 139 K; S1 at 28.4 GPa/4.2 K retained 147 K; S2 at 10.1 GPa/4.2 K retained 147 K; S3 at 10.9 GPa/4.2 K retained 149 K on warming and 148 K on cooling; S4 at 18.9 GPa/4.2 K retained 151 K on warming and 150 K on cooling. These are ambient-pressure measurements after quenching, with broad transitions. The highest onset is not a measured 151 K zero-resistance threshold. Multiple runs from this group are not independent laboratory replication. [R3](#ref-source-14d1e9e0097f7ffb)\n\nMagnetization was measured on retrieved S2 after its 10.1 GPa/4.2 K preparation and subsequent handling. Its magnetic transition was near 140 K in a 10 Oe field; the approximately 78% estimate applies at 70 K. It must not be transferred to S4 at 151 K. Author Figure S6 multiplies the post-quench curve by ten for display; its specimen photograph is approximately 104 by 66 micrometres. Comparing plotted amplitudes without the scale correction would give a misleading fraction. [R3](#ref-source-14d1e9e0097f7ffb)\n\nThe stability experiment used S3, initially near 149 K: storage at 77 K for up to three days and excursions to 160–170 K caused a slight decrease. A separate S2 cycle to 293 K lowered its onset from about 147 K to 143 K. Cold-storage survival does not establish a room-temperature shelf life for the 151 K specimen. In S5 after a 29.7 GPa/4.2 K quench, a broad warming anomaly extended to about 172 K, disappeared on subsequent cooling after a 180–193 K excursion, and was not reproduced. This entry records 172 K as an unassigned anomaly, with no searchable superconducting transition temperature. [R3](#ref-source-14d1e9e0097f7ffb)\n\nThe transport methods use van der Pauw contacts, a solid cubic-boron-nitride pressure medium and room-temperature ruby-fluorescence/diamond-Raman pressure calibration. Screws were released while cold. These details should accompany the preparation path; a generic label such as hydrostatic pressure is insufficient for the actual stress environment. The release rate has not been quantitatively reconstructed in this review. [R3](#ref-source-14d1e9e0097f7ffb)"
+        },
+        {
+          "id": "limits-and-disputes",
+          "title": "Limits and disputes",
+          "markdown": "## Limits and disputes\n\nThe reported tetragonal structure persists in diffraction measurements up to 15 GPa, while recovered peaks broaden and lattice parameters change slightly. Those observations do not establish identical microscopic states before and after quenching. Calculated phonon stability in the tested model and a possible electronic Lifshitz feature are candidate explanations, not a measurement of the pairing cause or proof of global thermodynamic stability. No independent replication has been verified in this review; that is a review limitation, not proof that none exists. [R3](#ref-source-14d1e9e0097f7ffb)\n\nThe journal article was published online on 9 March 2026; the checked author manuscript is arXiv v1 dated 12 March. Selected final PMC text was compared with author transport/magnetization methods and Figures 2, S2, S5 and S6. Final supplementary-file comparison, raw-data reanalysis and complete scientific acceptance remain open. The inherited bibliography names X. Deng; the published first author is Liangzi Deng. Gao and Schilling remain abstract-level checks here. Kramers supplies a simplified classical model, not a validated mechanism for this material. [R1](#ref-source-6d09a24a26a15997) [R2](#ref-source-d95477ebe515f481) [R3](#ref-source-14d1e9e0097f7ffb) [R4](#ref-source-26d03be9d47579df)"
+        },
+        {
+          "id": "discovery-implications",
+          "title": "Discovery implications",
+          "markdown": "## Discovery implications\n\nA useful follow-up tracks the same specimen before loading, under load and after release, combining transport, magnetism, composition and structure. Publish the complete pressure–temperature–time path, repeat cycles and failure cases, and measure retention versus temperature and time. Search records should distinguish preparation pressure from observation pressure and retain onset, zero-resistance, magnetic and unassigned-anomaly criteria separately. Applying this strategy to a different material is a proposal requiring new evidence; success in Hg-1223 does not guarantee a retained hydride or nickelate phase. [R3](#ref-source-14d1e9e0097f7ffb) [R4](#ref-source-26d03be9d47579df)"
+        },
+        {
+          "id": "related-topics",
+          "title": "Related topics",
+          "markdown": "## Related topics\n\nCompare [pressure tuning](/scwiki/pressure-tuning), [strain](/scwiki/strain), [chemical pressure](/scwiki/chemical-doping) and [cuprates](/scwiki/cuprates)."
+        },
+        {
+          "id": "material-cases",
+          "title": "Material cases",
+          "markdown": "## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S1); Deng S1 experiment1; PQ26.0GPa at77.0K | 139 K; Ambient onset after pressure quench; reported retained onset. Not zero resistance. | transition; resistive-onset | Resistance derivative | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S1); Deng S1 experiment2; PQ28.4GPa at4.2K | 147 K; Ambient onset after pressure quench; reported retained onset. Not zero resistance. | transition; resistive-onset | Resistance derivative | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S2); Deng S2 experiment3; PQ10.1GPa at4.2K | 147 K; Ambient onset after pressure quench; reported retained onset. Not zero resistance. | transition; resistive-onset | Resistance derivative | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S3); Deng S3 experiment4; PQ10.9GPa at4.2K | 149 K; Ambient onset after pressure quench; warming149.0K/cooling148.0K. Not zero resistance. | transition; resistive-onset | Resistance derivative | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S4); Deng S4 experiment5; PQ18.9GPa at4.2K | 151 K; Ambient onset after pressure quench; warming151.0K/cooling150.0K. Not zero resistance. | transition; resistive-onset | Resistance derivative | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S2 magnetization); Deng S2 retrieved after PQ10.1GPa/4.2K | 140 K; Approximate magnetic transition after retrieval; separate from S4 transport. | transition; magnetic-onset | Magnetization at10Oe | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S2 magnetization); Deng S2 shielding estimate | 70 K; Estimated78% at70K,not at151K; disk approximation. | measurement; shielding-estimate-temperature | Magnetization at10Oe | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S5); Deng S5 after PQ29.7GPa/4.2K | 172 K; Broad one-time anomaly not reproduced; no confirmedTc. | unassigned; unreproduced-resistive-anomaly | Resistance on warming | ambient; unknown GPa | unknown | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S3); Deng S3 storage protocol | 77 K; Up to3days at77K; not room-temperature lifetime. | measurement; storage-temperature | Resistance after cold storage | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |"
+        }
+      ],
+      "markdown": "# Pressure quenching: retained states and evidence thresholds\n\nEvaluate decompressed metastable states using sample-specific transport, magnetization, preparation paths and storage histories.\n\n## Scope\n\nPressure quenching is a preparation path: establish a state under pressure, cool while maintaining load, release pressure at a chosen temperature, then measure the recovered specimen. Quench pressure and measurement pressure are different fields. A retained state may be metastable, and its properties depend on unloading, defects and subsequent temperature excursions. This topic concerns decompressed specimens; superconductivity measured under load belongs to pressure tuning. [R3](#ref-source-14d1e9e0097f7ffb)\n\nSchilling's 1993 discovery paper reports magnetic and resistive evidence around 133 K in Hg-based cuprates. Gao's 1994 study reports resistive superconductivity up to 164 K under quasihydrostatic pressure. Those publisher abstracts establish historical context here, not a verified pressure-specific zero-resistance criterion. They do not establish that the high-pressure state survives unloading. [R1](#ref-source-6d09a24a26a15997) [R2](#ref-source-d95477ebe515f481)\n\n## Mathematical assumptions\n\nAn illustrative kinetic model assigns a retained fraction $x$ a one-way escape rate $\\Gamma$: $\\dot x=-\\Gamma x$, hence $x(t)=x(0)\\exp[-\\int_0^t\\Gamma(P(t'),T(t'))dt']$. A thermally activated approximation is $\\Gamma=\\Gamma_0\\exp[-\\Delta G^\\ddagger/(k_BT)]$. The prefactor has units of inverse time; the integral is dimensionless. This assumes a single effective barrier and negligible repopulation. Kramers' classical escape analysis also makes the prefactor depend on damping; it does not justify ignoring tunneling, barrier distributions or transformations involving nucleation and growth. No Hg-1223 barrier or lifetime is extracted here. [R4](#ref-source-26d03be9d47579df)\n\nFor the retrieved Hg-1223 specimen, the authors estimate a shielding fraction using a thin-disk geometry: $f\\simeq\\pi|M|/(Hr^3)$ with their cgs moment/field convention. Taking $|M|/H=1.9\\times10^{-8}$ emu/Oe and effective radius $r=42.5$ micrometres gives $f\\approx0.778$. This reproduces the reported arithmetic, not an independent volume measurement. Because $f\\propto r^{-3}$, a hypothetical radius change of ±5% gives roughly 67–91%; that sensitivity interval is not a reported confidence interval. Thickness cancels only within the stated disk approximation. Background subtraction, irregular shape, penetration and flux pinning still matter. [R3](#ref-source-14d1e9e0097f7ffb)\n\n## Experimental criteria\n\nDeng and colleagues' 2026 paper defines its quoted transition temperatures as resistive onsets using the temperature derivative. Author Figure 2 compares five quench experiments: S1 at 26.0 GPa/77 K retained 139 K; S1 at 28.4 GPa/4.2 K retained 147 K; S2 at 10.1 GPa/4.2 K retained 147 K; S3 at 10.9 GPa/4.2 K retained 149 K on warming and 148 K on cooling; S4 at 18.9 GPa/4.2 K retained 151 K on warming and 150 K on cooling. These are ambient-pressure measurements after quenching, with broad transitions. The highest onset is not a measured 151 K zero-resistance threshold. Multiple runs from this group are not independent laboratory replication. [R3](#ref-source-14d1e9e0097f7ffb)\n\nMagnetization was measured on retrieved S2 after its 10.1 GPa/4.2 K preparation and subsequent handling. Its magnetic transition was near 140 K in a 10 Oe field; the approximately 78% estimate applies at 70 K. It must not be transferred to S4 at 151 K. Author Figure S6 multiplies the post-quench curve by ten for display; its specimen photograph is approximately 104 by 66 micrometres. Comparing plotted amplitudes without the scale correction would give a misleading fraction. [R3](#ref-source-14d1e9e0097f7ffb)\n\nThe stability experiment used S3, initially near 149 K: storage at 77 K for up to three days and excursions to 160–170 K caused a slight decrease. A separate S2 cycle to 293 K lowered its onset from about 147 K to 143 K. Cold-storage survival does not establish a room-temperature shelf life for the 151 K specimen. In S5 after a 29.7 GPa/4.2 K quench, a broad warming anomaly extended to about 172 K, disappeared on subsequent cooling after a 180–193 K excursion, and was not reproduced. This entry records 172 K as an unassigned anomaly, with no searchable superconducting transition temperature. [R3](#ref-source-14d1e9e0097f7ffb)\n\nThe transport methods use van der Pauw contacts, a solid cubic-boron-nitride pressure medium and room-temperature ruby-fluorescence/diamond-Raman pressure calibration. Screws were released while cold. These details should accompany the preparation path; a generic label such as hydrostatic pressure is insufficient for the actual stress environment. The release rate has not been quantitatively reconstructed in this review. [R3](#ref-source-14d1e9e0097f7ffb)\n\n## Limits and disputes\n\nThe reported tetragonal structure persists in diffraction measurements up to 15 GPa, while recovered peaks broaden and lattice parameters change slightly. Those observations do not establish identical microscopic states before and after quenching. Calculated phonon stability in the tested model and a possible electronic Lifshitz feature are candidate explanations, not a measurement of the pairing cause or proof of global thermodynamic stability. No independent replication has been verified in this review; that is a review limitation, not proof that none exists. [R3](#ref-source-14d1e9e0097f7ffb)\n\nThe journal article was published online on 9 March 2026; the checked author manuscript is arXiv v1 dated 12 March. Selected final PMC text was compared with author transport/magnetization methods and Figures 2, S2, S5 and S6. Final supplementary-file comparison, raw-data reanalysis and complete scientific acceptance remain open. The inherited bibliography names X. Deng; the published first author is Liangzi Deng. Gao and Schilling remain abstract-level checks here. Kramers supplies a simplified classical model, not a validated mechanism for this material. [R1](#ref-source-6d09a24a26a15997) [R2](#ref-source-d95477ebe515f481) [R3](#ref-source-14d1e9e0097f7ffb) [R4](#ref-source-26d03be9d47579df)\n\n## Discovery implications\n\nA useful follow-up tracks the same specimen before loading, under load and after release, combining transport, magnetism, composition and structure. Publish the complete pressure–temperature–time path, repeat cycles and failure cases, and measure retention versus temperature and time. Search records should distinguish preparation pressure from observation pressure and retain onset, zero-resistance, magnetic and unassigned-anomaly criteria separately. Applying this strategy to a different material is a proposal requiring new evidence; success in Hg-1223 does not guarantee a retained hydride or nickelate phase. [R3](#ref-source-14d1e9e0097f7ffb) [R4](#ref-source-26d03be9d47579df)\n\n## Related topics\n\nCompare [pressure tuning](/scwiki/pressure-tuning), [strain](/scwiki/strain), [chemical pressure](/scwiki/chemical-doping) and [cuprates](/scwiki/cuprates).\n\n## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S1); Deng S1 experiment1; PQ26.0GPa at77.0K | 139 K; Ambient onset after pressure quench; reported retained onset. Not zero resistance. | transition; resistive-onset | Resistance derivative | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S1); Deng S1 experiment2; PQ28.4GPa at4.2K | 147 K; Ambient onset after pressure quench; reported retained onset. Not zero resistance. | transition; resistive-onset | Resistance derivative | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S2); Deng S2 experiment3; PQ10.1GPa at4.2K | 147 K; Ambient onset after pressure quench; reported retained onset. Not zero resistance. | transition; resistive-onset | Resistance derivative | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S3); Deng S3 experiment4; PQ10.9GPa at4.2K | 149 K; Ambient onset after pressure quench; warming149.0K/cooling148.0K. Not zero resistance. | transition; resistive-onset | Resistance derivative | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S4); Deng S4 experiment5; PQ18.9GPa at4.2K | 151 K; Ambient onset after pressure quench; warming151.0K/cooling150.0K. Not zero resistance. | transition; resistive-onset | Resistance derivative | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S2 magnetization); Deng S2 retrieved after PQ10.1GPa/4.2K | 140 K; Approximate magnetic transition after retrieval; separate from S4 transport. | transition; magnetic-onset | Magnetization at10Oe | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S2 magnetization); Deng S2 shielding estimate | 70 K; Estimated78% at70K,not at151K; disk approximation. | measurement; shielding-estimate-temperature | Magnetization at10Oe | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S5); Deng S5 after PQ29.7GPa/4.2K | 172 K; Broad one-time anomaly not reproduced; no confirmedTc. | unassigned; unreproduced-resistive-anomaly | Resistance on warming | ambient; unknown GPa | unknown | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n| HgBa2Ca2Cu3O8+δ (aliases: Hg-1223, Hg1223, Deng S3); Deng S3 storage protocol | 77 K; Up to3days at77K; not room-temperature lifetime. | measurement; storage-temperature | Resistance after cold storage | ambient; unknown GPa | metastable | experiment; [source](#ref-source-14d1e9e0097f7ffb) |\n\n## Sources\n\n### Ref source-6d09a24a26a15997\n\n[R1] Superconductivity up to 164 K in HgBa2Cam−1CumO2m+2+δ (m=1, 2, and 3) under quasihydrostatic pressures (1994). [DOI 10.1103/PhysRevB.50.4260](https://doi.org/10.1103/PhysRevB.50.4260). Publication: journal-article. Check: publisher-abstract. Checked: 2026-10-18. Resistive maximum164K under pressure; exact31GPa point and transition criterion not checked in full original.\n### Ref source-d95477ebe515f481\n\n[R2] Superconductivity above 130 K in the Hg–Ba–Ca–Cu–O system (1993). [DOI 10.1038/363056a0](https://doi.org/10.1038/363056a0). Publication: journal-article. Check: publisher-abstract-and-bibliography. Checked: 2026-10-18. Published6May1993,Nature363,56–58. Original abstract magnetic/resistive context only; full methods not reviewed.\n### Ref source-14d1e9e0097f7ffb\n\n[R3] Ambient-pressure 151-K superconductivity in HgBa2Ca2Cu3O8+δ via pressure quench (2026). [DOI 10.1073/pnas.2536178123](https://doi.org/10.1073/pnas.2536178123). Publication: journal-article. Check: selected-final-text-and-author-figures. Checked: 2026-10-18. Final selected PMC methods/results checked; author2603.12437v1 pp9,15,21,24,25 visually checked. Online9March2026; authorv1 12March2026. Final SI comparison,rawdata and replication remain open.\n### Ref source-26d03be9d47579df\n\n[R4] Brownian motion in a field of force and the diffusion model of chemical reactions (1940). [DOI 10.1016/S0031-8914(40)90098-2](https://doi.org/10.1016/S0031-8914(40)90098-2). Publication: journal-article. Check: selected-original-classical-escape-analysis. Checked: 2026-10-18. Original introduction and selected sections5–6 pp291–293,299–301 read as extracted text. Large-barrier classical escape and damping limits; no material-specific application validated.\n\n## Claim evidence and conditions\n\n### scwiki-e10-claim-scope-1\n\nPressure quenching is a preparation path: establish a state under pressure, cool while maintaining load, release pressure at a chosen temperature, then measure the recovered specimen. Quench pressure and measurement pressure are different fields. A retained state may be metastable, and its properties depend on unloading, defects and subsequent temperature excursions. This topic concerns decompressed specimens; superconductivity measured under load belongs to pressure tuning.\n\nEvidence: experiment. Sources: source-14d1e9e0097f7ffb.\n\nConditions: Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.\n\nVerification scope: Selected primary passages and bounded arithmetic; complete scientific acceptance open.\n\n### scwiki-e10-claim-scope-2\n\nSchilling's 1993 discovery paper reports magnetic and resistive evidence around 133 K in Hg-based cuprates. Gao's 1994 study reports resistive superconductivity up to 164 K under quasihydrostatic pressure. Those publisher abstracts establish historical context here, not a verified pressure-specific zero-resistance criterion. They do not establish that the high-pressure state survives unloading.\n\nEvidence: experiment. Sources: source-6d09a24a26a15997, source-d95477ebe515f481.\n\nConditions: Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.\n\nVerification scope: Selected primary passages and bounded arithmetic; complete scientific acceptance open.\n\n### scwiki-e10-claim-mathematical-assumptions-1\n\nAn illustrative kinetic model assigns a retained fraction $x$ a one-way escape rate $\\Gamma$: $\\dot x=-\\Gamma x$, hence $x(t)=x(0)\\exp[-\\int_0^t\\Gamma(P(t'),T(t'))dt']$. A thermally activated approximation is $\\Gamma=\\Gamma_0\\exp[-\\Delta G^\\ddagger/(k_BT)]$. The prefactor has units of inverse time; the integral is dimensionless. This assumes a single effective barrier and negligible repopulation. Kramers' classical escape analysis also makes the prefactor depend on damping; it does not justify ignoring tunneling, barrier distributions or transformations involving nucleation and growth. No Hg-1223 barrier or lifetime is extracted here.\n\nEvidence: theory. Sources: source-26d03be9d47579df.\n\nConditions: Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.\n\nVerification scope: Selected primary passages and bounded arithmetic; complete scientific acceptance open.\n\n### scwiki-e10-claim-mathematical-assumptions-2\n\nFor the retrieved Hg-1223 specimen, the authors estimate a shielding fraction using a thin-disk geometry: $f\\simeq\\pi|M|/(Hr^3)$ with their cgs moment/field convention. Taking $|M|/H=1.9\\times10^{-8}$ emu/Oe and effective radius $r=42.5$ micrometres gives $f\\approx0.778$. This reproduces the reported arithmetic, not an independent volume measurement. Because $f\\propto r^{-3}$, a hypothetical radius change of ±5% gives roughly 67–91%; that sensitivity interval is not a reported confidence interval. Thickness cancels only within the stated disk approximation. Background subtraction, irregular shape, penetration and flux pinning still matter.\n\nEvidence: theory. Sources: source-14d1e9e0097f7ffb.\n\nConditions: Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.\n\nVerification scope: Selected primary passages and bounded arithmetic; complete scientific acceptance open.\n\n### scwiki-e10-claim-experimental-criteria-1\n\nDeng and colleagues' 2026 paper defines its quoted transition temperatures as resistive onsets using the temperature derivative. Author Figure 2 compares five quench experiments: S1 at 26.0 GPa/77 K retained 139 K; S1 at 28.4 GPa/4.2 K retained 147 K; S2 at 10.1 GPa/4.2 K retained 147 K; S3 at 10.9 GPa/4.2 K retained 149 K on warming and 148 K on cooling; S4 at 18.9 GPa/4.2 K retained 151 K on warming and 150 K on cooling. These are ambient-pressure measurements after quenching, with broad transitions. The highest onset is not a measured 151 K zero-resistance threshold. Multiple runs from this group are not independent laboratory replication.\n\nEvidence: experiment. Sources: source-14d1e9e0097f7ffb.\n\nConditions: Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.\n\nVerification scope: Selected primary passages and bounded arithmetic; complete scientific acceptance open.\n\n### scwiki-e10-claim-experimental-criteria-2\n\nMagnetization was measured on retrieved S2 after its 10.1 GPa/4.2 K preparation and subsequent handling. Its magnetic transition was near 140 K in a 10 Oe field; the approximately 78% estimate applies at 70 K. It must not be transferred to S4 at 151 K. Author Figure S6 multiplies the post-quench curve by ten for display; its specimen photograph is approximately 104 by 66 micrometres. Comparing plotted amplitudes without the scale correction would give a misleading fraction.\n\nEvidence: experiment. Sources: source-14d1e9e0097f7ffb.\n\nConditions: Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.\n\nVerification scope: Selected primary passages and bounded arithmetic; complete scientific acceptance open.\n\n### scwiki-e10-claim-experimental-criteria-3\n\nThe stability experiment used S3, initially near 149 K: storage at 77 K for up to three days and excursions to 160–170 K caused a slight decrease. A separate S2 cycle to 293 K lowered its onset from about 147 K to 143 K. Cold-storage survival does not establish a room-temperature shelf life for the 151 K specimen. In S5 after a 29.7 GPa/4.2 K quench, a broad warming anomaly extended to about 172 K, disappeared on subsequent cooling after a 180–193 K excursion, and was not reproduced. This entry records 172 K as an unassigned anomaly, with no searchable superconducting transition temperature.\n\nEvidence: experiment. Sources: source-14d1e9e0097f7ffb.\n\nConditions: Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.\n\nVerification scope: Selected primary passages and bounded arithmetic; complete scientific acceptance open.\n\n### scwiki-e10-claim-experimental-criteria-4\n\nThe transport methods use van der Pauw contacts, a solid cubic-boron-nitride pressure medium and room-temperature ruby-fluorescence/diamond-Raman pressure calibration. Screws were released while cold. These details should accompany the preparation path; a generic label such as hydrostatic pressure is insufficient for the actual stress environment. The release rate has not been quantitatively reconstructed in this review.\n\nEvidence: experiment. Sources: source-14d1e9e0097f7ffb.\n\nConditions: Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.\n\nVerification scope: Selected primary passages and bounded arithmetic; complete scientific acceptance open.\n\n### scwiki-e10-claim-limits-and-disputes-1\n\nThe reported tetragonal structure persists in diffraction measurements up to 15 GPa, while recovered peaks broaden and lattice parameters change slightly. Those observations do not establish identical microscopic states before and after quenching. Calculated phonon stability in the tested model and a possible electronic Lifshitz feature are candidate explanations, not a measurement of the pairing cause or proof of global thermodynamic stability. No independent replication has been verified in this review; that is a review limitation, not proof that none exists.\n\nEvidence: experiment. Sources: source-14d1e9e0097f7ffb.\n\nConditions: Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.\n\nVerification scope: Selected primary passages and bounded arithmetic; complete scientific acceptance open.\n\n### scwiki-e10-claim-limits-and-disputes-2\n\nThe journal article was published online on 9 March 2026; the checked author manuscript is arXiv v1 dated 12 March. Selected final PMC text was compared with author transport/magnetization methods and Figures 2, S2, S5 and S6. Final supplementary-file comparison, raw-data reanalysis and complete scientific acceptance remain open. The inherited bibliography names X. Deng; the published first author is Liangzi Deng. Gao and Schilling remain abstract-level checks here. Kramers supplies a simplified classical model, not a validated mechanism for this material.\n\nEvidence: experiment. Sources: source-6d09a24a26a15997, source-d95477ebe515f481, source-14d1e9e0097f7ffb, source-26d03be9d47579df.\n\nConditions: Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.\n\nVerification scope: Selected primary passages and bounded arithmetic; complete scientific acceptance open.\n\n### scwiki-e10-claim-discovery-implications-1\n\nA useful follow-up tracks the same specimen before loading, under load and after release, combining transport, magnetism, composition and structure. Publish the complete pressure–temperature–time path, repeat cycles and failure cases, and measure retention versus temperature and time. Search records should distinguish preparation pressure from observation pressure and retain onset, zero-resistance, magnetic and unassigned-anomaly criteria separately. Applying this strategy to a different material is a proposal requiring new evidence; success in Hg-1223 does not guarantee a retained hydride or nickelate phase.\n\nEvidence: theory. Sources: source-14d1e9e0097f7ffb, source-26d03be9d47579df.\n\nConditions: Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.\n\nVerification scope: Selected primary passages and bounded arithmetic; complete scientific acceptance open.\n\n## Revision and review\n\nArticle ID: scwiki-e10. Revision: 019c6cc0cd0d595e2ee7. Updated: 2026-10-18T13:41:32.040544+00:00.\n\nReview scope: Selected final Hg1223 text and author figures; cgs disk estimate and illustrative kinetic integration; historical publisher abstracts and selected Kramers original.\n\n- Complete scientific acceptance, raw-data and final supplementary comparison remain open.\n- Independent replication has not been verified in this review.\n- Gao and Schilling are publisher-abstract checks, not full primary methods audits.\n- No material-specific retention barrier, lifetime or universal pressure-quench mechanism is calculated.\n\nSource: [E_tuning_parameters/E10_pressure_quenching.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/E_tuning_parameters/E10_pressure_quenching.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 9012460f69dd462da21bd90202c820c8c26289398853363b7a09ba7f2f67260b.\n",
+      "wordCount": 901
     },
     {
       "id": "scwiki-e2",
