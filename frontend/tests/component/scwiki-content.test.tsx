@@ -61,7 +61,28 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
    expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
   }
-  for(const id of ["scwiki-i","scwiki-n1"]){expect((await get(["articles",id])).status).toBe(404);}
+  for(const id of ["scwiki-j","scwiki-n1"]){expect((await get(["articles",id])).status).toBe(404);}
+ });
+
+ it("publishes all fifteen experimental-method sections with individual evidence limits",async()=>{
+  const a=articles().find(a=>a.code==="I")!;
+  expect(a.publicationKind).toBe("handbook");expect(a.slug).toBe("experimental-methods");
+  expect(a.scopeItems?.map(i=>i.id)).toEqual(Array.from({length:15},(_,i)=>"I"+(i+1)));
+  for(const item of a.scopeItems!){
+   expect(item.sectionIds).toEqual([item.id.toLowerCase()]);
+   const response=await get(["articles",a.id,"sections",item.sectionIds[0]]);
+   const data=await response.json();expect(data.scopeItems.map((s:{id:string})=>s.id)).toEqual([item.id]);
+   expect(data.section.markdown).toContain("## "+item.id+" — ");
+   const exported=await(await get(["articles",a.id,"sections",item.sectionIds[0]],"?format=markdown")).text();
+   for(const limit of item.limitations)expect(exported).toContain(limit);
+  }
+  expect(a.materialCases).toEqual([]);
+  for(const query of ["实验方法","中子散射","reciprocal-lattice sum"]){
+   expect(searchArticles(searchIndex().entries,query).some(r=>r.id===a.id)).toBe(true);
+   expect(searchArticles(searchIndex().entries,query,{tcMin:0.01}).some(r=>r.id===a.id)).toBe(false);
+  }
+  expect(a.body).toContain("not a simultaneous demonstration of zero resistance");
+  expect(a.body).toContain("different fields");expect(a.body).toContain("lower bounds on correlation lengths");
  });
 
  it("matches short Han keywords within phrases while keeping short Latin tokens exact",()=>{

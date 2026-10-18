@@ -107,5 +107,22 @@ test("approved question routes preserve provenance and exclude unfinished extens
  await expect(page.getByText("The pinned planning document identifies the approved scope.",{exact:false})).toBeVisible();
  const response=await request.get("/api/scwiki/v1/articles/scwiki-n10/sections/mathematical-assumptions");
  const data=await response.json();expect(data.scopeItems[0].id).toBe("N10");
- for(const path of ["/scwiki/open-questions/n1","/scwiki/open-questions/n11","/scwiki/experimental-methods"]){expect((await request.get(path)).status()).toBe(404);}
+ for(const path of ["/scwiki/open-questions/n1","/scwiki/open-questions/n11","/scwiki/theoretical-tools"]){expect((await request.get(path)).status()).toBe(404);}
+});
+
+test("experimental handbook keeps all approved section links and scoped API exports usable",async({page,request})=>{
+ await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
+ await page.getByRole("link",{name:"Experimental methods",exact:true}).click();
+ await expect(page).toHaveURL(/\/scwiki\/experimental-methods$/);
+ const a=catalogue.articles.find((a:{code:string})=>a.code==="I");
+ for(const item of a.scopeItems){
+  const id=item.sectionIds[0];
+  await page.getByRole('navigation',{name:'Article contents'}).locator('a[href="#'+id+'"]').click();
+  await expect(page.locator('h2#'+id)).toBeInViewport();
+  expect(await page.locator('h2#'+id).evaluate(e=>e.getBoundingClientRect().top)).toBeGreaterThanOrEqual(64);
+  const data=await(await request.get('/api/scwiki/v1/articles/scwiki-i/sections/'+id)).json();
+  expect(data.scopeItems.map((i:{id:string})=>i.id)).toEqual([item.id]);
+ }
+ expect(await page.locator('.katex-error').count()).toBe(0);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
 });
