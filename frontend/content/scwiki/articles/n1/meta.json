@@ -1,0 +1,429 @@
+{
+  "id": "scwiki-n1",
+  "topicId": "scwiki-topic-n1",
+  "code": "N1",
+  "slug": "open-questions/n1",
+  "publicationKind": "open-question",
+  "title": "Is room-temperature superconductivity at ambient pressure possible?",
+  "summary": "An open materials question: distinguish theoretical permission, pairing and phase coherence, preparation pressure, and reproducible experimental evidence.",
+  "aliases": [
+    "room temperature ambient pressure superconductivity",
+    "room-temperature superconductivity",
+    "RTSC",
+    "室温常压超导",
+    "室温超导是否可能",
+    "常温超导"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "B1",
+    "B2",
+    "D6",
+    "E10",
+    "N10",
+    "I"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T20:12:38.438380+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected theoretical assumptions, inherited measurement-specific hydride evidence, rechecked final pressure-quench main text and retraction status, with independent BCS and unit calculations.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "This is a source-bounded assessment, not an exhaustive current world-record or impossibility claim.",
+      "Final pressure-quench supplementary material, raw data and independent replication remain unverified here.",
+      "Inherited references retain their stated abstract, author-version or selected-final-text review limits.",
+      "Conditional model energies do not predict an experimentally accessible material."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "02_BATCH_2_IN_PLAN.md",
+    "sha256": "502293e5ed2fe8463b61a6c5b78a2c33bc33f3265bd36fe534fa2c469e42ff48",
+    "sourceId": "file-49326006ac2c2636"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 137,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    },
+    {
+      "startLine": 138,
+      "endLine": 138,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "pairing-coherence-and-stability",
+        "what-experiments-establish",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "decision": "new-research-for-approved-question",
+      "note": "Planning identifies N1 but is not scientific evidence for the answer."
+    },
+    {
+      "startLine": 139,
+      "endLine": 177,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta(0)/(k_BT_c)=\\pi/e^\\gamma",
+      "check": "Four independently integrated finite-cutoff BCS equations approach the weak-coupling ratio; three SI/eV temperature conversions and BKT stiffness conversions checked. None supplies material input parameters."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-ba10e800a1246bf6",
+      "doi": "10.1103/PhysRev.108.1175",
+      "title": "Theory of Superconductivity",
+      "year": 1957,
+      "url": "https://doi.org/10.1103/PhysRev.108.1175",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/pdf/10.1103/PhysRev.108.1175",
+        "note": "Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review."
+      }
+    },
+    {
+      "id": "source-0620df96ebbf2a66",
+      "doi": "10.1103/PhysRevB.12.905",
+      "title": "Transition temperature of strong-coupled superconductors reanalyzed",
+      "year": 1975,
+      "url": "https://doi.org/10.1103/PhysRevB.12.905",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.12.905",
+        "note": "Publisher abstract: modified prefactor, spectral moment/shape corrections and large-coupling limits within Eliashberg theory. Full derivation and Pb-Bi data not reanalyzed."
+      }
+    },
+    {
+      "id": "source-ba29a1eb0f9df263",
+      "doi": "10.1103/PhysRevLett.92.187002",
+      "title": "Hydrogen Dominant Metallic Alloys: High Temperature Superconductors?",
+      "year": 2004,
+      "url": "https://doi.org/10.1103/PhysRevLett.92.187002",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.92.187002",
+        "note": "Published 6 May 2004. Abstract only; chemical precompression is a proposal, not an ambient-pressure guarantee."
+      }
+    },
+    {
+      "id": "source-8b901b9c6008c434",
+      "doi": "10.1038/nature14964",
+      "title": "Conventional superconductivity at 203 kelvin at high pressures in the sulfur hydride system",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/nature14964",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-and-published-caption-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1506.08190v1",
+        "note": "Published 17 August 2015. Author v1 of 26 June 2015: selected pp. 3/5 and Fig. 4 pp. 11–12, visually checked; publisher abstract and extended captions also checked. Magnetization raw data and background subtraction not independently reproduced."
+      }
+    },
+    {
+      "id": "source-1e6e868a12cdd34f",
+      "doi": "10.1038/s41586-019-1201-8",
+      "title": "Superconductivity at 250 K in lanthanum hydride under high pressures",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41586-019-1201-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-methods-figures-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://public.magnet.fsu.edu/AToth/NSF%20publication%20access/2019/05%20Newly%20Entered%20Pubs%20May%202019/2019%20cited/2019_Superconductivity%20at%20250%20K%20in%20lanthanum%20hydride%20under%20high%20pressures.pdf",
+        "note": "Published online 22 May 2019. Selected printed pp. 528–529, Fig. 4p.531, Methods and deuteride assignment; PDF p. 2 visually checked. Final 249/180 K comparison replaces early 250/168 K; rounded ratio 0.468 differs from stated 0.46. Measured 9 T versus extrapolated 95–136 T; no SQUID measurement."
+      }
+    },
+    {
+      "id": "source-14d1e9e0097f7ffb",
+      "doi": "10.1073/pnas.2536178123",
+      "title": "Ambient-pressure 151-K superconductivity in HgBa2Ca2Cu3O8+δ via pressure quench",
+      "year": 2026,
+      "url": "https://doi.org/10.1073/pnas.2536178123",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-text-and-author-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12993975/",
+        "note": "Final selected PMC methods/results checked; author2603.12437v1 pp9,15,21,24,25 visually checked. Online9March2026; authorv1 12March2026. Final SI comparison,rawdata and replication remain open."
+      }
+    },
+    {
+      "id": "source-a57ef549f45fe74c",
+      "doi": "10.1103/PhysRevX.9.031049",
+      "title": "Bounds on the Superconducting Transition Temperature: Applications to Twisted Bilayer Graphene and Cold Atoms",
+      "year": 2019,
+      "url": "https://doi.org/10.1103/PhysRevX.9.031049",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-bounds-and-anisotropy",
+        "evidenceUrl": "https://journals.aps.org/prx/pdf/10.1103/PhysRevX.9.031049",
+        "note": "Final published 17 September 2019. Selected pp. 2–6 and 10–11; p. 3 equations and conditions visually checked. Peierls coupling, BKT thermodynamic limit, parabolic density convention, monotonicity assumption and input-dependent multiband estimates retained. Appendices A–G and original QMC data not fully reproduced."
+      }
+    },
+    {
+      "id": "source-754d75026e52d9ac",
+      "doi": "10.1038/s41586-022-05294-9",
+      "title": "Retraction Note: Room-temperature superconductivity in a carbonaceous sulfur hydride",
+      "year": 2022,
+      "url": "https://doi.org/10.1038/s41586-022-05294-9",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "complete-retraction-notice-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41586-022-05294-9.pdf",
+        "note": "Published 26 September 2022. Corrected notice read in full; concerns about non-standard user-defined background subtraction. All authors disagreed with retraction."
+      }
+    },
+    {
+      "id": "source-98bc73a5e1c86c78",
+      "doi": "10.1038/s41586-023-06774-2",
+      "title": "Retraction Note: Evidence of near-ambient superconductivity in a N-doped lutetium hydride",
+      "year": 2023,
+      "url": "https://doi.org/10.1038/s41586-023-06774-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "complete-retraction-notice-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41586-023-06774-2.pdf",
+        "note": "Published 7 November 2023. Notice read in full: eight authors requested retraction over provenance, measurements and processing; additional resistivity concerns. No independent misconduct finding inferred."
+      }
+    },
+    {
+      "id": "source-151c87f0eda0236f",
+      "doi": "10.1038/s41586-023-06162-w",
+      "title": "Absence of near-ambient superconductivity in LuH2±xNy",
+      "year": 2023,
+      "url": "https://doi.org/10.1038/s41586-023-06162-w",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-abstract-methods-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41586-023-06162-w.pdf",
+        "note": "Published online 11 May 2023; version of record 26 July 2023. Final abstract and selected synthesis/probe methods read. Transport 0.4–40.1 GPa down to 2 K; limited tested samples, not universal exclusion. Full curves and raw data not reproduced."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-n1-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Room-temperature superconductivity at ambient pressure remains an open materials question in the evidence reviewed here. The cited theoretical models do not establish a universal prohibition at 300 K, but they also do not supply an experimentally verified ambient-pressure material at that temperature. Mathematical permission, a candidate calculation and a reproducible specimen are different levels of evidence. A negative experiment or a retracted claim does not prove that every possible material must fail.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-0620df96ebbf2a66",
+        "source-a57ef549f45fe74c",
+        "source-151c87f0eda0236f"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n1-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "For a precise target, this page uses 300 K, approximately 27 °C, and near-atmospheric operating pressure. This is an explicit convention rather than a universal definition of room temperature. Preparation at high pressure and measurement after decompression must be reported separately. A recovered specimen may operate at ambient pressure while remaining metastable, cold-stored or difficult to manufacture; those are different practical questions.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ba29a1eb0f9df263",
+        "source-14d1e9e0097f7ffb"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n1-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A hypothetical BCS transition at 300 K would therefore correspond to a zero-temperature gap of about 45.60 meV. This is a conditional conversion: observing a gap of that size does not determine its origin, phase coherence or transition temperature. Strong coupling, anisotropy and competing orders can invalidate the weak-coupling ratio. Independent quadrature of the finite-cutoff BCS equations approaches the stated limiting ratio; it does not identify a viable compound.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-0620df96ebbf2a66"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n1-claim-mathematical-assumptions-6",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a strictly two-dimensional system with a BKT transition, define phase stiffness by $F=(D_s/2)\\int d^2r\\,|\\nabla\\theta|^2$. The renormalized stiffness just below the transition satisfies $D_s(T_c^-)=2k_BT_c/\\pi$. At 300 K this would require about 16.46 meV in that convention. A zero-temperature mean-field stiffness is not automatically this finite-temperature response. The [flat-band bounds question](/scwiki/open-questions/n10) explains why model-specific upper bounds are necessary constraints rather than sufficient evidence of superconductivity. The BKT relation is not a universal three-dimensional temperature limit.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a57ef549f45fe74c"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n1-claim-pairing-coherence-and-stability-1",
+      "sectionId": "pairing-coherence-and-stability",
+      "statement": "For phonon-mediated candidates, raising a characteristic frequency or electron–phonon coupling cannot be assessed in isolation. The Allen–Dynes analysis depends on coupling, screened Coulomb repulsion and spectral moments; it does not justify an arbitrary extrapolation of one fitted parameter. Ashcroft's hydrogen-dominant-alloy proposal motivates chemical precompression, but its proposal is not a demonstration of ambient-pressure superconductivity. The existence, stability and synthesis of the required structure remain separate problems.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0620df96ebbf2a66",
+        "source-ba29a1eb0f9df263"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n1-claim-pairing-coherence-and-stability-2",
+      "sectionId": "pairing-coherence-and-stability",
+      "statement": "A useful candidate must sustain pair formation and a coherent current response in the same accessible state. In two dimensions, phase fluctuations can constrain a transition even when pairing is strong. For a metastable recovered state, the pressure–temperature–time path and the lifetime at the intended operating temperature also matter. Neither a large calculated pairing scale nor a specimen recovered briefly at ambient pressure establishes all of these conditions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-14d1e9e0097f7ffb",
+        "source-a57ef549f45fe74c"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n1-claim-what-experiments-establish-1",
+      "sectionId": "what-experiments-establish",
+      "statement": "High-pressure hydrides show why temperature and pressure must remain paired. The 2015 sulfur-hydride work reports a magnetic onset of 203(1) K at 155 GPa in the checked author figure; its transport comparison uses a different pressure. Drozdov and colleagues' final 2019 lanthanum-hydride paper reports a resistive onset near 250–252 K around 170 GPa, zero resistance and field/isotope observations, while explicitly noting the sample was below their available SQUID sensitivity. These are substantial high-pressure results, not ambient-pressure demonstrations or interchangeable magnetic criteria. The [hydrides article](/scwiki/hydride-superconductors) preserves the measurement-specific qualifications.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8b901b9c6008c434",
+        "source-1e6e868a12cdd34f"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n1-claim-what-experiments-establish-2",
+      "sectionId": "what-experiments-establish",
+      "statement": "Deng and colleagues' 2026 Hg-1223 report separates preparation from observation: S4 was quenched from 18.9 GPa at 4.2 K, then showed derivative-defined resistive onsets of 151 K on warming and 150 K on cooling at ambient pressure. Those are not 300 K transitions or a 151 K zero-resistance threshold. The retrieved-sample magnetic estimate belongs to S2, while cold-storage tests used S3; neither can be silently assigned to the highest-onset S4 specimen. An unreproduced anomaly extending to 172 K remains unassigned.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-14d1e9e0097f7ffb"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n1-claim-what-experiments-establish-3",
+      "sectionId": "what-experiments-establish",
+      "statement": "These examples establish different experimental constraints and motivate follow-up; this selection is not an exhaustive world-record survey. The 2026 final main text and selected author figures were checked, but the final supplementary file and raw data remain outside the completed review. Independent laboratory replication of that pressure-quench result has not been verified here; this does not establish that no replication exists.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-14d1e9e0097f7ffb"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n1-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "A persuasive room-temperature claim needs mutually consistent evidence tied to identified samples: composition and structure, calibrated temperature and pressure, resistance with a stated noise floor and contact geometry, field/current dependence, and an appropriately calibrated magnetic or thermodynamic response. Their evidential weight depends on geometry and scale; a thin film cannot simply be judged by an uncorrected bulk shielding fraction. Preserve unsuccessful preparations and differences among specimens instead of combining each specimen's strongest result into an imaginary single sample. This is a synthesis of the measurement limitations in the cited primary studies.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-8b901b9c6008c434",
+        "source-1e6e868a12cdd34f",
+        "source-14d1e9e0097f7ffb"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n1-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Independent replication should reproduce the synthesis and relevant observations, with raw traces, calibration, backgrounds and transition criteria available for examination. An onset, midpoint, instrumental zero and magnetic onset answer different questions. Near-atmospheric operation should also survive the specified temperature cycle and useful measurement duration; a claim of practical applicability requires additional current, field, mechanical and manufacturing evidence beyond this scientific existence question.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-8b901b9c6008c434",
+        "source-1e6e868a12cdd34f",
+        "source-14d1e9e0097f7ffb"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n1-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The carbonaceous-sulfur-hydride and nitrogen-doped lutetium-hydride reports were retracted in 2022 and 2023, respectively. Their claimed transition temperatures cannot be treated as established benchmarks. In particular, a near-ambient label must not replace the numerical pressure: 10 kbar equals 1 GPa, about ten thousand times atmospheric pressure. Publication status, sample identity and the actual operating conditions must accompany any historical mention.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-754d75026e52d9ac",
+        "source-98bc73a5e1c86c78"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n1-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "The independent LuH₂±xNᵧ study found no superconductivity above 2 K in its tested samples across 0.4–40.1 GPa. That negative result constrains the tested preparation and composition, not every possible member of a chemical system. Likewise, the absence of a demonstrated 300 K material in the sources reviewed here is not a mathematical impossibility proof. It is a reason to demand better, reproducible evidence for a new claim.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-151c87f0eda0236f"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n1-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "The productive question is which concrete composition, structure and preparation route could supply pairing, phase coherence and sufficient stability under the same stated conditions. Predictions should identify their approximation, uncertainty and falsifying observations; experiments should test the same conditions and distinguish reproduction within one laboratory from independent confirmation. This page offers a framework for evaluating that question, not a prediction that a room-temperature material will or will not be discovered.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-ba29a1eb0f9df263",
+        "source-14d1e9e0097f7ffb",
+        "source-a57ef549f45fe74c"
+      ],
+      "conditions": "Retain model dimensionality, cutoff and response conventions; actual pressure, sample, temperature criterion and preparation history. Hypothetical 300 K scales are not material measurements.",
+      "verificationScope": "Named primary-review scopes inherited explicitly; final pressure-quench main text rechecked and independent finite-cutoff/unit arithmetic performed. Full scientific acceptance remains open."
+    }
+  ],
+  "scopeItems": [
+    {
+      "id": "N1",
+      "sectionIds": [
+        "scope",
+        "mathematical-assumptions",
+        "pairing-coherence-and-stability",
+        "what-experiments-establish",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Selected theoretical assumptions, inherited measurement-specific hydride evidence, rechecked final pressure-quench main text and retraction status, with independent BCS and unit calculations.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "This is a source-bounded assessment, not an exhaustive current world-record or impossibility claim.",
+        "Final pressure-quench supplementary material, raw data and independent replication remain unverified here.",
+        "Inherited references retain their stated abstract, author-version or selected-final-text review limits.",
+        "Conditional model energies do not predict an experimentally accessible material."
+      ]
+    }
+  ]
+}

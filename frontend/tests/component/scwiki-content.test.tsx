@@ -61,7 +61,27 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
    expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
   }
-  for(const id of ["scwiki-n2","scwiki-n1"]){expect((await get(["articles",id])).status).toBe(404);}
+  for(const id of ["scwiki-n2","scwiki-n9"]){expect((await get(["articles",id])).status).toBe(404);}
+ });
+
+ it("exports the room-temperature question without treating conditional energy scales as measured Tc",async()=>{
+  const a=articles().find(a=>a.code==="N1")!;
+  expect(a.slug).toBe("open-questions/n1");expect(a.materialCases).toEqual([]);
+  expect(a.scopeItems?.[0].id).toBe("N1");
+  for(const id of a.scopeItems![0].sectionIds){
+   const data=await(await get(["articles",a.id,"sections",id])).json();
+   expect(data.scopeItems.map((i:{id:string})=>i.id)).toEqual(["N1"]);
+   const md=await(await get(["articles",a.id,"sections",id],"?format=markdown")).text();
+   expect(md).toContain(data.section.markdown);
+   for(const limit of a.review!.limitations)expect(md).toContain(limit);
+  }
+  for(const q of ["室温常压超导","room temperature ambient pressure superconductivity","imaginary single sample"]){
+   expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
+   expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
+  }
+  expect(a.references.filter(r=>r.title.startsWith("Retraction Note:"))).toHaveLength(2);
+  expect(a.body).toContain("S4");expect(a.body).toContain("S2");expect(a.body).toContain("S3");
+  expect(a.review!.limitations.join(" ")).toContain("not an exhaustive");
  });
 
  it("publishes all fifteen experimental-method sections with individual evidence limits",async()=>{

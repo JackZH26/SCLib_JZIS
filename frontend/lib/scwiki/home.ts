@@ -19,6 +19,7 @@ export const topicGroups = [
     {code:"M", label:"Research methodology"},
   ]},
   {id:"open-questions", title:"Open research questions", description:"Examine what is established, what remains uncertain and which evidence would resolve it.", topics:[
+    {code:"N1", label:"Room-temperature superconductivity?"},
     {code:"N10", label:"What limits flat-band Tc?"},
   ]},
 ] as const;
