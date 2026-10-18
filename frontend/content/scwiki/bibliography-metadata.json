@@ -524,5 +524,15 @@
     "metadataCheck": "crossref-metadata-only",
     "relations": {},
     "checkedAt": "2026-10-17"
+  },
+  "10.1007/BF00116988": {
+    "doi": "10.1007/bf00116988",
+    "title": "Resistive transition in superconducting films",
+    "year": 1979,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1007/BF00116988",
+    "metadataCheck": "publisher-metadata-and-abstract",
+    "relations": {},
+    "checkedAt": "2026-10-18"
   }
 }

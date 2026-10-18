@@ -22,10 +22,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-17T12:13:01Z",
+  "modifiedAt": "2026-10-18",
   "review": {
-    "checkedAt": "2026-10-17",
-    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "checkedAt": "2026-10-18",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below. A1 film-transport attribution corrected using the 1979 publisher abstract on 2026-10-18; other primary-review debts remain.",
     "limitations": [
       "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
       "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
@@ -107,7 +107,16 @@
       "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
     }
   ],
-  "corrections": [],
+  "corrections": [
+    {
+      "id": "scwiki-a1-correction-1",
+      "description": "The pilot linked its Halperin-Nelson superconducting-film transport statement to DOI 10.1103/PhysRevLett.40.783, whose publisher abstract describes helium-film dissipation. Replace that attribution with Halperin and Nelson (1979), DOI 10.1007/BF00116988, and classify the supported statement as theory. The earlier paper is related vortex-dynamics background, not the cited superconducting-film treatment.",
+      "sourceId": "source-9e55a4505d9de546",
+      "scope": "Publisher abstracts and bibliographic identity only; no full derivation review.",
+      "originalSourceLines": [],
+      "targetSectionId": "experimental-criteria"
+    }
+  ],
   "equationChecks": [
     {
       "targetSectionId": "mathematical-assumptions",
@@ -136,17 +145,17 @@
       }
     },
     {
-      "id": "source-6b3c996f39226a0a",
-      "doi": "10.1103/PhysRevLett.40.783",
-      "title": "Dissipation in Two-Dimensional Superfluids",
-      "year": 1978,
-      "url": "https://doi.org/10.1103/PhysRevLett.40.783",
+      "id": "source-9e55a4505d9de546",
+      "doi": "10.1007/BF00116988",
+      "title": "Resistive transition in superconducting films",
+      "year": 1979,
+      "url": "https://doi.org/10.1007/BF00116988",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.40.783",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.springer.com/article/10.1007/BF00116988",
+        "note": "Publisher abstract only: dirty superconducting-film vortex-unbinding treatment, fluctuation conductivity and nonlinear resistivity. Full text is subscription-restricted; derivation, numerical applications and other A1 claims are not verified by this check."
       }
     },
     {
@@ -233,13 +242,13 @@
     {
       "id": "scwiki-a1-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "In a two-dimensional system, a resistive tail can reflect phase fluctuations. BKT analysis requires more than a fit to one tail: non-linear current-voltage behavior, finite-size effects and stiffness measurements constrain the interpretation. Halperin-Nelson transport scaling applies in a specified two-dimensional fluctuation regime; it is not a general proof of pairing symmetry.",
-      "evidenceType": "experiment",
+      "statement": "Halperin and Nelson developed a vortex-unbinding description of resistive behavior in dirty superconducting films, including fluctuation conductivity above an effective vortex-unbinding temperature and nonlinear resistivity below it. This is a theoretical treatment of a specified film regime, not a measurement of pairing symmetry. When applying it to data, this article requires independent checks of the model assumptions and sample conditions; a fit alone is not treated as a unique diagnosis. The publisher abstract supports this limited description; its full derivation has not yet been reviewed here.",
+      "evidenceType": "theory",
       "sourceIds": [
-        "source-6b3c996f39226a0a"
+        "source-9e55a4505d9de546"
       ],
-      "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Dirty two-dimensional superconducting films in the vortex-unbinding treatment; effective transition and fluctuation regime. Applying a fit requires sample-specific assumptions; no pairing-symmetry inference.",
+      "verificationScope": "Publisher abstract of Halperin and Nelson (1979), DOI 10.1007/BF00116988, checked 2026-10-18. Full derivation not accessed; diagnostic requirements are editorial guidance."
     },
     {
       "id": "scwiki-a1-claim-limits-and-disputes-1",
@@ -271,7 +280,7 @@
       "evidenceType": "experiment",
       "sourceIds": [
         "source-ba10e800a1246bf6",
-        "source-6b3c996f39226a0a"
+        "source-9e55a4505d9de546"
       ],
       "conditions": "DC four-probe transport; retain current, geometry, voltage threshold, magnetic field, sample and observation time. Equilibrium and driven optical responses are separate.",
       "verificationScope": "See each source verification label; this ledger does not certify primary findings."

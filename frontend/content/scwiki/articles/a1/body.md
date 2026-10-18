@@ -18,7 +18,7 @@ This expression is a measurement definition, not a universal material law. It as
 
 Use four-terminal measurements and show the raw resistance-versus-temperature or voltage-versus-current data. Report excitation current or current density, voltage threshold, field direction, sweep direction, contact arrangement and sample history. Repeat measurements at different currents to distinguish a robust transition from heating, a contact short or an instrument floor. For a claim of bulk superconductivity, seek independent magnetic or thermodynamic evidence. These are editorial evidence requirements, not a claim that one universal protocol fits every apparatus.
 
-In a two-dimensional system, a resistive tail can reflect phase fluctuations. BKT analysis requires more than a fit to one tail: non-linear current-voltage behavior, finite-size effects and stiffness measurements constrain the interpretation. Halperin-Nelson transport scaling applies in a specified two-dimensional fluctuation regime; it is not a general proof of pairing symmetry. [R2](#ref-source-6b3c996f39226a0a)
+Halperin and Nelson developed a vortex-unbinding description of resistive behavior in dirty superconducting films, including fluctuation conductivity above an effective vortex-unbinding temperature and nonlinear resistivity below it. This is a theoretical treatment of a specified film regime, not a measurement of pairing symmetry. When applying it to data, this article requires independent checks of the model assumptions and sample conditions; a fit alone is not treated as a unique diagnosis. The publisher abstract supports this limited description; its full derivation has not yet been reviewed here. [R2](#ref-source-9e55a4505d9de546)
 
 ## Limits and disputes
 
@@ -28,7 +28,7 @@ A persistent current can be complementary evidence, but its interpretation needs
 
 ## Discovery implications
 
-Treat zero resistance as one part of an evidence chain. A useful candidate report specifies a measurable threshold, demonstrates repeatability and connects transport to other probes. Preserve negative controls and the possibility of a minority superconducting path. This approach makes a discovery claim more testable while keeping unresolved volume fraction, phase identity and mechanism explicitly open. [R1](#ref-source-ba10e800a1246bf6) [R2](#ref-source-6b3c996f39226a0a)
+Treat zero resistance as one part of an evidence chain. A useful candidate report specifies a measurable threshold, demonstrates repeatability and connects transport to other probes. Preserve negative controls and the possibility of a minority superconducting path. This approach makes a discovery claim more testable while keeping unresolved volume fraction, phase identity and mechanism explicitly open. [R1](#ref-source-ba10e800a1246bf6) [R2](#ref-source-9e55a4505d9de546)
 
 ## Related topics
 

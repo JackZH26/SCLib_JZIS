@@ -14,6 +14,19 @@ import {legacyDestination} from "@/lib/site-routes";
 import {GET} from "@/app/api/scwiki/v1/[[...segments]]/route";
 const get=(segments:string[],query="")=>GET(new NextRequest("http://localhost/api/scwiki/v1/"+segments.join("/")+query),{params:Promise.resolve({segments})});
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("attributes the A1 film-transport theory to Halperin-Nelson without promoting abstract review to full verification",()=>{
+  const a=articles().find(a=>a.code==="A1")!;
+  const ref=a.references.find(r=>r.doi==="10.1007/BF00116988")!;
+  const claim=a.claims.find(c=>c.id==="scwiki-a1-claim-experimental-criteria-1")!;
+  expect(ref.title).toBe("Resistive transition in superconducting films");
+  expect(ref.verification.scope).toBe("primary-abstract-scoped-check");
+  expect(claim.sourceIds).toContain(ref.id);
+  expect(claim.evidenceType).toBe("theory");
+  expect(a.body).not.toContain("ref-source-6b3c996f39226a0a");
+  expect(a.body).toContain("full derivation has not yet been reviewed");
+  expect(a.editorialStatus).toBe("scoped-check");
+  expect(a.corrections.some(c=>c.id==="scwiki-a1-correction-1")).toBe(true);
+ });
  it("disposes all 282 pinned files and keeps unpublished topics out of the catalogue",()=>{
   const m=JSON.parse(readFileSync("content/scwiki/source-manifest.json","utf8"));
   expect(m.commit).toBe("0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf");
