@@ -1626,3 +1626,25 @@ it("binds nickelate temperature thresholds to their sample criteria and preprint
  const md=await(await get(["articles",a.id,"sections","recent-structures-and-membranes"],"?format=markdown")).text();
  expect(md).toContain("99.5%");expect(md).toContain("not assigned to a precise searchable Tc record");
 });
+
+
+it("preserves strange-metal evidence limits through search and section exports",async()=>{
+ const a=articles().find(a=>a.code==="N5")!;
+ expect(a.materialCases).toEqual([]);
+ for(const id of a.scopeItems![0].sectionIds){
+  const data=await(await get(["articles",a.id,"sections",id])).json();
+  expect(data.scopeItems.map((i:{id:string})=>i.id)).toEqual(["N5"]);
+  const md=await(await get(["articles",a.id,"sections",id],"?format=markdown")).text();
+  expect(md).toContain(data.section.markdown);
+  for(const limit of a.review!.limitations)expect(md).toContain(limit);
+ }
+ for(const q of ["奇异金属微观起源","thermal response width","zero-frequency spline extrapolation"]){
+  expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
+  expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
+ }
+ expect(a.references.find(r=>r.doi==="10.1103/611k-yxb9")!.verification.evidenceUrl).toMatch(/v4$/);
+ expect(a.references.find(r=>r.doi==="10.1038/s41567-026-03441-x")!.verification.note).toContain("Final main text");
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("does not adjudicate the dispute");
+ expect(md).toContain("not a microscopic Hamiltonian construction");
+});

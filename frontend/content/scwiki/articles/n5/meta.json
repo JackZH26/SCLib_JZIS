@@ -1,0 +1,409 @@
+{
+  "id": "scwiki-n5",
+  "topicId": "scwiki-topic-n5",
+  "code": "N5",
+  "slug": "open-questions/n5",
+  "publicationKind": "open-question",
+  "title": "What is the microscopic origin of strange metals?",
+  "summary": "Compare current relaxation, response-function scaling and carrier evidence across selected experiments and competing microscopic models.",
+  "aliases": [
+    "strange metal microscopic origin",
+    "strange metallicity mechanism",
+    "thermal response width",
+    "奇异金属微观起源",
+    "奇异金属机制",
+    "奇异金属噪声"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "H1",
+    "H2",
+    "H8",
+    "B3",
+    "N2"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T20:47:59.109815+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected random-interaction model and transport methods, t-J author results/final supplement, noise experiment and contact critique; inherited transport reviews and independent response examples.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "The 2026 t-J final main text and complete author-to-final comparison remain open; full numerical calculations were not reproduced.",
+      "Noise and contact analyses were not independently refitted; the dispute is not adjudicated.",
+      "Some source checks remain abstract or review level; the mathematical examples do not establish a material mechanism."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "02_BATCH_2_IN_PLAN.md",
+    "sha256": "502293e5ed2fe8463b61a6c5b78a2c33bc33f3265bd36fe534fa2c469e42ff48",
+    "sourceId": "file-49326006ac2c2636"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 141,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    },
+    {
+      "startLine": 142,
+      "endLine": 142,
+      "targetSections": [
+        "scope",
+        "experimental-criteria",
+        "two-constructive-model-routes",
+        "mathematical-assumptions",
+        "noise-and-the-interpretation-of-carriers",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "decision": "new-research-for-approved-question",
+      "note": "Planning identifies N5 but does not establish a microscopic mechanism."
+    },
+    {
+      "startLine": 143,
+      "endLine": 177,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\sigma_1(\\omega)=(1-e^{-\\omega/T})C(\\omega)/\\omega",
+      "check": "24 independent thermal transition checks; four broad-envelope examples with thermal width and finite d.c. limit. No material or sum-rule certification."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Gamma_{\\rm tr}=\\int W(\\theta)(1-\\cos\\theta)\\,d\\theta",
+      "check": "Eight independently assembled angular collision matrices conserve particles and reproduce current-mode eigenvalues in an elastic circular-Fermi-surface illustration."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-67da95cac5481029",
+      "doi": "10.1103/RevModPhys.94.041002",
+      "title": "Colloquium: Planckian dissipation in metals",
+      "year": 2022,
+      "url": "https://doi.org/10.1103/RevModPhys.94.041002",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/html/2107.07802v3",
+        "note": "Author manuscript v3 (18 June 2022), sections 1.4, 4, 4.1 and 5, Eqs. (28)-(32): residual subtraction, distinct lifetimes, effective-mass/vertex caveats, and chaos versus transport. This review-level check does not verify the underlying experiments or every statement in H2."
+      }
+    },
+    {
+      "id": "source-374c8bc13ced83e8",
+      "doi": "10.1038/s41586-021-03697-8",
+      "title": "Linear-in temperature resistivity from an isotropic Planckian scattering rate",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41586-021-03697-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-methods-results-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://warwick.ac.uk/fac/sci/physics/research/condensedmatt/supermag/pubs2021/Grissonnanche_Nature.595.667.2021.pdf",
+        "note": "Final results and selected methods read; printed page 669, Figure 2 visually checked. Compared selected author v2 passages. Temperature stability, absolute error, angular superconducting regions and fitted bandwidth distinguished. Complete fitting and raw-data reproduction remain open."
+      }
+    },
+    {
+      "id": "source-05b2d5ff6757b5eb",
+      "doi": "10.1038/s41567-026-03266-8",
+      "title": "Planckian scattering and parallel conduction channels in an iron chalcogenide superconductor",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41567-026-03266-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-figure-and-final-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/2505.00623v1",
+        "note": "Author v1, 1 May 2025: selected methods and results, pages 1–4, read; page 4 Figure 3 visually checked. Final publisher abstract and publication date, 23 April 2026, checked. Final full text requires access; the attempted PDF returned HTML. Complete version comparison and spectral-weight calibration remain open."
+      }
+    },
+    {
+      "id": "source-14387c003c0b024d",
+      "doi": "10.1126/science.abq6011",
+      "title": "Universal theory of strange metals from spatially random interactions",
+      "year": 2023,
+      "url": "https://doi.org/10.1126/science.abq6011",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-publisher-theory-and-outlook",
+        "evidenceUrl": "https://www.science.org/doi/10.1126/science.abq6011",
+        "note": "Online 17 August 2023. Selected introduction, interaction-disorder and outlook text read; large-N and long-scale disorder limitations retained. Full supplement and diagrammatic reproduction remain open."
+      }
+    },
+    {
+      "id": "source-f7ac8e7f2cfae198",
+      "doi": "10.1103/611k-yxb9",
+      "title": "Strange Metals and Planckian Transport in a Gapless Phase from Spatially Random Interactions",
+      "year": 2025,
+      "url": "https://doi.org/10.1103/611k-yxb9",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-published-version-model-and-transport",
+        "evidenceUrl": "https://arxiv.org/html/2410.05365v4",
+        "note": "Published 8 September 2025; author v4 dated 12 September and labelled published version. Selected model, transport extraction and discussion: two flavors, zero average coupling, usual L=40 and ten disorder samples. Zero-frequency spline extrapolation and limited coupling comparisons retained. Full numerical reproduction remains open."
+      }
+    },
+    {
+      "id": "source-dea2ebb88fe95936",
+      "doi": "10.1038/s41567-026-03441-x",
+      "title": "Strange metal behaviour from underlying bad metallicity",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41567-026-03441-x",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-results-final-abstract-and-supplement",
+        "evidenceUrl": "https://arxiv.org/html/2412.04322v3",
+        "note": "Final online 24 September 2026; author v3 dated 12 April under an earlier title. Selected main text and p. 4 Figure 3 checked; final supplement S2–S3 and Figure S1 checked. Final main text, full version comparison and raw numerical reproduction remain open."
+      }
+    },
+    {
+      "id": "source-96657a33251c13ee",
+      "doi": "10.1126/science.abq6100",
+      "title": "Shot noise in a strange metal",
+      "year": 2023,
+      "url": "https://doi.org/10.1126/science.abq6100",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-results-and-noise-figure",
+        "evidenceUrl": "https://arxiv.org/pdf/2206.00673v4",
+        "note": "Author v4 dated 28 November 2023: selected pp. 1–10 and captions pp. 21–22; p. 21 Figure 3 visually checked. Complete supplement, contact calibration and raw data not independently reanalyzed."
+      }
+    },
+    {
+      "id": "source-be020ff1e20fbae5",
+      "doi": "10.1134/S0021364024600654",
+      "title": "What Can We Learn from Nonequilibrium Response of a Strange Metal?",
+      "year": 2024,
+      "url": "https://doi.org/10.1134/S0021364024600654",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-contact-and-noise-analysis",
+        "evidenceUrl": "https://arxiv.org/html/2402.09946v1",
+        "note": "Author v1 dated 15 February 2024; journal identity checked. Selected contact-resistance, thermal-model and noise discussion read. Added contact fit and omitted noise terms retained; no independent adjudication or experimental replication."
+      }
+    },
+    {
+      "id": "source-62781c6eb802b997",
+      "doi": "10.1038/s41567-025-03034-0",
+      "title": "Impact of low-energy spin fluctuations on the strange metal in a cuprate superconductor",
+      "year": 2025,
+      "url": "https://doi.org/10.1038/s41567-025-03034-0",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "publisher-abstract-and-date-only",
+        "evidenceUrl": "https://www.nature.com/articles/s41567-025-03034-0",
+        "note": "Published 30 September 2025. Publisher abstract checked; detailed field-dependent analysis, figures and raw measurements not independently audited."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-n5-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "The microscopic origin of strange-metal behavior remains an open question across material families. Approximately linear low-temperature resistivity is an important observation, but it does not uniquely specify a scattering mechanism, establish the absence of quasiparticles, or identify the interaction responsible for superconductivity. A useful explanation must reproduce several observables in a defined regime and survive comparison with alternatives. This is a selected evidence map, not an exhaustive ranking of all proposed theories.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-67da95cac5481029"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    },
+    {
+      "id": "scwiki-n5-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Three questions should remain separate: what relaxes electrical current, what broadens a single-particle excitation, and what produces the measured response function? Their answers can differ. An apparent rate inferred using carrier density and effective mass is model dependent. A coefficient near $k_BT/\\hbar$ is not, by itself, a microscopic derivation or a universal transport bound.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-67da95cac5481029",
+        "source-14387c003c0b024d"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    },
+    {
+      "id": "scwiki-n5-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Grissonnanche and colleagues use angle-dependent magnetoresistance in Nd-LSCO to separate an anisotropic residual contribution from an approximately isotropic temperature-dependent rate. Their extraction depends on the band model, energy scale and geometry. At the lower measurement temperatures, some field orientations remain superconducting; these cannot silently enter an all-normal-state fit. This is a stronger constraint than a straight resistivity curve alone, while still being an inference tied to its experimental conditions.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-374c8bc13ced83e8"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    },
+    {
+      "id": "scwiki-n5-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Optical measurements add frequency dependence and spectral-weight information. Romero and colleagues resolve a narrower channel and a broad background in FeTe1−xSex films. The selected author analysis has a finite frequency resolution and a restricted fitting interval. Such a decomposition should be compared with competing response models, rather than assumed to prove that every apparent optical component represents a distinct microscopic carrier population.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-05b2d5ff6757b5eb",
+        "source-dea2ebb88fe95936"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    },
+    {
+      "id": "scwiki-n5-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Campbell and colleagues report a connection between fluctuating magnetic moments and strange-metal transport in LSCO at high fields, with changes when moments freeze. The checked publisher abstract supports this material-specific association. It does not alone establish the mechanism in every cuprate or distinguish all theories of magnetic fluctuations. Full measurement details remain outside this source check.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-62781c6eb802b997"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    },
+    {
+      "id": "scwiki-n5-claim-two-constructive-model-routes-1",
+      "sectionId": "two-constructive-model-routes",
+      "statement": "Patel, Guo, Esterlis and Sachdev's 2023 theory couples two-dimensional fermions to critical scalar modes, with spatially random Yukawa interactions about a nonzero mean. In a large-$N$ ensemble, interaction disorder produces linear resistivity while a different coupling can dominate the single-particle self-energy. This offers a mechanism for separating current relaxation from spectral broadening. Its proposed generality is a theoretical claim with stated approximations, not a material-by-material experimental identification.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-14387c003c0b024d"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    },
+    {
+      "id": "scwiki-n5-claim-two-constructive-model-routes-2",
+      "sectionId": "two-constructive-model-routes",
+      "statement": "Patel, Lunts and Albergo subsequently simulate a different, specified spin–fermion construction. The selected published-version text uses two bands, two auxiliary flavors, zero mean Yukawa coupling and typically a $40\\times40$ lattice averaged over ten disorder realizations. An extended region with localized, gapless magnetic fluctuations supports strange-metal transport. The transport rate is inferred from Matsubara conductivity and a zero-frequency spline extrapolation; its coupling comparison uses two disorder strengths at matched rescaled tuning parameters. Avoid turning that comparison into independence from every Hamiltonian parameter.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f7ac8e7f2cfae198"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    },
+    {
+      "id": "scwiki-n5-claim-two-constructive-model-routes-3",
+      "sectionId": "two-constructive-model-routes",
+      "statement": "Fratini and colleagues' paper, published on **24 September 2026**, develops another route through the two-dimensional t–J model. The checked author version and final supplement use finite-temperature and low-temperature Lanczos calculations, including twisted-boundary averaging. Single-hole clusters reach 24 sites and finite-density clusters 20 sites. Selected results connect broad current spectra to an apparent thermal optical width. Gaussian broadening and d.c. extrapolation remain part of the calculation; noninteracting boundary-average benchmarks do not prove exact interacting thermodynamic-limit transport.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-dea2ebb88fe95936"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    },
+    {
+      "id": "scwiki-n5-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "It concerns the response and its unsymmetrized spectrum; it is not a declaration that every metal has a finite regular d.c. limit. A separate zero-frequency delta function, if present, requires separate treatment. For finite $C(0)$, the regular limit is $\\sigma_1(0)=C(0)/T$.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-dea2ebb88fe95936"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    },
+    {
+      "id": "scwiki-n5-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A second independent illustration assumes elastic scattering on a circular Fermi surface. If $W(\\theta)$ is an angular transition-rate density, the departure rate weights $W$, whereas the current mode weights $W(1-\\cos\\theta)$. Eight discretized collision operators verify that forward-peaked scattering can leave a large departure rate but a much smaller current-relaxation rate. Particle conservation is checked independently. These quasiparticle examples explain an inference problem; they do not establish quasiparticles in a strange metal.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-67da95cac5481029"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    },
+    {
+      "id": "scwiki-n5-claim-noise-and-the-interpretation-of-carriers-1",
+      "sectionId": "noise-and-the-interpretation-of-carriers",
+      "statement": "Chen and colleagues measure suppressed noise in YbRh2Si2 nanowires compared with a gold control and specified diffusive Fermi-liquid expectations. Their selected author text uses long-wire measurements to constrain electron–phonon cooling, and interprets the short-wire result as evidence against well-defined quasiparticle carriers in the examined regime. Effective Fano factors come from a finite-temperature, bias-dependent analysis; they are not direct measurements of a fractional elementary charge.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-96657a33251c13ee"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    },
+    {
+      "id": "scwiki-n5-claim-noise-and-the-interpretation-of-carriers-2",
+      "sectionId": "noise-and-the-interpretation-of-carriers",
+      "statement": "Polyak, Khrapai and Tikhonov question that interpretation through contact resistance and energy relaxation. Their model allows current redistribution between the film and its gold covering, includes an added contact contribution fitted to resistance, and omits some contact and amplifier noise terms. These qualifications matter when comparing their alternative with the original controls. This review has not independently refitted either analysis and does not adjudicate the dispute. A low noise level should therefore be reported with its device and thermal assumptions.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-be020ff1e20fbae5",
+        "source-96657a33251c13ee"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    },
+    {
+      "id": "scwiki-n5-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The reviewed models explain overlapping features without yet establishing one microscopic origin across all strange metals. Large-$N$ control, finite-system numerical convergence and experimental agreement answer different questions. Keep extrapolation, disorder averaging, response normalization and temperature windows visible. In particular, a model producing narrow and broad optical features from one carrier type does not by itself overturn a two-channel interpretation in a different material.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-14387c003c0b024d",
+        "source-f7ac8e7f2cfae198",
+        "source-dea2ebb88fe95936",
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    },
+    {
+      "id": "scwiki-n5-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "A discriminating program should jointly compare transport, optical response, magnetic fluctuations, thermodynamics and, where feasible, noise. Test how controlled disorder, filling or field changes both the candidate mechanism and its predicted observables. The random-interaction model's proposed spatial magnetic probes offer one concrete direction; independent contact and thermal calibration offer another. These are proposed validation priorities. Reproducing a resistivity exponent or fitting a thermal rate does not certify a pairing mechanism or predict a new material's $T_c$.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-f7ac8e7f2cfae198",
+        "source-96657a33251c13ee",
+        "source-be020ff1e20fbae5"
+      ],
+      "conditions": "Preserve model, material, source version, current versus single-particle relaxation, thermal response and noise/calibration assumptions.",
+      "verificationScope": "Selected primary text/figures and explicit inherited review scope; no full experimental or many-body reproduction. Noise dispute not adjudicated."
+    }
+  ],
+  "scopeItems": [
+    {
+      "id": "N5",
+      "sectionIds": [
+        "scope",
+        "experimental-criteria",
+        "two-constructive-model-routes",
+        "mathematical-assumptions",
+        "noise-and-the-interpretation-of-carriers",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Selected random-interaction model and transport methods, t-J author results/final supplement, noise experiment and contact critique; inherited transport reviews and independent response examples.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "The 2026 t-J final main text and complete author-to-final comparison remain open; full numerical calculations were not reproduced.",
+        "Noise and contact analyses were not independently refitted; the dispute is not adjudicated.",
+        "Some source checks remain abstract or review level; the mathematical examples do not establish a material mechanism."
+      ]
+    }
+  ]
+}
