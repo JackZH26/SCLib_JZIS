@@ -193,7 +193,7 @@
       "code": "K",
       "slug": "applications",
       "kind": "handbook",
-      "publicBody": false,
+      "publicBody": true,
       "sourceId": "file-49326006ac2c2636",
       "items": [
         {

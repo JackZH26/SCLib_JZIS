@@ -61,7 +61,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
    expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
   }
-  for(const id of ["scwiki-k","scwiki-n1"]){expect((await get(["articles",id])).status).toBe(404);}
+  for(const id of ["scwiki-l","scwiki-n1"]){expect((await get(["articles",id])).status).toBe(404);}
  });
 
  it("publishes all fifteen experimental-method sections with individual evidence limits",async()=>{
@@ -106,6 +106,37 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(a.body).toContain("abstract was checked");
   expect(a.body).toContain("loss of perturbative control");
   expect(a.body).toContain("particle-hole redundancy");
+ });
+
+ it("preserves all application sections and excludes operating temperatures from Tc filtering",async()=>{
+  const a=articles().find(a=>a.code==="K")!;
+  expect(a.scopeItems?.map(i=>i.id)).toEqual(Array.from({length:10},(_,i)=>"K"+(i+1)));
+  for(const item of a.scopeItems!){
+   const id=item.id.toLowerCase();expect(item.sectionIds).toEqual([id]);
+   const data=await(await get(["articles",a.id,"sections",id])).json();
+   expect(data.scopeItems.map((s:{id:string})=>s.id)).toEqual([item.id]);
+   const md=await(await get(["articles",a.id,"sections",id],"?format=markdown")).text();
+   expect(md).toContain(data.section.markdown);
+   for(const limit of item.limitations)expect(md).toContain(limit);
+  }
+  for(const q of ["磁悬浮","超导应用","hypothetical rotating annulus"]){
+   expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
+   expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
+  }
+  expect(a.materialCases).toEqual([]);
+  expect(a.body).toContain("using MoSi, not WSi or NbN");
+  expect(a.body).toContain("copper-reinforced, spliced Bi-2223");
+  expect(a.body).toContain("ideal 20 minutes, not a measured discharge duration");
+  const undated=a.references.filter(r=>r.year===null);expect(undated).toHaveLength(2);
+  const fullMd=await(await get(["articles",a.id,"markdown"])).text();
+  for(const r of undated){
+   expect(fullMd).toContain(r.title+" (Publication date unknown)");
+   const exported=await(await get(["sources"])).json();expect(exported.sources.find((s:{id:string})=>s.id===r.id).year).toBeNull();
+  }
+  const schema=await(await get(["openapi.json"])).json();
+  expect(schema.components.schemas.Source.properties.year.type).toEqual(["integer","null"]);
+  const sectionMd=await(await get(["articles",a.id,"sections","k4"],"?format=markdown")).text();
+  expect(sectionMd).toContain("ITER magnets (Publication date unknown)");
  });
 
  it("matches short Han keywords within phrases while keeping short Latin tokens exact",()=>{

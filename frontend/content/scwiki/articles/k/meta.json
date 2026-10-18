@@ -1,0 +1,775 @@
+{
+  "id": "scwiki-k",
+  "topicId": "scwiki-topic-k",
+  "code": "K",
+  "slug": "applications",
+  "publicationKind": "handbook",
+  "title": "Superconducting applications: devices, conditions and evidence",
+  "summary": "Ten applications from cables and magnets to sensors, qubits and energy storage, with dated examples, operating conditions and limits on performance claims.",
+  "aliases": [
+    "superconducting applications",
+    "MRI SQUID SNSPD transmon maglev microwave flywheel",
+    "超导应用",
+    "磁悬浮",
+    "量子比特",
+    "飞轮储能",
+    "核磁共振",
+    "超导输电"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "A7",
+    "I",
+    "J",
+    "N10"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T19:43:24.823533+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Ten individually mapped applications with dated primary experiments, first-party engineering descriptions and explicitly bounded review/abstract context. Independent charge-basis, ideal interference and rotational-energy checks.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Full supplements, original device datasets, some final-version comparisons and lifetime/efficiency assessments are incomplete.",
+      "MRI and cable passages include review-level context; SQUID noise and bulk maglev access is explicitly limited.",
+      "Planning labels define topic identity, not scientific material assignments or evidence."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "02_BATCH_2_IN_PLAN.md",
+    "sha256": "502293e5ed2fe8463b61a6c5b78a2c33bc33f3265bd36fe534fa2c469e42ff48",
+    "sourceId": "file-49326006ac2c2636"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 76,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Scope planning is not scientific evidence."
+    },
+    {
+      "startLine": 77,
+      "endLine": 77,
+      "targetSections": [
+        "k1"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Approved identity retained; newly authored explanation with dated evidence."
+    },
+    {
+      "startLine": 78,
+      "endLine": 78,
+      "targetSections": [
+        "k2"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Approved identity retained; newly authored explanation with dated evidence."
+    },
+    {
+      "startLine": 79,
+      "endLine": 79,
+      "targetSections": [
+        "k3"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Approved identity retained; newly authored explanation with dated evidence."
+    },
+    {
+      "startLine": 80,
+      "endLine": 80,
+      "targetSections": [
+        "k4"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Approved identity retained; newly authored explanation with dated evidence."
+    },
+    {
+      "startLine": 81,
+      "endLine": 81,
+      "targetSections": [
+        "k5"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Approved identity retained; newly authored explanation with dated evidence."
+    },
+    {
+      "startLine": 82,
+      "endLine": 82,
+      "targetSections": [
+        "k6"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Approved identity retained; newly authored explanation with dated evidence."
+    },
+    {
+      "startLine": 83,
+      "endLine": 83,
+      "targetSections": [
+        "k7"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Approved identity retained; newly authored explanation with dated evidence."
+    },
+    {
+      "startLine": 84,
+      "endLine": 84,
+      "targetSections": [
+        "k8"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Approved identity retained; newly authored explanation with dated evidence."
+    },
+    {
+      "startLine": 85,
+      "endLine": 85,
+      "targetSections": [
+        "k9"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Approved identity retained; newly authored explanation with dated evidence."
+    },
+    {
+      "startLine": 86,
+      "endLine": 86,
+      "targetSections": [
+        "k10"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Approved identity retained; newly authored explanation with dated evidence."
+    },
+    {
+      "startLine": 87,
+      "endLine": 177,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other approved items remain separately tracked."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "k-material-assignments",
+      "description": "Preserve topic identities while correcting overly broad planning labels: AmpaCity Bi-2223, Reddy detector MoSi and JR Central NbTi are specific examples, not universally REBCO, WSi/NbN or YBCO.",
+      "sourceId": "file-49326006ac2c2636",
+      "scope": "K1, K6 and K8"
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "k5",
+      "tex": "I_{\\max}=2I_0|\\cos(\\pi\\Phi/\\Phi_0)|",
+      "check": "27 independent phase-grid maxima, including unequal junction counterexamples; negligible inductance only, not noise."
+    },
+    {
+      "targetSectionId": "k7",
+      "tex": "H=4E_C(\\hat n-n_g)^2-E_J\\cos\\hat\\varphi",
+      "check": "126 charge-basis cases with 20-versus-30 charge cutoff convergence; no measured device performance."
+    },
+    {
+      "targetSectionId": "k10",
+      "tex": "E=I\\omega^2/2",
+      "check": "Uniform-annulus integration and minimum-speed energy fraction; ideal power/energy duration excludes losses."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-6293adce09208657",
+      "doi": "10.2320/jinstmet.JA201910",
+      "title": "Development of Ag-sheath Bi-2223 superconducting wire",
+      "year": 2019,
+      "url": "https://doi.org/10.2320/jinstmet.JA201910",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-published-conductor-and-cable-check",
+        "evidenceUrl": "https://www.jstage.jst.go.jp/article/jinstmet/83/9/83_JA201910/_html/-char/ja",
+        "note": "Published 1 September 2019; online 25 August. Manufacturer-authored review, selected Sections 4 and 6.2: reinforcement, engineering area and copper-reinforced Bi-2223 used for AmpaCity. Original cable qualification datasets and total system losses not reviewed."
+      }
+    },
+    {
+      "id": "source-684ee630b8b083a8",
+      "doi": "10.1002/nbm.4921",
+      "title": "Superconducting magnet designs and MRI accessibility: a review",
+      "year": 2023,
+      "url": "https://doi.org/10.1002/nbm.4921",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-magnet-design-and-cooling-check",
+        "evidenceUrl": "https://arxiv.org/pdf/2205.08918v1",
+        "note": "First published 13 March 2023 (publisher metadata checked). Author manuscript v1, 18 May 2022; selected pp. 8–10 on geometry, field uniformity and refrigeration. Review-level engineering context, not original scanner qualification. Full final-version comparison and cited hardware datasets remain open. Historical product rankings are not repeated."
+      }
+    },
+    {
+      "id": "source-c43ec6c74bbdf714",
+      "doi": null,
+      "title": "HiLumi News: A successful test paves the way for magnet production at CERN",
+      "year": 2023,
+      "url": "https://home.cern/hilumi-news-successful-test-paves-way-magnet-production-cern/",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "dated-first-party-prototype-test-report",
+        "evidenceUrl": "https://home.cern/hilumi-news-successful-test-paves-way-magnet-production-cern/",
+        "note": "CERN report, 5 December 2023: third full-length Nb3Sn quadrupole prototype, 7.2 m, 16.53 kA tests at 1.9 K and 4.5 K. Historical prototype result, not current fleet acceptance."
+      }
+    },
+    {
+      "id": "source-9ca58981555e968d",
+      "doi": null,
+      "title": "ITER magnets",
+      "year": null,
+      "url": "https://www.iter.org/machine/magnets",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-first-party-magnet-system-overview",
+        "evidenceUrl": "https://www.iter.org/machine/magnets",
+        "note": "Accessed 19 October 2026; publication date not stated. Selected materials, field locations, cooling and in-vessel copper-coil passages. Design specifications are not evidence of completed fusion operation."
+      }
+    },
+    {
+      "id": "source-654ce5462e87aa22",
+      "doi": "10.1007/BF00655097",
+      "title": "dc SQUID: Noise and optimization",
+      "year": 1977,
+      "url": "https://doi.org/10.1007/BF00655097",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "publisher-original-abstract",
+        "evidenceUrl": "https://link.springer.com/article/10.1007/BF00655097",
+        "note": "November 1977. Abstract covers resistively shunted junctions, inductance, asymmetry and Johnson-noise-dependent optimization. Full derivation not read: author PDF returned empty locally and web access was rate-limited. Ideal phasor calculation is an independent editorial check, not reproduction of the noise model."
+      }
+    },
+    {
+      "id": "source-3fd82d6f06095581",
+      "doi": null,
+      "title": "Detector Readout Project",
+      "year": 2025,
+      "url": "https://www.nist.gov/programs-projects/detector-readout-project",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-first-party-sensor-readout-overview",
+        "evidenceUrl": "https://www.nist.gov/programs-projects/detector-readout-project",
+        "note": "NIST page updated 10 April 2025. Selected SQUID ammeter, sensor-array multiplexing and room-temperature readout passages. Mission plans and prototype chips are not equated with launched instruments."
+      }
+    },
+    {
+      "id": "source-f2533bc529f46a76",
+      "doi": "10.1364/OPTICA.400751",
+      "title": "Superconducting nanowire single-photon detectors with 98% system detection efficiency at 1550 nm",
+      "year": 2020,
+      "url": "https://doi.org/10.1364/OPTICA.400751",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-published-detector-conditions-check",
+        "evidenceUrl": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=930426",
+        "note": "Published 23 November 2020. Selected final pp. 1649–1652 text: MoSi, 720–780 mK, fiber-referenced system efficiency, optimized polarization and series-resistance readout. Supplement 1 calibration, raw data and figure pixels remain unchecked."
+      }
+    },
+    {
+      "id": "source-4807a9ed7d6653f1",
+      "doi": "10.1103/PhysRevA.76.042319",
+      "title": "Charge-insensitive qubit design derived from the Cooper pair box",
+      "year": 2007,
+      "url": "https://doi.org/10.1103/PhysRevA.76.042319",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-published-transmon-model-check",
+        "evidenceUrl": "https://painterlab.caltech.edu/wp-content/uploads/2019/06/iqd_charge_insensitive_qubit_design_cooper_pair_box.pdf",
+        "note": "Published 12 October 2007. Selected pp. 1–4, with p. 3 Fig. 2 and Eqs. 2.2–2.5 visually checked. Independent charge-basis diagonalization with cutoff convergence; not a measured coherence or gate benchmark. Full noise-channel analysis remains open."
+      }
+    },
+    {
+      "id": "source-5cdba326c3439d40",
+      "doi": null,
+      "title": "About SCMAGLEV",
+      "year": null,
+      "url": "https://scmaglev.jr-central-global.com/about/",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-first-party-propulsion-and-magnet-check",
+        "evidenceUrl": "https://scmaglev.jr-central-global.com/about/",
+        "note": "JR Central operator explanation, accessed 19 October 2026; publication date not stated. NbTi onboard magnets, liquid-helium cooling and distinct propulsion/levitation functions. Promotional zero-loss wording is not generalized to whole-system energy consumption."
+      }
+    },
+    {
+      "id": "source-7be734c7e3d7c08e",
+      "doi": "10.1016/S0921-4534(02)01548-4",
+      "title": "The first man-loading high temperature superconducting Maglev test vehicle in the world",
+      "year": 2002,
+      "url": "https://doi.org/10.1016/S0921-4534(02)01548-4",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "publisher-indexed-abstract-and-excerpt",
+        "evidenceUrl": "https://www.sciencedirect.com/science/article/abs/pii/S0921453402015484",
+        "note": "Published 1 October 2002, pp. 809–814. Publisher-indexed abstract/excerpt describes the 31 December 2000 test and YBaCuO bulk over NdFeB guideway. Direct full-page retrieval returned 403. No independent load, dynamic stability or service-life validation."
+      }
+    },
+    {
+      "id": "source-579a5cc38efb09e7",
+      "doi": "10.1109/22.853465",
+      "title": "Comparison of Power Dependence of Microwave Surface Resistance of Unpatterned and Patterned YBCO Thin Film",
+      "year": 2000,
+      "url": "https://doi.org/10.1109/22.853465",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-microwave-method-and-results-check",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/9906044v1",
+        "note": "Author v1 submitted 3 June 1999; the regenerated PDF typesetting date is not a new publication. Selected pp. 1–5: thermal design, loaded/unloaded Q, patterning comparison, frequency rescaling and current-profile limits. Full final-version comparison, figures and calibration not reproduced."
+      }
+    },
+    {
+      "id": "source-70cba2aaed2e7595",
+      "doi": null,
+      "title": "Superconducting flywheel power storage system: test machine and system details",
+      "year": 2015,
+      "url": "https://www.rtri.or.jp/eng/press/2015/gtgh7700000010m8-att/2015041501-NR_Details.pdf",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "dated-first-party-design-and-test-report",
+        "evidenceUrl": "https://www.rtri.or.jp/eng/press/2015/gtgh7700000010m8-att/2015041501-NR_Details.pdf",
+        "note": "RTRI release dated 15 April 2015; selected four-page system description. 4-ton rotor, 50 K bearing, 300 kW output, 100 kWh capacity and 6,000 rpm stated. Grid tests were planned; complete operation logs, efficiency and lifetime data not reviewed."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-k-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Superconducting applications combine materials with cryogenics, mechanical support, electronics and protection. This handbook connects ten approved topics to the physical function that superconductivity provides and the conditions required to assess a device. Historical demonstrations, design specifications and current operator explanations are identified separately. A material's transition temperature is not an equipment operating temperature, and a successful component does not establish the performance of an entire installation.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-684ee630b8b083a8",
+        "source-c43ec6c74bbdf714",
+        "source-f2533bc529f46a76"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Compare like quantities: magnetic field at a named location, current with a stated criterion, power versus stored energy, and sensor efficiency referenced to a defined input. Independent calculations here test an ideal two-junction interference model, a finite charge-basis qubit Hamiltonian and a hypothetical rotating annulus. They do not certify a magnet, reproduce a detector calibration or establish service life. Engineering margins and uncertainty must accompany device-level claims.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-654ce5462e87aa22",
+        "source-4807a9ed7d6653f1",
+        "source-70cba2aaed2e7595"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k1-1",
+      "sectionId": "k1",
+      "statement": "Superconducting cables aim to carry large currents in a compact conductor, but the conductor choice is project-specific. The 2019 manufacturer-authored Bi-2223 review identifies copper-reinforced, spliced Bi-2223 wire in the AmpaCity three-phase coaxial cable and dates its long-term grid trial from 2014. It must not be relabelled as a REBCO installation merely because the planning outline named REBCO long wires. The two conductor families require separate manufacturing and qualification evidence.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-6293adce09208657"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k1-2",
+      "sectionId": "k1",
+      "statement": "Assess usable current under the cable's field, temperature, strain and joint conditions, with the voltage criterion and area convention retained. Adding mechanical reinforcement can improve strength while reducing engineering current density when the entire conductor cross-section is counted. Low resistance in the superconducting path does not eliminate cryogenic loads, joint heating or alternating-current losses. Compare a complete installation over its load cycle, including cooling and fault response, before claiming an energy or cost advantage. The reviewed passage supports the conductor identification and historical deployment context; it does not independently quantify AmpaCity's total operating losses or long-term reliability.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-6293adce09208657"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k2-1",
+      "sectionId": "k2",
+      "statement": "The selected MRI review describes conventional whole-body systems using liquid-helium-cooled NbTi coils, commonly operating near 4.2 K. That temperature is a cooling condition, not the material's transition temperature. The main magnet must provide a field with suitable spatial uniformity and stability across the intended imaging region. A larger central field alone does not specify image quality or make two scanners equivalent. Geometry, gradients, radio-frequency hardware and reconstruction also matter.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-684ee630b8b083a8"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k2-2",
+      "sectionId": "k2",
+      "statement": "Shorter magnets and wider bores change the balance between conductor quantity, peak field, field uniformity and accessibility. Reduced-helium and conduction-cooled designs can change installation requirements, but they still need refrigeration, thermal margins and protection against local heating. The source's product examples describe the state considered in its 2022 manuscript; they are not a current market ranking. The engineering discussion here does not provide clinical advice or assert that every magnet of a named material has the same operating limits. Detailed scanner qualification, final review-version comparison and the underlying device datasets remain separate checks.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-684ee630b8b083a8"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k3-1",
+      "sectionId": "k3",
+      "statement": "Accelerator dipoles bend charged-particle trajectories; quadrupoles focus the beam. Their field profiles, apertures and operating cycles impose different requirements. CERN's 5 December 2023 report describes a 7.2 m Nb3Sn quadrupole prototype for the High-Luminosity LHC, following earlier LHC use of NbTi. The reported third full-length prototype reached 16.53 kA in tests at both 1.9 K and 4.5 K, while planned operation was at 1.9 K. These are distinct test conditions, not interchangeable operating specifications.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c43ec6c74bbdf714"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k3-2",
+      "sectionId": "k3",
+      "statement": "The same report links improved performance to changes in support-shell dimensions, assembly stress and production procedures after earlier prototypes were limited at 4.5 K. A useful comparison therefore includes conductor properties, mechanical loading, cooling and the specific magnet test, rather than attributing every improvement to chemical composition. Reaching a current target is an important milestone but does not independently establish beam performance, complete series-production acceptance or current fleet readiness. The Wiki records this as a dated prototype result; further system qualification requires its own evidence.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c43ec6c74bbdf714"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k4-1",
+      "sectionId": "k4",
+      "statement": "Magnetic-confinement fusion devices use different coils for different field functions. ITER's technical overview describes Nb3Sn in its toroidal-field and central-solenoid systems, and NbTi in the four largest poloidal-field coils. Its quoted peak fields refer to named parts of the magnet system: the toroidal-coil maximum and the central-solenoid maximum are not the same measurement location. Cooling near liquid-helium temperatures is also distinct from the plasma temperature.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9ca58981555e968d"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k4-2",
+      "sectionId": "k4",
+      "statement": "Coils, structural supports, cable jackets, cooling circuits and feeders form an engineered system. High-temperature superconducting current leads in a feeder should not be confused with the material used throughout the main winding. Nor are all ITER coils superconducting: the overview identifies copper conductors for in-vessel vertical-stability and edge-localized-mode coils. Treat the page's design capabilities and intended operation as design information. A magnet specification does not demonstrate a completed fusion campaign, sustained net electricity generation or commercial reactor availability. Those outcomes require separately dated operational evidence.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9ca58981555e968d"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k5-1",
+      "sectionId": "k5",
+      "statement": "A superconducting quantum interference device converts flux-dependent Josephson interference into an electrical signal. For an ideal loop with two identical sinusoidal junctions and negligible self-inductance, maximizing their summed currents gives $I_{\\max}=2I_0|\\cos(\\pi\\Phi/\\Phi_0)|$. This independently checked limit explains periodicity; unequal junctions leave a nonzero minimum at half a flux quantum. It is not a complete sensor-noise calculation. Tesche and Clarke's original abstract explicitly includes inductance, junction asymmetry, resistive shunts and noise when assessing performance.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-654ce5462e87aa22"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k5-2",
+      "sectionId": "k5",
+      "statement": "Practical sensitivity depends on the pickup geometry, flux-to-voltage transfer, bandwidth and noise environment. A noise density must carry its frequency normalization and refer to the correct input quantity. NIST's detector-readout project illustrates SQUID ammeters and multiplexing used to read cryogenic sensor arrays, together with room-temperature electronics. The SQUID readout and the sensor that absorbs a photon are distinct components. Neither an ideal interference curve nor the presence of a SQUID establishes the final instrument's energy resolution. The complete original noise derivation and device-specific calibration remain outside this scoped check.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-654ce5462e87aa22",
+        "source-3fd82d6f06095581"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k6-1",
+      "sectionId": "k6",
+      "statement": "An SNSPD uses a biased superconducting nanowire and readout circuit to register photon-induced detection events. Efficiency, timing jitter, dark counts, recovery and maximum usable rate are separate metrics. Reddy and colleagues' 2020 experiment reported 98.0 ± 0.5% system detection efficiency at 1550 nm using MoSi, not WSi or NbN. Its definition refers to photons entering the fiber pigtail outside the cryostat, so the reported system efficiency must not be replaced by an internal absorption or conversion efficiency.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-f2533bc529f46a76"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k6-2",
+      "sectionId": "k6",
+      "statement": "The selected final-paper passages describe operation at 720–780 mK with optimized polarization. For the 50 μm device, series resistance in the readout changed pulse behavior and suppressed problems that otherwise affected operation. These conditions belong with the headline value. Do not combine this efficiency with another paper's best timing or dark-count result as though one device achieved them together. This is a dated experimental example, not an assertion of a current world record. The full calibration supplement, uncertainty reconstruction and raw detection traces have not yet been independently reviewed.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-f2533bc529f46a76"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k7-1",
+      "sectionId": "k7",
+      "statement": "Josephson circuits supply a nonlinear quantum element whose lowest levels can encode a qubit. The transmon model uses $H=4E_C(\\hat n-n_g)^2-E_J\\cos\\hat\\varphi$, where $E_C=e^2/(2C_\\Sigma)$ and $\\hat n$ counts Cooper pairs. Koch and colleagues show that increasing $E_J/E_C$ strongly suppresses sensitivity to offset charge, while reducing relative anharmonicity more slowly. The latter must remain sufficient to distinguish the intended transition from leakage to higher levels.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-4807a9ed7d6653f1"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k7-2",
+      "sectionId": "k7",
+      "statement": "Independent diagonalization in the charge basis checks this tradeoff across six energy ratios and verifies convergence under an increased charge cutoff. Absolute anharmonicity approaches a scale of order $E_C$; confusing it with relative anharmonicity would misstate the result. The calculation does not include fabricated junction defects, all environmental noise, driven gates or measurement electronics. A stable transition in this model is not a measured coherence time, gate fidelity or fault-tolerant processor. The original 2007 design paper supplies a foundational model, not a benchmark for present-day hardware.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-4807a9ed7d6653f1"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k8-1",
+      "sectionId": "k8",
+      "statement": "Magnetic levitation is a family of systems, not a single superconducting material. JR Central's operator explanation describes liquid-helium-cooled NbTi magnets onboard SCMAGLEV vehicles. Propulsion uses powered guideway coils, while motion relative to other guideway coils generates levitation and guidance forces. This architecture must not be described simply as a YBCO bulk floating over permanent magnets. A low-loss superconducting magnet also does not imply a train that consumes no electrical energy.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-5cdba326c3439d40"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k8-2",
+      "sectionId": "k8",
+      "statement": "Bulk-superconductor demonstrations provide a different example. The publisher-indexed abstract and excerpt of Wang and colleagues' 2002 paper describe a YBaCuO-bulk test vehicle over an NdFeB guideway and date the first reported test to 31 December 2000. That limited source access does not establish all load, speed or stability claims. Distinguish the demonstrated configuration from a transport service: propulsion, guidance, cooling, emergency support and operating reliability must be assessed for the actual system. This handbook preserves both examples and their evidence boundaries without declaring every maglev system superconducting or every prototype commercially deployed.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-5cdba326c3439d40",
+        "source-7be734c7e3d7c08e"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k9-1",
+      "sectionId": "k9",
+      "statement": "Superconducting films can reduce conductor loss in microwave structures, but zero direct-current resistance does not imply zero microwave surface resistance. Resonator measurements must distinguish loaded from unloaded quality factor and account for coupling, dielectric loss, packaging and heating. Xin and colleagues compared unpatterned YBCO wafers with patterned stripline structures using different current distributions. Their selected methods include thermal control and a change of measurement method at high input power.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-579a5cc38efb09e7"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k9-2",
+      "sectionId": "k9",
+      "statement": "The observed absence of patterning-induced degradation applied to the tested films and procedures; it is not a theorem about every fabrication process. Some comparisons also rescaled between frequencies using an assumed frequency-squared resistance dependence. Retain that assumption when interpreting agreement. Nonlinear response can limit power handling and generate unwanted frequencies even where small-signal loss is low. For a filter, quote frequency, temperature, bandwidth, insertion loss and power conditions together. The reviewed resonator experiment motivates these checks but does not establish the performance or current deployment of a particular communications filter.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-579a5cc38efb09e7"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k10-1",
+      "sectionId": "k10",
+      "statement": "A superconducting flywheel stores kinetic energy in a rotating mass; its superconducting bearing reduces contact friction. This differs from storing energy directly in a magnetic field. RTRI's 15 April 2015 system description reports a four-ton rotor supported by a bearing cooled to 50 K, with a yttrium-containing superconducting coil and a superconducting bulk on the shaft. It lists 300 kW output, 100 kWh storage and a maximum speed of 6,000 rpm; grid-connection tests were still planned in that document.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-70cba2aaed2e7595"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-k10-2",
+      "sectionId": "k10",
+      "statement": "Rotational energy is $E=I\\omega^2/2$. Usable energy between two speeds depends on their squared difference, not just the maximum speed. Dividing the stated 100 kWh by 300 kW gives an ideal 20 minutes, not a measured discharge duration or round-trip efficiency. An independent uniform-annulus calculation illustrates why mass distribution matters; it does not reconstruct the actual layered rotor. Vacuum equipment, cooling, motor-generator losses, containment and maintenance remain part of system assessment. The source's historical capacity claim is preserved without repeating an absolute promise of unlimited lifetime or zero total loss.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-70cba2aaed2e7595"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "For each device, retain material, geometry, cooling, measurement reference, date and operating conditions. Identify whether the cited result is a model, component test, integrated demonstration or operational report. Reliability and efficiency need a stated duration and system boundary. Current or field targets, detector efficiency and storage capacity cannot be merged into a generic measure of superconducting quality.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c43ec6c74bbdf714",
+        "source-f2533bc529f46a76",
+        "source-70cba2aaed2e7595"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The ten sections have individual review records. Some use selected final-paper passages; others use author manuscripts, institutional engineering reports, reviews or explicitly limited abstract access. Full scientific acceptance remains open, including supplementary calibration, final-version comparisons and complete device records. The historical examples establish neither present-day records nor universal superiority over alternative technologies.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-684ee630b8b083a8",
+        "source-654ce5462e87aa22",
+        "source-f2533bc529f46a76",
+        "source-7be734c7e3d7c08e"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    },
+    {
+      "id": "scwiki-k-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Select materials against the application: usable current and mechanical margin for a cable, field quality for a magnet, noise and coupling for a sensor, or losses and control for a quantum circuit. A higher transition temperature can change cooling options but does not settle every engineering constraint. A useful development claim specifies which independently measurable system property should improve and which tradeoffs may worsen.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-6293adce09208657",
+        "source-684ee630b8b083a8",
+        "source-4807a9ed7d6653f1",
+        "source-579a5cc38efb09e7"
+      ],
+      "conditions": "Dated device or source context only. Retain material, temperature, geometry, measurement definition and system boundary. Operating temperatures are not experimental Tc records.",
+      "verificationScope": "Selected original passages, institutional technical descriptions, review-level context or explicit abstract-only access as named in each reference. No complete device qualification or final scientific acceptance."
+    }
+  ],
+  "scopeItems": [
+    {
+      "id": "K1",
+      "sectionIds": [
+        "k1"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Power transmission cables: selected-published-conductor-and-cable-check. Dates, device conditions and source limits retained.",
+      "limitations": [
+        "Complete scientific acceptance and device-level qualification remain open.",
+        "Historical tests and design ratings are not current deployment, universal performance or experimental Tc records."
+      ]
+    },
+    {
+      "id": "K2",
+      "sectionIds": [
+        "k2"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "MRI magnets: selected-author-magnet-design-and-cooling-check. Dates, device conditions and source limits retained.",
+      "limitations": [
+        "Complete scientific acceptance and device-level qualification remain open.",
+        "Historical tests and design ratings are not current deployment, universal performance or experimental Tc records."
+      ]
+    },
+    {
+      "id": "K3",
+      "sectionIds": [
+        "k3"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Accelerator magnets: dated-first-party-prototype-test-report. Dates, device conditions and source limits retained.",
+      "limitations": [
+        "Complete scientific acceptance and device-level qualification remain open.",
+        "Historical tests and design ratings are not current deployment, universal performance or experimental Tc records."
+      ]
+    },
+    {
+      "id": "K4",
+      "sectionIds": [
+        "k4"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Fusion magnets: selected-first-party-magnet-system-overview. Dates, device conditions and source limits retained.",
+      "limitations": [
+        "Complete scientific acceptance and device-level qualification remain open.",
+        "Historical tests and design ratings are not current deployment, universal performance or experimental Tc records."
+      ]
+    },
+    {
+      "id": "K5",
+      "sectionIds": [
+        "k5"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "SQUID sensors and readout: publisher-original-abstract; selected-first-party-sensor-readout-overview. Dates, device conditions and source limits retained.",
+      "limitations": [
+        "Complete scientific acceptance and device-level qualification remain open.",
+        "Historical tests and design ratings are not current deployment, universal performance or experimental Tc records."
+      ]
+    },
+    {
+      "id": "K6",
+      "sectionIds": [
+        "k6"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Superconducting nanowire photon detectors: selected-published-detector-conditions-check. Dates, device conditions and source limits retained.",
+      "limitations": [
+        "Complete scientific acceptance and device-level qualification remain open.",
+        "Historical tests and design ratings are not current deployment, universal performance or experimental Tc records."
+      ]
+    },
+    {
+      "id": "K7",
+      "sectionIds": [
+        "k7"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Superconducting qubits: selected-published-transmon-model-check. Dates, device conditions and source limits retained.",
+      "limitations": [
+        "Complete scientific acceptance and device-level qualification remain open.",
+        "Historical tests and design ratings are not current deployment, universal performance or experimental Tc records."
+      ]
+    },
+    {
+      "id": "K8",
+      "sectionIds": [
+        "k8"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Magnetic levitation: selected-first-party-propulsion-and-magnet-check; publisher-indexed-abstract-and-excerpt. Dates, device conditions and source limits retained.",
+      "limitations": [
+        "Complete scientific acceptance and device-level qualification remain open.",
+        "Historical tests and design ratings are not current deployment, universal performance or experimental Tc records."
+      ]
+    },
+    {
+      "id": "K9",
+      "sectionIds": [
+        "k9"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Microwave resonators and filters: selected-author-microwave-method-and-results-check. Dates, device conditions and source limits retained.",
+      "limitations": [
+        "Complete scientific acceptance and device-level qualification remain open.",
+        "Historical tests and design ratings are not current deployment, universal performance or experimental Tc records."
+      ]
+    },
+    {
+      "id": "K10",
+      "sectionIds": [
+        "k10"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Flywheel energy storage: dated-first-party-design-and-test-report. Dates, device conditions and source limits retained.",
+      "limitations": [
+        "Complete scientific acceptance and device-level qualification remain open.",
+        "Historical tests and design ratings are not current deployment, universal performance or experimental Tc records."
+      ]
+    }
+  ]
+}
