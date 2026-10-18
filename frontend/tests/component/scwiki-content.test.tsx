@@ -862,3 +862,20 @@ it("matches every material condition to the public search/API enum and retrieves
  expect(searchArticles(searchIndex().entries,"Budden",{equilibrium:"transient"}).some(a=>a.code==="B7")).toBe(true);
  expect(searchArticles(searchIndex().entries,"LaH10",{pressure:"high",tcMin:240}).some(a=>a.code==="D6")).toBe(true);
 });
+
+it("keeps MgB2 isotope transitions separate from probe temperatures and unresolved mass metadata",async()=>{
+ const a=articles().find(a=>a.code==="D7")!;
+ expect(a.references.some(r=>r.doi==="10.1038/nature00898")).toBe(true);
+ expect(a.references.some(r=>r.doi==="10.1038/nature00992")).toBe(false);
+ const budko=a.references.find(r=>r.doi==="10.1103/PhysRevLett.86.1877")!;
+ const isotopes=a.materialCases.filter(c=>c.sourceId===budko.id);
+ expect(isotopes.map(c=>c.tcK)).toEqual([40.2,39.2]);
+ expect(isotopes.every(c=>c.criterion==="two-percent-diamagnetic-onset")).toBe(true);
+ for(const c of a.materialCases.filter(c=>c.temperatureKind==="measurement"))expect(c.tcK).toBeNull();
+ expect(searchArticles(searchIndex().entries,"MgB2",{tcMin:40,criterion:"two-percent-diamagnetic-onset"}).some(a=>a.code==="D7")).toBe(true);
+ expect(searchArticles(searchIndex().entries,"MgB2",{tcMin:41}).some(a=>a.code==="D7")).toBe(false);
+ const limits=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+ expect(limits).toContain("25.001");expect(limits).toContain("No Mg-mass refit");
+ expect(a.references.find(r=>r.doi==="10.1038/35078037")!.verification.note).toContain("discrepancy unresolved");
+ expect(a.materialCases[0].pressureRegime).toBe("ambient");expect(a.materialCases[0].pressureGPa).toBeNull();
+});

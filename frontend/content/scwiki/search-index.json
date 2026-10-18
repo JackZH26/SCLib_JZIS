@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "a4fbcd94842cb0aa1a78",
+  "revision": "8e34417056f41e2d44ef",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -2323,6 +2323,122 @@
         "10.1038/s41467-026-74232-4"
       ],
       "text": " Scope\n\nHydrogen-rich superconductors connect light nuclei, strong electron–phonon coupling and pressure-dependent chemistry. Ashcroft's metallic-hydrogen proposal and later hydrogen-dominant-alloy proposal motivate this route; neither established a recoverable ambient-pressure superconductor. H₃S and LaH₁₀ are important high-pressure experimental systems. Their formulae, pressure scales and sample histories must accompany any quoted transition temperature.    \n\n“Chemical precompression” describes a design idea, not a guarantee of low operating pressure. A predicted metallic structure, a synthesized hydride and a superconducting phase are different achievements. Distinguish the starting H₂S reagent from its proposed H₃S product, and a clathrate-like hydrogen framework from directly measured hydrogen positions. The sulfur-hydride diffraction study supports the sulfur sublattice and coexistence with sulfur; its measured patterns cannot by themselves distinguish hydrogen arrangements with the same sulfur periodicity.   \n\n Mathematical assumptions\n\nFor a specified structure, a commonly used modified-McMillan estimate is Tc=(\\omega{\\log}/1.2)\\exp[-1.04(1+\\lambda)/(\\lambda-\\mu^(1+0.62\\lambda))], with \\omega{\\log} expressed in kelvin here. Duan's harmonic calculations give \\lambda=2.07, \\omega{\\log}=1125.1 K for R3m at 130 GPa and \\lambda=2.19, \\omega{\\log}=1334.6 K for Im\\bar{3}m at 200 GPa. Substitution with \\mu^=0.13 and 0.10 gives approximately 155–166 K and 191–204 K, respectively. This reproduces the printed estimate convention, without additional strong-coupling or spectral-shape factors; it does not reproduce the underlying density-functional perturbation calculation. \n\nHydrogen motion can invalidate a harmonic treatment. Errea and colleagues calculated a change from \\lambda=2.64 to 1.84 for H₃S at 200 GPa when including anharmonicity. Their full isotropic Migdal–Eliashberg calculation with \\mu^=0.16 changed the calculated transition from 250 to 194 K. That table is not obtained by simply substituting parameters into the preceding approximate formula. Zero-point contributions also alter the calculated decomposition landscape: both 3\\mathrm{H2S}\\rightarrow2\\mathrm{H3S}+\\mathrm{S} and 5\\mathrm{H2S}\\rightarrow3\\mathrm{H3S}+\\mathrm{HS2} conserve atoms, but atom balance alone does not establish stability or a reaction pathway. \n\nAn isotope comparison uses \\alpha=\\ln(T{c,\\mathrm H}/T{c,\\mathrm D})/\\ln2 only after checking structure, pressure and transition criteria. The final LaH₁₀ paper compares approximately 249 K and 180 K for fcc hydride and deuteride near 150 GPa; its Fig. 4 specifies 151 and 152 GPa. These rounded values give 0.468, while the paper states 0.46. The early author's 250/168 K comparison gives 0.573 and must not be silently substituted for the final result. Phase mixtures and different deuteride structures further limit interpretation. \n\n Experimental criteria\n\nFor sulfur hydride, the 2015 report combined resistance, field response, isotope substitution and magnetization. Its author-version Fig. 4a reports a zero-field-cooled magnetic onset of 203(1) K at 155 GPa, with a 20 Oe field-cooled comparison. The plotted transport comparison is a different pressure, 145 GPa, and must not be treated as the identical specimen condition. Background subtraction and diamond-anvil-cell contributions require scrutiny; this scoped reading does not independently reproduce raw magnetization. The later simultaneous diffraction/transport experiment on deuteride at 173 GPa provides structural context, not a direct measurement of every hydrogen coordinate.  \n\nThe two early lanthanum-superhydride studies have different evidence scopes. Somayazulu's author v3 describes a large resistance drop around 260 K, with room-temperature pressure changing from 188 to 196 GPa across a thermal cycle; pressure at the actual transition was not measured in that run. The lowest four-probe resistance was about 20 μΩ, while pseudo-four-probe measurements carried contact-resistance limitations. This should not be rewritten as an independently established zero-resistance or magnetic-shielding result. The final journal abstract was checked, but the selected detailed methods here come from the identified author version. \n\nDrozdov's final 2019 LaH₁₀ paper reports zero resistance, isotope dependence and field suppression, with a maximum near 250–252 K around 170 GPa. Its transition criterion is the onset of deviation from normal metallic resistance. Measurements to 9 T support an extrapolated zero-temperature upper critical field of approximately 95–136 T; they are not direct measurements at 136 T. The authors explicitly state that their tiny samples were below the available SQUID sensitivity. Their H₂/D₂ vibron pressure estimates were often 10–30 GPa lower than diamond-edge estimates around 150 GPa, so pressure calibrations cannot be freely interchanged. \n\n Limits and disputes\n\nThe 2020 carbonaceous-sulfur-hydride article was retracted on 26 September 2022. The corrected notice identifies concerns about non-standard, user-defined magnetic-background subtraction; all authors disagreed with the retraction. The 2023 nitrogen-doped lutetium-hydride article was retracted on 7 November 2023 following concerns including sample provenance, measurements and processing. These original papers remain linked as historical claims, accompanied by their notices. Their claimed temperatures are not usable experimental benchmarks in this catalogue. A retraction notice is not a substitute for an independent misconduct finding.    \n\nAn independent LuH₂±xNᵧ study reported no superconductivity above 2 K over 0.4–40.1 GPa in its transport measurements. That constrains its tested samples and synthesis route; it does not prove that every possible Lu–N–H composition is nonsuperconducting. The final published pressure range differs from an early preprint's narrower range. In particular, a blue-to-pink colour change is not a superconductivity measurement. \n\n Discovery implications\n\nA credible search must connect composition and structure to dynamical and thermodynamic stability, finite-temperature and nuclear-quantum effects, synthesis access and multiple superconductivity probes. A finite structure search can miss larger cells; absence of imaginary harmonic frequencies is a local dynamical check, not proof of global stability. Preserve decompression history, mixed phases, pressure standards and unsuccessful samples instead of ranking formulae by isolated temperature claims.   \n\nA June 2026 study recovered Y₃Fe₄H₂₀ at ambient pressure after synthesis above about 60 GPa, with survival on the scale of tens of hours. This is useful progress in hydride recovery, but its reported SQUID test found no superconductivity down to 3 K in the tested recovered sample. Hydrogen positions were supported by structure searches, and the sample was small and not pure. Recovery, long-term stability and ambient-pressure superconductivity remain distinct questions. Full raw-data, convergence and cross-laboratory assessment remain open for this article. \n\n Related topics\n\nContinue with , ,  and ."
+    },
+    {
+      "id": "scwiki-d7",
+      "topicId": "scwiki-topic-d7",
+      "code": "D7",
+      "slug": "magnesium-diboride",
+      "title": "MgB2: two gaps, isotope effects and conductor conditions",
+      "summary": "Connect boron-derived bands and coupled superconducting gaps to isotope experiments, impurity scattering and the conditions that matter for MgB2 conductors.",
+      "aliases": [
+        "MgB2",
+        "magnesium diboride",
+        "sigma bands",
+        "pi bands",
+        "boron isotope",
+        "two gaps",
+        "pair transfer",
+        "interband impurity scattering"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experiment"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "1e53e744bce18578929f",
+      "materialCases": [
+        {
+          "id": "scwiki-d7-material-1",
+          "formula": "MgB2",
+          "sample": "Nagamatsu 2001 polycrystalline pellet, zero field",
+          "recordType": "experiment",
+          "reportedTemperatureK": 39,
+          "tcK": 39,
+          "temperatureKind": "transition",
+          "temperatureNote": "Onset 39 K; endpoint 38 K. Synthesis pressure 196 MPa is not measurement pressure.",
+          "criterion": "four-probe-resistive-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Four-probe resistivity; separate 10 Oe magnetization",
+          "sourceId": "source-fade6558e7eafb2b"
+        },
+        {
+          "id": "scwiki-d7-material-2",
+          "formula": "MgB2",
+          "sample": "Budko Mg10B2, ZFC warming in 25 G",
+          "recordType": "experiment",
+          "reportedTemperatureK": 40.2,
+          "tcK": 40.2,
+          "temperatureKind": "transition",
+          "temperatureNote": "Isotope-specific sample; not universal MgB2 Tc.",
+          "criterion": "two-percent-diamagnetic-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "SQUID magnetization; paired Mg11B2 comparison",
+          "sourceId": "source-22ad55507a1e49c5"
+        },
+        {
+          "id": "scwiki-d7-material-3",
+          "formula": "MgB2",
+          "sample": "Budko Mg11B2, ZFC warming in 25 G",
+          "recordType": "experiment",
+          "reportedTemperatureK": 39.2,
+          "tcK": 39.2,
+          "temperatureKind": "transition",
+          "temperatureNote": "Isotope-specific sample and criterion.",
+          "criterion": "two-percent-diamagnetic-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "SQUID magnetization; paired Mg10B2 comparison",
+          "sourceId": "source-22ad55507a1e49c5"
+        },
+        {
+          "id": "scwiki-d7-material-4",
+          "formula": "MgB2",
+          "sample": "Szabo Cu–MgB2 point contact at 4.2 K",
+          "recordType": "experiment",
+          "reportedTemperatureK": 4.2,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Operating temperature; 2.8/7 meV gap scales are not measured Tc values.",
+          "criterion": "point-contact-operating-temperature",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Differential resistance; two BTK contributions, fields up to 1 T",
+          "sourceId": "source-69ced9b5dda860f1"
+        },
+        {
+          "id": "scwiki-d7-material-5",
+          "formula": "MgB2",
+          "sample": "2026 square 19-filament IMD wire",
+          "recordType": "experiment",
+          "reportedTemperatureK": 4.2,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Operating temperature, not Tc; full conductor methods remain open.",
+          "criterion": "engineering-current-operating-temperature",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Indexed summary benchmark at 6.5 T; voltage criterion not reviewed",
+          "sourceId": "source-39e103ef0175cc7e"
+        }
+      ],
+      "dois": [
+        "10.1038/35065039",
+        "10.1103/PhysRevLett.86.4656",
+        "10.1103/PhysRevLett.86.1877",
+        "10.1038/35078037",
+        "10.1103/PhysRevLett.87.137005",
+        "10.1038/nature00898",
+        "10.1103/PhysRevLett.89.107002"
+      ],
+      "text": " Scope\n\nMagnesium diboride, MgB₂, is a useful benchmark for electron–phonon superconductivity with different gap scales on different Fermi-surface sheets. Its 2001 discovery report combined magnetization and resistivity near 39 K in a simple hexagonal compound. This historical temperature is not a universal sample constant or an upper bound on phonon-mediated superconductivity.  \n\nBoron honeycomb layers provide most of the electronic states near the Fermi level. The approximately cylindrical σ sheets derive mainly from in-plane boron orbitals; the π sheets have substantial out-of-plane character. Strong coupling of σ states to boron bond stretching helps explain the large gap. “Two gaps” is a useful reduction of a momentum-dependent problem: Choi's calculation at 4 K spans 6.4–7.2 meV on σ sheets and 1.2–3.7 meV on π sheets, with averages of 6.8 and 1.8 meV. These are calculated distributions, not two exactly constant measured gaps.  \n\n Mathematical assumptions\n\nIn an illustrative clean weak-coupling model with a shared cutoff, the linearized equations are \\Deltai=L(T)\\sumj\\lambda{ij}\\Deltaj. The largest positive eigenvalue of the pairing matrix determines the first instability. Off-diagonal pair-transfer terms can make both gap components nonzero at the same transition, even when their amplitudes differ. For the chosen toy matrix \\lambda=\\begin{pmatrix}0.40&0.08\\\\0.04&0.15\\end{pmatrix}, the leading eigenvalue is approximately 0.4122 and \\Delta2/\\Delta1\\approx0.1526 at onset. Setting both off-diagonal entries to zero removes the induced second component at the higher transition. These numbers illustrate coupled equations; they are not fitted MgB₂ parameters.  \n\nPair transfer and impurity interband scattering are different processes. An elastic scattering rate contains impurity matrix elements and connects single-particle states; it must not replace \\lambda{ij} in the pairing equation. Mazin's analysis distinguishes weak σ–π impurity mixing from potentially large scattering within each band. Its normal-state conductivity adds parallel band contributions, so a single residual resistivity cannot uniquely determine the interband rate. Using its illustrated in-plane plasma weights and intraband rates, a simplified residual-conductivity calculation shifts the σ share from about 33% to 92% between the selected clean and dirty examples. This is a model illustration, not a resistivity measurement or a calculation of the full temperature dependence. \n\nFor isotope substitutions, \\alphai=-\\Delta\\ln Tc/\\Delta\\ln Mi is a partial coefficient. Bud'ko's rounded 40.2 K and 39.2 K values give \\alpha{\\mathrm B}\\approx0.264 using masses 10 and 11, consistent with the reported 0.26\\pm0.03. Hinks separately measured both elements and reported approximately \\alpha{\\mathrm B}=0.30(1) and \\alpha{\\mathrm{Mg}}=0.02(1). Their sum near 0.32 differs from the simplest harmonic single-scale expectation of 0.5. This does not uniquely isolate anharmonicity, Coulomb effects or multiband contributions.  \n\n Experimental criteria\n\nThe original discovery paper reported a resistive onset of 39 K and an endpoint of 38 K using four probes at zero applied field. Magnetization used zero-field-cooled and field-cooled protocols at 10 Oe; the authors estimated a 49% superconducting volume fraction at 5 K. Their 196 MPa argon pressure was used during hot isostatic synthesis at 973 K for ten hours. It is not the pressure of the superconductivity measurement. Onset, endpoint, magnetic response and synthesis conditions must remain separate fields. \n\nBud'ko used a 2% diamagnetic-onset criterion on warming after zero-field cooling, with a 25 G measuring field. The isotopically enriched samples had narrow but different transition widths. Hinks used a 1 G field and compared extrapolated onset with a 10% criterion; natural and enriched Mg samples showed possible impurity differences that the authors could not quantify. The Mg contribution therefore belongs to the Hinks study, not to the earlier boron-only experiment. The six printed boron comparisons have been recalculated here, but the raw magnetization has not been refitted.  \n\nSzabó's Cu–MgB₂ point contacts showed small and large gap scales around 2.8 and 7 meV. Their two-component BTK fits kept interface transparency and relative weight fixed across temperature; thermal smearing makes the two contributions harder to separate near the bulk transition. Fields up to 1 T preferentially suppressed the small-gap spectral contribution, helping reveal the large-gap features. This does not mean that 1 T is the bulk upper critical field, and these spectra alone do not determine the relative sign of the gaps. At 39 K the quoted gap ratios are approximately 1.67 and 4.17, rather than a single weak-coupling BCS ratio. \n\n Limits and disputes\n\nThe final Choi calculation uses the anisotropic Eliashberg framework and compares calculated thermodynamics with experiments. Its successful description does not turn a two-constant-gap approximation into an exact band-resolved result. Spectroscopic weights depend on geometry and matrix elements; fitting two components is strongest when checked against independent thermodynamic and field-dependent evidence. The original specific-heat datasets and full anisotropic numerical calculation have not been independently reproduced in this review.  \n\nThe Hinks author manuscript contains a version issue: Table 1 prints a Mg mass of 25.001 for a sample family, while the methods describe enriched ²⁶Mg. This discrepancy is retained as unresolved pending comparison with the final published table. No Mg-mass refit is presented. The boron ratios use the explicitly printed boron masses and temperatures. Likewise, the Mazin author PDF's generated date is not its submission date; the cited version is the arXiv submission of 1 April 2002.  \n\n Discovery implications\n\nMaterials development must connect gap physics to usable conductors. A 2026 study of square, 19-filament MgB₂ wire reports a 14.2% filling factor and an engineering-current benchmark at 4.2 K and 6.5 T. This reference is currently checked only through the publisher's indexed summary and the authors' publication record; the electric-field criterion, full methods and coil comparison require further review. Engineering current density uses the whole composite cross-section, unlike a current density normalized to superconducting material alone. Neither operating temperature nor a current-density benchmark should enter a transition-temperature ranking. \n\nPreserve processing, connectivity, field orientation, temperature and voltage criterion when comparing wires. Increasing intraband disorder, changing band filling and increasing interband impurity mixing are not interchangeable interventions. A useful candidate must satisfy its operating requirements as well as the microscopic pairing model; this article's scoped calculations do not certify a wire or magnet design.  \n\n Related topics\n\nSee , , ,  and ."
     },
     {
       "id": "scwiki-e4",

@@ -1,0 +1,429 @@
+{
+  "id": "scwiki-d7",
+  "topicId": "scwiki-topic-d7",
+  "code": "D7",
+  "slug": "magnesium-diboride",
+  "title": "MgB2: two gaps, isotope effects and conductor conditions",
+  "summary": "Connect boron-derived bands and coupled superconducting gaps to isotope experiments, impurity scattering and the conditions that matter for MgB2 conductors.",
+  "aliases": [
+    "MgB2",
+    "magnesium diboride",
+    "sigma bands",
+    "pi bands",
+    "boron isotope",
+    "two gaps",
+    "pair transfer",
+    "interband impurity scattering"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "B12",
+    "B2",
+    "A4",
+    "A9",
+    "A7",
+    "D2"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T11:19:34.848076+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected original discovery and Choi published passages, Budko/Hinks/Szabo/Mazin author-version methods and equations; independent isotope ratios, toy pairing eigenmodes and parallel-band weights.",
+    "limitations": [
+      "Full scientific acceptance, raw-data and full numerical reproduction remain open.",
+      "Hinks v1 table Mg mass conflicts with methods; final table unresolved, no Mg-mass refit presented.",
+      "Several detailed sources use identified author versions; final-version comparisons remain open.",
+      "2026 wire source is an indexed-summary check only; no conductor design or performance certification."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D7_MgB2.md",
+    "sha256": "2f2a1ddc3d4cf4a17f548112ddf82587ec4d600dd4b0795483cdc747e4c4a063",
+    "sourceId": "file-fc4bfe4d6989f587"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 44,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source retained; source identity, isotope attribution and interband-process distinction corrected."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-fade6558e7eafb2b",
+      "doi": "10.1038/35065039",
+      "title": "Superconductivity at 39 K in magnesium diboride",
+      "year": 2001,
+      "url": "https://doi.org/10.1038/35065039",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-methods-figures-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.w2agz.com/Library/HTSC%20History/MgB2%20Discovery%20nature410063.pdf",
+        "note": "Published 1 March 2001. Original published pp.63–64 read for MgB2 discovery (not preceding unrelated article); p.64 visually checked. Resistive onset 39 K / endpoint 38 K, 10 Oe magnetization and synthesis196 MPa distinguished. Raw data not reproduced."
+      }
+    },
+    {
+      "id": "source-a720b8200872878c",
+      "doi": "10.1103/PhysRevLett.86.4656",
+      "title": "Superconductivity of Metallic Boron in MgB2",
+      "year": 2001,
+      "url": "https://doi.org/10.1103/PhysRevLett.86.4656",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.86.4656",
+        "note": "Published 14 May 2001. Abstract only; band/phonon interpretation, not independently reproduced electronic structure."
+      }
+    },
+    {
+      "id": "source-22ad55507a1e49c5",
+      "doi": "10.1103/PhysRevLett.86.1877",
+      "title": "Boron Isotope Effect in Superconducting MgB2",
+      "year": 2001,
+      "url": "https://doi.org/10.1103/PhysRevLett.86.1877",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-isotope-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0101463v1",
+        "note": "Journal published 26 February 2001. Author v1 submitted 31 January 2001, selected pp.1–2: 25 G ZFC warming,2% onset,40.2/39.2 K and mixed-isotope broadening. Boron-only study; not source for measured Mg coefficient. No raw magnetization refit."
+      }
+    },
+    {
+      "id": "source-60ffd9b4ef2c9ccd",
+      "doi": "10.1038/35078037",
+      "title": "The complex nature of superconductivity in MgB2 as revealed by the reduced total isotope effect",
+      "year": 2001,
+      "url": "https://doi.org/10.1038/35078037",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-table-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0104242v1",
+        "note": "Author v1 submitted 12 April 2001, selected pp.2–3 and Table 1 p. 7 visually checked. 1 G warming, onset/10% criteria and impurity caveat. Table prints 25.001 Mg mass despite 26Mg methods; final version inaccessible, discrepancy unresolved. Only boron ratios recalculated."
+      }
+    },
+    {
+      "id": "source-69ced9b5dda860f1",
+      "doi": "10.1103/PhysRevLett.87.137005",
+      "title": "Evidence for Two Superconducting Energy Gaps in MgB2 by Point-Contact Spectroscopy",
+      "year": 2001,
+      "url": "https://doi.org/10.1103/PhysRevLett.87.137005",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-spectroscopy-methods-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0105598v1",
+        "note": "Journal published 11 September 2001; author v1 submitted 30 May 2001, selected methods/results pp.2–3. Cu tips,400 Hz differential resistance, two BTK contributions, fixed weight/Z across T, field to 1 T. Final journal first-page text compared; complete final methods/raw fits not reproduced."
+      }
+    },
+    {
+      "id": "source-7c4eac077ae5e221",
+      "doi": "10.1038/nature00898",
+      "title": "The origin of the anomalous superconducting properties of MgB2",
+      "year": 2002,
+      "url": "https://doi.org/10.1038/nature00898",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-anisotropic-gap-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www2.lbl.gov/Science-Articles/Archive/assets/images/2002/Aug-14-2002/MgB2Nature.pdf",
+        "note": "Published 15 August 2002. Original pp.758–760 selected discussion and Figs. 2–4; p.759 visually checked. Calculated distributions/thermodynamics distinguished from measured gap constants. No anisotropic Eliashberg solve or original specific-heat reanalysis."
+      }
+    },
+    {
+      "id": "source-a9d7d0b720a3bafd",
+      "doi": "10.1103/PhysRevLett.89.107002",
+      "title": "Superconductivity in MgB2: Clean or Dirty?",
+      "year": 2002,
+      "url": "https://doi.org/10.1103/PhysRevLett.89.107002",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-scattering-transport-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0204013v1",
+        "note": "Journal published 19 August 2002; arXiv v1 submitted 1 April 2002 (PDF generated date 2018 is not submission). Selected pp.1–4, Eqs. 1–3 / Table I and Fig. 3 parameters. Full final-version comparison and impurity supercell calculations not reproduced."
+      }
+    },
+    {
+      "id": "source-39e103ef0175cc7e",
+      "doi": null,
+      "title": "Square filamentary MgB2 wire fabricated by the internal Mg diffusion method",
+      "year": 2026,
+      "url": "https://www.sciencedirect.com/science/article/pii/S2772830726000086",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-indexed-summary-and-author-bibliography-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.sciencedirect.com/science/article/pii/S2772830726000086",
+        "note": "2026, Superconductivity 17, 100238; identity crosschecked with authors at https://elu.sav.sk/veda-a-vyskum/kniznica/ing-pavol-kovac-drsc/ . Indexed publisher summary only:19 filaments, 14.2% filling, 4.2 K / 6.5 T engineering benchmark. Exact publication date, voltage criterion and full methods remain unreviewed; DOI not yet resolved."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d7-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Magnesium diboride, MgB₂, is a useful benchmark for electron–phonon superconductivity with different gap scales on different Fermi-surface sheets. Its 2001 discovery report combined magnetization and resistivity near 39 K in a simple hexagonal compound. This historical temperature is not a universal sample constant or an upper bound on phonon-mediated superconductivity.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fade6558e7eafb2b",
+        "source-7c4eac077ae5e221"
+      ],
+      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+    },
+    {
+      "id": "scwiki-d7-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Boron honeycomb layers provide most of the electronic states near the Fermi level. The approximately cylindrical σ sheets derive mainly from in-plane boron orbitals; the π sheets have substantial out-of-plane character. Strong coupling of σ states to boron bond stretching helps explain the large gap. “Two gaps” is a useful reduction of a momentum-dependent problem: Choi's calculation at 4 K spans 6.4–7.2 meV on σ sheets and 1.2–3.7 meV on π sheets, with averages of 6.8 and 1.8 meV. These are calculated distributions, not two exactly constant measured gaps.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a720b8200872878c",
+        "source-7c4eac077ae5e221"
+      ],
+      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+    },
+    {
+      "id": "scwiki-d7-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In an illustrative clean weak-coupling model with a shared cutoff, the linearized equations are $\\Delta_i=L(T)\\sum_j\\lambda_{ij}\\Delta_j$. The largest positive eigenvalue of the pairing matrix determines the first instability. Off-diagonal pair-transfer terms can make both gap components nonzero at the same transition, even when their amplitudes differ. For the chosen toy matrix $\\lambda=\\begin{pmatrix}0.40&0.08\\\\0.04&0.15\\end{pmatrix}$, the leading eigenvalue is approximately 0.4122 and $\\Delta_2/\\Delta_1\\approx0.1526$ at onset. Setting both off-diagonal entries to zero removes the induced second component at the higher transition. These numbers illustrate coupled equations; they are not fitted MgB₂ parameters.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7c4eac077ae5e221",
+        "source-a9d7d0b720a3bafd"
+      ],
+      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+    },
+    {
+      "id": "scwiki-d7-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Pair transfer and impurity interband scattering are different processes. An elastic scattering rate contains impurity matrix elements and connects single-particle states; it must not replace $\\lambda_{ij}$ in the pairing equation. Mazin's analysis distinguishes weak σ–π impurity mixing from potentially large scattering within each band. Its normal-state conductivity adds parallel band contributions, so a single residual resistivity cannot uniquely determine the interband rate. Using its illustrated in-plane plasma weights and intraband rates, a simplified residual-conductivity calculation shifts the σ share from about 33% to 92% between the selected clean and dirty examples. This is a model illustration, not a resistivity measurement or a calculation of the full temperature dependence.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a9d7d0b720a3bafd"
+      ],
+      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+    },
+    {
+      "id": "scwiki-d7-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For isotope substitutions, $\\alpha_i=-\\Delta\\ln T_c/\\Delta\\ln M_i$ is a partial coefficient. Bud'ko's rounded 40.2 K and 39.2 K values give $\\alpha_{\\mathrm B}\\approx0.264$ using masses 10 and 11, consistent with the reported $0.26\\pm0.03$. Hinks separately measured both elements and reported approximately $\\alpha_{\\mathrm B}=0.30(1)$ and $\\alpha_{\\mathrm{Mg}}=0.02(1)$. Their sum near 0.32 differs from the simplest harmonic single-scale expectation of 0.5. This does not uniquely isolate anharmonicity, Coulomb effects or multiband contributions.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-22ad55507a1e49c5",
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+    },
+    {
+      "id": "scwiki-d7-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "The original discovery paper reported a resistive onset of 39 K and an endpoint of 38 K using four probes at zero applied field. Magnetization used zero-field-cooled and field-cooled protocols at 10 Oe; the authors estimated a 49% superconducting volume fraction at 5 K. Their 196 MPa argon pressure was used during hot isostatic synthesis at 973 K for ten hours. It is not the pressure of the superconductivity measurement. Onset, endpoint, magnetic response and synthesis conditions must remain separate fields.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-fade6558e7eafb2b"
+      ],
+      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+    },
+    {
+      "id": "scwiki-d7-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Bud'ko used a 2% diamagnetic-onset criterion on warming after zero-field cooling, with a 25 G measuring field. The isotopically enriched samples had narrow but different transition widths. Hinks used a 1 G field and compared extrapolated onset with a 10% criterion; natural and enriched Mg samples showed possible impurity differences that the authors could not quantify. The Mg contribution therefore belongs to the Hinks study, not to the earlier boron-only experiment. The six printed boron comparisons have been recalculated here, but the raw magnetization has not been refitted.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-22ad55507a1e49c5",
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+    },
+    {
+      "id": "scwiki-d7-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Szabó's Cu–MgB₂ point contacts showed small and large gap scales around 2.8 and 7 meV. Their two-component BTK fits kept interface transparency and relative weight fixed across temperature; thermal smearing makes the two contributions harder to separate near the bulk transition. Fields up to 1 T preferentially suppressed the small-gap spectral contribution, helping reveal the large-gap features. This does not mean that 1 T is the bulk upper critical field, and these spectra alone do not determine the relative sign of the gaps. At 39 K the quoted gap ratios are approximately 1.67 and 4.17, rather than a single weak-coupling BCS ratio.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-69ced9b5dda860f1"
+      ],
+      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+    },
+    {
+      "id": "scwiki-d7-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The final Choi calculation uses the anisotropic Eliashberg framework and compares calculated thermodynamics with experiments. Its successful description does not turn a two-constant-gap approximation into an exact band-resolved result. Spectroscopic weights depend on geometry and matrix elements; fitting two components is strongest when checked against independent thermodynamic and field-dependent evidence. The original specific-heat datasets and full anisotropic numerical calculation have not been independently reproduced in this review.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-69ced9b5dda860f1",
+        "source-7c4eac077ae5e221"
+      ],
+      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+    },
+    {
+      "id": "scwiki-d7-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "The Hinks author manuscript contains a version issue: Table 1 prints a Mg mass of 25.001 for a sample family, while the methods describe enriched ²⁶Mg. This discrepancy is retained as unresolved pending comparison with the final published table. No Mg-mass refit is presented. The boron ratios use the explicitly printed boron masses and temperatures. Likewise, the Mazin author PDF's generated date is not its submission date; the cited version is the arXiv submission of 1 April 2002.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd",
+        "source-a9d7d0b720a3bafd"
+      ],
+      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+    },
+    {
+      "id": "scwiki-d7-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Materials development must connect gap physics to usable conductors. A 2026 study of square, 19-filament MgB₂ wire reports a 14.2% filling factor and an engineering-current benchmark at 4.2 K and 6.5 T. This reference is currently checked only through the publisher's indexed summary and the authors' publication record; the electric-field criterion, full methods and coil comparison require further review. Engineering current density uses the whole composite cross-section, unlike a current density normalized to superconducting material alone. Neither operating temperature nor a current-density benchmark should enter a transition-temperature ranking.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-39e103ef0175cc7e"
+      ],
+      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+    },
+    {
+      "id": "scwiki-d7-claim-discovery-implications-2",
+      "sectionId": "discovery-implications",
+      "statement": "Preserve processing, connectivity, field orientation, temperature and voltage criterion when comparing wires. Increasing intraband disorder, changing band filling and increasing interband impurity mixing are not interchangeable interventions. A useful candidate must satisfy its operating requirements as well as the microscopic pairing model; this article's scoped calculations do not certify a wire or magnet design.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a9d7d0b720a3bafd",
+        "source-39e103ef0175cc7e"
+      ],
+      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-d7-correction-1",
+      "description": "Replaced inherited unrelated Choi DOI with nature00898; separated Budko boron-only evidence from Hinks Mg measurement and retained the unresolved author-table mass discrepancy.",
+      "sourceId": "source-7c4eac077ae5e221",
+      "scope": "Edited public article; pinned source bytes preserved."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta_i=L(T)\\sum_j\\lambda_{ij}\\Delta_j",
+      "check": "Four toy matrices checked by eigenvector residuals and uncoupled limit; not fitted MgB2."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\alpha_i=-\\Delta\\ln T_c/\\Delta\\ln M_i",
+      "check": "Budko rounded coefficient and six Hinks boron comparisons independently calculated."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\sigma_{dc}\\propto\\sum_n\\omega_{p,n}^2/\\gamma_n",
+      "check": "Three residual parallel-channel illustrations using named source parameters; not measured resistivity."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-d7-material-1",
+      "formula": "MgB2",
+      "sample": "Nagamatsu 2001 polycrystalline pellet, zero field",
+      "recordType": "experiment",
+      "reportedTemperatureK": 39,
+      "tcK": 39,
+      "temperatureKind": "transition",
+      "temperatureNote": "Onset 39 K; endpoint 38 K. Synthesis pressure 196 MPa is not measurement pressure.",
+      "criterion": "four-probe-resistive-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Four-probe resistivity; separate 10 Oe magnetization",
+      "sourceId": "source-fade6558e7eafb2b"
+    },
+    {
+      "id": "scwiki-d7-material-2",
+      "formula": "MgB2",
+      "sample": "Budko Mg10B2, ZFC warming in 25 G",
+      "recordType": "experiment",
+      "reportedTemperatureK": 40.2,
+      "tcK": 40.2,
+      "temperatureKind": "transition",
+      "temperatureNote": "Isotope-specific sample; not universal MgB2 Tc.",
+      "criterion": "two-percent-diamagnetic-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "SQUID magnetization; paired Mg11B2 comparison",
+      "sourceId": "source-22ad55507a1e49c5"
+    },
+    {
+      "id": "scwiki-d7-material-3",
+      "formula": "MgB2",
+      "sample": "Budko Mg11B2, ZFC warming in 25 G",
+      "recordType": "experiment",
+      "reportedTemperatureK": 39.2,
+      "tcK": 39.2,
+      "temperatureKind": "transition",
+      "temperatureNote": "Isotope-specific sample and criterion.",
+      "criterion": "two-percent-diamagnetic-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "SQUID magnetization; paired Mg10B2 comparison",
+      "sourceId": "source-22ad55507a1e49c5"
+    },
+    {
+      "id": "scwiki-d7-material-4",
+      "formula": "MgB2",
+      "sample": "Szabo Cu–MgB2 point contact at 4.2 K",
+      "recordType": "experiment",
+      "reportedTemperatureK": 4.2,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Operating temperature; 2.8/7 meV gap scales are not measured Tc values.",
+      "criterion": "point-contact-operating-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Differential resistance; two BTK contributions, fields up to 1 T",
+      "sourceId": "source-69ced9b5dda860f1"
+    },
+    {
+      "id": "scwiki-d7-material-5",
+      "formula": "MgB2",
+      "sample": "2026 square 19-filament IMD wire",
+      "recordType": "experiment",
+      "reportedTemperatureK": 4.2,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Operating temperature, not Tc; full conductor methods remain open.",
+      "criterion": "engineering-current-operating-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Indexed summary benchmark at 6.5 T; voltage criterion not reviewed",
+      "sourceId": "source-39e103ef0175cc7e"
+    }
+  ]
+}
