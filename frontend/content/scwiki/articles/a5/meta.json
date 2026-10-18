@@ -32,13 +32,13 @@
   "modifiedAt": "2026-10-19",
   "review": {
     "checkedAt": "2026-10-19",
-    "scope": "Edited pinned A5 chapter, selected BCS/Choi and phase-sensitive primary passages, review passages, Hardy/Carbotte abstracts and an independent ideal-DOS state-counting check. Selected Fischer tunneling, Dressel optical review and Seibold disordered-response author-version passages; identified manuscript dates retained.",
+    "scope": "Edited pinned A5 chapter, selected BCS/Choi and phase-sensitive primary passages, review passages, Hardy/Carbotte abstracts and an independent ideal-DOS state-counting check. Selected Fischer tunneling, Dressel optical review and Seibold disordered-response author-version passages; identified manuscript dates retained. Selected Sheet and Kumar point-contact author passages, with publisher abstracts checked separately.",
     "limitations": [
       "Selected source checks do not constitute full scientific validation or independent experimental replication.",
       "Hardy is abstract-scoped; tricrystal image fits, uncertainties and all underlying review citations were not independently reproduced.",
       "No sample-specific gap amplitude or transition temperature was re-extracted; calculated gaps are not experimental records.",
       "The DOS check assumes a clean isotropic constant-DOS mean-field model, not a universal tunneling spectrum.",
-      "The reporting table remains only partly mapped to source passages: tunneling and optical cautions have scoped support; point-contact controls and complete control-by-control verification remain open. Final-version comparisons of the three added sources are pending."
+      "The reporting table remains only partly mapped: tunneling, optical and point-contact cautions have scoped support; complete control-by-control verification of the other probe rows remains open. Complete final-version comparisons of these added sources are pending."
     ]
   },
   "provenance": {
@@ -250,6 +250,34 @@
         "evidenceUrl": "https://arxiv.org/pdf/1702.01610v1",
         "note": "Publisher abstract and author v1, submitted 6 February 2017, selected pp. 1-2 and Fig. 1 checked; p. 2 visually inspected. Distinguishes DOS peak/threshold and collective optical response in a disordered attractive-Hubbard framework. Full numerical calculation, raw experimental data and final-version comparison were not reproduced."
       }
+    },
+    {
+      "id": "source-d09edec8bdd2b452",
+      "doi": "10.1103/PhysRevB.69.134507",
+      "title": "Role of critical current on the point-contact Andreev reflection spectra between a normal metal and a superconductor",
+      "year": 2004,
+      "url": "https://doi.org/10.1103/PhysRevB.69.134507",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-publisher-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0311648v1",
+        "note": "Author v1 submitted 28 November 2003; journal published 16 April 2004. Selected pp. 4-8 on contact-size variation, ballistic/thermal/diffusive regimes and fitting errors; p. 5 visually checked. Heating statement is regime-dependent. No raw-data reanalysis, complete final-version comparison or universal contact diagnosis."
+      }
+    },
+    {
+      "id": "source-dc8f626a5df50714",
+      "doi": "10.1103/PhysRevB.104.094525",
+      "title": "Nonballistic transport characteristics of superconducting point contacts",
+      "year": 2021,
+      "url": "https://doi.org/10.1103/PhysRevB.104.094525",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-publisher-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/2008.09823v4",
+        "note": "Author v4 of 6 October 2020: selected pp. 2, 5-11 and p. 5 visual check of barrier/network-model context. Publisher abstract and 29 September 2021 publication date checked separately. Final abstract additionally reports Nb experiments; those final experiments and full version differences were not reviewed. No network-spectrum or raw-data reproduction."
+      }
     }
   ],
   "materialCases": [],
@@ -359,18 +387,20 @@
     {
       "id": "scwiki-a5-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. Selected review and theory passages now support tunneling and optical interpretation limits, alongside the earlier ARPES and bulk-probe context. Complete control-by-control verification, including the point-contact row, remains open.",
+      "statement": "Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. Selected review and theory passages now support tunneling, optical and point-contact interpretation limits, alongside the earlier ARPES and bulk-probe context. Complete control-by-control verification of the other probe rows remains open.",
       "evidenceType": "hypothesis",
       "sourceIds": [
         "source-e933e3bbd4beade6",
         "source-d687e60f83e71f36",
         "source-aa5ec58b03d1a3ef",
-        "source-9394f6a65db2d109"
+        "source-9394f6a65db2d109",
+        "source-d09edec8bdd2b452",
+        "source-dc8f626a5df50714"
       ],
       "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
       "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset.",
       "sourceRelationship": "context-for-local-derivation",
-      "derivationNote": "Local editorial reporting map with selected source support: Fischer author v1 pp. 6-8 and 11 for tunneling; Dressel author v1 pp. 1-2 and Seibold author v1 pp. 1-2 for optical models; Tsuei-Kirtley pp. 974-976 for other selected probes. These readings do not certify all controls or any material dataset. Point-contact and remaining control-level checks are pending."
+      "derivationNote": "Local editorial reporting map with selected source support: Fischer author v1 pp. 6-8 and 11 for tunneling; Dressel author v1 pp. 1-2 and Seibold author v1 pp. 1-2 for optical models; Tsuei-Kirtley pp. 974-976 for other selected probes. These readings do not certify all controls or any material dataset. Sheet author v1 pp. 4-8 and Kumar author v4 pp. 5-11 additionally support point-contact regime/barrier/heating/network cautions; complete control-level checks of the other rows remain pending."
     },
     {
       "id": "scwiki-a5-claim-experimental-criteria-2",
@@ -381,12 +411,14 @@
         "source-e933e3bbd4beade6",
         "source-d687e60f83e71f36",
         "source-aa5ec58b03d1a3ef",
-        "source-9394f6a65db2d109"
+        "source-9394f6a65db2d109",
+        "source-d09edec8bdd2b452",
+        "source-dc8f626a5df50714"
       ],
       "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
       "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset.",
       "sourceRelationship": "context-for-local-derivation",
-      "derivationNote": "Local editorial reporting map with selected source support: Fischer author v1 pp. 6-8 and 11 for tunneling; Dressel author v1 pp. 1-2 and Seibold author v1 pp. 1-2 for optical models; Tsuei-Kirtley pp. 974-976 for other selected probes. These readings do not certify all controls or any material dataset. Point-contact and remaining control-level checks are pending."
+      "derivationNote": "Local editorial reporting map with selected source support: Fischer author v1 pp. 6-8 and 11 for tunneling; Dressel author v1 pp. 1-2 and Seibold author v1 pp. 1-2 for optical models; Tsuei-Kirtley pp. 974-976 for other selected probes. These readings do not certify all controls or any material dataset. Sheet author v1 pp. 4-8 and Kumar author v4 pp. 5-11 additionally support point-contact regime/barrier/heating/network cautions; complete control-level checks of the other rows remain pending."
     },
     {
       "id": "scwiki-a5-claim-experimental-criteria-3",
@@ -480,6 +512,20 @@
       ],
       "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
       "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset."
+    },
+    {
+      "id": "scwiki-a5-claim-experimental-criteria-6",
+      "sectionId": "experimental-criteria",
+      "statement": "For point contacts, a barrier model is only part of the interpretation. Sheet and colleagues distinguish dissipative thermal contacts from a diffusive regime without significant local heating; non-ballistic does not always mean thermal. Kumar and Sheet show how multiple constrictions can mix responses in a network model. These examples motivate contact controls; they neither diagnose every observed peak nor prove that every unconventional spectrum is an artifact.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-d09edec8bdd2b452",
+        "source-dc8f626a5df50714"
+      ],
+      "conditions": "Contact geometry, elastic and inelastic mean free paths, barrier model and sample-specific spectrum; network examples are not a universal diagnosis.",
+      "verificationScope": "Selected author-version methods and publisher abstracts; final-version experiments and raw data remain unchecked.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source-specific contact regimes and model constructions support the cautions; their combination as reporting guidance is editorial, not a proof about every experimental spectrum."
     }
   ],
   "corrections": [

@@ -22,7 +22,7 @@ In this magnitude-only model, replacing a gap by its negative leaves the excitat
 
 ## Experimental criteria
 
-Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. Selected review and theory passages now support tunneling and optical interpretation limits, alongside the earlier ARPES and bulk-probe context. Complete control-by-control verification, including the point-contact row, remains open.
+Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. Selected review and theory passages now support tunneling, optical and point-contact interpretation limits, alongside the earlier ARPES and bulk-probe context. Complete control-by-control verification of the other probe rows remains open.
 
 | Probe | Recorded quantity | What must be controlled |
 |---|---|---|
@@ -31,9 +31,11 @@ Use the following as a reporting map adapted from the pinned chapter. Each inter
 | Optical or THz spectroscopy | Frequency-dependent electrodynamic response | Scattering, multiple bands and the model linking absorption to an excitation threshold [R8](#ref-source-aa5ec58b03d1a3ef) [R9](#ref-source-9394f6a65db2d109) |
 | Heat capacity | Entropy and bulk excitation contribution | Lattice/magnetic backgrounds and normalization; no direct phase measurement |
 | Penetration depth or thermal transport | Low-energy electromagnetic or heat response | Disorder, nonlocality, background and multiple excitation channels |
-| Andreev or point-contact spectroscopy | Interface current and conductance | Barrier transparency, heating, contact regime and channel mixing |
+| Andreev or point-contact spectroscopy | Interface current and conductance | Barrier transparency, heating, contact regime and channel mixing [R10](#ref-source-d09edec8bdd2b452) [R11](#ref-source-dc8f626a5df50714) |
 
 A tunnel conductance resembles the sample density of states only under counterelectrode and matrix-element assumptions; the selected Fischer review gives the thermal convolution and explains the resolution role of lock-in modulation. Do not identify every conductance peak with $\Delta$. Optical interpretation also depends on scattering and multiband weights: the selected Dressel review compares competing fits, while Seibold and colleagues distinguish DOS peaks, excitation thresholds and collective absorption within a disordered model. These are source-scoped cautions, not a new fit to any specimen. Photoemission and thermodynamic probes constrain other aspects; magnitude-sensitive measurements alone do not determine relative phase. [R3](#ref-source-e933e3bbd4beade6) [R7](#ref-source-d687e60f83e71f36) [R8](#ref-source-aa5ec58b03d1a3ef) [R9](#ref-source-9394f6a65db2d109)
+
+For point contacts, a barrier model is only part of the interpretation. Sheet and colleagues distinguish dissipative thermal contacts from a diffusive regime without significant local heating; non-ballistic does not always mean thermal. Kumar and Sheet show how multiple constrictions can mix responses in a network model. These examples motivate contact controls; they neither diagnose every observed peak nor prove that every unconventional spectrum is an artifact. [R10](#ref-source-d09edec8bdd2b452) [R11](#ref-source-dc8f626a5df50714)
 
 Hardy and colleagues report a strong linear term in the penetration-depth change of YBa2Cu3O6.95 single crystals over approximately 3–25 K using a 900 MHz resonator. This is evidence relevant to low-energy excitations under their sample conditions, not a direct measurement of gap phase. The present check covers the publisher abstract. [R4](#ref-source-b7bc48c845a47b53)
 
