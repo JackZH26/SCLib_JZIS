@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "0635f9223ad40f0dfbbf",
+  "revision": "b2482c2e30a81f43334c",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -4637,6 +4637,235 @@
         "10.1103/PhysRevLett.76.688"
       ],
       "text": " Scope\n\nDimensionality compares geometry with physical length scales. A layered crystal, a two-dimensional electronic band and a superconducting film with a nearly uniform order parameter through its thickness are different descriptions. Compare thickness with the perpendicular coherence length, wire transverse dimensions with coherence lengths, and lateral size with magnetic screening lengths. Interlayer coupling, substrate, disorder and carrier density can change when layers are removed. Reduced thickness alone does not establish an ideal two-dimensional phase transition.  \n\nFor a short-range two-dimensional phase model, vortex–antivortex unbinding separates quasi-long-range order from a disordered phase. The relevant stiffness is renormalized by fluctuations. In a charged film, magnetic screening changes the vortex interaction at long distance: Kosterlitz and Thouless explicitly identified this limitation in their original paper. BKT-like behavior requires an appropriate range of length, current and temperature scales; do not transfer the neutral infinite-system limit to every finite superconducting sheet.  \n\n Mathematical assumptions\n\nDefine the sheet phase stiffness J in energy units by F\\theta=(J/2)\\int d^2r\\,|\\nabla\\theta|^2. A single vortex has logarithmic energy \\pi J\\ln(L/a) and positional entropy 2kB\\ln(L/a) within this model, where a is a core cutoff. The universal jump is JR(T{\\rm BKT}^-)=2kBT{\\rm BKT}/\\pi, with the long-distance renormalized stiffness JR. The elementary energy–entropy balance explains the scale; it is not a replacement for the renormalization calculation. For a local sheet inductance Lk per square, the corresponding stiffness convention is J=\\hbar^2/(4e^2Lk). Frequency, vortex response and finite size matter when comparing a measured inductance with the static jump.  \n\nIn a uniform narrow wire near its mean-field transition, the zero-current Ginzburg–Landau saddle gives \\Delta F0=(8\\sqrt2/3)uc A\\xi, where uc=Bc^2/(2\\mu0) is the SI condensation-energy density and A is cross-sectional area. A local check integrates the normalized saddle f(y)=\\tanh(y/\\sqrt2), y=x/\\xi, in \\int[(1-f^2)^2+2(df/dy)^2]dy. This checks the barrier factor under those assumptions, not a finite-current barrier, quantum tunneling action or the full LAMH prefactor. The original Langer–Ambegaokar and McCumber–Halperin full derivations have not been retrieved for this review.  \n\nFor rare independent thermal phase slips, define r0 explicitly as the zero-bias rate per direction. With \\Phi0=h/(2e), detailed balance gives r\\pm=r0\\exp[\\pm I\\Phi0/(2kBT)] to leading small-bias barrier tilt, V=\\Phi0(r+-r-) and R{I\\to0}=\\Phi0^2r0/(kBT). The thermal activation factor belongs inside r0; this definition avoids confusing a total event rate with a directional one. Low-temperature resistance saturation alone does not identify coherent quantum phase slips.   \n\n Experimental criteria\n\nXi's encapsulated NbSe2 devices distinguish several transition definitions. In the checked author manuscript, the monolayer Aslamazov–Larkin fit gives T{c0}\\approx3.0 K, close to the 50% normal-resistance criterion; the inferred BKT transition lies near the 1% criterion. Those are separate quantities. Normal resistance was taken at 8 K. The four-terminal field series used a 50% criterion, while a separate two-terminal monolayer device used a rapid-resistance-drop criterion. The 0.3 K measurement floor is not another transition. Large in-plane critical fields support the authors' Ising-pairing interpretation under their model, rather than proving triplet pairing by themselves. The journal issue is from 2016; online publication was 9 November 2015. \n\nBezryadin's nanotube-templated amorphous Mo79Ge21 wires were approximately 10 nm or less in diameter and 95–185 nm long. The resistance drop near 5.5 K belongs to the electrodes, after which the wire resistance could be isolated. In the studied series, samples on opposite sides of a normal-resistance scale near RQ=h/(4e^2)\\approx6.45 kilohms showed decreasing or increasing resistance on cooling. One superconducting sample was checked down to 50 mK. These are sample-specific transport observations and a quantum-fluctuation interpretation, not a universal wire transition temperature or universal critical resistance for all geometries and environments. \n\nAstafiev's InOx loop experiment used microwave spectroscopy to investigate coherent coupling between flux states. The checked author version describes a 35 nm film, a narrow segment about 40 nm wide and 400 nm long, and measurements at 40 mK. A two-state fit gave ES/h=4.9 GHz and persistent current 24 nA for the illustrated device; resonator features distorted portions of the spectrum. The film's separately reported 2.7 K transition is distinct from the loop spectroscopy temperature. Coherent coupling evidence is stronger and different in kind from fitting a dissipative resistance tail; the selected readings do not reproduce the complete supplementary analysis. \n\nFor aluminum nanoparticles, Black, Ralph and Tinkham reported even/odd differences in tunneling excitation thresholds and field suppression of a spectroscopic gap in sufficiently large particles, with radius roughly 5 nm or greater in their abstract. Radius is not diameter. Discrete levels, charging and parity enter the interpretation. Local pairing signatures do not demonstrate zero resistance across an isolated grain or global phase coherence in an array. This entry currently relies on the original publisher abstract, without a complete original-text audit. \n\n Limits and disputes\n\nUse several diagnostics for a BKT interpretation: nonlinear current–voltage behavior, stiffness and resistance scaling over justified windows, together with finite-size, heating and inhomogeneity checks. A convenient fit does not establish its asymptotic assumptions. Likewise, Giordano's early indium-wire work reported low-temperature deviations from thermal-activation predictions consistent with quantum tunneling; it should not be generalized into a rule that every residual resistance tail proves quantum phase slips. Weak links, contacts, normal regions and electromagnetic environment need independent controls.     \n\nSelected original KT passages, NK journal text and author-version experimental sections have been checked. The NK equations were read from extracted publisher text, not a visually verified scan. The original LA, McCumber–Halperin, Giordano and nanoparticle full texts remain unreviewed; final-version comparisons for Xi, Bezryadin and Astafiev and complete supplements/raw-data analyses also remain open. Local algebra checks and successful software tests do not complete scientific acceptance.         \n\n Discovery implications\n\nBuild thickness and width series with documented oxidation protection, substrate, contacts and disorder. Store pairing-fit, phase-coherence, resistance and local-spectroscopy criteria separately, retaining the actual sample and measurement temperature. A route that strengthens pairing can simultaneously reduce phase stiffness; dimensional reduction is a tuning parameter, not a guarantee of a higher usable superconducting transition.    \n\n Related topics\n\nCompare ,  and ."
+    },
+    {
+      "id": "scwiki-e9",
+      "topicId": "scwiki-topic-e9",
+      "code": "E9",
+      "slug": "twist-angle",
+      "title": "Twist angle: moiré geometry, bandwidth and sample variation",
+      "summary": "Connect twist angle to moiré filling and interlayer coupling while preserving device-specific transition criteria, pressure history and stiffness-model limits.",
+      "aliases": [
+        "twist angle",
+        "moire",
+        "moiré",
+        "magic angle",
+        "MATBG",
+        "twisted bilayer graphene",
+        "Bistritzer MacDonald"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "2ffdbd631f14f65b72ec",
+      "materialCases": [
+        {
+          "id": "scwiki-e9-material-1",
+          "formula": "C",
+          "sample": "Cao M1, nominal1.16deg",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.5,
+          "tcK": 0.5,
+          "temperatureKind": "transition",
+          "temperatureNote": "Maximum Figure2 transition at50% normal resistance.",
+          "criterion": "resistive-midpoint",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Four-probe resistance",
+          "sourceId": "source-90c67b111a6e919c",
+          "aliases": [
+            "MATBG",
+            "twisted bilayer graphene",
+            "Cao M1"
+          ]
+        },
+        {
+          "id": "scwiki-e9-material-2",
+          "formula": "C",
+          "sample": "Cao M2, nominal1.05deg",
+          "recordType": "experiment",
+          "reportedTemperatureK": 1.7,
+          "tcK": 1.7,
+          "temperatureKind": "transition",
+          "temperatureNote": "Maximum Figure2 transition at50% normal resistance.",
+          "criterion": "resistive-midpoint",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Four-probe resistance",
+          "sourceId": "source-90c67b111a6e919c",
+          "aliases": [
+            "MATBG",
+            "twisted bilayer graphene",
+            "Cao M2"
+          ]
+        },
+        {
+          "id": "scwiki-e9-material-3",
+          "formula": "C",
+          "sample": "Cao M2 atn=-1.44e12cm^-2",
+          "recordType": "experiment",
+          "reportedTemperatureK": 1,
+          "tcK": 1,
+          "temperatureKind": "transition",
+          "temperatureNote": "Tentative cubic-power fit; not the1.7K midpoint.",
+          "criterion": "bkt-current-voltage-fit",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Nonlinear current–voltage",
+          "sourceId": "source-90c67b111a6e919c",
+          "aliases": [
+            "MATBG",
+            "twisted bilayer graphene",
+            "Cao M2"
+          ]
+        },
+        {
+          "id": "scwiki-e9-material-4",
+          "formula": "C",
+          "sample": "Cao M1/M2 measurement floor",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.07,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "70mK measurement floor at reported zero resistance; not Tc.",
+          "criterion": "measurement-floor",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Four-probe transport",
+          "sourceId": "source-90c67b111a6e919c",
+          "aliases": [
+            "MATBG",
+            "twisted bilayer graphene",
+            "Cao M1",
+            "Cao M2"
+          ]
+        },
+        {
+          "id": "scwiki-e9-material-5",
+          "formula": "C",
+          "sample": "Yankowitz D2 hole branch, nominal1.27deg",
+          "recordType": "experiment",
+          "reportedTemperatureK": 3.1,
+          "tcK": 3.1,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate author TableS1 value; final Fig2 uses low/high-temperature fit intersection, not zero resistance.",
+          "criterion": "resistive-fit-intersection",
+          "pressureRegime": "high",
+          "pressureGPa": {
+            "min": 1.33,
+            "max": 1.33
+          },
+          "equilibrium": "equilibrium",
+          "probe": "Four-terminal resistance",
+          "sourceId": "source-e80d36514bb4144d",
+          "aliases": [
+            "MATBG",
+            "twisted bilayer graphene",
+            "Yankowitz D2"
+          ]
+        },
+        {
+          "id": "scwiki-e9-material-6",
+          "formula": "C",
+          "sample": "Yankowitz D2 hole branch, nominal1.27deg",
+          "recordType": "experiment",
+          "reportedTemperatureK": 1.7,
+          "tcK": 1.7,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate author TableS1 value; sample removed/cleaned/reloaded between pressures.",
+          "criterion": "resistive-fit-intersection",
+          "pressureRegime": "high",
+          "pressureGPa": {
+            "min": 2.21,
+            "max": 2.21
+          },
+          "equilibrium": "equilibrium",
+          "probe": "Four-terminal resistance",
+          "sourceId": "source-e80d36514bb4144d",
+          "aliases": [
+            "MATBG",
+            "twisted bilayer graphene",
+            "Yankowitz D2"
+          ]
+        },
+        {
+          "id": "scwiki-e9-material-7",
+          "formula": "C",
+          "sample": "Yankowitz D1 hole branch, nominal1.14deg",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.4,
+          "tcK": 0.4,
+          "temperatureKind": "transition",
+          "temperatureNote": "Low/high-temperature fit crossover on logarithmic resistance plot.",
+          "criterion": "resistive-fit-intersection",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Four-terminal resistance",
+          "sourceId": "source-e80d36514bb4144d",
+          "aliases": [
+            "MATBG",
+            "twisted bilayer graphene",
+            "Yankowitz D1 holes"
+          ]
+        },
+        {
+          "id": "scwiki-e9-material-8",
+          "formula": "C",
+          "sample": "Yankowitz D1 electron branch, nominal1.14deg",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.25,
+          "tcK": 0.25,
+          "temperatureKind": "transition",
+          "temperatureNote": "Carrier branch separate from hole branch.",
+          "criterion": "resistive-fit-intersection",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Four-terminal resistance",
+          "sourceId": "source-e80d36514bb4144d",
+          "aliases": [
+            "MATBG",
+            "twisted bilayer graphene",
+            "Yankowitz D1 electrons"
+          ]
+        },
+        {
+          "id": "scwiki-e9-material-9",
+          "formula": "C",
+          "sample": "Tanaka wired device",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.04,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Approximately40mK effective device temperature; refrigerator base20mK and near1K half-resistance scale are distinct.",
+          "criterion": "effective-device-temperature",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Microwave circuit and transport",
+          "sourceId": "source-be7282623ca96056",
+          "aliases": [
+            "MATBG",
+            "twisted bilayer graphene",
+            "Tanaka device"
+          ]
+        }
+      ],
+      "dois": [
+        "10.1073/pnas.1108174108",
+        "10.1038/nature26154",
+        "10.1038/nature26160",
+        "10.1126/science.aav1910",
+        "10.1038/s41586-024-08494-7"
+      ],
+      "text": " Scope\n\nA twist angle controls the relative orientation of two layers, changing the moiré pattern and the coupled electronic Hamiltonian. It does not independently specify carrier filling, interlayer tunneling, disorder, pairing interaction or superconducting topology. The original continuum model explains narrow bands and suppressed Dirac velocity at particular parameter values; observing a moiré pattern alone does not demonstrate a flat band or superconductivity. \n\nMagic-angle graphene supplies experimentally accessible correlated phases, but an adjacent insulating state does not uniquely identify a one-band Mott mechanism or a common pairing mediator. The 2018 correlated-insulator and superconductivity papers are distinct sources, with different questions and evidence. Pressure-dependent superconductivity further shows why nominal angle cannot be treated as the only tuning parameter.   \n\n Mathematical assumptions\n\nFor two matched, unstrained hexagonal lattices, define a=0.246 nm as graphene's lattice constant, not its carbon–carbon bond length. Then Lm=a/[2\\sin(\\theta/2)], Am=\\sqrt3Lm^2/2 and Lm\\approx a/\\theta for a small angle expressed in radians. Bistritzer–MacDonald's manuscript instead calls the bond length a, so its numerator is \\sqrt3a: these conventions are equivalent. Using the bond length in the lattice-constant formula would underestimate the period by \\sqrt3 and overestimate the inferred full-filling density by a factor of three.  \n\nWith four spin–valley states per moiré band, define the full-band density ns=4/Am and filling \\nu=nAm=4n/ns, measured relative to charge neutrality. At 1.10°, the ideal geometry gives Lm\\approx12.81 nm and ns\\approx2.81\\times10^{12} cm⁻². This is a calculated reference, not a measured device value. The small-angle sensitivity is \\delta ns/ns\\approx2\\delta\\theta/\\theta; the exact logarithmic derivative is d\\ln ns/d\\theta=\\cot(\\theta/2). A contact-averaged filling estimate cannot resolve a local twist/strain map, and broken-symmetry states need not retain fourfold degeneracy.  \n\nLet k\\theta=2K\\sin(\\theta/2), K=4\\pi/(3a), and \\alpha=w/(\\hbar vFk\\theta), using wavevector units for k\\theta. In the first-shell approximation with the small layer-rotation correction neglected, v/vF=(1-3\\alpha^2)/(1+6\\alpha^2). Its zero at \\alpha=1/\\sqrt3 illustrates velocity cancellation, not an exact experimental magic angle. Tunneling, lattice relaxation and strain affect a realistic calculation. Our local check covers reciprocal geometry, density conversion and the stated algebraic zero; it does not diagonalize the complete continuum Hamiltonian or calculate a superconducting transition.  \n\n Experimental criteria\n\nCao's published superconductivity paper labels M1 at 1.16° and M2 at 1.05°. Figure 2 assigns maximum half-normal-resistance transition temperatures of about 0.5 K to M1 and 1.7 K to M2; the figure and caption resolve the device assignment. Both reached the reported zero-resistance state at the 70 mK measurement floor. A separate tentative cubic current–voltage fit for M2 at n=-1.44\\times10^{12} cm⁻² gave T{\\rm BKT}\\approx1.0 K. The midpoint, inferred BKT scale and measurement floor must remain separate records. \n\nYankowitz's nominal 1.27° device D2 developed superconducting transport under hydrostatic pressure. The published pressure plot defines Tc by the intersection of low- and high-temperature linear fits, and the reported resistance falls to a roughly 10-ohm noise floor. The author supplement lists approximately 3.1 K at 1.33 GPa and 1.7 K at 2.21 GPa; the 300 mK base temperature is separate. These fitted transition temperatures should not be relabeled as exact zero-resistance or half-resistance thresholds. The same supplement reports removal, solvent cleaning and reloading between these pressures, which adds a possible disorder change to the pressure comparison. \n\nThe same study's ambient-pressure D1, at approximately 1.14°, had fitted transition scales near 0.4 K for holes and 0.25 K for electrons, with a 10 mK base temperature. Different contacts showed different full-filling densities; the final text reports moiré unit-cell-area variations up to roughly 30% within a device. The authors used full-filling features and quantum-oscillation extrapolations to estimate angle. They did not establish a uniform angle at every point merely by quoting two decimal places. \n\nTanaka and colleagues' 2025 paper combines microwave kinetic inductance and transport to study superfluid stiffness. The checked earlier manuscript uses a parallel proximitized-edge circuit model and an assumed active-region aspect ratio to convert inductance into sheet stiffness. It distinguishes a 20 mK refrigerator base from an approximately 40 mK device temperature and uses a half-normal-resistance transition scale near 1 K over much of the dome. Its comparison supports a quantum-geometric contribution and anisotropic gap interpretation without extracting a model-independent geometric fraction or uniquely determining the pairing mediator. \n\n Limits and disputes\n\nCompare local geometry, filling calibration, contacts and thermal history before interpreting differences between devices. Pressure-dependent transition curves, a nearby insulator or a broadened dome are not unique fingerprints of a pairing mechanism. Distinguish measured resistance, nonlinear response and stiffness from a proposed microscopic explanation. Likewise, normal-state band topology does not alone fix the topology of the superconducting quasiparticles. Transferring graphene conclusions to a lattice-mismatched semiconductor stack requires a new model and platform-specific evidence.     \n\nThis review checks selected BM author equations, Cao final figures, Yankowitz final pressure passages plus selected author supplementary methods, and Tanaka author-version circuit/temperature definitions. The inherited source attributed the 2025 stiffness paper to Randeria; the publisher identifies Tanaka and colleagues. The BM and Tanaka final-version comparisons and complete supplementary/raw-data audits remain open. The correlated-insulator paper is used at publisher-abstract scope here, not as a completed microscopic-mechanism audit.     \n\n Discovery implications\n\nOptimize angle together with tunneling, strain, filling and phase stiffness. Store each transition under its device, carrier branch, pressure and criterion; keep measurement floors separate. Use local imaging and contact-resolved transport to test uniformity. A useful design can combine favorable pairing and adequate phase coherence, but narrow bandwidth alone is not a sufficient target or a universal guarantee of higher Tc.   \n\n Related topics\n\nCompare , , ,  and ."
     },
     {
       "id": "scwiki-f7",

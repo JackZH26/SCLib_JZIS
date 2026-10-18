@@ -1110,3 +1110,18 @@ it("separates dimensional crossover criteria from measurement floors and electro
  expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
  expect(articles().find(a=>a.code==="E7")!.materialCases.filter(c=>c.criterion==="irradiation-bath-temperature").every(c=>c.equilibrium==="unknown")).toBe(true);
 });
+
+it("binds moire transition values to the device, pressure and operational criterion",async()=>{
+ const a=articles().find(a=>a.code==="E9")!;
+ const index=searchIndex().entries;
+ expect(a.materialCases.filter(c=>c.temperatureKind!=="transition").every(c=>c.tcK===null)).toBe(true);
+ expect(searchArticles(index,"Cao M1",{tcMin:1}).some(a=>a.code==="E9")).toBe(false);
+ expect(searchArticles(index,"Cao M2",{tcMin:1.5,criterion:"resistive-midpoint"}).some(a=>a.code==="E9")).toBe(true);
+ expect(searchArticles(index,"Cao M2",{tcMin:1.5,criterion:"bkt-current-voltage-fit"}).some(a=>a.code==="E9")).toBe(false);
+ expect(searchArticles(index,"Yankowitz D2",{tcMin:3,pressure:"ambient"}).some(a=>a.code==="E9")).toBe(false);
+ expect(searchArticles(index,"Yankowitz D2",{tcMin:3,pressure:"high",criterion:"resistive-fit-intersection"}).some(a=>a.code==="E9")).toBe(true);
+ expect(searchArticles(index,"Tanaka device",{tcMin:.01}).some(a=>a.code==="E9")).toBe(false);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ for(const phrase of ["carbon–carbon bond length","factor of three","10-ohm noise floor","solvent cleaning","Randeria","Tanaka"])expect(md).toContain(phrase);
+ expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
+});
