@@ -2,6 +2,22 @@ import {expect,test} from "./public-site-fixture";
 import {readFileSync} from "node:fs";
 const catalogue=JSON.parse(readFileSync("content/scwiki/catalogue.json","utf8"));
 const extensions=JSON.parse(readFileSync("content/scwiki/extension-inventory.json","utf8"));
+test("published nickelate note preserves sample table, license and distinct publication status",async({page,request})=>{
+ await page.goto("/scwiki/library/bhatt-nickelate-strain-structure");
+ await page.getByRole("button",{name:"Reject all",exact:true}).click();
+ await expect(page.locator(".scwiki-sources")).toContainText("Journal article");
+ await expect(page.locator(".scwiki-sources")).not.toContainText("Preprint");
+ await expect(page.getByRole("link",{name:"CC BY 4.0",exact:true})).toHaveAttribute("href","https://creativecommons.org/licenses/by/4.0/");
+ await expect(page.locator("table")).toContainText("Onset near 42 K; zero resistance around 2 K");
+ await expect(page.locator("table")).toContainText("−1.6%");
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+ await expect(page.locator(".katex-error")).toHaveCount(0);
+ const data=await(await request.get("/api/scwiki/v1/library/bhatt-nickelate-strain-structure")).json();
+ await expect(page.locator("main.scwiki")).toHaveAttribute("data-revision",data.note.revision);
+ const broken=await page.locator('main.scwiki a[href^="#"]').evaluateAll(links=>links.map(a=>a.getAttribute("href")!.slice(1)).filter(id=>!document.getElementById(id)));
+ expect(broken).toEqual([]);
+ await page.screenshot({path:"test-results/scwiki-bhatt-390.png",fullPage:true});
+});
 test("research library connects homepage search, evidence notes and bounded read-only exports",async({page,request})=>{
  await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
  await page.getByRole("searchbox",{name:"Search SCWiki"}).fill("missing-area");

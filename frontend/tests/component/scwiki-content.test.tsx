@@ -21,6 +21,20 @@ const getAll=async(key:"articles"|"sources"|"topics")=>{
  return {[key]:items};
 };
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("paginates research studies separately and keeps the final-paper sample criteria and license",async()=>{
+  const first=await(await get(["library"],"?limit=1")).json();expect(first.total).toBeGreaterThan(1);
+  const second=await(await get(["library"],"?limit=1&cursor="+first.page.nextCursor)).json();
+  expect(second.revision).toBe(first.revision);expect(second.notes[0].id).not.toBe(first.notes[0].id);
+  const found=await(await get(["library"],"?q="+encodeURIComponent("10.1038/s41586-026-10446-2"))).json();expect(found.total).toBe(1);
+  const note=found.notes[0];expect(note.sources[0].publicationStatus).toBe("journal-article");expect(note.sources[0].date).toBe("2026-04-01");
+  const md=await(await get(["library",note.id,"markdown"])).text();
+  expect(md).toContain("42 K; zero resistance around 2 K");expect(md).toContain("LAO | −1.2% | −0.9% | Metallic");
+  expect(md).toContain("hypothetical controls");expect(md).toContain("not a demonstration");expect(md).toContain("importance of this reduced mixing for superconductivity remains to be established");
+  expect(md).toContain("https://creativecommons.org/licenses/by/4.0/");expect(md).toContain("Lopa Bhatt");
+  for(const section of note.sections)for(const id of section.sourceIds)expect(note.sources.some((s:any)=>s.id===id)).toBe(true);
+  for(const p of note.provenance)expect(createHash("sha256").update(readFileSync("../../sources/"+p.path)).digest("hex")).toBe(p.sha256);
+  expect((await get(["library"],"?q=Bhatt&limit=1&cursor="+first.page.nextCursor)).status).toBe(400);
+ });
  it("exports separate research notes with source versions, local derivations and review limits",async()=>{
   const list=await(await get(["library"],"?q=missing-area&limit=1")).json();
   expect(list.total).toBe(1);expect(list.page.next).toBeNull();expect(articles()).toHaveLength(104);

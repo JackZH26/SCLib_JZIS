@@ -6,7 +6,7 @@
       "title": "Parallel conduction and Planckian scattering in FeTeSe",
       "summary": "Connect optical parallel-channel fits with Planckian rate conventions and nonlinear resistance, while keeping the pairing mechanism unresolved.",
       "kind": "research-note-and-cross-topic-analysis",
-      "modifiedAt": "2026-10-18T23:45:17.620470+00:00",
+      "modifiedAt": "2026-10-18T23:53:19.022135+00:00",
       "aliases": [
         "Romero",
         "FeTeSe",
@@ -87,7 +87,12 @@
           "version": "v1; manuscript dated 2 May 2025",
           "checkedAt": "2026-10-19",
           "scope": "Selected PDF pages 1–5; page 4 figure and equations inspected visually. Final-version comparison pending.",
-          "doi": null
+          "doi": null,
+          "authors": "Ralph Romero III, Hee Taek Yi, Seongshik Oh and N. P. Armitage",
+          "date": "2025-05-01",
+          "dateLabel": "Submitted",
+          "licenseUrl": null,
+          "licenseLabel": null
         }
       ],
       "provenance": [
@@ -134,6 +139,158 @@
         }
       ],
       "rights": "Original editorial summary and local explanatory calculations. Linked papers retain their own rights; no third-party figures or full text are reproduced."
+    },
+    {
+      "id": "bhatt-nickelate-strain-structure",
+      "title": "Nickelate strain: structural parallels, different mechanical paths",
+      "summary": "Compare measured lattice deformation, resistive criteria and orbital-model conclusions in strained La3Ni2O7 films without treating a structural correlation as a demonstrated pairing mechanism.",
+      "kind": "research-note-and-cross-topic-analysis",
+      "modifiedAt": "2026-10-18T23:53:19.022135+00:00",
+      "aliases": [
+        "Bhatt",
+        "La3Ni2O7",
+        "bilayer nickelate",
+        "epitaxial strain",
+        "multislice electron ptychography",
+        "t2g mixing"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory"
+      ],
+      "relatedCodes": [
+        "D5",
+        "E4",
+        "A1",
+        "B14"
+      ],
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Selected final published passages and figures, including transport, structural interpretation and methods. Supplement-wide and independent scientific review remain open.",
+        "limitations": [
+          "Author self-review; no independent review or reproduction of imaging, transport or DFT data.",
+          "The full supplementary analysis, data repository and correction history have not been audited.",
+          "Structural association and hypothetical distortion calculations do not establish a unique pairing mechanism."
+        ]
+      },
+      "sections": [
+        {
+          "id": "sample-series",
+          "title": "Read the sample series before the headline",
+          "markdown": "Bhatt and colleagues compare bilayer La3Ni2O7−δ films on four substrates. The final Figure 1 distinguishes nominal substrate mismatch from measured film strain. Negative values denote compression. The film on SLAO has a broad resistive transition; the other listed films do not establish superconductivity merely because one also has compressive strain.\n\n| Substrate | Nominal strain | Measured strain | Reported transport in this study |\n| --- | ---: | ---: | --- |\n| SLAO | −2.0% | −1.6% | Onset near 42 K; zero resistance around 2 K |\n| LAO | −1.2% | −0.9% | Metallic |\n| NGO | +0.7% | +0.6% | Metallic |\n| STO | +1.9% | +1.8% | Insulating |\n\nThese temperature endpoints belong to the SLAO film's ambient-pressure transport report, cited by the structural paper to Ko and colleagues. They are different criteria, not two interchangeable values of a precisely established bulk transition. The growth methods also differ: SLAO uses pulsed-laser deposition, whereas the main comparison films on LAO, NGO and STO use molecular-beam epitaxy. The authors do not definitively exclude sensitivity to synthesis details.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "bhatt-2026"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "strain-definition",
+          "title": "Nominal mismatch is not the remaining film strain",
+          "markdown": "The methods define nominal mismatch as $\\epsilon_{\\rm nom}=(a_{\\rm sub}-a_{\\rm bulk})/a_{\\rm bulk}$, using the bulk pseudo-tetragonal reference $a_{\\rm bulk}=3.833$ Å. The substrate values are 3.756, 3.787, 3.858 and 3.905 Å for SLAO, LAO, NGO and STO. Direct arithmetic reproduces the rounded nominal percentages in the table; it does not calculate the film's measured relaxation.\n\nIn-plane compression and higher octahedral symmetry are common features identified in the superconducting film and pressurized bulk structures. Their out-of-plane responses differ: the film can expand along the stacking direction while a hydrostatically compressed bulk sample contracts. This contrast does not convert epitaxial strain into an equivalent pressure. Nor does it establish that the SLAO film has the largest c-axis among all substrates.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "bhatt-2026"
+          ],
+          "sourceRelationship": "mixed-source-and-local-derivation"
+        },
+        {
+          "id": "orbital-model",
+          "title": "What the orbital calculations do and do not establish",
+          "markdown": "The study decomposes structural changes into bond-length changes, internal-angle changes and rigid octahedral rotations. Calculations on those separated distortions are hypothetical controls, not independently prepared experimental samples. The reported suppression concerns local $t_{2g}$ admixture in predominantly $e_g$ low-energy bands; it is not a demonstration that the $d_{z^2}$ orbital disappears from the Fermi surface.\n\nThe final discussion says the importance of this reduced mixing for superconductivity remains to be established. Rotation effects are considered together with phenomenological Hubbard interactions. The calculations compare band structures, not a reproduced superconducting transition or a uniquely selected pairing mechanism. The metallic LAO film also has similar higher octahedral symmetry, so symmetry alone cannot be treated as a sufficient condition in this series.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "bhatt-2026"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "measurement-limits",
+          "title": "Keep local structure and superconductivity evidence distinct",
+          "markdown": "STEM cannot directly identify which microscopic regions are superconducting. The paper examines defects, mixed structural phases and variable oxygen occupancy that can affect bulk-sensitive transport and diffraction. Its methods coordinate microscopy preparation and measurements within three days of oxygen annealing to mitigate oxygen loss. That protocol is part of the evidence context, not proof of exact oxygen stoichiometry.\n\nThe study reports 40 distinct ptychography fields of view for bond analysis. Thousands of bonds within those images are not thousands of independently synthesized superconducting specimens. A low-temperature reversal of oxygen-distortion direction, analogous to that reported in bulk, remains unresolved for the films. Raw imaging reconstructions, transport data, full supplements and DFT convergence have not been reproduced in this editorial check.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "bhatt-2026"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "comparison",
+          "title": "Use the structural comparison as a constraint",
+          "markdown": "When comparing a new film, retain its growth and annealing history, composition, reference lattice, measured strain, local structural probe and transition criterion. Compare nominally similar samples before attributing transport changes solely to strain. This note connects the nickelate, strain and transport articles; it does not supply a validated recipe for raising the transition temperature.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "bhatt-2026"
+          ],
+          "sourceRelationship": "context-for-local-derivation"
+        }
+      ],
+      "sources": [
+        {
+          "id": "bhatt-2026",
+          "title": "Structural modifications in strain-engineered bilayer nickelate thin films",
+          "authors": "Lopa Bhatt and colleagues",
+          "url": "https://doi.org/10.1038/s41586-026-10446-2",
+          "publicationStatus": "journal-article",
+          "date": "2026-04-01",
+          "dateLabel": "Published online",
+          "version": "Final published article; Nature 653, 76–82 (7 May 2026 issue)",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected published PDF pages 2, 4–6 and 8–9; Figure 1 and lattice comparison inspected. Methods and author-stated limitations retained; full supplement and data reproduction pending.",
+          "doi": "10.1038/s41586-026-10446-2",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "licenseLabel": "CC BY 4.0"
+        }
+      ],
+      "provenance": [
+        {
+          "path": "papers/library/Bhatt_LNO-Structural-Modifications_Nature2026_NOTE.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "d4a733b8f2299e92df1ec3b99a0bf7d3d25ac144019dc45c91d256b0f9978657",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity"
+        },
+        {
+          "path": "papers/library/Bhatt_Structural-Origins-SC-Strain-LNO_2026_NOTE.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "d04c248a0eba4d37a3c3c46ca60486ddb8a7e0366ffa9acfcecd03dfc6f87745",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity"
+        }
+      ],
+      "corrections": [
+        {
+          "issue": "Duplicate study",
+          "inherited": "Two reading notes with different titles.",
+          "resolution": "Both refer to the same DOI and are merged into this single note, preserving both source hashes."
+        },
+        {
+          "issue": "Strain and superconductivity",
+          "inherited": "Compressive samples marked superconducting together.",
+          "resolution": "The LAO film is metallic in this series; compression and higher symmetry are not sufficient evidence for superconductivity."
+        },
+        {
+          "issue": "Measured strain values",
+          "inherited": "Several measured values differ from the final figure.",
+          "resolution": "Final nominal/measured pairs are SLAO −2.0%/−1.6%, LAO −1.2%/−0.9%, NGO +0.7%/+0.6%, STO +1.9%/+1.8%."
+        },
+        {
+          "issue": "Transition criterion",
+          "inherited": "42 K used as an unqualified transition.",
+          "resolution": "Retain the approximately 42 K resistive onset and 2 K zero-resistance endpoint separately."
+        },
+        {
+          "issue": "Orbital interpretation",
+          "inherited": "Strain-induced removal of dz2 implied as the mechanism.",
+          "resolution": "The final model emphasizes reduced t2g admixture; its importance for pairing remains unresolved."
+        },
+        {
+          "issue": "c-axis ranking",
+          "inherited": "SLAO described as having the largest c-axis.",
+          "resolution": "Retain the film-versus-hydrostatic trend without claiming an unsupported ranking among substrate films."
+        }
+      ],
+      "rights": "Original editorial synthesis adapted from Lopa Bhatt and colleagues, cited below under CC BY 4.0; wording, organization and local arithmetic are new. No source figures are reproduced. Third-party materials retain any separately stated rights."
     }
   ]
 }

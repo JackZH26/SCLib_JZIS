@@ -18,7 +18,7 @@ describe("SCWiki home discovery and research provenance",()=>{
   fireEvent.change(screen.getByRole("searchbox"),{target:{value:"missing-area"}});
   const result=await screen.findByRole("link",{name:"Read article: "+libraryNotes[0].title});
   expect(result).toHaveAttribute("href","/scwiki/library/"+libraryNotes[0].id);
-  expect(screen.getByText(/104 wiki articles and 1 research note/)).toBeInTheDocument();
+  expect(screen.getByText(new RegExp("104 wiki articles and "+libraryNotes.length+" research notes"))).toBeInTheDocument();
   expect(librarySearchEntries()[0].materialCases).toEqual([]);
   fireEvent.click(screen.getByRole("button",{name:/Filters/}));
   fireEvent.change(screen.getByLabelText("Pressure"),{target:{value:"ambient"}});
