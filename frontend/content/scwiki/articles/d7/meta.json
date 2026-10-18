@@ -263,7 +263,7 @@
     {
       "id": "scwiki-d7-claim-experimental-criteria-3",
       "sectionId": "experimental-criteria",
-      "statement": "Szabó's Cu–MgB₂ point contacts showed small and large gap scales around 2.8 and 7 meV. Their two-component BTK fits kept interface transparency and relative weight fixed across temperature; thermal smearing makes the two contributions harder to separate near the bulk transition. Fields up to 1 T preferentially suppressed the small-gap spectral contribution, helping reveal the large-gap features. This does not mean that 1 T is the bulk upper critical field, and these spectra alone do not determine the relative sign of the gaps. At 39 K the quoted gap ratios are approximately 1.67 and 4.17, rather than a single weak-coupling BCS ratio.",
+      "statement": "Szabó's Cu–MgB₂ point contacts showed small and large gap scales around 2.8 and 7 meV. Their two-component BTK fits kept interface transparency and relative weight fixed across temperature; thermal smearing makes the two contributions harder to separate near the bulk transition. Fields up to 1 T preferentially suppressed the small-gap spectral contribution, helping reveal the large-gap features. This does not mean that 1 T is the bulk upper critical field, and these spectra alone do not determine the relative sign of the gaps. Using a transition temperature of 39 K, the low-temperature gap ratios are approximately 1.67 and 4.17, rather than a single weak-coupling BCS ratio.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-69ced9b5dda860f1"
