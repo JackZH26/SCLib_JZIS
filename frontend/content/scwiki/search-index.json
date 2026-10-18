@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "0d8b31c856e37d3b3b42",
+  "revision": "6bf8b4c0acf14365f3ae",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -6048,7 +6048,7 @@
       "code": "G7",
       "slug": "spin-liquids-and-superconductivity",
       "title": "Spin liquids, RVB and superconductivity",
-      "summary": "Distinguish a quantum-spin-liquid candidate, an RVB construction and pressure-induced superconductivity; proximity does not establish a causal pairing path.",
+      "summary": "Compare NMR, ESR and transport evidence for a spin-liquid candidate, separating defects, model-dependent gaps and neighboring superconductivity.",
       "aliases": [
         "quantum spin liquid",
         "QSL",
@@ -6064,7 +6064,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "07c8e818d97731c55d27",
+      "revision": "2479eb20ff048b669b30",
       "materialCases": [
         {
           "formula": "κ-(BEDT-TTF)2Cu2(CN)3",
@@ -6085,15 +6085,36 @@
             "organic",
             "organic superconductors"
           ]
+        },
+        {
+          "id": "scwiki-g7-material-2",
+          "formula": "κ-(BEDT-TTF)2Cu2(CN)3",
+          "sample": "Shimizu single crystal under2.2T perpendicular to conducting planes",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.032,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Lowest proton NMR measurement temperature at2.2T; not zero field, an exchange scale or a superconducting Tc.",
+          "criterion": "NMR-order-bound",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Proton nuclear magnetic resonance",
+          "sourceId": "source-9d15cd9236072f5c",
+          "aliases": [
+            "quantum spin liquid",
+            "organic Mott insulator"
+          ]
         }
       ],
       "dois": [
         "10.1126/science.235.4793.1196",
         "10.1103/PhysRevLett.91.107001",
         "10.1103/PhysRevLett.95.177001",
-        "10.1038/s41467-023-37491-z"
+        "10.1038/s41467-023-37491-z",
+        "10.1126/science.abc6363"
       ],
-      "text": " Scope\n\nA quantum spin liquid is a proposed quantum many-body state, not simply a material with no detected magnetic order. Real candidate systems require tests that distinguish persistent quantum behavior from glassiness, valence-bond order, disorder and a measurement window that is not yet cold or slow enough. A claim about fractionalization is stronger than an observation of missing magnetic Bragg peaks.  \n\nRVB, or resonating valence bond, provides a family of theoretical constructions using superpositions of spin-singlet configurations. Anderson's cuprate proposal connected this language to doped correlated insulators. It remains a mechanism proposal rather than a proof that an undoped cuprate parent is an experimentally established spin liquid. In particular, the antiferromagnetic parent-state evidence cannot be replaced by a preferred wavefunction picture. \n\n Mathematical assumptions\n\nA schematic singlet-covering state can be written\n\n\n|\\Psi{\\mathrm{RVB}}\\rangle\n=\\sumC AC\\prod{(i,j)\\in C}\n\\frac{|\\uparrowi\\downarrowj\\rangle-|\\downarrowi\\uparrowj\\rangle}{\\sqrt{2}}.\n\n\nThe amplitudes AC, allowed coverings and constraints define the actual variational state. This expression alone does not establish its normalization, topological order or suitability for a particular material. Different parton and gauge constructions can yield different phases; a generic U(1) state should not automatically be called a Dirac state. \n\nLikewise, singlet correlations do not demonstrate superconductivity. A charged coherent condensate, an insulating spin system and a variational pairing amplitude are distinct physical objects. BCS mean-field language can organize pairing beyond a phonon-only interaction, so a simple “BCS versus RVB” dichotomy hides assumptions rather than testing them. \n\n Experimental criteria\n\nState the temperature floor, field, time window and probe used to exclude magnetic order or freezing. Compare local magnetic probes with thermodynamics, transport and structural controls. A low-temperature heat-capacity term or a continuum of excitations can be informative, but each has alternative explanations and sample dependencies. Do not use one such feature as a complete topological-state diagnosis.  \n\nThe organic compound kappa-(BEDT-TTF)2Cu2(CN)3 is an important candidate platform. Shimizu and colleagues reported a lack of conventional order to low temperatures, while the pressure work of Kurosaki and colleagues mapped neighboring electronic phases. These are separate observations: the pressure-induced superconducting region does not show that the insulating state's proposed fractionalized excitations are the pairing mediator.  \n\n Limits and disputes\n\nThe 2023 strain-transport study favors a spin-gapped valence-bond-solid interpretation, but explicitly leaves a gapped chiral spin liquid possible. Its hydrostatic-equivalent pressure is inferred from transport comparisons for a substrate-coupled crystal; it is not a directly applied hydrostatic pressure. Neighboring superconductivity therefore establishes phase-diagram proximity rather than a unique microscopic QSL-to-superconductor route.  \n\nFrustration is a useful route to suppressing simple order, but it is neither sufficient nor a universal necessary condition for every spin-liquid construction. Different topological labels and proposed excitations must be tied to a specified theoretical state. The pilot removes categorical material assignments and universal heat-capacity exponents from the original overview.  \n\n Discovery implications\n\nA testable proposal should predict a controlled change in fractionalization-sensitive and charge-coherence observables across a transition. Preserve negative evidence and disorder diagnostics. The strongest research lead is a mechanism-specific discriminating measurement, not the co-occurrence of superconductivity and a suggestive insulating phase diagram.  \n\n Related topics\n\nRead , , and ."
+      "text": " Scope\n\nA quantum spin liquid is not identified simply by an absence of detected magnetic order. A candidate material must be tested against valence-bond order, disorder, freezing and the finite temperature and time windows of the measurements. A spin gap can occur in different states; its observation alone does not identify topological order or fractionalized excitations. Here the organic Mott insulator κ-(BEDT-TTF)2Cu2(CN)3 illustrates how interpretations change when additional probes become available.   \n\nRVB, or resonating valence bond, describes a family of theoretical constructions built from superpositions of singlet configurations. Anderson's cuprate proposal connects this idea to superconductivity in a doped correlated insulator; the abstract is a historical proposal, not a material-level proof of a spin-liquid parent. The allowed coverings, amplitudes and constraints must be specified. A generic U(1) construction is not automatically a Dirac state, and BCS mean-field language does not imply a phonon-only pairing interaction. \n\n Mathematical assumptions\n\nAn independent finite example makes one logical limitation explicit. Consider an isolated singlet of energy zero and three triplet states with energies \\Delta-h, \\Delta and \\Delta+h. Use units kB=g\\muB=1, so temperatures, gaps and the field variable h are expressed in compatible energy units; the response below is not an SI molar susceptibility. The partition function is Z=1+e^{-\\Delta/T}[1+2\\cosh(h/T)]. Differentiating the mean moment at zero field gives \\chi0=2e^{-\\Delta/T}/\\{T[1+3e^{-\\Delta/T}]\\}. This illustrative model addresses an inference problem raised by the magnetic measurements, rather than fitting those experiments.  \n\nThe model has a gap and a nonmagnetic singlet ground state, yet an isolated dimer has neither bulk topological order nor mobile charge. Adding a synthetic Curie contribution gives \\chi{\\mathrm{obs}}=\\chi0+c/T. With an illustrative gap of 6 K, c = 0.001 and T = 0.1 K, the background exceeds 99.9999% of the total response even though the intrinsic response is exponentially suppressed. The chosen 6 K is a model parameter, not the measured anomaly temperature or a fitted material gap. An inverse-temperature tail cannot by itself establish a gapless intrinsic state. \n\nFive finite-difference derivatives agree with the analytic response, and fifteen temperature/background combinations check this counterexample. Its Curie term assumes independent, unsaturated moments; interactions, anisotropy and finite-field saturation are excluded. Singlet correlations in an insulating model also do not demonstrate charge coherence or superconductivity. The separate  examines wavefunction normalization and charge-response assumptions. These finite calculations are not a simulation of a bulk quantum spin liquid.  \n\n Experimental criteria\n\nShimizu and colleagues' lowest-temperature proton NMR measurements used a single crystal at 2.2 T perpendicular to the conducting planes, reaching 32 mK. That temperature floor is not a zero-field result. Their higher-temperature polycrystalline NMR used 3.9 T, and susceptibility measurements used 0.32 T. No resolved splitting or major broadening was observed at low temperature, but the small-moment estimate relies on calibration against a different chloride salt. The absence of a resolved signal therefore has a probe- and model-dependent bound. \n\nBelow approximately 0.4 K, the reported recovery needs two exponential components, with roughly linear and quadratic temperature dependences of their relaxation rates. The authors discuss spatial inhomogeneity and possible disorder-related explanations. Combining these components into one universal power law would discard relevant evidence. The approximately 250 K exchange scale obtained from the susceptibility analysis is neither the 32 mK measurement floor nor a superconducting transition temperature. \n\nMiksch and colleagues separate a decreasing main ESR contribution below the approximately 6 K anomaly from narrow defect-related components. Their author manuscript uses conventional 9.5 GHz measurements near 340 mT down to 1.9 K, alongside separate low-frequency measurements near 40 mT reaching 25 mK. These are different protocols, not one continuous zero-field measurement. Samples from four laboratories show different defect signals. The proposed microscopic defect origin remains an interpretation; the final abstract describes a gapped ground state consistent with a valence-bond solid. \n\n Limits and disputes\n\nGap values require their observable and fitting model. Miksch's author supplement compares a simple activated fit giving 7.3 K with a chain-based fit giving 12.1 K. Its main text and figure legend include an inverse-temperature prefactor that the displayed supplementary expression omits; no unreported correction or independent reproduction of that fit is claimed here. Pustogow's final paper explicitly distinguishes its transport scale Eg=2\\Delta\\approx30–50 K from the approximately 12 K ESR spin gap. These numbers are not interchangeable measurements of one quantity, nor evidence by themselves of a manuscript-version error.  \n\nThe strain-transport study favors a valence-bond-solid interpretation but leaves a gapped chiral spin liquid possible. Its hydrostatic-equivalent pressure is inferred for a substrate-coupled crystal; it is not a directly applied hydrostatic pressure. Kurosaki's pressure phase diagram establishes neighboring electronic phases and superconductivity, but proximity does not identify the pairing mediator. Complete scientific acceptance remains open: final-version comparisons, raw-data analysis, full calibration and discrimination among microscopic states are incomplete. Reference labels identify which selected methods, figures or abstracts were actually checked.   \n\n Discovery implications\n\nRecord the sample, magnetic field, frequency or time window, temperature floor, background subtraction and fitting assumptions for each proposed spin-liquid signature. Compare magnetic, structural, thermodynamic and charge-coherence observations under compatible conditions. A useful mechanism proposal must predict observations that distinguish alternatives across the transition, including the behavior of defects. Superconductivity next to a candidate insulating state motivates such tests; it does not establish fractionalization-mediated pairing.   \n\n Related topics\n\n, , , and ."
     },
     {
       "id": "scwiki-h2",
