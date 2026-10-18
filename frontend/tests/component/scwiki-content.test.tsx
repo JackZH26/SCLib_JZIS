@@ -729,3 +729,23 @@ it("all exported temperature classifications are declared by the live API contra
   }
  }
 });
+
+it("keeps the two Bi2212 PDW experiments and limited modern source checks distinct",async()=>{
+ const a=articles().find(a=>a.code==="C8")!;
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("not the later field-induced vortex-halo");
+ expect(md).toContain("explicitly without scanned Josephson tunneling microscopy");
+ expect(md).toContain("effective noise temperature");
+ expect(md).toContain("not exactly in a two-to-one ratio");
+ expect(md).toContain("without additional translation-symmetry breaking");
+ expect(a.materialCases.map(r=>r.reportedTemperatureK)).toEqual([null,2]);
+ expect(a.materialCases.every(r=>r.tcK===null&&r.temperatureKind==="measurement")).toBe(true);
+ expect(a.materialCases[0].sourceId).not.toBe(a.materialCases[1].sourceId);
+ expect(searchArticles(searchIndex().entries,"CPDM",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"CPDM",{tcMin:.01}).some(r=>r.id===a.id)).toBe(false);
+ const out=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(out).toContain("8.25 T");expect(out).toContain("Full scientific acceptance");
+ expect(a.references.find(r=>r.doi==="10.1038/nature17411")?.verification.scope).toBe("selected-published-and-author-text-check");
+ expect(a.references.find(r=>r.doi===null)?.verification.scope).toBe("institutional-bibliographic-check");
+ expect(a.references.find(r=>r.doi==="10.1038/s41586-026-10325-w")?.verification.scope).toBe("institutional-abstract-and-publication-check");
+});
