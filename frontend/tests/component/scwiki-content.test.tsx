@@ -700,8 +700,8 @@ it("preserves Mottness model limits and the nickelate specimen-specific onset in
  expect(searchArticles(searchIndex().entries,"La3Ni2O7",{criterion:"resistance-onset",tcMin:80}).some(r=>r.id===d.id)).toBe(true);
  expect(searchArticles(searchIndex().entries,"La3Ni2O7",{criterion:"zero-resistance",tcMin:80}).some(r=>r.id===d.id)).toBe(false);
  const out=await(await get(["articles",d.id,"sections","experimental-criteria"],"?format=markdown")).text();
- expect(out).toContain("separate measurement at 25.2 GPa");
- expect(out).toContain("must not be relabeled as zero resistance");
+ expect(out).toContain("measured separately at 25.2 GPa");
+ expect(out).toContain("prevent combining these observations into one zero-resistance");
 });
 
 it("keeps s-wave symmetry and imposed-gap checks separate from measured transition criteria",async()=>{
@@ -1318,4 +1318,20 @@ it("finds an English altermagnet article from Chinese queries without treating m
  expect(a.materialCases.every(r=>r.tcK===null&&r.temperatureKind==="measurement")).toBe(true);
  const filtered=await(await get(["search"],"?q="+encodeURIComponent("交错磁性")+"&tcMin=0.01")).json();
  expect(filtered.results.some((r:{id:string})=>r.id===a.id)).toBe(false);
+});
+
+
+it("binds nickelate temperature thresholds to their sample criteria and preprint status",async()=>{
+ const a=articles().find(a=>a.code==="D5")!;
+ const index=searchIndex().entries;
+ expect(searchArticles(index,"Nd0.8Sr0.2NiO2",{tcMin:14,criterion:"resistive-onset-maximum-curvature"}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(index,"Nd0.8Sr0.2NiO2",{tcMin:14,criterion:"zero-resistance"}).some(r=>r.id===a.id)).toBe(false);
+ expect(searchArticles(index,"La2PrNi2O7",{tcMin:40,criterion:"resistive-90-percent-normal-fit"}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(index,"La2PrNi2O7",{tcMin:40,criterion:"zero-resistance"}).some(r=>r.id===a.id)).toBe(false);
+ expect(searchArticles(index,"Nd0.85Sr0.15NiO2",{tcMin:70,pressure:"ambient"}).some(r=>r.id===a.id)).toBe(false);
+ const source=a.references.find(r=>r.doi==="10.48550/arXiv.2604.09525")!;
+ expect(source.publicationStatus).toBe("preprint");
+ expect(a.materialCases.find(m=>m.sourceId===source.id)?.pressureGPa).toEqual({min:91.5,max:91.5});
+ const md=await(await get(["articles",a.id,"sections","recent-structures-and-membranes"],"?format=markdown")).text();
+ expect(md).toContain("99.5%");expect(md).toContain("not assigned to a precise searchable Tc record");
 });
