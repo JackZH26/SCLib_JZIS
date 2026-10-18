@@ -1,0 +1,486 @@
+{
+  "id": "scwiki-c10",
+  "topicId": "scwiki-topic-c10",
+  "code": "C10",
+  "slug": "superconducting-node-structure",
+  "title": "Superconducting nodes: dimensionality, disorder and experimental tests",
+  "summary": "Distinguish point and line nodes, finite gap minima and zero-energy surfaces before assigning a pairing symmetry.",
+  "aliases": [
+    "node structure",
+    "line nodes",
+    "point nodes",
+    "accidental nodes",
+    "symmetry enforced",
+    "Bogoliubov Fermi surface",
+    "Pfaffian",
+    "nodal superconductivity",
+    "universal heat transport"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "C1",
+    "C3",
+    "C9",
+    "B11"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T10:28:52.386170+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Reid accepted methods, Hashimoto/Mizukami author passages, published Vorontsov field-angle model, Durst nodal/thermal passages and Agterberg Pfaffian model. Explicit abstract-only Hardy and Schnyder–Ryu scopes. Independent phase-volume, thermal, root and determinant checks.",
+    "limitations": [
+      "Full scientific acceptance, complete version comparisons and raw-data fits remain open.",
+      "Fixed numerical spectra and gap functions do not reproduce self-consistent disorder/vortex response or energetic stability.",
+      "Hardy and Schnyder–Ryu review is abstract-level only; accepted Reid/Agterberg figures not visually checked.",
+      "Selected author manuscripts have later typesetting dates distinct from their arXiv version dates."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "C_pairing_symmetry/C10_node_structure.md",
+    "sha256": "84d9022fc768d506b2eefa67066d61a1155305898e27713712b483956c8df90c",
+    "sourceId": "file-96821cfa0261a6ee"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 15,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned bytes preserved; material misattribution corrected and conditional spectra/probe evidence expanded."
+    },
+    {
+      "startLine": 16,
+      "endLine": 29,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned bytes preserved; material misattribution corrected and conditional spectra/probe evidence expanded."
+    },
+    {
+      "startLine": 30,
+      "endLine": 41,
+      "targetSections": [
+        "mathematical-assumptions",
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned bytes preserved; material misattribution corrected and conditional spectra/probe evidence expanded."
+    },
+    {
+      "startLine": 42,
+      "endLine": 58,
+      "targetSections": [
+        "experimental-criteria",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned bytes preserved; material misattribution corrected and conditional spectra/probe evidence expanded."
+    },
+    {
+      "startLine": 59,
+      "endLine": 70,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned bytes preserved; material misattribution corrected and conditional spectra/probe evidence expanded."
+    },
+    {
+      "startLine": 71,
+      "endLine": 97,
+      "targetSections": [
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned bytes preserved; material misattribution corrected and conditional spectra/probe evidence expanded."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-8d1b859d5ffcad9f",
+      "doi": "10.1103/RevModPhys.63.239",
+      "title": "Phenomenological theory of unconventional superconductivity",
+      "year": 1991,
+      "url": "https://doi.org/10.1103/RevModPhys.63.239",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.63.239",
+        "note": "Identity and abstract scope checked. Full review not obtained; explicit angular illustrations are independently evaluated, not attributed as a reproduction of this review."
+      }
+    },
+    {
+      "id": "source-b7bc48c845a47b53",
+      "doi": "10.1103/PhysRevLett.70.3999",
+      "title": "Precision measurements of the temperature dependence of lambda in YBa2Cu3O6.95: Strong evidence for nodes in the gap function",
+      "year": 1993,
+      "url": "https://doi.org/10.1103/PhysRevLett.70.3999",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.70.3999",
+        "note": "Published 21 June 1993. Abstract distinguishes 1.3 K lower operating temperature and approximately 3–25 K linear interval. Full methods and data not reviewed."
+      }
+    },
+    {
+      "id": "source-d140b2e83ddf11d9",
+      "doi": "10.1103/PhysRevB.62.1270",
+      "title": "Impurity-induced quasiparticle transport and universal-limit Wiedemann-Franz violation in d-wave superconductors",
+      "year": 2000,
+      "url": "https://doi.org/10.1103/PhysRevB.62.1270",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/9908182v3",
+        "note": "Author v3 dated 24 April 2000, not later typeset date. Selected p.2 nodal dispersion/coordinate measure and Eqs.4.19–4.25 thermal limit passages read; full vertex and Fermi-liquid derivation not reproduced."
+      }
+    },
+    {
+      "id": "source-8a117f38b78526ff",
+      "doi": "10.1103/PhysRevLett.109.087001",
+      "title": "Universal Heat Conduction in the Iron Arsenide Superconductor KFe2As2: Evidence of a d-Wave State",
+      "year": 2012,
+      "url": "https://doi.org/10.1103/PhysRevLett.109.087001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-accepted-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/accepted/10.1103/PhysRevLett.109.087001",
+        "note": "Published 21 August 2012. Selected accepted manuscript pp.2–5 including cover in pagination: contacts, separate directional samples, low-T/H extrapolation and normalized cross-sample comparison read via web text. Local PDF download403; figures not visually checked. Material is KFe2As2, not P-Ba122."
+      }
+    },
+    {
+      "id": "source-ad52940b1b5c5ecd",
+      "doi": "10.1103/PhysRevB.81.220501",
+      "title": "Line nodes in the energy gap of superconducting BaFe2(As1-xPx)2 single crystals as seen via penetration depth and thermal conductivity",
+      "year": 2010,
+      "url": "https://doi.org/10.1103/PhysRevB.81.220501",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0907.4399v2",
+        "note": "Author v2 dated 17 May 2010, not later typeset2018 date. Selected p.1 methods and p.3 thermal result/upturn passages read; p.3 visually checked. Complete final-version comparison and raw-data fits open."
+      }
+    },
+    {
+      "id": "source-c4a5c25b97df43a2",
+      "doi": "10.1038/ncomms6657",
+      "title": "Disorder-induced topological change of the superconducting gap structure in iron pnictides",
+      "year": 2014,
+      "url": "https://doi.org/10.1038/ncomms6657",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1405.6951v2",
+        "note": "Author v2 dated 29 May 2014; journal published28 November2014, later typeset2021 date is not publication date. Selected pp.2–4 protocol, Fig.3 results and two-band/annealing passages read; p.3 visually checked. Full final-version and scattering-model reproduction open."
+      }
+    },
+    {
+      "id": "source-6c82ca23c0fda096",
+      "doi": "10.1103/PhysRevLett.96.237001",
+      "title": "Nodal Structure of Quasi-Two-Dimensional Superconductors Probed by a Magnetic Field",
+      "year": 2006,
+      "url": "https://doi.org/10.1103/PhysRevLett.96.237001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.phys.lsu.edu/faculty/vekhter/Research/papers/AntonPRL06.pdf",
+        "note": "Selected published pp.1–3 model and reversal passages read; p.3 Figs.1–2 visually checked. PDF says published12 June2006, distinct from catalogue entry date20 June. BPT approximation, ignoresZeeman; full calculation not reproduced."
+      }
+    },
+    {
+      "id": "source-558057f5efd127fe",
+      "doi": "10.1103/PhysRevLett.118.127001",
+      "title": "Bogoliubov Fermi Surfaces in Superconductors with Broken Time-Reversal Symmetry",
+      "year": 2017,
+      "url": "https://doi.org/10.1103/PhysRevLett.118.127001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-accepted-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/accepted/10.1103/PhysRevLett.118.127001",
+        "note": "Published24 March2017. Selected accepted manuscript pp.2–4 including cover: model, Eq.6 Pfaffian and CP invariant passages read via web text; localPDF403. Independent five determinant checks of specified model; no full stability/supplement reproduction."
+      }
+    },
+    {
+      "id": "source-fcdf63980c7fb4f9",
+      "doi": "10.1103/PhysRevB.79.094512",
+      "title": "Lifting of nodes by disorder in extended-s-state superconductors: Application to ferropnictides",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevB.79.094512",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-earlier-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0901.2653v1",
+        "note": "Selected pp1–3 and6–8: local pocket harmonic, weak Born scatterers, single-sheet Tc suppression and multiband/interband limitations. Submission history is January 2009; PDF body has a later internal typesetting date, not a new version. Full journal comparison pending."
+      }
+    },
+    {
+      "id": "source-082f6af19b62ce2b",
+      "doi": "10.1103/PhysRevB.84.060504",
+      "title": "Topological phases and surface flat bands in superconductors without inversion symmetry",
+      "year": 2011,
+      "url": "https://doi.org/10.1103/PhysRevB.84.060504",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.84.060504",
+        "note": "Published11 August2011. Publisher-indexed abstract and author abstract checked: time-reversal-symmetric noncentrosymmetric nodal-line topology and surface projection. Full invariant/surface calculation not reviewed."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-c10-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A superconducting node is a zero of the quasiparticle excitation energy. In a simple weak-pairing single-band description it lies where the normal-state Fermi surface intersects a zero of the gap. A point, a line, a small but finite minimum and an extended Bogoliubov Fermi surface are different possibilities. In multiband systems, inspect the full Bogoliubov spectrum rather than only one scalar gap. Nodal dimension, symmetry protection and the pairing representation are separate questions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-558057f5efd127fe"
+      ],
+      "conditions": "Distinguish scalar gap zeros, full quasiparticle spectrum, nodal dimension and representation.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c10-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "A low-temperature power law constrains low-energy excitations within a measured window; it is not a unique symmetry label. The dispersion near a node, probe weighting, disorder, nonlocal response, multiple gaps and backgrounds can change the observed dependence. A fit should state its lowest temperature and energy resolution, and compare with alternatives before assigning a representation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-b7bc48c845a47b53",
+        "source-d140b2e83ddf11d9",
+        "source-c4a5c25b97df43a2"
+      ],
+      "conditions": "Distinguish scalar gap zeros, full quasiparticle spectrum, nodal dimension and representation.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c10-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For $m$ linearly dispersing directions transverse to a nodal manifold, an ideal spectrum $E^2=\\sum_{i=1}^{m}v_i^2q_i^2$ has phase volume below E proportional to $E^m$, hence density of states $N(E)\\propto E^{m-1}$. A three-dimensional line node has two such directions; an isolated linear point has three. Independent cross-section integrations recover these powers. A point with $E^2=q_z^2+(q_x^2+q_y^2)^2$ instead has volume proportional to $E^2$ and a linear density of states. This explicit quadratic-dispersion example shows why the same density-of-states exponent need not imply the same nodal dimension. Velocities, units and degeneracies set the prefactors; these examples use dimensionless coordinates.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d140b2e83ddf11d9"
+      ],
+      "conditions": "Fixed dimensionless spectra/amplitudes, explicit Fermi surface and symmetry sector. No material fit, disorder/vortex self-consistency or stability calculation.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c10-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "With a temperature-independent low-energy density of states $N(E)=AE^p$ and $k_B=1$, the positive-energy quasiparticle contribution satisfies $C(T)=\\int_0^\\infty N(E)E^2 e^{E/T}/[T^2(1+e^{E/T})^2]dE\\propto T^{p+1}$. Direct energy integrals and numerical derivatives of internal energy agree for $p=0,1,2$. Thus ideal linear line nodes give $C\\propto T^2$, whereas ideal linear point nodes in three dimensions give $C\\propto T^3$. These are electronic contributions in the stated regime, not the total measured heat capacity. Two hard-gap toy densities also show increasing suppression as temperature falls below the gap; they do not model a BCS coherence peak or an actual sample.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d140b2e83ddf11d9",
+        "source-6c82ca23c0fda096"
+      ],
+      "conditions": "Fixed dimensionless spectra/amplitudes, explicit Fermi surface and symmetry sector. No material fit, disorder/vortex self-consistency or stability calculation.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c10-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "On an imposed circular Fermi surface, $\\Delta_s(\\theta)=s_0+s_4\\cos4\\theta$ can have zeros while retaining fully symmetric character. For real amplitudes with $s_4\\ne0$, $|s_0/s_4|<1$ gives eight zeros, equality gives four merged quadratic zeros, and a larger ratio gives none. In contrast, $\\Delta_d=\\cos2\\theta+\\eta\\cos6\\theta$ retains diagonal zeros for the tested small real $\\eta$ values in the B1g sector. Seven numerical root checks verify these examples. Changing a model harmonic ratio is not a calculation of how irradiation changes a real gap; a disorder self-energy and gap equation are needed for that connection.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-fcdf63980c7fb4f9"
+      ],
+      "conditions": "Fixed dimensionless spectra/amplitudes, explicit Fermi surface and symmetry sector. No material fit, disorder/vortex self-consistency or stability calculation.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c10-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Agterberg, Brydon and Timm's even-parity multiband model supplies another caution. With its inversion and particle-hole symmetries, the Hamiltonian can be transformed to an antisymmetric form with real Pfaffian P and $\\det H=P^2$. Opposite signs of P enclose protected zero-energy surfaces. For the specified pure-quintet example, $P=(\\epsilon_+\\epsilon_-)^2+4\\Delta_0^2(\\epsilon_+\\epsilon_-+c_{xz}^2+c_{yz}^2)$. Five independent eight-dimensional Hamiltonian determinants match this expression, including a change of sign between two nearby momenta. This tests the named model identity. It does not show that every multiband or time-reversal-breaking superconductor has such a surface, nor establish a material's energetic stability.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-558057f5efd127fe"
+      ],
+      "conditions": "Fixed dimensionless spectra/amplitudes, explicit Fermi surface and symmetry sector. No material fit, disorder/vortex self-consistency or stability calculation.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c10-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Hardy and colleagues measured the penetration-depth change in YBa2Cu3O6.95 using a resonator with a 1.3 K lower operating temperature. The reported strong linear term extended approximately from 3 to 25 K; those are different intervals. The publisher abstract supports a classic nodal constraint, with defects relevant to comparisons, but the full experimental analysis has not been reviewed here.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-b7bc48c845a47b53"
+      ],
+      "conditions": "Retain named sample, measured range and extrapolation; author versions and abstract-only checks remain labelled.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c10-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Hashimoto and colleagues' P-substituted BaFe2(As0.67P0.33)2 study combined penetration depth and thermal conductivity. The author version describes measurements down to about 0.15 K with a tunnel-diode oscillator and about 1.6 K with a microwave resonator. Its zero-field thermal fit resolves a residual contribution of approximately $25\\,\\mathrm{mW\\,K^{-2}\\,m^{-1}}$. The low-temperature penetration-depth upturn was discussed as a small paramagnetic contribution, not silently discarded. These combined observations support line nodes; the measurements do not alone locate every node or uniquely select d-wave over nodal s-wave.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ad52940b1b5c5ecd"
+      ],
+      "conditions": "Retain named sample, measured range and extrapolation; author versions and abstract-only checks remain labelled.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c10-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "The inherited Reid citation concerns KFe2As2, not P-substituted BaFe2As2. Reid and colleagues compared heat flow along two crystal directions using different samples and measurements down to 50 mK. A 0.05 T field made solder contacts normal; the residual zero-field term was obtained by extrapolation, with thermal fits below 0.3 K. Cross-sample scattering comparisons also used resistivity normalization and assumptions relating resistivity to scattering. The authors favored d-wave from several constraints. That interpretation must retain these conditions and its material identity rather than become an automatic classification of another compound.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8a117f38b78526ff"
+      ],
+      "conditions": "Retain named sample, measured range and extrapolation; author versions and abstract-only checks remain labelled.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c10-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Mizukami and colleagues irradiated P-substituted BaFe2As2 with 2.5 MeV electrons and followed penetration depth across multiple samples and doses. Selected data show a nodal-like response becoming nearly temperature independent, then developing low-energy excitations again. One irradiated sample was measured to 80 mK; the reported flat response had roughly 1 Å precision. The proposed two-band interpretation removes accidental nodes before an impurity band reaches zero energy: the final gapless response is not simply restored symmetry-enforced nodes. Retain the separate sample batches, partial defect annealing on warming, and assumed interband/intraband scattering ratio.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c4a5c25b97df43a2"
+      ],
+      "conditions": "Retain named sample, measured range and extrapolation; author versions and abstract-only checks remain labelled.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c10-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "Rotating-field heat measurements require a response calculation. Vorontsov and Vekhter's quasi-two-dimensional model includes vortex scattering and finds that the same nodal direction can give a maximum or a minimum depending on temperature and field. The selected calculation neglects Zeeman splitting and uses an approximate vortex-state treatment; its illustrated reversal scale is not universal. Reading every fourfold minimum as a node would discard precisely the physics that changes the sign.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6c82ca23c0fda096"
+      ],
+      "conditions": "Retain named sample, measured range and extrapolation; author versions and abstract-only checks remain labelled.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c10-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "“Universal” residual heat transport refers to a specified low-temperature, low-frequency scattering regime. Durst and Lee distinguish thermal transport from electrical and spin responses, whose corrections differ; an impurity-independent formula cannot be transferred indiscriminately across all probes or multiband materials. Likewise, a symmetry-enforced zero is robust only while the protecting symmetry, relevant Fermi-surface crossing and phase remain applicable. Strong perturbations may change the phase or electronic structure.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d140b2e83ddf11d9",
+        "source-fcdf63980c7fb4f9"
+      ],
+      "conditions": "Each conclusion depends on symmetry, probe and stated approximation; no general material classification.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c10-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Topology requires an appropriate invariant and protecting symmetries, with any surface prediction tied to surface orientation and the projected bulk nodes. Schnyder and Ryu's time-reversal-symmetric noncentrosymmetric model links nodal-line topology to surface flat bands, distinct from a fully gapped bulk classification. A tunneling feature, a normal-state Weyl band or the word “topological” in a gap-evolution title is not sufficient to establish superconducting Weyl nodes. The cited abstract is checked here; its full surface calculation remains open.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-082f6af19b62ce2b"
+      ],
+      "conditions": "Each conclusion depends on symmetry, probe and stated approximation; no general material classification.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c10-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Store the lowest measured temperature, fit interval, residual background, field orientation, contact protocol, dose history and sample identity with each observation. Separate the measured response, inferred low-energy spectrum and proposed representation. Our numerical examples test fixed spectra, roots and a named Pfaffian identity, not the complete experiments. Full scientific acceptance, complete source-version comparisons, raw-data reconstruction and disorder/vortex self-consistency remain open.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8a117f38b78526ff",
+        "source-ad52940b1b5c5ecd",
+        "source-c4a5c25b97df43a2",
+        "source-6c82ca23c0fda096"
+      ],
+      "conditions": "Full scientific acceptance open; numerical algebra does not certify experiments.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-c10-correction-1",
+      "description": "Corrected inherited material attribution: Reid 2012 DOI109.087001 concerns KFe2As2; added the distinct Hashimoto2010 source for P-substituted BaFe2As2.",
+      "sourceId": "source-8a117f38b78526ff",
+      "scope": "Material identity, probe conditions and independent author interpretations."
+    },
+    {
+      "id": "scwiki-c10-correction-2",
+      "description": "Qualified power-law and node-protection shortcuts; separated impurity-induced gapless response from restored symmetry nodes.",
+      "sourceId": "source-c4a5c25b97df43a2",
+      "scope": "Selected irradiation results and conditional spectral examples."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "N(E)\\propto E^{m-1}",
+      "check": "Three independent phase-volume integrations, including quadratic point-dispersion counterexample."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "C\\propto T^{p+1}",
+      "check": "Three direct thermal integrals checked against finite differences of internal energy; two hard-gap examples."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta_s=s_0+s_4\\cos4\\theta",
+      "check": "Seven scalar root cases distinguish accidental merging from B1g-preserving perturbations."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\det H=P^2",
+      "check": "Five full 8x8 determinants vs specified Agterberg Eq.6 polynomial, including adjacent positive/negative Pfaffian points."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-c10-material-1",
+      "formula": "KFe2As2",
+      "sample": "Reid 2012 separate a-axis and c-axis heat-current crystals",
+      "recordType": "experiment",
+      "tcK": null,
+      "reportedTemperatureK": 0.05,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Lower thermal measurement bound, not Tc; 0.05 T contact-normalizing field and H→0 extrapolation are separate conditions.",
+      "criterion": "thermal-conductivity-lower-temperature",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Directional thermal conductivity; fit below 0.3 K and extrapolated residual term",
+      "sourceId": "source-8a117f38b78526ff"
+    },
+    {
+      "id": "scwiki-c10-material-2",
+      "formula": "BaFe2(As1-xPx)2",
+      "sample": "Mizukami 2014 irradiated sample 29A, initial batch Tc 29 K, 4.9 C/cm2 dose",
+      "recordType": "experiment",
+      "tcK": null,
+      "reportedTemperatureK": 0.08,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Lowest reported penetration-depth measurement in selected Fig.3e sample, not transition temperature.",
+      "criterion": "penetration-depth-lower-temperature",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "13 MHz tunnel-diode oscillator; electron irradiation 2.5 MeV; partial defect annealing on warming",
+      "sourceId": "source-c4a5c25b97df43a2"
+    }
+  ]
+}

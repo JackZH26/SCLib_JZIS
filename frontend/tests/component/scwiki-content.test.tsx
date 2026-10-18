@@ -765,3 +765,20 @@ it("exports conditional spin classification with its erratum and searchable orbi
  const out=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
  expect(out).toContain("particle-hole-symmetric test point");expect(out).toContain("Full scientific acceptance");
 });
+
+it("keeps node studies linked to their actual materials and measurement temperatures",async()=>{
+ const a=articles().find(a=>a.code==="C10")!;
+ const reid=a.references.find(r=>r.doi==="10.1103/PhysRevLett.109.087001")!;
+ const cases=a.materialCases.filter(m=>m.sourceId===reid.id);
+ expect(cases).toHaveLength(1);expect(cases[0].formula).toBe("KFe2As2");
+ expect(cases[0].reportedTemperatureK).toBe(.05);expect(cases[0].tcK).toBeNull();
+ expect(a.materialCases.every(m=>m.temperatureKind==="measurement"&&m.tcK===null)).toBe(true);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("not simply restored symmetry-enforced nodes");
+ expect(md).toContain("does not show that every multiband");
+ expect(md).toContain("zero-field term was obtained by extrapolation");
+ expect(searchArticles(searchIndex().entries,"Pfaffian",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"Pfaffian",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const out=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(out).toContain("KFe2As2, not P-substituted");expect(out).toContain("Full scientific acceptance");
+});

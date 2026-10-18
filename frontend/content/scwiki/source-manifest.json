@@ -371,8 +371,8 @@
       "lineCount": 97,
       "topicId": "scwiki-topic-c10",
       "articleId": "scwiki-c10",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3614,6 +3614,18 @@
       "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.93.099903",
       "checkedAt": "2026-10-18",
       "scope": "Omitted linear MnSi SOC term and Fig.2 alphaR rescaling; original alignment conclusion remains conditional on g and interaction."
+    },
+    {
+      "id": "correction-c10-reid-material",
+      "affectedTopics": [
+        "C10"
+      ],
+      "affectedSourcePaths": [
+        "C_pairing_symmetry/C10_node_structure.md"
+      ],
+      "evidenceUrl": "https://link.aps.org/accepted/10.1103/PhysRevLett.109.087001",
+      "checkedAt": "2026-10-18",
+      "scope": "Reid2012 DOI109.087001 identifies KFe2As2, not P-Ba122. Original DOI retained with correct material; separate Hashimoto2010 source added."
     }
   ]
 }
