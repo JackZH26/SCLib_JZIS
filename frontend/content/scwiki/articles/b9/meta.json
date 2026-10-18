@@ -27,9 +27,9 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T08:32:24.904612+00:00",
+  "modifiedAt": "2026-10-18T23:41:04.042237+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
+    "checkedAt": "2026-10-19",
     "scope": "Selected projected-state review and organic manuscripts, published strain-study passages, historical abstracts and independent finite-model checks.",
     "limitations": [
       "Full scientific acceptance, complete final-version comparison and raw-data reproduction remain open.",
@@ -236,7 +236,9 @@
         "source-2f6a1c773323226a"
       ],
       "conditions": "Independent finite spin, Hubbard-dimer and Gaussian response illustrations; cited review supplies context, not claimed reproduction. Organic measurements retain material and probe conditions.",
-      "verificationScope": "Selected primary passages and tools/check_rvb_models.py; complete scientific acceptance remains open."
+      "verificationScope": "Selected author-manuscript passages; local finite models and exact zero-stiffness boundary checks. No bulk phase or material transition established.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Lee–Nagaosa–Wen author manuscript v1, pp. 27–28, Eqs. (33), (34), (39), supports the constrained matrix-element representation and internal redundancy. The four-spin and Hubbard-dimer checks are separate local illustrations. The normalized quadratic response uses its own field convention; pp. 33, Eqs. (83)–(86), provide Gaussian response-composition context and an experimental limitation, not a universal law. Full final-version comparison remains pending."
     },
     {
       "id": "scwiki-b9-claim-mathematical-assumptions-2",
@@ -247,7 +249,9 @@
         "source-2f6a1c773323226a"
       ],
       "conditions": "Independent finite spin, Hubbard-dimer and Gaussian response illustrations; cited review supplies context, not claimed reproduction. Organic measurements retain material and probe conditions.",
-      "verificationScope": "Selected primary passages and tools/check_rvb_models.py; complete scientific acceptance remains open."
+      "verificationScope": "Selected author-manuscript passages; local finite models and exact zero-stiffness boundary checks. No bulk phase or material transition established.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Lee–Nagaosa–Wen author manuscript v1, pp. 27–28, Eqs. (33), (34), (39), supports the constrained matrix-element representation and internal redundancy. The four-spin and Hubbard-dimer checks are separate local illustrations. The normalized quadratic response uses its own field convention; pp. 33, Eqs. (83)–(86), provide Gaussian response-composition context and an experimental limitation, not a universal law. Full final-version comparison remains pending."
     },
     {
       "id": "scwiki-b9-claim-mathematical-assumptions-3",
@@ -258,7 +262,9 @@
         "source-2f6a1c773323226a"
       ],
       "conditions": "Independent finite spin, Hubbard-dimer and Gaussian response illustrations; cited review supplies context, not claimed reproduction. Organic measurements retain material and probe conditions.",
-      "verificationScope": "Selected primary passages and tools/check_rvb_models.py; complete scientific acceptance remains open."
+      "verificationScope": "Selected author-manuscript passages; local finite models and exact zero-stiffness boundary checks. No bulk phase or material transition established.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Lee–Nagaosa–Wen author manuscript v1, pp. 27–28, Eqs. (33), (34), (39), supports the constrained matrix-element representation and internal redundancy. The four-spin and Hubbard-dimer checks are separate local illustrations. The normalized quadratic response uses its own field convention; pp. 33, Eqs. (83)–(86), provide Gaussian response-composition context and an experimental limitation, not a universal law. Full final-version comparison remains pending."
     },
     {
       "id": "scwiki-b9-claim-mathematical-assumptions-4",
@@ -269,7 +275,9 @@
         "source-2f6a1c773323226a"
       ],
       "conditions": "Independent finite spin, Hubbard-dimer and Gaussian response illustrations; cited review supplies context, not claimed reproduction. Organic measurements retain material and probe conditions.",
-      "verificationScope": "Selected primary passages and tools/check_rvb_models.py; complete scientific acceptance remains open."
+      "verificationScope": "Selected author-manuscript passages; local finite models and exact zero-stiffness boundary checks. No bulk phase or material transition established.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Lee–Nagaosa–Wen author manuscript v1, pp. 27–28, Eqs. (33), (34), (39), supports the constrained matrix-element representation and internal redundancy. The four-spin and Hubbard-dimer checks are separate local illustrations. The normalized quadratic response uses its own field convention; pp. 33, Eqs. (83)–(86), provide Gaussian response-composition context and an experimental limitation, not a universal law. Full final-version comparison remains pending."
     },
     {
       "id": "scwiki-b9-claim-mathematical-assumptions-5",
@@ -280,18 +288,22 @@
         "source-2f6a1c773323226a"
       ],
       "conditions": "Independent finite spin, Hubbard-dimer and Gaussian response illustrations; cited review supplies context, not claimed reproduction. Organic measurements retain material and probe conditions.",
-      "verificationScope": "Selected primary passages and tools/check_rvb_models.py; complete scientific acceptance remains open."
+      "verificationScope": "Selected author-manuscript passages; local finite models and exact zero-stiffness boundary checks. No bulk phase or material transition established.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Lee–Nagaosa–Wen author manuscript v1, pp. 27–28, Eqs. (33), (34), (39), supports the constrained matrix-element representation and internal redundancy. The four-spin and Hubbard-dimer checks are separate local illustrations. The normalized quadratic response uses its own field convention; pp. 33, Eqs. (83)–(86), provide Gaussian response-composition context and an experimental limitation, not a universal law. Full final-version comparison remains pending."
     },
     {
       "id": "scwiki-b9-claim-mathematical-assumptions-6",
       "sectionId": "mathematical-assumptions",
-      "statement": "A projected-electron construction writes $c_{i\\sigma}=b_i^\\dagger f_{i\\sigma}$ with $b_i^\\dagger b_i+\\sum_\\sigma f_{i\\sigma}^\\dagger f_{i\\sigma}=1$. It represents the reduced local Hilbert space containing an empty site and two singly occupied spin states. Under the internal redundancy $f_i\\to e^{i\\theta_i}f_i$, $b_i\\to e^{i\\theta_i}b_i$, the electron remains invariant. A spinon pair alone changes phase; the accompanying charge factor cancels it. Three explicit phase checks confirm this cancellation. A gauge-fixed factorization into spin and charge averages is an approximation, not separate observation of either factor.",
+      "statement": "A projected-electron construction writes $c_{i\\sigma}=b_i^\\dagger f_{i\\sigma}$ with $b_i^\\dagger b_i+\\sum_\\sigma f_{i\\sigma}^\\dagger f_{i\\sigma}=1$. It represents the reduced local Hilbert space containing an empty site and two singly occupied spin states. The equality specifies physical matrix elements within that constrained space, not a canonical electron operator identity on the enlarged unconstrained space. Under the internal redundancy $f_i\\to e^{i\\theta_i}f_i$, $b_i\\to e^{i\\theta_i}b_i$, the electron remains invariant. A spinon pair alone changes phase; the accompanying charge factor cancels it. Three explicit phase checks confirm this cancellation. A gauge-fixed factorization into spin and charge averages is an approximation, not separate observation of either factor.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-2f6a1c773323226a"
       ],
       "conditions": "Independent finite spin, Hubbard-dimer and Gaussian response illustrations; cited review supplies context, not claimed reproduction. Organic measurements retain material and probe conditions.",
-      "verificationScope": "Selected primary passages and tools/check_rvb_models.py; complete scientific acceptance remains open."
+      "verificationScope": "Selected author-manuscript passages; local finite models and exact zero-stiffness boundary checks. No bulk phase or material transition established.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Lee–Nagaosa–Wen author manuscript v1, pp. 27–28, Eqs. (33), (34), (39), supports the constrained matrix-element representation and internal redundancy. The four-spin and Hubbard-dimer checks are separate local illustrations. The normalized quadratic response uses its own field convention; pp. 33, Eqs. (83)–(86), provide Gaussian response-composition context and an experimental limitation, not a universal law. Full final-version comparison remains pending."
     },
     {
       "id": "scwiki-b9-claim-mathematical-assumptions-7",
@@ -302,7 +314,9 @@
         "source-2f6a1c773323226a"
       ],
       "conditions": "Independent finite spin, Hubbard-dimer and Gaussian response illustrations; cited review supplies context, not claimed reproduction. Organic measurements retain material and probe conditions.",
-      "verificationScope": "Selected primary passages and tools/check_rvb_models.py; complete scientific acceptance remains open."
+      "verificationScope": "Selected author-manuscript passages; local finite models and exact zero-stiffness boundary checks. No bulk phase or material transition established.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Lee–Nagaosa–Wen author manuscript v1, pp. 27–28, Eqs. (33), (34), (39), supports the constrained matrix-element representation and internal redundancy. The four-spin and Hubbard-dimer checks are separate local illustrations. The normalized quadratic response uses its own field convention; pp. 33, Eqs. (83)–(86), provide Gaussian response-composition context and an experimental limitation, not a universal law. Full final-version comparison remains pending."
     },
     {
       "id": "scwiki-b9-claim-mathematical-assumptions-8",
@@ -312,19 +326,23 @@
       "sourceIds": [
         "source-2f6a1c773323226a"
       ],
-      "conditions": "Independent finite spin, Hubbard-dimer and Gaussian response illustrations; cited review supplies context, not claimed reproduction. Organic measurements retain material and probe conditions.",
-      "verificationScope": "Selected primary passages and tools/check_rvb_models.py; complete scientific acceptance remains open."
+      "conditions": "Nonnegative sector coefficients; the fractional expression requires their sum to be positive. When both vanish, minimize the identically zero free energy directly.",
+      "verificationScope": "Selected author-manuscript passages; local finite models and exact zero-stiffness boundary checks. No bulk phase or material transition established.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Lee–Nagaosa–Wen author manuscript v1, pp. 27–28, Eqs. (33), (34), (39), supports the constrained matrix-element representation and internal redundancy. The four-spin and Hubbard-dimer checks are separate local illustrations. The normalized quadratic response uses its own field convention; pp. 33, Eqs. (83)–(86), provide Gaussian response-composition context and an experimental limitation, not a universal law. Full final-version comparison remains pending."
     },
     {
       "id": "scwiki-b9-claim-mathematical-assumptions-9",
       "sectionId": "mathematical-assumptions",
-      "statement": "Here $A$ is a normalized external field, $a$ an internal field, and nonnegative coefficients describe two sectors within this quadratic model. Four direct minimizations agree with the expression. A finite $\\rho_f$ does not provide charged stiffness when $\\rho_b=0$. This is a restricted response illustration: non-Gaussian and compact gauge fluctuations are absent, and it is not a universal experimental law.",
+      "statement": "Here $A$ is a normalized external field, $a$ an internal field, and nonnegative coefficients describe two sectors within this quadratic model. The fraction requires $\\rho_b+\\rho_f>0$. If both coefficients vanish, $F=0$ for every field: the physical stiffness is zero and minimization does not select an internal field; the undefined fraction is not evaluated. Direct minimizations and exact quadratic checks cover these boundaries. A finite $\\rho_f$ does not provide charged stiffness when $\\rho_b=0$. This is a restricted response illustration: non-Gaussian and compact gauge fluctuations are absent, and it is not a universal experimental law.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-2f6a1c773323226a"
       ],
-      "conditions": "Independent finite spin, Hubbard-dimer and Gaussian response illustrations; cited review supplies context, not claimed reproduction. Organic measurements retain material and probe conditions.",
-      "verificationScope": "Selected primary passages and tools/check_rvb_models.py; complete scientific acceptance remains open."
+      "conditions": "Nonnegative sector coefficients; the fractional expression requires their sum to be positive. When both vanish, minimize the identically zero free energy directly.",
+      "verificationScope": "Selected author-manuscript passages; local finite models and exact zero-stiffness boundary checks. No bulk phase or material transition established.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Lee–Nagaosa–Wen author manuscript v1, pp. 27–28, Eqs. (33), (34), (39), supports the constrained matrix-element representation and internal redundancy. The four-spin and Hubbard-dimer checks are separate local illustrations. The normalized quadratic response uses its own field convention; pp. 33, Eqs. (83)–(86), provide Gaussian response-composition context and an experimental limitation, not a universal law. Full final-version comparison remains pending."
     },
     {
       "id": "scwiki-b9-claim-experimental-criteria-1",
@@ -433,7 +451,7 @@
     {
       "targetSectionId": "mathematical-assumptions",
       "tex": "\\rho_{\\mathrm{eff}}=\\rho_b\\rho_f/(\\rho_b+\\rho_f)",
-      "check": "Four direct Gaussian minimizations; three local phase cancellations checked separately."
+      "check": "Exact quadratic energy-difference checks include one-zero and both-zero sector boundaries; the zero-over-zero expression is never evaluated."
     }
   ],
   "materialCases": []
