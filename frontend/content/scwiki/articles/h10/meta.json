@@ -1,0 +1,455 @@
+{
+  "id": "scwiki-h10",
+  "topicId": "scwiki-topic-h10",
+  "code": "H10",
+  "slug": "quantum-spin-liquids",
+  "title": "Quantum spin liquids and superconductivity: models and evidence",
+  "summary": "Compare solvable spin models with organic, kagome and Kitaev-material experiments, while separating candidate signatures, neutral excitations and charged superconducting order.",
+  "aliases": [
+    "quantum spin liquid",
+    "QSL",
+    "Kitaev spin liquid",
+    "herbertsmithite",
+    "自旋液体",
+    "量子自旋液体"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "B9",
+    "B14",
+    "D10",
+    "G7"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T17:32:52.513035+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Kitaev final selected phase/edge passages, Kitaev-Preskill author entropy equations, Shimizu NMR methods/figures, Han neutron methods/figures, Xing selected transport results/methods and Shragai selected ultrasound comparisons; inherited B9 scopes.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Complete primary final-version/supplement/raw-data, disorder and thermal-calibration audits remain open.",
+      "Kurosaki,Anderson,Vaknin and Han2016 retain abstract-level limits.",
+      "Independent models do not establish a material ground state, full topological classification or superconductivity."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "H_anomalous_normal_state/H10_spin_liquid.md",
+    "sha256": "27bd58e1a03a8a66f696e36ddafe920be685805b75e96b260aa585e231c725c8",
+    "sourceId": "file-cd678b6bdf568e37"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 647,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Preserve model/material/superconductivity routes; correct phase labels, paramagnet and symmetry/entropy overstatements; remove unsupported universal detection bounds; update thermal Hall evidence through selected2025/2026 studies."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-h10-correction-1",
+      "description": "Kitaev isotropic gapless region is B; dominant-coupling gapped regions are A. Pauli versus spin couplings differ by four. A generic finite-field Hamiltonian is not claimed exactly solvable.",
+      "sourceId": "source-779d3cdcbcd5a620",
+      "scope": "Correct reversed pinned phase labels and restrict perturbative magnetic-field statement."
+    },
+    {
+      "id": "scwiki-h10-correction-2",
+      "description": "Absence of order or a continuum alone is insufficient; gapped2D entropy formula is not universal to gapless phases; thermal transport is not superconductivity.",
+      "sourceId": "source-4619c72961e466c5",
+      "scope": "Remove universal symmetry/entropy/experimental-proof claims; preserve finite-field and candidate limits."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\kappa_{xy}^{2D}/T=c_-\\pi^2k_B^2/(3h)",
+      "check": "12 zero local moments and dimer correlations;4 explicit gapless B roots,3 gapped A examples and boundary closure;3 Pauli/spin normalizations;positive-energy Majorana integral;2 equal-entropy distinct anyon examples. No bulk proof or experimental fit."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-779d3cdcbcd5a620",
+      "doi": "10.1016/j.aop.2005.10.005",
+      "title": "Anyons in an exactly solved model and beyond",
+      "year": 2006,
+      "url": "https://doi.org/10.1016/j.aop.2005.10.005",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-phase-and-edge-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.physics.rutgers.edu/~coleman/603/texts/kitaev_annals.pdf",
+        "note": "Final PDFpp18–19(printed19–20) dispersion/phase labels,PDFp25(printed26) third-order field approximation andPDFpp27–28(printed28–29) Chern/edge passages read. PDFpp19/28 visually checked. B is gapless at isotropy; A regions gapped. Complete110-page argument not read. General field not claimed exactly solvable."
+      }
+    },
+    {
+      "id": "source-4619c72961e466c5",
+      "doi": "10.1103/PhysRevLett.96.110404",
+      "title": "Topological Entanglement Entropy",
+      "year": 2006,
+      "url": "https://doi.org/10.1103/PhysRevLett.96.110404",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-entropy-equations",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/hep-th/0510092v1",
+        "note": "Authorv1,11October2005,pp1–2 read: gapped2D medium,large smooth region versus correlation length, gamma=log total quantum dimension, boundary-subtraction construction. Final comparison/full TQFT derivation not completed."
+      }
+    },
+    {
+      "id": "source-5a6026d6455bf7a0",
+      "doi": "10.1126/science.235.4793.1196",
+      "title": "The Resonating Valence Bond State in La2CuO4 and Superconductivity",
+      "year": 1987,
+      "url": "https://doi.org/10.1126/science.235.4793.1196",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "indexed-primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/17818979/",
+        "note": "Original abstract at PubMed: historical proposal, not a confirmed parent-state diagnosis. Publisher endpoint unavailable; full text not checked."
+      }
+    },
+    {
+      "id": "source-9d15cd9236072f5c",
+      "doi": "10.1103/PhysRevLett.91.107001",
+      "title": "Spin Liquid State in an Organic Mott Insulator with a Triangular Lattice",
+      "year": 2003,
+      "url": "https://doi.org/10.1103/PhysRevLett.91.107001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-NMR-methods-and-spectra",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0307483v1",
+        "note": "Authorv1,19July2003; selected pp1–3 read;p2Figures2/3 andmethods visually checked. Single crystal76microgram,32mK–36K,2.2T perpendicular planes;polycrystal NMR3.9T; susceptibility0.32T. Exchange250K fromseries-fit susceptibility,notTc. No exactT=0/zero-field proof or final/raw audit."
+      }
+    },
+    {
+      "id": "source-0443485ac20d3a8c",
+      "doi": "10.1103/PhysRevLett.95.177001",
+      "title": "Mott Transition from a Spin Liquid to a Fermi Liquid in the Spin-Frustrated Organic Conductor kappa-(ET)2Cu2(CN)3",
+      "year": 2005,
+      "url": "https://doi.org/10.1103/PhysRevLett.95.177001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.95.177001",
+        "note": "Pressure NMR/resistivity phase diagram and neighboring superconductivity; no causal RVB mechanism established. Full data not reviewed."
+      }
+    },
+    {
+      "id": "source-5e0dcd80e8b64a1b",
+      "doi": "10.1038/s41467-023-37491-z",
+      "title": "Chasing the spin gap through the phase diagram of a frustrated Mott insulator",
+      "year": 2023,
+      "url": "https://doi.org/10.1038/s41467-023-37491-z",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "published-primary-passages-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-023-37491-z.pdf",
+        "note": "Published pp.1–5 selected results,discussion,methods and data analysis; Fig4/discussion visually checked. Substrate strain and inferred hydrostatic-equivalent pressure, VBS interpretation with gapped chiral QSL not excluded, mounting microcracks retained. Raw-data audit pending."
+      }
+    },
+    {
+      "id": "source-43fba6076983bec0",
+      "doi": "10.1038/nature11659",
+      "title": "Fractionalized excitations in the spin-liquid state of a kagome-lattice antiferromagnet",
+      "year": 2012,
+      "url": "https://doi.org/10.1038/nature11659",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-neutron-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1307.5047v1",
+        "note": "Author upload18July2013 after2012journal. Selected pp2–6 read; p11Figures3/4 visually checked. Deuterated ZnCu3(OD)6Cl2 single crystal,MACS,1.6K; final energies5.1/3.0meV,resolution HWHM0.21/0.08meV. Low-energy interlayer impurities can mask intrinsic gap; no full background/raw-data audit."
+      }
+    },
+    {
+      "id": "source-7a6863ba09a1c037",
+      "doi": "10.1103/PhysRevB.94.060409",
+      "title": "Correlated impurities and intrinsic spin-liquid physics in the kagome material herbertsmithite",
+      "year": 2016,
+      "url": "https://doi.org/10.1103/PhysRevB.94.060409",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.94.060409",
+        "note": "Original abstract checked: low-energy interlayer impurity correlations in deuterated herbertsmithite. Full neutron decomposition not reviewed; no new exact intrinsic gap extracted."
+      }
+    },
+    {
+      "id": "source-f089ec733f27462c",
+      "doi": "10.1038/s41535-025-00749-4",
+      "title": "Magnetothermal transport in ultraclean single crystals of Kitaev magnet alpha-RuCl3",
+      "year": 2025,
+      "url": "https://doi.org/10.1038/s41535-025-00749-4",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-transport-results-and-methods",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/html/2410.18342v2",
+        "note": "Authorv2,29March2025; publisher28March2025. Selected HTML results,Figure4caption andmethods read: q||b,fieldalong a,5.0Ksample versus4.3Kcomparison,plateau narrower,steady-state transport,two-stepCVT/sublimation. Same-sample orthogonal transport still desired. No Figure4visual/raw-data audit; rendering date notpublication."
+      }
+    },
+    {
+      "id": "source-4a3e383e4c71604e",
+      "doi": "10.1038/s41586-026-10420-y",
+      "title": "Phonon Hall viscosity and the intrinsic thermal Hall effect of alpha-RuCl3",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10420-y",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-ultrasound-and-comparison-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/2510.06443v2",
+        "note": "Authorv2,9May2026; Nature652,1166–1172. Selected pp5–7,9–13 read;p12visually checked.2K ultrasound B||c and55degree tilt; frequency-dependent viscosity; single-branch estimate withinfactor6, otherbranches/tensor terms inferred. Figure5b compares2K55degree ultrasound with4.9K45degree literature Hall. Full final/supplement/calibration comparison remains open."
+      }
+    },
+    {
+      "id": "source-9dda11fbf0c41f73",
+      "doi": "10.1103/PhysRevLett.58.2802",
+      "title": "Antiferromagnetism in La2CuO4-y",
+      "year": 1987,
+      "url": "https://doi.org/10.1103/PhysRevLett.58.2802",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.58.2802",
+        "note": "Powder neutron magnetic superlattice evidence for antiferromagnetism in undoped parent. Abstract only; full refinement not checked."
+      }
+    },
+    {
+      "id": "source-2f6a1c773323226a",
+      "doi": "10.1103/RevModPhys.78.17",
+      "title": "Doping a Mott insulator: Physics of high-temperature superconductivity",
+      "year": 2006,
+      "url": "https://doi.org/10.1103/RevModPhys.78.17",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "earlier-author-manuscript-selected-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0410445v1",
+        "note": "Selected manuscript pp.27–28 projected Hilbert space and constraint, p.33 Gaussian response and experimental mismatch, p.45 representation versus emergent gauge group. Page33 equations visually inspected. Full final-version comparison pending."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-h10-material-1",
+      "recordType": "experiment",
+      "formula": "RuCl3",
+      "sample": "Xing two-step-grown alpha-RuCl3 crystal; heat current b,field a",
+      "tcK": null,
+      "reportedTemperatureK": 5,
+      "temperatureKind": "measurement",
+      "temperatureNote": "5K thermal Hall measurement temperature, not superconducting Tc or magnetic TN.",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "criterion": "thermal-hall-measurement",
+      "probe": "Steady-state thermal transport",
+      "sourceId": "source-f089ec733f27462c",
+      "aliases": [
+        "alpha-RuCl3",
+        "RuCl3",
+        "ruthenium trichloride"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-h10-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A quantum spin liquid is a quantum magnetic state with correlations and excitations beyond a conventional ordered magnet. Absence of static magnetic order alone is not a definition that identifies it experimentally: a trivial singlet state, disorder or a finite measurement window can also suppress the expected signal. Candidate materials require positive evidence and tests of alternatives. Chiral spin liquids can break time-reversal symmetry, so preserving every conventional symmetry is not a universal requirement.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-779d3cdcbcd5a620",
+        "source-4619c72961e466c5",
+        "source-5e0dcd80e8b64a1b"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h10-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The connection to superconductivity is a research route, not an automatic consequence. Anderson's RVB proposal motivates doping a correlated singlet state, but undoped La2CuO4 has antiferromagnetic order. A spin-only Hamiltonian has no mobile electrical charge or superconducting stiffness. Emergent neutral Majorana fermions in such a model do not make its material a topological superconductor. A specific charge sector and gauge-invariant superconducting response must be established separately.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-779d3cdcbcd5a620",
+        "source-5a6026d6455bf7a0",
+        "source-9dda11fbf0c41f73",
+        "source-2f6a1c773323226a"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h10-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An explicit counterexample clarifies the diagnostic problem. A product of disconnected spin singlets has $\\langle\\mathbf S_i\\rangle=0$ and vanishing correlations between different dimers, yet is not thereby a long-range-entangled spin liquid. For two spin-one-half singlets, direct matrix evaluation gives $\\langle\\mathbf S_1\\cdot\\mathbf S_2\\rangle=-3/4$ and $\\langle\\mathbf S_1\\cdot\\mathbf S_3\\rangle=0$. These finite-state checks disprove the inference from zero local moments alone; they do not classify an interacting bulk material.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-4619c72961e466c5",
+        "source-5e0dcd80e8b64a1b"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h10-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Use the honeycomb convention $H=-\\sum_{\\langle ij\\rangle_\\alpha}J_\\alpha\\sigma_i^\\alpha\\sigma_j^\\alpha$, with Pauli matrices $\\sigma=2S$. A Hamiltonian written with spin operators requires couplings $K_\\alpha=4J_\\alpha$ for the same energy. The vortex-free zero-field matter spectrum has zeros when the three $|J_\\alpha|$ satisfy triangle inequalities. Kitaev calls this the gapless B region, including isotropy; the dominant-coupling A regions are gapped. The source draft had these labels reversed.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-779d3cdcbcd5a620"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h10-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Near isotropy, a weak field with all three spin-axis components nonzero generates a time-reversal-breaking term scaling as $h_xh_yh_z/J^2$ at third order. This perturbative result is not exact solvability at arbitrary field. For an ideal equilibrated chiral Majorana edge above a gapped bulk, $\\kappa_{xy}^{2D}/T=c_-\\pi^2k_B^2/(3h)$ with $c_-=\\pm1/2$. This is thermal conductance per layer, not three-dimensional conductivity or electrical Hall conductance. Independent checks verify the phase-boundary algebra, spin normalization and positive-energy thermal integral.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-779d3cdcbcd5a620"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h10-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a gapped two-dimensional topologically ordered ground state and a sufficiently large smooth region, $S=\\alpha L-\\gamma+\\cdots$ with $\\gamma=\\ln\\mathcal D$ and $\\mathcal D=\\sqrt{\\sum_a d_a^2}$. The Abelian Z2 example gives $\\gamma=\\ln2$. This expression is not a universal entropy formula for every gapless spin liquid, and a single entropy constant does not fully specify anyon statistics. Finite geometry, boundaries and correlation length matter before identifying a universal term.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-4619c72961e466c5"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h10-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Shimizu's organic candidate kappa-(BEDT-TTF)2Cu2(CN)3 shows no proton-NMR signature of long-range magnetic order down to 32 mK. The single-crystal experiment applied 2.2 T perpendicular to the conducting planes; the susceptibility-derived exchange scale around 250 K came from a separate fit. Neither number is a superconducting transition temperature, and the experiment does not directly observe the zero-field, zero-temperature ground state. Kurosaki's pressure phase diagram separately connects the correlated insulator with metallic and superconducting regions; it does not identify a unique pairing mechanism.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9d15cd9236072f5c",
+        "source-0443485ac20d3a8c"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h10-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Pustogow's 2023 strain-transport study instead favors a low-entropy, spin-gapped valence-bond-solid interpretation of the organic material's 6 K anomaly. Its hydrostatic-equivalent pressure is inferred from comparison with transport data, rather than directly applied hydrostatic pressure. The paper retains a gapped chiral-spin-liquid alternative and discusses mounting-related microcracks. Thus a revised interpretation must preserve both the measured anomaly and the remaining discrimination problem.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-5e0dcd80e8b64a1b"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h10-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Han's neutron study used deuterated herbertsmithite, ZnCu3(OD)6Cl2, at 1.6 K. Broad momentum-energy scattering supports the authors' fractionalization interpretation, but the measured low-energy signal can include interlayer Cu defects. The apparent absence of a gap down to the measured energy limit does not establish a universally gapless intrinsic kagome state. A later primary study explicitly analyzes correlated impurity contributions. Preserve isotope, background subtraction, resolution and momentum window before comparing these results with a theoretical continuum.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-43fba6076983bec0",
+        "source-7a6863ba09a1c037"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h10-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "In alpha-RuCl3, zero-field magnetic order and candidate field-induced behavior must be separated. Xing's 2025 ultraclean-crystal study reports a narrower near-half-quantized thermal Hall plateau and weakened oscillation-like features. It discusses sample-dependent magnetic boundaries, possible stacking faults and phonon-edge coupling. The 5.0 K Hall measurement used heat current along b and field along a; the comparison crystal was measured at 4.3 K. These are not identical conditions or a universal material threshold.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-f089ec733f27462c"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h10-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "Shragai's 2026 ultrasound study measures acoustic Faraday rotation and infers a phonon Hall-viscosity contribution. Its conversion to thermal transport requires assumptions about frequency, phonon branches and viscosity components; the directly measured single-component estimate does not independently measure every thermal carrier. One displayed comparison also combines 2 K, 55-degree-tilted ultrasound with 4.9 K, 45-degree-tilted thermal data. This supplies substantive phonon evidence without making every field geometry or claimed quantized plateau equivalent.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-4a3e383e4c71604e"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h10-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A continuum, a low-temperature heat-capacity term, absent NMR splitting and a thermal Hall signal test different observables. Their interpretation depends on defects, phonons, magnetic order, probe time scales and sample history. Do not turn one positive signal into a sufficient spin-liquid criterion, or one disputed material interpretation into a claim about every possible quantum spin liquid. Broad statements that all materials are settled or that none can ever be established would exceed this review.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-9d15cd9236072f5c",
+        "source-5e0dcd80e8b64a1b",
+        "source-43fba6076983bec0",
+        "source-f089ec733f27462c",
+        "source-4a3e383e4c71604e"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h10-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. The present check covers selected primary passages, figures and restricted independent models. Several references retain abstract-only or earlier manuscript scopes; complete final-version comparisons, defect subtraction, thermal calibration and raw-data reproduction remain unfinished. The exact-model results and experimental interpretations are therefore presented at different evidence levels.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-779d3cdcbcd5a620",
+        "source-4619c72961e466c5",
+        "source-9d15cd9236072f5c",
+        "source-0443485ac20d3a8c",
+        "source-43fba6076983bec0",
+        "source-7a6863ba09a1c037",
+        "source-f089ec733f27462c",
+        "source-4a3e383e4c71604e"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h10-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Track the insulating magnetic state, tuning parameter and superconducting response independently. For a pressure or doping trajectory, distinguish structural changes and disorder from changed bandwidth or filling. Compare several probes on characterized samples and ask what would exclude a trivial singlet, ordered or disordered alternative. A successful spin-liquid model provides testable mechanisms and excitations; establishing superconductivity additionally requires mobile charge, phase coherence and the corresponding experimental criteria.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-0443485ac20d3a8c",
+        "source-5e0dcd80e8b64a1b",
+        "source-9dda11fbf0c41f73",
+        "source-2f6a1c773323226a"
+      ],
+      "conditions": "Distinguish exact spin model, restricted illustrations and material interpretations. Preserve field, temperature, isotope, normalizations, defects and charge-sector criteria.",
+      "verificationScope": "Selected primary text/figures and independent model checks; full scientific acceptance remains open."
+    }
+  ]
+}
