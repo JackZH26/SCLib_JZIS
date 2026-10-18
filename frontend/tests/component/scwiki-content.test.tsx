@@ -291,6 +291,17 @@ describe("SCWiki source and scientific-content contracts",()=>{
    if(a.body.includes("$$"))expect(html).toContain('class="katex"');
   }
  });
+ it("preserves iron-based source-version criteria and excludes nondetection and gap scales",async()=>{
+  const a=articles().find(a=>a.code==="D4")!;
+  for(const [q,filters,expected] of [["Ba0.6K0.4Fe2As2","&tcMin=38&criterion=resistive-midpoint",true],["Ba0.6K0.4Fe2As2","&tcMin=38&criterion=reported-zero-resistance",false],["Fe1.03Se","&tcMin=1",false],["FeSe STO","&tcMin=1",false],["FeSe0.88","&tcMin=7&criterion=zero-resistance&pressure=ambient",true],["FeSe0.88","&tcMin=7&pressure=high",false]] as const){
+   const data=await(await get(["search"],"?q="+encodeURIComponent(q)+filters)).json();expect(data.results.some((r:{code:string})=>r.code==="D4")).toBe(expected);
+  }
+  const exported=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+  expect(exported).toContain("10% threshold");expect(exported).toContain("Complete scientific acceptance remains open");
+  const source=a.references.find(r=>r.doi==="10.1103/PhysRevLett.101.107006")!;
+  expect(source.verification.evidenceUrl).toContain("0805.4630v2");
+  expect(searchArticles(searchIndex().entries,"铁基超导体").some(r=>r.code==="D4")).toBe(true);
+ });
  it("keeps cuprate discovery criteria and recovered sample temperature filters distinct",async()=>{
   const a=articles().find(a=>a.code==="D3")!;
   expect(a.materialCases.find(r=>r.id==="scwiki-d3-material-2")?.pressureGPa).toBeNull();
