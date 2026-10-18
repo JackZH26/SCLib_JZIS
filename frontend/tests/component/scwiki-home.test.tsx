@@ -17,7 +17,7 @@ describe("SCWiki home discovery and research provenance",()=>{
   expect(html.indexOf('id="scwiki-research-heading"')).toBeLessThan(html.indexOf('id="scwiki-topics-heading"'));
   expect(html).not.toContain('class="scwiki-article-grid"');
   for(const a of articles())expect(html).toContain('href="/scwiki/'+a.slug+'"');
-  expect(new Set(topicGroups.flatMap(g=>g.topics.map(t=>t.code))).size).toBe(12);
+  expect(new Set(topicGroups.flatMap(g=>g.topics.map(t=>t.code))).size).toBe(articles().length);
   expect(html).toContain("Coverage and scientific review are still expanding");
  });
  it("keeps research dated, sourced and distinct from complete scientific verification",()=>{

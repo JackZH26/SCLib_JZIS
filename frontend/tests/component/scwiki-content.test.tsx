@@ -52,15 +52,38 @@ describe("SCWiki source and scientific-content contracts",()=>{
    }
   }
  });
+ it("publishes BCS as a conditional theory entry without inventing experimental Tc records",async()=>{
+  const a=articles().find(a=>a.code==="B1")!;
+  expect(a.evidenceTypes).toEqual(["theory","hypothesis"]);
+  expect(a.materialCases).toEqual([]);
+  expect(a.body).toContain("**one spin**");
+  expect(a.body).toContain("angular frequency");
+  expect(a.body).toContain("3.528");
+  expect(a.body).toContain("not a measured transition temperature");
+  expect(a.references).toHaveLength(2);
+  expect(a.references.every(r=>r.verification.scope==="primary-full-text-scoped-check")).toBe(true);
+  expect(searchArticles(searchIndex().entries,"Cooper pair").some(x=>x.id===a.id)).toBe(true);
+  expect(searchArticles(searchIndex().entries,"BCS",{tcMin:1}).some(x=>x.id===a.id)).toBe(false);
+  const payload=await (await get(["articles",a.id])).json();
+  expect(payload.article.provenance.path).toBe("B_mechanisms/B1_BCS_weak_coupling.md");
+ });
+ it("does not apply a new article's primary check to other claims citing the same paper",async()=>{
+  const payload=await (await get(["sources"])).json();
+  const bcs=payload.sources.find((r:{doi:string})=>r.doi==="10.1103/PhysRev.108.1175");
+  expect(bcs.verification.scope).toBe("article-scoped-checks");
+  expect(bcs.usedBy).toEqual(expect.arrayContaining(["scwiki-a1","scwiki-b1"]));
+  expect(bcs.articleChecks.find((c:{articleId:string})=>c.articleId==="scwiki-a1").verification.scope).toBe("crossref-metadata-only");
+  expect(bcs.articleChecks.find((c:{articleId:string})=>c.articleId==="scwiki-b1").verification.scope).toBe("primary-full-text-scoped-check");
+ });
  it("disposes all 282 pinned files and keeps unpublished topics out of the catalogue",()=>{
   const m=JSON.parse(readFileSync("content/scwiki/source-manifest.json","utf8"));
   expect(m.commit).toBe("0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf");
   expect(m.files).toHaveLength(282);
   expect(new Set(m.files.map((x:{id:string})=>x.id)).size).toBe(282);
   expect(m.files.filter((x:{topicId:string|null})=>x.topicId)).toHaveLength(88);
-  expect(m.files.filter((x:{publicBody:boolean})=>x.publicBody)).toHaveLength(12);
+  expect(m.files.filter((x:{publicBody:boolean})=>x.publicBody).map((x:{articleId:string})=>x.articleId).sort()).toEqual(articles().map(a=>a.id).sort());
   expect(m.files.find((x:{path:string})=>x.path.includes("Al-O")).disposition).toContain("prediction-only");
-  expect(articles().map(a=>a.code).sort()).toEqual(["A1","A2","B12","C2","D11","D3","D4","D5","E4","F7","G7","H2"]);
+  expect(articles().map(a=>a.code)).toEqual(expect.arrayContaining(["A1","A2","B12","C2","D11","D3","D4","D5","E4","F7","G7","H2"]));
   expect(articles().every(a=>a.wordCount>=450)).toBe(true);
  });
  it("uses stable IDs, content hashes, complete source mappings and separate review labels",()=>{

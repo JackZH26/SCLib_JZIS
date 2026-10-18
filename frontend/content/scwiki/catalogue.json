@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "7385a7a9b5525815b665",
+  "revision": "09ddcecde49472da6457",
   "articles": [
     {
       "id": "scwiki-a1",
@@ -664,6 +664,283 @@
       ],
       "markdown": "# The Meissner effect and magnetic evidence\n\nDistinguish equilibrium flux expulsion from shielding, then interpret penetration depth and magnetic volume estimates with their geometric assumptions.\n\n## Scope\n\nThe Meissner effect concerns the magnetic state selected on entering superconductivity. Meissner and Ochsenfeld's historical observation of flux expulsion is conceptually different from merely freezing the field already inside an ideal perfect conductor. Electrical transport and magnetic response therefore answer complementary questions. A sample may screen a changing field while retaining trapped vortices, so the cooling protocol must accompany a magnetization curve. [R1](#ref-source-512705f3e64d88d7) [R2](#ref-source-0590b237a1d87de4)\n\nSeparate zero-field-cooled shielding, field-cooled magnetization and magnetic hysteresis. Strong pinning can make the field-cooled signal small even in a superconducting specimen. Conversely, a large shielding response cannot be read as an exact superconducting volume fraction without considering shape, connectivity and background subtraction. The magnetic inference belongs to the actual sample and protocol, not to a chemical formula in isolation. [R2](#ref-source-0590b237a1d87de4)\n\n## Mathematical assumptions\n\nThe local, homogeneous London description gives\n\n$\n\\nabla^2\\mathbf B=\\frac{\\mathbf B}{\\lambda_L^2}.\n$\n\nThe penetration depth $\\lambda_L$ describes the decay of magnetic field in the stated limit. In a simple single-component convention, $\\lambda_L^{-2}$ is proportional to superfluid weight. Multiband, anisotropic or non-local electrodynamics requires a more careful response model; the same fitted depth need not represent the same microscopic density across those settings. [R2](#ref-source-0590b237a1d87de4)\n\nFor an approximately ellipsoidal specimen, the measured susceptibility is altered by a demagnetizing field. The correction depends on the field direction and shape. Quoting a shielding percentage without the underlying convention can produce values that look like a volume fraction but do not have that interpretation. The pilot therefore records the measurement criterion separately from any transition temperature. [R2](#ref-source-0590b237a1d87de4)\n\n## Experimental criteria\n\nReport specimen dimensions, orientation, applied field, cooling protocol, field history and background treatment. State whether the result is a shielding estimate, field-cooled expulsion, local magnetic response, penetration depth or sheet stiffness. Bulk claims benefit from consistency with transport and thermodynamic measurements rather than one isolated diamagnetic trace.\n\nLow-temperature penetration-depth behavior constrains low-energy quasiparticles. Hardy and colleagues' YBCO microwave work is an important cuprate example, but extracting a gap structure still depends on impurity scattering, surface effects and the electrodynamic limit. A power law by itself does not uniquely identify an irreducible pairing representation. [R3](#ref-source-b7bc48c845a47b53)\n\n## Limits and disputes\n\nGeometry, granularity and pinning can separate shielding from equilibrium flux expulsion. A small magnetic signal may reflect a small superconducting region, a difficult geometry or background uncertainty; these possibilities must be evaluated rather than silently choosing one. Likewise, magnetic screening alone does not identify a pairing mediator. [R2](#ref-source-0590b237a1d87de4)\n\nSuperfluid-density studies of overdoped La2-xSrxCuO4 constrain how the condensate evolves across a controlled sample series. Such correlations are useful but do not automatically determine a microscopic interaction. When comparing stiffness across two- and three-dimensional systems, retain thickness and the electromagnetic normalization. A geometric contribution cannot be obtained merely by relabeling a measured total stiffness. [R4](#ref-source-b96ffab89d45664d)\n\n## Discovery implications\n\nA persuasive magnetic evidence package documents what field is excluded, which part is trapped and how the susceptibility was corrected. Pair transport and magnetic probes on comparable samples. For thin films, explicitly report whether the inferred quantity is a sheet response or a bulk penetration depth. These distinctions support reproducibility without turning an inversion model into an unqualified material property. [R2](#ref-source-0590b237a1d87de4) [R4](#ref-source-b96ffab89d45664d)\n\n## Related topics\n\nCompare [zero resistance](/scwiki/zero-resistance), [geometric superfluid weight](/scwiki/geometric-superfluid-weight), and [cuprate materials](/scwiki/cuprates).\n\n## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Pressure | State | Evidence |\n|---|---|---|---|---|---|\n| YBa2Cu3O7-delta; cuprate crystal in penetration-depth experiments | not a temperature-record entry | unassigned; penetration-depth | ambient; unknown GPa | equilibrium | experiment; [source](#ref-source-b7bc48c845a47b53) |\n\n## Sources\n\n### Ref source-512705f3e64d88d7\n\n[R1] Ein neuer Effekt bei Eintritt der Supraleitf�higkeit (1933). [DOI 10.1007/BF01504252](https://doi.org/10.1007/BF01504252). Publication: journal-article. Check: crossref-metadata-only. Checked: 2026-10-17. Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope.\n### Ref source-0590b237a1d87de4\n\n[R2] The electromagnetic equations of the supraconductor (1935). [DOI 10.1098/rspa.1935.0048](https://doi.org/10.1098/rspa.1935.0048). Publication: journal-article. Check: crossref-metadata-only. Checked: 2026-10-17. Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope.\n### Ref source-b7bc48c845a47b53\n\n[R3] Precision measurements of the temperature dependence of λ in\n                    \n                      \n                        \n                          \n                            YBa\n                          \n                          \n                            2\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            Cu\n                          \n                          \n                            3\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            O\n                          \n                          \n                            6.95\n                          \n                        \n                      \n                    \n                    : Strong evidence for nodes in the gap function (1993). [DOI 10.1103/PhysRevLett.70.3999](https://doi.org/10.1103/PhysRevLett.70.3999). Publication: journal-article. Check: crossref-metadata-only. Checked: 2026-10-17. Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope.\n### Ref source-b96ffab89d45664d\n\n[R4] Dependence of the critical temperature in overdoped copper oxides on superfluid density (2016). [DOI 10.1038/nature19061](https://doi.org/10.1038/nature19061). Publication: journal-article. Check: crossref-metadata-only. Checked: 2026-10-17. Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope.\n\n## Revision and review\n\nArticle ID: scwiki-a2. Revision: a0c09d808b8998fc9544. Updated: 2026-10-17T12:13:01Z.\n\nReview scope: Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.\n\n- No full scientific validation, raw-data reanalysis or independent replication review has been completed.\n- A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.\n- New quantitative 2026 reports not checked in primary text are not promoted into the pilot temperature comparison.\n- Historical audit scores and file presence are not evidence that a proposition is correct.\n\nSource: [A_phenomenology/A2_meissner_effect.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/A_phenomenology/A2_meissner_effect.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 6f9cc20701142991b8034214d36e80f59cf2a70b125e0e4f85c505b85e6c45f6.\n",
       "wordCount": 531
+    },
+    {
+      "id": "scwiki-b1",
+      "topicId": "scwiki-topic-b1",
+      "code": "B1",
+      "slug": "bcs-weak-coupling",
+      "title": "BCS theory: the weak-coupling baseline",
+      "summary": "Cooper pairing, the gap equation and the 3.528 gap ratio, with the assumptions that make these useful model benchmarks rather than universal material rules.",
+      "aliases": [
+        "BCS",
+        "Bardeen Cooper Schrieffer",
+        "Cooper pair",
+        "weak coupling",
+        "gap ratio",
+        "N(0)V"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "hypothesis"
+      ],
+      "relatedCodes": [
+        "A1",
+        "A2",
+        "B12",
+        "D11"
+      ],
+      "editorialStatus": "scoped-check",
+      "contentState": "pilot",
+      "modifiedAt": "2026-10-18T06:02:10Z",
+      "review": {
+        "checkedAt": "2026-10-18",
+        "scope": "Edited adaptation of the pinned B1 chapter with selected primary passages of Cooper (1956) and Bardeen-Cooper-Schrieffer (1957), plus model-equation and notation checks.",
+        "limitations": [
+          "This is a scoped theoretical review, not a full scientific validation or independent reproduction of every derivation.",
+          "No sample-specific experimental values or pairing mechanisms have been verified for this entry.",
+          "Josephson, flux quantization and microscopic GL derivations mentioned in the pinned chapter are not independently reviewed here.",
+          "The one-spin density of states, weak-coupling and phase-coherence assumptions must not be discarded when reusing formulas."
+        ]
+      },
+      "provenance": {
+        "repository": "JackZH26/jzis-superconductivity",
+        "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+        "path": "B_mechanisms/B1_BCS_weak_coupling.md",
+        "sha256": "63eded6a9fdee6c6532ef12719ab1710d694f12378132a1afaf1c53b7850869e",
+        "sourceId": "file-5fc39098f8aabf38"
+      },
+      "sourceMap": [
+        {
+          "startLine": 1,
+          "endLine": 5,
+          "targetSections": [
+            "scope"
+          ],
+          "decision": "edited-with-scoped-primary-check",
+          "note": "Scope mapping to the pinned B1 chapter. The present entry does not independently audit Josephson, flux-quantization or Gorkov results listed there; those remain candidates for separate entries."
+        },
+        {
+          "startLine": 6,
+          "endLine": 16,
+          "targetSections": [
+            "mathematical-assumptions"
+          ],
+          "decision": "edited-with-scoped-primary-check",
+          "note": "Scope mapping to the pinned B1 chapter. The present entry does not independently audit Josephson, flux-quantization or Gorkov results listed there; those remain candidates for separate entries."
+        },
+        {
+          "startLine": 17,
+          "endLine": 26,
+          "targetSections": [
+            "scope",
+            "experimental-criteria"
+          ],
+          "decision": "edited-with-scoped-primary-check",
+          "note": "Scope mapping to the pinned B1 chapter. The present entry does not independently audit Josephson, flux-quantization or Gorkov results listed there; those remain candidates for separate entries."
+        },
+        {
+          "startLine": 27,
+          "endLine": 40,
+          "targetSections": [
+            "limits-and-disputes"
+          ],
+          "decision": "edited-with-scoped-primary-check",
+          "note": "Scope mapping to the pinned B1 chapter. The present entry does not independently audit Josephson, flux-quantization or Gorkov results listed there; those remain candidates for separate entries."
+        },
+        {
+          "startLine": 41,
+          "endLine": 44,
+          "targetSections": [
+            "limits-and-disputes",
+            "discovery-implications"
+          ],
+          "decision": "edited-with-scoped-primary-check",
+          "note": "Scope mapping to the pinned B1 chapter. The present entry does not independently audit Josephson, flux-quantization or Gorkov results listed there; those remain candidates for separate entries."
+        },
+        {
+          "startLine": 45,
+          "endLine": 51,
+          "targetSections": [
+            "sources"
+          ],
+          "decision": "edited-with-scoped-primary-check",
+          "note": "Scope mapping to the pinned B1 chapter. The present entry does not independently audit Josephson, flux-quantization or Gorkov results listed there; those remain candidates for separate entries."
+        },
+        {
+          "startLine": 52,
+          "endLine": 54,
+          "targetSections": [
+            "discovery-implications"
+          ],
+          "decision": "edited-with-scoped-primary-check",
+          "note": "Scope mapping to the pinned B1 chapter. The present entry does not independently audit Josephson, flux-quantization or Gorkov results listed there; those remain candidates for separate entries."
+        }
+      ],
+      "corrections": [],
+      "equationChecks": [
+        {
+          "targetSectionId": "mathematical-assumptions",
+          "tex": "\\lambda=N(0)V",
+          "check": "N(0) is one-spin DOS and V uses the corresponding volume normalization; the product is dimensionless."
+        },
+        {
+          "targetSectionId": "mathematical-assumptions",
+          "tex": "2\\pi e^{-\\gamma}",
+          "check": "Modern weak-coupling gap ratio from the same constant-DOS integral model; numerical equation check recorded in local report. Historical rounded values are not asserted as exact."
+        }
+      ],
+      "references": [
+        {
+          "id": "source-ba10e800a1246bf6",
+          "doi": "10.1103/PhysRev.108.1175",
+          "title": "Theory of Superconductivity",
+          "year": 1957,
+          "url": "https://doi.org/10.1103/PhysRev.108.1175",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "primary-full-text-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://journals.aps.org/pr/pdf/10.1103/PhysRev.108.1175",
+            "note": "Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review."
+          }
+        },
+        {
+          "id": "source-d0ec754310a67e88",
+          "doi": "10.1103/PhysRev.104.1189",
+          "title": "Bound Electron Pairs in a Degenerate Fermi Gas",
+          "year": 1956,
+          "url": "https://doi.org/10.1103/PhysRev.104.1189",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "primary-full-text-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://journals.aps.org/pr/pdf/10.1103/PhysRev.104.1189",
+            "note": "Two-page primary letter: pp. 1189-1190, model setup and Eqs. (3)-(5). Checked the inert Fermi-sea and attractive-shell assumptions and the distinction from the many-body problem. No material-specific pairing mechanism is verified."
+          }
+        }
+      ],
+      "materialCases": [],
+      "claims": [
+        {
+          "id": "scwiki-b1-claim-scope-1",
+          "sectionId": "scope",
+          "statement": "BCS theory provides a microscopic pairing framework and a useful weak-coupling reference point. This article concerns its equilibrium, single-band, isotropic implementation with a smooth density of states and an effective attraction near the Fermi surface. Those assumptions define a model, not a classification of every superconductor. Agreement with one numerical ratio does not uniquely identify a pairing interaction.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-ba10e800a1246bf6"
+          ],
+          "conditions": "Equilibrium isotropic single-band model, weak net attraction in an energy shell, smooth one-spin DOS and sufficient phase coherence; a two-electron Cooper problem is not the full many-body solution.",
+          "verificationScope": "Selected primary model passages as listed in source notes; broader applicability cautions and measurement guidance are editorial synthesis of the pinned chapter, not independently verified experimental findings."
+        },
+        {
+          "id": "scwiki-b1-claim-scope-2",
+          "sectionId": "scope",
+          "statement": "The Cooper problem asks what happens when two electrons interact above an otherwise inert, filled Fermi sea. In the idealized attractive-shell model, a bound pair exists below the two-particle continuum for arbitrarily weak net attraction. The filled sea and its excluded states are essential to this result. It is not a claim that every attractive potential binds two isolated electrons in vacuum, nor is the two-electron calculation alone a construction of the finite-density superconducting state.\n",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-d0ec754310a67e88"
+          ],
+          "conditions": "Equilibrium isotropic single-band model, weak net attraction in an energy shell, smooth one-spin DOS and sufficient phase coherence; a two-electron Cooper problem is not the full many-body solution.",
+          "verificationScope": "Selected primary model passages as listed in source notes; broader applicability cautions and measurement guidance are editorial synthesis of the pinned chapter, not independently verified experimental findings."
+        },
+        {
+          "id": "scwiki-b1-claim-mathematical-assumptions-1",
+          "sectionId": "mathematical-assumptions",
+          "statement": "Write the attractive matrix element as $-V$, with $V>0$. Let $N(0)$ count states of **one spin** per unit energy, using the same volume normalization as $V$, so $\\lambda=N(0)V$ is dimensionless. The energy cutoff is $E_c=\\hbar\\omega_c$, where $\\omega_c$ is an angular frequency. With $\\xi$ measured relative to the chemical potential, the excitation spectrum and gap equation are",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-ba10e800a1246bf6"
+          ],
+          "conditions": "Equilibrium isotropic single-band model, weak net attraction in an energy shell, smooth one-spin DOS and sufficient phase coherence; a two-electron Cooper problem is not the full many-body solution.",
+          "verificationScope": "Selected primary model passages as listed in source notes; broader applicability cautions and measurement guidance are editorial synthesis of the pinned chapter, not independently verified experimental findings."
+        },
+        {
+          "id": "scwiki-b1-claim-experimental-criteria-2",
+          "sectionId": "experimental-criteria",
+          "statement": "Then compare more than one observable: the temperature evolution of the gap, electronic thermodynamics and magnetic response constrain different aspects of the state. Distinguish a consistency test of the isotropic weak-coupling model from evidence for a particular microscopic mediator. No sample-specific $T_c$ or gap value is added to the material-comparison catalogue by this theoretical article.\n",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "source-ba10e800a1246bf6"
+          ],
+          "conditions": "Equilibrium isotropic single-band model, weak net attraction in an energy shell, smooth one-spin DOS and sufficient phase coherence; a two-electron Cooper problem is not the full many-body solution.",
+          "verificationScope": "Selected primary model passages as listed in source notes; broader applicability cautions and measurement guidance are editorial synthesis of the pinned chapter, not independently verified experimental findings."
+        },
+        {
+          "id": "scwiki-b1-claim-limits-and-disputes-1",
+          "sectionId": "limits-and-disputes",
+          "statement": "The general pairing construction should not be equated with a universal weak-coupling phonon mechanism. A frequency-dependent interaction, several coupled bands, an anisotropic gap or a rapidly varying density of states requires a more suitable equation. Phase fluctuations can also separate a pairing scale from the temperature at which long-range or quasi-long-range coherence develops. The simple gap equation above does not calculate that fluctuation problem.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-ba10e800a1246bf6"
+          ],
+          "conditions": "Equilibrium isotropic single-band model, weak net attraction in an energy shell, smooth one-spin DOS and sufficient phase coherence; a two-electron Cooper problem is not the full many-body solution.",
+          "verificationScope": "Selected primary model passages as listed in source notes; broader applicability cautions and measurement guidance are editorial synthesis of the pinned chapter, not independently verified experimental findings."
+        },
+        {
+          "id": "scwiki-b1-claim-limits-and-disputes-2",
+          "sectionId": "limits-and-disputes",
+          "statement": "The familiar isotope exponent $-d\\ln T_c/d\\ln M=1/2$ follows only if the cutoff has harmonic mass scaling and the remaining effective parameters are mass-independent. Changes in structure or coupling invalidate that inference. Likewise, a nonstandard gap ratio can motivate tests of stronger coupling or anisotropy; it does not, by itself, prove a named alternative mechanism. These applicability cautions follow the scope of the pinned B1 source chapter and are not new experimental findings.\n",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-ba10e800a1246bf6"
+          ],
+          "conditions": "Equilibrium isotropic single-band model, weak net attraction in an energy shell, smooth one-spin DOS and sufficient phase coherence; a two-electron Cooper problem is not the full many-body solution.",
+          "verificationScope": "Selected primary model passages as listed in source notes; broader applicability cautions and measurement guidance are editorial synthesis of the pinned chapter, not independently verified experimental findings."
+        },
+        {
+          "id": "scwiki-b1-claim-discovery-implications-1",
+          "sectionId": "discovery-implications",
+          "statement": "Use BCS as a controlled baseline: define the band model, interaction window and normalization before fitting. Check that the inferred scales fit within the regime assumed by the calculation, rather than extrapolating an exponential formula into a flat-band or low-density regime. Compare alternative explanations using measurements that distinguish them. In particular, finding a Cooper instability is a starting point for a many-body theory, not the final demonstration of a material's phase coherence or pairing mediator.",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "source-d0ec754310a67e88"
+          ],
+          "conditions": "Equilibrium isotropic single-band model, weak net attraction in an energy shell, smooth one-spin DOS and sufficient phase coherence; a two-electron Cooper problem is not the full many-body solution.",
+          "verificationScope": "Selected primary model passages as listed in source notes; broader applicability cautions and measurement guidance are editorial synthesis of the pinned chapter, not independently verified experimental findings."
+        }
+      ],
+      "body": "## Scope\n\nBCS theory provides a microscopic pairing framework and a useful weak-coupling reference point. This article concerns its equilibrium, single-band, isotropic implementation with a smooth density of states and an effective attraction near the Fermi surface. Those assumptions define a model, not a classification of every superconductor. Agreement with one numerical ratio does not uniquely identify a pairing interaction. [R1](#ref-source-ba10e800a1246bf6)\n\nThe Cooper problem asks what happens when two electrons interact above an otherwise inert, filled Fermi sea. In the idealized attractive-shell model, a bound pair exists below the two-particle continuum for arbitrarily weak net attraction. The filled sea and its excluded states are essential to this result. It is not a claim that every attractive potential binds two isolated electrons in vacuum, nor is the two-electron calculation alone a construction of the finite-density superconducting state. [R2](#ref-source-d0ec754310a67e88)\n\n## Mathematical assumptions\n\nWrite the attractive matrix element as $-V$, with $V>0$. Let $N(0)$ count states of **one spin** per unit energy, using the same volume normalization as $V$, so $\\lambda=N(0)V$ is dimensionless. The energy cutoff is $E_c=\\hbar\\omega_c$, where $\\omega_c$ is an angular frequency. With $\\xi$ measured relative to the chemical potential, the excitation spectrum and gap equation are\n\n$$\nE(\\xi)=\\sqrt{\\xi^2+|\\Delta|^2},\n$$\n\n$$\n1=\\lambda\\int_0^{E_c}\\frac{\\tanh[E(\\xi)/(2k_BT)]}{E(\\xi)}\\,d\\xi.\n$$\n\nThe positive-energy integral already accounts for the symmetric negative-energy interval in the momentum-sum formulation. Inserting a two-spin density of states without changing the prefactor doubles the effective coupling. At zero temperature this model gives $\\Delta_0=E_c/\\sinh(1/\\lambda)$. For $\\lambda\\ll1$, the usual limiting forms are\n\n$$\nk_BT_c\\simeq\\frac{2e^\\gamma}{\\pi}E_c e^{-1/\\lambda},\n$$\n\n$$\n\\frac{2\\Delta_0}{k_BT_c}\\simeq2\\pi e^{-\\gamma}\\simeq3.528.\n$$\n\nHere $\\gamma$ is the Euler–Mascheroni constant; $2e^\\gamma/\\pi\\simeq1.134$. These are model results, not a measured transition temperature. We use modern $\\Delta$ notation for the single-quasiparticle threshold; creating two quasiparticles costs at least $2\\Delta$ in this idealized spectrum. The original paper used different notation and rounded numerical estimates. [R1](#ref-source-ba10e800a1246bf6)\n\n## Experimental criteria\n\nA useful comparison needs a gap measurement and a separately specified superconducting transition criterion on a comparable sample. Report whether the measured quantity is a single-particle threshold, a pair-breaking energy or a fitted spectral parameter. State temperature, magnetic field, sample composition and uncertainty before calculating a gap ratio. A peak separation must not silently be substituted for $\\Delta_0$.\n\nThen compare more than one observable: the temperature evolution of the gap, electronic thermodynamics and magnetic response constrain different aspects of the state. Distinguish a consistency test of the isotropic weak-coupling model from evidence for a particular microscopic mediator. No sample-specific $T_c$ or gap value is added to the material-comparison catalogue by this theoretical article. [R1](#ref-source-ba10e800a1246bf6)\n\n## Limits and disputes\n\nThe general pairing construction should not be equated with a universal weak-coupling phonon mechanism. A frequency-dependent interaction, several coupled bands, an anisotropic gap or a rapidly varying density of states requires a more suitable equation. Phase fluctuations can also separate a pairing scale from the temperature at which long-range or quasi-long-range coherence develops. The simple gap equation above does not calculate that fluctuation problem.\n\nThe familiar isotope exponent $-d\\ln T_c/d\\ln M=1/2$ follows only if the cutoff has harmonic mass scaling and the remaining effective parameters are mass-independent. Changes in structure or coupling invalidate that inference. Likewise, a nonstandard gap ratio can motivate tests of stronger coupling or anisotropy; it does not, by itself, prove a named alternative mechanism. These applicability cautions follow the scope of the pinned B1 source chapter and are not new experimental findings. [R1](#ref-source-ba10e800a1246bf6)\n\n## Discovery implications\n\nUse BCS as a controlled baseline: define the band model, interaction window and normalization before fitting. Check that the inferred scales fit within the regime assumed by the calculation, rather than extrapolating an exponential formula into a flat-band or low-density regime. Compare alternative explanations using measurements that distinguish them. In particular, finding a Cooper instability is a starting point for a many-body theory, not the final demonstration of a material's phase coherence or pairing mediator. [R2](#ref-source-d0ec754310a67e88)\n\nA productive research record should retain which assumption failed, which observation exposed the failure and which additional measurement could decide between the remaining models. This is editorial guidance for using the baseline, not a claim of an experimentally established route to higher $T_c$.\n\n## Related topics\n\nConnect the model to [zero-resistance evidence](/scwiki/zero-resistance), [the Meissner effect](/scwiki/meissner-effect), [multiband pairing](/scwiki/multiband-pairing), and [two-dimensional coherence](/scwiki/two-dimensional-interfaces).",
+      "revision": "c793eaf02358c66ca094",
+      "sections": [
+        {
+          "id": "scope",
+          "title": "Scope",
+          "markdown": "## Scope\n\nBCS theory provides a microscopic pairing framework and a useful weak-coupling reference point. This article concerns its equilibrium, single-band, isotropic implementation with a smooth density of states and an effective attraction near the Fermi surface. Those assumptions define a model, not a classification of every superconductor. Agreement with one numerical ratio does not uniquely identify a pairing interaction. [R1](#ref-source-ba10e800a1246bf6)\n\nThe Cooper problem asks what happens when two electrons interact above an otherwise inert, filled Fermi sea. In the idealized attractive-shell model, a bound pair exists below the two-particle continuum for arbitrarily weak net attraction. The filled sea and its excluded states are essential to this result. It is not a claim that every attractive potential binds two isolated electrons in vacuum, nor is the two-electron calculation alone a construction of the finite-density superconducting state. [R2](#ref-source-d0ec754310a67e88)"
+        },
+        {
+          "id": "mathematical-assumptions",
+          "title": "Mathematical assumptions",
+          "markdown": "## Mathematical assumptions\n\nWrite the attractive matrix element as $-V$, with $V>0$. Let $N(0)$ count states of **one spin** per unit energy, using the same volume normalization as $V$, so $\\lambda=N(0)V$ is dimensionless. The energy cutoff is $E_c=\\hbar\\omega_c$, where $\\omega_c$ is an angular frequency. With $\\xi$ measured relative to the chemical potential, the excitation spectrum and gap equation are\n\n$$\nE(\\xi)=\\sqrt{\\xi^2+|\\Delta|^2},\n$$\n\n$$\n1=\\lambda\\int_0^{E_c}\\frac{\\tanh[E(\\xi)/(2k_BT)]}{E(\\xi)}\\,d\\xi.\n$$\n\nThe positive-energy integral already accounts for the symmetric negative-energy interval in the momentum-sum formulation. Inserting a two-spin density of states without changing the prefactor doubles the effective coupling. At zero temperature this model gives $\\Delta_0=E_c/\\sinh(1/\\lambda)$. For $\\lambda\\ll1$, the usual limiting forms are\n\n$$\nk_BT_c\\simeq\\frac{2e^\\gamma}{\\pi}E_c e^{-1/\\lambda},\n$$\n\n$$\n\\frac{2\\Delta_0}{k_BT_c}\\simeq2\\pi e^{-\\gamma}\\simeq3.528.\n$$\n\nHere $\\gamma$ is the Euler–Mascheroni constant; $2e^\\gamma/\\pi\\simeq1.134$. These are model results, not a measured transition temperature. We use modern $\\Delta$ notation for the single-quasiparticle threshold; creating two quasiparticles costs at least $2\\Delta$ in this idealized spectrum. The original paper used different notation and rounded numerical estimates. [R1](#ref-source-ba10e800a1246bf6)"
+        },
+        {
+          "id": "experimental-criteria",
+          "title": "Experimental criteria",
+          "markdown": "## Experimental criteria\n\nA useful comparison needs a gap measurement and a separately specified superconducting transition criterion on a comparable sample. Report whether the measured quantity is a single-particle threshold, a pair-breaking energy or a fitted spectral parameter. State temperature, magnetic field, sample composition and uncertainty before calculating a gap ratio. A peak separation must not silently be substituted for $\\Delta_0$.\n\nThen compare more than one observable: the temperature evolution of the gap, electronic thermodynamics and magnetic response constrain different aspects of the state. Distinguish a consistency test of the isotropic weak-coupling model from evidence for a particular microscopic mediator. No sample-specific $T_c$ or gap value is added to the material-comparison catalogue by this theoretical article. [R1](#ref-source-ba10e800a1246bf6)"
+        },
+        {
+          "id": "limits-and-disputes",
+          "title": "Limits and disputes",
+          "markdown": "## Limits and disputes\n\nThe general pairing construction should not be equated with a universal weak-coupling phonon mechanism. A frequency-dependent interaction, several coupled bands, an anisotropic gap or a rapidly varying density of states requires a more suitable equation. Phase fluctuations can also separate a pairing scale from the temperature at which long-range or quasi-long-range coherence develops. The simple gap equation above does not calculate that fluctuation problem.\n\nThe familiar isotope exponent $-d\\ln T_c/d\\ln M=1/2$ follows only if the cutoff has harmonic mass scaling and the remaining effective parameters are mass-independent. Changes in structure or coupling invalidate that inference. Likewise, a nonstandard gap ratio can motivate tests of stronger coupling or anisotropy; it does not, by itself, prove a named alternative mechanism. These applicability cautions follow the scope of the pinned B1 source chapter and are not new experimental findings. [R1](#ref-source-ba10e800a1246bf6)"
+        },
+        {
+          "id": "discovery-implications",
+          "title": "Discovery implications",
+          "markdown": "## Discovery implications\n\nUse BCS as a controlled baseline: define the band model, interaction window and normalization before fitting. Check that the inferred scales fit within the regime assumed by the calculation, rather than extrapolating an exponential formula into a flat-band or low-density regime. Compare alternative explanations using measurements that distinguish them. In particular, finding a Cooper instability is a starting point for a many-body theory, not the final demonstration of a material's phase coherence or pairing mediator. [R2](#ref-source-d0ec754310a67e88)\n\nA productive research record should retain which assumption failed, which observation exposed the failure and which additional measurement could decide between the remaining models. This is editorial guidance for using the baseline, not a claim of an experimentally established route to higher $T_c$."
+        },
+        {
+          "id": "related-topics",
+          "title": "Related topics",
+          "markdown": "## Related topics\n\nConnect the model to [zero-resistance evidence](/scwiki/zero-resistance), [the Meissner effect](/scwiki/meissner-effect), [multiband pairing](/scwiki/multiband-pairing), and [two-dimensional coherence](/scwiki/two-dimensional-interfaces)."
+        },
+        {
+          "id": "material-cases",
+          "title": "Material cases",
+          "markdown": "## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Pressure | State | Evidence |\n|---|---|---|---|---|---|\n"
+        }
+      ],
+      "markdown": "# BCS theory: the weak-coupling baseline\n\nCooper pairing, the gap equation and the 3.528 gap ratio, with the assumptions that make these useful model benchmarks rather than universal material rules.\n\n## Scope\n\nBCS theory provides a microscopic pairing framework and a useful weak-coupling reference point. This article concerns its equilibrium, single-band, isotropic implementation with a smooth density of states and an effective attraction near the Fermi surface. Those assumptions define a model, not a classification of every superconductor. Agreement with one numerical ratio does not uniquely identify a pairing interaction. [R1](#ref-source-ba10e800a1246bf6)\n\nThe Cooper problem asks what happens when two electrons interact above an otherwise inert, filled Fermi sea. In the idealized attractive-shell model, a bound pair exists below the two-particle continuum for arbitrarily weak net attraction. The filled sea and its excluded states are essential to this result. It is not a claim that every attractive potential binds two isolated electrons in vacuum, nor is the two-electron calculation alone a construction of the finite-density superconducting state. [R2](#ref-source-d0ec754310a67e88)\n\n## Mathematical assumptions\n\nWrite the attractive matrix element as $-V$, with $V>0$. Let $N(0)$ count states of **one spin** per unit energy, using the same volume normalization as $V$, so $\\lambda=N(0)V$ is dimensionless. The energy cutoff is $E_c=\\hbar\\omega_c$, where $\\omega_c$ is an angular frequency. With $\\xi$ measured relative to the chemical potential, the excitation spectrum and gap equation are\n\n$$\nE(\\xi)=\\sqrt{\\xi^2+|\\Delta|^2},\n$$\n\n$$\n1=\\lambda\\int_0^{E_c}\\frac{\\tanh[E(\\xi)/(2k_BT)]}{E(\\xi)}\\,d\\xi.\n$$\n\nThe positive-energy integral already accounts for the symmetric negative-energy interval in the momentum-sum formulation. Inserting a two-spin density of states without changing the prefactor doubles the effective coupling. At zero temperature this model gives $\\Delta_0=E_c/\\sinh(1/\\lambda)$. For $\\lambda\\ll1$, the usual limiting forms are\n\n$$\nk_BT_c\\simeq\\frac{2e^\\gamma}{\\pi}E_c e^{-1/\\lambda},\n$$\n\n$$\n\\frac{2\\Delta_0}{k_BT_c}\\simeq2\\pi e^{-\\gamma}\\simeq3.528.\n$$\n\nHere $\\gamma$ is the Euler–Mascheroni constant; $2e^\\gamma/\\pi\\simeq1.134$. These are model results, not a measured transition temperature. We use modern $\\Delta$ notation for the single-quasiparticle threshold; creating two quasiparticles costs at least $2\\Delta$ in this idealized spectrum. The original paper used different notation and rounded numerical estimates. [R1](#ref-source-ba10e800a1246bf6)\n\n## Experimental criteria\n\nA useful comparison needs a gap measurement and a separately specified superconducting transition criterion on a comparable sample. Report whether the measured quantity is a single-particle threshold, a pair-breaking energy or a fitted spectral parameter. State temperature, magnetic field, sample composition and uncertainty before calculating a gap ratio. A peak separation must not silently be substituted for $\\Delta_0$.\n\nThen compare more than one observable: the temperature evolution of the gap, electronic thermodynamics and magnetic response constrain different aspects of the state. Distinguish a consistency test of the isotropic weak-coupling model from evidence for a particular microscopic mediator. No sample-specific $T_c$ or gap value is added to the material-comparison catalogue by this theoretical article. [R1](#ref-source-ba10e800a1246bf6)\n\n## Limits and disputes\n\nThe general pairing construction should not be equated with a universal weak-coupling phonon mechanism. A frequency-dependent interaction, several coupled bands, an anisotropic gap or a rapidly varying density of states requires a more suitable equation. Phase fluctuations can also separate a pairing scale from the temperature at which long-range or quasi-long-range coherence develops. The simple gap equation above does not calculate that fluctuation problem.\n\nThe familiar isotope exponent $-d\\ln T_c/d\\ln M=1/2$ follows only if the cutoff has harmonic mass scaling and the remaining effective parameters are mass-independent. Changes in structure or coupling invalidate that inference. Likewise, a nonstandard gap ratio can motivate tests of stronger coupling or anisotropy; it does not, by itself, prove a named alternative mechanism. These applicability cautions follow the scope of the pinned B1 source chapter and are not new experimental findings. [R1](#ref-source-ba10e800a1246bf6)\n\n## Discovery implications\n\nUse BCS as a controlled baseline: define the band model, interaction window and normalization before fitting. Check that the inferred scales fit within the regime assumed by the calculation, rather than extrapolating an exponential formula into a flat-band or low-density regime. Compare alternative explanations using measurements that distinguish them. In particular, finding a Cooper instability is a starting point for a many-body theory, not the final demonstration of a material's phase coherence or pairing mediator. [R2](#ref-source-d0ec754310a67e88)\n\nA productive research record should retain which assumption failed, which observation exposed the failure and which additional measurement could decide between the remaining models. This is editorial guidance for using the baseline, not a claim of an experimentally established route to higher $T_c$.\n\n## Related topics\n\nConnect the model to [zero-resistance evidence](/scwiki/zero-resistance), [the Meissner effect](/scwiki/meissner-effect), [multiband pairing](/scwiki/multiband-pairing), and [two-dimensional coherence](/scwiki/two-dimensional-interfaces).\n\n## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Pressure | State | Evidence |\n|---|---|---|---|---|---|\n\n\n## Sources\n\n### Ref source-ba10e800a1246bf6\n\n[R1] Theory of Superconductivity (1957). [DOI 10.1103/PhysRev.108.1175](https://doi.org/10.1103/PhysRev.108.1175). Publication: journal-article. Check: primary-full-text-scoped-check. Checked: 2026-10-18. Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review.\n### Ref source-d0ec754310a67e88\n\n[R2] Bound Electron Pairs in a Degenerate Fermi Gas (1956). [DOI 10.1103/PhysRev.104.1189](https://doi.org/10.1103/PhysRev.104.1189). Publication: journal-article. Check: primary-full-text-scoped-check. Checked: 2026-10-18. Two-page primary letter: pp. 1189-1190, model setup and Eqs. (3)-(5). Checked the inert Fermi-sea and attractive-shell assumptions and the distinction from the many-body problem. No material-specific pairing mechanism is verified.\n\n## Revision and review\n\nArticle ID: scwiki-b1. Revision: c793eaf02358c66ca094. Updated: 2026-10-18T06:02:10Z.\n\nReview scope: Edited adaptation of the pinned B1 chapter with selected primary passages of Cooper (1956) and Bardeen-Cooper-Schrieffer (1957), plus model-equation and notation checks.\n\n- This is a scoped theoretical review, not a full scientific validation or independent reproduction of every derivation.\n- No sample-specific experimental values or pairing mechanisms have been verified for this entry.\n- Josephson, flux quantization and microscopic GL derivations mentioned in the pinned chapter are not independently reviewed here.\n- The one-spin density of states, weak-coupling and phase-coherence assumptions must not be discarded when reusing formulas.\n\nSource: [B_mechanisms/B1_BCS_weak_coupling.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/B_mechanisms/B1_BCS_weak_coupling.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 63eded6a9fdee6c6532ef12719ab1710d694f12378132a1afaf1c53b7850869e.\n",
+      "wordCount": 696
     },
     {
       "id": "scwiki-b12",

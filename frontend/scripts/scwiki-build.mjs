@@ -10,6 +10,10 @@ const fail=message=>{throw new Error("SCWiki: "+message)};
 const required=["scope","mathematical-assumptions","experimental-criteria","limits-and-disputes","discovery-implications","related-topics"];
 const manifest=JSON.parse(readFileSync(path.join(directory,"source-manifest.json"),"utf8"));
 const bySource=new Map(manifest.files.map(f=>[f.id,f]));
+// publicBody is an explicit editorial publication decision, not a file-count target.
+const publishedSources=manifest.files.filter(f=>f.publicBody);
+const expectedIds=new Set(publishedSources.map(f=>f.articleId));
+if(!expectedIds.size||expectedIds.size!==publishedSources.length||publishedSources.some(f=>!/^scwiki-[a-h][0-9]+$/.test(f.articleId)))fail("invalid publication inventory");
 const articles=[],ids=new Set(),slugs=new Set();
 for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  const meta=JSON.parse(readFileSync(path.join(directory,"articles",folder,"meta.json"),"utf8"));
@@ -20,6 +24,7 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  if(ids.has(meta.id)||slugs.has(meta.slug))fail("duplicate article");
  ids.add(meta.id);slugs.add(meta.slug);
  const source=bySource.get(meta.provenance.sourceId);
+ if(!source?.publicBody||source.articleId!==meta.id||source.topicId!==meta.topicId||meta.id!=="scwiki-"+meta.code.toLowerCase())fail(folder+" article is not approved in the publication inventory");
  if(!source||source.sha256!==meta.provenance.sha256||source.path!==meta.provenance.path||meta.provenance.commit!==manifest.commit)fail(folder+" provenance mismatch");
  if(/\p{Script=Han}/u.test(body)||/\p{Script=Han}/u.test(meta.title+" "+meta.summary))fail(folder+" authored English content contains Han copy");
  if(/<\/?[a-z][^>]*>/i.test(body)||/\]\(\s*(?:javascript|data|vbscript):/i.test(body))fail(folder+" unsafe authored Markdown");
@@ -54,7 +59,7 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  const markdown="# "+meta.title+"\n\n"+meta.summary+"\n\n"+body+"\n\n"+conditions+"\n\n## Sources\n\n"+referenceText+"\n\n"+provenance+"\n";
  articles.push({...meta,body,revision,sections:[...chunks,{id:"material-cases",title:"Material cases",markdown:conditions}],markdown,wordCount:body.split(/\s+/).length});
 }
-if(articles.length!==12)fail("expected exactly 12 pilot articles, got "+articles.length);
+if(articles.length!==expectedIds.size||articles.some(a=>!expectedIds.has(a.id)))fail("published articles do not match the publication inventory");
 for(const a of articles)for(const code of a.relatedCodes)if(!articles.some(other=>other.code===code))fail("unpublished related article "+code);
 const revision=sha(articles.map(a=>a.revision).join("\n")).slice(0,20);
 const catalogue={schemaVersion:"1.0",revision,articles};

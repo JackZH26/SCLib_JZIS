@@ -1,6 +1,8 @@
 import test from "node:test";
 import assert from "node:assert/strict";
-import {readFileSync} from "node:fs";
+import {readFileSync,writeFileSync,mkdtempSync,cpSync,rmSync,mkdirSync} from "node:fs";
+import {tmpdir} from "node:os";
+import path from "node:path";
 import {spawnSync} from "node:child_process";
 test("committed SCWiki catalogue and search index match authored sources",()=>{
  const result=spawnSync(process.execPath,["scripts/scwiki-build.mjs","--check"],{encoding:"utf8"});
@@ -12,4 +14,46 @@ test("standalone packaging and E2E copies include content and scripts",()=>{
  assert.match(docker,/COPY --from=builder \/app\/scripts/);
  assert.match(server,/"content", "scripts"/);
  assert.match(config,/outputFileTracingIncludes/);
+});
+
+function inventoryFixture(t){
+ const cwd=mkdtempSync(path.join(tmpdir(),"scwiki-inventory-"));
+ t.after(()=>rmSync(cwd,{recursive:true,force:true}));
+ cpSync("content/scwiki",path.join(cwd,"content/scwiki"),{recursive:true});
+ const directory=path.join(cwd,"content/scwiki");
+ const manifest=JSON.parse(readFileSync(path.join(directory,"source-manifest.json"),"utf8"));
+ const save=()=>writeFileSync(path.join(directory,"source-manifest.json"),JSON.stringify(manifest));
+ const build=()=>spawnSync(process.execPath,[path.resolve("scripts/scwiki-build.mjs")],{cwd,encoding:"utf8"});
+ return {cwd,directory,manifest,save,build};
+}
+test("publication inventory permits an explicitly approved additional core article",t=>{
+ const f=inventoryFixture(t);
+ const published=f.manifest.files.filter(x=>x.publicBody).length;
+ const source=f.manifest.files.find(x=>x.topicId&&!x.publicBody);
+ assert.ok(source,"fixture needs one unpublished approved core topic");
+ const code=source.articleId.replace("scwiki-","");
+ const meta=JSON.parse(readFileSync(path.join(f.directory,"articles/a1/meta.json"),"utf8"));
+ Object.assign(meta,{id:source.articleId,topicId:source.topicId,code:code.toUpperCase(),slug:"synthetic-inventory-fixture",provenance:{...meta.provenance,path:source.path,sha256:source.sha256,sourceId:source.id}});
+ mkdirSync(path.join(f.directory,"articles",code),{recursive:true});
+ writeFileSync(path.join(f.directory,"articles",code,"meta.json"),JSON.stringify(meta));
+ cpSync(path.join(f.directory,"articles/a1/body.md"),path.join(f.directory,"articles",code,"body.md"));
+ source.publicBody=true;f.save();
+ const result=f.build();assert.equal(result.status,0,result.stderr);
+ const catalogue=JSON.parse(readFileSync(path.join(f.directory,"catalogue.json"),"utf8"));
+ assert.equal(catalogue.articles.length,published+1);
+ assert.ok(catalogue.articles.some(a=>a.id===source.articleId));
+});
+test("publication inventory rejects missing, unapproved and mismatched articles",async t=>{
+ for(const scenario of ["missing","unapproved","identity-mismatch"]){
+  await t.test(scenario,t=>{
+   const f=inventoryFixture(t);
+   if(scenario==="missing")rmSync(path.join(f.directory,"articles/a1"),{recursive:true});
+   if(scenario==="unapproved"){f.manifest.files.find(x=>x.articleId==="scwiki-a1").publicBody=false;f.save();}
+   if(scenario==="identity-mismatch"){
+    const filename=path.join(f.directory,"articles/a1/meta.json"),meta=JSON.parse(readFileSync(filename,"utf8"));
+    meta.topicId="scwiki-topic-a2";writeFileSync(filename,JSON.stringify(meta));
+   }
+   const result=f.build();assert.notEqual(result.status,0);assert.match(result.stderr,/publication inventory/);
+  });
+ }
 });

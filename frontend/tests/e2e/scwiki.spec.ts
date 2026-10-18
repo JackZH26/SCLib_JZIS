@@ -6,7 +6,7 @@ test("SCWiki ships complete server-rendered English content and lazy search",asy
  const html=await response.text();for(const a of catalogue.articles)expect(html).toContain("/scwiki/"+a.slug);
  expect(html.indexOf("Latest research")).toBeLessThan(html.indexOf("Explore the key concepts"));
  await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
- expect(await page.locator(".scwiki-topic-group li").count()).toBe(12);
+ expect(await page.locator(".scwiki-topic-group li").count()).toBe(catalogue.articles.length);
  await expect(page.getByRole("heading",{name:"Latest research",exact:true})).toBeVisible();
  const indexRequests:string[]=[];page.on("request",r=>{if(r.url().includes("search-index.json"))indexRequests.push(r.url());});
  expect(indexRequests).toEqual([]);
@@ -21,11 +21,11 @@ test("SCWiki ships complete server-rendered English content and lazy search",asy
  await expect(page.locator(".scwiki-article-grid")).toContainText("Nickelate superconductors");
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
  await page.getByRole("button",{name:"Clear filters",exact:true}).click();
- await expect(page.locator(".scwiki-topic-group li")).toHaveCount(12);
+ await expect(page.locator(".scwiki-topic-group li")).toHaveCount(catalogue.articles.length);
  await expect(page.getByRole("heading",{name:"Latest research",exact:true})).toBeVisible();
  await page.screenshot({path:"test-results/scwiki-index-390.png",fullPage:true});
 });
-test("all 12 articles have formulas, real citation anchors and HTML/Markdown/JSON consistency",async({page,request})=>{
+test("all published articles have formulas, real citation anchors and HTML/Markdown/JSON consistency",async({page,request})=>{
  for(const a of catalogue.articles){
   const response=await page.goto("/scwiki/"+a.slug);expect(response?.status()).toBe(200);
   await expect(page.getByRole("heading",{name:a.title,exact:true})).toBeVisible();
@@ -81,7 +81,7 @@ test("homepage research, topic links and search stay usable at mobile, tablet an
   expect(await search.evaluate(button=>{const range=document.createRange();range.selectNodeContents(button);return range.getClientRects().length;})).toBe(1);
   expect(await page.locator('.scwiki-research-item').count()).toBe(3);
   const links=await page.locator('.scwiki-topic-group a').all();
-  expect(links.length).toBe(12);
+  expect(links.length).toBe(catalogue.articles.length);
   for(const link of links)expect(await link.getAttribute('href')).toMatch(/^\/scwiki\/[a-z-]+$/);
  }
  await page.locator('.scwiki-topic-group').getByRole('link',{name:'Meissner effect',exact:true}).click();
