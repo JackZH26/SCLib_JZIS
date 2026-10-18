@@ -57,11 +57,18 @@ describe("SCWiki source and scientific-content contracts",()=>{
   const md=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
   for(const limit of a.scopeItems![0].limitations){expect(md).toContain(limit);expect(a.markdown).toContain(limit);}
   expect(md).toContain("Approved scope items");expect(a.markdown).toContain("Approved scope items");
-  for(const q of ["平带超导温度上限","flat-band Tc bound"]){
+  for(const q of ["平带","平带超导温度上限","flat-band Tc bound"]){
    expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
    expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
   }
   for(const id of ["scwiki-i","scwiki-n1"]){expect((await get(["articles",id])).status).toBe(404);}
+ });
+
+ it("matches short Han keywords within phrases while keeping short Latin tokens exact",()=>{
+  const entry={...searchIndex().entries[0],title:"Total optical response",aliases:["平带超导温度上限","镍酸盐超导"],dois:[],text:"Spectral weight",materialCases:[]};
+  for(const query of ["平带","镍","酸盐"]){expect(searchArticles([entry],query)).toHaveLength(1);}
+  for(const query of ["Al","sp","不存在"]){expect(searchArticles([entry],query)).toEqual([]);}
+  expect(searchArticles([{...entry,aliases:["Al"]}],"Al")).toHaveLength(1);
  });
 
  it("separates interface noise-floor zero, BKT analysis and spectroscopic temperatures through API exports",async()=>{

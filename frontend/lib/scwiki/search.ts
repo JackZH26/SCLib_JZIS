@@ -14,7 +14,9 @@ export function searchArticles(entries: SearchEntry[], query: string, filters: S
   return entries.filter(entry => {
     const haystack = normalizeSearch([entry.title,...entry.aliases,...entry.dois,entry.text,...entry.materialCases.flatMap(x=>[x.formula,...(x.aliases??[])])].join(" "));
     const words=new Set(haystack.split(" "));
-    if(!tokens.every(token=>token.length<=2?words.has(token):haystack.includes(token))) return false;
+    // Han keywords do not use spaces as word boundaries; keep short Latin
+    // tokens exact so element symbols do not match arbitrary prose fragments.
+    if(!tokens.every(token=>token.length<=2&&!/^\p{Script=Han}+$/u.test(token)?words.has(token):haystack.includes(token))) return false;
     if(filters.evidence && !entry.evidenceTypes.some(type=>type===filters.evidence)) return false;
     const conditioned=filters.pressure || filters.equilibrium || filters.criterion || filters.tcMin!==undefined;
     if(!conditioned) return true;
