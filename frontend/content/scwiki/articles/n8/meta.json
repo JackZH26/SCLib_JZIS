@@ -1,0 +1,403 @@
+{
+  "id": "scwiki-n8",
+  "topicId": "scwiki-topic-n8",
+  "code": "N8",
+  "slug": "open-questions/n8",
+  "publicationKind": "open-question",
+  "title": "How should claims like LK-99 be validated?",
+  "summary": "Evaluate unusual superconductivity claims using sample traceability, transport bounds, magnetic controls and independent replication.",
+  "aliases": [
+    "LK-99 verification standards",
+    "superconductivity claim validation",
+    "LK99科学验证",
+    "LK-99验证标准",
+    "超导声明验证"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "A1",
+    "A2",
+    "N1",
+    "I"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T21:14:55.713384+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected LK-99 original claims, independent phase/transport/magnetic controls, public IEC scope and independently calculated measurement examples.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Full supplements, raw data and complete author-to-final comparisons remain open.",
+      "Synthetic control examples are not reconstructions of LK-99 data.",
+      "Independent negative results apply to investigated specimens; the original preprint claim is not accepted as a material Tc.",
+      "Only the public IEC scope was checked, not the paid full standard."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "02_BATCH_2_IN_PLAN.md",
+    "sha256": "502293e5ed2fe8463b61a6c5b78a2c33bc33f3265bd36fe534fa2c469e42ff48",
+    "sourceId": "file-49326006ac2c2636"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 144,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    },
+    {
+      "startLine": 145,
+      "endLine": 145,
+      "targetSections": [
+        "scope",
+        "experimental-criteria",
+        "what-the-lk-99-controls-show",
+        "mathematical-assumptions",
+        "standards-and-reporting",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "decision": "new-research-for-approved-question",
+      "note": "Approved N8 question defines scope; it does not validate the LK-99 claim."
+    },
+    {
+      "startLine": 146,
+      "endLine": 177,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\widehat R=(V_+-V_-)/(2I)",
+      "check": "Nine constant-offset cases and a deterministic voltage-error bound; not a general removal of thermoelectric effects. Twenty-seven separate positive-resistor network cases verify KCL and power balance."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\chi_{\\rm app}=\\chi/(1+N\\chi)",
+      "check": "Twelve homogeneous SI ellipsoid cases verify forward/inverse relations; not a granular superconducting volume-fraction estimator."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-cd8f3ac578e82497",
+      "doi": "10.48550/arXiv.2307.12008",
+      "title": "The First Room-Temperature Ambient-Pressure Superconductor",
+      "year": 2023,
+      "url": "https://doi.org/10.48550/arXiv.2307.12008",
+      "publicationStatus": "preprint",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-original-preprint-claims-methods-and-references",
+        "evidenceUrl": "https://arxiv.org/pdf/2307.12008v1",
+        "note": "Submitted 22 July 2023. Selected pp. 1–4, 14 and 19–22 checked. References 16–17 are Wang and Ekin books, not the IEC standard itself. Claims remain unverified; full figures, data and reconstruction not checked."
+      }
+    },
+    {
+      "id": "source-0d5220e22a764bd4",
+      "doi": "10.1016/j.matt.2023.11.001",
+      "title": "First-order transition in LK-99 containing Cu2S",
+      "year": 2023,
+      "url": "https://doi.org/10.1016/j.matt.2023.11.001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-in-press-control-experiment-and-methods",
+        "evidenceUrl": "https://www.iop.cas.cn/xwzx/kydt/202311/P020231128650554216959.pdf",
+        "note": "Institutional in-press PDF pp. 1–7 checked; p. 5 Figure 2 visually inspected. Printed 6 December 2023. Final pagination, complete supplement and raw data remain unchecked. Cu2S transition is finite-resistance; do not attribute all sample magnetism to Cu2S."
+      }
+    },
+    {
+      "id": "source-a2986ca87572851e",
+      "doi": "10.1063/5.0172755",
+      "title": "Single crystal synthesis, structure, and magnetism of Pb10−xCux(PO4)6O",
+      "year": 2023,
+      "url": "https://doi.org/10.1063/5.0172755",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-synthesis-transport-and-magnetic-results",
+        "evidenceUrl": "https://arxiv.org/pdf/2308.06256v2",
+        "note": "Author v2 revised 23 August 2023; selected pp. 1–5 and p. 4 figures checked. Room-temperature resistance above several megaohms; heterogeneous Cu distribution. Some plots retain a holder offset; a separate 63 mg calibration explicitly subtracts the holder. Full final comparison remains open."
+      }
+    },
+    {
+      "id": "source-4065b69b701c07cd",
+      "doi": "10.1007/s44214-023-00035-z",
+      "title": "Ferromagnetic and insulating behavior in both half magnetic levitation and non-levitation LK-99 like samples",
+      "year": 2023,
+      "url": "https://doi.org/10.1007/s44214-023-00035-z",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-methods-results-and-discussion",
+        "evidenceUrl": "https://link.springer.com/article/10.1007/s44214-023-00035-z",
+        "note": "Published 30 August 2023. Selected final HTML methods, results, discussion and captions checked. Both levitating and non-levitating samples insulating at 165–300 K; soft ferromagnetism and shape effects discussed. Figure pixels, full supplement and raw data not independently checked."
+      }
+    },
+    {
+      "id": "source-c8143afdf96ce96f",
+      "doi": "10.6028/NIST.TN.1462",
+      "title": "A Four-Terminal Current Shunt with Calculable AC Response",
+      "year": 2004,
+      "url": "https://doi.org/10.6028/NIST.TN.1462",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "scope": "primary-report-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=31690",
+        "note": "Selected section 2.5, printed p. 11, and section 5.7, p. 28: thermoelectric effects can reverse with current and survive averaging; constant offsets treated separately. Calibration-shunt methodology, not a superconducting-material study."
+      }
+    },
+    {
+      "id": "source-0c63f38b6789c792",
+      "doi": "10.6028/NIST.TN.1297",
+      "title": "Guidelines for Evaluating and Expressing the Uncertainty of NIST Measurement Results, 1994 Edition",
+      "year": 1994,
+      "url": "https://doi.org/10.6028/NIST.TN.1297",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "scope": "primary-report-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://nvlpubs.nist.gov/nistpubs/Legacy/TN/nbstechnicalnote1297.pdf",
+        "note": "Selected sections 5–6 and Appendix A: uncertainty propagation including covariance, systematic corrections and coverage factors. Local interval/circuit examples are independent deductions, not an instrument-specific calibration."
+      }
+    },
+    {
+      "id": "source-37f27e50dbdcf3a5",
+      "doi": "10.1103/PhysRevApplied.10.014030",
+      "title": "Effective Demagnetizing Factors of Diamagnetic Samples of Various Shapes",
+      "year": 2018,
+      "url": "https://doi.org/10.1103/PhysRevApplied.10.014030",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1712.06037v2",
+        "note": "Selected pp. 1–2, section II Eqs. (1)–(7): SI susceptibility, ellipsoidal demagnetization and distinction from integral effective factors for other shapes. Full three-dimensional numerical simulations and all shape approximations not reproduced."
+      }
+    },
+    {
+      "doi": null,
+      "id": "source-183e82eda528f417",
+      "title": "IEC 61788-1:2006: Critical current measurement — DC critical current of Nb-Ti composite superconductors",
+      "year": 2006,
+      "url": "https://webstore.iec.ch/en/publication/5909",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "official-public-scope-only",
+        "evidenceUrl": "https://webstore.iec.ch/en/publication/5909",
+        "note": "Published 21 November 2006. Official scope concerns specified Nb-Ti composite conductors in a liquid-helium bath. Paid full standard not accessed; numerical clauses not independently verified."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-n8-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A credible claim of a new superconducting material needs convergent, reproducible evidence tied to a documented sample and conditions. A resistance drop, diamagnetic background or partly levitating fragment is a candidate observation, not a unique identification. This page uses LK-99 as a measurement-control case study. Lee and colleagues' July 2023 preprint claimed ambient-pressure superconductivity above 400 K; that claim is not accepted as a measured material Tc here. Selected independent studies instead found alternative explanations or non-superconducting samples. Those results apply to their investigated specimens and do not constitute a test of every possible composition.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-cd8f3ac578e82497",
+        "source-0d5220e22a764bd4",
+        "source-a2986ca87572851e",
+        "source-4065b69b701c07cd"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    },
+    {
+      "id": "scwiki-n8-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Preserve synthesis records, composition, phase analysis, specimen identifiers, dimensions and contact positions. Connect transport, magnetic and thermodynamic observations to the same specimen where practicable, or to traceably matched pieces with documented differences. Diffraction and microscopy have detection limits; nominal chemical formulas do not guarantee homogeneous doping or exclude minority phases. Puphal and colleagues found spatially inhomogeneous Cu concentrations in their crystals even while their structural analysis identified the lead-apatite phase.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-a2986ca87572851e"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    },
+    {
+      "id": "scwiki-n8-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Report raw voltages, excitation current, polarity, temperature calibration, field, sweep direction, stability and uncertainty. Four-terminal wiring reduces ordinary contact-voltage contamination but does not make every contact configuration diagnostic. Change current and voltage contacts, reverse current, check heating and inspect reproducibility across cycles. State a resistance bound at the instrument's sensitivity rather than claiming an exact measured zero. Constant thermoelectric offsets and current-dependent thermal effects need different controls.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-c8143afdf96ce96f",
+        "source-0c63f38b6789c792"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    },
+    {
+      "id": "scwiki-n8-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "A magnetic assessment should distinguish a diamagnetic background, zero-field-cooled shielding and field-cooled flux expulsion. Record holder subtraction, volume or mass normalization, sample shape and ferromagnetic contributions. Geometry, pinning and granularity complicate any conversion to a superconducting volume fraction. Combine these observations with appropriate thermodynamic measurements where sensitivity and sample size permit; a missing resolvable anomaly constrains a claim only in relation to those limits. This is an evidence plan, not a demand that every experimental platform deliver identical signals.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-0d5220e22a764bd4",
+        "source-a2986ca87572851e",
+        "source-37f27e50dbdcf3a5"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    },
+    {
+      "id": "scwiki-n8-claim-what-the-lk-99-controls-show-1",
+      "sectionId": "what-the-lk-99-controls-show",
+      "statement": "Zhu and colleagues measured Cu2S controls and mixtures containing different Cu2S fractions. In the checked in-press article, pure Cu2S changes from about 13.7 Ω cm at 385.6 K to 0.006 Ω cm at 381.5 K, with a heating–cooling hysteresis of 13.1 K. The lower resistivity is finite. Their Cu2S-rich mixture also shows a sharp resistivity change and a magnetic anomaly. These observations provide an alternative explanation for selected transition-like features; they do not establish superconductivity or explain every magnetic signal in every synthesis. The order of this structural transition is not a universal rule for excluding all possible superconducting transitions.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-0d5220e22a764bd4"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    },
+    {
+      "id": "scwiki-n8-claim-what-the-lk-99-controls-show-2",
+      "sectionId": "what-the-lk-99-controls-show",
+      "statement": "Puphal and colleagues' sulfur-free crystal study attempted four-point room-temperature transport and found resistance above several megaohms. Their magnetic measurements cover 2–800 K and identify weak ferromagnetic contributions alongside diamagnetism. Optical transparency alone is not their decisive transport test. Some displayed magnetization data retain holder offsets, while a separate large-sample calibration explicitly subtracts the holder contribution. Keep those protocols distinct. Merging of cooling histories at the start of a measurement range is not by itself a critical temperature.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a2986ca87572851e"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    },
+    {
+      "id": "scwiki-n8-claim-what-the-lk-99-controls-show-3",
+      "sectionId": "what-the-lk-99-controls-show",
+      "statement": "Wang and colleagues compared half-levitating and non-levitating fragments. Both groups were insulating in the investigated 165–300 K interval. Their magnetic results and shape-dependent torque analysis show how soft ferromagnetism can accompany half levitation without the claimed superconductivity. The fitted activation scale is not a superconducting gap. A levitation video therefore cannot replace transport and magnetic controls, and a ferromagnetic contribution must not automatically be assigned to Cu2S.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-4065b69b701c07cd"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    },
+    {
+      "id": "scwiki-n8-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Nine independent cases recover the imposed resistance and constant offset. With each voltage error bounded by 10 nV at an exact 1 mA current, the worst-case resistance error is 10 μΩ. This is a deterministic bound, not a statistical confidence interval. Current uncertainty, changing thermal offsets, nonlinearity and moving contacts require additional analysis; some thermoelectric effects reverse with current and survive this subtraction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-c8143afdf96ce96f",
+        "source-0c63f38b6789c792"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    },
+    {
+      "id": "scwiki-n8-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A separate four-node resistor network has two conducting branches and voltage probes at their midpoints. Equal branch resistance ratios give a zero midpoint voltage even though the input resistance and dissipated power remain positive. Twenty-seven cases verify Kirchhoff's equations and energy balance, including imbalanced branches. This constructed transfer-resistance counterexample demonstrates why geometry and alternative paths matter. It is not a reconstruction of any LK-99 experiment.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-c8143afdf96ce96f"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    },
+    {
+      "id": "scwiki-n8-claim-mathematical-assumptions-7",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Twelve independent cases check this relation and its inverse. In the idealized χ = −1, N = 0.5 case, χapp = −2; its magnitude does not imply a 200% superconducting volume fraction. The assumed uniform ellipsoid does not model a granular irregular fragment, hysteretic ferromagnet or pinned vortex distribution. Mass susceptibilities and cgs values cannot be inserted without conversion.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-37f27e50dbdcf3a5"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    },
+    {
+      "id": "scwiki-n8-claim-standards-and-reporting-1",
+      "sectionId": "standards-and-reporting",
+      "statement": "The original preprint invokes electric-field or resistivity criteria and cites application-oriented books. Its references 16 and 17 are Wang's electrical-engineering book and Ekin's low-temperature measurement book, not the text of an IEC standard. Separately, the official public scope of IEC 61788-1:2006 concerns critical-current measurement in specified Nb-Ti composite conductors in a liquid-helium bath. An engineering threshold for a known conductor is not a universal certification that an unfamiliar material hosts a new superconducting phase. The paid standard's full clauses have not been checked here.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-cd8f3ac578e82497",
+        "source-183e82eda528f417"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    },
+    {
+      "id": "scwiki-n8-claim-standards-and-reporting-2",
+      "sectionId": "standards-and-reporting",
+      "statement": "Preserve unsuccessful batches and negative controls alongside successful-looking traces. Independent groups should document composition, measurement sensitivity and protocol differences before calling results a replication or contradiction. A provisional editorial progression can separate a candidate anomaly, reproducible transport evidence and convergent bulk evidence. These are proposed reporting categories, not an official certification scheme. Share data, calibrations, analysis code and versioned corrections sufficiently to test competing explanations.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-0d5220e22a764bd4",
+        "source-a2986ca87572851e",
+        "source-4065b69b701c07cd",
+        "source-0c63f38b6789c792"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    },
+    {
+      "id": "scwiki-n8-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "This review checks selected primary passages and a limited set of figures. It does not reproduce raw experimental measurements, compare every manuscript version or establish the properties of every claimed LK-99 preparation. The original claim is explicitly a preprint; the independent examples above are synthetic controls with stated assumptions. Apparent agreement among several measurements is strongest when they share a traceable phase, specimen history and temperature or field scale. Unresolved differences should remain visible rather than being replaced by a single categorical label.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-cd8f3ac578e82497",
+        "source-0d5220e22a764bd4",
+        "source-a2986ca87572851e",
+        "source-4065b69b701c07cd"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    },
+    {
+      "id": "scwiki-n8-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Allocate effort to observations that discriminate among superconductivity, structural transitions, current-path artifacts and magnetic torque. For a candidate, prioritize reproducible synthesis, contact permutations, phase-resolved characterization and quantitative magnetic controls before advertising an exceptional Tc. State precisely which alternative each new test excludes, which remain possible and what independent work would change the conclusion. This makes an unusual signal useful to research even when its first interpretation fails.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-0d5220e22a764bd4",
+        "source-a2986ca87572851e",
+        "source-4065b69b701c07cd"
+      ],
+      "conditions": "Preserve specimen, phase, geometry, temperature, field, measurement sensitivity, subtraction protocol and publication version.",
+      "verificationScope": "Selected primary evidence and independent synthetic measurement controls; no raw-data reconstruction or universal material verdict."
+    }
+  ],
+  "scopeItems": [
+    {
+      "id": "N8",
+      "sectionIds": [
+        "scope",
+        "experimental-criteria",
+        "what-the-lk-99-controls-show",
+        "mathematical-assumptions",
+        "standards-and-reporting",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Selected LK-99 original claims, independent phase/transport/magnetic controls, public IEC scope and independently calculated measurement examples.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "Full supplements, raw data and complete author-to-final comparisons remain open.",
+        "Synthetic control examples are not reconstructions of LK-99 data.",
+        "Independent negative results apply to investigated specimens; the original preprint claim is not accepted as a material Tc.",
+        "Only the public IEC scope was checked, not the paid full standard."
+      ]
+    }
+  ]
+}

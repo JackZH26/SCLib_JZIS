@@ -1691,3 +1691,24 @@ it("preserves nickelate sample and publication boundaries across search and sect
  expect(a.references.find(r=>r.doi==="10.1126/science.adw8329")!.verification.evidenceUrl).toMatch(/v2$/);
  expect(a.references.find(r=>r.doi==="10.1038/s41467-025-65865-y")!.verification.note).toContain("23 meV");
 });
+
+
+it("preserves LK-99 validation limits in exports and keeps unverified claims out of Tc filters",async()=>{
+ const a=articles().find(a=>a.code==="N8")!;
+ expect(a.materialCases).toEqual([]);
+ for(const id of a.scopeItems![0].sectionIds){
+  const data=await(await get(["articles",a.id,"sections",id])).json();
+  expect(data.scopeItems.map((i:{id:string})=>i.id)).toEqual(["N8"]);
+  const md=await(await get(["articles",a.id,"sections",id],"?format=markdown")).text();
+  expect(md).toContain(data.section.markdown);
+  for(const limit of a.review!.limitations)expect(md).toContain(limit);
+ }
+ for(const q of ["LK99科学验证","contact permutations","constant thermoelectric offsets"]){
+  expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
+  expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
+ }
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ for(const phrase of ["not a statistical confidence interval","not a reconstruction of any LK-99 experiment","not a universal certification","separate large-sample calibration explicitly subtracts"])expect(md).toContain(phrase);
+ expect(a.references.find(r=>r.doi==="10.48550/arXiv.2307.12008")!.publicationStatus).toBe("preprint");
+ expect(a.references.find(r=>r.doi===null&&r.url.includes("webstore.iec.ch"))!.verification.scope).toBe("official-public-scope-only");
+});
