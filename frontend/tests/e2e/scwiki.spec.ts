@@ -89,3 +89,18 @@ test("homepage research, topic links and search stay usable at mobile, tablet an
  await expect(page).toHaveURL(/\/scwiki\/meissner-effect$/);
  await expect(page.getByRole('heading',{level:1})).toContainText('Meissner effect');
 });
+
+
+test("approved question routes preserve provenance and exclude unfinished extension pages",async({page,request})=>{
+ const a=catalogue.articles.find((a:{code:string})=>a.code==="N10");
+ await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
+ await page.getByRole("link",{name:"What limits flat-band Tc?",exact:true}).click();
+ await expect(page).toHaveURL(/\/scwiki\/open-questions\/n10$/);
+ await expect(page.getByRole("heading",{level:1})).toHaveText(a.title);
+ await expect(page.locator('link[rel="canonical"]')).toHaveAttribute("href",/\/scwiki\/open-questions\/n10$/);
+ await page.getByText("Source and editorial mapping",{exact:true}).click();
+ await expect(page.getByText("The pinned planning document identifies the approved scope.",{exact:false})).toBeVisible();
+ const response=await request.get("/api/scwiki/v1/articles/scwiki-n10/sections/mathematical-assumptions");
+ const data=await response.json();expect(data.scopeItems[0].id).toBe("N10");
+ for(const path of ["/scwiki/open-questions/n1","/scwiki/open-questions/n11","/scwiki/experimental-methods"]){expect((await request.get(path)).status()).toBe(404);}
+});

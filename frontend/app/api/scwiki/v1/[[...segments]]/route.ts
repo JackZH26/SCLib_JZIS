@@ -34,13 +34,15 @@ export async function GET(request:NextRequest,{params}:{params:Promise<{segments
    const claims=article.claims.filter(c=>c.sectionId===section.id);
    const ids=new Set([...claims.flatMap(c=>c.sourceIds),...Array.from(section.markdown.matchAll(/\]\(#ref-([a-z0-9-]+)\)/g),m=>m[1])]);
    const sources=article.references.filter(r=>ids.has(r.id)||section.id==="material-cases"&&article.materialCases.some(c=>c.sourceId===r.id));
+   const scopeItems=(article.scopeItems??[]).filter(item=>item.sectionIds.includes(section.id));
    if(request.nextUrl.searchParams.get("format")==="markdown"){
     const sourceText=sources.map(r=>"### Ref "+r.id+"\n\n"+r.title+" ("+r.year+"). ["+(r.doi?"DOI "+r.doi:"Source publication")+"]("+r.url+"). Publication: "+r.publicationStatus+". "+(r.retraction?"Retracted: "+r.retraction.retractedAt+". [Retraction notice]("+r.retraction.evidenceUrl+"). ":"")+"Check: "+r.verification.scope+". Checked: "+r.verification.checkedAt+". "+(r.verification.note??"")).join("\n\n");
     const claimText=claims.map(c=>"### "+c.id+"\n\n"+c.statement+"\n\nEvidence: "+c.evidenceType+". Sources: "+c.sourceIds.join(", ")+".\n\nConditions: "+c.conditions+"\n\nVerification scope: "+(c.verificationScope??"No additional claim-level review recorded; see source checks.")).join("\n\n");
+    const itemReview=scopeItems.length?"\n\n## Approved scope items\n\n"+scopeItems.map(item=>item.id+". Checked: "+item.checkedAt+". "+item.scope+"\n\n"+item.limitations.map(x=>"- "+x).join("\n")).join("\n\n"):"";
     const review="## Review scope\n\n"+article.review.scope+"\n\n"+article.review.limitations.map(note=>"- "+note).join("\n");
-    return text("# "+article.title+"\n\n"+section.markdown+"\n\n## Sources\n\n"+sourceText+"\n\n## Claim evidence and conditions\n\n"+claimText+"\n\n"+review+"\n\nArticle ID: "+article.id+". Revision: "+article.revision+". Section ID: "+section.id+".\n",article.revision);
+    return text("# "+article.title+"\n\n"+section.markdown+"\n\n## Sources\n\n"+sourceText+"\n\n## Claim evidence and conditions\n\n"+claimText+"\n\n"+review+itemReview+"\n\nArticle ID: "+article.id+". Revision: "+article.revision+". Section ID: "+section.id+".\n",article.revision);
    }
-   return json({...base,articleId:article.id,articleRevision:article.revision,section,claims,sources,materialCases:section.id==="material-cases"?article.materialCases:[]},200,article.revision);
+   return json({...base,articleId:article.id,articleRevision:article.revision,section,claims,sources,scopeItems,materialCases:section.id==="material-cases"?article.materialCases:[]},200,article.revision);
   }
  }
  return json({error:"Endpoint not found."},404);

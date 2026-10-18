@@ -39,7 +39,7 @@ test("pressure ranges reject malformed values before rendering material conditio
 });
 test("publication inventory permits an explicitly approved additional core article",t=>{
  const f=inventoryFixture(t);
- const published=f.manifest.files.filter(x=>x.publicBody).length;
+ const published=JSON.parse(readFileSync(path.join(f.directory,"catalogue.json"),"utf8")).articles.length;
  // Keep this independent of production editorial progress: all real topics
  // may already be published. Approval is exercised only in this temp fixture.
  const source={...f.manifest.files.find(x=>x.articleId==="scwiki-a1"),
@@ -68,7 +68,7 @@ test("publication inventory rejects missing, unapproved and mismatched articles"
     const filename=path.join(f.directory,"articles/a1/meta.json"),meta=JSON.parse(readFileSync(filename,"utf8"));
     meta.topicId="scwiki-topic-a2";writeFileSync(filename,JSON.stringify(meta));
    }
-   const result=f.build();assert.notEqual(result.status,0);assert.match(result.stderr,/publication inventory/);
+   const result=f.build();assert.notEqual(result.status,0);assert.match(result.stderr,scenario==="identity-mismatch"?/invalid ID/:/publication inventory/);
   });
  }
 });
@@ -247,4 +247,24 @@ test("curated material aliases reject non-string entries",t=>{
  const f=inventoryFixture(t),filename=path.join(f.directory,"articles/e1/meta.json"),meta=JSON.parse(readFileSync(filename,"utf8"));
  meta.materialCases[0].aliases=[false];writeFileSync(filename,JSON.stringify(meta));const result=f.build();
  assert.notEqual(result.status,0);assert.match(result.stderr,/invalid material aliases/);
+});
+
+
+test("approved extension pages cannot publish without registration and per-item evidence",async t=>{
+ for(const scenario of ["unpublished","missing-item-review","wrong-target"]){
+  await t.test(scenario,t=>{
+   const f=inventoryFixture(t),inventoryPath=path.join(f.directory,"extension-inventory.json");
+   const inventory=JSON.parse(readFileSync(inventoryPath,"utf8"));
+   const page=inventory.pages.find(p=>p.code==="N10");
+   if(scenario==="unpublished")page.publicBody=false;
+   if(scenario==="wrong-target")page.slug="unapproved-question";
+   writeFileSync(inventoryPath,JSON.stringify(inventory));
+   if(scenario==="missing-item-review"){
+    const filename=path.join(f.directory,"articles/n10/meta.json"),meta=JSON.parse(readFileSync(filename,"utf8"));
+    meta.scopeItems=[];writeFileSync(filename,JSON.stringify(meta));
+   }
+   const result=f.build();assert.notEqual(result.status,0);
+   assert.match(result.stderr,scenario==="unpublished"?/publication inventory/:scenario==="missing-item-review"?/each approved item/:/page identity/);
+  });
+ }
 });

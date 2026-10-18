@@ -9,11 +9,61 @@ import {NextRequest} from "next/server";
 import {ScientificMarkdown} from "@/components/scwiki/ScientificMarkdown";
 import {articles,catalogue,searchIndex} from "@/lib/scwiki/catalogue";
 import {searchArticles,normalizeSearch} from "@/lib/scwiki/search";
+import {articleIdPattern,sectionAnchor,validateExtensionInventory,validateExtensionArticle} from "../../scripts/scwiki-publication.mjs";
+import {sectionId} from "@/lib/scwiki/safety";
 import {safeUrl} from "@/lib/scwiki/safety";
 import {legacyDestination} from "@/lib/site-routes";
 import {GET} from "@/app/api/scwiki/v1/[[...segments]]/route";
 const get=(segments:string[],query="")=>GET(new NextRequest("http://localhost/api/scwiki/v1/"+segments.join("/")+query),{params:Promise.resolve({segments})});
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("retains all 71 approved extension targets separately from 282 pinned sources",()=>{
+  const manifest=JSON.parse(readFileSync("content/scwiki/source-manifest.json","utf8"));
+  const inventory=JSON.parse(readFileSync("content/scwiki/extension-inventory.json","utf8"));
+  const published=validateExtensionInventory(inventory,manifest);
+  expect(inventory.pages).toHaveLength(15);
+  expect(inventory.pages.flatMap((p:{items:unknown[]})=>p.items)).toHaveLength(71);
+  expect(inventory.pages.filter((p:{kind:string})=>p.kind==="handbook").flatMap((p:{items:unknown[]})=>p.items)).toHaveLength(61);
+  expect(published.map((p:{id:string})=>p.id).sort()).toEqual(articles().filter(a=>a.publicationKind).map(a=>a.id).sort());
+  const plan=manifest.files.find((s:{path:string})=>s.path==="02_BATCH_2_IN_PLAN.md");
+  expect(plan.publicBody).toBe(false);expect(plan.articleId).toBeNull();
+  for(const alter of [(v:any)=>v.pages.pop(),(v:any)=>v.pages[0].items.pop(),(v:any)=>v.pages[0].items[0].target="experimental-methods#changed",(v:any)=>v.pages[0].slug="new-unapproved-scope"]){
+   const broken=structuredClone(inventory);alter(broken);expect(()=>validateExtensionInventory(broken,manifest)).toThrow();
+  }
+  expect(articleIdPattern.test("scwiki-n11")).toBe(false);expect(articleIdPattern.test("scwiki-i1")).toBe(false);
+ });
+ it("keeps 61 handbook anchors stable and rejects publication without each substantive item review",()=>{
+  const inventory=JSON.parse(readFileSync("content/scwiki/extension-inventory.json","utf8"));
+  for(const page of inventory.pages.filter((p:{kind:string})=>p.kind==="handbook"))for(const item of page.items){
+   for(const title of [item.id+" — Original heading",item.id+" — Revised description"]){
+    expect(sectionId(title)).toBe(item.sectionId);expect(sectionAnchor(title)).toBe(item.sectionId);
+    expect(renderToStaticMarkup(<ScientificMarkdown markdown={"## "+title+"\n\nA cited explanation."}/>)).toContain('id="'+item.sectionId+'"');
+   }
+  }
+  const a=articles().find(a=>a.code==="N10")!;const registration=inventory.pages.find((p:{code:string})=>p.code==="N10");
+  expect(()=>validateExtensionArticle(a,a.sections,registration)).not.toThrow();
+  for(const alter of [(v:any)=>v.scopeItems=[],(v:any)=>v.scopeItems[0].sectionIds=["nonexistent"],(v:any)=>v.scopeItems[0].limitations=[]]){
+   const broken=structuredClone(a);alter(broken);expect(()=>validateExtensionArticle(broken,broken.sections,registration)).toThrow();
+  }
+  const chunks=a.sections.map(s=>({...s,markdown:"Short placeholder."}));
+  expect(()=>validateExtensionArticle(a,chunks,registration)).toThrow(/substantive/);
+ });
+ it("exports the N10 question with scoped planning provenance and no experimental Tc invention",async()=>{
+  const a=articles().find(a=>a.code==="N10")!;
+  expect(a.slug).toBe("open-questions/n10");expect(a.materialCases).toEqual([]);
+  expect(a.provenance.path).toBe("02_BATCH_2_IN_PLAN.md");
+  const response=await get(["articles",a.id,"sections","mathematical-assumptions"]);
+  expect(response.status).toBe(200);const payload=await response.json();
+  expect(payload.scopeItems[0].id).toBe("N10");
+  const md=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+  for(const limit of a.scopeItems![0].limitations){expect(md).toContain(limit);expect(a.markdown).toContain(limit);}
+  expect(md).toContain("Approved scope items");expect(a.markdown).toContain("Approved scope items");
+  for(const q of ["平带超导温度上限","flat-band Tc bound"]){
+   expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
+   expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
+  }
+  for(const id of ["scwiki-i","scwiki-n1"]){expect((await get(["articles",id])).status).toBe(404);}
+ });
+
  it("separates interface noise-floor zero, BKT analysis and spectroscopic temperatures through API exports",async()=>{
   const a=articles().find(a=>a.code==="D11")!;
   const zero=a.materialCases.filter(c=>c.criterion==="zero-resistance");
@@ -277,7 +327,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(m.files).toHaveLength(282);
   expect(new Set(m.files.map((x:{id:string})=>x.id)).size).toBe(282);
   expect(m.files.filter((x:{topicId:string|null})=>x.topicId)).toHaveLength(89);
-  expect(m.files.filter((x:{publicBody:boolean})=>x.publicBody).map((x:{articleId:string})=>x.articleId).sort()).toEqual(articles().map(a=>a.id).sort());
+  expect(m.files.filter((x:{publicBody:boolean})=>x.publicBody).map((x:{articleId:string})=>x.articleId).sort()).toEqual(articles().filter(a=>!a.publicationKind).map(a=>a.id).sort());
   expect(m.files.find((x:{path:string})=>x.path.includes("Al-O")).disposition).toContain("prediction-only");
   expect(articles().map(a=>a.code)).toEqual(expect.arrayContaining(["A1","A2","B12","C2","D11","D3","D4","D5","E4","F7","G7","H2"]));
   expect(articles().every(a=>a.wordCount>=450)).toBe(true);
@@ -285,7 +335,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
  it("uses stable IDs, content hashes, complete source mappings and separate review labels",()=>{
   const m=JSON.parse(readFileSync("content/scwiki/source-manifest.json","utf8"));
   for(const a of articles()){
-   expect(a.id).toMatch(/^scwiki-(?:[a-h]\d+|overview)$/);expect(a.topicId).toBe("scwiki-topic-"+a.code.toLowerCase());
+   expect(a.id).toMatch(articleIdPattern);expect(a.topicId).toBe("scwiki-topic-"+a.code.toLowerCase());
    expect(a.revision).toMatch(/^[a-f0-9]{20}$/);expect(a.editorialStatus).toBe("scoped-check");
    const source=m.files.find((x:{id:string})=>x.id===a.provenance.sourceId);
    expect(source.sha256).toBe(a.provenance.sha256);
@@ -304,7 +354,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(a.claims.length).toBeGreaterThan(5);
    for(const c of a.claims){expect(sections.has(c.sectionId)).toBe(true);expect(c.conditions.length).toBeGreaterThan(30);expect(c.sourceIds.every(id=>refs.has(id))).toBe(true);}
    for(const match of a.body.matchAll(/\]\(#ref-([a-z0-9-]+)\)/g))expect(refs.has(match[1])).toBe(true);
-   for(const match of a.body.matchAll(/\]\(\/scwiki\/([a-z0-9-]+)\)/g))expect(slugs.has(match[1])).toBe(true);
+   for(const match of a.body.matchAll(/\]\(\/scwiki\/([a-z0-9/-]+)\)/g))expect(slugs.has(match[1])).toBe(true);
    const html=renderToStaticMarkup(<ScientificMarkdown markdown={a.body}/>);
    expect(html).not.toContain('class="katex-error"');expect(html).not.toContain("language-text");
    if(a.body.includes("$$"))expect(html).toContain('class="katex"');

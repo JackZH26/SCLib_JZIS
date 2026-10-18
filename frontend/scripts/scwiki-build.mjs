@@ -2,10 +2,11 @@ import {readFileSync,readdirSync,writeFileSync} from "node:fs";
 import path from "node:path";
 import {createHash} from "node:crypto";
 import katex from "katex";
+import {articleIdPattern,sectionAnchor,validateExtensionInventory,validateExtensionArticle} from "./scwiki-publication.mjs";
 
 const directory=path.join(process.cwd(),"content/scwiki");
 const sha=value=>createHash("sha256").update(value).digest("hex");
-const anchor=value=>value.toLowerCase().replace(/[^a-z0-9]+/g,"-").replace(/^-|-$/g,"");
+const anchor=sectionAnchor;
 const fail=message=>{throw new Error("SCWiki: "+message)};
 const required=["scope","mathematical-assumptions","experimental-criteria","limits-and-disputes","discovery-implications","related-topics"];
 const manifest=JSON.parse(readFileSync(path.join(directory,"source-manifest.json"),"utf8"));
@@ -14,17 +15,22 @@ const bySource=new Map(manifest.files.map(f=>[f.id,f]));
 const publishedSources=manifest.files.filter(f=>f.publicBody);
 const expectedIds=new Set(publishedSources.map(f=>f.articleId));
 if(!expectedIds.size||expectedIds.size!==publishedSources.length||publishedSources.some(f=>!/^scwiki-(?:[a-h][0-9]+|overview)$/.test(f.articleId)))fail("invalid publication inventory");
+const extensionInventory=JSON.parse(readFileSync(path.join(directory,"extension-inventory.json"),"utf8"));
+const publishedExtensions=validateExtensionInventory(extensionInventory,manifest);
+const extensions=new Map(publishedExtensions.map(p=>[p.id,p]));
+for(const p of publishedExtensions){if(expectedIds.has(p.id))fail("duplicate extension publication");expectedIds.add(p.id);}
 const articles=[],ids=new Set(),slugs=new Set();
 for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  const meta=JSON.parse(readFileSync(path.join(directory,"articles",folder,"meta.json"),"utf8"));
  const body=readFileSync(path.join(directory,"articles",folder,"body.md"),"utf8").trim();
  if(meta.contentState!=="pilot")continue;
  for(const key of ["id","topicId","code","slug","title","summary","modifiedAt"])if(!meta[key])fail(folder+" missing "+key);
- if(!/^scwiki-(?:[a-h][0-9]+|overview)$/.test(meta.id)||!/^scwiki-topic-(?:[a-h][0-9]+|overview)$/.test(meta.topicId)||!/^[-a-z0-9]+$/.test(meta.slug))fail(folder+" invalid ID");
+ if(!articleIdPattern.test(meta.id)||meta.topicId!=="scwiki-topic-"+meta.code.toLowerCase()||! /^(?:[-a-z0-9]+|open-questions\/n(?:[1-9]|10))$/.test(meta.slug))fail(folder+" invalid ID");
  if(ids.has(meta.id)||slugs.has(meta.slug))fail("duplicate article");
  ids.add(meta.id);slugs.add(meta.slug);
  const source=bySource.get(meta.provenance.sourceId);
- if(!source?.publicBody||source.articleId!==meta.id||source.topicId!==meta.topicId||meta.id!=="scwiki-"+meta.code.toLowerCase())fail(folder+" article is not approved in the publication inventory");
+ const extension=extensions.get(meta.id);
+ if(meta.id!=="scwiki-"+meta.code.toLowerCase()||(!extension&&(!source?.publicBody||source.articleId!==meta.id||source.topicId!==meta.topicId)))fail(folder+" article is not approved in the publication inventory");
  if(!source||source.sha256!==meta.provenance.sha256||source.path!==meta.provenance.path||meta.provenance.commit!==manifest.commit)fail(folder+" provenance mismatch");
  if(/\p{Script=Han}/u.test(body)||/\p{Script=Han}/u.test(meta.title+" "+meta.summary))fail(folder+" authored English content contains Han copy");
  if(/<\/?[a-z][^>]*>/i.test(body)||/\]\(\s*(?:javascript|data|vbscript):/i.test(body))fail(folder+" unsafe authored Markdown");
@@ -33,6 +39,7 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
   return {id:anchor(title),title,markdown:"## "+chunk.trim()};
  });
  for(const id of required)if(!chunks.some(s=>s.id===id))fail(folder+" missing section "+id);
+ if(extension)validateExtensionArticle(meta,chunks,extension);
  const sectionIds=new Set(chunks.map(s=>s.id));
  if(sectionIds.size!==chunks.length)fail(folder+" duplicate section");
  const refIds=new Set(meta.references.map(r=>r.id));
@@ -80,7 +87,8 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  const revision=sha("scwiki-export-v4\n"+JSON.stringify(meta)+"\n"+body).slice(0,20);
  const provenance="## Revision and review\n\nArticle ID: "+meta.id+". Revision: "+revision+". Updated: "+meta.modifiedAt+".\n\nReview scope: "+meta.review.scope+"\n\n"+meta.review.limitations.map(x=>"- "+x).join("\n")+"\n\nSource: ["+meta.provenance.path+"](https://github.com/"+meta.provenance.repository+"/blob/"+meta.provenance.commit+"/"+meta.provenance.path+"), commit "+meta.provenance.commit+", SHA-256 "+meta.provenance.sha256+".";
  const claimText="## Claim evidence and conditions\n\n"+meta.claims.map(c=>"### "+c.id+"\n\n"+c.statement+"\n\nEvidence: "+c.evidenceType+". Sources: "+c.sourceIds.join(", ")+".\n\nConditions: "+c.conditions+"\n\nVerification scope: "+(c.verificationScope??"No additional claim-level review recorded; see source checks.")).join("\n\n");
- const markdown="# "+meta.title+"\n\n"+meta.summary+"\n\n"+body+"\n\n"+conditions+"\n\n## Sources\n\n"+referenceText+"\n\n"+claimText+"\n\n"+provenance+"\n";
+ const scopeText=(meta.scopeItems??[]).length?"\n\n## Approved scope items\n\n"+meta.scopeItems.map(item=>item.id+". Checked: "+item.checkedAt+". "+item.scope+"\n\n"+item.limitations.map(x=>"- "+x).join("\n")).join("\n\n"):"";
+ const markdown="# "+meta.title+"\n\n"+meta.summary+"\n\n"+body+"\n\n"+conditions+"\n\n## Sources\n\n"+referenceText+"\n\n"+claimText+scopeText+"\n\n"+provenance+"\n";
  articles.push({...meta,body,revision,sections:[...chunks,{id:"material-cases",title:"Material cases",markdown:conditions}],markdown,wordCount:body.split(/\s+/).length});
 }
 if(articles.length!==expectedIds.size||articles.some(a=>!expectedIds.has(a.id)))fail("published articles do not match the publication inventory");
