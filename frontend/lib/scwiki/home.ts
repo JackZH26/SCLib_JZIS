@@ -13,6 +13,7 @@ export const topicGroups = [
   ]},
   {id:"handbooks", title:"Reference handbooks", description:"Compare methods, assumptions and the evidence behind an interpretation.", topics:[
     {code:"I", label:"Experimental methods"},
+    {code:"J", label:"Theoretical tools"},
   ]},
   {id:"open-questions", title:"Open research questions", description:"Examine what is established, what remains uncertain and which evidence would resolve it.", topics:[
     {code:"N10", label:"What limits flat-band Tc?"},

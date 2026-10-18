@@ -61,7 +61,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
    expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
   }
-  for(const id of ["scwiki-j","scwiki-n1"]){expect((await get(["articles",id])).status).toBe(404);}
+  for(const id of ["scwiki-k","scwiki-n1"]){expect((await get(["articles",id])).status).toBe(404);}
  });
 
  it("publishes all fifteen experimental-method sections with individual evidence limits",async()=>{
@@ -83,6 +83,29 @@ describe("SCWiki source and scientific-content contracts",()=>{
   }
   expect(a.body).toContain("not a simultaneous demonstration of zero resistance");
   expect(a.body).toContain("different fields");expect(a.body).toContain("lower bounds on correlation lengths");
+ });
+
+ it("exports every theoretical-method item without promoting model results into measured Tc",async()=>{
+  const a=articles().find(a=>a.code==="J")!;
+  expect(a.scopeItems?.map(i=>i.id)).toEqual(Array.from({length:12},(_,i)=>"J"+(i+1)));
+  for(const item of a.scopeItems!){
+   const id=item.id.toLowerCase();expect(item.sectionIds).toEqual([id]);
+   const data=await(await get(["articles",a.id,"sections",id])).json();
+   expect(data.scopeItems.map((s:{id:string})=>s.id)).toEqual([item.id]);
+   const md=await(await get(["articles",a.id,"sections",id],"?format=markdown")).text();
+   expect(md).toContain(data.section.markdown);
+   for(const limit of item.limitations)expect(md).toContain(limit);
+  }
+  for(const q of ["理论工具","重整化群","undersampled distant hopping"]){
+   expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
+   expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
+  }
+  expect(a.materialCases).toEqual([]);
+  expect(a.body).toContain("not collectively weak-correlation methods");
+  expect(a.body).toContain("does not take its width to the two-dimensional thermodynamic limit");
+  expect(a.body).toContain("abstract was checked");
+  expect(a.body).toContain("loss of perturbative control");
+  expect(a.body).toContain("particle-hole redundancy");
  });
 
  it("matches short Han keywords within phrases while keeping short Latin tokens exact",()=>{
