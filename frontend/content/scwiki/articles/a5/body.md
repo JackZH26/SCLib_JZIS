@@ -22,16 +22,21 @@ In this magnitude-only model, replacing a gap by its negative leaves the excitat
 
 ## Experimental criteria
 
-Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. Selected review and theory passages now support tunneling, optical and point-contact interpretation limits, alongside the earlier ARPES and bulk-probe context. Complete control-by-control verification of the other probe rows remains open.
+Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. Selected passages now support the listed controls across all seven probe rows. This is a scoped methods check, not an exhaustive experimental protocol, a final-version audit or independent validation.
 
 | Probe | Recorded quantity | What must be controlled |
 |---|---|---|
 | Tunneling or STS | Differential conductance versus bias | Tip and sample spectra, thermal/instrumental broadening, matrix elements and surface variation [R7](#ref-source-d687e60f83e71f36) |
-| ARPES | Momentum-resolved photoemission intensity | Occupation, resolution, matrix elements and surface state; a leading edge is not automatically a gap amplitude |
+| ARPES | Momentum-resolved photoemission intensity | Occupation, resolution, matrix elements and surface state; a leading edge is not automatically a gap amplitude [R12](#ref-source-d679e3d02f15050c) [R3](#ref-source-e933e3bbd4beade6) |
 | Optical or THz spectroscopy | Frequency-dependent electrodynamic response | Scattering, multiple bands and the model linking absorption to an excitation threshold [R8](#ref-source-aa5ec58b03d1a3ef) [R9](#ref-source-9394f6a65db2d109) |
-| Heat capacity | Entropy and bulk excitation contribution | Lattice/magnetic backgrounds and normalization; no direct phase measurement |
-| Penetration depth or thermal transport | Low-energy electromagnetic or heat response | Disorder, nonlocality, background and multiple excitation channels |
+| Heat capacity | Heat capacity versus temperature and field; entropy inferred by integration | Addenda, sample basis, equilibration, lattice and magnetic backgrounds; no direct phase measurement [R13](#ref-source-18085282135e3fe4) [R3](#ref-source-e933e3bbd4beade6) |
+| Penetration depth | Low-energy electromagnetic response | Disorder, geometry/nonlocal response, magnetic or surface contributions and multiband weighting [R14](#ref-source-35bdae325860140f) |
+| Thermal transport | Heat conductivity and its low-temperature extrapolation | Impurity scattering, nonsuperconducting regions, multiband response and extrapolation range [R15](#ref-source-63de87eb1fb70b58) |
 | Andreev or point-contact spectroscopy | Interface current and conductance | Barrier transparency, heating, contact regime and channel mixing [R10](#ref-source-d09edec8bdd2b452) [R11](#ref-source-dc8f626a5df50714) |
+
+The measured ARPES intensity includes occupation and matrix-element factors, and quantitative analysis also requires resolution and background treatment. A leading-edge displacement therefore needs a model before it is reported as a gap amplitude. For calorimetry, Wang and colleagues separately measure addenda and discuss impurity contributions, normalization and thermal equilibration in their MgB2 sample. Heat capacity is measured; entropy requires an integration and reference choice. [R12](#ref-source-d679e3d02f15050c) [R13](#ref-source-18085282135e3fe4)
+
+Penetration depth and heat transport require different controls. The Prozorov-Giannetta review discusses geometry, nonlocality and magnetic or surface contributions, including competing interpretations of a power law. Shakeripour and colleagues warn that nonsuperconducting regions can contribute to a residual heat-conduction term and that multiband response can obscure a particular gap. These selected methodological cautions do not import the reviews' historical material-symmetry assignments as current verdicts. [R14](#ref-source-35bdae325860140f) [R15](#ref-source-63de87eb1fb70b58)
 
 A tunnel conductance resembles the sample density of states only under counterelectrode and matrix-element assumptions; the selected Fischer review gives the thermal convolution and explains the resolution role of lock-in modulation. Do not identify every conductance peak with $\Delta$. Optical interpretation also depends on scattering and multiband weights: the selected Dressel review compares competing fits, while Seibold and colleagues distinguish DOS peaks, excitation thresholds and collective absorption within a disordered model. These are source-scoped cautions, not a new fit to any specimen. Photoemission and thermodynamic probes constrain other aspects; magnitude-sensitive measurements alone do not determine relative phase. [R3](#ref-source-e933e3bbd4beade6) [R7](#ref-source-d687e60f83e71f36) [R8](#ref-source-aa5ec58b03d1a3ef) [R9](#ref-source-9394f6a65db2d109)
 

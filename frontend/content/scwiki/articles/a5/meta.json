@@ -32,13 +32,13 @@
   "modifiedAt": "2026-10-19",
   "review": {
     "checkedAt": "2026-10-19",
-    "scope": "Edited pinned A5 chapter, selected BCS/Choi and phase-sensitive primary passages, review passages, Hardy/Carbotte abstracts and an independent ideal-DOS state-counting check. Selected Fischer tunneling, Dressel optical review and Seibold disordered-response author-version passages; identified manuscript dates retained. Selected Sheet and Kumar point-contact author passages, with publisher abstracts checked separately.",
+    "scope": "Edited pinned A5 chapter, selected BCS/Choi and phase-sensitive primary passages, review passages, Hardy/Carbotte abstracts and an independent ideal-DOS state-counting check. Selected Fischer tunneling, Dressel optical review and Seibold disordered-response author-version passages; identified manuscript dates retained. Selected Sheet and Kumar point-contact author passages, with publisher abstracts checked separately. Selected Damascelli, Wang, Prozorov-Giannetta and Shakeripour author-version methods and interpretation passages mapped to the remaining probe controls.",
     "limitations": [
       "Selected source checks do not constitute full scientific validation or independent experimental replication.",
       "Hardy is abstract-scoped; tricrystal image fits, uncertainties and all underlying review citations were not independently reproduced.",
       "No sample-specific gap amplitude or transition temperature was re-extracted; calculated gaps are not experimental records.",
       "The DOS check assumes a clean isotropic constant-DOS mean-field model, not a universal tunneling spectrum.",
-      "The reporting table remains only partly mapped: tunneling, optical and point-contact cautions have scoped support; complete control-by-control verification of the other probe rows remains open. Complete final-version comparisons of these added sources are pending."
+      "All seven listed probe rows have selected source support, but the table is an editorial methods map, not an exhaustive protocol or certified dataset. Full final-version comparisons, underlying experimental data and independent review remain open."
     ]
   },
   "provenance": {
@@ -278,6 +278,62 @@
         "evidenceUrl": "https://arxiv.org/pdf/2008.09823v4",
         "note": "Author v4 of 6 October 2020: selected pp. 2, 5-11 and p. 5 visual check of barrier/network-model context. Publisher abstract and 29 September 2021 publication date checked separately. Final abstract additionally reports Nb experiments; those final experiments and full version differences were not reviewed. No network-spectrum or raw-data reproduction."
       }
+    },
+    {
+      "id": "source-d679e3d02f15050c",
+      "doi": "10.1103/RevModPhys.75.473",
+      "title": "Angle-resolved photoemission studies of the cuprate superconductors",
+      "year": 2003,
+      "url": "https://doi.org/10.1103/RevModPhys.75.473",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-author-manuscript-scoped-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0208504v1",
+        "note": "Author review v1 submitted 27 August 2002; journal publication 17 April 2003. Selected pp. 7 and 9 (Eqs. 12 and 21), pp. 37-38 on leading-edge versus gap estimates; p. 9 visually checked. Surface caution also uses the separately identified Tsuei-Kirtley review. No current instrumental-resolution claim, raw-spectrum fit, final-version comparison or audit of all underlying experiments."
+      }
+    },
+    {
+      "id": "source-18085282135e3fe4",
+      "doi": "10.1016/S0921-4534(01)00617-7",
+      "title": "Specific heat in the superconducting and normal state (2–300 K, 0–16 T), and magnetic susceptibility of the 38 K superconductor MgB2: evidence for a multicomponent gap",
+      "year": 2001,
+      "url": "https://doi.org/10.1016/S0921-4534(01)00617-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-measurement-methods-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0103181v1",
+        "note": "Author v1 submitted 8 March 2001. Selected pp. 3, 6-7, 9 and 16: lattice/electronic separation, separately measured addenda, impurity Schottky contribution, per-gram-atom versus per-mole units and heating/cooling equilibration; p. 9 visually checked. These are sample-specific methods and cautions, not re-extracted gaps or temperatures. Final-version comparison and raw-data reanalysis remain open."
+      }
+    },
+    {
+      "id": "source-35bdae325860140f",
+      "doi": "10.1088/0953-2048/19/8/R01",
+      "title": "Magnetic penetration depth in unconventional superconductors",
+      "year": 2006,
+      "url": "https://doi.org/10.1088/0953-2048/19/8/R01",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-author-manuscript-scoped-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0605612v1",
+        "note": "Author review v1 submitted 24 May 2006. Selected pp. 14, 24, 32-34 and 38 on paramagnetism, alternative impurity/nonlocal interpretations, surface contributions and multiband response; p. 24 visually checked. Historical material assignments and FFLO claims are not adopted as current conclusions. No underlying-data reanalysis or full final-version comparison."
+      }
+    },
+    {
+      "id": "source-63de87eb1fb70b58",
+      "doi": "10.1088/1367-2630/11/5/055065",
+      "title": "Heat transport as a probe of superconducting gap structure",
+      "year": 2009,
+      "url": "https://doi.org/10.1088/1367-2630/11/5/055065",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-author-manuscript-scoped-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/0904.0388v1",
+        "note": "Author v1 submitted 2 April 2009. Selected pp. 1-2 and 8-9: residual-term extrapolation, impurity response, nonsuperconducting-region caveat and multiband weighting. Historical Sr2RuO4 p-wave assignment and material-specific gap verdicts are not adopted as current conclusions. No raw thermal-transport fits or final-version comparison."
+      }
     }
   ],
   "materialCases": [],
@@ -387,7 +443,7 @@
     {
       "id": "scwiki-a5-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. Selected review and theory passages now support tunneling, optical and point-contact interpretation limits, alongside the earlier ARPES and bulk-probe context. Complete control-by-control verification of the other probe rows remains open.",
+      "statement": "Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. Selected passages now support the listed controls across all seven probe rows. This is a scoped methods check, not an exhaustive experimental protocol, a final-version audit or independent validation.",
       "evidenceType": "hypothesis",
       "sourceIds": [
         "source-e933e3bbd4beade6",
@@ -395,17 +451,21 @@
         "source-aa5ec58b03d1a3ef",
         "source-9394f6a65db2d109",
         "source-d09edec8bdd2b452",
-        "source-dc8f626a5df50714"
+        "source-dc8f626a5df50714",
+        "source-d679e3d02f15050c",
+        "source-18085282135e3fe4",
+        "source-35bdae325860140f",
+        "source-63de87eb1fb70b58"
       ],
       "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
-      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset.",
+      "verificationScope": "Selected source passages mapped to each listed probe control; editorial synthesis, no data reanalysis or exhaustive protocol validation.",
       "sourceRelationship": "context-for-local-derivation",
-      "derivationNote": "Local editorial reporting map with selected source support: Fischer author v1 pp. 6-8 and 11 for tunneling; Dressel author v1 pp. 1-2 and Seibold author v1 pp. 1-2 for optical models; Tsuei-Kirtley pp. 974-976 for other selected probes. These readings do not certify all controls or any material dataset. Sheet author v1 pp. 4-8 and Kumar author v4 pp. 5-11 additionally support point-contact regime/barrier/heating/network cautions; complete control-level checks of the other rows remain pending."
+      "derivationNote": "Local editorial reporting map, now checked against selected source passages for each listed row. Fischer pp. 6-8/11: tunneling; Dressel pp. 1-2 and Seibold pp. 1-2: optical response; Sheet pp. 4-8 and Kumar pp. 5-11: point-contact controls. Damascelli pp. 7/9/37-38: ARPES; Wang pp. 3/6-7/9/16: calorimetry; Prozorov-Giannetta pp. 14/24/32-34/38: penetration depth; Shakeripour pp. 1-2/8-9: heat transport. Tsuei-Kirtley pp. 975-976 and section III opening p. 977 distinguish these magnitude-sensitive probes from phase tests. Not an exhaustive protocol, independent review or material certification."
     },
     {
       "id": "scwiki-a5-claim-experimental-criteria-2",
       "sectionId": "experimental-criteria",
-      "statement": "| Probe | Recorded quantity | What must be controlled |\n|---|---|---|\n| Tunneling or STS | Differential conductance versus bias | Tip and sample spectra, thermal/instrumental broadening, matrix elements and surface variation |\n| ARPES | Momentum-resolved photoemission intensity | Occupation, resolution, matrix elements and surface state; a leading edge is not automatically a gap amplitude |\n| Optical or THz spectroscopy | Frequency-dependent electrodynamic response | Scattering, multiple bands and the model linking absorption to an excitation threshold |\n| Heat capacity | Entropy and bulk excitation contribution | Lattice/magnetic backgrounds and normalization; no direct phase measurement |\n| Penetration depth or thermal transport | Low-energy electromagnetic or heat response | Disorder, nonlocality, background and multiple excitation channels |\n| Andreev or point-contact spectroscopy | Interface current and conductance | Barrier transparency, heating, contact regime and channel mixing |",
+      "statement": "| Probe | Recorded quantity | What must be controlled |\n|---|---|---|\n| Tunneling or STS | Differential conductance versus bias | Tip and sample spectra, thermal/instrumental broadening, matrix elements and surface variation [R7](#ref-source-d687e60f83e71f36) |\n| ARPES | Momentum-resolved photoemission intensity | Occupation, resolution, matrix elements and surface state; a leading edge is not automatically a gap amplitude [R12](#ref-source-d679e3d02f15050c) [R3](#ref-source-e933e3bbd4beade6) |\n| Optical or THz spectroscopy | Frequency-dependent electrodynamic response | Scattering, multiple bands and the model linking absorption to an excitation threshold [R8](#ref-source-aa5ec58b03d1a3ef) [R9](#ref-source-9394f6a65db2d109) |\n| Heat capacity | Heat capacity versus temperature and field; entropy inferred by integration | Addenda, sample basis, equilibration, lattice and magnetic backgrounds; no direct phase measurement [R13](#ref-source-18085282135e3fe4) [R3](#ref-source-e933e3bbd4beade6) |\n| Penetration depth | Low-energy electromagnetic response | Disorder, geometry/nonlocal response, magnetic or surface contributions and multiband weighting [R14](#ref-source-35bdae325860140f) |\n| Thermal transport | Heat conductivity and its low-temperature extrapolation | Impurity scattering, nonsuperconducting regions, multiband response and extrapolation range [R15](#ref-source-63de87eb1fb70b58) |\n| Andreev or point-contact spectroscopy | Interface current and conductance | Barrier transparency, heating, contact regime and channel mixing [R10](#ref-source-d09edec8bdd2b452) [R11](#ref-source-dc8f626a5df50714) |",
       "evidenceType": "hypothesis",
       "sourceIds": [
         "source-e933e3bbd4beade6",
@@ -413,12 +473,16 @@
         "source-aa5ec58b03d1a3ef",
         "source-9394f6a65db2d109",
         "source-d09edec8bdd2b452",
-        "source-dc8f626a5df50714"
+        "source-dc8f626a5df50714",
+        "source-d679e3d02f15050c",
+        "source-18085282135e3fe4",
+        "source-35bdae325860140f",
+        "source-63de87eb1fb70b58"
       ],
       "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
-      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset.",
+      "verificationScope": "Selected source passages mapped to each listed probe control; editorial synthesis, no data reanalysis or exhaustive protocol validation.",
       "sourceRelationship": "context-for-local-derivation",
-      "derivationNote": "Local editorial reporting map with selected source support: Fischer author v1 pp. 6-8 and 11 for tunneling; Dressel author v1 pp. 1-2 and Seibold author v1 pp. 1-2 for optical models; Tsuei-Kirtley pp. 974-976 for other selected probes. These readings do not certify all controls or any material dataset. Sheet author v1 pp. 4-8 and Kumar author v4 pp. 5-11 additionally support point-contact regime/barrier/heating/network cautions; complete control-level checks of the other rows remain pending."
+      "derivationNote": "Local editorial reporting map, now checked against selected source passages for each listed row. Fischer pp. 6-8/11: tunneling; Dressel pp. 1-2 and Seibold pp. 1-2: optical response; Sheet pp. 4-8 and Kumar pp. 5-11: point-contact controls. Damascelli pp. 7/9/37-38: ARPES; Wang pp. 3/6-7/9/16: calorimetry; Prozorov-Giannetta pp. 14/24/32-34/38: penetration depth; Shakeripour pp. 1-2/8-9: heat transport. Tsuei-Kirtley pp. 975-976 and section III opening p. 977 distinguish these magnitude-sensitive probes from phase tests. Not an exhaustive protocol, independent review or material certification."
     },
     {
       "id": "scwiki-a5-claim-experimental-criteria-3",
@@ -526,6 +590,34 @@
       "verificationScope": "Selected author-version methods and publisher abstracts; final-version experiments and raw data remain unchecked.",
       "sourceRelationship": "mixed-source-and-local-derivation",
       "derivationNote": "Source-specific contact regimes and model constructions support the cautions; their combination as reporting guidance is editorial, not a proof about every experimental spectrum."
+    },
+    {
+      "id": "scwiki-a5-claim-experimental-criteria-7",
+      "sectionId": "experimental-criteria",
+      "statement": "The measured ARPES intensity includes occupation and matrix-element factors, and quantitative analysis also requires resolution and background treatment. A leading-edge displacement therefore needs a model before it is reported as a gap amplitude. For calorimetry, Wang and colleagues separately measure addenda and discuss impurity contributions, normalization and thermal equilibration in their MgB2 sample. Heat capacity is measured; entropy requires an integration and reference choice. [R12](#ref-source-d679e3d02f15050c) [R13](#ref-source-18085282135e3fe4)",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-d679e3d02f15050c",
+        "source-18085282135e3fe4"
+      ],
+      "conditions": "Source-scoped measurement interpretation; no new gap extraction, symmetry verdict or material certification.",
+      "verificationScope": "Selected author-version passages and declared limitations; no independent reproduction.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source methods and cautions summarized in an editorial comparison; selected historical material assignments are excluded."
+    },
+    {
+      "id": "scwiki-a5-claim-experimental-criteria-8",
+      "sectionId": "experimental-criteria",
+      "statement": "Penetration depth and heat transport require different controls. The Prozorov-Giannetta review discusses geometry, nonlocality and magnetic or surface contributions, including competing interpretations of a power law. Shakeripour and colleagues warn that nonsuperconducting regions can contribute to a residual heat-conduction term and that multiband response can obscure a particular gap. These selected methodological cautions do not import the reviews' historical material-symmetry assignments as current verdicts. [R14](#ref-source-35bdae325860140f) [R15](#ref-source-63de87eb1fb70b58)",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-35bdae325860140f",
+        "source-63de87eb1fb70b58"
+      ],
+      "conditions": "Source-scoped measurement interpretation; no new gap extraction, symmetry verdict or material certification.",
+      "verificationScope": "Selected author-version passages and declared limitations; no independent reproduction.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source methods and cautions summarized in an editorial comparison; selected historical material assignments are excluded."
     }
   ],
   "corrections": [
