@@ -585,3 +585,22 @@ it("keeps flat-band pairing, frozen geometry and measured stiffness conditions s
  const f=articles().find(a=>a.code==="F7")!;const fm=await(await get(["articles",f.id,"markdown"])).text();expect(fm).toContain("assumed active-region aspect ratio");
  expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
 });
+
+it("preserves Mottness model limits and the nickelate specimen-specific onset in retrieval",async()=>{
+ const a=articles().find(a=>a.code==="B14")!;
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("does not establish a bulk Mott transition");
+ expect(md).toContain("not a quantitative X-ray absorption spectrum");
+ expect(a.references.some(r=>r.doi==="10.1038/nature00898")).toBe(true);
+ expect(a.references.some(r=>r.doi==="10.1038/nature00992")).toBe(false);
+ expect(searchArticles(searchIndex().entries,"Mottness",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"Mottness",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const d=articles().find(a=>a.code==="D5")!,m=d.materialCases.find(m=>m.formula==="La3Ni2O7")!;
+ expect(m.criterion).toBe("resistance-onset");expect(m.pressureGPa).toEqual({min:18.5,max:18.5});
+ expect(m.temperatureNote).toContain("nonzero residual resistance");
+ expect(searchArticles(searchIndex().entries,"La3Ni2O7",{criterion:"resistance-onset",tcMin:80}).some(r=>r.id===d.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"La3Ni2O7",{criterion:"zero-resistance",tcMin:80}).some(r=>r.id===d.id)).toBe(false);
+ const out=await(await get(["articles",d.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(out).toContain("separate measurement at 25.2 GPa");
+ expect(out).toContain("must not be relabeled as zero resistance");
+});

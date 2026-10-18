@@ -24,7 +24,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-17T12:13:01Z",
+  "modifiedAt": "2026-10-18T09:04:57.758148+00:00",
   "review": {
     "checkedAt": "2026-10-17",
     "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
@@ -201,10 +201,10 @@
       "url": "https://doi.org/10.1038/nature14165",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fnature14165",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "earlier-author-manuscript-selected-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1409.4673v1",
+        "note": "Selected pp3–4 localization and competing-order context; September2014 author version precedes February2015 journal publication. No universal numerical doping or gap threshold inferred."
       }
     }
   ],

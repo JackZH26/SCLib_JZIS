@@ -23,10 +23,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-17T12:13:01Z",
+  "modifiedAt": "2026-10-18T09:04:57.757329+00:00",
   "review": {
-    "checkedAt": "2026-10-17",
-    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Sun2023 published figure, results and methods checked; Li2019 and the2026 strain report retain their listed review scopes.",
     "limitations": [
       "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
       "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
@@ -169,10 +169,10 @@
       "url": "https://doi.org/10.1038/s41586-023-06408-7",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "primary-abstract-scoped-check",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://www.nature.com/articles/s41586-023-06408-7",
-        "note": "Abstract identifies La3Ni2O7, maximum 80 K, 14.0-43.5 GPa and resistance/susceptibility probes; individual onset/zero criteria not re-extracted."
+        "scope": "selected-published-primary-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://iopex6.iphy.ac.cn/PDFlist/2023/Nature621%282023%29493-EX6.pdf",
+        "note": "Selected published p496 Fig3/caption and text, plus Methods PDFp7. Resistance onset, residual resistance, separate magnetic measurement, KBr and room-temperature ruby calibration retained. Raw-data/replication review remains open."
       }
     },
     {
@@ -209,18 +209,18 @@
     },
     {
       "formula": "La3Ni2O7",
-      "sample": "bilayer single crystals under high pressure",
+      "sample": "Sun2023 run1 bilayer single crystal; no pressure-transmitting medium",
       "recordType": "experiment",
       "tcK": 80,
-      "temperatureNote": "maximum reported scale across a pressure series",
-      "criterion": "unknown",
+      "temperatureNote": "Resistance onset at 18.5 GPa; nonzero residual resistance. Separate magnetic response must not be merged into this specimen/pressure record.",
+      "criterion": "resistance-onset",
       "pressureRegime": "high",
       "pressureGPa": {
-        "min": 14,
-        "max": 43.5
+        "min": 18.5,
+        "max": 18.5
       },
-      "equilibrium": "unknown",
-      "probe": "resistance and mutual-inductive susceptibility",
+      "equilibrium": "equilibrium",
+      "probe": "Four-probe resistance; 10 μA; room-temperature ruby pressure calibration",
       "id": "scwiki-d5-material-2",
       "sourceId": "source-df0c15d62982f853",
       "reportedTemperatureK": 80,
@@ -276,11 +276,10 @@
     {
       "id": "scwiki-d5-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "The Li source reports a transition range around 9-15 K in infinite-layer films. This pilot does not assign precise onset and zero values without re-extracting those individual criteria. The Sun abstract reports a maximum scale of 80 K in La3Ni2O7 over pressures between 14.0 and 43.5 GPa with resistance and susceptibility evidence. The maximum is not asserted to occur at every pressure in that interval.",
+      "statement": "The Li source reports a transition range around 9–15 K in infinite-layer films; its individual criteria remain unextracted here.",
       "evidenceType": "experiment",
       "sourceIds": [
-        "source-35fd62b7cb3c490c",
-        "source-df0c15d62982f853"
+        "source-35fd62b7cb3c490c"
       ],
       "conditions": "Infinite-layer reduced epitaxial films and high-pressure bilayer crystals are distinct families. The 80 K scale is not an ambient-pressure bulk result; field and strain reports require sample-specific review.",
       "verificationScope": "See each source verification label; this ledger does not certify primary findings."
@@ -319,6 +318,17 @@
       ],
       "conditions": "Infinite-layer reduced epitaxial films and high-pressure bilayer crystals are distinct families. The 80 K scale is not an ambient-pressure bulk result; field and strain reports require sample-specific review.",
       "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+    },
+    {
+      "id": "scwiki-d5-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Sun2023 reports a resistance onset of 80 K at 18.5 GPa in run 1 without pressure medium. Run 2 uses KBr and shows an onset of 78 K at 18.9 GPa. The 77 K magnetic response is a separate measurement at 25.2 GPa. Residual resistance is explicitly discussed in the methods; these records must not be relabeled as zero resistance.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-df0c15d62982f853"
+      ],
+      "conditions": "Infinite-layer reduced epitaxial films and high-pressure bilayer crystals are distinct families. The 80 K scale is not an ambient-pressure bulk result; field and strain reports require sample-specific review.",
+      "verificationScope": "Selected published p496 Fig3 and Methods PDFp7; raw-data and replication audit open."
     }
   ]
 }

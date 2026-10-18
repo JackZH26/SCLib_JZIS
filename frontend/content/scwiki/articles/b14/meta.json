@@ -1,0 +1,464 @@
+{
+  "id": "scwiki-b14",
+  "topicId": "scwiki-topic-b14",
+  "code": "B14",
+  "slug": "mottness-and-superconductivity",
+  "title": "Mottness and superconductivity",
+  "summary": "Distinguish localization, charge transfer and pairing, with spectral-weight checks and material-specific experimental conditions.",
+  "aliases": [
+    "Mott insulator",
+    "Mottness",
+    "charge-transfer insulator",
+    "Hubbard dimer",
+    "spectral weight",
+    "Kondo",
+    "localization"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "B9",
+    "B3",
+    "D3",
+    "D5",
+    "B10"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T09:04:57.753572+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Sun published results and methods, earlier Lee/Keimer/Lefebvre manuscripts, scoped historical and XAS abstracts, and independent finite-model checks.",
+    "limitations": [
+      "Full scientific acceptance, final-version comparisons and raw-data review remain open.",
+      "ZSA and Chen original full texts were not obtained; the classification anchor and absorption result retain limited review scopes.",
+      "Finite dimer and atomic spectral weights are not bulk transition predictions or measured XAS intensities.",
+      "Kondo, charge-transfer and one-band parameters cannot be transferred unchanged between families."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "B_mechanisms/B14_mottness.md",
+    "sha256": "bee4d8e59da2e3f430693ba1369261a8f561a606569ecffc1b911826d5a8b72c",
+    "sourceId": "file-edcdaf26fe0cfc93"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 15,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Preserved pinned chapter; no universal cross-material parameters added. Original MgB2 DOI corrected in adaptation."
+    },
+    {
+      "startLine": 16,
+      "endLine": 24,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Preserved pinned chapter; no universal cross-material parameters added. Original MgB2 DOI corrected in adaptation."
+    },
+    {
+      "startLine": 25,
+      "endLine": 42,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Preserved pinned chapter; no universal cross-material parameters added. Original MgB2 DOI corrected in adaptation."
+    },
+    {
+      "startLine": 43,
+      "endLine": 53,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Preserved pinned chapter; no universal cross-material parameters added. Original MgB2 DOI corrected in adaptation."
+    },
+    {
+      "startLine": 54,
+      "endLine": 64,
+      "targetSections": [
+        "experimental-criteria",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Preserved pinned chapter; no universal cross-material parameters added. Original MgB2 DOI corrected in adaptation."
+    },
+    {
+      "startLine": 65,
+      "endLine": 81,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Preserved pinned chapter; no universal cross-material parameters added. Original MgB2 DOI corrected in adaptation."
+    },
+    {
+      "startLine": 82,
+      "endLine": 101,
+      "targetSections": [
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Preserved pinned chapter; no universal cross-material parameters added. Original MgB2 DOI corrected in adaptation."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-38cb545895463a79",
+      "doi": "10.1103/PhysRevLett.55.418",
+      "title": "Band gaps and electronic structure of transition-metal compounds",
+      "year": 1985,
+      "url": "https://doi.org/10.1103/PhysRevLett.55.418",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.55.418",
+        "note": "Original classification identity/abstract checked; full primary text unavailable. Detailed cuprate discussion cross-referenced to Lee manuscript p5."
+      }
+    },
+    {
+      "id": "source-5a6026d6455bf7a0",
+      "doi": "10.1126/science.235.4793.1196",
+      "title": "The Resonating Valence Bond State in La2CuO4 and Superconductivity",
+      "year": 1987,
+      "url": "https://doi.org/10.1126/science.235.4793.1196",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "indexed-primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/17818979/",
+        "note": "Original abstract at PubMed: historical proposal, not a confirmed parent-state diagnosis. Publisher endpoint unavailable; full text not checked."
+      }
+    },
+    {
+      "id": "source-2f6a1c773323226a",
+      "doi": "10.1103/RevModPhys.78.17",
+      "title": "Doping a Mott insulator: Physics of high-temperature superconductivity",
+      "year": 2006,
+      "url": "https://doi.org/10.1103/RevModPhys.78.17",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "earlier-author-manuscript-selected-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0410445v1",
+        "note": "Selected pp4–6 electronic structure, oxygen holes and restricted low-energy mapping, in addition to prior B9 passages. Full published-version comparison remains open."
+      }
+    },
+    {
+      "id": "source-6c1991333d4a6fed",
+      "doi": "10.1038/nature14165",
+      "title": "From quantum matter to high-temperature superconductivity in copper oxides",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/nature14165",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "earlier-author-manuscript-selected-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1409.4673v1",
+        "note": "Selected pp3–4 localization and competing-order context; September2014 author version precedes February2015 journal publication. No universal numerical doping or gap threshold inferred."
+      }
+    },
+    {
+      "id": "source-2cc5358d54a65217",
+      "doi": "10.1103/PhysRevLett.85.5420",
+      "title": "Mott Transition, Antiferromagnetism, and Unconventional Superconductivity in Layered Organic Superconductors",
+      "year": 2000,
+      "url": "https://doi.org/10.1103/PhysRevLett.85.5420",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "earlier-author-manuscript-selected-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0004455v1",
+        "note": "Selected pp.1–3: kappa-Cl helium pressure protocol, 0.5T NMR versus no static field ac susceptibility, unresolved macro/mesoscopic coexistence. Full published-version and raw-data comparison pending."
+      }
+    },
+    {
+      "id": "source-0ebda9b697c1f7fd",
+      "doi": "10.1103/PhysRevLett.43.1892",
+      "title": "Superconductivity in the Presence of Strong Pauli Paramagnetism: CeCu2Si2",
+      "year": 1979,
+      "url": "https://doi.org/10.1103/PhysRevLett.43.1892",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.43.1892",
+        "note": "Ce/La comparison and strongly renormalized electronic response; abstract does not settle gap symmetry or a unique pairing mechanism."
+      }
+    },
+    {
+      "id": "source-df0c15d62982f853",
+      "doi": "10.1038/s41586-023-06408-7",
+      "title": "Signatures of superconductivity near 80 K in a nickelate under high pressure",
+      "year": 2023,
+      "url": "https://doi.org/10.1038/s41586-023-06408-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-primary-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://iopex6.iphy.ac.cn/PDFlist/2023/Nature621%282023%29493-EX6.pdf",
+        "note": "Selected published p496 Fig3/caption and text, plus Methods PDFp7. Resistance onset, residual resistance, separate magnetic measurement, KBr and room-temperature ruby calibration retained. Raw-data/replication review remains open."
+      }
+    },
+    {
+      "id": "source-1756566a3dd37c2c",
+      "doi": "10.1103/PhysRevLett.66.104",
+      "title": "Electronic states in La2-xSrxCuO4+δ probed by soft-x-ray absorption",
+      "year": 1991,
+      "url": "https://doi.org/10.1103/PhysRevLett.66.104",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.66.104",
+        "note": "O K-edge fluorescence yield, Sr-dependent pre-edge features and core-hole excitonic model included. Full primary text unavailable."
+      }
+    },
+    {
+      "id": "source-7c4eac077ae5e221",
+      "doi": "10.1038/nature00898",
+      "title": "The origin of the anomalous superconducting properties of MgB2",
+      "year": 2002,
+      "url": "https://doi.org/10.1038/nature00898",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www2.lbl.gov/Science-Articles/Archive/assets/images/2002/Aug-14-2002/MgB2Nature.pdf",
+        "note": "Selected pp. 758–759 and Fig. 3 checked during A5: anisotropic calculation, band-dependent gaps and common calculated transition. This article inherits that scoped check, not independent convergence or experimental replication."
+      }
+    },
+    {
+      "id": "source-8b901b9c6008c434",
+      "doi": "10.1038/nature14964",
+      "title": "Conventional superconductivity at 203 kelvin at high pressures in the sulfur hydride system",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/nature14964",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/abs/1506.08190",
+        "note": "Author abstract: resistivity, field, susceptibility and isotope observations; H3S attribution qualified in that version. Publisher identity checked; detailed data and final-version comparison pending."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-b14-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Mottness describes how electronic interactions constrain charge motion near integer filling and influence the states reached by doping or changing bandwidth. It is a useful starting point for some superconductors, not a unique pairing interaction. Anderson's RVB proposal is one historical route from a correlated parent; competing orders and several pairing descriptions remain part of the cuprate problem.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-5a6026d6455bf7a0",
+        "source-6c1991333d4a6fed"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Distinguish Mott-Hubbard and charge-transfer descriptions. In a localized configuration picture, the former emphasizes the cost of redistributing electrons between metal sites; the latter can involve a lower-energy ligand-to-metal excitation. Hybridization and bandwidth complicate that comparison. The Zaanen–Sawatzky–Allen paper provides the classification anchor, but its full text has not been checked here. The selected Lee–Nagaosa–Wen manuscript explicitly retains oxygen holes in cuprates before discussing a restricted low-energy reduction. A fitted single-band interaction is not automatically the bare metal-orbital Coulomb energy.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-38cb545895463a79",
+        "source-2f6a1c773323226a"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An independent Hubbard-dimer illustration separates charge and spin scales. Take two sites, two spin states per site, hopping $t>0$, repulsion $U\\geq0$, and no ligand orbital or reservoir. With $E_N$ the lowest energy at fixed particle number, define the finite-system charge addition/removal gap $\\Delta_c=E_3+E_1-2E_2$. Direct diagonalization gives",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2f6a1c773323226a"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\Delta_c=\\sqrt{U^2+16t^2}-2t,\\qquad \\Delta_s=\\frac{\\sqrt{U^2+16t^2}-U}{2}.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2f6a1c773323226a"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Here $\\Delta_s$ is the two-electron singlet–triplet gap. Eight independent spectra verify these expressions and the total double occupancy obtained from $\\partial E_2/\\partial U$. At $U=0$, the dimer already has a charge gap $2t$ from its discrete bonding levels. A finite-cluster charge gap therefore does not establish a bulk Mott transition. For $U\\gg t$, the spin scale approaches $4t^2/U$ while the charge cost increases. Neither is a superconducting gap or a predicted transition temperature. The cited review supplies the Hubbard-model context; this calculation is an independent illustration.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2f6a1c773323226a"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a second atomic illustration, prescribe a spin-balanced ensemble with empty-site probability $x$, each singly occupied state of probability $(1-x)/2$, and no double occupancy. Counting electron creation and removal matrix elements gives, after summing both spins,",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2f6a1c773323226a"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$W_{\\mathrm{remove}}=1-x,\\qquad W_{\\mathrm{add,low}}=2x,\\qquad W_{\\mathrm{add,upper}}=1-x.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2f6a1c773323226a"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-mathematical-assumptions-6",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The total spectral weight is two; the lower-energy removal-plus-addition weight is $1+x$, rather than a fixed rigid band with only its occupation changed. Five enumerated cases check the sum rule. This is a zero-hopping state-counting result with a specified ensemble, not a quantitative X-ray absorption spectrum. Finite hopping, ligand character and a core hole alter the interpretation of a measured spectrum.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2f6a1c773323226a",
+        "source-1756566a3dd37c2c"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-mathematical-assumptions-7",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Configuration mixing also prevents an orbital label from being an integer occupancy. For the illustrative matrix $H=\\begin{pmatrix}0&V\\\\V&\\Delta_{\\mathrm{CT}}\\end{pmatrix}$ in two configuration states, the lower eigenstate has second-state weight $[1-\\Delta_{\\mathrm{CT}}/\\sqrt{\\Delta_{\\mathrm{CT}}^2+4V^2}]/2$. Eight eigenvector and energy-derivative comparisons verify this result. The symbol $\\Delta_{\\mathrm{CT}}$ denotes a configuration-energy difference in this toy model; it is not a measured gap. This two-state calculation omits the lattice, multiplets and screening and cannot determine a material's ZSA phase boundary.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-38cb545895463a79",
+        "source-2f6a1c773323226a"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Chen and colleagues measured the oxygen K edge of La2-xSrxCuO4+δ using bulk-sensitive fluorescence yield. Their two pre-edge features evolve with Sr concentration; the reported modeling includes local interactions and core-hole excitonic correlations. This supports a doped charge-transfer interpretation without making absorption intensity a direct ground-state density of states or proving a pairing glue. The present check is abstract-scoped.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-1756566a3dd37c2c"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Lefebvre and colleagues' kappa-Cl organic-salt study connects a pressure-driven Mott boundary with nearby antiferromagnetism and superconductivity. Its helium-pressure protocol includes 0.5 T NMR and AC susceptibility without a static field. Those are different measurement conditions, and the selected manuscript leaves macroscopic versus mesoscopic coexistence unresolved. No fixed pressure or transition temperature is transferred to other salts.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-2cc5358d54a65217"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Sun and colleagues' 2023 bilayer-nickelate report must retain sample and probe distinctions: four-probe resistance, KBr versus no pressure medium, nonzero residual resistance, and separately measured magnetic response. The published methods use room-temperature ruby calibration. Pressure changes structure as well as electronic parameters; the reported signatures do not identify Mottness as the pairing cause.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-df0c15d62982f853"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "CeCu2Si2 supplies a heavy-fermion comparison, not a copy of a one-band copper-oxide model. Its original discovery supports superconductivity with strongly enhanced electronic response; that report does not settle a unique gap or pairing glue. Comparisons involving localized f states and itinerant coherence require a material-specific Kondo description. Effective mass alone is not a measurement of a Mott charge gap.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0ebda9b697c1f7fd"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Mottness is neither sufficient nor a universal prerequisite for superconductivity. MgB2 provides a multiband electron–phonon calculation, and sulfur-hydride experiments provide a distinct high-pressure setting. These examples prevent treating a doped Mott parent as a necessary route to a high transition scale. The inherited MgB2 DOI has been corrected to **nature00898**; the old **nature00992** points to an unrelated biological channel paper.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7c4eac077ae5e221",
+        "source-8b901b9c6008c434"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b14-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "State the orbital basis, interaction convention and screening method before comparing $U/t$ or charge-transfer energies. Combine transport with spectroscopic and structural measurements, preserving pressure media, oxygen content and temperature criteria. Treat localization, pseudogap, magnetic exchange, pairing and phase coherence as distinct questions. Full scientific acceptance, final-version comparisons and raw-data checks remain open; the finite models illustrate constraints rather than rank real materials.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2f6a1c773323226a",
+        "source-6c1991333d4a6fed",
+        "source-df0c15d62982f853"
+      ],
+      "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-b14-correction-1",
+      "description": "Inherited MgB2 DOI corrected from unrelated nature00992 to nature00898.",
+      "sourceId": "source-7c4eac077ae5e221",
+      "scope": "Publisher identity plus inherited primary passage check."
+    },
+    {
+      "id": "scwiki-b14-correction-2",
+      "description": "Finite charge gap distinguished from bulk Mottness; nickelate onset and magnetic signatures retain separate conditions.",
+      "sourceId": "source-df0c15d62982f853",
+      "scope": "Independent finite model and selected published figure/methods."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta_c=\\sqrt{U^2+16t^2}-2t",
+      "check": "Eight finite-dimer spectra and double-occupancy derivative checks."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "W_{\\mathrm{add,low}}=2x",
+      "check": "Five atomic matrix-element counting and total-weight sum rules."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\partial E_-/\\partial\\Delta_{\\mathrm{CT}}",
+      "check": "Eight two-configuration eigenvector/energy-derivative comparisons."
+    }
+  ],
+  "materialCases": []
+}

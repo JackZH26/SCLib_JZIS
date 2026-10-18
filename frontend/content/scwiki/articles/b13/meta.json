@@ -27,10 +27,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T08:54:40.849124+00:00",
+  "modifiedAt": "2026-10-18T09:04:57.758932+00:00",
   "review": {
     "checkedAt": "2026-10-18",
-    "scope": "Selected published Peotta/Cao passages, earlier Julku/Tanaka manuscripts, CsV3Sb5 abstract and versioned2026preprint abstract, plus independent reduced models.",
+    "scope": "Selected published Peotta/Cao passages, earlier Julku/Tanaka manuscripts, CsV3Sb5 abstract and versioned 2026 preprint abstract, plus independent reduced models.",
     "limitations": [
       "Full scientific acceptance, final-version comparisons and raw-data review remain open.",
       "Frozen projected overlap curvature omits full multiband and self-consistent orbital response.",
@@ -156,7 +156,7 @@
         "scope": "selected-earlier-author-manuscript-check",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://arxiv.org/html/2406.13740v2",
-        "note": "Selected device and stiffness sections:20mKbase/~40mKdevice,edge proximity model,activeaspectratio andhalf-resistance criterion. Published5February2025; full publishedversion/raw-data review open."
+        "note": "Selected device and stiffness sections:20 mK base / approximately 40 mK device,edge proximity model,active aspect ratio and half-resistance criterion. Published 5 February 2025; full published-version / raw-data review open."
       }
     },
     {
@@ -184,7 +184,7 @@
         "scope": "preprint-v2-abstract-version-check",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://arxiv.org/abs/2603.24766v2",
-        "note": "v2 9September2026 title/abstract differ from Marchv1; prediction,not measurement. Full methods not reviewed."
+        "note": "v2 9 September 2026 title/abstract differ from March v1; prediction, not measurement. Full methods not reviewed."
       }
     }
   ],
@@ -418,7 +418,7 @@
       "tcK": null,
       "reportedTemperatureK": 0.02,
       "temperatureKind": "measurement",
-      "temperatureNote": "20mK refrigerator base; approximately40mK wireddevice. Approximatehalf-resistance~1K acrossdome notassignedasonepreciseTc.",
+      "temperatureNote": "20 mK refrigerator base; approximately 40 mK wired device. Approximate half-resistance scale near 1 K across the dome is not assigned as one precise Tc.",
       "criterion": "superfluid-stiffness",
       "pressureRegime": "unknown",
       "pressureGPa": null,

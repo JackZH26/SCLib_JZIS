@@ -14,7 +14,9 @@ Pressure changes can involve structural rearrangement as well as electronic band
 
 Record family, layer count, rare-earth composition, sample form, reduction procedure, oxygen content and substrate. Keep resistance onset, zero resistance, magnetic response and superconducting fraction separate. If a field-induced or re-entrant state is proposed, include field direction and the temperature of the measurement rather than substituting a characteristic field for an upper critical field.
 
-The Li source reports a transition range around 9-15 K in infinite-layer films. This pilot does not assign precise onset and zero values without re-extracting those individual criteria. The Sun abstract reports a maximum scale of 80 K in La3Ni2O7 over pressures between 14.0 and 43.5 GPa with resistance and susceptibility evidence. The maximum is not asserted to occur at every pressure in that interval. [R1](#ref-source-35fd62b7cb3c490c) [R2](#ref-source-df0c15d62982f853)
+The Li source reports a transition range around 9–15 K in infinite-layer films; its individual criteria remain unextracted here. [R1](#ref-source-35fd62b7cb3c490c)
+
+Sun2023 reports a resistance onset of 80 K at 18.5 GPa in run 1 without pressure medium. Run 2 uses KBr and shows an onset of 78 K at 18.9 GPa. The 77 K magnetic response is a separate measurement at 25.2 GPa. Residual resistance is explicitly discussed in the methods; these records must not be relabeled as zero resistance. [R2](#ref-source-df0c15d62982f853)
 
 ## Limits and disputes
 

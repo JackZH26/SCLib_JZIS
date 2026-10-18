@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "38b9ef9c81777ee0e9bd",
+  "revision": "8d41207ea749dd4aba4f",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -703,7 +703,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "e792c5ff56ba144e760a",
+      "revision": "2df3845c0a1a56bf5486",
       "materialCases": [
         {
           "id": "scwiki-b13-material-1",
@@ -713,7 +713,7 @@
           "tcK": null,
           "reportedTemperatureK": 0.02,
           "temperatureKind": "measurement",
-          "temperatureNote": "20mK refrigerator base; approximately40mK wireddevice. Approximatehalf-resistance~1K acrossdome notassignedasonepreciseTc.",
+          "temperatureNote": "20 mK refrigerator base; approximately 40 mK wired device. Approximate half-resistance scale near 1 K across the dome is not assigned as one precise Tc.",
           "criterion": "superfluid-stiffness",
           "pressureRegime": "unknown",
           "pressureGPa": null,
@@ -731,6 +731,43 @@
         "10.48550/arXiv.2603.24766"
       ],
       "text": " Scope\n\nA narrow band can increase the number of electronic states available for pairing, while reducing the ordinary velocity-based contribution to current response. Pair formation and phase coherence must therefore be assessed separately. A large density of states is not a guarantee of high superconducting transition temperature, and a flat band need not be topological.\n\nPeotta and Törmä derive a geometric contribution to superfluid weight within a multiband mean-field treatment. Their isolated-flat-band reduction assumes bandwidth much smaller than attraction, attraction much smaller than the gaps to other bands, and a suitable uniform orbital pairing field. The associated Chern bound includes interaction, filling and normalization factors; it is not a dimensionful stiffness greater than a bare integer. Julku and colleagues give a Chern-trivial Lieb-lattice example with finite geometric response, so a nonzero Chern number is sufficient for particular bounds, not necessary for every geometric contribution.  \n\n Mathematical assumptions\n\nConsider an independent reduced pairing model with one flat state per spin per cell, effective attraction G>0 and half filling. Absorb the Hartree shift into the chemical potential and set the flat level at that chemical potential. The mean-field equation is\n\n1=\\frac{G}{2\\Delta}\\tanh\\!\\left(\\frac{\\Delta}{2kBT}\\right),\\qquad \\Delta(0)=\\frac{G}{2},\\qquad kBT{\\mathrm{pair}}=\\frac{G}{4}.\n\nTwelve numerical cases solve the finite-temperature equation or verify the absence of a nonzero solution above its linearized onset. This linear pairing scale depends on the stated state-counting convention. It must not be transferred unchanged to a multiorbital lattice: the effective interaction includes orbital weights and differs from a bare on-site attraction.\n\nTo test whether pairing alone establishes coherence, take four disconnected attractive sites. Direct enumeration of all 256 occupation states at three attractions gives pair binding but no dependence of the spectrum or partition function on an intersite phase twist. The thermal trace of pair transfer between different sites is zero. Each site can bind two particles while the assembly carries no phase-stiffness response. The mean-field onset above is not a true finite-temperature superconducting transition in this atomic limit.\n\nA second independent illustration keeps two exactly flat band energies but changes their eigenvectors in a fixed orbital basis. Compare a constant normalized vector with u(k)=(\\cos(k/2),\\sin(k/2)). The first has zero quantum metric; the second has\n\ng{kk}=\\langle\\partialk u|\\partialk u\\rangle-|\\langle u|\\partialk u\\rangle|^2=\\frac14.\n\nTwelve finite-difference fidelity checks reproduce these values, including a smooth momentum-dependent phase multiplying each vector. Identical dispersions therefore do not determine identical geometry. This Bloch-phase invariance does not remove the need to specify physical orbital positions, coupling to a field and the response of the pairing fields.\n\nFor the rotating vector, an imposed projected pair field has overlap |\\langle u(k-q)|u(k+q)\\rangle|^2=\\cos^2q. With fixed \\Delta and level offset \\xi, define E(q)=\\sqrt{\\xi^2+\\Delta^2\\cos^2q} and the illustrative energy cost E(0)-E(q). Six finite-difference comparisons, including the constant-vector case, give curvature \\Delta^2/E(0) for the rotating vector and zero for the constant one. If the pair phase gradient is Q=2q, its curvature is one quarter as large. This checks a frozen projected overlap response, not a self-consistent multiband stiffness or one-dimensional finite-temperature order.\n\nFor an isotropic superconducting sheet, define phase stiffness by F/A=\\rhos|\\nabla\\theta-(2e/\\hbar)\\mathbf A|^2/2. Then sheet kinetic inductance L\\square gives \\rhos=\\hbar^2/(4e^2L\\square). A hypothetical zero-temperature value of 10 nH per square corresponds to \\rhos/kB\\approx0.784 K and an upper BKT scale of about 1.232 K. The actual BKT jump uses the renormalized stiffness just below the transition, not this zero-temperature value. This is a unit-conversion illustration, not a material measurement.\n\n Experimental criteria\n\nCao and colleagues established gate-tunable superconducting transport in magic-angle twisted bilayer graphene. Their published device discussion uses four-probe measurements and deliberately non-superconducting Cr/Au contacts. These observations establish the platform, but do not uniquely separate phonon, electronic and geometric roles. Keep twist angle, density and transition criterion attached to the specific device rather than combining a maximum temperature from one device with a stiffness from another. \n\nTanaka and colleagues infer total sheet stiffness from microwave kinetic inductance alongside four-probe transport. The reviewed earlier manuscript uses a 20 mK refrigerator base temperature and estimates about 40 mK for the wired device. Its circuit model includes a parallel electrode-proximitized edge, and the sheet conversion assumes the active region shares the device aspect ratio. The approximately 1 K scale across much of the dome uses half normal-state resistance; it is not automatically the zero-resistance or BKT temperature. Comparison with a conventional estimate supports a geometric interpretation without isolating a model-independent geometric fraction. These selected manuscript passages were checked; the complete published-version and raw-data comparison remains open. \n\n Limits and disputes\n\nThe CsV3Sb5 discovery paper combines superconducting evidence with normal-state photoemission and band calculations. A kagome lattice, a van Hove feature, normal-state band topology and charge order are different observations. None alone measures quantum-metric superfluid weight or proves that geometry supplies the pairing interaction. Related potassium and rubidium compounds require their own specimen-specific review; no cross-compound temperature ranking is inferred here. \n\nA September 2026 preprint by Wang and colleagues studies a proposed pair-density-wave state with Bogoliubov Fermi surfaces. It predicts that residual zero-energy spectral weight can accompany reduced stiffness despite a positive geometric contribution. This is a model prediction, not an observed universal correlation. The current v2 title and abstract differ from the March v1 indexed by some services; this entry cites v2 explicitly and has checked only its abstract and version history. \n\nNeither the finite models above nor a fit to total stiffness identifies a unique pairing interaction. Orbital relaxation, remote bands, disorder and spatial inhomogeneity can alter quantitative comparisons. Full scientific acceptance remains open, including final-version checks, raw-data review and material-specific self-consistent response calculations.\n\n Discovery implications\n\nOptimize pairing and coherence together. State the bandwidth, interband separation, orbital interaction and filling; test the approximations before applying an isolated-band formula. Compare gap, transport and inductive response in the same specimen. Keep an inferred phase scale separate from measured resistive criteria, and preserve the uncertainty in the conventional baseline used to discuss geometry.\n\n Related topics\n\nContinue with , ,  and ."
+    },
+    {
+      "id": "scwiki-b14",
+      "topicId": "scwiki-topic-b14",
+      "code": "B14",
+      "slug": "mottness-and-superconductivity",
+      "title": "Mottness and superconductivity",
+      "summary": "Distinguish localization, charge transfer and pairing, with spectral-weight checks and material-specific experimental conditions.",
+      "aliases": [
+        "Mott insulator",
+        "Mottness",
+        "charge-transfer insulator",
+        "Hubbard dimer",
+        "spectral weight",
+        "Kondo",
+        "localization"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experiment"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "a731ebfc02758f114725",
+      "materialCases": [],
+      "dois": [
+        "10.1103/PhysRevLett.55.418",
+        "10.1126/science.235.4793.1196",
+        "10.1103/RevModPhys.78.17",
+        "10.1038/nature14165",
+        "10.1103/PhysRevLett.85.5420",
+        "10.1103/PhysRevLett.43.1892",
+        "10.1038/s41586-023-06408-7",
+        "10.1103/PhysRevLett.66.104",
+        "10.1038/nature00898",
+        "10.1038/nature14964"
+      ],
+      "text": " Scope\n\nMottness describes how electronic interactions constrain charge motion near integer filling and influence the states reached by doping or changing bandwidth. It is a useful starting point for some superconductors, not a unique pairing interaction. Anderson's RVB proposal is one historical route from a correlated parent; competing orders and several pairing descriptions remain part of the cuprate problem.  \n\nDistinguish Mott-Hubbard and charge-transfer descriptions. In a localized configuration picture, the former emphasizes the cost of redistributing electrons between metal sites; the latter can involve a lower-energy ligand-to-metal excitation. Hybridization and bandwidth complicate that comparison. The Zaanen–Sawatzky–Allen paper provides the classification anchor, but its full text has not been checked here. The selected Lee–Nagaosa–Wen manuscript explicitly retains oxygen holes in cuprates before discussing a restricted low-energy reduction. A fitted single-band interaction is not automatically the bare metal-orbital Coulomb energy.  \n\n Mathematical assumptions\n\nAn independent Hubbard-dimer illustration separates charge and spin scales. Take two sites, two spin states per site, hopping t>0, repulsion U\\geq0, and no ligand orbital or reservoir. With EN the lowest energy at fixed particle number, define the finite-system charge addition/removal gap \\Deltac=E3+E1-2E2. Direct diagonalization gives\n\n\\Deltac=\\sqrt{U^2+16t^2}-2t,\\qquad \\Deltas=\\frac{\\sqrt{U^2+16t^2}-U}{2}.\n\nHere \\Deltas is the two-electron singlet–triplet gap. Eight independent spectra verify these expressions and the total double occupancy obtained from \\partial E2/\\partial U. At U=0, the dimer already has a charge gap 2t from its discrete bonding levels. A finite-cluster charge gap therefore does not establish a bulk Mott transition. For U\\gg t, the spin scale approaches 4t^2/U while the charge cost increases. Neither is a superconducting gap or a predicted transition temperature. The cited review supplies the Hubbard-model context; this calculation is an independent illustration. \n\nFor a second atomic illustration, prescribe a spin-balanced ensemble with empty-site probability x, each singly occupied state of probability (1-x)/2, and no double occupancy. Counting electron creation and removal matrix elements gives, after summing both spins,\n\nW{\\mathrm{remove}}=1-x,\\qquad W{\\mathrm{add,low}}=2x,\\qquad W{\\mathrm{add,upper}}=1-x.\n\nThe total spectral weight is two; the lower-energy removal-plus-addition weight is 1+x, rather than a fixed rigid band with only its occupation changed. Five enumerated cases check the sum rule. This is a zero-hopping state-counting result with a specified ensemble, not a quantitative X-ray absorption spectrum. Finite hopping, ligand character and a core hole alter the interpretation of a measured spectrum.  \n\nConfiguration mixing also prevents an orbital label from being an integer occupancy. For the illustrative matrix H=\\begin{pmatrix}0&V\\\\V&\\Delta{\\mathrm{CT}}\\end{pmatrix} in two configuration states, the lower eigenstate has second-state weight [1-\\Delta{\\mathrm{CT}}/\\sqrt{\\Delta{\\mathrm{CT}}^2+4V^2}]/2. Eight eigenvector and energy-derivative comparisons verify this result. The symbol \\Delta{\\mathrm{CT}} denotes a configuration-energy difference in this toy model; it is not a measured gap. This two-state calculation omits the lattice, multiplets and screening and cannot determine a material's ZSA phase boundary.  \n\n Experimental criteria\n\nChen and colleagues measured the oxygen K edge of La2-xSrxCuO4+δ using bulk-sensitive fluorescence yield. Their two pre-edge features evolve with Sr concentration; the reported modeling includes local interactions and core-hole excitonic correlations. This supports a doped charge-transfer interpretation without making absorption intensity a direct ground-state density of states or proving a pairing glue. The present check is abstract-scoped. \n\nLefebvre and colleagues' kappa-Cl organic-salt study connects a pressure-driven Mott boundary with nearby antiferromagnetism and superconductivity. Its helium-pressure protocol includes 0.5 T NMR and AC susceptibility without a static field. Those are different measurement conditions, and the selected manuscript leaves macroscopic versus mesoscopic coexistence unresolved. No fixed pressure or transition temperature is transferred to other salts. \n\nSun and colleagues' 2023 bilayer-nickelate report must retain sample and probe distinctions: four-probe resistance, KBr versus no pressure medium, nonzero residual resistance, and separately measured magnetic response. The published methods use room-temperature ruby calibration. Pressure changes structure as well as electronic parameters; the reported signatures do not identify Mottness as the pairing cause. \n\n Limits and disputes\n\nCeCu2Si2 supplies a heavy-fermion comparison, not a copy of a one-band copper-oxide model. Its original discovery supports superconductivity with strongly enhanced electronic response; that report does not settle a unique gap or pairing glue. Comparisons involving localized f states and itinerant coherence require a material-specific Kondo description. Effective mass alone is not a measurement of a Mott charge gap. \n\nMottness is neither sufficient nor a universal prerequisite for superconductivity. MgB2 provides a multiband electron–phonon calculation, and sulfur-hydride experiments provide a distinct high-pressure setting. These examples prevent treating a doped Mott parent as a necessary route to a high transition scale. The inherited MgB2 DOI has been corrected to nature00898; the old nature00992 points to an unrelated biological channel paper.  \n\n Discovery implications\n\nState the orbital basis, interaction convention and screening method before comparing U/t or charge-transfer energies. Combine transport with spectroscopic and structural measurements, preserving pressure media, oxygen content and temperature criteria. Treat localization, pseudogap, magnetic exchange, pairing and phase coherence as distinct questions. Full scientific acceptance, final-version comparisons and raw-data checks remain open; the finite models illustrate constraints rather than rank real materials.   \n\n Related topics\n\nRead , , , , and ."
     },
     {
       "id": "scwiki-b2",
@@ -1216,7 +1253,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "05ac57742146da037e74",
+      "revision": "b42c74253a4c48a3bdd4",
       "materialCases": [
         {
           "formula": "HgBa2Ca2Cu3O8+delta",
@@ -1367,7 +1404,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "0ff487afce43ca5c1a95",
+      "revision": "9b0458bd758abd9457bb",
       "materialCases": [
         {
           "formula": "Nd0.8Sr0.2NiO2",
@@ -1387,18 +1424,18 @@
         },
         {
           "formula": "La3Ni2O7",
-          "sample": "bilayer single crystals under high pressure",
+          "sample": "Sun2023 run1 bilayer single crystal; no pressure-transmitting medium",
           "recordType": "experiment",
           "tcK": 80,
-          "temperatureNote": "maximum reported scale across a pressure series",
-          "criterion": "unknown",
+          "temperatureNote": "Resistance onset at 18.5 GPa; nonzero residual resistance. Separate magnetic response must not be merged into this specimen/pressure record.",
+          "criterion": "resistance-onset",
           "pressureRegime": "high",
           "pressureGPa": {
-            "min": 14,
-            "max": 43.5
+            "min": 18.5,
+            "max": 18.5
           },
-          "equilibrium": "unknown",
-          "probe": "resistance and mutual-inductive susceptibility",
+          "equilibrium": "equilibrium",
+          "probe": "Four-probe resistance; 10 μA; room-temperature ruby pressure calibration",
           "id": "scwiki-d5-material-2",
           "sourceId": "source-df0c15d62982f853",
           "reportedTemperatureK": 80,
@@ -1410,7 +1447,7 @@
         "10.1038/s41586-023-06408-7",
         "10.1038/s41586-026-10446-2"
       ],
-      "text": " Scope\n\n“Nickelate superconductivity” includes distinct structural and preparation routes. Infinite-layer RNiO2 films and bilayer Ruddlesden-Popper La3Ni2O7 crystals differ in layer geometry, oxygen coordination and electronic structure. Their temperatures should not be presented as continuous optimization of one material. Li and colleagues' 2019 discovery and Sun and colleagues' 2023 high-pressure report establish different experimental settings.  \n\nThe infinite-layer route uses epitaxial precursors and topotactic reduction. Oxygen stoichiometry, residual apical oxygen, reduction uniformity and the substrate can all matter. A nominal chemical formula does not prove identical electronic states across bulk powders, supported films and membranes. This pilot does not infer a universal exchange energy or a common one-band model from the resemblance of NiO2 and CuO2 planes. \n\n Mathematical assumptions\n\nAn orbital label such as d{x^2-y^2} or d{z^2} identifies part of a model basis; it does not by itself identify the pairing channel. A proposed gap or coupling matrix needs a declared band structure, filling, interaction and structural phase. Similar local configurations can motivate a cuprate analogy, but do not transfer a phase diagram or a numerical pairing scale to nickelates. \n\nPressure changes can involve structural rearrangement as well as electronic bandwidth. For a bilayer crystal, a model evaluated in one structural phase must be compared with measurements in the same pressure regime. Distinguish calculations suggesting a favorable orbital configuration from observations establishing superconducting signatures. \n\n Experimental criteria\n\nRecord family, layer count, rare-earth composition, sample form, reduction procedure, oxygen content and substrate. Keep resistance onset, zero resistance, magnetic response and superconducting fraction separate. If a field-induced or re-entrant state is proposed, include field direction and the temperature of the measurement rather than substituting a characteristic field for an upper critical field.\n\nThe Li source reports a transition range around 9-15 K in infinite-layer films. This pilot does not assign precise onset and zero values without re-extracting those individual criteria. The Sun abstract reports a maximum scale of 80 K in La3Ni2O7 over pressures between 14.0 and 43.5 GPa with resistance and susceptibility evidence. The maximum is not asserted to occur at every pressure in that interval.  \n\n Limits and disputes\n\nAn 80 K high-pressure bilayer observation is not ambient-pressure bulk superconductivity. Likewise, a strained film and a pressure-treated crystal need not follow an identical structural path. The 2026 film, membrane, oxygen-cycling and magnetic-substitution updates in the pinned chapter require separate primary-text checks. This pilot retains their review debt rather than adding their numbers to a quantitative record.  \n\nThe pairing symmetry and microscopic interaction remain inference questions. A theoretical s± candidate, an orbital-selective interpretation or a magnetic compensation scenario must keep its theoretical or hypothetical label until supported by the corresponding phase-sensitive or field-resolved evidence. \n\n Discovery implications\n\nCompare controlled sample series within a structural family before making cross-family claims. A useful design experiment separates oxygen, strain, interface and carrier changes as far as possible. Negative controls are especially valuable when two substrates both produce compression but only one preparation yields a transition. Such observations constrain a mechanism without proving that one structural variable is sufficient.  \n\n Related topics\n\nRead , , and ."
+      "text": " Scope\n\n“Nickelate superconductivity” includes distinct structural and preparation routes. Infinite-layer RNiO2 films and bilayer Ruddlesden-Popper La3Ni2O7 crystals differ in layer geometry, oxygen coordination and electronic structure. Their temperatures should not be presented as continuous optimization of one material. Li and colleagues' 2019 discovery and Sun and colleagues' 2023 high-pressure report establish different experimental settings.  \n\nThe infinite-layer route uses epitaxial precursors and topotactic reduction. Oxygen stoichiometry, residual apical oxygen, reduction uniformity and the substrate can all matter. A nominal chemical formula does not prove identical electronic states across bulk powders, supported films and membranes. This pilot does not infer a universal exchange energy or a common one-band model from the resemblance of NiO2 and CuO2 planes. \n\n Mathematical assumptions\n\nAn orbital label such as d{x^2-y^2} or d{z^2} identifies part of a model basis; it does not by itself identify the pairing channel. A proposed gap or coupling matrix needs a declared band structure, filling, interaction and structural phase. Similar local configurations can motivate a cuprate analogy, but do not transfer a phase diagram or a numerical pairing scale to nickelates. \n\nPressure changes can involve structural rearrangement as well as electronic bandwidth. For a bilayer crystal, a model evaluated in one structural phase must be compared with measurements in the same pressure regime. Distinguish calculations suggesting a favorable orbital configuration from observations establishing superconducting signatures. \n\n Experimental criteria\n\nRecord family, layer count, rare-earth composition, sample form, reduction procedure, oxygen content and substrate. Keep resistance onset, zero resistance, magnetic response and superconducting fraction separate. If a field-induced or re-entrant state is proposed, include field direction and the temperature of the measurement rather than substituting a characteristic field for an upper critical field.\n\nThe Li source reports a transition range around 9–15 K in infinite-layer films; its individual criteria remain unextracted here. \n\nSun2023 reports a resistance onset of 80 K at 18.5 GPa in run 1 without pressure medium. Run 2 uses KBr and shows an onset of 78 K at 18.9 GPa. The 77 K magnetic response is a separate measurement at 25.2 GPa. Residual resistance is explicitly discussed in the methods; these records must not be relabeled as zero resistance. \n\n Limits and disputes\n\nAn 80 K high-pressure bilayer observation is not ambient-pressure bulk superconductivity. Likewise, a strained film and a pressure-treated crystal need not follow an identical structural path. The 2026 film, membrane, oxygen-cycling and magnetic-substitution updates in the pinned chapter require separate primary-text checks. This pilot retains their review debt rather than adding their numbers to a quantitative record.  \n\nThe pairing symmetry and microscopic interaction remain inference questions. A theoretical s± candidate, an orbital-selective interpretation or a magnetic compensation scenario must keep its theoretical or hypothetical label until supported by the corresponding phase-sensitive or field-resolved evidence. \n\n Discovery implications\n\nCompare controlled sample series within a structural family before making cross-family claims. A useful design experiment separates oxygen, strain, interface and carrier changes as far as possible. Negative controls are especially valuable when two substrates both produce compression but only one preparation yields a transition. Such observations constrain a mechanism without proving that one structural variable is sufficient.  \n\n Related topics\n\nRead , , and ."
     },
     {
       "id": "scwiki-e4",
@@ -1477,7 +1514,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "4a3883835979501aced8",
+      "revision": "cd0cdb3faf6ae3132e0d",
       "materialCases": [
         {
           "formula": "twisted bilayer graphene",
