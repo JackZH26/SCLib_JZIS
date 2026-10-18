@@ -57,3 +57,16 @@ test("publication inventory rejects missing, unapproved and mismatched articles"
   });
  }
 });
+
+test("known source-identity corrections block reintroducing an unrelated DOI",t=>{
+ const f=inventoryFixture(t);
+ const filename=path.join(f.directory,"articles/b12/meta.json");
+ const meta=JSON.parse(readFileSync(filename,"utf8"));
+ const source=meta.references.find(r=>r.doi==="10.1038/nature00898");
+ assert.ok(source);
+ source.doi="10.1038/nature00992";
+ writeFileSync(filename,JSON.stringify(meta));
+ const result=f.build();
+ assert.notEqual(result.status,0);
+ assert.match(result.stderr,/known incorrect DOI 10\.1038\/nature00992/);
+});
