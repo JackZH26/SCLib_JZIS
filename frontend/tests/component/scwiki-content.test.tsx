@@ -546,3 +546,15 @@ it("keeps RVB model results and organic spin-state alternatives distinct from me
  expect(g.references.find(r=>r.doi==="10.1038/s41467-023-37491-z")?.verification.scope).toBe("published-primary-passages-scoped-check");
  expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
 });
+
+it("retains Hund atomic-model limits, corrected material identity and calorimetry conditions",async()=>{
+ const a=articles().find(a=>a.code==="B10")!;
+ const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(math).toContain("spin symmetry alone");expect(math).toContain("only two states");expect(math).toContain("not a prediction of quasiparticle coherence");
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("10.1038/nmat3152");expect(md).toContain("BaFe2As2, replacing the original BaFe2Se2");expect(md).toContain("5.5 T, c-axis");expect(md).toContain("Neither is a measured material Tc");expect(md).toContain("fermion sign problem");
+ expect(a.materialCases[0].tcK).toBe(3.4);expect(a.materialCases[0].pressureGPa).toBeNull();
+ expect(searchArticles(searchIndex().entries,"Hund",{tcMin:3}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"Hund",{tcMin:5}).some(r=>r.id===a.id)).toBe(false);
+ expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
+});

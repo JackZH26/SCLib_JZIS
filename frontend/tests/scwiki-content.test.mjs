@@ -133,3 +133,11 @@ test("uranium discovery references reject both inherited incorrect DOIs",t=>{
   const result=f.build();assert.notEqual(result.status,0);assert.ok(result.stderr.includes("known incorrect DOI "+incorrect));
  }
 });
+
+test("Yin material-label erratum remains attached to its original paper",t=>{
+ const f=inventoryFixture(t),filename=path.join(f.directory,"articles/b10/meta.json");
+ const meta=JSON.parse(readFileSync(filename,"utf8"));
+ meta.references=meta.references.filter(r=>r.doi!=="10.1038/nmat3152");
+ writeFileSync(filename,JSON.stringify(meta));const result=f.build();
+ assert.notEqual(result.status,0);assert.match(result.stderr,/missing required erratum 10\.1038\/nmat3152/);
+});

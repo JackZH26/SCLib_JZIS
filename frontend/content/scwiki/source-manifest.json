@@ -203,8 +203,8 @@
       "lineCount": 40,
       "topicId": "scwiki-topic-b10",
       "articleId": "scwiki-b10",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3554,6 +3554,20 @@
       "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.125.247002",
       "checkedAt": "2026-10-18",
       "scope": "CsV3Sb5 citation misidentified a valid Osada nickelate paper. Do not globally ban the original DOI."
+    },
+    {
+      "id": "correction-yin2011-material-label",
+      "articleDoi": "10.1038/nmat3120",
+      "requiredCompanionDoi": "10.1038/nmat3152",
+      "affectedTopics": [
+        "B10"
+      ],
+      "affectedSourcePaths": [
+        "B_mechanisms/B10_Hund_coupling.md"
+      ],
+      "evidenceUrl": "https://www.physics.rutgers.edu/~haule/papers/nmat3120.pdf",
+      "checkedAt": "2026-10-18",
+      "scope": "Published erratum p5: Figures1/2 BaFe2As2 not BaFe2Se2; require companion citation."
     }
   ]
 }
