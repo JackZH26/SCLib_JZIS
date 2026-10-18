@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "aafb570b6cdd12f827c2",
+  "revision": "80b2db5f1eaf89a149fb",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -1224,6 +1224,61 @@
       "text": " Scope\n\nThe label s± describes a superconducting gap whose sign differs between relevant Fermi-surface sheets. In common iron-based models the state belongs to the fully symmetric A1g representation, while different pockets carry opposite gap signs. A fully open gap therefore does not establish a sign-preserving state. The precise pocket and orbital assignments must come from the actual material rather than a generic two-pocket drawing.  \n\n Mathematical assumptions\n\nA minimal illustration is\n\n\n\\Deltah=+\\Delta1,\\qquad\n\\Deltae=-\\Delta2.\n\n\nThe labels h and e refer to hole and electron pockets in the model, not to a universal inventory present in every iron-based superconductor. Repulsive interband scattering can favor opposite signs in a linearized pairing equation. Mazin and colleagues and Kuroki and colleagues developed important iron-based proposals, but their predictions depend on the Fermi surface and interaction assumptions.  \n\nAn A1g gap can also be anisotropic and can develop accidental nodes. This possibility should be distinguished from symmetry-enforced nodes in another representation. Observing nodes alone cannot choose among every candidate, and no one compound determines the gap of an entire family.  \n\nKuroki and colleagues published an erratum correcting an orbital-to-band transformation error in the original gap plot. The corrected diagonal band gap is fully open for the displayed parameter set; strong anisotropy and parameter-dependent nodal or d-wave competition remain. The original plot must be read with this correction, not treated as the corrected result. \n\n Experimental criteria\n\nA neutron resonance can be consistent with a sign-changing coherence factor, but its interpretation depends on the normal-state response and gap structure. Christianson and colleagues studied K-doped Ba0.6K0.4Fe2As2; the pinned chapter's Co-doped attribution is corrected here. Their result provides a material-specific constraint rather than a universal direct phase measurement. \n\nQuasiparticle interference depends on scattering channels, matrix elements, field conditions and a band model. Hanaguri and colleagues' Fe(Se,Te) study is not a measurement on pure bulk FeSe, and its evidence should not be paraphrased as directly photographing a negative gap sign. Complementary phase-sensitive junctions, controlled disorder studies and gap spectroscopy can narrow alternatives. \n\n Corrected nodal example\n\nReid and colleagues' 2012 thermal-conductivity paper, DOI 10.1103/PhysRevLett.109.087001, is about KFe2As2. The authors report residual heat transport consistent with nodes and argue for a d-wave interpretation. It is not a P-substituted Ba122 paper. The previous attribution is corrected in the source mapping and in the register for C2 and C10. No replacement P-Ba122 claim is silently inferred from this DOI. \n\nThis correction matters physically: a source arguing for symmetry-imposed nodes cannot be repurposed as a demonstration of accidental nodes in another compound. The editorial record preserves the original path and hash so readers can identify what changed. \n\n Limits and disputes\n\nFeSe, shallow-band systems, strongly hole-doped endpoints and electron-only interfaces can require models different from the original hole-electron-pocket proposal. A candidate s± solution for a nickelate is a theoretical proposal until an appropriate experiment constrains it. Gap magnitude, gap sign, nodes and the microscopic pairing interaction are separate inference steps.  \n\n Discovery implications\n\nSpecify which sheets are expected to change sign and what observation could reject that assignment. Use measured electronic structure, compare several independent probes and retain sample composition. For agent retrieval, quote the claim together with the named material and source; the sign structure is not an unconditional property of the phrase “iron-based superconductor.”   \n\n Related topics\n\nContinue with , , and ."
     },
     {
+      "id": "scwiki-c3",
+      "topicId": "scwiki-topic-c3",
+      "code": "C3",
+      "slug": "d-wave",
+      "title": "d-wave: nodes, crystal symmetry and phase evidence",
+      "summary": "Connect B1g symmetry to Fermi-surface nodes and distinguish magnitude measurements from controlled phase-sensitive experiments.",
+      "aliases": [
+        "d wave",
+        "d-wave",
+        "dx2-y2",
+        "B1g",
+        "tricrystal",
+        "half flux",
+        "phase sensitive",
+        "NCCO",
+        "PCCO"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experiment"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "e21aa18d501ae2f53287",
+      "materialCases": [
+        {
+          "id": "scwiki-c3-material-1",
+          "formula": "Nd1.85Ce0.15CuO4-y",
+          "sample": "NCCO film, frustrated tricrystal geometry in Tsuei–Kirtley 2000 Fig. 1",
+          "recordType": "experiment",
+          "tcK": null,
+          "reportedTemperatureK": 4.2,
+          "temperatureKind": "unassigned",
+          "temperatureNote": "Imaging temperature only. The paper separately reports sample transition ranges without a single table-ready criterion.",
+          "criterion": "phase-sensitive-flux-imaging",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Scanning SQUID; nominal zero-field cooling, images at applied fields of ±0.2 mG",
+          "sourceId": "source-7700f02a5390b1cf"
+        }
+      ],
+      "dois": [
+        "10.1103/RevModPhys.72.969",
+        "10.1103/PhysRevLett.70.3999",
+        "10.1103/PhysRevLett.70.1553",
+        "10.1103/PhysRevLett.73.593",
+        "10.1038/373225a0",
+        "10.1103/PhysRevLett.93.187004",
+        "10.1103/PhysRevLett.85.182",
+        "10.1103/PhysRevB.49.4261",
+        "10.1038/s41586-019-1596-2"
+      ],
+      "text": " Scope\n\nFor the tetragonal point group D4h, the familiar d{x^2-y^2} state belongs to B1g: a quarter turn changes its sign, while inversion preserves it. This entry separates symmetry, low-energy excitations and phase-sensitive evidence. A node or a small gap alone does not identify B1g, and identifying B1g does not uniquely determine the interaction that produced pairing. The cuprate evidence combines complementary measurements rather than a single universal diagnostic. \n\nThe usual even-parity spin-singlet description assumes a centrosymmetric setting with the appropriate spin or pseudospin pairing structure. Orthorhombicity, multiple bands and additional broken symmetries require the actual crystal symmetry to be used. A label inherited from an ideal square lattice is not a substitute for that analysis. \n\n Mathematical assumptions\n\nAn illustrative lattice harmonic, with lattice spacing set to one, is \\Delta(\\mathbf k)=\\Delta0[\\cos kx-\\cos ky]/2. Direct rotation, diagonal-reflection and inversion checks establish its B1g transformation. Its diagonal zero lines produce quasiparticle nodes only where they intersect the Fermi surface. A circular contour centered at the zone center intersects them; hypothetical small pockets around (\\pi,0) and (0,\\pi) do not. The latter have opposite gap signs while each pocket remains fully gapped. These checks establish a geometric possibility, not a band structure for a particular cuprate. \n\nOn a circular Fermi surface, f(\\phi)=\\cos2\\phi has four zeros. A real admixture f=\\cos2\\phi+s shifts the four nodes for |s|<1, gives two touching zeros at |s|=1, and removes them for |s|>1. Such a mixture is not pure B1g in a tetragonal crystal; orthorhombic symmetry can permit the corresponding real components to mix. The complex illustrative mixture \\cos2\\phi+is instead has minimum magnitude |s| and, when both components are nonzero, breaks time reversal. Five direct checks distinguish these cases. They do not demonstrate that any material selects the mixture. \n\nNear one simple node, take E(\\mathbf q)=\\sqrt{(vFq1)^2+(v\\Delta q2)^2} in units \\hbar=kB=1. The ellipse of states below E has area \\pi E^2/(vFv\\Delta); dividing by (2\\pi)^2 and differentiating gives a positive-energy density of states g(E)=E/(2\\pi vFv\\Delta) for this one declared branch. Polygon-area checks verify six cases. For a linear density g(E)=aE, a converged thermal integral gives C=(9\\zeta(3)/2)aT^2. Spin, node and band multiplicities must be supplied consistently. This clean local model illustrates a power law; disorder, finite temperature windows and different nodal dispersions change its applicability. \n\nFor a separate illustration of phase frustration, consider a zero-field, single-junction loop with a built-in \\pi phase shift. Writing f=\\Phi/\\Phi0, \\Phi0=h/(2e) and \\beta=2\\pi LIc/\\Phi0, with EJ=\\Phi0 Ic/(2\\pi), its energy is U/EJ=2\\pi^2f^2/\\beta+\\cos(2\\pi f). The stationary condition is f=\\beta\\sin(2\\pi f)/(2\\pi). Five energy-minimization checks show a zero-flux minimum for \\beta\\leq1 and paired nonzero minima for \\beta>1; their magnitude approaches one half only as the inductance parameter grows. A finite loop therefore need not contain exactly half a flux quantum. This is not a reproduction of the extended three-boundary tricrystal geometry used in the experiments below. \n\n Experimental criteria\n\nHardy and colleagues measured changes in penetration depth in YBa2Cu3O6.95 using a 900 MHz resonator. Their abstract reports a linear contribution over approximately 3–25 K, within measurements extending from 1.3 K to the transition. This supports low-energy nodal excitations; the temperature interval is not a reported transition-temperature interval. Only the publisher abstract is checked here, so the full calibration, defect comparison and raw traces remain outside this review. \n\nShen and colleagues' 1993 Bi2212 photoemission report finds a large in-plane gap anisotropy compatible with d{x^2-y^2}. Photoemission primarily constrains excitation energies and gap magnitude; it does not directly read the relative order-parameter phase. The pinned chapter's DOI ending in 75.4234 actually identifies a Brillouin-spectroscopy paper and is corrected to 70.1553. Published comments and replies in 1993 and 1994 have been identified but not fully examined; the early ARPES result is not presented as a standalone final symmetry proof. \n\nThe original 1994 tricrystal-ring and 1995 scanning-SQUID papers are retained as historical source pointers. Their identities are checked, but this entry's detailed geometry discussion relies on the explicitly reviewed later author manuscripts, rather than claiming a new full audit of those originals.  \n\nIn the 2004 study of Ca-doped Y-123, La-214 and Bi-2212 films, selected crystal orientations create an odd phase frustration for a predominantly d{x^2-y^2} state. The authors compare opposite vortex polarities and model the pickup-loop response. The La-214 fit allowing flux to vary gives 0.585\\pm0.1\\,\\Phi0, compatible with one half within its stated uncertainty. Imaging at 4.2 K is distinct from the samples' transition temperatures. Constraints on a fixed imaginary component depend on resolution; sufficiently small alternating domains are an explicitly discussed caveat. Doping coordinates are estimated using an empirical relation, and grain-boundary doping need not exactly equal bulk doping. \n\nThe 2000 electron-doped study tests NCCO and PCCO films. For NCCO it compares a frustrated tricrystal with two unfrustrated geometries; the controls show little central flux. Sensor height and pickup-loop integration enter the field model. Allowing total flux to vary gives 0.47^{+0.18}{-0.14}\\,\\Phi0 in the quoted NCCO fit; the authors define the uncertainty using a doubling of best-fit chi-square, not an asserted standard confidence interval. This is sample- and geometry-specific phase evidence. The reported 22–25 K NCCO and 22–23 K PCCO transition ranges are separate from 4.2 K imaging and junction measurements; no single transition criterion is invented for the material table. \n\n Limits and disputes\n\nLow-temperature power laws, gap anisotropy and phase-sensitive interference probe different quantities. Interpret them with sample composition, disorder, field, temperature range, surface sensitivity and interface geometry attached. A magnitude-only spectrum cannot distinguish a gap from another function with the same absolute value; this mathematical ambiguity does not imply that every such function is a smooth, physically realizable pairing state.  \n\nSpin-fluctuation calculations provide one route to a sign-changing gap, subject to their input spectrum and approximations. Their agreement with a symmetry assignment does not prove a unique pairing mechanism. High transition temperatures or family membership likewise cannot replace a phase-sensitive measurement of a particular pressure state. \n\nThe 2019 oxygen-17 NMR work on Sr2RuO4 constrains earlier order-parameter proposals by observing a Knight-shift reduction. This does not automatically establish B1g pairing. The inherited review distinguishes RF heating, strain and applied-field conditions; a complete current order-parameter survey remains separate work. \n\n Discovery implications\n\nFor a candidate material, first state its point group and measured Fermi surface. Then ask which experiments constrain node locations, spin response and relative phase, and whether those measurements describe comparable sample states. A useful next experiment should distinguish competing explanations within a specified geometry and resolution. Keep computed pairing preference, observed superconductivity and experimentally constrained symmetry as separate conclusions. Full scientific acceptance, complete final-version comparisons and raw-data review remain open.   \n\n Related topics\n\nRead , , , , and ."
+    },
+    {
       "id": "scwiki-d11",
       "topicId": "scwiki-topic-d11",
       "code": "D11",
@@ -1307,7 +1362,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "b42c74253a4c48a3bdd4",
+      "revision": "18d91881ccd885691abc",
       "materialCases": [
         {
           "formula": "HgBa2Ca2Cu3O8+delta",

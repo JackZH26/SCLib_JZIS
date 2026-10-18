@@ -407,8 +407,8 @@
       "lineCount": 82,
       "topicId": "scwiki-topic-c3",
       "articleId": "scwiki-c3",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3568,6 +3568,20 @@
       "evidenceUrl": "https://www.physics.rutgers.edu/~haule/papers/nmat3120.pdf",
       "checkedAt": "2026-10-18",
       "scope": "Published erratum p5: Figures1/2 BaFe2As2 not BaFe2Se2; require companion citation."
+    },
+    {
+      "id": "correction-c3-arpes-doi",
+      "affectedTopics": [
+        "C3"
+      ],
+      "affectedSourcePaths": [
+        "C_pairing_symmetry/C3_d_wave.md"
+      ],
+      "incorrectDoi": "10.1103/PhysRevLett.75.4234",
+      "correctDoi": "10.1103/PhysRevLett.70.1553",
+      "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.70.1553",
+      "checkedAt": "2026-10-18",
+      "scope": "Pinned ARPES reference identifies unrelated Brillouin spectroscopy; corrected Shen 1993 identity and abstract checked."
     }
   ]
 }

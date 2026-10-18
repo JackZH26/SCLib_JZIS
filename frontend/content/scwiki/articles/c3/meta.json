@@ -1,0 +1,450 @@
+{
+  "id": "scwiki-c3",
+  "topicId": "scwiki-topic-c3",
+  "code": "C3",
+  "slug": "d-wave",
+  "title": "d-wave: nodes, crystal symmetry and phase evidence",
+  "summary": "Connect B1g symmetry to Fermi-surface nodes and distinguish magnitude measurements from controlled phase-sensitive experiments.",
+  "aliases": [
+    "d wave",
+    "d-wave",
+    "dx2-y2",
+    "B1g",
+    "tricrystal",
+    "half flux",
+    "phase sensitive",
+    "NCCO",
+    "PCCO"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "C1",
+    "C2",
+    "B3",
+    "D3",
+    "A5"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T09:22:17.409794+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected 2000 and 2004 tricrystal author manuscripts, early penetration-depth and ARPES abstracts, inherited scoped sources, and independent symmetry, nodal-state and finite-loop calculations.",
+    "limitations": [
+      "Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
+      "The original 1994/1995 phase papers are identity-checked historical pointers; detailed later experiments have explicit manuscript scopes.",
+      "Early ARPES comments and replies are identified but not fully reviewed.",
+      "The finite single-junction loop and hypothetical Fermi surfaces are not fits to tricrystal samples."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "C_pairing_symmetry/C3_d_wave.md",
+    "sha256": "a429852c8f891866a2db069cfe81b68eda06c34deb88fe934092da56d64506fc",
+    "sourceId": "file-cffdb5bef963a259"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 17,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; ARPES identity corrected and geometry/measurement limits expanded."
+    },
+    {
+      "startLine": 18,
+      "endLine": 29,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; ARPES identity corrected and geometry/measurement limits expanded."
+    },
+    {
+      "startLine": 30,
+      "endLine": 49,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; ARPES identity corrected and geometry/measurement limits expanded."
+    },
+    {
+      "startLine": 50,
+      "endLine": 59,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; ARPES identity corrected and geometry/measurement limits expanded."
+    },
+    {
+      "startLine": 60,
+      "endLine": 71,
+      "targetSections": [
+        "discovery-implications"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; ARPES identity corrected and geometry/measurement limits expanded."
+    },
+    {
+      "startLine": 72,
+      "endLine": 82,
+      "targetSections": [
+        "related-topics",
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; ARPES identity corrected and geometry/measurement limits expanded."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-e933e3bbd4beade6",
+      "doi": "10.1103/RevModPhys.72.969",
+      "title": "Pairing symmetry in cuprate superconductors",
+      "year": 2000,
+      "url": "https://doi.org/10.1103/RevModPhys.72.969",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.72.969",
+        "note": "Tsuei–Kirtley publisher abstract: phase-sensitive evidence for predominantly d-wave in specified optimally doped cuprates. Original experiments, sample data and full review not audited here."
+      }
+    },
+    {
+      "id": "source-b7bc48c845a47b53",
+      "doi": "10.1103/PhysRevLett.70.3999",
+      "title": "Precision measurements of the temperature dependence of lambda in YBa2Cu3O6.95: Strong evidence for nodes in the gap function",
+      "year": 1993,
+      "url": "https://doi.org/10.1103/PhysRevLett.70.3999",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.70.3999",
+        "note": "900 MHz resonator and 3–25 K linear term checked in abstract. Full traces, calibration and sample comparison not reviewed."
+      }
+    },
+    {
+      "id": "source-22f5417afdec3a9f",
+      "doi": "10.1103/PhysRevLett.70.1553",
+      "title": "Anomalously large gap anisotropy in the a-b plane of Bi2Sr2CaCu2O8+delta",
+      "year": 1993,
+      "url": "https://doi.org/10.1103/PhysRevLett.70.1553",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-and-discussion-identity-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.70.1553",
+        "note": "Correct Shen paper identity and anisotropy abstract checked. Comments/replies 71.4277/4278 and 73.3044/3045 identified, not fully read. Fulltext endpoint returned 401."
+      }
+    },
+    {
+      "id": "source-2e4d7fdb6c1797b7",
+      "doi": "10.1103/PhysRevLett.73.593",
+      "title": "Pairing Symmetry and Flux Quantization in a Tricrystal Superconducting Ring of YBa2Cu3O7-delta",
+      "year": 1994,
+      "url": "https://doi.org/10.1103/PhysRevLett.73.593",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-and-author-bibliography-identity",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.73.593",
+        "note": "Historical source identity only; detailed result not independently audited here."
+      }
+    },
+    {
+      "id": "source-6fe9eb9d2301fe93",
+      "doi": "10.1038/373225a0",
+      "title": "Symmetry of the order parameter in the high-Tc superconductor YBa2Cu3O7-delta",
+      "year": 1995,
+      "url": "https://doi.org/10.1038/373225a0",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-bibliography-identity",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.kirtleyscientific.com/publications.html",
+        "note": "Author bibliography identifies original. Nature fetch failed; detailed original not independently audited here."
+      }
+    },
+    {
+      "id": "source-a9db90b0ffeff826",
+      "doi": "10.1103/PhysRevLett.93.187004",
+      "title": "Robust dx2-y2 Pairing Symmetry in Hole-Doped Cuprate Superconductors",
+      "year": 2004,
+      "url": "https://doi.org/10.1103/PhysRevLett.93.187004",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0402655v1",
+        "note": "Selected pp. 1–4: geometry, inversion, pickup-loop fit, domain/doping caveats. Page 3 figures/captions visually checked. Submission 2004, despite internal 2018 typesetting date. Full journal comparison and raw data remain open. Published title differs from the earlier manuscript title; publisher identity and abstract checked."
+      }
+    },
+    {
+      "id": "source-7700f02a5390b1cf",
+      "doi": "10.1103/PhysRevLett.85.182",
+      "title": "Phase-sensitive Evidence for d-wave Pairing Symmetry in Electron-doped Cuprate Superconductors",
+      "year": 2000,
+      "url": "https://doi.org/10.1103/PhysRevLett.85.182",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0002341v2",
+        "note": "Selected pp. 1–4: sample ranges, frustrated/control geometries, sensor model, variable-flux uncertainty convention and figure captions. Version 2 submitted May 2000; internal 2018 typesetting date is not a new version. Full journal comparison and raw data remain open."
+      }
+    },
+    {
+      "id": "source-7755cb2d156620a8",
+      "doi": "10.1103/PhysRevB.49.4261",
+      "title": "Spin-fluctuation-induced superconductivity and normal-state properties of YBa2Cu3O7",
+      "year": 1994,
+      "url": "https://doi.org/10.1103/PhysRevB.49.4261",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.49.4261",
+        "note": "Monthoux–Pines publisher abstract: model calculations and parameter/impurity sensitivity. Full derivation, input spectrum and numerical data not reanalyzed."
+      }
+    },
+    {
+      "id": "source-c7f8b99a795aba41",
+      "doi": "10.1038/s41586-019-1596-2",
+      "title": "Constraints on the superconducting order parameter in Sr2RuO4 from oxygen-17 nuclear magnetic resonance",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41586-019-1596-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1904.00047v1",
+        "note": "Pustogow et al. v1 selected pp.4–7; p.7 RF-energy and heating passage visually checked. Zero-strain0.7107T versus strained1.9980T conditions distinguished. Published identity checked; full final-version equivalence and subsequent literature survey not completed."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-c3-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "For the tetragonal point group D4h, the familiar $d_{x^2-y^2}$ state belongs to B1g: a quarter turn changes its sign, while inversion preserves it. This entry separates symmetry, low-energy excitations and phase-sensitive evidence. A node or a small gap alone does not identify B1g, and identifying B1g does not uniquely determine the interaction that produced pairing. The cuprate evidence combines complementary measurements rather than a single universal diagnostic.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The usual even-parity spin-singlet description assumes a centrosymmetric setting with the appropriate spin or pseudospin pairing structure. Orthorhombicity, multiple bands and additional broken symmetries require the actual crystal symmetry to be used. A label inherited from an ideal square lattice is not a substitute for that analysis.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An illustrative lattice harmonic, with lattice spacing set to one, is $\\Delta(\\mathbf k)=\\Delta_0[\\cos k_x-\\cos k_y]/2$. Direct rotation, diagonal-reflection and inversion checks establish its B1g transformation. Its diagonal zero lines produce quasiparticle nodes only where they intersect the Fermi surface. A circular contour centered at the zone center intersects them; hypothetical small pockets around $(\\pi,0)$ and $(0,\\pi)$ do not. The latter have opposite gap signs while each pocket remains fully gapped. These checks establish a geometric possibility, not a band structure for a particular cuprate.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "On a circular Fermi surface, $f(\\phi)=\\cos2\\phi$ has four zeros. A real admixture $f=\\cos2\\phi+s$ shifts the four nodes for $|s|<1$, gives two touching zeros at $|s|=1$, and removes them for $|s|>1$. Such a mixture is not pure B1g in a tetragonal crystal; orthorhombic symmetry can permit the corresponding real components to mix. The complex illustrative mixture $\\cos2\\phi+is$ instead has minimum magnitude $|s|$ and, when both components are nonzero, breaks time reversal. Five direct checks distinguish these cases. They do not demonstrate that any material selects the mixture.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Near one simple node, take $E(\\mathbf q)=\\sqrt{(v_Fq_1)^2+(v_\\Delta q_2)^2}$ in units $\\hbar=k_B=1$. The ellipse of states below $E$ has area $\\pi E^2/(v_Fv_\\Delta)$; dividing by $(2\\pi)^2$ and differentiating gives a positive-energy density of states $g(E)=E/(2\\pi v_Fv_\\Delta)$ for this one declared branch. Polygon-area checks verify six cases. For a linear density $g(E)=aE$, a converged thermal integral gives $C=(9\\zeta(3)/2)aT^2$. Spin, node and band multiplicities must be supplied consistently. This clean local model illustrates a power law; disorder, finite temperature windows and different nodal dispersions change its applicability.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a separate illustration of phase frustration, consider a zero-field, single-junction loop with a built-in $\\pi$ phase shift. Writing $f=\\Phi/\\Phi_0$, $\\Phi_0=h/(2e)$ and $\\beta=2\\pi LI_c/\\Phi_0$, with $E_J=\\Phi_0 I_c/(2\\pi)$, its energy is $U/E_J=2\\pi^2f^2/\\beta+\\cos(2\\pi f)$. The stationary condition is $f=\\beta\\sin(2\\pi f)/(2\\pi)$. Five energy-minimization checks show a zero-flux minimum for $\\beta\\leq1$ and paired nonzero minima for $\\beta>1$; their magnitude approaches one half only as the inductance parameter grows. A finite loop therefore need not contain exactly half a flux quantum. This is not a reproduction of the extended three-boundary tricrystal geometry used in the experiments below.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a9db90b0ffeff826"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Hardy and colleagues measured changes in penetration depth in YBa2Cu3O6.95 using a 900 MHz resonator. Their abstract reports a linear contribution over approximately 3–25 K, within measurements extending from 1.3 K to the transition. This supports low-energy nodal excitations; the temperature interval is not a reported transition-temperature interval. Only the publisher abstract is checked here, so the full calibration, defect comparison and raw traces remain outside this review.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-b7bc48c845a47b53"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Shen and colleagues' 1993 Bi2212 photoemission report finds a large in-plane gap anisotropy compatible with $d_{x^2-y^2}$. Photoemission primarily constrains excitation energies and gap magnitude; it does not directly read the relative order-parameter phase. The pinned chapter's DOI ending in 75.4234 actually identifies a Brillouin-spectroscopy paper and is corrected to 70.1553. Published comments and replies in 1993 and 1994 have been identified but not fully examined; the early ARPES result is not presented as a standalone final symmetry proof.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-22f5417afdec3a9f"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "The original 1994 tricrystal-ring and 1995 scanning-SQUID papers are retained as historical source pointers. Their identities are checked, but this entry's detailed geometry discussion relies on the explicitly reviewed later author manuscripts, rather than claiming a new full audit of those originals.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-2e4d7fdb6c1797b7",
+        "source-6fe9eb9d2301fe93"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "In the 2004 study of Ca-doped Y-123, La-214 and Bi-2212 films, selected crystal orientations create an odd phase frustration for a predominantly $d_{x^2-y^2}$ state. The authors compare opposite vortex polarities and model the pickup-loop response. The La-214 fit allowing flux to vary gives $0.585\\pm0.1\\,\\Phi_0$, compatible with one half within its stated uncertainty. Imaging at 4.2 K is distinct from the samples' transition temperatures. Constraints on a fixed imaginary component depend on resolution; sufficiently small alternating domains are an explicitly discussed caveat. Doping coordinates are estimated using an empirical relation, and grain-boundary doping need not exactly equal bulk doping.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a9db90b0ffeff826"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "The 2000 electron-doped study tests NCCO and PCCO films. For NCCO it compares a frustrated tricrystal with two unfrustrated geometries; the controls show little central flux. Sensor height and pickup-loop integration enter the field model. Allowing total flux to vary gives $0.47^{+0.18}_{-0.14}\\,\\Phi_0$ in the quoted NCCO fit; the authors define the uncertainty using a doubling of best-fit chi-square, not an asserted standard confidence interval. This is sample- and geometry-specific phase evidence. The reported 22–25 K NCCO and 22–23 K PCCO transition ranges are separate from 4.2 K imaging and junction measurements; no single transition criterion is invented for the material table.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-7700f02a5390b1cf"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Low-temperature power laws, gap anisotropy and phase-sensitive interference probe different quantities. Interpret them with sample composition, disorder, field, temperature range, surface sensitivity and interface geometry attached. A magnitude-only spectrum cannot distinguish a gap from another function with the same absolute value; this mathematical ambiguity does not imply that every such function is a smooth, physically realizable pairing state.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e933e3bbd4beade6",
+        "source-22f5417afdec3a9f"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Spin-fluctuation calculations provide one route to a sign-changing gap, subject to their input spectrum and approximations. Their agreement with a symmetry assignment does not prove a unique pairing mechanism. High transition temperatures or family membership likewise cannot replace a phase-sensitive measurement of a particular pressure state.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7755cb2d156620a8"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "The 2019 oxygen-17 NMR work on Sr2RuO4 constrains earlier order-parameter proposals by observing a Knight-shift reduction. This does not automatically establish B1g pairing. The inherited review distinguishes RF heating, strain and applied-field conditions; a complete current order-parameter survey remains separate work.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-c7f8b99a795aba41"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c3-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "For a candidate material, first state its point group and measured Fermi surface. Then ask which experiments constrain node locations, spin response and relative phase, and whether those measurements describe comparable sample states. A useful next experiment should distinguish competing explanations within a specified geometry and resolution. Keep computed pairing preference, observed superconductivity and experimentally constrained symmetry as separate conclusions. Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e933e3bbd4beade6",
+        "source-a9db90b0ffeff826",
+        "source-7700f02a5390b1cf"
+      ],
+      "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-c3-correction-1",
+      "description": "The pinned Shen citation 10.1103/PhysRevLett.75.4234 identifies unrelated Brillouin spectroscopy. The intended early Bi2212 ARPES paper is 10.1103/PhysRevLett.70.1553 (1993).",
+      "sourceId": "source-22f5417afdec3a9f",
+      "scope": "Publisher identities and corrected abstract; later comments remain open."
+    },
+    {
+      "id": "scwiki-c3-correction-2",
+      "description": "Gap zero lines require Fermi-surface intersections; phase evidence remains attached to measured sample and geometry.",
+      "sourceId": "source-7700f02a5390b1cf",
+      "scope": "Independent geometry checks and selected original manuscript passages."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta(\\mathbf k)=\\Delta_0[\\cos k_x-\\cos k_y]/2",
+      "check": "Four transformation cases, three Fermi contours and five real/imaginary mixtures."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "f=\\beta\\sin(2\\pi f)/(2\\pi)",
+      "check": "Five finite pi-loop minima; separate from extended tricrystal geometry."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-c3-material-1",
+      "formula": "Nd1.85Ce0.15CuO4-y",
+      "sample": "NCCO film, frustrated tricrystal geometry in Tsuei–Kirtley 2000 Fig. 1",
+      "recordType": "experiment",
+      "tcK": null,
+      "reportedTemperatureK": 4.2,
+      "temperatureKind": "unassigned",
+      "temperatureNote": "Imaging temperature only. The paper separately reports sample transition ranges without a single table-ready criterion.",
+      "criterion": "phase-sensitive-flux-imaging",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Scanning SQUID; nominal zero-field cooling, images at applied fields of ±0.2 mG",
+      "sourceId": "source-7700f02a5390b1cf"
+    }
+  ]
+}

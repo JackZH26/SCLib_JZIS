@@ -621,3 +621,22 @@ it("keeps s-wave symmetry and imposed-gap checks separate from measured transiti
  expect(md).toContain("pressure at the resistance change was not directly measured");
  expect(md).toContain("magnetization of its small samples remained unresolved");
 });
+
+it("preserves d-wave phase controls and excludes imaging temperatures from transition filters",async()=>{
+ const a=articles().find(a=>a.code==="C3")!;
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("only where they intersect the Fermi surface");
+ expect(md).toContain("not a reproduction of the extended three-boundary tricrystal geometry");
+ expect(md).toContain("two unfrustrated geometries");
+ expect(md).toContain("doubling of best-fit chi-square");
+ expect(a.references.some(r=>r.doi==="10.1103/PhysRevLett.75.4234")).toBe(false);
+ expect(a.references.find(r=>r.doi==="10.1103/PhysRevLett.70.1553")?.year).toBe(1993);
+ expect(a.references.find(r=>r.doi==="10.1103/PhysRevLett.73.593")?.verification.scope).toContain("identity");
+ expect(a.materialCases[0].reportedTemperatureK).toBe(4.2);
+ expect(a.materialCases[0].tcK).toBeNull();expect(a.materialCases[0].temperatureKind).toBe("unassigned");
+ expect(searchArticles(searchIndex().entries,"NCCO",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"NCCO",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const section=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(section).toContain("no single transition criterion is invented");
+ expect(section).toContain("Full scientific acceptance");
+});
