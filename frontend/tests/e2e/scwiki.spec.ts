@@ -107,7 +107,7 @@ test("approved question routes preserve provenance and exclude unfinished extens
  await expect(page.getByText("The pinned planning document identifies the approved scope.",{exact:false})).toBeVisible();
  const response=await request.get("/api/scwiki/v1/articles/scwiki-n10/sections/mathematical-assumptions");
  const data=await response.json();expect(data.scopeItems[0].id).toBe("N10");
- for(const path of ["/scwiki/open-questions/n2","/scwiki/open-questions/n11","/scwiki/open-questions/n9"]){expect((await request.get(path)).status()).toBe(404);}
+ for(const path of ["/scwiki/open-questions/n3","/scwiki/open-questions/n11","/scwiki/open-questions/n9"]){expect((await request.get(path)).status()).toBe(404);}
 });
 
 for(const [code,slug,label] of [["I","experimental-methods","Experimental methods"],["J","theoretical-tools","Theoretical tools"],["K","applications","Superconducting applications"],["L","history","History of superconductivity"],["M","research-methodology","Research methodology"]]) test(code+" handbook keeps all approved section links and scoped API exports usable",async({page,request})=>{
@@ -145,21 +145,21 @@ test("long desktop handbook contents keep the final links reachable within a sho
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(1280);
 });
 
- test("room-temperature question is reachable and preserves scoped evidence across formats",async({page,request})=>{
+ for(const [code,label,query] of [["N1","Room-temperature superconductivity?","室温常压超导"],["N2","A unified pairing mechanism?","非常规超导统一理论"]]) test(code+" question is reachable and preserves scoped evidence across formats",async({page,request})=>{
  await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
- await page.getByRole("link",{name:"Room-temperature superconductivity?",exact:true}).click();
- await expect(page).toHaveURL(/\/scwiki\/open-questions\/n1$/);
- const a=catalogue.articles.find((a:{code:string})=>a.code==="N1");
+ await page.getByRole("link",{name:label,exact:true}).click();
+ await expect(page).toHaveURL(new RegExp("/scwiki/open-questions/"+code.toLowerCase()+"$"));
+ const a=catalogue.articles.find((a:{code:string})=>a.code===code);
  await expect(page.getByRole("heading",{level:1})).toHaveText(a.title);
  for(const id of a.scopeItems[0].sectionIds){
   await page.getByRole("navigation",{name:"Article contents"}).locator('a[href="#'+id+'"]').click();
   await expect(page.locator('h2#'+id)).toBeInViewport();
-  const exported=await(await request.get('/api/scwiki/v1/articles/scwiki-n1/sections/'+id)).json();
-  expect(exported.scopeItems[0].id).toBe("N1");
+  const exported=await(await request.get('/api/scwiki/v1/articles/'+a.id+'/sections/'+id)).json();
+  expect(exported.scopeItems[0].id).toBe(code);
  }
  await expect(page.locator('.katex-error')).toHaveCount(0);
- const result=await(await request.get('/api/scwiki/v1/search?q='+encodeURIComponent('室温常压超导'))).json();
+ const result=await(await request.get('/api/scwiki/v1/search?q='+encodeURIComponent(query))).json();
  expect(result.results.some((x:{id:string})=>x.id===a.id)).toBe(true);
- const filtered=await(await request.get('/api/scwiki/v1/search?q='+encodeURIComponent('室温常压超导')+'&tcMin=0.01')).json();
+ const filtered=await(await request.get('/api/scwiki/v1/search?q='+encodeURIComponent(query)+'&tcMin=0.01')).json();
  expect(filtered.results.some((x:{id:string})=>x.id===a.id)).toBe(false);
  });
