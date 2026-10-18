@@ -1,0 +1,407 @@
+{
+  "id": "scwiki-b11",
+  "topicId": "scwiki-topic-b11",
+  "code": "B11",
+  "slug": "topological-superconductivity",
+  "title": "Topological superconductivity",
+  "summary": "Connect symmetry, bulk invariants and boundary evidence while separating Majorana model constructions, experimental readout and unresolved identification.",
+  "aliases": [
+    "topological pairing",
+    "Majorana",
+    "Kitaev chain",
+    "Fu–Berg criterion",
+    "Fu–Kane proximity",
+    "zero-bias peak",
+    "BdG invariant"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "B1",
+    "A9",
+    "B4",
+    "B12"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T08:48:04.497425+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected primary manuscripts, published abstracts, institution-hosted retraction text and independent finite-chain calculations.",
+    "limitations": [
+      "Complete final-version, methods and raw-data review remains open.",
+      "Finite-chain spectra and projectors do not establish experimental conductance or a material invariant.",
+      "2026 readout source reviewed at abstract scope only; it does not demonstrate fault-tolerant braiding.",
+      "No candidate compound is certified as topological."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "B_mechanisms/B11_topological_pairing.md",
+    "sha256": "49d2d5071645f0596f86e3470a9fe227d9b5a3b888a5902c3a7fccb6b3a8253a",
+    "sourceId": "file-6204fde24b2792bd"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 14,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained; source conditions and evidence boundaries checked."
+    },
+    {
+      "startLine": 15,
+      "endLine": 22,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained; source conditions and evidence boundaries checked."
+    },
+    {
+      "startLine": 23,
+      "endLine": 28,
+      "targetSections": [
+        "experimental-criteria",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained; source conditions and evidence boundaries checked."
+    },
+    {
+      "startLine": 29,
+      "endLine": 36,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained; source conditions and evidence boundaries checked."
+    },
+    {
+      "startLine": 37,
+      "endLine": 48,
+      "targetSections": [
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained; source conditions and evidence boundaries checked."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-ade538b429fdd847",
+      "doi": "10.1070/1063-7869/44/10S/S29",
+      "title": "Unpaired Majorana fermions in quantum wires",
+      "year": 2001,
+      "url": "https://doi.org/10.1070/1063-7869/44/10S/S29",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0010440v2",
+        "note": "Selected pp3–6 Majorana representation and chain assumptions; independent spectra checked separately."
+      }
+    },
+    {
+      "id": "source-a33c639b7db4f05a",
+      "doi": "10.1103/PhysRevB.61.10267",
+      "title": "Paired states of fermions in two dimensions with breaking of parity and time-reversal symmetries and the fractional quantum Hall effect",
+      "year": 2000,
+      "url": "https://doi.org/10.1103/PhysRevB.61.10267",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevB.61.10267",
+        "note": "Abstract-scoped weak/strong pairing distinction; no full-paper claim."
+      }
+    },
+    {
+      "id": "source-7dc64372df6ba886",
+      "doi": "10.1103/PhysRevLett.100.096407",
+      "title": "Superconducting Proximity Effect and Majorana Fermions at the Surface of a Topological Insulator",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevLett.100.096407",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-version-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0707.1692v3",
+        "note": "Selected pp1–2 uniform time-reversal preservation, surface proximity and vortex distinction."
+      }
+    },
+    {
+      "id": "source-4e92d11d59fb3441",
+      "doi": "10.1103/PhysRevLett.105.097001",
+      "title": "Odd-Parity Topological Superconductors: Theory and Application to CuxBi2Se3",
+      "year": 2010,
+      "url": "https://doi.org/10.1103/PhysRevLett.105.097001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-earlier-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0912.3294v1",
+        "note": "Selected pp1–2, visually checked p1 sufficient-not-necessary criterion and parity of integer invariant; weak-pairing proof conditions retained."
+      }
+    },
+    {
+      "id": "source-37986d2488e4cace",
+      "doi": "10.1103/PhysRevB.78.195125",
+      "title": "Classification of topological insulators and superconductors in three spatial dimensions",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevB.78.195125",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0803.2786v3",
+        "note": "Selected classification discussion pp3–5: noninteracting/BdG symmetry scope; not a full interacting classification."
+      }
+    },
+    {
+      "id": "source-dca781066e96eecc",
+      "doi": "10.1103/PhysRevResearch.2.013377",
+      "title": "Physical mechanisms for zero-bias conductance peaks in Majorana nanowires",
+      "year": 2020,
+      "url": "https://doi.org/10.1103/PhysRevResearch.2.013377",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1910.11413v2",
+        "note": "Abstract and selected pp13–14 correlation/disorder caveats; no transport reproduction or universal experimental diagnosis."
+      }
+    },
+    {
+      "id": "source-f127bb2d99183698",
+      "doi": "10.1038/s41586-021-03373-x",
+      "title": "Retraction Note: Quantized Majorana conductance",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41586-021-03373-x",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "institution-hosted-retraction-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://research.tudelft.nl/en/publications/retraction-note-quantized-majorana-conductance-nature-2018-556-76/",
+        "note": "Full retraction text reproduced by author institution read; publisher endpoint unavailable. Retracted original is not positive evidence."
+      }
+    },
+    {
+      "id": "source-a3c2dc153700478a",
+      "doi": "10.1038/s41586-025-09927-7",
+      "title": "Single-shot parity readout of a minimal Kitaev chain",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-025-09927-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "published-abstract-and-date-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://research.tudelft.nl/en/publications/single-shot-parity-readout-of-a-minimal-kitaev-chain/",
+        "note": "Published abstract read; publication date11February2026 corroborated by PubMed41673287. Institution PDF403; methods/raw data not checked."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-b11-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Topological superconductivity describes a paired state's quasiparticle structure under specified dimensionality, symmetry and gap conditions. It does not name an independent pairing interaction. This entry concentrates on fully gapped Bogoliubov–de Gennes (BdG) descriptions; topology of nodal superconductors requires a different invariant and boundary analysis. The noninteracting/BdG classification is not, by itself, a complete classification of interacting phases.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-37986d2488e4cace"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Read and Green distinguish weak and strong pairing in a specified two-dimensional spinless p-wave model. This establishes a theoretical phase distinction, not a classification of every material with an unusual tunnelling spectrum. A material claim needs a superconducting state compatible with the proposed invariant and the relevant boundary geometry.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a33c639b7db4f05a"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a spinless chain, take positive nearest-neighbour hopping $t$, real pairing $\\Delta$, chemical potential $\\mu$ and unit lattice spacing. One Nambu convention gives",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ade538b429fdd847"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$H(k)=(-\\mu-2t\\cos k)\\tau_z+2\\Delta\\sin k\\,\\tau_y,\\qquad E_\\pm(k)=\\pm\\sqrt{(\\mu+2t\\cos k)^2+4\\Delta^2\\sin^2 k}.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ade538b429fdd847"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The bulk is gapped for nonzero $\\Delta$ away from $|\\mu|=2t$. The particle-hole-protected parity index is $Q=\\operatorname{sgn}(\\mu^2-4t^2)$: $Q=-1$ identifies the nontrivial region. The real-parameter chain also has an additional effective time-reversal symmetry; retaining that symmetry gives the finer BDI classification. Using its class-D parity does not claim that its additional symmetry is absent. These are ideal mean-field assumptions, not a determination of an experimental device's parameters.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ade538b429fdd847",
+        "source-37986d2488e4cace"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An independent finite-matrix check constructs the hopping and antisymmetric pairing blocks directly. Five periodic eight-site spectra agree with the analytic energies above; Hermiticity, particle-hole symmetry and eigenvector residuals are checked separately. For open chains with $\\mu=t=\\Delta=1$ in common energy units, the smallest positive eigenvalues at lengths 8, 12 and 16 are approximately 0.00585989, 0.000366211 and 0.0000228882. The corresponding normalized eigenvectors place about 94% of their weight in the outermost two sites at each end. This demonstrates finite-size splitting and end localization for these parameters, not a universal protection scale.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ade538b429fdd847"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A second independent check illustrates why zero energy is insufficient. At $\\mu=0$ and $t=\\Delta=1$, an eight-site open chain has two exact zero eigenvalues; the zero-subspace projector has one unit of Nambu weight at each end. A trivial chain at $\\mu=3$ also acquires two zero eigenvalues if its first site is deliberately disconnected and tuned to zero on-site energy. Both projector weights then sit at that same site. The sum of two is a Nambu subspace dimension, not a measured charge. No leads or conductance are simulated here; this constructed counterexample tests the inference from energy alone.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ade538b429fdd847"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-mathematical-assumptions-6",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For centrosymmetric, time-reversal-invariant, fully gapped odd-parity pairing, the Fu–Berg weak-pairing criterion supplies a useful sufficient test: the Fermi surface encloses an odd number of time-reversal-invariant momenta. In their three-dimensional setting the test detects the parity of an integer invariant. An even result does not establish that the integer itself vanishes. The normal-state Fermi-surface reduction assumes weak pairing and normal bands away from the chemical potential at those momenta. Do not apply it to an unspecified nodal, inversion-broken or time-reversal-broken state.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-4e92d11d59fb3441"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Distinguish intrinsic bulk order from an engineered interface. In the Fu–Kane proposal, ordinary s-wave proximity pairing gaps a topological-insulator surface. Its relation to a spinless p+ip description does not make the uniform surface a time-reversal-breaking chiral bulk superconductor: the uniform paired surface preserves time reversal, whereas a vortex changes the local setting. Surface participation in pairing and the actual defect or junction geometry matter.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-7dc64372df6ba886"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "A zero-bias conductance peak alone does not uniquely identify a Majorana mode. Pan and Das Sarma construct alternatives involving quantum dots, spatially varying potentials and disorder. Their analysis also limits end-to-end correlation as a diagnostic: trivial correlations can occur, particularly in short wires, and accidental correlations require scrutiny even in longer examples. Length must be assessed relative to the relevant localization scales. Their model comparisons do not diagnose every experimental device.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-dca781066e96eecc"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "For an experimental claim, retain the full gate and field ranges, calibration, temperature, tunnel coupling and device-selection procedure. Compare local spectra with independent bulk-gap and nonlocal constraints. A measured gap reopening, a near-quantized peak or an isolated boundary feature must be assessed together with competing models; a checklist of individually ambiguous signatures cannot substitute for a state-specific argument.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ade538b429fdd847"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "A recent readout result illustrates a narrower, measurable advance. Van Loo and colleagues, published on 11 February 2026, report quantum-capacitance parity readout in a minimal two-site Kitaev chain, with switching lifetimes exceeding a millisecond and charge-sensing checks. Their abstract explicitly limits the protection of these minimal-chain modes relative to longer chains. Parity readout is not a demonstration of fault-tolerant braiding or a bulk material's superconducting transition. Here the published abstract and bibliographic record were checked; the full methods and raw data remain to be reviewed.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a3c2dc153700478a"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The 2018 claim titled “Quantized Majorana conductance” was retracted in 2021. The authors' retraction describes undisclosed charge-jump corrections, a mislabeled axis and recalibration that moved plateau values above the originally claimed quantized value. They withdrew the quantization claim. The original positive claim must not be reused as confirmation; the retraction does not by itself disprove every Majorana platform.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-f127bb2d99183698"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Protection is conditional on the relevant gap, symmetries and isolation. Finite-size overlap, uncontrolled perturbations and changes of state need explicit treatment. The finite checks above establish neither a material invariant nor transport statistics, parity lifetime, fusion rules or a fault-tolerant operation. This entry does not promote a candidate compound to confirmed topological superconductivity. Full final-version comparisons and complete scientific acceptance remain open.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ade538b429fdd847"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-b11-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Start from a specified superconducting order and its dimensionality. Compute the appropriate invariant with convergence checks, predict boundary or defect responses in the actual geometry, and test alternatives against the same data range. Keep an engineered interface result separate from a host bulk-phase claim. Record negative results, corrections and the distinction between theoretical construction, compatible measurement and unique experimental identification.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ade538b429fdd847"
+      ],
+      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-b11-correction-1",
+      "description": "Fu–Berg criterion retains inversion, full gap, time reversal and weak pairing; its parity test is sufficient, not necessary.",
+      "sourceId": "source-4e92d11d59fb3441",
+      "scope": "Selected pp1–2 and visual criterion check."
+    },
+    {
+      "id": "scwiki-b11-correction-2",
+      "description": "Retracted quantized-conductance claim excluded as positive evidence.",
+      "sourceId": "source-f127bb2d99183698",
+      "scope": "Institution-hosted full retraction text."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "E_\\pm(k)=\\pm\\sqrt{(\\mu+2t\\cos k)^2+4\\Delta^2\\sin^2 k}",
+      "check": "Five periodic finite spectra independently diagonalized and compared; Hermiticity/PHS/eigenvector residuals checked."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "Q=\\operatorname{sgn}(\\mu^2-4t^2)",
+      "check": "Five Pfaffian-sign cases; gap and real-model symmetry restrictions explicit."
+    }
+  ],
+  "materialCases": []
+}

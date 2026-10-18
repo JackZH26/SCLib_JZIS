@@ -558,3 +558,16 @@ it("retains Hund atomic-model limits, corrected material identity and calorimetr
  expect(searchArticles(searchIndex().entries,"Hund",{tcMin:5}).some(r=>r.id===a.id)).toBe(false);
  expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
 });
+
+it("preserves topological criterion conditions, retraction and readout limits in searchable exports",async()=>{
+ const a=articles().find(a=>a.code==="B11")!;
+ expect(a.materialCases).toEqual([]);
+ expect(searchArticles(searchIndex().entries,"Kitaev",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"Kitaev",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(math).toContain("even result does not establish");expect(math).toContain("weak pairing");expect(math).toContain("BDI");expect(math).toContain("No leads or conductance are simulated");
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("uniform paired surface preserves time reversal");expect(md).toContain("retracted in 2021");expect(md).toContain("11 February 2026");expect(md).toContain("not a demonstration of fault-tolerant braiding");
+ expect(a.references.find(r=>r.doi==="10.1038/s41586-025-09927-7")?.verification.scope).toBe("published-abstract-and-date-check");
+ expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
+});
