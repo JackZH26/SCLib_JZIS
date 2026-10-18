@@ -1,0 +1,345 @@
+{
+  "id": "scwiki-f6",
+  "topicId": "scwiki-topic-f6",
+  "code": "F6",
+  "slug": "flat-band-superconductivity",
+  "title": "Flat-band superconductivity: pairing and phase coherence",
+  "summary": "Compare pairing scales with phase stiffness, test finite-bandwidth limits, and retain the internal-field relaxation needed for a reliable geometric response.",
+  "aliases": [
+    "flat-band superconductivity",
+    "flat band superconductivity",
+    "pair formation and phase coherence",
+    "minimal quantum metric",
+    "relaxed superfluid stiffness",
+    "rectangular density of states"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experimental"
+  ],
+  "relatedCodes": [
+    "B13",
+    "F1",
+    "F7",
+    "E9",
+    "E8"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T14:28:30.444332+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected original flat-band/response passages, visual Huhtinen and Julku equation checks, earlier MATBG source review and independent bandwidth/relaxation illustrations.",
+    "limitations": [
+      "Complete scientific acceptance and full author/final-version comparisons remain open.",
+      "Reduced DOS model has no Bloch wavefunctions or stiffness; its onset is not an experimental transition.",
+      "No full multiorbital self-consistent response, raw microwave data or complete material survey reviewed.",
+      "Scalar Hessian illustration does not reproduce the full quantum-geometric response."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "F_quantum_geometry/F6_flat_band_SC.md",
+    "sha256": "fa63249ec45c9c9d416765b58366b85351d9a1d143f47092c714060a38a57c98",
+    "sourceId": "file-0028dec24f551825"
+  },
+  "references": [
+    {
+      "id": "source-fdf091e09e7f4a6f",
+      "doi": "10.1038/ncomms9944",
+      "title": "Superfluidity in topologically nontrivial flat bands",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/ncomms9944",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-flat-band-assumptions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/ncomms9944",
+        "note": "Published20November2015. Existing local final PDF selectedpp4–6, especially uniform pairing and bandwidth/interaction/bandgap hierarchy onp5; prior B13p5visual reused. Full supplementary derivation not reproduced."
+      }
+    },
+    {
+      "id": "source-b43340ce5c356e49",
+      "doi": "10.1103/PhysRevLett.117.045303",
+      "title": "Geometric Origin of Superfluidity in the Lieb-Lattice Flat Band",
+      "year": 2016,
+      "url": "https://doi.org/10.1103/PhysRevLett.117.045303",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-lieb-model",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1603.03237v2",
+        "note": "Authorv2 8May2016,publication22July2016; selectedpp1–2,Chern-zero model,isolated-limit and orbital-pairing conditions; p2visuallychecked after xref warning. Full finalcomparison and modelresponse not reproduced."
+      }
+    },
+    {
+      "id": "source-fa7a165c8c344a63",
+      "doi": "10.1103/PhysRevB.95.024515",
+      "title": "Band geometry, Berry curvature, and superfluid weight",
+      "year": 2017,
+      "url": "https://doi.org/10.1103/PhysRevB.95.024515",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-projector-and-metric-conventions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1610.01803v2",
+        "note": "Authorv2 11January2017,selectedpp1–2,4–6; p5Eq21–24 visuallychecked. Published27January2017. R=2Tr(P dP dP) and gLiang=2gWiki. Final-version comparison and full response derivation remain open."
+      }
+    },
+    {
+      "id": "source-72f7ddb9f13bbd81",
+      "doi": "10.1103/PhysRevB.106.014518",
+      "title": "Revisiting flat band superconductivity: Dependence on minimal quantum metric and band touchings",
+      "year": 2022,
+      "url": "https://doi.org/10.1103/PhysRevB.106.014518",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-relaxation-correction",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://aaltodoc.aalto.fi/server/api/core/bitstreams/e05db312-49b0-4769-b112-681407acd4b0/content",
+        "note": "Final reprint selectedpp1–5; actualp4 Eq13–17 visuallychecked: order-parameter derivatives,TRS and positive-Hessian conditions,representation dependence and relaxation. Minimal-integrated-trace statement reused from F1selectedp6. Full proof/multibandresponse not reproduced."
+      }
+    },
+    {
+      "id": "source-90c67b111a6e919c",
+      "doi": "10.1038/nature26160",
+      "title": "Unconventional superconductivity in magic-angle graphene superlattices",
+      "year": 2018,
+      "url": "https://doi.org/10.1038/nature26160",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-primary-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://ciqm.harvard.edu/uploads/2/3/3/4/23349210/cao_fatemi_fang2018.pdf",
+        "note": "Published pp1–2 device/contacts/four-probe description; no unique pairing mechanism inferred."
+      }
+    },
+    {
+      "id": "source-be7282623ca96056",
+      "doi": "10.1038/s41586-024-08494-7",
+      "title": "Superfluid stiffness of magic-angle twisted bilayer graphene",
+      "year": 2025,
+      "url": "https://doi.org/10.1038/s41586-024-08494-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-circuit-and-temperature-definitions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2406.13740v2",
+        "note": "Tanaka et al, published5February2025. Authorv2selectedpp5–7 and prior B13/E9 Supplement3p31 circuitreview.20mKbase/40mKdevice,half-resistance near1K,active aspect ratio and parallel edge model; fullfinal/rawdata comparison open."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-f6-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Flat-band superconductivity involves two distinct questions: whether electrons develop a pairing amplitude, and whether the resulting state resists a spatial phase twist. A narrow dispersion can favor pairing while suppressing the usual velocity contribution to current. Neither a large density of states nor a large mean-field gap establishes a high measured transition temperature.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-b43340ce5c356e49"
+      ],
+      "conditions": "Explicit DOS/state-counting and scale hierarchy; fixed versus relaxed internal pairing response; device-specific circuit and temperature criteria.",
+      "verificationScope": "Selected primary passages and bounded reduced-model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f6-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "This article focuses on the scale hierarchy and response calculation. The isolated-band reduction of Peotta and Törmä assumes a bandwidth small compared with the attraction, itself small compared with the separation to other bands, together with an appropriate uniform pairing field. Those are conditions for that reduction, not necessary conditions for every superconducting flat-band system. Huhtinen and colleagues also analyze situations where a touching dispersive band can help within their mean-field treatment.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-72f7ddb9f13bbd81"
+      ],
+      "conditions": "Explicit DOS/state-counting and scale hierarchy; fixed versus relaxed internal pairing response; device-specific circuit and temperature criteria.",
+      "verificationScope": "Selected primary passages and bounded reduced-model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f6-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "As an independent pairing illustration, take one state per spin per cell, half filling, a rectangular density of states $\\rho(\\xi)=1/W$ over $-W/2\\lt\\xi\\lt W/2$, and an effective attraction $G>0$. Absorb the Hartree shift into the chemical potential. The zero-temperature reduced mean-field gap is $\\Delta_0=W/[2\\sinh(W/G)]$. Its linearized pairing onset obeys $1=(G/W)\\int_0^{W/2}\\tanh[\\xi/(2k_BT_{\\rm pair})]\\,d\\xi/\\xi$. State counting and the projected interaction are fixed here; $G$ is not automatically a multiorbital lattice's bare onsite attraction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-b43340ce5c356e49"
+      ],
+      "conditions": "Explicit DOS/state-counting and scale hierarchy; fixed versus relaxed internal pairing response; device-specific circuit and temperature criteria.",
+      "verificationScope": "Selected primary passages and bounded reduced-model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f6-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In this illustration, $W/G\\to0$ gives $\\Delta_0\\to G/2$ and $k_BT_{\\rm pair}\\to G/4$. Seven bandwidth ratios were checked using an independent zero-temperature quadrature and numerical roots of the onset equation. The gap-to-pairing-scale ratio approaches two in the flat limit and approximately 1.764 in the broad-band weak-coupling regime. This density-of-states model specifies no Bloch eigenvectors, current operator or phase stiffness. Its pairing onset must not be relabelled an experimental $T_c$.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-b43340ce5c356e49"
+      ],
+      "conditions": "Explicit DOS/state-counting and scale hierarchy; fixed versus relaxed internal pairing response; device-specific circuit and temperature criteria.",
+      "verificationScope": "Selected primary passages and bounded reduced-model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f6-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For the multiband response, a conventional/geometric split is useful only with its precise definitions. An isolated flat band can have zero conventional contribution while its wavefunctions support a geometric contribution. The corrected response includes how the orbital pairing fields change under the applied twist. In the time-reversal-symmetric isolated-flat-band setting with uniform pairing, Huhtinen and colleagues connect the response to the minimal integrated quantum metric, rather than an arbitrary orbital representation's unrelaxed metric expression.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63",
+        "source-72f7ddb9f13bbd81"
+      ],
+      "conditions": "Explicit DOS/state-counting and scale hierarchy; fixed versus relaxed internal pairing response; device-specific circuit and temperature criteria.",
+      "verificationScope": "Selected primary passages and bounded reduced-model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f6-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A separate scalar example shows why relaxation matters. Let a free-energy density be $f(Q,\\eta)=D_0Q^2/2+bQ\\eta+a\\eta^2/2$, with $a>0$, an imposed phase gradient $Q$ and a relaxable internal coordinate $\\eta$. Minimization gives $\\eta_*=-bQ/a$ and $D_{\\rm relaxed}=D_0-b^2/a$. A stable example with $D_0=a=b=1$ has positive frozen curvature but zero relaxed curvature. Four parameter sets and twelve coordinate changes $\\eta'=\\eta+cQ$ reproduce the same relaxed response while the frozen curvature can change. This illustrates a chain-rule correction, not a full superconducting lattice calculation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-72f7ddb9f13bbd81"
+      ],
+      "conditions": "Explicit DOS/state-counting and scale hierarchy; fixed versus relaxed internal pairing response; device-specific circuit and temperature criteria.",
+      "verificationScope": "Selected primary passages and bounded reduced-model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f6-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Quantum-metric normalization also matters. In this Wiki, $g_{ij}=\\operatorname{Re}\\langle\\partial_i u|(1-|u\\rangle\\langle u|)|\\partial_j u\\rangle$. Liang and colleagues use a metric with twice this normalization in the checked author equations. Copying a response prefactor without translating conventions can introduce a factor-of-two error. A nonzero Chern number provides particular geometric bounds under additional assumptions; the Chern-trivial Lieb-lattice example shows why it is not necessary for all geometric superfluid response.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-b43340ce5c356e49",
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "Explicit DOS/state-counting and scale hierarchy; fixed versus relaxed internal pairing response; device-specific circuit and temperature criteria.",
+      "verificationScope": "Selected primary passages and bounded reduced-model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f6-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Cao and colleagues established gate-tunable superconducting transport in magic-angle twisted bilayer graphene. The published paper documents four-probe measurements with non-superconducting Cr/Au contacts. It establishes a platform for narrow-band superconductivity, while leaving the relative roles of lattice vibrations, electronic correlations and quantum geometry to further tests. A twist angle or band label alone does not identify the pairing interaction.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-90c67b111a6e919c"
+      ],
+      "conditions": "Explicit DOS/state-counting and scale hierarchy; fixed versus relaxed internal pairing response; device-specific circuit and temperature criteria.",
+      "verificationScope": "Selected primary passages and bounded reduced-model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f6-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Tanaka and colleagues, published on 5 February 2025, infer sheet stiffness through microwave kinetic inductance alongside transport. The reviewed author manuscript distinguishes a 20 mK refrigerator base temperature from an approximately 40 mK wired-device temperature. Its roughly 1 K resistive scale uses half the normal-state resistance. Those three quantities have different meanings; the measurement temperatures are excluded from transition-temperature searches here.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Explicit DOS/state-counting and scale hierarchy; fixed versus relaxed internal pairing response; device-specific circuit and temperature criteria.",
+      "verificationScope": "Selected primary passages and bounded reduced-model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f6-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Their circuit analysis includes a parallel electrode-proximitized edge and assumes the active region has the device aspect ratio when converting inductance to sheet stiffness. The comparison with a conventional Fermi-liquid estimate supports a quantum-geometric interpretation within the analysis, but does not experimentally isolate a model-independent geometric fraction or demonstrate that geometry supplies the attraction. Keep total measured response, inferred parameters and theory comparisons separate.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Explicit DOS/state-counting and scale hierarchy; fixed versus relaxed internal pairing response; device-specific circuit and temperature criteria.",
+      "verificationScope": "Selected primary passages and bounded reduced-model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f6-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The response correction identified in 2022 can alter more than a numerical prefactor: freezing the internal pairing response can yield a nonzero stiffness even when the relaxed result vanishes. Time reversal and equal pairing at zero twist do not by themselves remove that issue. Conversely, failure of an isolated-band approximation does not prove that a touching or nearby band suppresses superconductivity; it requires a calculation that retains the relevant bands.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-72f7ddb9f13bbd81"
+      ],
+      "conditions": "Explicit DOS/state-counting and scale hierarchy; fixed versus relaxed internal pairing response; device-specific circuit and temperature criteria.",
+      "verificationScope": "Selected primary passages and bounded reduced-model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f6-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Selected original passages, two visual equation checks and reduced calculations have been reviewed. Complete scientific acceptance has not been reached. Full published-version comparisons for the author manuscripts, multiorbital self-consistent response, raw microwave data and a complete material survey remain open. A kagome lattice or a flat photoemission feature is not, by itself, a measurement of geometric superfluid weight.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-b43340ce5c356e49",
+        "source-72f7ddb9f13bbd81",
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Explicit DOS/state-counting and scale hierarchy; fixed versus relaxed internal pairing response; device-specific circuit and temperature criteria.",
+      "verificationScope": "Selected primary passages and bounded reduced-model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f6-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Compare bandwidth, interband separation, filling and interaction projection before choosing a flat-band approximation. Evaluate pairing and phase response independently, retaining the response of internal fields. For a real sample, compare spectroscopy, resistive criteria and inductive measurements with their temperature, geometry and fitting assumptions attached. Favor a reproducible combination of pairing and coherence over a ranking based solely on band flatness.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-72f7ddb9f13bbd81",
+        "source-90c67b111a6e919c",
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Explicit DOS/state-counting and scale hierarchy; fixed versus relaxed internal pairing response; device-specific circuit and temperature criteria.",
+      "verificationScope": "Selected primary passages and bounded reduced-model checks; complete scientific acceptance open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-f6-correction-1",
+      "sourceId": "source-be7282623ca96056",
+      "description": "The pinned bibliography attributed the2025stiffness paper to Randeria. Its original title/DOI identify Tanaka and colleagues; this public article uses that authorship.",
+      "scope": "Bibliographic attribution correction; not a scientific correction to the paper."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta_0=\\frac{W}{2\\sinh(W/G)},\\qquad D_{\\rm relaxed}=D_0-b^2/a",
+      "check": "7 bandwidth ratios with independent zero-T quadrature and onset roots;4 relaxed curvatures and12coordinate changes. No experimental Tc or multiband response assigned."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-f6-material-1",
+      "formula": "C",
+      "sample": "Tanaka wired MATBG device",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.04,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Approximately40mK effective device temperature, distinct from20mKbase andnear1Khalf-resistance scale; no Tc assigned here.",
+      "criterion": "effective-device-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Microwave kinetic inductance and transport",
+      "sourceId": "source-be7282623ca96056",
+      "aliases": [
+        "MATBG",
+        "Tanaka device",
+        "twisted bilayer graphene"
+      ]
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 61,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source retained; distinguish pairing/coherence,correct2025author attribution and incorporate2022order-parameter response correction; no universal isolated-band necessity claim."
+    }
+  ]
+}

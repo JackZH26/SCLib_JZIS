@@ -1,0 +1,39 @@
+## Scope
+
+Flat-band superconductivity involves two distinct questions: whether electrons develop a pairing amplitude, and whether the resulting state resists a spatial phase twist. A narrow dispersion can favor pairing while suppressing the usual velocity contribution to current. Neither a large density of states nor a large mean-field gap establishes a high measured transition temperature. [R1](#ref-source-fdf091e09e7f4a6f) [R2](#ref-source-b43340ce5c356e49)
+
+This article focuses on the scale hierarchy and response calculation. The isolated-band reduction of Peotta and Törmä assumes a bandwidth small compared with the attraction, itself small compared with the separation to other bands, together with an appropriate uniform pairing field. Those are conditions for that reduction, not necessary conditions for every superconducting flat-band system. Huhtinen and colleagues also analyze situations where a touching dispersive band can help within their mean-field treatment. [R1](#ref-source-fdf091e09e7f4a6f) [R4](#ref-source-72f7ddb9f13bbd81)
+
+## Mathematical assumptions
+
+As an independent pairing illustration, take one state per spin per cell, half filling, a rectangular density of states $\rho(\xi)=1/W$ over $-W/2\lt\xi\lt W/2$, and an effective attraction $G>0$. Absorb the Hartree shift into the chemical potential. The zero-temperature reduced mean-field gap is $\Delta_0=W/[2\sinh(W/G)]$. Its linearized pairing onset obeys $1=(G/W)\int_0^{W/2}\tanh[\xi/(2k_BT_{\rm pair})]\,d\xi/\xi$. State counting and the projected interaction are fixed here; $G$ is not automatically a multiorbital lattice's bare onsite attraction. [R1](#ref-source-fdf091e09e7f4a6f) [R2](#ref-source-b43340ce5c356e49)
+
+In this illustration, $W/G\to0$ gives $\Delta_0\to G/2$ and $k_BT_{\rm pair}\to G/4$. Seven bandwidth ratios were checked using an independent zero-temperature quadrature and numerical roots of the onset equation. The gap-to-pairing-scale ratio approaches two in the flat limit and approximately 1.764 in the broad-band weak-coupling regime. This density-of-states model specifies no Bloch eigenvectors, current operator or phase stiffness. Its pairing onset must not be relabelled an experimental $T_c$. [R1](#ref-source-fdf091e09e7f4a6f) [R2](#ref-source-b43340ce5c356e49)
+
+For the multiband response, a conventional/geometric split is useful only with its precise definitions. An isolated flat band can have zero conventional contribution while its wavefunctions support a geometric contribution. The corrected response includes how the orbital pairing fields change under the applied twist. In the time-reversal-symmetric isolated-flat-band setting with uniform pairing, Huhtinen and colleagues connect the response to the minimal integrated quantum metric, rather than an arbitrary orbital representation's unrelaxed metric expression. [R1](#ref-source-fdf091e09e7f4a6f) [R3](#ref-source-fa7a165c8c344a63) [R4](#ref-source-72f7ddb9f13bbd81)
+
+A separate scalar example shows why relaxation matters. Let a free-energy density be $f(Q,\eta)=D_0Q^2/2+bQ\eta+a\eta^2/2$, with $a>0$, an imposed phase gradient $Q$ and a relaxable internal coordinate $\eta$. Minimization gives $\eta_*=-bQ/a$ and $D_{\rm relaxed}=D_0-b^2/a$. A stable example with $D_0=a=b=1$ has positive frozen curvature but zero relaxed curvature. Four parameter sets and twelve coordinate changes $\eta'=\eta+cQ$ reproduce the same relaxed response while the frozen curvature can change. This illustrates a chain-rule correction, not a full superconducting lattice calculation. [R4](#ref-source-72f7ddb9f13bbd81)
+
+Quantum-metric normalization also matters. In this Wiki, $g_{ij}=\operatorname{Re}\langle\partial_i u|(1-|u\rangle\langle u|)|\partial_j u\rangle$. Liang and colleagues use a metric with twice this normalization in the checked author equations. Copying a response prefactor without translating conventions can introduce a factor-of-two error. A nonzero Chern number provides particular geometric bounds under additional assumptions; the Chern-trivial Lieb-lattice example shows why it is not necessary for all geometric superfluid response. [R2](#ref-source-b43340ce5c356e49) [R3](#ref-source-fa7a165c8c344a63)
+
+## Experimental criteria
+
+Cao and colleagues established gate-tunable superconducting transport in magic-angle twisted bilayer graphene. The published paper documents four-probe measurements with non-superconducting Cr/Au contacts. It establishes a platform for narrow-band superconductivity, while leaving the relative roles of lattice vibrations, electronic correlations and quantum geometry to further tests. A twist angle or band label alone does not identify the pairing interaction. [R5](#ref-source-90c67b111a6e919c)
+
+Tanaka and colleagues, published on 5 February 2025, infer sheet stiffness through microwave kinetic inductance alongside transport. The reviewed author manuscript distinguishes a 20 mK refrigerator base temperature from an approximately 40 mK wired-device temperature. Its roughly 1 K resistive scale uses half the normal-state resistance. Those three quantities have different meanings; the measurement temperatures are excluded from transition-temperature searches here. [R6](#ref-source-be7282623ca96056)
+
+Their circuit analysis includes a parallel electrode-proximitized edge and assumes the active region has the device aspect ratio when converting inductance to sheet stiffness. The comparison with a conventional Fermi-liquid estimate supports a quantum-geometric interpretation within the analysis, but does not experimentally isolate a model-independent geometric fraction or demonstrate that geometry supplies the attraction. Keep total measured response, inferred parameters and theory comparisons separate. [R6](#ref-source-be7282623ca96056)
+
+## Limits and disputes
+
+The response correction identified in 2022 can alter more than a numerical prefactor: freezing the internal pairing response can yield a nonzero stiffness even when the relaxed result vanishes. Time reversal and equal pairing at zero twist do not by themselves remove that issue. Conversely, failure of an isolated-band approximation does not prove that a touching or nearby band suppresses superconductivity; it requires a calculation that retains the relevant bands. [R4](#ref-source-72f7ddb9f13bbd81)
+
+Selected original passages, two visual equation checks and reduced calculations have been reviewed. Complete scientific acceptance has not been reached. Full published-version comparisons for the author manuscripts, multiorbital self-consistent response, raw microwave data and a complete material survey remain open. A kagome lattice or a flat photoemission feature is not, by itself, a measurement of geometric superfluid weight. [R1](#ref-source-fdf091e09e7f4a6f) [R2](#ref-source-b43340ce5c356e49) [R4](#ref-source-72f7ddb9f13bbd81) [R6](#ref-source-be7282623ca96056)
+
+## Discovery implications
+
+Compare bandwidth, interband separation, filling and interaction projection before choosing a flat-band approximation. Evaluate pairing and phase response independently, retaining the response of internal fields. For a real sample, compare spectroscopy, resistive criteria and inductive measurements with their temperature, geometry and fitting assumptions attached. Favor a reproducible combination of pairing and coherence over a ranking based solely on band flatness. [R1](#ref-source-fdf091e09e7f4a6f) [R4](#ref-source-72f7ddb9f13bbd81) [R5](#ref-source-90c67b111a6e919c) [R6](#ref-source-be7282623ca96056)
+
+## Related topics
+
+Compare [flat-band pairing](/scwiki/flat-band-pairing), [quantum metric](/scwiki/quantum-metric), [geometric superfluid weight](/scwiki/geometric-superfluid-weight), [twist angle](/scwiki/twist-angle) and [dimensionality and phase slips](/scwiki/dimensionality).
