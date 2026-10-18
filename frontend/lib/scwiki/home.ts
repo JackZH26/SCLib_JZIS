@@ -27,6 +27,7 @@ export const topicGroups = [
     {code:"N6", label:"Is UTe2 spin triplet?"},
     {code:"N7", label:"Nickelate s or d pairing?"},
     {code:"N8", label:"Validating claims like LK-99?"},
+    {code:"N9", label:"Does topology imply higher Tc?"},
     {code:"N10", label:"What limits flat-band Tc?"},
   ]},
 ] as const;

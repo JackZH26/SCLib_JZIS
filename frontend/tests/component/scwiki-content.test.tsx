@@ -1712,3 +1712,24 @@ it("preserves LK-99 validation limits in exports and keeps unverified claims out
  expect(a.references.find(r=>r.doi==="10.48550/arXiv.2307.12008")!.publicationStatus).toBe("preprint");
  expect(a.references.find(r=>r.doi===null&&r.url.includes("webstore.iec.ch"))!.verification.scope).toBe("official-public-scope-only");
 });
+
+
+it("separates topology, transition temperature and spectral visibility across exports and search",async()=>{
+ const a=articles().find(a=>a.code==="N9")!;
+ expect(a.materialCases).toEqual([]);
+ for(const id of a.scopeItems![0].sectionIds){
+  const data=await(await get(["articles",a.id,"sections",id])).json();
+  expect(data.scopeItems.map((i:{id:string})=>i.id)).toEqual(["N9"]);
+  const md=await(await get(["articles",a.id,"sections",id],"?format=markdown")).text();
+  expect(md).toContain(data.section.markdown);
+  for(const limit of a.review!.limitations)expect(md).toContain(limit);
+ }
+ for(const q of ["拓扑超导与高Tc","vortex orientation","vortex minigap"]){
+  expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
+  expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
+ }
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ for(const phrase of ["does not solve its temperature dependence","not a universal device operating limit","7.9 K zero-resistance","not a fit to a measured peak"])expect(md).toContain(phrase);
+ expect(a.references.find(r=>r.doi==="10.1038/s41467-025-67957-1")!.verification.note).toContain("26 December 2025");
+ expect(a.references.find(r=>r.doi==="10.1126/science.aao1797")!.verification.evidenceUrl).toMatch(/v3$/);
+});
