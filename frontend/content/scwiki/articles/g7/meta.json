@@ -26,10 +26,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-17T12:13:01Z",
+  "modifiedAt": "2026-10-18T08:32:24.908533+00:00",
   "review": {
-    "checkedAt": "2026-10-17",
-    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "checkedAt": "2026-10-18",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below. Updated selected Pustogow published passages and Anderson/Shimizu/Kurosaki abstracts on 2026-10-18.",
     "limitations": [
       "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
       "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
@@ -164,15 +164,15 @@
     {
       "id": "source-5a6026d6455bf7a0",
       "doi": "10.1126/science.235.4793.1196",
-      "title": "The Resonating Valence Bond State in La\n                    2\n                    CuO\n                    4\n                    and Superconductivity",
+      "title": "The Resonating Valence Bond State in La2CuO4 and Superconductivity",
       "year": 1987,
       "url": "https://doi.org/10.1126/science.235.4793.1196",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1126%2Fscience.235.4793.1196",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "indexed-primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/17818979/",
+        "note": "Original abstract at PubMed: historical proposal, not a confirmed parent-state diagnosis. Publisher endpoint unavailable; full text not checked."
       }
     },
     {
@@ -183,24 +183,24 @@
       "url": "https://doi.org/10.1103/PhysRevLett.91.107001",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FPhysRevLett.91.107001",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "publisher-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.91.107001",
+        "note": "Abstract: NMR absence of order down to32mK and susceptibility exchange scale about250K. Neither is Tc; full methods not reviewed."
       }
     },
     {
       "id": "source-0443485ac20d3a8c",
       "doi": "10.1103/PhysRevLett.95.177001",
-      "title": "Mott Transition from a Spin Liquid to a Fermi Liquid in the Spin-Frustrated Organic Conductor\n                    \n                      κ\n                      −\n                      (\n                      ET\n                      \n                        )\n                        2\n                      \n                      \n                        Cu\n                        2\n                      \n                      (\n                      CN\n                      \n                        )\n                        3\n                      \n                    ",
+      "title": "Mott Transition from a Spin Liquid to a Fermi Liquid in the Spin-Frustrated Organic Conductor kappa-(ET)2Cu2(CN)3",
       "year": 2005,
       "url": "https://doi.org/10.1103/PhysRevLett.95.177001",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "primary-abstract-scoped-check",
-        "checkedAt": "2026-10-17",
+        "scope": "publisher-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
         "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.95.177001",
-        "note": "Abstract confirms the pressure-temperature phase diagram from NMR/resistivity and neighboring metal/superconducting phases; no causal RVB route is established."
+        "note": "Pressure NMR/resistivity phase diagram and neighboring superconductivity; no causal RVB mechanism established. Full data not reviewed."
       }
     },
     {
@@ -211,10 +211,10 @@
       "url": "https://doi.org/10.1038/s41467-023-37491-z",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1038%2Fs41467-023-37491-z",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "published-primary-passages-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-023-37491-z.pdf",
+        "note": "Published pp.1–5 selected results,discussion,methods and data analysis; Fig4/discussion visually checked. Substrate strain and inferred hydrostatic-equivalent pressure, VBS interpretation with gapped chiral QSL not excluded, mounting microcracks retained. Raw-data audit pending."
       }
     }
   ],
@@ -309,14 +309,14 @@
     {
       "id": "scwiki-g7-claim-limits-and-disputes-1",
       "sectionId": "limits-and-disputes",
-      "statement": "The candidate interpretation has continuing spin-gap and valence-bond-order questions, explicitly represented by the later source cited here. Pressure changes bandwidth and may change several effective parameters. A neighboring superconductor is therefore evidence of phase-diagram proximity, not a controlled demonstration of a QSL-to-superconductor microscopic route.",
+      "statement": "The 2023 strain-transport study favors a spin-gapped valence-bond-solid interpretation, but explicitly leaves a gapped chiral spin liquid possible. Its hydrostatic-equivalent pressure is inferred from transport comparisons for a substrate-coupled crystal; it is not a directly applied hydrostatic pressure. Neighboring superconductivity therefore establishes phase-diagram proximity rather than a unique microscopic QSL-to-superconductor route.",
       "evidenceType": "hypothesis",
       "sourceIds": [
         "source-0443485ac20d3a8c",
         "source-5e0dcd80e8b64a1b"
       ],
       "conditions": "A lack of observed magnetic order has a finite experimental temperature/time window. Pressure-induced superconductivity in a QSL candidate does not prove fractionalization-mediated pairing.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "verificationScope": "Selected published Pustogow pp.1–5, Fig4/discussion visually checked; Kurosaki abstract only. No raw-data or full mechanism audit."
     },
     {
       "id": "scwiki-g7-claim-limits-and-disputes-2",

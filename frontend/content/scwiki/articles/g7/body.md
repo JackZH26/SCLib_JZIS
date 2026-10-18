@@ -26,7 +26,7 @@ The organic compound kappa-(BEDT-TTF)2Cu2(CN)3 is an important candidate platfor
 
 ## Limits and disputes
 
-The candidate interpretation has continuing spin-gap and valence-bond-order questions, explicitly represented by the later source cited here. Pressure changes bandwidth and may change several effective parameters. A neighboring superconductor is therefore evidence of phase-diagram proximity, not a controlled demonstration of a QSL-to-superconductor microscopic route. [R3](#ref-source-0443485ac20d3a8c) [R4](#ref-source-5e0dcd80e8b64a1b)
+The 2023 strain-transport study favors a spin-gapped valence-bond-solid interpretation, but explicitly leaves a gapped chiral spin liquid possible. Its hydrostatic-equivalent pressure is inferred from transport comparisons for a substrate-coupled crystal; it is not a directly applied hydrostatic pressure. Neighboring superconductivity therefore establishes phase-diagram proximity rather than a unique microscopic QSL-to-superconductor route. [R3](#ref-source-0443485ac20d3a8c) [R4](#ref-source-5e0dcd80e8b64a1b)
 
 Frustration is a useful route to suppressing simple order, but it is neither sufficient nor a universal necessary condition for every spin-liquid construction. Different topological labels and proposed excitations must be tied to a specified theoretical state. The pilot removes categorical material assignments and universal heat-capacity exponents from the original overview. [R1](#ref-source-5a6026d6455bf7a0) [R4](#ref-source-5e0dcd80e8b64a1b)
 

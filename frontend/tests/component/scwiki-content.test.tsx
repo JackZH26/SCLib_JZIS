@@ -527,3 +527,22 @@ it("keeps plasmon mode energies and spectroscopy temperatures distinct from supe
  expect(a.references.find(r=>r.doi==="10.1103/PhysRevB.94.224515")?.verification.evidenceUrl).toContain("accepted/");
  expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
 });
+
+it("keeps RVB model results and organic spin-state alternatives distinct from measured Tc",async()=>{
+ const a=articles().find(a=>a.code==="B9")!;
+ expect(a.materialCases).toEqual([]);
+ expect(searchArticles(searchIndex().entries,"RVB",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"RVB",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const exp=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(exp).toContain("32 mK");expect(exp).toContain("Neither number is a superconducting transition");
+ expect(exp).toContain("0.5 T");expect(exp).toContain("macroscopic or mesoscopic");
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("20.7%");expect(md).toContain("no mobile charge degrees of freedom");
+ expect(md).toContain("gapped chiral spin liquid");expect(md).toContain("mounting-related microcracks");
+ expect(md).toContain("experimental mismatch");
+ const g=articles().find(a=>a.code==="G7")!;
+ const gs=await(await get(["articles",g.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+ expect(gs).toContain("not a directly applied hydrostatic pressure");expect(gs).toContain("leaves a gapped chiral spin liquid possible");
+ expect(g.references.find(r=>r.doi==="10.1038/s41467-023-37491-z")?.verification.scope).toBe("published-primary-passages-scoped-check");
+ expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
+});
