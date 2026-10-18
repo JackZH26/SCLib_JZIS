@@ -71,3 +71,20 @@ test("SCWiki retains docs API/data, redirects canonical paths and returns genuin
  for(const a of catalogue.articles){expect(sitemap).toContain("/scwiki/"+a.slug);expect(sitemap).toContain(a.modifiedAt);}
  expect(sitemap).toContain("/docs/api");expect(sitemap).toContain("/docs/data");expect(sitemap).not.toContain("<loc>https://jzis.org/docs</loc>");
 });
+
+test("homepage research, topic links and search stay usable at mobile, tablet and desktop widths",async({page})=>{
+ await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
+ for(const width of [390,768,1440]){
+  await page.setViewportSize({width,height:900});
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  const search=page.getByRole("button",{name:"Search",exact:true});
+  expect(await search.evaluate(button=>{const range=document.createRange();range.selectNodeContents(button);return range.getClientRects().length;})).toBe(1);
+  expect(await page.locator('.scwiki-research-item').count()).toBe(3);
+  const links=await page.locator('.scwiki-topic-group a').all();
+  expect(links.length).toBe(12);
+  for(const link of links)expect(await link.getAttribute('href')).toMatch(/^\/scwiki\/[a-z-]+$/);
+ }
+ await page.locator('.scwiki-topic-group').getByRole('link',{name:'Meissner effect',exact:true}).click();
+ await expect(page).toHaveURL(/\/scwiki\/meissner-effect$/);
+ await expect(page.getByRole('heading',{level:1})).toContainText('Meissner effect');
+});
