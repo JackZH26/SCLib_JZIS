@@ -879,3 +879,17 @@ it("keeps MgB2 isotope transitions separate from probe temperatures and unresolv
  expect(a.references.find(r=>r.doi==="10.1038/35078037")!.verification.note).toContain("discrepancy unresolved");
  expect(a.materialCases[0].pressureRegime).toBe("ambient");expect(a.materialCases[0].pressureGPa).toBeNull();
 });
+
+it("keeps heavy-fermion transition criteria separate from magnetic and normal-state temperatures",async()=>{
+ const a=articles().find(a=>a.code==="D8")!;
+ const pang=a.references.find(r=>r.doi==="10.1073/pnas.1720291115")!;
+ expect(a.materialCases.filter(c=>c.sourceId===pang.id).map(c=>c.tcK)).toEqual([.64,.53]);
+ expect(a.materialCases.find(c=>c.temperatureKind==="normal-state")?.tcK).toBeNull();
+ expect(a.materialCases.filter(c=>c.temperatureKind==="measurement").every(c=>c.tcK===null)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"heavy fermion",{tcMin:2,criterion:"zero-resistance-and-shielding"}).some(a=>a.code==="D8")).toBe(true);
+ expect(searchArticles(searchIndex().entries,"heavy fermion",{tcMin:3}).some(a=>a.code==="D8")).toBe(false);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("not a measured upper boundary");
+ expect(md).toContain("complete supplement remain outside this scoped review");
+ expect(md).toContain("normal state at 4 K");
+});

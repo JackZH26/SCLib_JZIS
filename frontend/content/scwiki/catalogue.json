@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "1683fc561523adb0cf8d",
+  "revision": "41d2201a254036750645",
   "articles": [
     {
       "id": "scwiki-a1",
@@ -20351,6 +20351,587 @@
       ],
       "markdown": "# MgB2: two gaps, isotope effects and conductor conditions\n\nConnect boron-derived bands and coupled superconducting gaps to isotope experiments, impurity scattering and the conditions that matter for MgB2 conductors.\n\n## Scope\n\nMagnesium diboride, MgB₂, is a useful benchmark for electron–phonon superconductivity with different gap scales on different Fermi-surface sheets. Its 2001 discovery report combined magnetization and resistivity near 39 K in a simple hexagonal compound. This historical temperature is not a universal sample constant or an upper bound on phonon-mediated superconductivity. [R1](#ref-source-fade6558e7eafb2b) [R6](#ref-source-7c4eac077ae5e221)\n\nBoron honeycomb layers provide most of the electronic states near the Fermi level. The approximately cylindrical σ sheets derive mainly from in-plane boron orbitals; the π sheets have substantial out-of-plane character. Strong coupling of σ states to boron bond stretching helps explain the large gap. “Two gaps” is a useful reduction of a momentum-dependent problem: Choi's calculation at 4 K spans 6.4–7.2 meV on σ sheets and 1.2–3.7 meV on π sheets, with averages of 6.8 and 1.8 meV. These are calculated distributions, not two exactly constant measured gaps. [R2](#ref-source-a720b8200872878c) [R6](#ref-source-7c4eac077ae5e221)\n\n## Mathematical assumptions\n\nIn an illustrative clean weak-coupling model with a shared cutoff, the linearized equations are $\\Delta_i=L(T)\\sum_j\\lambda_{ij}\\Delta_j$. The largest positive eigenvalue of the pairing matrix determines the first instability. Off-diagonal pair-transfer terms can make both gap components nonzero at the same transition, even when their amplitudes differ. For the chosen toy matrix $\\lambda=\\begin{pmatrix}0.40&0.08\\\\0.04&0.15\\end{pmatrix}$, the leading eigenvalue is approximately 0.4122 and $\\Delta_2/\\Delta_1\\approx0.1526$ at onset. Setting both off-diagonal entries to zero removes the induced second component at the higher transition. These numbers illustrate coupled equations; they are not fitted MgB₂ parameters. [R6](#ref-source-7c4eac077ae5e221) [R7](#ref-source-a9d7d0b720a3bafd)\n\nPair transfer and impurity interband scattering are different processes. An elastic scattering rate contains impurity matrix elements and connects single-particle states; it must not replace $\\lambda_{ij}$ in the pairing equation. Mazin's analysis distinguishes weak σ–π impurity mixing from potentially large scattering within each band. Its normal-state conductivity adds parallel band contributions, so a single residual resistivity cannot uniquely determine the interband rate. Using its illustrated in-plane plasma weights and intraband rates, a simplified residual-conductivity calculation shifts the σ share from about 33% to 92% between the selected clean and dirty examples. This is a model illustration, not a resistivity measurement or a calculation of the full temperature dependence. [R7](#ref-source-a9d7d0b720a3bafd)\n\nFor isotope substitutions, $\\alpha_i=-\\Delta\\ln T_c/\\Delta\\ln M_i$ is a partial coefficient. Bud'ko's rounded 40.2 K and 39.2 K values give $\\alpha_{\\mathrm B}\\approx0.264$ using masses 10 and 11, consistent with the reported $0.26\\pm0.03$. Hinks separately measured both elements and reported approximately $\\alpha_{\\mathrm B}=0.30(1)$ and $\\alpha_{\\mathrm{Mg}}=0.02(1)$. Their sum near 0.32 differs from the simplest harmonic single-scale expectation of 0.5. This does not uniquely isolate anharmonicity, Coulomb effects or multiband contributions. [R3](#ref-source-22ad55507a1e49c5) [R4](#ref-source-60ffd9b4ef2c9ccd)\n\n## Experimental criteria\n\nThe original discovery paper reported a resistive onset of 39 K and an endpoint of 38 K using four probes at zero applied field. Magnetization used zero-field-cooled and field-cooled protocols at 10 Oe; the authors estimated a 49% superconducting volume fraction at 5 K. Their 196 MPa argon pressure was used during hot isostatic synthesis at 973 K for ten hours. It is not the pressure of the superconductivity measurement. Onset, endpoint, magnetic response and synthesis conditions must remain separate fields. [R1](#ref-source-fade6558e7eafb2b)\n\nBud'ko used a 2% diamagnetic-onset criterion on warming after zero-field cooling, with a 25 G measuring field. The isotopically enriched samples had narrow but different transition widths. Hinks used a 1 G field and compared extrapolated onset with a 10% criterion; natural and enriched Mg samples showed possible impurity differences that the authors could not quantify. The Mg contribution therefore belongs to the Hinks study, not to the earlier boron-only experiment. The six printed boron comparisons have been recalculated here, but the raw magnetization has not been refitted. [R3](#ref-source-22ad55507a1e49c5) [R4](#ref-source-60ffd9b4ef2c9ccd)\n\nSzabó's Cu–MgB₂ point contacts showed small and large gap scales around 2.8 and 7 meV. Their two-component BTK fits kept interface transparency and relative weight fixed across temperature; thermal smearing makes the two contributions harder to separate near the bulk transition. Fields up to 1 T preferentially suppressed the small-gap spectral contribution, helping reveal the large-gap features. This does not mean that 1 T is the bulk upper critical field, and these spectra alone do not determine the relative sign of the gaps. Using a transition temperature of 39 K, the low-temperature gap ratios are approximately 1.67 and 4.17, rather than a single weak-coupling BCS ratio. [R5](#ref-source-69ced9b5dda860f1)\n\n## Limits and disputes\n\nThe final Choi calculation uses the anisotropic Eliashberg framework and compares calculated thermodynamics with experiments. Its successful description does not turn a two-constant-gap approximation into an exact band-resolved result. Spectroscopic weights depend on geometry and matrix elements; fitting two components is strongest when checked against independent thermodynamic and field-dependent evidence. The original specific-heat datasets and full anisotropic numerical calculation have not been independently reproduced in this review. [R5](#ref-source-69ced9b5dda860f1) [R6](#ref-source-7c4eac077ae5e221)\n\nThe Hinks author manuscript contains a version issue: Table 1 prints a Mg mass of 25.001 for a sample family, while the methods describe enriched ²⁶Mg. This discrepancy is retained as unresolved pending comparison with the final published table. No Mg-mass refit is presented. The boron ratios use the explicitly printed boron masses and temperatures. Likewise, the Mazin author PDF's generated date is not its submission date; the cited version is the arXiv submission of 1 April 2002. [R4](#ref-source-60ffd9b4ef2c9ccd) [R7](#ref-source-a9d7d0b720a3bafd)\n\n## Discovery implications\n\nMaterials development must connect gap physics to usable conductors. A 2026 study of square, 19-filament MgB₂ wire reports a 14.2% filling factor and an engineering-current benchmark at 4.2 K and 6.5 T. This reference is currently checked only through the publisher's indexed summary and the authors' publication record; the electric-field criterion, full methods and coil comparison require further review. Engineering current density uses the whole composite cross-section, unlike a current density normalized to superconducting material alone. Neither operating temperature nor a current-density benchmark should enter a transition-temperature ranking. [R8](#ref-source-39e103ef0175cc7e)\n\nPreserve processing, connectivity, field orientation, temperature and voltage criterion when comparing wires. Increasing intraband disorder, changing band filling and increasing interband impurity mixing are not interchangeable interventions. A useful candidate must satisfy its operating requirements as well as the microscopic pairing model; this article's scoped calculations do not certify a wire or magnet design. [R7](#ref-source-a9d7d0b720a3bafd) [R8](#ref-source-39e103ef0175cc7e)\n\n## Related topics\n\nSee [multiband pairing](/scwiki/multiband-pairing), [Eliashberg theory](/scwiki/eliashberg-strong-coupling), [isotope effects](/scwiki/isotope-effect), [Andreev reflection](/scwiki/andreev-reflection) and [critical current](/scwiki/critical-current).\n\n## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| MgB2; Nagamatsu 2001 polycrystalline pellet, zero field | 39 K; Onset 39 K; endpoint 38 K. Synthesis pressure 196 MPa is not measurement pressure. | transition; four-probe-resistive-onset | Four-probe resistivity; separate 10 Oe magnetization | ambient; unknown GPa | unknown | experiment; [source](#ref-source-fade6558e7eafb2b) |\n| MgB2; Budko Mg10B2, ZFC warming in 25 G | 40.2 K; Isotope-specific sample; not universal MgB2 Tc. | transition; two-percent-diamagnetic-onset | SQUID magnetization; paired Mg11B2 comparison | ambient; unknown GPa | unknown | experiment; [source](#ref-source-22ad55507a1e49c5) |\n| MgB2; Budko Mg11B2, ZFC warming in 25 G | 39.2 K; Isotope-specific sample and criterion. | transition; two-percent-diamagnetic-onset | SQUID magnetization; paired Mg10B2 comparison | ambient; unknown GPa | unknown | experiment; [source](#ref-source-22ad55507a1e49c5) |\n| MgB2; Szabo Cu–MgB2 point contact at 4.2 K | 4.2 K; Operating temperature; 2.8/7 meV gap scales are not measured Tc values. | measurement; point-contact-operating-temperature | Differential resistance; two BTK contributions, fields up to 1 T | ambient; unknown GPa | unknown | experiment; [source](#ref-source-69ced9b5dda860f1) |\n| MgB2; 2026 square 19-filament IMD wire | 4.2 K; Operating temperature, not Tc; full conductor methods remain open. | measurement; engineering-current-operating-temperature | Indexed summary benchmark at 6.5 T; voltage criterion not reviewed | ambient; unknown GPa | unknown | experiment; [source](#ref-source-39e103ef0175cc7e) |\n\n## Sources\n\n### Ref source-fade6558e7eafb2b\n\n[R1] Superconductivity at 39 K in magnesium diboride (2001). [DOI 10.1038/35065039](https://doi.org/10.1038/35065039). Publication: journal-article. Check: selected-published-methods-figures-check. Checked: 2026-10-18. Published 1 March 2001. Original published pp.63–64 read for MgB2 discovery (not preceding unrelated article); p.64 visually checked. Resistive onset 39 K / endpoint 38 K, 10 Oe magnetization and synthesis196 MPa distinguished. Raw data not reproduced.\n### Ref source-a720b8200872878c\n\n[R2] Superconductivity of Metallic Boron in MgB2 (2001). [DOI 10.1103/PhysRevLett.86.4656](https://doi.org/10.1103/PhysRevLett.86.4656). Publication: journal-article. Check: publisher-abstract-check. Checked: 2026-10-18. Published 14 May 2001. Abstract only; band/phonon interpretation, not independently reproduced electronic structure.\n### Ref source-22ad55507a1e49c5\n\n[R3] Boron Isotope Effect in Superconducting MgB2 (2001). [DOI 10.1103/PhysRevLett.86.1877](https://doi.org/10.1103/PhysRevLett.86.1877). Publication: journal-article. Check: selected-author-methods-isotope-check. Checked: 2026-10-18. Journal published 26 February 2001. Author v1 submitted 31 January 2001, selected pp.1–2: 25 G ZFC warming,2% onset,40.2/39.2 K and mixed-isotope broadening. Boron-only study; not source for measured Mg coefficient. No raw magnetization refit.\n### Ref source-60ffd9b4ef2c9ccd\n\n[R4] The complex nature of superconductivity in MgB2 as revealed by the reduced total isotope effect (2001). [DOI 10.1038/35078037](https://doi.org/10.1038/35078037). Publication: journal-article. Check: selected-author-methods-table-check. Checked: 2026-10-18. Author v1 submitted 12 April 2001, selected pp.2–3 and Table 1 p. 7 visually checked. 1 G warming, onset/10% criteria and impurity caveat. Table prints 25.001 Mg mass despite 26Mg methods; final version inaccessible, discrepancy unresolved. Only boron ratios recalculated.\n### Ref source-69ced9b5dda860f1\n\n[R5] Evidence for Two Superconducting Energy Gaps in MgB2 by Point-Contact Spectroscopy (2001). [DOI 10.1103/PhysRevLett.87.137005](https://doi.org/10.1103/PhysRevLett.87.137005). Publication: journal-article. Check: selected-author-spectroscopy-methods-check. Checked: 2026-10-18. Journal published 11 September 2001; author v1 submitted 30 May 2001, selected methods/results pp.2–3. Cu tips,400 Hz differential resistance, two BTK contributions, fixed weight/Z across T, field to 1 T. Final journal first-page text compared; complete final methods/raw fits not reproduced.\n### Ref source-7c4eac077ae5e221\n\n[R6] The origin of the anomalous superconducting properties of MgB2 (2002). [DOI 10.1038/nature00898](https://doi.org/10.1038/nature00898). Publication: journal-article. Check: selected-published-anisotropic-gap-check. Checked: 2026-10-18. Published 15 August 2002. Original pp.758–760 selected discussion and Figs. 2–4; p.759 visually checked. Calculated distributions/thermodynamics distinguished from measured gap constants. No anisotropic Eliashberg solve or original specific-heat reanalysis.\n### Ref source-a9d7d0b720a3bafd\n\n[R7] Superconductivity in MgB2: Clean or Dirty? (2002). [DOI 10.1103/PhysRevLett.89.107002](https://doi.org/10.1103/PhysRevLett.89.107002). Publication: journal-article. Check: selected-author-scattering-transport-check. Checked: 2026-10-18. Journal published 19 August 2002; arXiv v1 submitted 1 April 2002 (PDF generated date 2018 is not submission). Selected pp.1–4, Eqs. 1–3 / Table I and Fig. 3 parameters. Full final-version comparison and impurity supercell calculations not reproduced.\n### Ref source-39e103ef0175cc7e\n\n[R8] Square filamentary MgB2 wire fabricated by the internal Mg diffusion method (2026). [Source publication](https://www.sciencedirect.com/science/article/pii/S2772830726000086). Publication: journal-article. Check: publisher-indexed-summary-and-author-bibliography-check. Checked: 2026-10-18. 2026, Superconductivity 17, 100238; identity crosschecked with authors at https://elu.sav.sk/veda-a-vyskum/kniznica/ing-pavol-kovac-drsc/ . Indexed publisher summary only:19 filaments, 14.2% filling, 4.2 K / 6.5 T engineering benchmark. Exact publication date, voltage criterion and full methods remain unreviewed; DOI not yet resolved.\n\n## Claim evidence and conditions\n\n### scwiki-d7-claim-scope-1\n\nMagnesium diboride, MgB₂, is a useful benchmark for electron–phonon superconductivity with different gap scales on different Fermi-surface sheets. Its 2001 discovery report combined magnetization and resistivity near 39 K in a simple hexagonal compound. This historical temperature is not a universal sample constant or an upper bound on phonon-mediated superconductivity.\n\nEvidence: theory. Sources: source-fade6558e7eafb2b, source-7c4eac077ae5e221.\n\nConditions: Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.\n\nVerification scope: Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.\n\n### scwiki-d7-claim-scope-2\n\nBoron honeycomb layers provide most of the electronic states near the Fermi level. The approximately cylindrical σ sheets derive mainly from in-plane boron orbitals; the π sheets have substantial out-of-plane character. Strong coupling of σ states to boron bond stretching helps explain the large gap. “Two gaps” is a useful reduction of a momentum-dependent problem: Choi's calculation at 4 K spans 6.4–7.2 meV on σ sheets and 1.2–3.7 meV on π sheets, with averages of 6.8 and 1.8 meV. These are calculated distributions, not two exactly constant measured gaps.\n\nEvidence: theory. Sources: source-a720b8200872878c, source-7c4eac077ae5e221.\n\nConditions: Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.\n\nVerification scope: Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.\n\n### scwiki-d7-claim-mathematical-assumptions-1\n\nIn an illustrative clean weak-coupling model with a shared cutoff, the linearized equations are $\\Delta_i=L(T)\\sum_j\\lambda_{ij}\\Delta_j$. The largest positive eigenvalue of the pairing matrix determines the first instability. Off-diagonal pair-transfer terms can make both gap components nonzero at the same transition, even when their amplitudes differ. For the chosen toy matrix $\\lambda=\\begin{pmatrix}0.40&0.08\\\\0.04&0.15\\end{pmatrix}$, the leading eigenvalue is approximately 0.4122 and $\\Delta_2/\\Delta_1\\approx0.1526$ at onset. Setting both off-diagonal entries to zero removes the induced second component at the higher transition. These numbers illustrate coupled equations; they are not fitted MgB₂ parameters.\n\nEvidence: theory. Sources: source-7c4eac077ae5e221, source-a9d7d0b720a3bafd.\n\nConditions: Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.\n\nVerification scope: Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.\n\n### scwiki-d7-claim-mathematical-assumptions-2\n\nPair transfer and impurity interband scattering are different processes. An elastic scattering rate contains impurity matrix elements and connects single-particle states; it must not replace $\\lambda_{ij}$ in the pairing equation. Mazin's analysis distinguishes weak σ–π impurity mixing from potentially large scattering within each band. Its normal-state conductivity adds parallel band contributions, so a single residual resistivity cannot uniquely determine the interband rate. Using its illustrated in-plane plasma weights and intraband rates, a simplified residual-conductivity calculation shifts the σ share from about 33% to 92% between the selected clean and dirty examples. This is a model illustration, not a resistivity measurement or a calculation of the full temperature dependence.\n\nEvidence: theory. Sources: source-a9d7d0b720a3bafd.\n\nConditions: Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.\n\nVerification scope: Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.\n\n### scwiki-d7-claim-mathematical-assumptions-3\n\nFor isotope substitutions, $\\alpha_i=-\\Delta\\ln T_c/\\Delta\\ln M_i$ is a partial coefficient. Bud'ko's rounded 40.2 K and 39.2 K values give $\\alpha_{\\mathrm B}\\approx0.264$ using masses 10 and 11, consistent with the reported $0.26\\pm0.03$. Hinks separately measured both elements and reported approximately $\\alpha_{\\mathrm B}=0.30(1)$ and $\\alpha_{\\mathrm{Mg}}=0.02(1)$. Their sum near 0.32 differs from the simplest harmonic single-scale expectation of 0.5. This does not uniquely isolate anharmonicity, Coulomb effects or multiband contributions.\n\nEvidence: experiment. Sources: source-22ad55507a1e49c5, source-60ffd9b4ef2c9ccd.\n\nConditions: Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.\n\nVerification scope: Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.\n\n### scwiki-d7-claim-experimental-criteria-1\n\nThe original discovery paper reported a resistive onset of 39 K and an endpoint of 38 K using four probes at zero applied field. Magnetization used zero-field-cooled and field-cooled protocols at 10 Oe; the authors estimated a 49% superconducting volume fraction at 5 K. Their 196 MPa argon pressure was used during hot isostatic synthesis at 973 K for ten hours. It is not the pressure of the superconductivity measurement. Onset, endpoint, magnetic response and synthesis conditions must remain separate fields.\n\nEvidence: experiment. Sources: source-fade6558e7eafb2b.\n\nConditions: Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.\n\nVerification scope: Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.\n\n### scwiki-d7-claim-experimental-criteria-2\n\nBud'ko used a 2% diamagnetic-onset criterion on warming after zero-field cooling, with a 25 G measuring field. The isotopically enriched samples had narrow but different transition widths. Hinks used a 1 G field and compared extrapolated onset with a 10% criterion; natural and enriched Mg samples showed possible impurity differences that the authors could not quantify. The Mg contribution therefore belongs to the Hinks study, not to the earlier boron-only experiment. The six printed boron comparisons have been recalculated here, but the raw magnetization has not been refitted.\n\nEvidence: experiment. Sources: source-22ad55507a1e49c5, source-60ffd9b4ef2c9ccd.\n\nConditions: Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.\n\nVerification scope: Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.\n\n### scwiki-d7-claim-experimental-criteria-3\n\nSzabó's Cu–MgB₂ point contacts showed small and large gap scales around 2.8 and 7 meV. Their two-component BTK fits kept interface transparency and relative weight fixed across temperature; thermal smearing makes the two contributions harder to separate near the bulk transition. Fields up to 1 T preferentially suppressed the small-gap spectral contribution, helping reveal the large-gap features. This does not mean that 1 T is the bulk upper critical field, and these spectra alone do not determine the relative sign of the gaps. Using a transition temperature of 39 K, the low-temperature gap ratios are approximately 1.67 and 4.17, rather than a single weak-coupling BCS ratio.\n\nEvidence: experiment. Sources: source-69ced9b5dda860f1.\n\nConditions: Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.\n\nVerification scope: Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.\n\n### scwiki-d7-claim-limits-and-disputes-1\n\nThe final Choi calculation uses the anisotropic Eliashberg framework and compares calculated thermodynamics with experiments. Its successful description does not turn a two-constant-gap approximation into an exact band-resolved result. Spectroscopic weights depend on geometry and matrix elements; fitting two components is strongest when checked against independent thermodynamic and field-dependent evidence. The original specific-heat datasets and full anisotropic numerical calculation have not been independently reproduced in this review.\n\nEvidence: theory. Sources: source-69ced9b5dda860f1, source-7c4eac077ae5e221.\n\nConditions: Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.\n\nVerification scope: Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.\n\n### scwiki-d7-claim-limits-and-disputes-2\n\nThe Hinks author manuscript contains a version issue: Table 1 prints a Mg mass of 25.001 for a sample family, while the methods describe enriched ²⁶Mg. This discrepancy is retained as unresolved pending comparison with the final published table. No Mg-mass refit is presented. The boron ratios use the explicitly printed boron masses and temperatures. Likewise, the Mazin author PDF's generated date is not its submission date; the cited version is the arXiv submission of 1 April 2002.\n\nEvidence: theory. Sources: source-60ffd9b4ef2c9ccd, source-a9d7d0b720a3bafd.\n\nConditions: Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.\n\nVerification scope: Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.\n\n### scwiki-d7-claim-discovery-implications-1\n\nMaterials development must connect gap physics to usable conductors. A 2026 study of square, 19-filament MgB₂ wire reports a 14.2% filling factor and an engineering-current benchmark at 4.2 K and 6.5 T. This reference is currently checked only through the publisher's indexed summary and the authors' publication record; the electric-field criterion, full methods and coil comparison require further review. Engineering current density uses the whole composite cross-section, unlike a current density normalized to superconducting material alone. Neither operating temperature nor a current-density benchmark should enter a transition-temperature ranking.\n\nEvidence: experiment. Sources: source-39e103ef0175cc7e.\n\nConditions: Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.\n\nVerification scope: Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.\n\n### scwiki-d7-claim-discovery-implications-2\n\nPreserve processing, connectivity, field orientation, temperature and voltage criterion when comparing wires. Increasing intraband disorder, changing band filling and increasing interband impurity mixing are not interchangeable interventions. A useful candidate must satisfy its operating requirements as well as the microscopic pairing model; this article's scoped calculations do not certify a wire or magnet design.\n\nEvidence: theory. Sources: source-a9d7d0b720a3bafd, source-39e103ef0175cc7e.\n\nConditions: Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.\n\nVerification scope: Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.\n\n## Revision and review\n\nArticle ID: scwiki-d7. Revision: 9c7e83645d0f5daa18a0. Updated: 2026-10-18T11:19:34.848076+00:00.\n\nReview scope: Selected original discovery and Choi published passages, Budko/Hinks/Szabo/Mazin author-version methods and equations; independent isotope ratios, toy pairing eigenmodes and parallel-band weights.\n\n- Full scientific acceptance, raw-data and full numerical reproduction remain open.\n- Hinks v1 table Mg mass conflicts with methods; final table unresolved, no Mg-mass refit presented.\n- Several detailed sources use identified author versions; final-version comparisons remain open.\n- 2026 wire source is an indexed-summary check only; no conductor design or performance certification.\n\nSource: [D_material_families/D7_MgB2.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/D_material_families/D7_MgB2.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 2f2a1ddc3d4cf4a17f548112ddf82587ec4d600dd4b0795483cdc747e4c4a063.\n",
       "wordCount": 1013
+    },
+    {
+      "id": "scwiki-d8",
+      "topicId": "scwiki-topic-d8",
+      "code": "D8",
+      "slug": "heavy-fermion-superconductors",
+      "title": "Heavy-fermion superconductors: correlations, gaps and magnetic phases",
+      "summary": "Explore CeCu2Si2, CeCoIn5 and uranium compounds through thermodynamic evidence, competing gap models and condition-specific magnetic phases.",
+      "aliases": [
+        "heavy fermion",
+        "heavy-fermion",
+        "Kondo lattice",
+        "CeCu2Si2",
+        "CeCoIn5",
+        "UPt3",
+        "URhGe",
+        "UCoGe",
+        "UTe2",
+        "d+d band mixing",
+        "Q phase"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experiment"
+      ],
+      "relatedCodes": [
+        "A3",
+        "B3",
+        "B4",
+        "B12",
+        "C6",
+        "C8"
+      ],
+      "editorialStatus": "scoped-check",
+      "contentState": "pilot",
+      "modifiedAt": "2026-10-18T11:30:41.526332+00:00",
+      "review": {
+        "checkedAt": "2026-10-18",
+        "scope": "Selected CeCu2Si2 and CeCoIn5 methods, nuclear subtraction, proposed gap model and UTe2 pulsed-field passages; previously scoped uranium evidence and independent bounded algebra.",
+        "limitations": [
+          "Full scientific acceptance and raw-data reproduction remain open.",
+          "Author manuscripts are version-labelled; complete final-version comparisons remain open.",
+          "Several magnetic-mechanism references remain abstract or selected-passage checks.",
+          "No pairing symmetry, topological classification or device performance is certified by these checks."
+        ]
+      },
+      "provenance": {
+        "repository": "JackZH26/jzis-superconductivity",
+        "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+        "path": "D_material_families/D8_heavy_fermion.md",
+        "sha256": "d389474b7d40c91c84b51b5d175bd0038239b825f4dccf53353b4097d02e1d4f",
+        "sourceId": "file-b9805c80b6bae9b1"
+      },
+      "sourceMap": [
+        {
+          "startLine": 1,
+          "endLine": 353,
+          "targetSections": [
+            "scope",
+            "mathematical-assumptions",
+            "experimental-criteria",
+            "limits-and-disputes",
+            "discovery-implications",
+            "related-topics"
+          ],
+          "decision": "edited-with-scoped-evidence",
+          "note": "Pinned source retained; normal-state/transition, candidate/established and measurement/model boundaries preserved."
+        }
+      ],
+      "references": [
+        {
+          "id": "source-0ebda9b697c1f7fd",
+          "doi": "10.1103/PhysRevLett.43.1892",
+          "title": "Superconductivity in the Presence of Strong Pauli Paramagnetism: CeCu2Si2",
+          "year": 1979,
+          "url": "https://doi.org/10.1103/PhysRevLett.43.1892",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-abstract-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.1892",
+            "note": "Published 17 December 1979. Abstract checked for historical discovery and approximately 0.5 K; complete original measurements not reviewed."
+          }
+        },
+        {
+          "id": "source-1bdac37fd450eb32",
+          "doi": "10.1016/0378-4363(77)90190-5",
+          "title": "The Kondo lattice and weak antiferromagnetism",
+          "year": 1977,
+          "url": "https://doi.org/10.1016/0378-4363(77)90190-5",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-indexed-abstract-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.sciencedirect.com/science/article/pii/0378436377901905",
+            "note": "July 1977. Indexed abstract identifies a model competition, not a universal phase diagram. Full publisher endpoint unavailable."
+          }
+        },
+        {
+          "id": "source-2764bce38246bfae",
+          "doi": "10.1103/PhysRevLett.112.067002",
+          "title": "Multiband Superconductivity with Unexpected Deficiency of Nodal Quasiparticles in CeCu2Si2",
+          "year": 2014,
+          "url": "https://doi.org/10.1103/PhysRevLett.112.067002",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-author-methods-and-supplement-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://arxiv.org/pdf/1307.3499v2",
+            "note": "Journal published 12 February 2014; author v2 submitted 13 February 2014. Selected pp.1–3 and supplemental p.6 read; p.6 visually checked. Nuclear subtraction and heavy-band sensitivity retained. PDF generated date 2018 is not submission. Final-version comparison and raw-data refit remain open."
+          }
+        },
+        {
+          "id": "source-e721bddb9ef11661",
+          "doi": "10.1073/pnas.1720291115",
+          "title": "Fully gapped d-wave superconductivity in CeCu2Si2",
+          "year": 2018,
+          "url": "https://doi.org/10.1073/pnas.1720291115",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-published-methods-model-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.pnas.org/doi/10.1073/pnas.1720291115",
+            "note": "Published 8 May 2018. Selected Results, simplified quadrature, conclusion and Materials and Methods read. Supplement and raw fits not reviewed; simplified angular model is not a full band calculation."
+          }
+        },
+        {
+          "id": "source-5962cf8038597944",
+          "doi": "10.1088/0953-8984/13/17/103",
+          "title": "Heavy-fermion superconductivity in CeCoIn5 at 2.3 K",
+          "year": 2001,
+          "url": "https://doi.org/10.1088/0953-8984/13/17/103",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-author-discovery-thermodynamics-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0103168v1",
+            "note": "Author v1 submitted 7 March 2001. Selected discovery, growth, heat-capacity baseline and field-orientation passages, pp.2–5, read. Final journal-version comparison and original data reanalysis remain open."
+          }
+        },
+        {
+          "id": "source-e7c77a3327daf5c6",
+          "doi": "10.1103/PhysRevB.69.024508",
+          "title": "Signatures of valence fluctuations in CeCu2Si2 under high pressure",
+          "year": 2004,
+          "url": "https://doi.org/10.1103/PhysRevB.69.024508",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-abstract-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.69.024508",
+            "note": "Published 15 January 2004. Abstract: helium pressure medium, simultaneous resistivity/ac heat capacity above 6 GPa and proposed valence interpretation around 4.5 GPa. Full methods not reviewed."
+          }
+        },
+        {
+          "id": "source-fda01ade7737b638",
+          "doi": "10.1126/science.1161818",
+          "title": "Coupled superconducting and magnetic order in CeCoIn5",
+          "year": 2008,
+          "url": "https://doi.org/10.1126/science.1161818",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "original-abstract-index-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/18719250/",
+            "note": "Original abstract indexed at PubMed read. Online 21 August 2008; issue 19 September 2008. Magnetic order collapses with superconductivity; finite-momentum interpretation is not direct imaging. Publisher fulltext returned 403; complete methods not reviewed."
+          }
+        },
+        {
+          "id": "source-d3edee404071ac81",
+          "doi": "10.1126/science.1248552",
+          "title": "Observation of broken time-reversal symmetry in the heavy-fermion superconductor UPt3",
+          "year": 2014,
+          "url": "https://doi.org/10.1126/science.1248552",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-author-manuscript-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://arxiv.org/pdf/1410.1482v1",
+            "note": "Reused scoped primary reading from C6 in this project. Selected pp.1–6, Fig.2 on p.11 visually checked, and sample/apparatus passages on p.13. Published July2014; author upload October2014. Heating and training limits retained; full final-version and raw-data comparison open."
+          }
+        },
+        {
+          "id": "source-15aec45a868e9fb9",
+          "doi": "10.1038/35098048",
+          "title": "Coexistence of superconductivity and ferromagnetism in URhGe",
+          "year": 2001,
+          "url": "https://doi.org/10.1038/35098048",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-abstract-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.nature.com/articles/35098048",
+            "note": "Reused scoped primary reading from B4 in this project. Aoki et al. publisher indexed abstract: ambient-pressure thermodynamic evidence, with qualified triplet interpretation. Corrects inherited35065045, which identifies unrelated semiconductor melting research. Full data not reanalyzed."
+          }
+        },
+        {
+          "id": "source-a4695ba5bfa789f3",
+          "doi": "10.1103/PhysRevLett.99.067006",
+          "title": "Superconductivity on the Border of Weak Itinerant Ferromagnetism in UCoGe",
+          "year": 2007,
+          "url": "https://doi.org/10.1103/PhysRevLett.99.067006",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-abstract-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.99.067006",
+            "note": "Reused scoped primary reading from B4 in this project. Huy et al. original abstract: ambient-pressure bulk signatures. Curie3K and best-sample resistive0.8K are distinct; no sample Tc extracted here. Full curves not reviewed."
+          }
+        },
+        {
+          "id": "source-df199ac9453d6985",
+          "doi": "10.1038/s41586-021-04151-5",
+          "title": "Resonance from antiferromagnetic spin fluctuations for superconductivity in UTe2",
+          "year": 2021,
+          "url": "https://doi.org/10.1038/s41586-021-04151-5",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-passages-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.nature.com/articles/s41586-021-04151-5",
+            "note": "Reused scoped primary reading from B4 in this project. Duan et al. publisher indexed abstract and Extended Data Fig.7 text checked: AFM resonance and no FM signal above background within specified window. Complete spectra and raw data not reproduced; not an exclusion of all FM fluctuations."
+          }
+        },
+        {
+          "id": "source-0c4d7cebb12a0d5b",
+          "doi": "10.1126/science.adn7673",
+          "title": "High-field superconducting halo in UTe2",
+          "year": 2025,
+          "url": "https://doi.org/10.1126/science.adn7673",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-published-pulsed-field-methods-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.vector.umd.edu/images/publications/Science389_5122025.pdf",
+            "note": "Published 31 July 2025. Selected pp.512–513 methods and boundary interpretation read; p.512 visually checked. Pulsed-field maximum around 73 T is distinct from extrapolation. Supplement and dataset not reanalyzed; no full order-parameter reconstruction."
+          }
+        },
+        {
+          "id": "source-15cfc4a2f9587af0",
+          "doi": "10.1038/s41467-026-71899-7",
+          "title": "Giant transverse magnetic fluctuations at the edge of re-entrant superconductivity in UTe2",
+          "year": 2026,
+          "url": "https://doi.org/10.1038/s41467-026-71899-7",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-passages-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.nature.com/articles/s41467-026-71899-7",
+            "note": "Reused scoped primary reading from B4 in this project. Zambra et al., published29April2026. Selected introduction/results, Eq.1 and Fig.1 caption checked:4K normal state, pulsedfields to60T, transverse relative to applied field;300mK phase boundaries reproduced from earlier work. No raw-data or complete spectral/pairing-kernel reconstruction. Publisher indexed record gives article 3742, not inherited 3814; current full HTML endpoint unavailable."
+          }
+        },
+        {
+          "id": "source-dd4e897d833ce69c",
+          "doi": "10.1103/PhysRevX.13.041019",
+          "title": "Fate of Time-Reversal Symmetry Breaking in UTe2",
+          "year": 2023,
+          "url": "https://doi.org/10.1103/PhysRevX.13.041019",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "selected-author-manuscript-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://arxiv.org/pdf/2305.00589v1",
+            "note": "Reused scoped primary reading from C6 in this project. Selected pp.2–3 and methods pp.5–6; Fig.1 p.3 visually checked. Kerr sample set distinguished from susceptibility set. Final publisher abstract checked; full version comparison open."
+          }
+        }
+      ],
+      "claims": [
+        {
+          "id": "scwiki-d8-claim-scope-1",
+          "sectionId": "scope",
+          "statement": "Heavy-fermion superconductors pair electrons in a strongly renormalized metallic state. Their large low-temperature electronic heat capacity and magnetic response reflect interactions involving partially filled f shells, not unusually heavy atoms moving as Cooper pairs. CeCu₂Si₂ established this class in 1979; the discovery paper reported a transition near 0.5 K. Different compositions and probes need not reproduce that exact number. The family is a laboratory for competing correlations rather than a single pairing mechanism.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-0ebda9b697c1f7fd",
+            "source-5962cf8038597944"
+          ],
+          "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
+          "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+        },
+        {
+          "id": "scwiki-d8-claim-scope-2",
+          "sectionId": "scope",
+          "statement": "Kondo screening, conduction-electron-mediated magnetic interactions, hybridization and valence changes provide useful organizing ideas. Doniach's competition between magnetic order and a compensated state is a model framework. Proximity to a magnetic boundary does not by itself identify the pairing interaction or predict a superconducting transition. Uranium compounds also require attention to itinerant 5f character and strong spin–orbit coupling; a label borrowed from a cerium compound is not a complete microscopic description.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-1bdac37fd450eb32",
+            "source-e7c77a3327daf5c6",
+            "source-15aec45a868e9fb9"
+          ],
+          "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
+          "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+        },
+        {
+          "id": "scwiki-d8-claim-mathematical-assumptions-1",
+          "sectionId": "mathematical-assumptions",
+          "statement": "In a Fermi-liquid regime, the electronic coefficient $\\gamma=\\lim_{T\\to0}C_e/T$ is proportional to the renormalized density of states. A finite-temperature value of total $C/T$ is not automatically that limit. Petrovic's CeCoIn₅ report gives about 290 mJ mol⁻¹ K⁻² above 2.5 K but a much larger low-temperature normal-state value under field. Thus its apparent $\\Delta C/(\\gamma T_c)\\approx4.5$ cannot be converted mechanically into a coupling strength using a temperature-independent normal-state baseline.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-5962cf8038597944"
+          ],
+          "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
+          "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+        },
+        {
+          "id": "scwiki-d8-claim-mathematical-assumptions-2",
+          "sectionId": "mathematical-assumptions",
+          "statement": "Kittaka's CeCu₂Si₂ analysis subtracts a nuclear term. With numerical field $h$ in tesla and temperature $t$ in kelvin, its empirical expression is $C_n/T=(7.4h^2+0.1)t^{-3}\\times10^{-6}$ J mol⁻¹ K⁻². At 60 mK it gives approximately 0.00046, 0.111 and 0.309 J mol⁻¹ K⁻² for 0, 1.8 and 3 T. These recalculations illustrate the size of the correction; they are not a new fit or evidence that any arbitrary subtraction is acceptable.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-2764bce38246bfae"
+          ],
+          "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
+          "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+        },
+        {
+          "id": "scwiki-d8-claim-mathematical-assumptions-3",
+          "sectionId": "mathematical-assumptions",
+          "statement": "Pang's simplified band-mixing model uses $|\\Delta(\\varphi)|=\\sqrt{a^2\\cos^2(2\\varphi)+b^2\\sin^2(2\\varphi)}$ at zero temperature. For nonzero amplitudes on the assumed cylinder, the minimum is $\\min(|a|,|b|)$; exchanging them preserves angular averages. The reported S-type fit uses $a=2.5k_BT_c$ and $b=0.58k_BT_c$. This magnitude does not specify the full band matrix or its time-reversal properties. A scalar chiral gap can have the same magnitude; that algebraic coincidence does not equate the two physical states.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-e721bddb9ef11661"
+          ],
+          "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
+          "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+        },
+        {
+          "id": "scwiki-d8-claim-experimental-criteria-1",
+          "sectionId": "experimental-criteria",
+          "statement": "The CeCu₂Si₂ specific-heat study used a 13.8 mg S-type crystal, measurements down to 40 mK and a nuclear correction constrained by high-field normal-state data. It reported low-energy behavior consistent with full gaps and no detected in-plane angular oscillation within stated sensitivity. The result constrains quasiparticles weighted strongly by thermodynamics; it is not a universal exclusion of every possible small-band node. The author manuscript's February 2014 version must not be dated from its later PDF generation stamp.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-2764bce38246bfae"
+          ],
+          "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
+          "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+        },
+        {
+          "id": "scwiki-d8-claim-experimental-criteria-2",
+          "sectionId": "experimental-criteria",
+          "statement": "Pang's penetration-depth measurements reached 40 mK. Its S-type sample showed a specific-heat transition near 0.64 K; an A/S-type sample showed superconducting and antiferromagnetic anomalies near 0.53 and 0.7 K. These are different transitions. Nodeless low-temperature behavior motivates the proposed d+d description, but fitting these data does not uniquely settle the order parameter. Raw-data refitting and the complete supplement remain outside this scoped review.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-e721bddb9ef11661"
+          ],
+          "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
+          "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+        },
+        {
+          "id": "scwiki-d8-claim-experimental-criteria-3",
+          "sectionId": "experimental-criteria",
+          "statement": "For CeCoIn₅, the discovery study combined zero resistance, magnetic shielding and a heat-capacity anomaly near 2.3 K. It also found substantially different upper critical fields parallel and perpendicular to the c axis. Later neutron work found magnetic order that disappears with superconductivity at the high-field boundary. A coupled magnetic Q phase therefore cannot be described as a clean demonstration of a standalone textbook FFLO state.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-5962cf8038597944",
+            "source-fda01ade7737b638"
+          ],
+          "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
+          "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+        },
+        {
+          "id": "scwiki-d8-claim-limits-and-disputes-1",
+          "sectionId": "limits-and-disputes",
+          "statement": "CeCu₂Si₂ should not be assigned an unqualified textbook nodal d-wave label. Full-gap thermodynamics, sign-sensitive interpretations and band structure must be reconciled. Its pressure response adds another question: Holmes measured resistivity and ac heat capacity above 6 GPa in helium and interpreted anomalies near 4.5 GPa through valence fluctuations. That interpretation is a proposed mechanism, not a direct measurement of a unique pairing interaction.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-2764bce38246bfae",
+            "source-e721bddb9ef11661",
+            "source-e7c77a3327daf5c6"
+          ],
+          "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
+          "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+        },
+        {
+          "id": "scwiki-d8-claim-limits-and-disputes-2",
+          "sectionId": "limits-and-disputes",
+          "statement": "UPt₃ has multiple superconducting phases and Kerr evidence constraining time-reversal symmetry. Heating, field training and the phase being probed matter. This does not uniquely select f-wave symmetry or establish a topological device. URhGe and UCoGe provide coexistence evidence for ferromagnetism and superconductivity, but their magnetic and superconducting transition temperatures are distinct. Their respective field responses cannot be exchanged between compounds.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-d3edee404071ac81",
+            "source-15aec45a868e9fb9",
+            "source-a4695ba5bfa789f3"
+          ],
+          "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
+          "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+        },
+        {
+          "id": "scwiki-d8-claim-limits-and-disputes-3",
+          "sectionId": "limits-and-disputes",
+          "statement": "UTe₂ requires particularly careful qualifiers. Antiferromagnetic neutron fluctuations, transverse high-field fluctuations and sample-dependent Kerr results probe different conditions. The 2023 Kerr study found no spontaneous signal in the tested single-transition samples; it does not negate every other superconducting phase. No single large upper critical field, fluctuation spectrum or null Kerr observation determines spin structure and topology together.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-df199ac9453d6985",
+            "source-15cfc4a2f9587af0",
+            "source-dd4e897d833ce69c"
+          ],
+          "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
+          "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+        },
+        {
+          "id": "scwiki-d8-claim-discovery-implications-1",
+          "sectionId": "discovery-implications",
+          "statement": "The 2025 UTe₂ halo study mapped transport boundaries with pulsed fields, generally near 0.63 K, using resistance and contactless proximity-detector measurements. Tilting away from the b axis revealed an extended high-field region. The experiment reached approximately 73 T; extrapolated persistence beyond that field is not a measured upper boundary. Its multicomponent triplet interpretation remains a model conclusion. Supplementary sample details, heating corrections and the deposited raw data have not been independently reanalyzed here.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-0c4d7cebb12a0d5b"
+          ],
+          "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
+          "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+        },
+        {
+          "id": "scwiki-d8-claim-discovery-implications-2",
+          "sectionId": "discovery-implications",
+          "statement": "The 2026 transverse-fluctuation study measured the normal state at 4 K; superconducting phase boundaries at 300 mK were comparisons with earlier work. Neither temperature is a newly measured transition temperature in that experiment. Discovery records should retain the sample, pressure, field direction, probe and criterion, then compare mechanisms across compatible conditions. The goal is to identify informative constraints, not rank unrelated temperatures or convert candidate topology into an established engineering capability.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-15cfc4a2f9587af0"
+          ],
+          "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
+          "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+        }
+      ],
+      "corrections": [
+        {
+          "id": "scwiki-d8-correction-1",
+          "description": "Removed blanket ferromagnetic characterization of UTe2, retained probe/phase-dependent evidence, and corrected the 2026 transverse-fluctuation paper article number to 3742.",
+          "sourceId": "source-15cfc4a2f9587af0",
+          "scope": "Edited public article; pinned source preserved."
+        }
+      ],
+      "equationChecks": [
+        {
+          "targetSectionId": "mathematical-assumptions",
+          "tex": "|\\Delta(\\varphi)|=\\sqrt{a^2\\cos^2(2\\varphi)+b^2\\sin^2(2\\varphi)}",
+          "check": "Five amplitude pairs,720 angles each; extrema, exchange symmetry, matrix/scalar magnitude coincidence and nodal limit. No full band solution."
+        },
+        {
+          "targetSectionId": "mathematical-assumptions",
+          "tex": "C_n/T=(7.4h^2+0.1)t^{-3}\\times10^{-6}",
+          "check": "Reported numeric units evaluated at60mK for0/1.8/3T; dimensional conversion and inverse-cubic scaling verified. No original data refit."
+        }
+      ],
+      "materialCases": [
+        {
+          "id": "scwiki-d8-material-1",
+          "formula": "CeCu2Si2",
+          "sample": "Pang S-type crystal",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.64,
+          "tcK": 0.64,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate thermodynamic transition; resistive onset and zero-resistance criteria differ.",
+          "criterion": "specific-heat-anomaly",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Specific heat",
+          "sourceId": "source-e721bddb9ef11661"
+        },
+        {
+          "id": "scwiki-d8-material-2",
+          "formula": "CeCu2Si2",
+          "sample": "Pang A/S-type crystal",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.53,
+          "tcK": 0.53,
+          "temperatureKind": "transition",
+          "temperatureNote": "Superconducting anomaly; separate antiferromagnetic anomaly near 0.7 K is not Tc.",
+          "criterion": "specific-heat-anomaly",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Specific heat",
+          "sourceId": "source-e721bddb9ef11661"
+        },
+        {
+          "id": "scwiki-d8-material-3",
+          "formula": "CeCu2Si2",
+          "sample": "Kittaka S-type crystal, base temperature",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.04,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Base measurement temperature, not superconducting transition.",
+          "criterion": "heat-capacity-base-temperature",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Quasi-adiabatic heat pulse",
+          "sourceId": "source-2764bce38246bfae"
+        },
+        {
+          "id": "scwiki-d8-material-4",
+          "formula": "CeCoIn5",
+          "sample": "Petrovic discovery single crystals",
+          "recordType": "experiment",
+          "reportedTemperatureK": 2.3,
+          "tcK": 2.3,
+          "temperatureKind": "transition",
+          "temperatureNote": "Discovery sample transition; not a family-wide fixed value.",
+          "criterion": "zero-resistance-and-shielding",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Resistivity and diamagnetic shielding; corroborating heat-capacity anomaly",
+          "sourceId": "source-5962cf8038597944"
+        },
+        {
+          "id": "scwiki-d8-material-5",
+          "formula": "UTe2",
+          "sample": "Lewin pulsed-field transport, general run condition",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.63,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Operating temperature, not a measured Tc or exact upper critical field.",
+          "criterion": "pulsed-field-operating-temperature",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Resistance and proximity-detector oscillator; angle-dependent fields to around 73 T",
+          "sourceId": "source-0c4d7cebb12a0d5b"
+        },
+        {
+          "id": "scwiki-d8-material-6",
+          "formula": "UTe2",
+          "sample": "Zambra normal-state high-field fluctuation study",
+          "recordType": "experiment",
+          "reportedTemperatureK": 4,
+          "tcK": null,
+          "temperatureKind": "normal-state",
+          "temperatureNote": "Normal-state measurement; earlier 300 mK phase boundaries are a separate dataset.",
+          "criterion": "normal-state-fluctuation-temperature",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Pulsed-field magnetic fluctuation probe",
+          "sourceId": "source-15cfc4a2f9587af0"
+        }
+      ],
+      "body": "## Scope\n\nHeavy-fermion superconductors pair electrons in a strongly renormalized metallic state. Their large low-temperature electronic heat capacity and magnetic response reflect interactions involving partially filled f shells, not unusually heavy atoms moving as Cooper pairs. CeCu₂Si₂ established this class in 1979; the discovery paper reported a transition near 0.5 K. Different compositions and probes need not reproduce that exact number. The family is a laboratory for competing correlations rather than a single pairing mechanism. [R1](#ref-source-0ebda9b697c1f7fd) [R5](#ref-source-5962cf8038597944)\n\nKondo screening, conduction-electron-mediated magnetic interactions, hybridization and valence changes provide useful organizing ideas. Doniach's competition between magnetic order and a compensated state is a model framework. Proximity to a magnetic boundary does not by itself identify the pairing interaction or predict a superconducting transition. Uranium compounds also require attention to itinerant 5f character and strong spin–orbit coupling; a label borrowed from a cerium compound is not a complete microscopic description. [R2](#ref-source-1bdac37fd450eb32) [R6](#ref-source-e7c77a3327daf5c6) [R9](#ref-source-15aec45a868e9fb9)\n\n## Mathematical assumptions\n\nIn a Fermi-liquid regime, the electronic coefficient $\\gamma=\\lim_{T\\to0}C_e/T$ is proportional to the renormalized density of states. A finite-temperature value of total $C/T$ is not automatically that limit. Petrovic's CeCoIn₅ report gives about 290 mJ mol⁻¹ K⁻² above 2.5 K but a much larger low-temperature normal-state value under field. Thus its apparent $\\Delta C/(\\gamma T_c)\\approx4.5$ cannot be converted mechanically into a coupling strength using a temperature-independent normal-state baseline. [R5](#ref-source-5962cf8038597944)\n\nKittaka's CeCu₂Si₂ analysis subtracts a nuclear term. With numerical field $h$ in tesla and temperature $t$ in kelvin, its empirical expression is $C_n/T=(7.4h^2+0.1)t^{-3}\\times10^{-6}$ J mol⁻¹ K⁻². At 60 mK it gives approximately 0.00046, 0.111 and 0.309 J mol⁻¹ K⁻² for 0, 1.8 and 3 T. These recalculations illustrate the size of the correction; they are not a new fit or evidence that any arbitrary subtraction is acceptable. [R3](#ref-source-2764bce38246bfae)\n\nPang's simplified band-mixing model uses $|\\Delta(\\varphi)|=\\sqrt{a^2\\cos^2(2\\varphi)+b^2\\sin^2(2\\varphi)}$ at zero temperature. For nonzero amplitudes on the assumed cylinder, the minimum is $\\min(|a|,|b|)$; exchanging them preserves angular averages. The reported S-type fit uses $a=2.5k_BT_c$ and $b=0.58k_BT_c$. This magnitude does not specify the full band matrix or its time-reversal properties. A scalar chiral gap can have the same magnitude; that algebraic coincidence does not equate the two physical states. [R4](#ref-source-e721bddb9ef11661)\n\n## Experimental criteria\n\nThe CeCu₂Si₂ specific-heat study used a 13.8 mg S-type crystal, measurements down to 40 mK and a nuclear correction constrained by high-field normal-state data. It reported low-energy behavior consistent with full gaps and no detected in-plane angular oscillation within stated sensitivity. The result constrains quasiparticles weighted strongly by thermodynamics; it is not a universal exclusion of every possible small-band node. The author manuscript's February 2014 version must not be dated from its later PDF generation stamp. [R3](#ref-source-2764bce38246bfae)\n\nPang's penetration-depth measurements reached 40 mK. Its S-type sample showed a specific-heat transition near 0.64 K; an A/S-type sample showed superconducting and antiferromagnetic anomalies near 0.53 and 0.7 K. These are different transitions. Nodeless low-temperature behavior motivates the proposed d+d description, but fitting these data does not uniquely settle the order parameter. Raw-data refitting and the complete supplement remain outside this scoped review. [R4](#ref-source-e721bddb9ef11661)\n\nFor CeCoIn₅, the discovery study combined zero resistance, magnetic shielding and a heat-capacity anomaly near 2.3 K. It also found substantially different upper critical fields parallel and perpendicular to the c axis. Later neutron work found magnetic order that disappears with superconductivity at the high-field boundary. A coupled magnetic Q phase therefore cannot be described as a clean demonstration of a standalone textbook FFLO state. [R5](#ref-source-5962cf8038597944) [R7](#ref-source-fda01ade7737b638)\n\n## Limits and disputes\n\nCeCu₂Si₂ should not be assigned an unqualified textbook nodal d-wave label. Full-gap thermodynamics, sign-sensitive interpretations and band structure must be reconciled. Its pressure response adds another question: Holmes measured resistivity and ac heat capacity above 6 GPa in helium and interpreted anomalies near 4.5 GPa through valence fluctuations. That interpretation is a proposed mechanism, not a direct measurement of a unique pairing interaction. [R3](#ref-source-2764bce38246bfae) [R4](#ref-source-e721bddb9ef11661) [R6](#ref-source-e7c77a3327daf5c6)\n\nUPt₃ has multiple superconducting phases and Kerr evidence constraining time-reversal symmetry. Heating, field training and the phase being probed matter. This does not uniquely select f-wave symmetry or establish a topological device. URhGe and UCoGe provide coexistence evidence for ferromagnetism and superconductivity, but their magnetic and superconducting transition temperatures are distinct. Their respective field responses cannot be exchanged between compounds. [R8](#ref-source-d3edee404071ac81) [R9](#ref-source-15aec45a868e9fb9) [R10](#ref-source-a4695ba5bfa789f3)\n\nUTe₂ requires particularly careful qualifiers. Antiferromagnetic neutron fluctuations, transverse high-field fluctuations and sample-dependent Kerr results probe different conditions. The 2023 Kerr study found no spontaneous signal in the tested single-transition samples; it does not negate every other superconducting phase. No single large upper critical field, fluctuation spectrum or null Kerr observation determines spin structure and topology together. [R11](#ref-source-df199ac9453d6985) [R13](#ref-source-15cfc4a2f9587af0) [R14](#ref-source-dd4e897d833ce69c)\n\n## Discovery implications\n\nThe 2025 UTe₂ halo study mapped transport boundaries with pulsed fields, generally near 0.63 K, using resistance and contactless proximity-detector measurements. Tilting away from the b axis revealed an extended high-field region. The experiment reached approximately 73 T; extrapolated persistence beyond that field is not a measured upper boundary. Its multicomponent triplet interpretation remains a model conclusion. Supplementary sample details, heating corrections and the deposited raw data have not been independently reanalyzed here. [R12](#ref-source-0c4d7cebb12a0d5b)\n\nThe 2026 transverse-fluctuation study measured the normal state at 4 K; superconducting phase boundaries at 300 mK were comparisons with earlier work. Neither temperature is a newly measured transition temperature in that experiment. Discovery records should retain the sample, pressure, field direction, probe and criterion, then compare mechanisms across compatible conditions. The goal is to identify informative constraints, not rank unrelated temperatures or convert candidate topology into an established engineering capability. [R13](#ref-source-15cfc4a2f9587af0)\n\n## Related topics\n\nContinue with [antiferromagnetic fluctuations](/scwiki/spin-fluctuation-pairing), [ferromagnetic fluctuations](/scwiki/ferromagnetic-fluctuations), [specific heat](/scwiki/specific-heat-jump), [multiband pairing](/scwiki/multiband-pairing), [f-wave candidates](/scwiki/f-wave) and [pair-density waves](/scwiki/pair-density-wave).",
+      "revision": "99973f2239236ec6895f",
+      "sections": [
+        {
+          "id": "scope",
+          "title": "Scope",
+          "markdown": "## Scope\n\nHeavy-fermion superconductors pair electrons in a strongly renormalized metallic state. Their large low-temperature electronic heat capacity and magnetic response reflect interactions involving partially filled f shells, not unusually heavy atoms moving as Cooper pairs. CeCu₂Si₂ established this class in 1979; the discovery paper reported a transition near 0.5 K. Different compositions and probes need not reproduce that exact number. The family is a laboratory for competing correlations rather than a single pairing mechanism. [R1](#ref-source-0ebda9b697c1f7fd) [R5](#ref-source-5962cf8038597944)\n\nKondo screening, conduction-electron-mediated magnetic interactions, hybridization and valence changes provide useful organizing ideas. Doniach's competition between magnetic order and a compensated state is a model framework. Proximity to a magnetic boundary does not by itself identify the pairing interaction or predict a superconducting transition. Uranium compounds also require attention to itinerant 5f character and strong spin–orbit coupling; a label borrowed from a cerium compound is not a complete microscopic description. [R2](#ref-source-1bdac37fd450eb32) [R6](#ref-source-e7c77a3327daf5c6) [R9](#ref-source-15aec45a868e9fb9)"
+        },
+        {
+          "id": "mathematical-assumptions",
+          "title": "Mathematical assumptions",
+          "markdown": "## Mathematical assumptions\n\nIn a Fermi-liquid regime, the electronic coefficient $\\gamma=\\lim_{T\\to0}C_e/T$ is proportional to the renormalized density of states. A finite-temperature value of total $C/T$ is not automatically that limit. Petrovic's CeCoIn₅ report gives about 290 mJ mol⁻¹ K⁻² above 2.5 K but a much larger low-temperature normal-state value under field. Thus its apparent $\\Delta C/(\\gamma T_c)\\approx4.5$ cannot be converted mechanically into a coupling strength using a temperature-independent normal-state baseline. [R5](#ref-source-5962cf8038597944)\n\nKittaka's CeCu₂Si₂ analysis subtracts a nuclear term. With numerical field $h$ in tesla and temperature $t$ in kelvin, its empirical expression is $C_n/T=(7.4h^2+0.1)t^{-3}\\times10^{-6}$ J mol⁻¹ K⁻². At 60 mK it gives approximately 0.00046, 0.111 and 0.309 J mol⁻¹ K⁻² for 0, 1.8 and 3 T. These recalculations illustrate the size of the correction; they are not a new fit or evidence that any arbitrary subtraction is acceptable. [R3](#ref-source-2764bce38246bfae)\n\nPang's simplified band-mixing model uses $|\\Delta(\\varphi)|=\\sqrt{a^2\\cos^2(2\\varphi)+b^2\\sin^2(2\\varphi)}$ at zero temperature. For nonzero amplitudes on the assumed cylinder, the minimum is $\\min(|a|,|b|)$; exchanging them preserves angular averages. The reported S-type fit uses $a=2.5k_BT_c$ and $b=0.58k_BT_c$. This magnitude does not specify the full band matrix or its time-reversal properties. A scalar chiral gap can have the same magnitude; that algebraic coincidence does not equate the two physical states. [R4](#ref-source-e721bddb9ef11661)"
+        },
+        {
+          "id": "experimental-criteria",
+          "title": "Experimental criteria",
+          "markdown": "## Experimental criteria\n\nThe CeCu₂Si₂ specific-heat study used a 13.8 mg S-type crystal, measurements down to 40 mK and a nuclear correction constrained by high-field normal-state data. It reported low-energy behavior consistent with full gaps and no detected in-plane angular oscillation within stated sensitivity. The result constrains quasiparticles weighted strongly by thermodynamics; it is not a universal exclusion of every possible small-band node. The author manuscript's February 2014 version must not be dated from its later PDF generation stamp. [R3](#ref-source-2764bce38246bfae)\n\nPang's penetration-depth measurements reached 40 mK. Its S-type sample showed a specific-heat transition near 0.64 K; an A/S-type sample showed superconducting and antiferromagnetic anomalies near 0.53 and 0.7 K. These are different transitions. Nodeless low-temperature behavior motivates the proposed d+d description, but fitting these data does not uniquely settle the order parameter. Raw-data refitting and the complete supplement remain outside this scoped review. [R4](#ref-source-e721bddb9ef11661)\n\nFor CeCoIn₅, the discovery study combined zero resistance, magnetic shielding and a heat-capacity anomaly near 2.3 K. It also found substantially different upper critical fields parallel and perpendicular to the c axis. Later neutron work found magnetic order that disappears with superconductivity at the high-field boundary. A coupled magnetic Q phase therefore cannot be described as a clean demonstration of a standalone textbook FFLO state. [R5](#ref-source-5962cf8038597944) [R7](#ref-source-fda01ade7737b638)"
+        },
+        {
+          "id": "limits-and-disputes",
+          "title": "Limits and disputes",
+          "markdown": "## Limits and disputes\n\nCeCu₂Si₂ should not be assigned an unqualified textbook nodal d-wave label. Full-gap thermodynamics, sign-sensitive interpretations and band structure must be reconciled. Its pressure response adds another question: Holmes measured resistivity and ac heat capacity above 6 GPa in helium and interpreted anomalies near 4.5 GPa through valence fluctuations. That interpretation is a proposed mechanism, not a direct measurement of a unique pairing interaction. [R3](#ref-source-2764bce38246bfae) [R4](#ref-source-e721bddb9ef11661) [R6](#ref-source-e7c77a3327daf5c6)\n\nUPt₃ has multiple superconducting phases and Kerr evidence constraining time-reversal symmetry. Heating, field training and the phase being probed matter. This does not uniquely select f-wave symmetry or establish a topological device. URhGe and UCoGe provide coexistence evidence for ferromagnetism and superconductivity, but their magnetic and superconducting transition temperatures are distinct. Their respective field responses cannot be exchanged between compounds. [R8](#ref-source-d3edee404071ac81) [R9](#ref-source-15aec45a868e9fb9) [R10](#ref-source-a4695ba5bfa789f3)\n\nUTe₂ requires particularly careful qualifiers. Antiferromagnetic neutron fluctuations, transverse high-field fluctuations and sample-dependent Kerr results probe different conditions. The 2023 Kerr study found no spontaneous signal in the tested single-transition samples; it does not negate every other superconducting phase. No single large upper critical field, fluctuation spectrum or null Kerr observation determines spin structure and topology together. [R11](#ref-source-df199ac9453d6985) [R13](#ref-source-15cfc4a2f9587af0) [R14](#ref-source-dd4e897d833ce69c)"
+        },
+        {
+          "id": "discovery-implications",
+          "title": "Discovery implications",
+          "markdown": "## Discovery implications\n\nThe 2025 UTe₂ halo study mapped transport boundaries with pulsed fields, generally near 0.63 K, using resistance and contactless proximity-detector measurements. Tilting away from the b axis revealed an extended high-field region. The experiment reached approximately 73 T; extrapolated persistence beyond that field is not a measured upper boundary. Its multicomponent triplet interpretation remains a model conclusion. Supplementary sample details, heating corrections and the deposited raw data have not been independently reanalyzed here. [R12](#ref-source-0c4d7cebb12a0d5b)\n\nThe 2026 transverse-fluctuation study measured the normal state at 4 K; superconducting phase boundaries at 300 mK were comparisons with earlier work. Neither temperature is a newly measured transition temperature in that experiment. Discovery records should retain the sample, pressure, field direction, probe and criterion, then compare mechanisms across compatible conditions. The goal is to identify informative constraints, not rank unrelated temperatures or convert candidate topology into an established engineering capability. [R13](#ref-source-15cfc4a2f9587af0)"
+        },
+        {
+          "id": "related-topics",
+          "title": "Related topics",
+          "markdown": "## Related topics\n\nContinue with [antiferromagnetic fluctuations](/scwiki/spin-fluctuation-pairing), [ferromagnetic fluctuations](/scwiki/ferromagnetic-fluctuations), [specific heat](/scwiki/specific-heat-jump), [multiband pairing](/scwiki/multiband-pairing), [f-wave candidates](/scwiki/f-wave) and [pair-density waves](/scwiki/pair-density-wave)."
+        },
+        {
+          "id": "material-cases",
+          "title": "Material cases",
+          "markdown": "## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| CeCu2Si2; Pang S-type crystal | 0.64 K; Approximate thermodynamic transition; resistive onset and zero-resistance criteria differ. | transition; specific-heat-anomaly | Specific heat | ambient; unknown GPa | unknown | experiment; [source](#ref-source-e721bddb9ef11661) |\n| CeCu2Si2; Pang A/S-type crystal | 0.53 K; Superconducting anomaly; separate antiferromagnetic anomaly near 0.7 K is not Tc. | transition; specific-heat-anomaly | Specific heat | ambient; unknown GPa | unknown | experiment; [source](#ref-source-e721bddb9ef11661) |\n| CeCu2Si2; Kittaka S-type crystal, base temperature | 0.04 K; Base measurement temperature, not superconducting transition. | measurement; heat-capacity-base-temperature | Quasi-adiabatic heat pulse | ambient; unknown GPa | unknown | experiment; [source](#ref-source-2764bce38246bfae) |\n| CeCoIn5; Petrovic discovery single crystals | 2.3 K; Discovery sample transition; not a family-wide fixed value. | transition; zero-resistance-and-shielding | Resistivity and diamagnetic shielding; corroborating heat-capacity anomaly | ambient; unknown GPa | unknown | experiment; [source](#ref-source-5962cf8038597944) |\n| UTe2; Lewin pulsed-field transport, general run condition | 0.63 K; Operating temperature, not a measured Tc or exact upper critical field. | measurement; pulsed-field-operating-temperature | Resistance and proximity-detector oscillator; angle-dependent fields to around 73 T | ambient; unknown GPa | unknown | experiment; [source](#ref-source-0c4d7cebb12a0d5b) |\n| UTe2; Zambra normal-state high-field fluctuation study | 4 K; Normal-state measurement; earlier 300 mK phase boundaries are a separate dataset. | normal-state; normal-state-fluctuation-temperature | Pulsed-field magnetic fluctuation probe | ambient; unknown GPa | unknown | experiment; [source](#ref-source-15cfc4a2f9587af0) |"
+        }
+      ],
+      "markdown": "# Heavy-fermion superconductors: correlations, gaps and magnetic phases\n\nExplore CeCu2Si2, CeCoIn5 and uranium compounds through thermodynamic evidence, competing gap models and condition-specific magnetic phases.\n\n## Scope\n\nHeavy-fermion superconductors pair electrons in a strongly renormalized metallic state. Their large low-temperature electronic heat capacity and magnetic response reflect interactions involving partially filled f shells, not unusually heavy atoms moving as Cooper pairs. CeCu₂Si₂ established this class in 1979; the discovery paper reported a transition near 0.5 K. Different compositions and probes need not reproduce that exact number. The family is a laboratory for competing correlations rather than a single pairing mechanism. [R1](#ref-source-0ebda9b697c1f7fd) [R5](#ref-source-5962cf8038597944)\n\nKondo screening, conduction-electron-mediated magnetic interactions, hybridization and valence changes provide useful organizing ideas. Doniach's competition between magnetic order and a compensated state is a model framework. Proximity to a magnetic boundary does not by itself identify the pairing interaction or predict a superconducting transition. Uranium compounds also require attention to itinerant 5f character and strong spin–orbit coupling; a label borrowed from a cerium compound is not a complete microscopic description. [R2](#ref-source-1bdac37fd450eb32) [R6](#ref-source-e7c77a3327daf5c6) [R9](#ref-source-15aec45a868e9fb9)\n\n## Mathematical assumptions\n\nIn a Fermi-liquid regime, the electronic coefficient $\\gamma=\\lim_{T\\to0}C_e/T$ is proportional to the renormalized density of states. A finite-temperature value of total $C/T$ is not automatically that limit. Petrovic's CeCoIn₅ report gives about 290 mJ mol⁻¹ K⁻² above 2.5 K but a much larger low-temperature normal-state value under field. Thus its apparent $\\Delta C/(\\gamma T_c)\\approx4.5$ cannot be converted mechanically into a coupling strength using a temperature-independent normal-state baseline. [R5](#ref-source-5962cf8038597944)\n\nKittaka's CeCu₂Si₂ analysis subtracts a nuclear term. With numerical field $h$ in tesla and temperature $t$ in kelvin, its empirical expression is $C_n/T=(7.4h^2+0.1)t^{-3}\\times10^{-6}$ J mol⁻¹ K⁻². At 60 mK it gives approximately 0.00046, 0.111 and 0.309 J mol⁻¹ K⁻² for 0, 1.8 and 3 T. These recalculations illustrate the size of the correction; they are not a new fit or evidence that any arbitrary subtraction is acceptable. [R3](#ref-source-2764bce38246bfae)\n\nPang's simplified band-mixing model uses $|\\Delta(\\varphi)|=\\sqrt{a^2\\cos^2(2\\varphi)+b^2\\sin^2(2\\varphi)}$ at zero temperature. For nonzero amplitudes on the assumed cylinder, the minimum is $\\min(|a|,|b|)$; exchanging them preserves angular averages. The reported S-type fit uses $a=2.5k_BT_c$ and $b=0.58k_BT_c$. This magnitude does not specify the full band matrix or its time-reversal properties. A scalar chiral gap can have the same magnitude; that algebraic coincidence does not equate the two physical states. [R4](#ref-source-e721bddb9ef11661)\n\n## Experimental criteria\n\nThe CeCu₂Si₂ specific-heat study used a 13.8 mg S-type crystal, measurements down to 40 mK and a nuclear correction constrained by high-field normal-state data. It reported low-energy behavior consistent with full gaps and no detected in-plane angular oscillation within stated sensitivity. The result constrains quasiparticles weighted strongly by thermodynamics; it is not a universal exclusion of every possible small-band node. The author manuscript's February 2014 version must not be dated from its later PDF generation stamp. [R3](#ref-source-2764bce38246bfae)\n\nPang's penetration-depth measurements reached 40 mK. Its S-type sample showed a specific-heat transition near 0.64 K; an A/S-type sample showed superconducting and antiferromagnetic anomalies near 0.53 and 0.7 K. These are different transitions. Nodeless low-temperature behavior motivates the proposed d+d description, but fitting these data does not uniquely settle the order parameter. Raw-data refitting and the complete supplement remain outside this scoped review. [R4](#ref-source-e721bddb9ef11661)\n\nFor CeCoIn₅, the discovery study combined zero resistance, magnetic shielding and a heat-capacity anomaly near 2.3 K. It also found substantially different upper critical fields parallel and perpendicular to the c axis. Later neutron work found magnetic order that disappears with superconductivity at the high-field boundary. A coupled magnetic Q phase therefore cannot be described as a clean demonstration of a standalone textbook FFLO state. [R5](#ref-source-5962cf8038597944) [R7](#ref-source-fda01ade7737b638)\n\n## Limits and disputes\n\nCeCu₂Si₂ should not be assigned an unqualified textbook nodal d-wave label. Full-gap thermodynamics, sign-sensitive interpretations and band structure must be reconciled. Its pressure response adds another question: Holmes measured resistivity and ac heat capacity above 6 GPa in helium and interpreted anomalies near 4.5 GPa through valence fluctuations. That interpretation is a proposed mechanism, not a direct measurement of a unique pairing interaction. [R3](#ref-source-2764bce38246bfae) [R4](#ref-source-e721bddb9ef11661) [R6](#ref-source-e7c77a3327daf5c6)\n\nUPt₃ has multiple superconducting phases and Kerr evidence constraining time-reversal symmetry. Heating, field training and the phase being probed matter. This does not uniquely select f-wave symmetry or establish a topological device. URhGe and UCoGe provide coexistence evidence for ferromagnetism and superconductivity, but their magnetic and superconducting transition temperatures are distinct. Their respective field responses cannot be exchanged between compounds. [R8](#ref-source-d3edee404071ac81) [R9](#ref-source-15aec45a868e9fb9) [R10](#ref-source-a4695ba5bfa789f3)\n\nUTe₂ requires particularly careful qualifiers. Antiferromagnetic neutron fluctuations, transverse high-field fluctuations and sample-dependent Kerr results probe different conditions. The 2023 Kerr study found no spontaneous signal in the tested single-transition samples; it does not negate every other superconducting phase. No single large upper critical field, fluctuation spectrum or null Kerr observation determines spin structure and topology together. [R11](#ref-source-df199ac9453d6985) [R13](#ref-source-15cfc4a2f9587af0) [R14](#ref-source-dd4e897d833ce69c)\n\n## Discovery implications\n\nThe 2025 UTe₂ halo study mapped transport boundaries with pulsed fields, generally near 0.63 K, using resistance and contactless proximity-detector measurements. Tilting away from the b axis revealed an extended high-field region. The experiment reached approximately 73 T; extrapolated persistence beyond that field is not a measured upper boundary. Its multicomponent triplet interpretation remains a model conclusion. Supplementary sample details, heating corrections and the deposited raw data have not been independently reanalyzed here. [R12](#ref-source-0c4d7cebb12a0d5b)\n\nThe 2026 transverse-fluctuation study measured the normal state at 4 K; superconducting phase boundaries at 300 mK were comparisons with earlier work. Neither temperature is a newly measured transition temperature in that experiment. Discovery records should retain the sample, pressure, field direction, probe and criterion, then compare mechanisms across compatible conditions. The goal is to identify informative constraints, not rank unrelated temperatures or convert candidate topology into an established engineering capability. [R13](#ref-source-15cfc4a2f9587af0)\n\n## Related topics\n\nContinue with [antiferromagnetic fluctuations](/scwiki/spin-fluctuation-pairing), [ferromagnetic fluctuations](/scwiki/ferromagnetic-fluctuations), [specific heat](/scwiki/specific-heat-jump), [multiband pairing](/scwiki/multiband-pairing), [f-wave candidates](/scwiki/f-wave) and [pair-density waves](/scwiki/pair-density-wave).\n\n## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| CeCu2Si2; Pang S-type crystal | 0.64 K; Approximate thermodynamic transition; resistive onset and zero-resistance criteria differ. | transition; specific-heat-anomaly | Specific heat | ambient; unknown GPa | unknown | experiment; [source](#ref-source-e721bddb9ef11661) |\n| CeCu2Si2; Pang A/S-type crystal | 0.53 K; Superconducting anomaly; separate antiferromagnetic anomaly near 0.7 K is not Tc. | transition; specific-heat-anomaly | Specific heat | ambient; unknown GPa | unknown | experiment; [source](#ref-source-e721bddb9ef11661) |\n| CeCu2Si2; Kittaka S-type crystal, base temperature | 0.04 K; Base measurement temperature, not superconducting transition. | measurement; heat-capacity-base-temperature | Quasi-adiabatic heat pulse | ambient; unknown GPa | unknown | experiment; [source](#ref-source-2764bce38246bfae) |\n| CeCoIn5; Petrovic discovery single crystals | 2.3 K; Discovery sample transition; not a family-wide fixed value. | transition; zero-resistance-and-shielding | Resistivity and diamagnetic shielding; corroborating heat-capacity anomaly | ambient; unknown GPa | unknown | experiment; [source](#ref-source-5962cf8038597944) |\n| UTe2; Lewin pulsed-field transport, general run condition | 0.63 K; Operating temperature, not a measured Tc or exact upper critical field. | measurement; pulsed-field-operating-temperature | Resistance and proximity-detector oscillator; angle-dependent fields to around 73 T | ambient; unknown GPa | unknown | experiment; [source](#ref-source-0c4d7cebb12a0d5b) |\n| UTe2; Zambra normal-state high-field fluctuation study | 4 K; Normal-state measurement; earlier 300 mK phase boundaries are a separate dataset. | normal-state; normal-state-fluctuation-temperature | Pulsed-field magnetic fluctuation probe | ambient; unknown GPa | unknown | experiment; [source](#ref-source-15cfc4a2f9587af0) |\n\n## Sources\n\n### Ref source-0ebda9b697c1f7fd\n\n[R1] Superconductivity in the Presence of Strong Pauli Paramagnetism: CeCu2Si2 (1979). [DOI 10.1103/PhysRevLett.43.1892](https://doi.org/10.1103/PhysRevLett.43.1892). Publication: journal-article. Check: publisher-abstract-check. Checked: 2026-10-18. Published 17 December 1979. Abstract checked for historical discovery and approximately 0.5 K; complete original measurements not reviewed.\n### Ref source-1bdac37fd450eb32\n\n[R2] The Kondo lattice and weak antiferromagnetism (1977). [DOI 10.1016/0378-4363(77)90190-5](https://doi.org/10.1016/0378-4363(77)90190-5). Publication: journal-article. Check: publisher-indexed-abstract-check. Checked: 2026-10-18. July 1977. Indexed abstract identifies a model competition, not a universal phase diagram. Full publisher endpoint unavailable.\n### Ref source-2764bce38246bfae\n\n[R3] Multiband Superconductivity with Unexpected Deficiency of Nodal Quasiparticles in CeCu2Si2 (2014). [DOI 10.1103/PhysRevLett.112.067002](https://doi.org/10.1103/PhysRevLett.112.067002). Publication: journal-article. Check: selected-author-methods-and-supplement-check. Checked: 2026-10-18. Journal published 12 February 2014; author v2 submitted 13 February 2014. Selected pp.1–3 and supplemental p.6 read; p.6 visually checked. Nuclear subtraction and heavy-band sensitivity retained. PDF generated date 2018 is not submission. Final-version comparison and raw-data refit remain open.\n### Ref source-e721bddb9ef11661\n\n[R4] Fully gapped d-wave superconductivity in CeCu2Si2 (2018). [DOI 10.1073/pnas.1720291115](https://doi.org/10.1073/pnas.1720291115). Publication: journal-article. Check: selected-published-methods-model-check. Checked: 2026-10-18. Published 8 May 2018. Selected Results, simplified quadrature, conclusion and Materials and Methods read. Supplement and raw fits not reviewed; simplified angular model is not a full band calculation.\n### Ref source-5962cf8038597944\n\n[R5] Heavy-fermion superconductivity in CeCoIn5 at 2.3 K (2001). [DOI 10.1088/0953-8984/13/17/103](https://doi.org/10.1088/0953-8984/13/17/103). Publication: journal-article. Check: selected-author-discovery-thermodynamics-check. Checked: 2026-10-18. Author v1 submitted 7 March 2001. Selected discovery, growth, heat-capacity baseline and field-orientation passages, pp.2–5, read. Final journal-version comparison and original data reanalysis remain open.\n### Ref source-e7c77a3327daf5c6\n\n[R6] Signatures of valence fluctuations in CeCu2Si2 under high pressure (2004). [DOI 10.1103/PhysRevB.69.024508](https://doi.org/10.1103/PhysRevB.69.024508). Publication: journal-article. Check: publisher-abstract-check. Checked: 2026-10-18. Published 15 January 2004. Abstract: helium pressure medium, simultaneous resistivity/ac heat capacity above 6 GPa and proposed valence interpretation around 4.5 GPa. Full methods not reviewed.\n### Ref source-fda01ade7737b638\n\n[R7] Coupled superconducting and magnetic order in CeCoIn5 (2008). [DOI 10.1126/science.1161818](https://doi.org/10.1126/science.1161818). Publication: journal-article. Check: original-abstract-index-check. Checked: 2026-10-18. Original abstract indexed at PubMed read. Online 21 August 2008; issue 19 September 2008. Magnetic order collapses with superconductivity; finite-momentum interpretation is not direct imaging. Publisher fulltext returned 403; complete methods not reviewed.\n### Ref source-d3edee404071ac81\n\n[R8] Observation of broken time-reversal symmetry in the heavy-fermion superconductor UPt3 (2014). [DOI 10.1126/science.1248552](https://doi.org/10.1126/science.1248552). Publication: journal-article. Check: selected-author-manuscript-check. Checked: 2026-10-18. Reused scoped primary reading from C6 in this project. Selected pp.1–6, Fig.2 on p.11 visually checked, and sample/apparatus passages on p.13. Published July2014; author upload October2014. Heating and training limits retained; full final-version and raw-data comparison open.\n### Ref source-15aec45a868e9fb9\n\n[R9] Coexistence of superconductivity and ferromagnetism in URhGe (2001). [DOI 10.1038/35098048](https://doi.org/10.1038/35098048). Publication: journal-article. Check: publisher-abstract-scoped-check. Checked: 2026-10-18. Reused scoped primary reading from B4 in this project. Aoki et al. publisher indexed abstract: ambient-pressure thermodynamic evidence, with qualified triplet interpretation. Corrects inherited35065045, which identifies unrelated semiconductor melting research. Full data not reanalyzed.\n### Ref source-a4695ba5bfa789f3\n\n[R10] Superconductivity on the Border of Weak Itinerant Ferromagnetism in UCoGe (2007). [DOI 10.1103/PhysRevLett.99.067006](https://doi.org/10.1103/PhysRevLett.99.067006). Publication: journal-article. Check: publisher-abstract-scoped-check. Checked: 2026-10-18. Reused scoped primary reading from B4 in this project. Huy et al. original abstract: ambient-pressure bulk signatures. Curie3K and best-sample resistive0.8K are distinct; no sample Tc extracted here. Full curves not reviewed.\n### Ref source-df199ac9453d6985\n\n[R11] Resonance from antiferromagnetic spin fluctuations for superconductivity in UTe2 (2021). [DOI 10.1038/s41586-021-04151-5](https://doi.org/10.1038/s41586-021-04151-5). Publication: journal-article. Check: publisher-passages-scoped-check. Checked: 2026-10-18. Reused scoped primary reading from B4 in this project. Duan et al. publisher indexed abstract and Extended Data Fig.7 text checked: AFM resonance and no FM signal above background within specified window. Complete spectra and raw data not reproduced; not an exclusion of all FM fluctuations.\n### Ref source-0c4d7cebb12a0d5b\n\n[R12] High-field superconducting halo in UTe2 (2025). [DOI 10.1126/science.adn7673](https://doi.org/10.1126/science.adn7673). Publication: journal-article. Check: selected-published-pulsed-field-methods-check. Checked: 2026-10-18. Published 31 July 2025. Selected pp.512–513 methods and boundary interpretation read; p.512 visually checked. Pulsed-field maximum around 73 T is distinct from extrapolation. Supplement and dataset not reanalyzed; no full order-parameter reconstruction.\n### Ref source-15cfc4a2f9587af0\n\n[R13] Giant transverse magnetic fluctuations at the edge of re-entrant superconductivity in UTe2 (2026). [DOI 10.1038/s41467-026-71899-7](https://doi.org/10.1038/s41467-026-71899-7). Publication: journal-article. Check: publisher-passages-scoped-check. Checked: 2026-10-18. Reused scoped primary reading from B4 in this project. Zambra et al., published29April2026. Selected introduction/results, Eq.1 and Fig.1 caption checked:4K normal state, pulsedfields to60T, transverse relative to applied field;300mK phase boundaries reproduced from earlier work. No raw-data or complete spectral/pairing-kernel reconstruction. Publisher indexed record gives article 3742, not inherited 3814; current full HTML endpoint unavailable.\n### Ref source-dd4e897d833ce69c\n\n[R14] Fate of Time-Reversal Symmetry Breaking in UTe2 (2023). [DOI 10.1103/PhysRevX.13.041019](https://doi.org/10.1103/PhysRevX.13.041019). Publication: journal-article. Check: selected-author-manuscript-check. Checked: 2026-10-18. Reused scoped primary reading from C6 in this project. Selected pp.2–3 and methods pp.5–6; Fig.1 p.3 visually checked. Kerr sample set distinguished from susceptibility set. Final publisher abstract checked; full version comparison open.\n\n## Claim evidence and conditions\n\n### scwiki-d8-claim-scope-1\n\nHeavy-fermion superconductors pair electrons in a strongly renormalized metallic state. Their large low-temperature electronic heat capacity and magnetic response reflect interactions involving partially filled f shells, not unusually heavy atoms moving as Cooper pairs. CeCu₂Si₂ established this class in 1979; the discovery paper reported a transition near 0.5 K. Different compositions and probes need not reproduce that exact number. The family is a laboratory for competing correlations rather than a single pairing mechanism.\n\nEvidence: experiment. Sources: source-0ebda9b697c1f7fd, source-5962cf8038597944.\n\nConditions: Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.\n\nVerification scope: Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.\n\n### scwiki-d8-claim-scope-2\n\nKondo screening, conduction-electron-mediated magnetic interactions, hybridization and valence changes provide useful organizing ideas. Doniach's competition between magnetic order and a compensated state is a model framework. Proximity to a magnetic boundary does not by itself identify the pairing interaction or predict a superconducting transition. Uranium compounds also require attention to itinerant 5f character and strong spin–orbit coupling; a label borrowed from a cerium compound is not a complete microscopic description.\n\nEvidence: theory. Sources: source-1bdac37fd450eb32, source-e7c77a3327daf5c6, source-15aec45a868e9fb9.\n\nConditions: Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.\n\nVerification scope: Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.\n\n### scwiki-d8-claim-mathematical-assumptions-1\n\nIn a Fermi-liquid regime, the electronic coefficient $\\gamma=\\lim_{T\\to0}C_e/T$ is proportional to the renormalized density of states. A finite-temperature value of total $C/T$ is not automatically that limit. Petrovic's CeCoIn₅ report gives about 290 mJ mol⁻¹ K⁻² above 2.5 K but a much larger low-temperature normal-state value under field. Thus its apparent $\\Delta C/(\\gamma T_c)\\approx4.5$ cannot be converted mechanically into a coupling strength using a temperature-independent normal-state baseline.\n\nEvidence: theory. Sources: source-5962cf8038597944.\n\nConditions: Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.\n\nVerification scope: Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.\n\n### scwiki-d8-claim-mathematical-assumptions-2\n\nKittaka's CeCu₂Si₂ analysis subtracts a nuclear term. With numerical field $h$ in tesla and temperature $t$ in kelvin, its empirical expression is $C_n/T=(7.4h^2+0.1)t^{-3}\\times10^{-6}$ J mol⁻¹ K⁻². At 60 mK it gives approximately 0.00046, 0.111 and 0.309 J mol⁻¹ K⁻² for 0, 1.8 and 3 T. These recalculations illustrate the size of the correction; they are not a new fit or evidence that any arbitrary subtraction is acceptable.\n\nEvidence: theory. Sources: source-2764bce38246bfae.\n\nConditions: Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.\n\nVerification scope: Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.\n\n### scwiki-d8-claim-mathematical-assumptions-3\n\nPang's simplified band-mixing model uses $|\\Delta(\\varphi)|=\\sqrt{a^2\\cos^2(2\\varphi)+b^2\\sin^2(2\\varphi)}$ at zero temperature. For nonzero amplitudes on the assumed cylinder, the minimum is $\\min(|a|,|b|)$; exchanging them preserves angular averages. The reported S-type fit uses $a=2.5k_BT_c$ and $b=0.58k_BT_c$. This magnitude does not specify the full band matrix or its time-reversal properties. A scalar chiral gap can have the same magnitude; that algebraic coincidence does not equate the two physical states.\n\nEvidence: theory. Sources: source-e721bddb9ef11661.\n\nConditions: Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.\n\nVerification scope: Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.\n\n### scwiki-d8-claim-experimental-criteria-1\n\nThe CeCu₂Si₂ specific-heat study used a 13.8 mg S-type crystal, measurements down to 40 mK and a nuclear correction constrained by high-field normal-state data. It reported low-energy behavior consistent with full gaps and no detected in-plane angular oscillation within stated sensitivity. The result constrains quasiparticles weighted strongly by thermodynamics; it is not a universal exclusion of every possible small-band node. The author manuscript's February 2014 version must not be dated from its later PDF generation stamp.\n\nEvidence: experiment. Sources: source-2764bce38246bfae.\n\nConditions: Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.\n\nVerification scope: Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.\n\n### scwiki-d8-claim-experimental-criteria-2\n\nPang's penetration-depth measurements reached 40 mK. Its S-type sample showed a specific-heat transition near 0.64 K; an A/S-type sample showed superconducting and antiferromagnetic anomalies near 0.53 and 0.7 K. These are different transitions. Nodeless low-temperature behavior motivates the proposed d+d description, but fitting these data does not uniquely settle the order parameter. Raw-data refitting and the complete supplement remain outside this scoped review.\n\nEvidence: experiment. Sources: source-e721bddb9ef11661.\n\nConditions: Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.\n\nVerification scope: Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.\n\n### scwiki-d8-claim-experimental-criteria-3\n\nFor CeCoIn₅, the discovery study combined zero resistance, magnetic shielding and a heat-capacity anomaly near 2.3 K. It also found substantially different upper critical fields parallel and perpendicular to the c axis. Later neutron work found magnetic order that disappears with superconductivity at the high-field boundary. A coupled magnetic Q phase therefore cannot be described as a clean demonstration of a standalone textbook FFLO state.\n\nEvidence: experiment. Sources: source-5962cf8038597944, source-fda01ade7737b638.\n\nConditions: Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.\n\nVerification scope: Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.\n\n### scwiki-d8-claim-limits-and-disputes-1\n\nCeCu₂Si₂ should not be assigned an unqualified textbook nodal d-wave label. Full-gap thermodynamics, sign-sensitive interpretations and band structure must be reconciled. Its pressure response adds another question: Holmes measured resistivity and ac heat capacity above 6 GPa in helium and interpreted anomalies near 4.5 GPa through valence fluctuations. That interpretation is a proposed mechanism, not a direct measurement of a unique pairing interaction.\n\nEvidence: experiment. Sources: source-2764bce38246bfae, source-e721bddb9ef11661, source-e7c77a3327daf5c6.\n\nConditions: Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.\n\nVerification scope: Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.\n\n### scwiki-d8-claim-limits-and-disputes-2\n\nUPt₃ has multiple superconducting phases and Kerr evidence constraining time-reversal symmetry. Heating, field training and the phase being probed matter. This does not uniquely select f-wave symmetry or establish a topological device. URhGe and UCoGe provide coexistence evidence for ferromagnetism and superconductivity, but their magnetic and superconducting transition temperatures are distinct. Their respective field responses cannot be exchanged between compounds.\n\nEvidence: experiment. Sources: source-d3edee404071ac81, source-15aec45a868e9fb9, source-a4695ba5bfa789f3.\n\nConditions: Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.\n\nVerification scope: Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.\n\n### scwiki-d8-claim-limits-and-disputes-3\n\nUTe₂ requires particularly careful qualifiers. Antiferromagnetic neutron fluctuations, transverse high-field fluctuations and sample-dependent Kerr results probe different conditions. The 2023 Kerr study found no spontaneous signal in the tested single-transition samples; it does not negate every other superconducting phase. No single large upper critical field, fluctuation spectrum or null Kerr observation determines spin structure and topology together.\n\nEvidence: experiment. Sources: source-df199ac9453d6985, source-15cfc4a2f9587af0, source-dd4e897d833ce69c.\n\nConditions: Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.\n\nVerification scope: Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.\n\n### scwiki-d8-claim-discovery-implications-1\n\nThe 2025 UTe₂ halo study mapped transport boundaries with pulsed fields, generally near 0.63 K, using resistance and contactless proximity-detector measurements. Tilting away from the b axis revealed an extended high-field region. The experiment reached approximately 73 T; extrapolated persistence beyond that field is not a measured upper boundary. Its multicomponent triplet interpretation remains a model conclusion. Supplementary sample details, heating corrections and the deposited raw data have not been independently reanalyzed here.\n\nEvidence: experiment. Sources: source-0c4d7cebb12a0d5b.\n\nConditions: Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.\n\nVerification scope: Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.\n\n### scwiki-d8-claim-discovery-implications-2\n\nThe 2026 transverse-fluctuation study measured the normal state at 4 K; superconducting phase boundaries at 300 mK were comparisons with earlier work. Neither temperature is a newly measured transition temperature in that experiment. Discovery records should retain the sample, pressure, field direction, probe and criterion, then compare mechanisms across compatible conditions. The goal is to identify informative constraints, not rank unrelated temperatures or convert candidate topology into an established engineering capability.\n\nEvidence: experiment. Sources: source-15cfc4a2f9587af0.\n\nConditions: Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.\n\nVerification scope: Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.\n\n## Revision and review\n\nArticle ID: scwiki-d8. Revision: 99973f2239236ec6895f. Updated: 2026-10-18T11:30:41.526332+00:00.\n\nReview scope: Selected CeCu2Si2 and CeCoIn5 methods, nuclear subtraction, proposed gap model and UTe2 pulsed-field passages; previously scoped uranium evidence and independent bounded algebra.\n\n- Full scientific acceptance and raw-data reproduction remain open.\n- Author manuscripts are version-labelled; complete final-version comparisons remain open.\n- Several magnetic-mechanism references remain abstract or selected-passage checks.\n- No pairing symmetry, topological classification or device performance is certified by these checks.\n\nSource: [D_material_families/D8_heavy_fermion.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/D_material_families/D8_heavy_fermion.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 d389474b7d40c91c84b51b5d175bd0038239b825f4dccf53353b4097d02e1d4f.\n",
+      "wordCount": 926
     },
     {
       "id": "scwiki-e4",
