@@ -1,0 +1,368 @@
+{
+  "id": "scwiki-g4",
+  "topicId": "scwiki-topic-g4",
+  "code": "G4",
+  "slug": "reentrant-superconductivity",
+  "title": "Reentrant superconductivity: paths, history and separated regions",
+  "summary": "Distinguish field reentrance, the return of a normal state on cooling and separated pressure domes using explicit paths and measurement criteria.",
+  "aliases": [
+    "reentrant superconductivity",
+    "reentrance",
+    "double superconducting dome",
+    "thermal hysteresis",
+    "separated superconducting regions"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experimental"
+  ],
+  "relatedCodes": [
+    "G3",
+    "G2",
+    "E1",
+    "D5"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T15:41:06.310617+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Original Sinha and Yuan abstracts, Prozorov final susceptibility evidence, selected Crespo author local spectra, institutional pressure report and independent path examples.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Full original historical methods, raw spectra and absolute magnetic calibration remain incomplete.",
+      "Selected surface observations and finite-temperature measurement floors do not establish universal bulk absence.",
+      "Synthetic examples do not determine a microscopic interaction or reproduce magnetic hysteresis."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "G_magnetism_interplay/G4_reentrant_SC.md",
+    "sha256": "cf63a9fd7358de5dc461c9c06923e498af61778374fbc6bb765e0b9a1d3d7d26",
+    "sourceId": "file-992435b2a63bfe03"
+  },
+  "references": [
+    {
+      "id": "source-435b794ed32c7604",
+      "doi": "10.1103/PhysRevLett.48.950",
+      "title": "Study of Coexistence of Ferromagnetism and Superconductivity in Single-Crystal ErRh4B4",
+      "year": 1982,
+      "url": "https://doi.org/10.1103/PhysRevLett.48.950",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "original-publisher-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.48.950",
+        "note": "Published5April1982. Neutron and resistive observations checked in original abstract only; full curves and methods not read."
+      }
+    },
+    {
+      "id": "source-a1eeb97b9380bbe3",
+      "doi": "10.1103/PhysRevB.77.100503",
+      "title": "Coexistence of ferromagnetism and superconductivity in ErRh4B4 single crystals probed by dynamic magnetic susceptibility",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevB.77.100503",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-text-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://supermaglab.physics.iastate.edu/files/inline-files/ErRh4B4_PRB_77_100503_%282008%29.pdf",
+        "note": "Published7March2008. Selected finalpp1–4 read; p2Figures1–3 visually checked. Screening limits, direction and tested ramp rates retained. Absolute domain-volume inference not independently calibrated."
+      }
+    },
+    {
+      "id": "source-384b3a4f65f6493c",
+      "doi": "10.1103/PhysRevLett.102.237002",
+      "title": "Evolution of the Local Superconducting Density of States in ErRh4B4 Close to the Ferromagnetic Transition",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevLett.102.237002",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0902.0308v1",
+        "note": "Published12June2009. Authorv1 submitted2February2009; selectedpp1–4 read, p3Figure3 visually checked. Internal2022typesetting date is not publication. Local surface selection and superconducting Pb-tip deconvolution retained; full final comparison and raw spectra unchecked."
+      }
+    },
+    {
+      "id": "source-9be3bcd270b306a2",
+      "doi": "10.1126/science.1091648",
+      "title": "Observation of Two Distinct Superconducting Phases in CeCu2Si2",
+      "year": 2003,
+      "url": "https://doi.org/10.1126/science.1091648",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "indexed-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/14684816/",
+        "note": "Published19December2003. Original indexed abstract confirms disconnected domes for partiallyGe-substituted compounds. Complete Science methods and curves not checked."
+      }
+    },
+    {
+      "id": "source-da35691a947db0c5",
+      "doi": null,
+      "title": "Two Distinct Superconducting Phases in CeCu2Si2: Selected Research Reports",
+      "year": 2006,
+      "url": "https://www1.cpfs.mpg.de/web/docs/scientreport/report2006_data/SR%20pages225-228.pdf?cpfs_id=000469",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "scope": "selected-author-institutional-report",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www1.cpfs.mpg.de/web/docs/scientreport/report2006_data/SR%20pages225-228.pdf?cpfs_id=000469",
+        "note": "Reportpp225–227text/captions read; p226Figures1–2 visually checked. Relative pressure, mixed comparison probes and distinct pressure cells retained. This2006institutional report is not the original2003Science article."
+      }
+    },
+    {
+      "id": "source-e917adb251d93c59",
+      "doi": "10.1126/science.1115498",
+      "title": "Magnetic Field-Induced Superconductivity in the Ferromagnet URhGe",
+      "year": 2005,
+      "url": "https://doi.org/10.1126/science.1115498",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/16123293/",
+        "note": "Levy et al. original abstract as indexed by PubMed: field along b, spin reorientation12T, second superconducting pocket. Full text and phase boundaries not audited; associated commentary1117436 is not the original research."
+      }
+    },
+    {
+      "id": "source-c690ee5b95521000",
+      "doi": "10.1103/PhysRevLett.117.046401",
+      "title": "Collapse of Ferromagnetism and Fermi Surface Instability near Reentrant Superconductivity of URhGe",
+      "year": 2016,
+      "url": "https://doi.org/10.1103/PhysRevLett.117.046401",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "final-abstract-and-selected-author-text",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1607.06399v1",
+        "note": "Published22July2016. Authorv1 submitted21July2016 selectedpp1–4 read. Abstract12.75T conflicts internally with body11.75T; final abstract also12.75T. Exact calibration remains unresolved. No full final comparison or original figure audit."
+      }
+    },
+    {
+      "id": "source-3504ee9027165d0a",
+      "doi": "10.1038/s41586-026-10547-y",
+      "title": "Field re-entrant superconductivity in Eu-doped infinite-layer nickelates",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10547-y",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2508.14666v3",
+        "note": "Published23April2026; read authorv3 dated25April2026, selectedpp2–8, captionsp12, methodsp13–14; Fig2p19/Fig3p20 visually checked. Full final equivalence, calibration and all raw data remain open."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-g4-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Reentrance describes a path through a phase diagram. Specify which phase returns, which parameter is swept, its direction, and what is held fixed. A field scan can produce superconducting, dissipative, and superconducting regimes in sequence. The historical term reentrant superconductor also covers a different sequence on cooling: normal, superconducting, then normal ferromagnetic. A pair of maxima in a transition-temperature curve does not by itself establish disconnected superconducting regions.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-435b794ed32c7604",
+        "source-9be3bcd270b306a2",
+        "source-e917adb251d93c59"
+      ],
+      "conditions": "Path, scan direction/history, specimen, finite measurement floor and probe-specific criterion; model coordinates dimensionless and synthetic.",
+      "verificationScope": "Selected primary evidence and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g4-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Use superconducting and normal labels only to the extent supported by the probes. A resistive intermediate regime may retain pairing or superconducting correlations, while zero resistance may follow a connected minority path. The same plotted boundary can have different meanings when it represents onset, a resistance fraction, a magnetic response or a thermodynamic anomaly. Paths assembled from different samples need explicit specimen labels.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-a1eeb97b9380bbe3",
+        "source-384b3a4f65f6493c",
+        "source-3504ee9027165d0a"
+      ],
+      "conditions": "Path, scan direction/history, specimen, finite measurement floor and probe-specific criterion; model coordinates dimensionless and synthetic.",
+      "verificationScope": "Selected primary evidence and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g4-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An independent dimensionless example separates path geometry from mechanism. Define an imposed transition curve $T_c(x)=\\max[0,1+v-(x^2-1)^2]$, and label a point superconducting when $0\\lt T\\lt T_c(x)$. The variable $x$ is a control coordinate, not an assigned pressure in GPa. With $v=0.2$, both peaks reach 1.2 and the valley remains at 0.2. A horizontal scan at $T=0.6$ crosses two superconducting intervals; at $T=0.1$ it crosses one connected interval. The two higher-temperature pockets therefore belong to one connected region in the full positive-temperature plane.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9be3bcd270b306a2",
+        "source-da35691a947db0c5"
+      ],
+      "conditions": "Path, scan direction/history, specimen, finite measurement floor and probe-specific criterion; model coordinates dimensionless and synthetic.",
+      "verificationScope": "Selected primary evidence and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g4-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For $v=-0.2$, the imposed curve has a zero-temperature gap between two lobes. At $T=0.1$, its superconducting intervals run approximately from -1.355 to -0.404 and from 0.404 to 1.355. The analytic endpoints follow from $(x^2-1)^2=1+v-T$. Six cases, including scans above both peaks, agree with 120,000 independent grid evaluations. This construction demonstrates a logical distinction; it does not infer a second order parameter, pairing symmetry or microscopic interaction from the number of lobes.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9be3bcd270b306a2"
+      ],
+      "conditions": "Path, scan direction/history, specimen, finite measurement floor and probe-specific criterion; model coordinates dimensionless and synthetic.",
+      "verificationScope": "Selected primary evidence and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g4-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A separate homogeneous example represents the historical temperature sequence. Let $f=a(T)s^2+s^4/2$, where $s\\ge0$ and $a(T)=(T-1)(T-3)$ in dimensionless units. Its global minimum has $s^2=\\max[0,-a(T)]$. Cooling through $T=4,2,0.5$ gives normal, superconducting and normal states. Only one superconducting interval exists. The model has continuous boundaries and no domains or hysteresis, so it cannot reproduce the observed history dependence of ErRh4B4. It illustrates which state reenters, not that material's magnetic mechanism.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-435b794ed32c7604",
+        "source-a1eeb97b9380bbe3"
+      ],
+      "conditions": "Path, scan direction/history, specimen, finite measurement floor and probe-specific criterion; model coordinates dimensionless and synthetic.",
+      "verificationScope": "Selected primary evidence and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g4-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Sinha and colleagues' 1982 ErRh4B4 study combines neutron diffraction and resistivity. Its abstract reports an intermediate region below 1.2 K with ferromagnetic and modulated magnetic structures, followed below 0.71 K by disappearance of the modulation and superconductivity into a normal ferromagnetic state. The proposed coexistence of ferromagnetic and superconducting domains is an interpretation of these measurements, not proof of uniform coexistence at every microscopic position. The full historical methods remain unchecked here.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-435b794ed32c7604"
+      ],
+      "conditions": "Path, scan direction/history, specimen, finite measurement floor and probe-specific criterion; model coordinates dimensionless and synthetic.",
+      "verificationScope": "Selected primary evidence and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g4-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Prozorov and colleagues later resolve directional and historical differences using dynamic susceptibility. Their approximately 10 MHz probe uses a small excitation field, and their Figure 3 compares multiple temperature-ramp rates. Warming from the ferromagnetic state produces steps; cooling is more gradual. The reported rate insensitivity covers the tested ramps, not every possible relaxation timescale. Superconducting screening can conceal remaining ferromagnetic regions. Minor temperature loops also differ from the initial warming path, so sweep direction alone does not completely specify sample history.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-a1eeb97b9380bbe3"
+      ],
+      "conditions": "Path, scan direction/history, specimen, finite measurement floor and probe-specific criterion; model coordinates dimensionless and synthetic.",
+      "verificationScope": "Selected primary evidence and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g4-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Crespo and colleagues add local tunneling spectroscopy with a superconducting Pb tip. Their analysis deconvolves the tip response to infer the sample density of states. They select about twenty suitable surface locations; many other areas have suppressed or absent superconducting features. The representative heating and cooling transitions differ by about 90 mK. At 0.3 K the measured superconducting features come from the tip, while the inferred sample spectrum is featureless. This is a local, surface-sensitive absence within the measured conditions, not a complete volume census. The author manuscript identifies the crystal as the one previously used in the neutron and transport study.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-384b3a4f65f6493c"
+      ],
+      "conditions": "Path, scan direction/history, specimen, finite measurement floor and probe-specific criterion; model coordinates dimensionless and synthetic.",
+      "verificationScope": "Selected primary evidence and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g4-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Yuan and colleagues' original 2003 abstract reports disconnected pressure domes in partially Ge-substituted CeCu2Si2. Their later institutional report distinguishes the continuous region of the pure compound from the separated domes near substitution x=0.1. The comparison uses relative pressure $\\Delta p=p-p_{c1}(x)$; the reference pressure depends on composition. Ge substitution changes both disorder and lattice volume. The report also combines comparison curves from different probes and uses distinct pressure-cell techniques across its range. These conditions prevent a universal pressure window from being assigned to every CeCu2(Si,Ge)2 sample.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-9be3bcd270b306a2",
+        "source-da35691a947db0c5"
+      ],
+      "conditions": "Path, scan direction/history, specimen, finite measurement floor and probe-specific criterion; model coordinates dimensionless and synthetic.",
+      "verificationScope": "Selected primary evidence and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g4-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "URhGe and Eu-rich Sm/Ca/Eu nickelates provide field-scan examples, with different magnetic settings. The former has a second pocket near a b-axis spin reorientation; the latter combines selected high-field zero-resistance and screening observations. Keep these examples distinct from the normal-state reentrance on cooling in ErRh4B4. Similar phase-diagram shapes do not establish a shared microscopic mechanism. The sample-specific field and temperature conditions are treated in the linked field-induced-superconductivity page.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-e917adb251d93c59",
+        "source-c690ee5b95521000",
+        "source-3504ee9027165d0a"
+      ],
+      "conditions": "Path, scan direction/history, specimen, finite measurement floor and probe-specific criterion; model coordinates dimensionless and synthetic.",
+      "verificationScope": "Selected primary evidence and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g4-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A lowest measured temperature is a detection boundary, not proof that the true transition temperature vanishes. The institutional pressure report describes measurements extending down to 50 mK; its absence of observed superconductivity cannot establish an exact zero-temperature interval without further evidence. Likewise, its discussion of a possible volume collapse cites diffraction on CeCu2Ge2 rather than a direct structural measurement on every specimen in its superconducting phase diagram. Magnetic and valence-mediated pairing remain interpretations to test against additional measurements.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-da35691a947db0c5"
+      ],
+      "conditions": "Path, scan direction/history, specimen, finite measurement floor and probe-specific criterion; model coordinates dimensionless and synthetic.",
+      "verificationScope": "Selected primary evidence and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g4-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. The original Sinha and Science pressure papers have only abstract-level checks here; other selected passages and figures have more detailed review. Raw spectra, absolute magnetic calibration, complete final-version comparisons and historical field boundaries remain incomplete. Local gaplessness, resistance, screening and global phase coherence must not be treated as interchangeable observations. The independent examples verify their stated assumptions only.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-435b794ed32c7604",
+        "source-a1eeb97b9380bbe3",
+        "source-384b3a4f65f6493c",
+        "source-9be3bcd270b306a2"
+      ],
+      "conditions": "Path, scan direction/history, specimen, finite measurement floor and probe-specific criterion; model coordinates dimensionless and synthetic.",
+      "verificationScope": "Selected primary evidence and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g4-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Record the full path, sample history, parameter uncertainties, measurement floor and transition criterion with each reported pocket. Compare warming, cooling and partial loops before assigning an equilibrium boundary. Separate a new region in a measured slice from a distinct phase in the full diagram, then use magnetic, structural and spectroscopic measurements to test the proposed mechanism. Preserve unresolved differences instead of averaging incompatible temperatures or pressure origins.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-a1eeb97b9380bbe3",
+        "source-384b3a4f65f6493c",
+        "source-da35691a947db0c5"
+      ],
+      "conditions": "Path, scan direction/history, specimen, finite measurement floor and probe-specific criterion; model coordinates dimensionless and synthetic.",
+      "verificationScope": "Selected primary evidence and independent bounded examples; complete scientific acceptance remains open."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "T_c(x)=\\max[0,1+v-(x^2-1)^2]",
+      "check": "6analytic isotherm classifications checked at120000independent points; two slice intervals need not be globally disconnected."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "f=a(T)s^2+s^4/2",
+      "check": "3global free-energy minima checked againstnonnegative amplitude scans. Normal-SC-normal sequence contains oneSCwindow and no hysteresis."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-g4-material-1",
+      "formula": "ErRh4B4",
+      "sample": "Crespo selected surface regions in low-temperature ferromagnetic regime",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.3,
+      "tcK": null,
+      "temperatureKind": "normal-state",
+      "temperatureNote": "Measurement temperature; remaining superconducting tunneling features attributed toPb tip, not sample superconductivity.",
+      "criterion": "local-normal-spectrum",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Pb-tip STM spectroscopy with tip-response deconvolution",
+      "sourceId": "source-384b3a4f65f6493c",
+      "aliases": [
+        "reentrant superconductor"
+      ]
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 88,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source retained; clarify returning phase, path versus globalconnectivity, probe history, finite measurement floor and composition-dependent pressure origin."
+    }
+  ]
+}
