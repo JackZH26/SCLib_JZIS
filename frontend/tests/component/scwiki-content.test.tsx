@@ -464,3 +464,19 @@ it("keeps normal-state magnetic temperatures and extrapolated fields explicit in
  expect(sec).toContain("300 mK superconducting boundaries came from earlier work");expect(sec).toContain("10.1038/s41467-026-71899-7");
  expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
 });
+
+it("preserves nematic boundary conditions and unresolved source updates in machine-readable sections",async()=>{
+ const a=articles().find(a=>a.code==="B5")!;
+ expect(a.materialCases).toEqual([]);
+ expect(searchArticles(searchIndex().entries,"elastoresistance",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"elastoresistance",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(math).toContain("At fixed strain");expect(math).toContain("at fixed stress");expect(math).toContain("These derivatives are not interchangeable");
+ expect(math).toContain("Chu2012 correction content remains unverified");
+ const exp=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(exp).toContain("including FeTeSe");expect(exp).toContain("publisher text remains unavailable");
+ expect(exp).toContain("10.1126/science.338.6106.469-a");
+ const json=await(await get(["articles",a.id])).json();
+ expect(json.article.references.find((r:{doi:string})=>r.doi==="10.1126/science.1221713").verification.scope).toBe("author-manuscript-with-update-pending");
+ expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
+});
