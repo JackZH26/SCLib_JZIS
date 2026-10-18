@@ -29,15 +29,16 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T06:37:49.655522+00:00",
+  "modifiedAt": "2026-10-19",
   "review": {
-    "checkedAt": "2026-10-18",
+    "checkedAt": "2026-10-19",
     "scope": "Edited pinned A5 chapter, selected BCS/Choi and phase-sensitive primary passages, review passages, Hardy/Carbotte abstracts and an independent ideal-DOS state-counting check.",
     "limitations": [
       "Selected source checks do not constitute full scientific validation or independent experimental replication.",
       "Hardy is abstract-scoped; tricrystal image fits, uncertainties and all underlying review citations were not independently reproduced.",
       "No sample-specific gap amplitude or transition temperature was re-extracted; calculated gaps are not experimental records.",
-      "The DOS check assumes a clean isotropic constant-DOS mean-field model, not a universal tunneling spectrum."
+      "The DOS check assumes a clean isotropic constant-DOS mean-field model, not a universal tunneling spectrum.",
+      "The reporting table still needs row-specific primary-source mapping; selected review passages do not verify all listed controls."
     ]
   },
   "provenance": {
@@ -298,7 +299,9 @@
         "source-ba10e800a1246bf6"
       ],
       "conditions": "Clean isotropic single-band weak-coupling spectrum and constant normal DOS; no broadening or fit. Magnitude-only sign invariance is not a statement about all interference experiments.",
-      "verificationScope": "Selected BCS passages, existing B1 gap-equation check and local DOS state-counting calculation; Carbotte remains abstract-scoped."
+      "verificationScope": "Selected BCS passages, existing B1 gap-equation check and local DOS state-counting calculation; Carbotte remains abstract-scoped.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "BCS pp. 1182-1183 supply the excitation and one-spin state-counting conventions. The modern normalized positive-energy spectral DOS and finite-edge integral are locally derived with a constant normal DOS and matched spin convention; no measured tunneling curve is fitted."
     },
     {
       "id": "scwiki-a5-claim-mathematical-assumptions-7",
@@ -314,13 +317,15 @@
     {
       "id": "scwiki-a5-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset.",
+      "statement": "Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. The selected review passages provide context for ARPES, heat capacity, penetration depth and thermal transport; row-by-row source verification of the complete checklist remains open.",
       "evidenceType": "hypothesis",
       "sourceIds": [
         "source-e933e3bbd4beade6"
       ],
       "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
-      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset."
+      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "This is a local editorial reporting map. Tsuei-Kirtley pp. 974-976 support selected probe interpretation limits, not every STS/optical/THz/interface control in the complete checklist. Row-specific primary references and remaining control checks are pending."
     },
     {
       "id": "scwiki-a5-claim-experimental-criteria-2",
@@ -331,7 +336,9 @@
         "source-e933e3bbd4beade6"
       ],
       "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
-      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset."
+      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "This is a local editorial reporting map. Tsuei-Kirtley pp. 974-976 support selected probe interpretation limits, not every STS/optical/THz/interface control in the complete checklist. Row-specific primary references and remaining control checks are pending."
     },
     {
       "id": "scwiki-a5-claim-experimental-criteria-3",

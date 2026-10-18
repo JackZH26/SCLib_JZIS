@@ -22,7 +22,7 @@ In this magnitude-only model, replacing a gap by its negative leaves the excitat
 
 ## Experimental criteria
 
-Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset.
+Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset. The selected review passages provide context for ARPES, heat capacity, penetration depth and thermal transport; row-by-row source verification of the complete checklist remains open.
 
 | Probe | Recorded quantity | What must be controlled |
 |---|---|---|
