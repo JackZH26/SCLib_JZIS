@@ -31,7 +31,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T11:06:56.295974+00:00",
+  "modifiedAt": "2026-10-18T11:12:52.733822+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected primary structure, transport and magnetometry passages; final LaH10 isotope and pressure methods; both retraction notices in full; bounded printed-parameter and isotope calculations.",
@@ -105,7 +105,7 @@
         "scope": "selected-published-methods-equation-check",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://www.nature.com/articles/srep06968.pdf",
-        "note": "Published 10 November 2014. Selected pp.1–6: structure search, Table1 and methods. Printed modified-McMillan estimates independently calculated; no DFPT or search reproduced."
+        "note": "Published 10 November 2014. Selected pp. 1–6: structure search, Table 1 and methods. Printed modified-McMillan estimates independently calculated; no DFPT or search reproduced."
       }
     },
     {
@@ -119,7 +119,7 @@
         "scope": "selected-author-text-and-published-caption-check",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://arxiv.org/pdf/1506.08190v1",
-        "note": "Published 17 August 2015. Author v1 of 26 June 2015: selected pp.3/5 and Fig4 pp.11–12, visually checked; publisher abstract and extended captions also checked. Magnetization raw data and background subtraction not independently reproduced."
+        "note": "Published 17 August 2015. Author v1 of 26 June 2015: selected pp. 3/5 and Fig. 4 pp. 11–12, visually checked; publisher abstract and extended captions also checked. Magnetization raw data and background subtraction not independently reproduced."
       }
     },
     {
@@ -133,7 +133,7 @@
         "scope": "selected-author-structure-check",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://arxiv.org/pdf/1509.03156v1",
-        "note": "Author v1 of 10 September 2015, selected pp.1–3: sulfur sublattice, mixed sulfur phase and deuteride173GPa simultaneous transport/XRD. Final published full text not compared; hydrogen positions not directly resolved."
+        "note": "Author v1 of 10 September 2015, selected pp. 1–3: sulfur sublattice, mixed sulfur phase and deuteride 173 GPa simultaneous transport/XRD. Final published full text not compared; hydrogen positions not directly resolved."
       }
     },
     {
@@ -147,7 +147,7 @@
         "scope": "publisher-abstract-and-selected-author-v3-methods-check",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://arxiv.org/pdf/1808.07695v3",
-        "note": "Journal published 14 January 2019; detailed scope is author v3 of29August2018 pp.3–7. Four-probe versus pseudo-four-probe, pressure drift, about20microohm minimum and sample geometry. Final journal methods not compared; intrinsic resistivity not determined."
+        "note": "Journal published 14 January 2019; detailed scope is author v3 of 29 August 2018 pp. 3–7. Four-probe versus pseudo-four-probe, pressure drift, about 20 microohm minimum and sample geometry. Final journal methods not compared; intrinsic resistivity not determined."
       }
     },
     {
@@ -161,7 +161,7 @@
         "scope": "selected-published-methods-figures-check",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://public.magnet.fsu.edu/AToth/NSF%20publication%20access/2019/05%20Newly%20Entered%20Pubs%20May%202019/2019%20cited/2019_Superconductivity%20at%20250%20K%20in%20lanthanum%20hydride%20under%20high%20pressures.pdf",
-        "note": "Published online22May2019. Selected printedpp.528–529, Fig4p.531, Methods and deuteride assignment; PDFp2 visually checked. Final249/180K comparison replaces early250/168K; rounded ratio0.468 differs from stated0.46. Measured9T versus extrapolated95–136T; no SQUID measurement."
+        "note": "Published online 22 May 2019. Selected printed pp. 528–529, Fig. 4p.531, Methods and deuteride assignment; PDF p. 2 visually checked. Final 249/180 K comparison replaces early 250/168 K; rounded ratio 0.468 differs from stated 0.46. Measured 9 T versus extrapolated 95–136 T; no SQUID measurement."
       }
     },
     {
@@ -175,7 +175,7 @@
         "scope": "selected-author-equations-table-check",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://api.repository.cam.ac.uk/server/api/core/bitstreams/5cc3e771-c6c8-423c-bea3-7faa5ba6a44f/content",
-        "note": "Author accepted manuscript dated26March2015, selectedpp.1–4 and TableII visually checked. Publisher identity confirmed. No SSCHA, phonon or full Eliashberg solver reproduced; early experimental190/90K comparison not promoted to later benchmark."
+        "note": "Author accepted manuscript dated 26 March 2015, selectedpp. 1–4 and Table II visually checked. Publisher identity confirmed. No SSCHA, phonon or full Eliashberg solver reproduced; early experimental 190/90 K comparison not promoted to later benchmark."
       }
     },
     {
@@ -208,7 +208,7 @@
         "scope": "complete-retraction-notice-text-check",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://www.nature.com/articles/s41586-022-05294-9.pdf",
-        "note": "Published26September2022. Corrected notice read in full; concerns about non-standard user-defined background subtraction. All authors disagreed with retraction."
+        "note": "Published 26 September 2022. Corrected notice read in full; concerns about non-standard user-defined background subtraction. All authors disagreed with retraction."
       }
     },
     {
@@ -241,7 +241,7 @@
         "scope": "complete-retraction-notice-text-check",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://www.nature.com/articles/s41586-023-06774-2.pdf",
-        "note": "Published7November2023. Notice read in full: eight authors requested retraction over provenance, measurements and processing; additional resistivity concerns. No independent misconduct finding inferred."
+        "note": "Published 7 November 2023. Notice read in full: eight authors requested retraction over provenance, measurements and processing; additional resistivity concerns. No independent misconduct finding inferred."
       }
     },
     {
@@ -255,7 +255,7 @@
         "scope": "selected-published-abstract-methods-check",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://www.nature.com/articles/s41586-023-06162-w.pdf",
-        "note": "Published online11May2023; version of record26July2023. Final abstract and selected synthesis/probe methods read. Transport0.4–40.1GPa down to2K; limited tested samples, not universal exclusion. Full curves and raw data not reproduced."
+        "note": "Published online 11 May 2023; version of record 26 July 2023. Final abstract and selected synthesis/probe methods read. Transport 0.4–40.1 GPa down to 2 K; limited tested samples, not universal exclusion. Full curves and raw data not reproduced."
       }
     },
     {
@@ -269,7 +269,7 @@
         "scope": "selected-published-recovery-and-magnetometry-check",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://www.nature.com/articles/s41467-026-74232-4.pdf",
-        "note": "Published20June2026. Selected abstractp1, structure/DFPTdiscussionp4 and SQUIDparagraphp5: recovered material survives tens of hours; no superconductivity down to3K in run4. Full supplementary methods and raw data remain open."
+        "note": "Published 20 June 2026. Selected abstract p. 1, structure/DFPT discussion p. 4 and SQUID paragraph p. 5: recovered material survives tens of hours; no superconductivity down to 3 K in run 4. Full supplementary methods and raw data remain open."
       }
     }
   ],
@@ -442,12 +442,12 @@
     {
       "id": "scwiki-d6-material-1",
       "formula": "H3S",
-      "sample": "Sulfur hydride, author Fig4a, 155 GPa",
+      "sample": "Sulfur hydride, author Fig. 4a, 155 GPa",
       "recordType": "experiment",
       "reportedTemperatureK": 203,
       "tcK": 203,
       "temperatureKind": "transition",
-      "temperatureNote": "Reported203(1)K onset; raw background subtraction not independently reproduced.",
+      "temperatureNote": "Reported 203(1) K onset; raw background subtraction not independently reproduced.",
       "criterion": "zfc-magnetic-onset",
       "pressureRegime": "high",
       "pressureGPa": {
@@ -461,12 +461,12 @@
     {
       "id": "scwiki-d6-material-2",
       "formula": "LaH10",
-      "sample": "Final2019 pressure-dome maximum, near170 GPa",
+      "sample": "Final 2019 pressure-dome maximum, near 170 GPa",
       "recordType": "experiment",
       "reportedTemperatureK": 250,
       "tcK": 250,
       "temperatureKind": "transition",
-      "temperatureNote": "Approximate maximum250–252K; onset of departure from normal metallic resistance.",
+      "temperatureNote": "Approximate maximum 250–252 K; onset of departure from normal metallic resistance.",
       "criterion": "resistance-onset-deviation",
       "pressureRegime": "high",
       "pressureGPa": {
@@ -480,12 +480,12 @@
     {
       "id": "scwiki-d6-material-3",
       "formula": "LaD10",
-      "sample": "fcc sample17, isotope Fig4, 152 GPa",
+      "sample": "fcc sample 17, isotope Fig. 4, 152 GPa",
       "recordType": "experiment",
       "reportedTemperatureK": 180,
       "tcK": 180,
       "temperatureKind": "transition",
-      "temperatureNote": "Final isotope comparison; not early168K assignment.",
+      "temperatureNote": "Final isotope comparison; not early 168 K assignment.",
       "criterion": "resistance-onset-deviation",
       "pressureRegime": "high",
       "pressureGPa": {
@@ -512,13 +512,13 @@
         "max": 40.1
       },
       "equilibrium": "unknown",
-      "probe": "Transport found no superconductivity above2K",
+      "probe": "Transport found no superconductivity above 2 K",
       "sourceId": "source-151c87f0eda0236f"
     },
     {
       "id": "scwiki-d6-material-5",
       "formula": "Y3Fe4H20",
-      "sample": "Recovered run4 sample, small and not pure",
+      "sample": "Recovered run 4 sample, small and not pure",
       "recordType": "experiment",
       "reportedTemperatureK": 3,
       "tcK": null,
@@ -528,7 +528,7 @@
       "pressureRegime": "ambient",
       "pressureGPa": null,
       "equilibrium": "metastable",
-      "probe": "SQUID test found no superconductivity down to3K",
+      "probe": "SQUID test found no superconductivity down to 3 K",
       "sourceId": "source-f9dfe34f7dffd9d2"
     },
     {
@@ -536,10 +536,10 @@
       "formula": "H3S",
       "sample": "Im-3m harmonic model, mu*=0.10",
       "recordType": "prediction",
-      "reportedTemperatureK": 203.65062833468093,
+      "reportedTemperatureK": 204,
       "tcK": null,
       "temperatureKind": "transition",
-      "temperatureNote": "Calculated estimate, not measured transition.",
+      "temperatureNote": "Rounded printed prediction for mu*=0.10; not a measured transition. Independent substitution gives about 203.65 K.",
       "criterion": "modified-mcmillan-prediction",
       "pressureRegime": "high",
       "pressureGPa": {

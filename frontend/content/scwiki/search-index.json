@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "90c61604d919ed005d99",
+  "revision": "a4fbcd94842cb0aa1a78",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -2192,17 +2192,17 @@
         "prediction"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "b23aceaf71114fcf1843",
+      "revision": "ef044e8d5c19b1105586",
       "materialCases": [
         {
           "id": "scwiki-d6-material-1",
           "formula": "H3S",
-          "sample": "Sulfur hydride, author Fig4a, 155 GPa",
+          "sample": "Sulfur hydride, author Fig. 4a, 155 GPa",
           "recordType": "experiment",
           "reportedTemperatureK": 203,
           "tcK": 203,
           "temperatureKind": "transition",
-          "temperatureNote": "Reported203(1)K onset; raw background subtraction not independently reproduced.",
+          "temperatureNote": "Reported 203(1) K onset; raw background subtraction not independently reproduced.",
           "criterion": "zfc-magnetic-onset",
           "pressureRegime": "high",
           "pressureGPa": {
@@ -2216,12 +2216,12 @@
         {
           "id": "scwiki-d6-material-2",
           "formula": "LaH10",
-          "sample": "Final2019 pressure-dome maximum, near170 GPa",
+          "sample": "Final 2019 pressure-dome maximum, near 170 GPa",
           "recordType": "experiment",
           "reportedTemperatureK": 250,
           "tcK": 250,
           "temperatureKind": "transition",
-          "temperatureNote": "Approximate maximum250–252K; onset of departure from normal metallic resistance.",
+          "temperatureNote": "Approximate maximum 250–252 K; onset of departure from normal metallic resistance.",
           "criterion": "resistance-onset-deviation",
           "pressureRegime": "high",
           "pressureGPa": {
@@ -2235,12 +2235,12 @@
         {
           "id": "scwiki-d6-material-3",
           "formula": "LaD10",
-          "sample": "fcc sample17, isotope Fig4, 152 GPa",
+          "sample": "fcc sample 17, isotope Fig. 4, 152 GPa",
           "recordType": "experiment",
           "reportedTemperatureK": 180,
           "tcK": 180,
           "temperatureKind": "transition",
-          "temperatureNote": "Final isotope comparison; not early168K assignment.",
+          "temperatureNote": "Final isotope comparison; not early 168 K assignment.",
           "criterion": "resistance-onset-deviation",
           "pressureRegime": "high",
           "pressureGPa": {
@@ -2267,13 +2267,13 @@
             "max": 40.1
           },
           "equilibrium": "unknown",
-          "probe": "Transport found no superconductivity above2K",
+          "probe": "Transport found no superconductivity above 2 K",
           "sourceId": "source-151c87f0eda0236f"
         },
         {
           "id": "scwiki-d6-material-5",
           "formula": "Y3Fe4H20",
-          "sample": "Recovered run4 sample, small and not pure",
+          "sample": "Recovered run 4 sample, small and not pure",
           "recordType": "experiment",
           "reportedTemperatureK": 3,
           "tcK": null,
@@ -2283,7 +2283,7 @@
           "pressureRegime": "ambient",
           "pressureGPa": null,
           "equilibrium": "metastable",
-          "probe": "SQUID test found no superconductivity down to3K",
+          "probe": "SQUID test found no superconductivity down to 3 K",
           "sourceId": "source-f9dfe34f7dffd9d2"
         },
         {
@@ -2291,10 +2291,10 @@
           "formula": "H3S",
           "sample": "Im-3m harmonic model, mu*=0.10",
           "recordType": "prediction",
-          "reportedTemperatureK": 203.65062833468093,
+          "reportedTemperatureK": 204,
           "tcK": null,
           "temperatureKind": "transition",
-          "temperatureNote": "Calculated estimate, not measured transition.",
+          "temperatureNote": "Rounded printed prediction for mu*=0.10; not a measured transition. Independent substitution gives about 203.65 K.",
           "criterion": "modified-mcmillan-prediction",
           "pressureRegime": "high",
           "pressureGPa": {
