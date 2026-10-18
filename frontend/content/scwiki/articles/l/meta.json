@@ -1,0 +1,1334 @@
+{
+  "id": "scwiki-l",
+  "topicId": "scwiki-topic-l",
+  "code": "L",
+  "slug": "history",
+  "publicationKind": "handbook",
+  "title": "A history of superconductivity: milestones and evidence",
+  "summary": "Eighteen milestones from mercury to recent research, with original-source links, corrected chronology and the conditions behind reported temperatures.",
+  "aliases": [
+    "superconductivity history",
+    "historical timeline",
+    "discovery milestones",
+    "超导历史",
+    "超导时间线",
+    "历史里程碑"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "D1",
+    "D2",
+    "D3",
+    "D4",
+    "D5",
+    "D6",
+    "D7",
+    "D8",
+    "E9",
+    "E10",
+    "G5",
+    "I",
+    "J",
+    "K"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T19:51:10.612090+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Eighteen stable historical milestones with corrected dates and temperature criteria. Prior original-source checks reused; selected Ginzburg and Josephson author retrospectives and the earlier LaOFeP report added.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Original 1911, 1950 and 1962 full-text coverage is incomplete; later firsthand accounts are explicitly identified.",
+      "Several discovery papers remain abstract-only; original datasets, supplementary material and replication are not fully audited.",
+      "Narrative temperatures are not duplicate material records or a standardized record-ranking dataset."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "02_BATCH_2_IN_PLAN.md",
+    "sha256": "502293e5ed2fe8463b61a6c5b78a2c33bc33f3265bd36fe534fa2c469e42ff48",
+    "sourceId": "file-49326006ac2c2636"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 95,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Scope planning is not scientific evidence."
+    },
+    {
+      "startLine": 96,
+      "endLine": 96,
+      "targetSections": [
+        "l1"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 97,
+      "endLine": 97,
+      "targetSections": [
+        "l2"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 98,
+      "endLine": 98,
+      "targetSections": [
+        "l3"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 99,
+      "endLine": 99,
+      "targetSections": [
+        "l4"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 100,
+      "endLine": 100,
+      "targetSections": [
+        "l5"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 101,
+      "endLine": 101,
+      "targetSections": [
+        "l6"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 102,
+      "endLine": 102,
+      "targetSections": [
+        "l7"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 103,
+      "endLine": 103,
+      "targetSections": [
+        "l8"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 104,
+      "endLine": 104,
+      "targetSections": [
+        "l9"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 105,
+      "endLine": 105,
+      "targetSections": [
+        "l10"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 106,
+      "endLine": 106,
+      "targetSections": [
+        "l11"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 107,
+      "endLine": 107,
+      "targetSections": [
+        "l12"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 108,
+      "endLine": 108,
+      "targetSections": [
+        "l13"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 109,
+      "endLine": 109,
+      "targetSections": [
+        "l14"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 110,
+      "endLine": 110,
+      "targetSections": [
+        "l15"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 111,
+      "endLine": 111,
+      "targetSections": [
+        "l16"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 112,
+      "endLine": 112,
+      "targetSections": [
+        "l17"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 113,
+      "endLine": 113,
+      "targetSections": [
+        "l18"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "Stable approved identity retained; corrected chronology and evidence-linked explanation."
+    },
+    {
+      "startLine": 114,
+      "endLine": 177,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other items remain separately tracked."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "l-chronology-and-temperature",
+      "description": "Correct L7 original 1973 report to 22.3 K, L9 to the checked percolative onset description, L11 to the original above-130 K report, L16 from 2022 to 2018, and distinguish March/April 2026 dates in L18. L13 retains the earlier 2006 iron-pnictide precedent.",
+      "sourceId": "file-49326006ac2c2636",
+      "scope": "L7, L9, L11, L13, L16 and L18"
+    }
+  ],
+  "equationChecks": [],
+  "references": [
+    {
+      "id": "source-d36e5a81b57e823f",
+      "doi": null,
+      "title": "Investigations into the properties of substances at low temperatures (Nobel lecture, 11 December 1913; later notes included)",
+      "year": 1913,
+      "url": "https://www.nevis.columbia.edu/~haas/documents/physics_nobel_lectures/physics01-21-2.pdf",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "scope": "selected-primary-lecture-scan-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nevis.columbia.edu/~haas/documents/physics_nobel_lectures/physics01-21-2.pdf",
+        "note": "Selected printed pp.330–336 (PDF pp.76–82), mercury apparatus/resolution and current threshold. PDF pp.79–80 visually checked. Later 1914 addendum distinguished; original 1911 communication scan remains unavailable."
+      }
+    },
+    {
+      "id": "source-512705f3e64d88d7",
+      "doi": "10.1007/BF01504252",
+      "title": "Ein neuer Effekt bei Eintritt der Supraleitfähigkeit",
+      "year": 1933,
+      "url": "https://doi.org/10.1007/BF01504252",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-reproduction-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://courses.physics.ucsd.edu/2025/Fall/physics139/meissnerpapertranslated.pdf",
+        "note": "Selected first two PDF pages: German original with English translation by A. M. Forrest, external field redistribution in tin/lead and retained field in a lead-tube cavity. Original apparatus, uncertainties and complete translation not independently reproduced."
+      }
+    },
+    {
+      "id": "source-0590b237a1d87de4",
+      "doi": "10.1098/rspa.1935.0048",
+      "title": "The electromagnetic equations of the supraconductor",
+      "year": 1935,
+      "url": "https://doi.org/10.1098/rspa.1935.0048",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-scan-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://w2agz.com/Library/Classic%20Papers%20in%20Superconductivity/London%20%26%20London%2C%20Proc%20Roy%20Soc%20London%20A149%2C%2071%20%281935%29.pdf",
+        "note": "Original pp. 72–73 visually checked, Eqs. (2)–(6): initial-field integration constant, screening equation and additional magnetic-state postulate. Public equations use modern SI conventions and stated local assumptions; not an exhaustive check of the historical paper or later electrodynamics."
+      }
+    },
+    {
+      "id": "source-9ccf1f17448aae3d",
+      "doi": "10.1103/RevModPhys.76.981",
+      "title": "Nobel Lecture: On superconductivity and superfluidity, and the physical minimum",
+      "year": 2004,
+      "url": "https://doi.org/10.1103/RevModPhys.76.981",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-retrospective-final-text",
+        "evidenceUrl": "https://www.if.ufrj.br/~tclp/estadosolido/ginzburg.pdf",
+        "note": "Published 2 December 2004. Selected final pp. 982–985; p. 984 visually checked. Firsthand retrospective of the 1950 Ginzburg–Landau theory, effective charge and later microscopic interpretation. Not a full review of the original 1950 article."
+      }
+    },
+    {
+      "id": "source-ba10e800a1246bf6",
+      "doi": "10.1103/PhysRev.108.1175",
+      "title": "Theory of Superconductivity",
+      "year": 1957,
+      "url": "https://doi.org/10.1103/PhysRev.108.1175",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/pdf/10.1103/PhysRev.108.1175",
+        "note": "Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review."
+      }
+    },
+    {
+      "id": "source-ee44c3aab4e6fdee",
+      "doi": "10.1016/0031-9163(62)91369-0",
+      "title": "Possible new effects in superconductive tunnelling",
+      "year": 1962,
+      "url": "https://doi.org/10.1016/0031-9163(62)91369-0",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "publisher-bibliographic-identity",
+        "evidenceUrl": "https://www.sciencedirect.com/science/article/pii/0031916362913690",
+        "note": "Publisher-indexed record: 1 July 1962, Physics Letters 1, 251–253. Original full text not reviewed here; the later author lecture supplies the historical explanation."
+      }
+    },
+    {
+      "id": "source-2e9437c55bb758da",
+      "doi": null,
+      "title": "The discovery of tunnelling supercurrents: Nobel Lecture",
+      "year": 1973,
+      "url": "https://materias.df.uba.ar/ft3a2014c2/files/2014/11/josephson-lecture_new.pdf",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-lecture-text",
+        "evidenceUrl": "https://materias.df.uba.ar/ft3a2014c2/files/2014/11/josephson-lecture_new.pdf",
+        "note": "Lecture dated 12 December 1973. Selected first seven PDF pages read: prediction, failed tests, Anderson–Rowell evidence, microwave steps and interference. University-hosted copy used after Nobel host returned 403. Equations are incomplete in extraction; no full mathematical or experimental reproduction."
+      }
+    },
+    {
+      "id": "source-849f7f4f675464de",
+      "doi": "10.1103/PhysRevLett.9.290",
+      "title": "Ultra-High-Field Superconductivity",
+      "year": 1962,
+      "url": "https://doi.org/10.1103/PhysRevLett.9.290",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-identity-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.9.290",
+        "note": "Published1October1962. Original identity verified; full text unavailable. Independent field-budget illustration is not a reproduction of the original derivation."
+      }
+    },
+    {
+      "id": "source-82a0df3d764cd0bc",
+      "doi": "10.1063/1.1654966",
+      "title": "Superconductivity in Nb–Ge films above 22 K",
+      "year": 1973,
+      "url": "https://doi.org/10.1063/1.1654966",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://aipp.silverchair-cdn.com/article-minimal/44036",
+        "note": "Published 15 October 1973. Publisher abstract also verified through Crossref; reports 22.3 K films from high-pressure dc sputtering. Measurement criterion and full methods not independently read."
+      }
+    },
+    {
+      "id": "source-0ebda9b697c1f7fd",
+      "doi": "10.1103/PhysRevLett.43.1892",
+      "title": "Superconductivity in the Presence of Strong Pauli Paramagnetism: CeCu2Si2",
+      "year": 1979,
+      "url": "https://doi.org/10.1103/PhysRevLett.43.1892",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.43.1892",
+        "note": "Published 17 December 1979. Abstract checked for historical discovery and approximately 0.5 K; complete original measurements not reviewed."
+      }
+    },
+    {
+      "id": "source-ad4ee05105f93caf",
+      "doi": "10.1007/BF01303701",
+      "title": "Possible high Tc superconductivity in the Ba–La–Cu–O system",
+      "year": 1986,
+      "url": "https://doi.org/10.1007/BF01303701",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-and-date",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://link.springer.com/article/10.1007/BF01303701",
+        "note": "Publisher lists June1986. Original abstract: three-phase polycrystals, current-dependent percolative resistive onset in30K range. Full methods/figures not read: archive download406 and web screenshot returned no pixels. Do not infer a bulk magnetic transition from this abstract."
+      }
+    },
+    {
+      "id": "source-9350a30b2eabe27e",
+      "doi": "10.1103/PhysRevLett.58.908",
+      "title": "Superconductivity at 93 K in a new mixed-phase Y-Ba-Cu-O compound system at ambient pressure",
+      "year": 1987,
+      "url": "https://doi.org/10.1103/PhysRevLett.58.908",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-history-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.58.908",
+        "note": "Published2March1987. Final pp908–909 selected text and p909 Figures1–3 visually checked locally. Mixed-phase nominal Y1.2Ba0.8CuO4-y; resistive deviation93K, sharp drop92K, zero80K, diamagnetic onset91K; 24% Pb signal at4.2K is not a bulk volume fraction. Field extrapolation80–180T is not measured critical field; maximal reported applied field5.7T. No raw data or independent phase assignment."
+      }
+    },
+    {
+      "id": "source-82098193516b8d9a",
+      "doi": "10.1103/PhysRevB.35.7242",
+      "title": "Superconductivity above 90 K in the compound YBa2Cu3Ox: Structural, transport, and magnetic properties",
+      "year": 1987,
+      "url": "https://doi.org/10.1103/PhysRevB.35.7242",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-and-date",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.35.7242",
+        "note": "Published1May1987. Abstract identifies study of principal superconducting phase and structural/transport/magnetic properties. Full refinement and methods not reviewed; this separate follow-up must not be back-attributed to Wu discovery paper."
+      }
+    },
+    {
+      "id": "source-d95477ebe515f481",
+      "doi": "10.1038/363056a0",
+      "title": "Superconductivity above 130 K in the Hg–Ba–Ca–Cu–O system",
+      "year": 1993,
+      "url": "https://doi.org/10.1038/363056a0",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-and-bibliography",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/363056a0",
+        "note": "Published6May1993,Nature363,56–58. Original abstract magnetic/resistive context only; full methods not reviewed."
+      }
+    },
+    {
+      "id": "source-6d09a24a26a15997",
+      "doi": "10.1103/PhysRevB.50.4260",
+      "title": "Superconductivity up to 164 K in HgBa2Cam−1CumO2m+2+δ (m = 1, 2, and 3) under quasihydrostatic pressures",
+      "year": 1994,
+      "url": "https://doi.org/10.1103/PhysRevB.50.4260",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.50.4260",
+        "note": "Published 1 August 1994. Original abstract checked: resistive quasihydrostatic measurements up to 45 GPa and 164 K maximum for m = 3. Full PDF requires authorization; exact onset/zero criterion and point pressure not independently read."
+      }
+    },
+    {
+      "id": "source-fade6558e7eafb2b",
+      "doi": "10.1038/35065039",
+      "title": "Superconductivity at 39 K in magnesium diboride",
+      "year": 2001,
+      "url": "https://doi.org/10.1038/35065039",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-methods-figures-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.w2agz.com/Library/HTSC%20History/MgB2%20Discovery%20nature410063.pdf",
+        "note": "Published 1 March 2001. Original published pp.63–64 read for MgB2 discovery (not preceding unrelated article); p.64 visually checked. Resistive onset 39 K / endpoint 38 K, 10 Oe magnetization and synthesis196 MPa distinguished. Raw data not reproduced."
+      }
+    },
+    {
+      "id": "source-62a72493865c59d7",
+      "doi": "10.1021/ja800073m",
+      "title": "Iron-Based Layered Superconductor La[O1−xFx]FeAs (x = 0.05–0.12) with Tc = 26 K",
+      "year": 2008,
+      "url": "https://doi.org/10.1021/ja800073m",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-and-date",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://pubs.acs.org/doi/10.1021/ja800073m",
+        "note": "Publisher original abstract indexed: online23February2008,issue19March; F substitution and approximate26K. Full methods require access; institutional copy timedout25s. No exact operational criterion assigned."
+      }
+    },
+    {
+      "id": "source-2c26a22bac7d742e",
+      "doi": "10.1021/ja063355c",
+      "title": "Iron-Based Layered Superconductor: LaOFeP",
+      "year": 2006,
+      "url": "https://doi.org/10.1021/ja063355c",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "publisher-indexed-original-abstract",
+        "evidenceUrl": "https://pubs.acs.org/doi/10.1021/ja063355c",
+        "note": "Original publisher-indexed abstract and 2006 bibliographic identity checked; direct retrieval returned 403. Used only to establish the earlier iron-pnictide report, not a newly audited numerical transition or complete methods."
+      }
+    },
+    {
+      "id": "source-8b901b9c6008c434",
+      "doi": "10.1038/nature14964",
+      "title": "Conventional superconductivity at 203 kelvin at high pressures in the sulfur hydride system",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/nature14964",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-and-published-caption-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1506.08190v1",
+        "note": "Published 17 August 2015. Author v1 of 26 June 2015: selected pp. 3/5 and Fig. 4 pp. 11–12, visually checked; publisher abstract and extended captions also checked. Magnetization raw data and background subtraction not independently reproduced."
+      }
+    },
+    {
+      "id": "source-e7837a18f3252cb9",
+      "doi": "10.1038/nphys3760",
+      "title": "Crystal structure of the superconducting phase of sulfur hydride",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nphys3760",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-structure-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1509.03156v1",
+        "note": "Author v1 of 10 September 2015, selected pp. 1–3: sulfur sublattice, mixed sulfur phase and deuteride 173 GPa simultaneous transport/XRD. Final published full text not compared; hydrogen positions not directly resolved."
+      }
+    },
+    {
+      "id": "source-1e6e868a12cdd34f",
+      "doi": "10.1038/s41586-019-1201-8",
+      "title": "Superconductivity at 250 K in lanthanum hydride under high pressures",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41586-019-1201-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-methods-figures-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://public.magnet.fsu.edu/AToth/NSF%20publication%20access/2019/05%20Newly%20Entered%20Pubs%20May%202019/2019%20cited/2019_Superconductivity%20at%20250%20K%20in%20lanthanum%20hydride%20under%20high%20pressures.pdf",
+        "note": "Published online 22 May 2019. Selected printed pp. 528–529, Fig. 4p.531, Methods and deuteride assignment; PDF p. 2 visually checked. Final 249/180 K comparison replaces early 250/168 K; rounded ratio 0.468 differs from stated 0.46. Measured 9 T versus extrapolated 95–136 T; no SQUID measurement."
+      }
+    },
+    {
+      "id": "source-35fd62b7cb3c490c",
+      "doi": "10.1038/s41586-019-1496-5",
+      "title": "Superconductivity in an infinite-layer nickelate",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41586-019-1496-5",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-transport-magnetic-and-methods-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://web.stanford.edu/group/cui_group/papers/Danfeng_Cui_Hwang_NATURE_2019.pdf",
+        "note": "Final published pp624–626, online Methods PDFp5; p626 Figures3–4 visually checked. Specific sample onset14.9K maximum-curvature,midpoint13.6K,noise-floorzero9.1K; six-point contacts,two-coil response,9–11nm precursor. No extracted penetration depth or complete raw/replication audit."
+      }
+    },
+    {
+      "id": "source-90c67b111a6e919c",
+      "doi": "10.1038/nature26160",
+      "title": "Unconventional superconductivity in magic-angle graphene superlattices",
+      "year": 2018,
+      "url": "https://doi.org/10.1038/nature26160",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-device-and-criterion-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://ciqm.harvard.edu/uploads/2/3/3/4/23349210/cao_fatemi_fang2018.pdf",
+        "note": "Final pp44–45 selected text and captions; p45 Fig2 visually checked. M1 1.16deg0.5K versus M2 1.05deg1.7K at50% criterion; M2 tentative1K BKT fit and70mK measurement floor separate. Full methods/supplement/rawdata review open."
+      }
+    },
+    {
+      "id": "source-df0c15d62982f853",
+      "doi": "10.1038/s41586-023-06408-7",
+      "title": "Signatures of superconductivity near 80 K in a nickelate under high pressure",
+      "year": 2023,
+      "url": "https://doi.org/10.1038/s41586-023-06408-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-primary-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://iopex6.iphy.ac.cn/PDFlist/2023/Nature621%282023%29493-EX6.pdf",
+        "note": "Selected published p496 Fig3/caption and text, plus Methods PDFp7. Resistance onset, residual resistance, separate magnetic measurement, KBr and room-temperature ruby calibration retained. Raw-data/replication review remains open. On2026-10-19 finalp496Figure3 visually rechecked: run1 10microA versus run2 300microA, magnetic393Hz/50mA; upper-critical-field186T is a fit, not applied field."
+      }
+    },
+    {
+      "id": "source-14d1e9e0097f7ffb",
+      "doi": "10.1073/pnas.2536178123",
+      "title": "Ambient-pressure 151-K superconductivity in HgBa2Ca2Cu3O8+δ via pressure quench",
+      "year": 2026,
+      "url": "https://doi.org/10.1073/pnas.2536178123",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-text-and-author-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12993975/",
+        "note": "Final selected PMC methods/results checked; author2603.12437v1 pp9,15,21,24,25 visually checked. Online9March2026; authorv1 12March2026. Final SI comparison,rawdata and replication remain open."
+      }
+    },
+    {
+      "id": "source-3504ee9027165d0a",
+      "doi": "10.1038/s41586-026-10547-y",
+      "title": "Field re-entrant superconductivity in Eu-doped infinite-layer nickelates",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10547-y",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2508.14666v3",
+        "note": "Published23April2026; read authorv3 dated25April2026, selectedpp2–8, captionsp12, methodsp13–14; Fig2p19/Fig3p20 visually checked. Full final equivalence, calibration and all raw data remain open."
+      }
+    },
+    {
+      "id": "source-05b2d5ff6757b5eb",
+      "doi": "10.1038/s41567-026-03266-8",
+      "title": "Planckian scattering and parallel conduction channels in an iron chalcogenide superconductor",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41567-026-03266-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-figure-and-final-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/2505.00623v1",
+        "note": "Author v1, 1 May 2025: selected methods and results, pages 1–4, read; page 4 Figure 3 visually checked. Final publisher abstract and publication date, 23 April 2026, checked. Final full text requires access; the attempted PDF returned HTML. Complete version comparison and spectral-weight calibration remain open."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-l-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "The history of superconductivity includes discoveries, theories, material families and changing standards of evidence. These eighteen milestones preserve the approved topic identities while correcting dates and oversimplified temperature labels. A later author's recollection, an original discovery report and a modern reanalysis answer different historical questions. The cited review scope tells the reader which was checked.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d36e5a81b57e823f",
+        "source-9ccf1f17448aae3d",
+        "source-2e9437c55bb758da"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "There is no single mathematical curve that makes all reported transition temperatures directly comparable. A resistance onset, a midpoint, a noise-floor zero and a magnetic response can occur at different temperatures, even in one specimen. Pressure, composition, sample history and measurement field must remain attached to any point. The linked material articles preserve detailed records; this history does not create duplicate experimental Tc entries from narrative summaries.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9350a30b2eabe27e",
+        "source-1e6e868a12cdd34f",
+        "source-35fd62b7cb3c490c"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l1-1",
+      "sectionId": "l1",
+      "statement": "Onnes's 1911 mercury work opened the study of superconductivity. His 1913 Nobel lecture provides a firsthand account of the abrupt resistance decrease near 4.2 K and the limits of the electrical measurement. Resistance too small to resolve is an experimental statement; mathematical exactness is not read directly from an instrument. The lecture also discusses a current threshold above which a voltage appeared, anticipating the need to specify measuring current.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d36e5a81b57e823f"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l1-2",
+      "sectionId": "l1",
+      "statement": "The checked scan contains later notes, including a 1914 addendum. Those observations must not all be assigned to the original 1911 discovery. Nor should the initial resistance experiment be described as already establishing the later Meissner effect or a complete microscopic theory. The original 1911 communication itself remains outside the directly reviewed material; the author lecture is identified as the historical source used here.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d36e5a81b57e823f"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l2-1",
+      "sectionId": "l2",
+      "statement": "Meissner and Ochsenfeld's 1933 work added magnetic behavior to the definition of the superconducting state. The selected original reproduction describes field redistribution around tin and lead as the samples became superconducting. This changed the question from whether a conductor can sustain current without detectable resistance to which magnetic state it reaches. An ideal conductor's history-dependent trapped field does not by itself supply the same equilibrium magnetic condition.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-512705f3e64d88d7"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l2-2",
+      "sectionId": "l2",
+      "statement": "Geometry remains essential to reading the experiment. The original report also discusses retained field in a lead-tube cavity; a cavity is not the same region as the superconducting material. A simplified statement that every field everywhere becomes zero would erase this distinction. The historical paper's apparatus, uncertainty and complete translation have not been independently reconstructed here. The milestone records the new magnetic evidence while retaining the limits of the selected primary reproduction.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-512705f3e64d88d7"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l3-1",
+      "sectionId": "l3",
+      "statement": "The London brothers' 1935 paper supplied an electromagnetic description of superconductors that accommodates magnetic screening. The selected original pages distinguish the consequence of perfect conductivity from an additional condition selecting the superconducting magnetic state. An integration constant associated with the initial field is therefore not a trivial detail: dropping it without stating the physical postulate would conceal what the theory adds.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l3-2",
+      "sectionId": "l3",
+      "statement": "The London description links current and electromagnetic fields under its stated local assumptions. It does not determine a material's microscopic pairing interaction or explain every spatially nonuniform state. Modern equations often use SI units and different notation from the original scan; a historical formula should not be copied into a modern calculation without checking those conventions. This milestone concerns a phenomenological advance in electrodynamics, not an experimental discovery of a new transition-temperature record.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0590b237a1d87de4"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l4-1",
+      "sectionId": "l4",
+      "statement": "Ginzburg and Landau introduced a complex order parameter and a free-energy description of superconductivity in 1950. Ginzburg's later firsthand lecture explains the motivation to extend the London treatment, including spatial variation and interfaces. The resulting framework connects electromagnetic response to the amplitude and phase of an order parameter and provides a basis for studying boundaries and competing configurations near a transition.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9ccf1f17448aae3d"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l4-2",
+      "sectionId": "l4",
+      "statement": "The history is not identical to today's textbook presentation. Ginzburg recounts that the effective charge was not correctly settled at twice the electron charge in the original work; the later microscopic interpretation clarified that point. Their early analysis also focused on what are now called type-I superconductors. Avoid projecting every subsequent vortex result or the complete BCS interpretation back into 1950. The checked source is the 2004 retrospective, with its original-paper citation, rather than a full direct audit of the 1950 article.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9ccf1f17448aae3d"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l5-1",
+      "sectionId": "l5",
+      "statement": "Bardeen, Cooper and Schrieffer's 1957 theory constructed a coherent paired many-electron state and related its excitation spectrum to superconducting observables. It moved beyond identifying macroscopic signatures by providing a microscopic explanation within a specified interaction model. The energy gap and thermodynamic behavior arise together in that framework, rather than being independent empirical labels attached to a zero-resistance state.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l5-2",
+      "sectionId": "l5",
+      "statement": "The achievement should not be turned into a claim that one elementary approximation describes every later material. The familiar isotropic weak-coupling results assume a particular pairing structure and energy-scale hierarchy. Strong coupling, multiple bands, unconventional symmetry and substantial fluctuations require further treatment. A historical timeline should distinguish the theory's established role from a material-specific mechanism assignment. Agreement with one BCS-like ratio is a consistency check, not proof that a newly observed superconductor has the same microscopic interaction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l6-1",
+      "sectionId": "l6",
+      "statement": "Josephson's 1962 paper predicted new tunnelling effects between superconductors. His 1973 lecture distinguishes the theoretical prediction from the later experiments that convincingly attributed observed supercurrents to tunnelling. Earlier zero-voltage currents could instead have involved metallic shorts, and unsuccessful measurements were part of the development. Phase-dependent response, magnetic interference and microwave-induced voltage steps provided more specific tests than a zero-voltage branch alone.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ee44c3aab4e6fdee",
+        "source-2e9437c55bb758da"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l6-2",
+      "sectionId": "l6",
+      "statement": "The same approved milestone includes Jaccarino and Peter's 1962 proposal of ultra-high-field superconductivity through compensation of an external field by an internal exchange effect. This is a separate idea, not part of Josephson tunnelling. Its original bibliographic identity is checked here; the full original derivation is not. Later field-induced experiments and their limits are discussed in the linked exchange-compensation article. Keeping the two contributions distinct prevents a shared calendar year from becoming a misleading shared mechanism.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-849f7f4f675464de"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l7-1",
+      "sectionId": "l7",
+      "statement": "Gavaler's 1973 report describes superconductivity in sputtered Nb–Ge films above 22 K. The checked original abstract reports 22.3 K. The planning outline's 23.2 K value is therefore not substituted for this specific discovery paper. A later optimized result, if added, needs its own citation, sample description and date rather than being silently attached to the earlier report.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-82a0df3d764cd0bc"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l7-2",
+      "sectionId": "l7",
+      "statement": "Processing is central to the historical interpretation: the source describes high-pressure sputtering, which is a deposition condition, not evidence that the superconducting transition was measured under high external pressure. Film composition, phase formation and preparation affect the result. Neither the reported temperature nor the A15 label defines a universal transition for all Nb–Ge samples or a strict ceiling for the entire structural family. Full methods and the exact operational transition criterion remain unreviewed at this abstract-level scope.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-82a0df3d764cd0bc"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l8-1",
+      "sectionId": "l8",
+      "statement": "The 1979 CeCu2Si2 report established a superconducting state in a system with strong Pauli paramagnetism and an unusually large electronic response. Its original abstract gives a transition scale around 0.5 K. The historical importance lies in opening a strongly correlated setting for superconductivity, not in raising the maximum known transition temperature. Different measures of progress therefore belong in a scientific timeline.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-0ebda9b697c1f7fd"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l8-2",
+      "sectionId": "l8",
+      "statement": "This original observation should be separated from later debates over gap structure, magnetic coexistence and sample classification. Modern CeCu2Si2 experiments distinguish crystals and transitions that cannot be reduced to a universal 0.5 K constant. The presence of a heavy-electron normal state also does not uniquely identify a pairing interaction from the discovery abstract alone. The original full measurements have not been reconstructed in this review; the linked heavy-fermion article follows the subsequent evidence and its competing interpretations.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-0ebda9b697c1f7fd"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l9-1",
+      "sectionId": "l9",
+      "statement": "Bednorz and Müller's 1986 paper deliberately used the title “Possible high Tc superconductivity” for its Ba–La–Cu–O result. The publisher's original abstract describes multiphase polycrystals and a current-dependent, percolative resistive onset in the 30 K range. That is the evidence actually checked here. A precise bulk magnetic transition at 35 K should not be manufactured from the short planning label.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ad4ee05105f93caf"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l9-2",
+      "sectionId": "l9",
+      "statement": "The milestone initiated a new materials direction, but the discovery report's sample and uncertainty deserve to remain visible. A connected superconducting path can strongly affect resistance without establishing that the whole sample occupies one superconducting phase. Later synthesis, phase identification and complementary measurements must retain their own citations. The original abstract and publication record were checked; the complete figures, apparatus and raw measurements remain outside this review scope. Historical significance does not remove the need to distinguish an initial report from later confirmation.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ad4ee05105f93caf"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l10-1",
+      "sectionId": "l10",
+      "statement": "Wu and colleagues reported a transition above liquid-nitrogen temperature in mixed-phase Y–Ba–Cu–O material. The selected final paper distinguishes a resistance deviation at 93 K, a sharp drop beginning near 92 K, zero resistance at 80 K and a magnetic onset near 91 K. These values describe different criteria in the reported experiment; the 93 K headline is not a 93 K zero-resistance result.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9350a30b2eabe27e"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l10-2",
+      "sectionId": "l10",
+      "statement": "The original nominal sample composition was not a phase-pure YBa2Cu3O7 crystal. A subsequent structural, transport and magnetic study identified the principal YBa2Cu3Ox phase. Combining those papers is useful only when their roles remain distinct. Likewise, a low-temperature diamagnetic signal compared with lead is not automatically an independently corrected volume fraction. This milestone records both the striking temperature advance and the continuing work needed to establish the responsible phase and quantitative superconducting properties.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9350a30b2eabe27e",
+        "source-82098193516b8d9a"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l11-1",
+      "sectionId": "l11",
+      "statement": "Schilling and colleagues' 1993 report describes superconductivity above 130 K in the Hg–Ba–Ca–Cu–O system, with magnetic and resistive evidence summarized near 133 K. The short planning value of 135 K is not used as an exact replacement for the selected original report. Oxygen content, phase composition and the experimental criterion matter when later samples yield somewhat different quoted temperatures.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d95477ebe515f481"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l11-2",
+      "sectionId": "l11",
+      "statement": "Gao and colleagues' 1994 pressure study is a separate milestone in the development of this material family. Its abstract reports resistive superconductivity up to 164 K under quasihydrostatic pressure. That high-pressure result is neither an ambient-pressure value nor evidence that the state survives unloading. The exact pressure of the maximum and its onset-versus-zero criterion have not been re-extracted here. A plot that joins these numbers without marking conditions would confuse distinct experiments; the linked cuprate and pressure-quench pages preserve those boundaries.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d95477ebe515f481",
+        "source-6d09a24a26a15997"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l12-1",
+      "sectionId": "l12",
+      "statement": "Nagamatsu and colleagues' 2001 MgB2 paper showed that a chemically simple binary compound could superconduct at a surprisingly high temperature for that class of material. In the selected final report, resistance begins to fall at 39 K and reaches its endpoint near 38 K; a separate low-field magnetization measurement supports the interpretation. The two criteria should not be merged into one exact temperature independent of the measurement.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-fade6558e7eafb2b"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l12-2",
+      "sectionId": "l12",
+      "statement": "The synthesis pressure quoted in the methods is a preparation condition, not the pressure at which the reported transition was measured. The discovery also precedes the detailed body of isotope, spectroscopy and anisotropic electron–phonon work that established MgB2 as a multigap benchmark. Those later results do not all belong to the original discovery paper. Its role in the timeline is the 2001 observation with the sample and probes actually described, while the linked material article develops the subsequent microscopic evidence.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-fade6558e7eafb2b"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l13-1",
+      "sectionId": "l13",
+      "statement": "The 2008 fluorine-substituted LaOFeAs report brought a transition near 26 K to the iron-pnictide field. The publisher record distinguishes its February online publication from the later journal issue. The selected original abstract supports the composition range and reported temperature, but the detailed operational transition criterion remains unassigned at this review scope. Do not infer that criterion from the title alone.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-62a72493865c59d7"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l13-2",
+      "sectionId": "l13",
+      "statement": "This was not the first superconducting iron-containing compound or even the first reported layered iron pnictide: the same research group's LaOFeP paper appeared in 2006. That earlier source is retained to avoid compressing the family history into an incorrect first-discovery claim. The 2008 advance instead marks the higher-temperature arsenide platform and the beginning of rapid diversification into related systems. Iron-based materials subsequently require separate structural, magnetic and pairing analyses; the presence of iron does not fix a universal gap symmetry.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-62a72493865c59d7",
+        "source-2c26a22bac7d742e"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l14-1",
+      "sectionId": "l14",
+      "statement": "The 2015 sulfur-hydride report extended superconducting temperatures into a much higher range under extreme pressure. The selected author passages and published captions distinguish resistance measurements from the magnetic response, including a reported onset near 203 K at 155 GPa for the magnetic specimen. The pressure and measurement definition belong with the number; the result is not an ambient-pressure material property.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8b901b9c6008c434"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l14-2",
+      "sectionId": "l14",
+      "statement": "The superconducting phase assignment also developed through further structural work. A sulfur-hydride starting composition is not by itself proof of the final high-pressure stoichiometry, and the later diffraction study must remain separately cited when discussing H3S. The selected scientific review did not independently reconstruct magnetization background subtraction or all raw transport data. This milestone records the reported evidence and the pressure-enabled material setting without treating the historical headline as a complete audit of every experimental inference.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8b901b9c6008c434",
+        "source-e7837a18f3252cb9"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l15-1",
+      "sectionId": "l15",
+      "statement": "Two distinct developments share this approved milestone. The lanthanum-hydride experiment reported a resistive transition around 250 K near 170 GPa. The selected final paper includes resistance, isotope comparison and field suppression, but no SQUID measurement. Applied magnetic fields and extrapolated upper-critical-field estimates are different quantities. This high-pressure result should not be plotted as an ambient-pressure room-temperature superconductor.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-1e6e868a12cdd34f"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l15-2",
+      "sectionId": "l15",
+      "statement": "In a different materials setting, Li and colleagues reported superconductivity in reduced, Sr-substituted infinite-layer nickelate films. A representative Nd0.8Sr0.2NiO2 sample has separately defined onset, midpoint and noise-floor zero values of 14.9, 13.6 and 9.1 K. The result must not be relabelled as superconductivity in undoped bulk NdNiO2. Epitaxy, reduction, capping and sample preparation are part of the observation. The common year links these discoveries chronologically, not through an established common mechanism.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-35fd62b7cb3c490c"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l16-1",
+      "sectionId": "l16",
+      "statement": "Cao and colleagues' superconductivity report appeared in 2018, not 2022. The stable L16 identifier is retained while correcting the planning date. In the selected final paper, two devices with different nominal twist angles have different transition scales: approximately 0.5 K and 1.7 K under the stated half-normal-resistance criterion. A device label, carrier density and transport definition belong with each number.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-90c67b111a6e919c"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l16-2",
+      "sectionId": "l16",
+      "statement": "The paper's tentative BKT analysis supplies another temperature scale, while a 70 mK measurement floor is not a transition temperature. These distinctions prevent one figure from becoming several apparently interchangeable records. The broader advance is geometric control of electronic bands and interactions through a moiré structure; it does not establish that every magic-angle device has the same phase diagram or that a flat band alone guarantees superconductivity. This entry precedes the 2019 milestones chronologically even though its inherited scope number follows them.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-90c67b111a6e919c"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l17-1",
+      "sectionId": "l17",
+      "statement": "The 2023 La3Ni2O7 paper reported signatures near 80 K under pressure. For the selected run, the resistance onset occurs near 18.5 GPa, with nonzero residual resistance. A separate magnetic measurement is part of the broader paper, but its sample and pressure must not be silently attached to that particular resistance record. The wording “signatures” and the operational criterion are scientifically meaningful.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-df0c15d62982f853"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l17-2",
+      "sectionId": "l17",
+      "statement": "The checked passages also distinguish applied fields from an upper-critical-field extrapolation and retain pressure calibration and measurement-current conditions. A later zero-resistance result, thin-film experiment or structurally modified nickelate would be a separate entry with its own evidence. The historical milestone therefore establishes the reported pressure-induced phenomenon and the questions it raised, rather than declaring an independently reproduced 80 K bulk transition for every bilayer nickelate. Full raw-data and replication review remains open.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-df0c15d62982f853"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l18-1",
+      "sectionId": "l18",
+      "statement": "The approved recent-research node groups three different papers, whose dates and observables must remain separate. Deng and colleagues' pressure-quench article appeared online on 9 March 2026. Its highest retained ambient-pressure value, 151 K, is a resistive onset after a specific pressure-and-temperature preparation. A magnetic result on a different retrieved sample and cold-storage tests cannot be reassigned to that highest-onset specimen.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-14d1e9e0097f7ffb"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-l18-2",
+      "sectionId": "l18",
+      "statement": "The Eu-substituted infinite-layer nickelate paper and the iron-chalcogenide Planckian-scattering paper were published on 23 April 2026. The first concerns field-dependent re-entrance under specified conditions; the second analyzes normal-state transport with parallel conduction channels. A model-dependent scattering rate is not a new Tc record or proof of a universal pairing mechanism. These studies are recent research directions with scoped checks, not one combined discovery or a completed independent replication programme.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-3504ee9027165d0a",
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "A reported milestone is not a standardized material benchmark. Preserve the experimental criterion and distinguish the year of observation, first public report, journal publication and later author account. An accurate timeline can include a theory, a measurement or a material platform without assigning each one a transition-temperature point. Links to primary evidence make the interpretation inspectable.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d36e5a81b57e823f",
+        "source-2e9437c55bb758da",
+        "source-9350a30b2eabe27e",
+        "source-35fd62b7cb3c490c"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Some early sources remain checked only at abstract or bibliographic level; other entries reuse selected original-paper reviews from the linked core articles. Those limitations remain attached rather than being upgraded by appearing in a history handbook. Later recollections help explain reasoning but are not the original laboratory record. Complete scientific acceptance, full final-version comparisons, supplementary data and independent replication remain open where stated.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9ccf1f17448aae3d",
+        "source-ee44c3aab4e6fdee",
+        "source-82a0df3d764cd0bc",
+        "source-2c26a22bac7d742e"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    },
+    {
+      "id": "scwiki-l-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Progress has come from new materials, better preparation, more discriminating probes and theories that make testable predictions. A higher reported onset is only one kind of advance. The historical examples encourage a workflow that separates initial observations from phase identification, reproducibility and mechanism tests, preserving negative results and corrections instead of rewriting them out of the story.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-2e9437c55bb758da",
+        "source-9350a30b2eabe27e",
+        "source-fade6558e7eafb2b",
+        "source-df0c15d62982f853"
+      ],
+      "conditions": "Historical source and date as stated. Reported temperature retains sample, preparation, pressure and measurement criterion; narrative milestones are not standardized Tc records.",
+      "verificationScope": "Source-specific selected original passages, author retrospectives or explicit abstract/identity-only boundaries. Prior core reviews reused without upgrading to full scientific acceptance."
+    }
+  ],
+  "scopeItems": [
+    {
+      "id": "L1",
+      "sectionIds": [
+        "l1"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "1911: mercury and the resistance transition: selected-primary-lecture-scan-check. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L2",
+      "sectionIds": [
+        "l2"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "1933: the Meissner–Ochsenfeld effect: primary-reproduction-scoped-check. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L3",
+      "sectionIds": [
+        "l3"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "1935: London electrodynamics: primary-scan-scoped-check. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L4",
+      "sectionIds": [
+        "l4"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "1950: Ginzburg–Landau theory: selected-author-retrospective-final-text. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L5",
+      "sectionIds": [
+        "l5"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "1957: the BCS microscopic theory: primary-full-text-scoped-check. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L6",
+      "sectionIds": [
+        "l6"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "1962: tunnelling supercurrents and field compensation: publisher-bibliographic-identity; selected-author-lecture-text; publisher-identity-only. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L7",
+      "sectionIds": [
+        "l7"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "1973: Nb–Ge films above 22 K: publisher-abstract-check. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L8",
+      "sectionIds": [
+        "l8"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "1979: CeCu2Si2 and heavy fermions: publisher-abstract-check. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L9",
+      "sectionIds": [
+        "l9"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "1986: the Ba–La–Cu–O discovery: publisher-original-abstract-and-date. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L10",
+      "sectionIds": [
+        "l10"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "1987: Y–Ba–Cu–O above liquid-nitrogen temperature: selected-final-history-methods-and-figure-check; publisher-original-abstract-and-date. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L11",
+      "sectionIds": [
+        "l11"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "1993: mercury-based cuprates above 130 K: publisher-abstract-and-bibliography; publisher-abstract-only. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L12",
+      "sectionIds": [
+        "l12"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "2001: MgB2 at 39 K: selected-published-methods-figures-check. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L13",
+      "sectionIds": [
+        "l13"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "2008: the iron-arsenide expansion: publisher-original-abstract-and-date; publisher-indexed-original-abstract. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L14",
+      "sectionIds": [
+        "l14"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "2015: sulfur hydride near 203 K: selected-author-text-and-published-caption-check; selected-author-structure-check. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L15",
+      "sectionIds": [
+        "l15"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "2019: lanthanum hydride and infinite-layer nickelates: selected-published-methods-figures-check; selected-final-transport-magnetic-and-methods-check. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L16",
+      "sectionIds": [
+        "l16"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "2018: magic-angle twisted bilayer graphene: selected-final-device-and-criterion-figures. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L17",
+      "sectionIds": [
+        "l17"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "2023: bilayer nickelate signatures near 80 K: selected-published-primary-passages-check. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    },
+    {
+      "id": "L18",
+      "sectionIds": [
+        "l18"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "2026: recovered cuprates, re-entrance and transport: selected-final-text-and-author-figures; selected-author-text-and-figures; selected-author-figure-and-final-abstract-check. Original source limits and chronology retained.",
+      "limitations": [
+        "Historical milestone review is not complete scientific acceptance or independent experimental replication.",
+        "Source-specific abstract access, later retrospectives and incomplete final/supplement comparisons remain explicitly identified."
+      ]
+    }
+  ]
+}

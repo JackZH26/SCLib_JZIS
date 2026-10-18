@@ -61,7 +61,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
    expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
   }
-  for(const id of ["scwiki-l","scwiki-n1"]){expect((await get(["articles",id])).status).toBe(404);}
+  for(const id of ["scwiki-m","scwiki-n1"]){expect((await get(["articles",id])).status).toBe(404);}
  });
 
  it("publishes all fifteen experimental-method sections with individual evidence limits",async()=>{
@@ -137,6 +137,31 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(schema.components.schemas.Source.properties.year.type).toEqual(["integer","null"]);
   const sectionMd=await(await get(["articles",a.id,"sections","k4"],"?format=markdown")).text();
   expect(sectionMd).toContain("ITER magnets (Publication date unknown)");
+ });
+
+ it("preserves eighteen historical milestones and distinguishes chronology from transition criteria",async()=>{
+  const a=articles().find(a=>a.code==="L")!;
+  expect(a.scopeItems?.map(i=>i.id)).toEqual(Array.from({length:18},(_,i)=>"L"+(i+1)));
+  for(const item of a.scopeItems!){
+   const id=item.id.toLowerCase();expect(item.sectionIds).toEqual([id]);
+   const data=await(await get(["articles",a.id,"sections",id])).json();
+   expect(data.scopeItems.map((s:{id:string})=>s.id)).toEqual([item.id]);
+   const md=await(await get(["articles",a.id,"sections",id],"?format=markdown")).text();
+   expect(md).toContain(data.section.markdown);
+   for(const limit of item.limitations)expect(md).toContain(limit);
+  }
+  for(const q of ["超导历史","历史里程碑","metallic shorts"]){
+   expect(searchArticles(searchIndex().entries,q).some(x=>x.id===a.id)).toBe(true);
+   expect(searchArticles(searchIndex().entries,q,{tcMin:0.01}).some(x=>x.id===a.id)).toBe(false);
+  }
+  expect(a.materialCases).toEqual([]);
+  expect(a.body).toContain("not a 93 K zero-resistance result");
+  expect(a.body).toContain("appeared in 2018, not 2022");
+  expect(a.body).toContain("LaOFeP paper appeared in 2006");
+  expect(a.body).toContain("not the pressure at which the reported transition was measured");
+  const guide=a.sections.find(s=>s.id==="chronological-guide")!;
+  expect(guide.markdown.indexOf("(#l16)")).toBeLessThan(guide.markdown.indexOf("(#l15)"));
+  expect(a.body).toContain("Complete scientific acceptance");
  });
 
  it("matches short Han keywords within phrases while keeping short Latin tokens exact",()=>{

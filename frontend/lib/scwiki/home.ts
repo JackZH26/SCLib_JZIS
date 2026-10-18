@@ -15,6 +15,7 @@ export const topicGroups = [
     {code:"I", label:"Experimental methods"},
     {code:"J", label:"Theoretical tools"},
     {code:"K", label:"Superconducting applications"},
+    {code:"L", label:"History of superconductivity"},
   ]},
   {id:"open-questions", title:"Open research questions", description:"Examine what is established, what remains uncertain and which evidence would resolve it.", topics:[
     {code:"N10", label:"What limits flat-band Tc?"},
