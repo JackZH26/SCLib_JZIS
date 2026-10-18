@@ -677,3 +677,23 @@ it("keeps p-wave symmetry distinct from spin response and measurement temperatur
  const out=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
  expect(out).toContain("field-cooled magnetization");expect(out).toContain("Full scientific acceptance");
 });
+
+it("keeps f-wave model nodes and Kerr temperatures separate from established material assignments",async()=>{
+ const a=articles().find(a=>a.code==="C6")!;
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("These are model angles, not measured node coordinates");
+ expect(md).toContain("not a density-of-states or thermal-conductivity calculation");
+ expect(md).toContain("not fitted to UPt3 or UTe2");
+ expect(md).toContain("Kerr onset is not the upper superconducting transition");
+ expect(md).toContain("optical and susceptibility sample sets are different");
+ expect(md).toContain("multidimensional point-group representations are not a universal prerequisite");
+ expect(a.references.find(r=>r.doi==="10.1103/PhysRevLett.108.157002")?.verification.note).toContain("differs");
+ expect(a.references.some(r=>r.doi==="10.1103/PhysRevX.13.041019")).toBe(true);
+ expect(a.references.some(r=>r.doi==="10.1126/science.abb0272")).toBe(true);
+ expect(a.materialCases[0].reportedTemperatureK).toBe(.46);
+ expect(a.materialCases[0].tcK).toBeNull();expect(a.materialCases[0].temperatureKind).toBe("unassigned");
+ expect(searchArticles(searchIndex().entries,"E2u",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"E2u",{tcMin:.1}).some(r=>r.id===a.id)).toBe(false);
+ const out=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+ expect(out).toContain("zero-field Kerr signal");expect(out).toContain("Full scientific acceptance");
+});

@@ -1,0 +1,475 @@
+{
+  "id": "scwiki-c6",
+  "topicId": "scwiki-topic-c6",
+  "code": "C6",
+  "slug": "f-wave",
+  "title": "f-wave pairing: crystal representations and nodal evidence",
+  "summary": "Compare higher-order odd pairing, UPt3 candidate states and the limits of Kerr, nodal and multicomponent evidence.",
+  "aliases": [
+    "f-wave",
+    "f wave",
+    "E2u",
+    "E1u",
+    "UPt3",
+    "UTe2",
+    "Kerr rotation",
+    "tropical line nodes",
+    "higher angular momentum"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "C5",
+    "C4",
+    "C3",
+    "B4",
+    "B11"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T09:45:48.034111+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected UPt3 Kerr and planar-state manuscripts, historical transport/review abstracts, UTe2 contrasting Kerr reports, and independent harmonic/nodal/free-energy checks.",
+    "limitations": [
+      "Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
+      "Spherical harmonics and chosen free-energy coefficients are not a multiband material calculation.",
+      "Null and trained Kerr signals are scoped to sample,protocol and sensitivity; no universal exclusion claimed.",
+      "No definite f-wave assignment or bulk topological invariant follows from these local checks."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "C_pairing_symmetry/C6_f_wave.md",
+    "sha256": "788c392c4ae92a9c8c716666621564e27ca9690a53c336507be4f70358d766c4",
+    "sourceId": "file-bb58c569bf3bf5d6"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 15,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; candidate symmetry and evidence boundaries expanded with primary checks."
+    },
+    {
+      "startLine": 16,
+      "endLine": 28,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; candidate symmetry and evidence boundaries expanded with primary checks."
+    },
+    {
+      "startLine": 29,
+      "endLine": 38,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; candidate symmetry and evidence boundaries expanded with primary checks."
+    },
+    {
+      "startLine": 39,
+      "endLine": 46,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; candidate symmetry and evidence boundaries expanded with primary checks."
+    },
+    {
+      "startLine": 47,
+      "endLine": 58,
+      "targetSections": [
+        "experimental-criteria",
+        "discovery-implications"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; candidate symmetry and evidence boundaries expanded with primary checks."
+    },
+    {
+      "startLine": 59,
+      "endLine": 72,
+      "targetSections": [
+        "related-topics",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; candidate symmetry and evidence boundaries expanded with primary checks."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-8d1b859d5ffcad9f",
+      "doi": "10.1103/RevModPhys.63.239",
+      "title": "Phenomenological theory of unconventional superconductivity",
+      "year": 1991,
+      "url": "https://doi.org/10.1103/RevModPhys.63.239",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.63.239",
+        "note": "Identity and abstract scope checked. Full review not obtained; explicit angular illustrations are independently evaluated, not attributed as a reproduction of this review."
+      }
+    },
+    {
+      "id": "source-a329f7df31c7d3e9",
+      "doi": "10.1103/RevModPhys.74.235",
+      "title": "The superconducting phases of UPt3",
+      "year": 2002,
+      "url": "https://doi.org/10.1103/RevModPhys.74.235",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.74.235",
+        "note": "Historical E1g/E2u comparison and unresolved magnetic coupling; full review not obtained."
+      }
+    },
+    {
+      "id": "source-d3edee404071ac81",
+      "doi": "10.1126/science.1248552",
+      "title": "Observation of broken time-reversal symmetry in the heavy-fermion superconductor UPt3",
+      "year": 2014,
+      "url": "https://doi.org/10.1126/science.1248552",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1410.1482v1",
+        "note": "Selected pp.1–6, Fig.2 on p.11 visually checked, and sample/apparatus passages on p.13. Published July2014; author upload October2014. Heating and training limits retained; full final-version and raw-data comparison open."
+      }
+    },
+    {
+      "id": "source-31577c7cb2ae0ac8",
+      "doi": "10.1103/PhysRevLett.108.157002",
+      "title": "Twofold Spontaneous Symmetry Breaking in the Heavy-Fermion Superconductor UPt3",
+      "year": 2012,
+      "url": "https://doi.org/10.1103/PhysRevLett.108.157002",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.108.157002",
+        "note": "Journal abstract B/C coverage differs from arxiv1107.3082v1 A/B/C wording. E1u is the authors interpretation; full version/data comparison open."
+      }
+    },
+    {
+      "id": "source-34df31af237b76a7",
+      "doi": "10.1143/JPSJ.81.074717",
+      "title": "A Spin Triplet Superconductor UPt3",
+      "year": 2012,
+      "url": "https://doi.org/10.1143/JPSJ.81.074717",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1202.1894v2",
+        "note": "Selected pp.1–3, Fig.1 and basis table; p.2 visually checked. Version2 July2012 marked published version by authors. Weak-SOC planar construction and competing scenarios retained; Eilenberger results not reproduced."
+      }
+    },
+    {
+      "id": "source-ca6322be2694e430",
+      "doi": "10.1126/science.aav8645",
+      "title": "Nearly ferromagnetic spin-triplet superconductivity",
+      "year": 2019,
+      "url": "https://doi.org/10.1126/science.aav8645",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-passages-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://vector.umd.edu/images/publications/Science365_6842019.pdf",
+        "note": "Ran et al. published paper pp.1–2; p.2 visually checked: maximum measured20T versus extrapolated b-axis40T. Historical spin/pairing interpretations are not adopted as settled consensus. Supplement and raw data not fully audited."
+      }
+    },
+    {
+      "id": "source-5ff091aacae25bb0",
+      "doi": "10.1126/science.abb0272",
+      "title": "Multicomponent superconducting order parameter in UTe2",
+      "year": 2021,
+      "url": "https://doi.org/10.1126/science.abb0272",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-first-release-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://vector.umd.edu/images/publications/Science_abb02722021.pdf",
+        "note": "Selected first-release15July2021 pp.1–2: reported Kerr,training and calorimetric interpretation. Final pagination/version and full supplement not checked."
+      }
+    },
+    {
+      "id": "source-dd4e897d833ce69c",
+      "doi": "10.1103/PhysRevX.13.041019",
+      "title": "Fate of Time-Reversal Symmetry Breaking in UTe2",
+      "year": 2023,
+      "url": "https://doi.org/10.1103/PhysRevX.13.041019",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2305.00589v1",
+        "note": "Selected pp.2–3 and methods pp.5–6; Fig.1 p.3 visually checked. Kerr sample set distinguished from susceptibility set. Final publisher abstract checked; full version comparison open."
+      }
+    },
+    {
+      "id": "source-6c82ca23c0fda096",
+      "doi": "10.1103/PhysRevLett.96.237001",
+      "title": "Nodal Structure of Quasi-Two-Dimensional Superconductors Probed by a Magnetic Field",
+      "year": 2006,
+      "url": "https://doi.org/10.1103/PhysRevLett.96.237001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0601126v1",
+        "note": "Selected pp. 1–3 and Fig. 2 visually checked: finite-energy vortex scattering, anisotropy reversal and BPT/low-field/Zeeman limitations. Publisher identity checked. Full journal comparison and vortex calculation not reproduced."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-c6-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "In a rotationally invariant continuum, f-wave means orbital angular momentum $l=3$. A crystal instead classifies a gap by its actual point group, spin or pseudospin structure and basis functions. An odd cubic polynomial, an experimentally inferred node and a particular irreducible representation are different statements. The discussion below assumes even-frequency pairing unless stated otherwise; orbital exchange and spin-orbit coupling must also be included when applying parity arguments to a multiorbital material.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "UPt3 is an important test case with competing descriptions of its superconducting phases. The historical E2u framework and a proposed E1u planar state organize different observations, but a candidate label is not a unique experimental determination. UTe2 has a different crystal symmetry and must not inherit UPt3's representation merely because both are uranium compounds.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a329f7df31c7d3e9",
+        "source-d3edee404071ac81",
+        "source-34df31af237b76a7",
+        "source-5ff091aacae25bb0"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An illustrative hexagonal E2u orbital doublet is $[k_z(k_x^2-k_y^2),2k_zk_xk_y]$. With a fixed spin vector along z, its equal-amplitude chiral combination is proportional to $k_z(k_x+ik_y)^2$. It is odd under inversion. Under rotation by angle $\\alpha$ about z, its orbital factor acquires $e^{2i\\alpha}$: the continuum harmonic has $l=3$ but axial projection $m=2$, not $m=3$. Four direct transformation checks and finite-difference Laplacians verify the polynomial identities. In a lattice, continuous angular momentum is only a comparison, not an exact conserved quantum number.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-d3edee404071ac81"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "On a unit sphere this chiral form has magnitude $|\\cos\\theta|\\sin^2\\theta$: an equatorial line zero and quadratic polar zeros. A planar E1u illustration uses two orthogonal spin vectors multiplying $k_x(5k_z^2-1)$ and $k_y(5k_z^2-1)$. Its magnitude is $\\sin\\theta|5\\cos^2\\theta-1|$, with polar point zeros and two horizontal zeros at $\\cos^2\\theta=1/5$. These are model angles, not measured node coordinates. Tsutsumi and colleagues use a related planar construction in their weak-spin-orbit scenario, with field-dependent spin orientation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-34df31af237b76a7"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The constant one in the spherical E1u expressions represents $k_x^2+k_y^2+k_z^2$. Restoring it makes each component a homogeneous harmonic cubic. Yet the lower-order pair $(k_x,k_y)$ transforms as the same orbital doublet under the crystal's in-plane operations. In the chosen planar model, adding amplitude $a(k_x,k_y)$ changes the horizontal-zero condition to $k_z^2=(1-a)/5$. Five examples move or eliminate these zeros while preserving odd parity and the orbital transformation rule. A representation therefore need not fix the positions of every node.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-34df31af237b76a7"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The polar zeros have different local phase space. Restricting to small polar caps, count the fraction of a unit sphere with imposed gap below $\\epsilon$. Doubling a sufficiently small cutoff approximately doubles this fraction for the quadratic E2u zero, but quadruples it for the linear E1u zero. Eight cap calculations verify these limits. This is a geometric illustration, not a density-of-states or thermal-conductivity calculation; real velocities, impurity scattering and other nodes still contribute to a measured power law.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-34df31af237b76a7"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A separate two-component illustration shows how split transitions can arise without determining a material representation. Set $u=|\\eta_1|^2$, $v=|\\eta_2|^2$ and relative phase $\\delta$, with dimensionless free energy $F=(t-1)u+(t-0.8)v+(u^2+v^2)/2+(0.4+0.15\\cos2\\delta)uv$. When both amplitudes are present, $\\delta=\\pm\\pi/2$ minimizes the phase term. The first onset is $t=1$; the second is $t=(0.8-0.25)/(1-0.25)\\simeq0.7333$. Five independent positive-amplitude grid comparisons agree with the analytic minima. These coefficients are chosen, not fitted to UPt3 or UTe2.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-a329f7df31c7d3e9"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "The 2002 Joynt–Taillefer review weighs UPt3's phase diagram, nodal responses and magnetic coupling. Its abstract favors E1g or E2u on balance while acknowledging that neither explains all observations. That historical conclusion is not a current universal assignment. Machida and colleagues' later angle-dependent thermal-conductivity study instead interprets the B/C-phase data using E1u. The 2011 author abstract and 2012 journal abstract differ in the stated phase coverage; this entry uses the latter and does not claim a complete version comparison.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a329f7df31c7d3e9",
+        "source-31577c7cb2ae0ac8"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Schemm and colleagues reported a UPt3 Kerr signal below about 0.46 K, separated from an upper susceptibility onset near 0.55 K. Their 1550 nm optical probe required an estimated local-heating allowance up to 50 mK; bulk heating inferred from mutual inductance was much smaller. Cooling in either sign of a 50 G field and then measuring with the field removed trained the signal's sign. These observations support additional time-reversal breaking in the lower-temperature phase within the experiment's controls; the optical signal alone does not select E2u. The Kerr onset is not the upper superconducting transition.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d3edee404071ac81"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Node assignment requires field direction, heat-current direction, temperature and the response model. A minimum in an angle-dependent signal is not automatically a node: vortex scattering and thermal weighting can reverse anisotropy. Compare multiple axes and independent probes before deciding between equatorial, off-equatorial and vertical zeros. The relative success of one calculation under selected assumptions does not eliminate every competing representation.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-31577c7cb2ae0ac8",
+        "source-34df31af237b76a7",
+        "source-6c82ca23c0fda096"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "For a null Kerr result, record illumination, surface, residual field, cooldown history and statistical sensitivity. Independent noise and domain signals add in variance, $\\sigma_{\\rm total}^2=\\sigma_{\\rm noise}^2+\\sigma_{\\rm signal}^2$. A small constructed example verifies this identity for uncorrelated sequences. The equation requires its independence assumption; a measured absence of increased scatter is a constraint at finite sensitivity, not proof that all possible microscopic time-reversal breaking is absent.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-dd4e897d833ce69c"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Hayes and colleagues reported UTe2 Kerr and calorimetric signatures supporting a multicomponent state. Their low-field warmups were compared with measurements following positive and negative training fields; the interpretation includes domains. Ajeesh and colleagues later found no spontaneous zero-field Kerr signal in four single-transition samples spanning two growth methods. Their heat-pulse procedure repeatedly crossed the transition, and trained signals varied with position and sample. The selected manuscript's optical and susceptibility sample sets are different: one must not attribute the separate double-transition susceptibility sample to the Kerr set. Retain this disagreement and its conditions rather than declaring all UTe2 samples chiral or all possible states excluded.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-5ff091aacae25bb0",
+        "source-dd4e897d833ce69c"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Orthorhombic D2h has one-dimensional ordinary point-group representations, unlike hexagonal E2u. A complex combination of distinct components can still break time reversal if the energetics permit it; multidimensional point-group representations are not a universal prerequisite. Spin degeneracy, orbital structure and accidental near-degeneracy must be specified. UTe2's discovery evidence for unusual spin pairing does not independently choose an f-wave basis or a unique multicomponent state.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-ca6322be2694e430",
+        "source-5ff091aacae25bb0"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "The spherical polynomial examples neglect UPt3's real multiband, nonsymmorphic band structure. The Ginzburg–Landau example does not reproduce its field–temperature phase diagram, and no surface-state or bulk-topology calculation is supplied. A change of polynomial order, a broken-symmetry signal or a high critical field cannot replace that missing analysis.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-a329f7df31c7d3e9"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c6-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Specify the crystal symmetry and basis first. Then test whether one proposed state explains phase splitting, directional nodes, spin response and symmetry-breaking observations under compatible conditions. Preserve null results, competing interpretations and source-version differences alongside positive evidence. Full scientific acceptance, complete final-version comparisons and raw-data review remain open; the model calculations here constrain language and logic, not the pairing state of a new material.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-d3edee404071ac81",
+        "source-34df31af237b76a7",
+        "source-dd4e897d833ce69c"
+      ],
+      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-c6-correction-1",
+      "description": "Separated historical E1g/E2u review conclusions from the later E1u proposal and explicit source-version differences.",
+      "sourceId": "source-31577c7cb2ae0ac8",
+      "scope": "Historical abstracts and selected theory passages."
+    },
+    {
+      "id": "scwiki-c6-correction-2",
+      "description": "Kerr onset and upper superconducting onset retain different probes and heating uncertainty.",
+      "sourceId": "source-d3edee404071ac81",
+      "scope": "Selected methods and Fig.2 visual inspection."
+    },
+    {
+      "id": "scwiki-c6-correction-3",
+      "description": "UTe2 multicomponent/TRSB narrative now includes zero-field null results and distinguishes Kerr and susceptibility sample sets.",
+      "sourceId": "source-dd4e897d833ce69c",
+      "scope": "Selected author methods/results, not universal absence of TRSB."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "k_z(k_x+ik_y)^2",
+      "check": "Four inversion/rotation/harmonic checks; axial phase winding2 differs from total l3."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\sin\\theta|5\\cos^2\\theta-1|",
+      "check": "Five spherical evaluations, five allowed orbital admixtures and eight polar-cap fractions."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "F=(t-1)u+(t-0.8)v+(u^2+v^2)/2+(0.4+0.15\\cos2\\delta)uv",
+      "check": "Five analytic minima versus independent nonnegative grids; chosen coefficients, not material fits."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-c6-material-1",
+      "formula": "UPt3",
+      "sample": "Schemm et al. optical Kerr measurement",
+      "recordType": "experiment",
+      "tcK": null,
+      "reportedTemperatureK": 0.46,
+      "temperatureKind": "unassigned",
+      "temperatureNote": "Approximate Kerr onset with up to50mK local-heating allowance; not upper superconducting transition",
+      "criterion": "polar-kerr-onset",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "1550nm polar Kerr; field-off warmup after zero-field or±50G training; separate upper susceptibility onset",
+      "sourceId": "source-d3edee404071ac81"
+    }
+  ]
+}
