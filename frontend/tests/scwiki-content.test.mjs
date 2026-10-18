@@ -228,3 +228,9 @@ test("organic discovery citation rejects the inherited unrelated structural-anal
  writeFileSync(filename,JSON.stringify(meta));const result=f.build();
  assert.notEqual(result.status,0);assert.match(result.stderr,/known incorrect DOI 10\.1021\/ic00331a012/);
 });
+
+test("curated material aliases reject non-string entries",t=>{
+ const f=inventoryFixture(t),filename=path.join(f.directory,"articles/e1/meta.json"),meta=JSON.parse(readFileSync(filename,"utf8"));
+ meta.materialCases[0].aliases=[false];writeFileSync(filename,JSON.stringify(meta));const result=f.build();
+ assert.notEqual(result.status,0);assert.match(result.stderr,/invalid material aliases/);
+});

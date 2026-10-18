@@ -24,7 +24,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-17T12:13:01Z",
+  "modifiedAt": "2026-10-18T12:07:06.644281+00:00",
   "review": {
     "checkedAt": "2026-10-17",
     "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
@@ -344,7 +344,11 @@
       "id": "scwiki-d4-material-3",
       "sourceId": "source-a631bcd83d23567b",
       "reportedTemperatureK": 36.7,
-      "temperatureKind": "transition"
+      "temperatureKind": "transition",
+      "aliases": [
+        "FeSe",
+        "iron selenide"
+      ]
     }
   ],
   "claims": [

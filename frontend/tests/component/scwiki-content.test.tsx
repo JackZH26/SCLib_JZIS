@@ -931,3 +931,33 @@ it("keeps organic transition criteria separate from Mott endpoints and low-tempe
  expect(md).toContain("anion-ordering-temperature");expect(md).toContain("7mK/min");
  expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
 });
+
+it("preserves pressure-probe calibration and does not promote freezing or unknown resistive criteria",async()=>{
+ const a=articles().find(a=>a.code==="E1")!;
+ expect(a.materialCases.filter(c=>c.formula==="Fe1.01Se").map(c=>[c.tcK,c.pressureGPa?.min,c.criterion])).toEqual([[18.6,.8,"resistive-onset"],[36.7,8.9,"resistive-onset"],[25,15,"resistive-onset"]]);
+ const hg=a.materialCases.find(c=>c.tcK===164)!;
+ expect(hg.pressureGPa).toBeNull();expect(hg.criterion).toBe("resistive-transition-unspecified");
+ expect(a.materialCases.find(c=>c.reportedTemperatureK===96.9)?.tcK).toBeNull();
+ expect(a.materialCases.some(c=>c.tcK===151)).toBe(false);
+ expect(searchArticles(searchIndex().entries,"pressure tuning",{tcMin:100}).some(a=>a.code==="E1")).toBe(true);
+ expect(searchArticles(searchIndex().entries,"pressure tuning",{tcMin:100,criterion:"resistive-onset"}).some(a=>a.code==="E1")).toBe(false);
+ expect(searchArticles(searchIndex().entries,"pressure tuning",{criterion:"zero-resistance"}).some(a=>a.code==="E1")).toBe(false);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("8.9 to 8.9 GPa");expect(md).toContain("pressure-medium-freezing-proxy");
+ expect(md).toContain("separate Mössbauer paragraph");expect(md).toContain("not the assigned pressure");
+ expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
+});
+
+it("binds recognized material names and curated aliases to the same record as numeric filters",async()=>{
+ const index=searchIndex().entries;
+ expect(searchArticles(index,"FeSe",{tcMin:60})).toEqual([]);
+ expect(searchArticles(index,"fese pressure",{tcMin:30}).some(a=>a.code==="E1")).toBe(true);
+ expect(searchArticles(index,"iron selenide",{tcMin:60})).toEqual([]);
+ expect(searchArticles(index,"iron selenide",{tcMin:30}).some(a=>a.code==="E1")).toBe(true);
+ expect(searchArticles(index,"FeSe/SrTiO3",{tcMin:60})).toEqual([]);
+ expect(searchArticles(index,"HgBa2Ca2Cu3O8+δ",{tcMin:150}).some(a=>a.code==="E1")).toBe(true);
+ expect(searchArticles(index,"pressure tuning",{tcMin:150}).some(a=>a.code==="E1")).toBe(true);
+ const data=await(await get(["search"],"?q=FeSe&tcMin=60")).json();expect(data.results).toEqual([]);
+ const positive=await(await get(["search"],"?q=FeSe&tcMin=30")).json();expect(positive.results.some((a:{code:string})=>a.code==="E1")).toBe(true);
+ const md=await(await get(["articles","scwiki-e1","markdown"])).text();expect(md).toContain("aliases: FeSe, iron selenide");
+});

@@ -60,6 +60,7 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
   catch(error){fail(folder+" invalid math: "+error.message)}
  }
  for(const record of meta.materialCases){
+  if(record.aliases!==undefined&&(!Array.isArray(record.aliases)||record.aliases.some(a=>typeof a!=="string"||!a.trim())))fail(folder+" invalid material aliases");
   const pressure=record.pressureGPa;
   if(pressure!==null&&(typeof pressure!=="object"||Array.isArray(pressure)||!Number.isFinite(pressure.min)||!Number.isFinite(pressure.max)||pressure.min<0||pressure.max<pressure.min))fail(folder+" invalid pressure range");
   if(!["ambient","high","unknown"].includes(record.pressureRegime)||!["equilibrium","transient","metastable","unknown"].includes(record.equilibrium)||!["theory","experiment","prediction","hypothesis"].includes(record.recordType))fail(folder+" invalid material condition enum");
@@ -73,7 +74,7 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  }
  const conditions=meta.materialCases.length===0?"## Material cases\n\nNo sample-specific material records are included in this article. Model results are not experimental transition temperatures.":"## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n"+
  "| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n"+
- meta.materialCases.map(r=>"| "+r.formula+"; "+r.sample+" | "+(r.reportedTemperatureK===null?r.temperatureNote:r.reportedTemperatureK+" K; "+r.temperatureNote)+" | "+r.temperatureKind+"; "+r.criterion+" | "+r.probe+" | "+r.pressureRegime+"; "+(r.pressureGPa?r.pressureGPa.min+" to "+r.pressureGPa.max+" GPa":"unknown GPa")+" | "+r.equilibrium+" | "+r.recordType+"; [source](#ref-"+r.sourceId+") |").join("\n");
+ meta.materialCases.map(r=>"| "+r.formula+(r.aliases?.length?" (aliases: "+r.aliases.join(", ")+")":"")+"; "+r.sample+" | "+(r.reportedTemperatureK===null?r.temperatureNote:r.reportedTemperatureK+" K; "+r.temperatureNote)+" | "+r.temperatureKind+"; "+r.criterion+" | "+r.probe+" | "+r.pressureRegime+"; "+(r.pressureGPa?r.pressureGPa.min+" to "+r.pressureGPa.max+" GPa":"unknown GPa")+" | "+r.equilibrium+" | "+r.recordType+"; [source](#ref-"+r.sourceId+") |").join("\n");
  const referenceText=meta.references.map((r,i)=>"### Ref "+r.id+"\n\n[R"+(i+1)+"] "+r.title+" ("+r.year+"). ["+(r.doi?"DOI "+r.doi:"Source publication")+"]("+r.url+"). Publication: "+r.publicationStatus+". "+(r.retraction?"Retracted: "+r.retraction.retractedAt+". [Retraction notice]("+r.retraction.evidenceUrl+"). ":"")+"Check: "+r.verification.scope+". Checked: "+r.verification.checkedAt+". "+(r.verification.note??"")).join("\n");
  // Export v4 also retains each material record's probe and measurement protocol.
  const revision=sha("scwiki-export-v4\n"+JSON.stringify(meta)+"\n"+body).slice(0,20);
