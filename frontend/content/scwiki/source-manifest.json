@@ -899,8 +899,8 @@
       "lineCount": 73,
       "topicId": "scwiki-topic-f9",
       "articleId": "scwiki-f9",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {

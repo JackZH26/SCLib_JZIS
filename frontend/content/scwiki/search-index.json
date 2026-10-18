@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "2e9d5690242faefa1f88",
+  "revision": "82e48d2c59b6261d32c8",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -5493,6 +5493,78 @@
         "10.1126/science.1228006"
       ],
       "text": " Scope\n\nThe Berezinskii–Kosterlitz–Thouless (BKT) framework describes vortex–antivortex unbinding in an appropriate two-dimensional phase system. The ideal short-range XY model has algebraically decaying correlations below the transition, rather than ordinary finite-temperature long-range order. Above it, free vortices destroy that quasi-long-range order. A resistance drop in a thin film does not by itself establish this mechanism.  \n\nCharged superconducting films require a further qualification: magnetic screening changes the vortex interaction at sufficiently long distance. Kosterlitz and Thouless explicitly identified this limitation in their original paper. Effective BKT behavior can be relevant over experimentally accessible scales, but finite size, screening, interlayer coupling and spatial inhomogeneity must be assessed before transferring the infinite neutral-system result.   \n\n Mathematical assumptions\n\nDefine the sheet phase stiffness in energy units by F\\theta=(\\rhos/2)\\int d^2r\\,|\\nabla\\theta|^2. The universal jump uses the long-distance renormalized total stiffness, \\rhos^R(T{\\rm BKT}^-)=2kBT{\\rm BKT}/\\pi. A bare pairing calculation or finite-frequency inductive response is not automatically this quantity. In the local sheet convention, \\rhos=\\hbar^2/(4e^2L\\square); frequency, vortex dynamics and geometry enter its experimental interpretation. The jump does not separate conventional and geometric contributions.   \n\nFor dimensionless K=\\rhos/(kBT) and dilute vortex fugacity y, one convention gives dK/d\\ell=-4\\pi^3K^2y^2 and dy/d\\ell=(2-\\pi K)y. The Benfatto manuscript instead uses K{\\rm B}=\\pi K and g=2\\pi y; its stiffness is expressed in temperature units. Keeping these factors prevents a spurious disagreement between equations. Two illustrative flows from K0=0.5,0.8 and y0=0.01 were checked at three step sizes, stopping at \\ell=4 while y\\lt0.1. They illustrate proliferation versus suppression within a dilute approximation; they do not determine a material transition or justify continuation to strong fugacity.  \n\nOn the disordered side, an asymptotic resistance form is R=R0\\exp[-b/\\sqrt{t}], with t=T/T{\\rm BKT}-1\\gt0 and nonuniversal R0,b. This is the near-transition limit, not the full Halperin–Nelson interpolation into the Gaussian fluctuation regime. If those parameters are temperature independent over the fit window, [d\\ln R/dT]^{-2/3}=(2T{\\rm BKT}/b)^{2/3}(T/T{\\rm BKT}-1). Its linear extrapolation is a consistency test under those assumptions. Derivatives amplify measurement noise, and a temperature-dependent background changes the result.  \n\n Experimental criteria\n\nCompare the jump, nonlinear transport and resistance tail on the same sample and temperature scale, using independent observables where available. Report the measurement frequency, current interval, contact configuration, geometry and uncertainty. Agreement across probes strengthens a BKT interpretation; it is not a universal requirement that every experiment resolve all three ideal signatures. A broadened or unobserved jump needs a quantitative account of resolution, finite scales and inhomogeneity.   \n\nIn the commonly used homogeneous vortex-transport regime, V\\propto I^{a(T)} with a=1+\\pi\\rhos^R/(kBT) gives a=3 at the ideal jump. This is a dynamical response relation with an applicable current window. Finite samples can recover an ohmic low-current response; heating and contact effects need separate checks. As a logical counterexample, dimensionless v=i+i^3 has a finite zero-current resistance but an apparent log–log slope of approximately 2.996 between i=10 and 100. No phase transition is encoded in that example. \n\nA second synthetic example tests the resistance diagnostic. For dimensionless temperature x, the positive function R/R0=\\exp(-4/x) has no finite-temperature transition. Yet [d\\ln R/dx]^{-2/3} is nearly linear on x=3.96–4.04: a local fit has R^2\\gt0.999999 and extrapolates to approximately x=1. A visually impressive line over a narrow interval therefore does not identify a transition. This constructed example is not a diagnosis of any cited device. Fit-window stability and physically consistent parameters matter. \n\nXi and colleagues illustrate why temperature criteria must remain distinct. Their NbSe₂ author manuscript takes normal resistance at 8 K; the Aslamazov–Larkin fit temperature is close to the half-resistance temperature, while a BKT temperature inferred from current excitation is close to the one-percent-resistance criterion. The approximate 3 K monolayer AL-fit value must not be relabelled as a measured BKT temperature. The final supplement and raw nonlinear traces have not been audited here. Ye's gate-tuned MoS₂ dome provides another material context, but its checked institutional abstract alone does not verify BKT behavior.  \n\n Limits and disputes\n\nPair formation, gap closing, resistive onset, phase coherence and an instrumental zero-resistance threshold can differ. A BKT interpretation addresses phase ordering and vortex physics; it does not identify the pairing interaction or gap symmetry. The accessible range of logarithmic vortex interactions and the crossover into amplitude fluctuations constrain how far a BKT fit can be extrapolated. Spatially varying stiffness and percolative transport deserve sample-specific comparison rather than automatic assignment to one mechanism.   \n\nThis review covers selected original KT/NK passages, selected Benfatto and Xi author passages, and bounded local calculations. The original Halperin–Nelson full derivation, full author-to-journal comparisons, supplements and raw experimental data remain open. The selected Nelson–Kosterlitz text was not visually checked. Mathematical counterexamples and passing software tests do not complete scientific acceptance.      \n\n Discovery implications\n\nFor thin-film screening, preserve the sample, density, thickness, field, current and frequency alongside each fitted or measured temperature. Compare stiffness with pairing indicators and test size or frequency dependence when possible. Improving a pairing scale need not improve phase coherence; conversely, a small stiffness does not by itself prove a BKT transition. Keep alternative interpretations and source-access limits visible in exported records.    \n\n Related topics\n\n, , , and ."
+    },
+    {
+      "id": "scwiki-f9",
+      "topicId": "scwiki-topic-f9",
+      "code": "F9",
+      "slug": "vortex-topological-charge",
+      "title": "Vortex topological charge: winding, fluxoid and magnetic flux",
+      "summary": "Distinguish real-space winding from measured flux, retain screening and junction constraints, and compare quantization claims with the original experiments.",
+      "aliases": [
+        "vortex topological charge",
+        "fluxoid quantization",
+        "phase winding",
+        "magnetic flux quantization",
+        "pi junction loop",
+        "half flux quantum"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experimental"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "a64f72ca20edb4941532",
+      "materialCases": [
+        {
+          "id": "scwiki-f9-material-1",
+          "formula": "YBa2Cu3O7-delta",
+          "sample": "Tsuei three-junction tricrystal ring",
+          "recordType": "experiment",
+          "reportedTemperatureK": 4.2,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Measurement temperature only; no bulk or device superconducting transition is assigned.",
+          "criterion": "phase-sensitive-flux-measurement",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Scanning SQUID microscopy",
+          "sourceId": "source-2e4d7fdb6c1797b7",
+          "aliases": [
+            "flux quantization"
+          ]
+        },
+        {
+          "id": "scwiki-f9-material-2",
+          "formula": "Nb/Pd0.82Ni0.18/Nb",
+          "sample": "Bauer single-pi-junction loop",
+          "recordType": "experiment",
+          "reportedTemperatureK": 2,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Measurement temperature only; no bulk or device superconducting transition is assigned.",
+          "criterion": "phase-sensitive-flux-measurement",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Micro-Hall magnetometry field sweep",
+          "sourceId": "source-279470d337ba1fff",
+          "aliases": [
+            "flux quantization"
+          ]
+        }
+      ],
+      "dois": [
+        "10.1103/RevModPhys.76.975",
+        "10.1103/PhysRevLett.7.43",
+        "10.1103/PhysRevLett.7.51",
+        "10.1103/PhysRevLett.7.46",
+        "10.1103/PhysRevLett.73.593",
+        "10.1103/PhysRevLett.92.217001",
+        "10.1103/PhysRev.140.A1197"
+      ],
+      "text": " Scope\n\nA superconducting vortex is a defect of the real-space order parameter. For a single complex component that stays nonzero on a closed contour C, its phase winding is n=(2\\pi)^{-1}\\ointC\\nabla\\phi\\cdot d\\mathbf l\\in\\mathbb Z. The contour must avoid cores and other zeros. Reversing its orientation reverses the sign; enclosing several defects gives their net winding. This integer is distinct from the momentum-space Chern number of a band or Bogoliubov Hamiltonian. \n\nWinding, fluxoid and measured magnetic flux answer different questions. Fluxoid combines magnetic flux with supercurrent circulation. A detector measures a geometry-dependent magnetic response, which need not equal the fluxoid around a chosen contour. Junction phase shifts and multicomponent textures require additional constraints; a fractional magnetic signal alone does not specify a new bulk condensate charge, Chern number or Majorana mode.   \n\n Mathematical assumptions\n\nUse the explicit positive-charge phase convention q=2e, with e\\gt0, and the local London relation \\mu0\\lambdaL^2\\mathbf js=(\\hbar/q)\\nabla\\phi-\\mathbf A. For constant \\lambdaL on the contour, integration gives \\Phi+\\mu0\\lambdaL^2\\ointC\\mathbf js\\cdot d\\mathbf l=n\\Phi0, where \\Phi0=h/(2e)\\approx2.0678\\times10^{-15} Wb. With a negatively charged pair-field convention, the associated phase winding reverses sign. These are equivalent conventions when used consistently. The simple constant-\\lambdaL expression assumes a local, uniform condensate response away from the core.  \n\nOnly when the circulation term is negligible does magnetic flux itself approach n\\Phi0. A lumped uniform ring makes the distinction explicit: I=(n\\Phi0-\\Phi{\\rm ext})/(Lg+Lk), \\Phi=\\Phi{\\rm ext}+LgI, and \\Phi+LkI=n\\Phi0. Here Lg and Lk are geometric and kinetic inductance. At zero applied flux with n=1 and Lk=9Lg, the magnetic flux is only 0.1\\Phi0 although the fluxoid is one quantum. Twelve illustrative branches check this identity and the energy (n\\Phi0-\\Phi{\\rm ext})^2/[2(Lg+Lk)]; they do not model phase-slip switching or an experimental device.  \n\nTwenty-four discrete phase-loop checks compare enclosed defect charges, contour reversal and smooth single-valued gauge changes at two resolutions. A contour intersecting a zero is rejected. These checks establish the numerical examples under the stated complex-field construction, not a classification of every superconducting order-parameter manifold. Singular gauge choices require separate treatment and were not tested. \n\nFor an ideal triangular array with one flux quantum per cell, B(\\sqrt3 a^2/2)=\\Phi0 gives a=\\sqrt{2\\Phi0/(\\sqrt3 B)}. At mean induction B=1 T this is approximately 48.9 nm. Four geometric checks verify the cell area; they do not establish that a particular sample has a triangular lattice. Use mean induction B, not applied field H without a stated magnetization approximation. The later Abrikosov lecture favors the triangular array in the isotropic model but allows crystal-dependent alternatives; its result should not be attributed uncritically to the different early numerical estimate in the 1957 paper.  \n\n Experimental criteria\n\nDeaver and Fairbank reported discrete trapped flux in tin cylinders consistent with hc/2e in Gaussian units, including a first-step uncertainty of approximately 20 percent and explicit geometric corrections. Doll and Näbauer independently observed steps in lead-tube measurements, but their original report compared approximately 0.2 Oe spacing with 0.5 Oe predicted using hc/e and left that discrepancy unresolved. Preserve the observations and uncertainties of each paper instead of rewriting both reports as identical precision determinations. The SI flux quantum has no factor of c.  \n\nTsuei and colleagues reported spontaneous half-quantum flux in a three-junction YBCO tricrystal ring, absent in the two-junction controls, consistent with d-wave pairing. Their 4.2 K value is the scanning SQUID measurement temperature. Interpreting such a result requires the junction geometry and phase constraints, trapped-flux controls and a calibrated magnetic response; it is not an observation of an isolated half vortex in every ordinary single-component superconductor. The original abstract has been checked here, not the complete flux-map analysis. \n\nBauer and colleagues used niobium loops with PdNi ferromagnetic junctions and conventional-loop controls. Their final paper describes 2 K field sweeps, cooling-field reversal and subtraction of the Hall probe's temperature-dependent background; the low-temperature spontaneous flux approaches half a quantum. The final Figure 4 onset near 5 K replaces the author manuscript's approximate 5.5 K value. This is a device spontaneous-current scale, not a new bulk Nb transition temperature. Neither that onset nor the 2 K measurement is entered as experimental Tc. \n\nFinite inductance matters even in a simple sinusoidal single-π-junction model. At zero applied field and negligible ring kinetic inductance, set x=2\\pi\\Phi/\\Phi0, \\betaL=2\\pi LgIc/\\Phi0 with Ic\\gt0, and normalized energy u=x^2/2+\\betaL\\cos x. The stable nonzero solutions obey x=\\betaL\\sin x for \\betaL\\gt1. Illustrative values \\betaL=2,10,100 give positive fluxes approximately 0.302,0.454,0.495 quanta; at 0.5 the minimum is zero. The half-quantum limit is approached with large \\betaL, not imposed exactly at every inductance. This independently checked model is distinct from the paper's gamma notation and from a multijunction tricrystal.  \n\n Limits and disputes\n\nCurrent-driven vortex motion can produce an electric field and dissipative transport even while a pair amplitude survives. Pinning, creep, drive and measurement duration therefore affect an operational zero-resistance criterion. The checked Bardeen–Stephen abstract supports a local vortex-motion model; its full viscosity and Hall-response calculation has not been reproduced. A magnetoresistance or Nernst signal alone does not determine a vortex structure or exclude quasiparticle contributions. \n\nThe full Byers–Yang proof, complete 1994 tricrystal analysis, multicomponent fractional-vortex energetics and experimental raw-data audits remain open. Selected original scans, the later Abrikosov lecture and the published Bauer passages support the bounded discussion above. The local winding and ring calculations are illustrative checks. They do not complete scientific acceptance or establish a material's topological superconductivity.      \n\n Discovery implications\n\nStore the contour, phase convention, inductive terms, field history, probe calibration and sample state alongside a vortex claim. Separate cell flux inferred from average induction, local sensor flux, fluxoid and momentum-space invariants. For a proposed fractional defect, identify the order-parameter or Josephson constraint and test competing trapped-flux explanations. These distinctions make a magnetic signal useful for comparing hypotheses without treating it as a complete pairing or topology diagnosis.   \n\n Related topics\n\n, , , and ."
     },
     {
       "id": "scwiki-g7",
