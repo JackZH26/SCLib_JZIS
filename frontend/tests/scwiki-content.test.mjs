@@ -81,7 +81,7 @@ test("d-wave migration rejects the unrelated Brillouin paper as its ARPES refere
 });
 
 test("non-transition temperatures cannot become searchable transition records",async t=>{
- for(const kind of ["normal-state","transient-response","spectroscopic-gap","unassigned"]){
+ for(const kind of ["normal-state","transient-response","spectroscopic-gap","measurement","unassigned"]){
   await t.test(kind,t=>{
    const f=inventoryFixture(t),filename=path.join(f.directory,"articles/a1/meta.json");
    const meta=JSON.parse(readFileSync(filename,"utf8"));
@@ -157,4 +157,16 @@ test("Yin material-label erratum remains attached to its original paper",t=>{
  meta.references=meta.references.filter(r=>r.doi!=="10.1038/nmat3152");
  writeFileSync(filename,JSON.stringify(meta));const result=f.build();
  assert.notEqual(result.status,0);assert.match(result.stderr,/missing required erratum 10\.1038\/nmat3152/);
+});
+
+
+test("material generation rejects undeclared kinds and invalid observed temperatures",async t=>{
+ for(const [name,change,error] of [["unknown kind",{temperatureKind:"spectroscopic",tcK:null},/invalid temperature kind/],["negative observation",{reportedTemperatureK:-1},/invalid reported temperature/],["text observation",{reportedTemperatureK:"300 mK"},/invalid reported temperature/]]){
+  await t.test(name,t=>{
+   const f=inventoryFixture(t),filename=path.join(f.directory,"articles/a1/meta.json");
+   const meta=JSON.parse(readFileSync(filename,"utf8"));Object.assign(meta.materialCases[0],change);
+   writeFileSync(filename,JSON.stringify(meta));const result=f.build();
+   assert.notEqual(result.status,0);assert.match(result.stderr,error);
+  });
+ }
 });

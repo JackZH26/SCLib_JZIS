@@ -515,7 +515,7 @@ it("preserves exciton proposal disputes and transient transport conditions witho
 
 it("keeps plasmon mode energies and spectroscopy temperatures distinct from superconducting transitions",async()=>{
  const a=articles().find(a=>a.code==="B8")!,m=a.materialCases[0];
- expect(m.reportedTemperatureK).toBe(20);expect(m.temperatureKind).toBe("spectroscopic");expect(m.tcK).toBeNull();
+ expect(m.reportedTemperatureK).toBe(20);expect(m.temperatureKind).toBe("measurement");expect(m.tcK).toBeNull();
  expect(searchArticles(searchIndex().entries,"plasmon",{}).some(r=>r.id===a.id)).toBe(true);
  expect(searchArticles(searchIndex().entries,"plasmon",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
  const exp=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
@@ -696,4 +696,36 @@ it("keeps f-wave model nodes and Kerr temperatures separate from established mat
  expect(searchArticles(searchIndex().entries,"E2u",{tcMin:.1}).some(r=>r.id===a.id)).toBe(false);
  const out=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
  expect(out).toContain("zero-field Kerr signal");expect(out).toContain("Full scientific acceptance");
+});
+
+it("separates chiral topology and kagome measurement temperatures in article exports and search",async()=>{
+ const a=articles().find(a=>a.code==="C7")!;
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("no gapped-band invariant is assigned there");
+ expect(md).toContain("not a universal absence of current");
+ expect(md).toContain("approximately constant across the superconducting transition");
+ expect(md).toContain("roton excitations were not directly observed");
+ expect(md).toContain("bulk signatures near 2.8 K from a surface transition near 2.3 K");
+ expect(a.materialCases.map(r=>r.reportedTemperatureK)).toEqual([80,.3]);
+ expect(a.materialCases.every(r=>r.tcK===null)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"roton PDW",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"roton PDW",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const out=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(out).toContain("30 mG");expect(out).toContain("Full scientific acceptance");
+ expect(a.references.find(r=>r.doi==="10.1038/s41586-021-04327-z")?.verification.evidenceUrl).toContain("2106.13443v2");
+ expect(a.references.find(r=>r.doi==="10.1103/PhysRevB.81.134522")?.verification.scope).toBe("publisher-abstract-check");
+});
+
+
+it("all exported temperature classifications are declared by the live API contract",async()=>{
+ const spec=await(await get(["openapi.json"])).json();
+ const allowed=spec.components.schemas.MaterialCase.properties.temperatureKind.enum;
+ expect(allowed).toContain("measurement");
+ for(const a of articles()){
+  const record=await(await get(["articles",a.id])).json();
+  for(const m of record.article.materialCases){
+   expect(allowed).toContain(m.temperatureKind);
+   if(m.temperatureKind!=="transition")expect(m.tcK).toBeNull();
+  }
+ }
 });

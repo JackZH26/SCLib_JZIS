@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "a9e3af1585993bda0a23",
+  "revision": "d7c40942387e0304f1c9",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -1040,7 +1040,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "c6558883d01b5cf54c73",
+      "revision": "32840a54cb81e6bae0e0",
       "materialCases": [
         {
           "id": "scwiki-b8-material-1",
@@ -1049,7 +1049,7 @@
           "recordType": "experiment",
           "tcK": null,
           "reportedTemperatureK": 20,
-          "temperatureKind": "spectroscopic",
+          "temperatureKind": "measurement",
           "temperatureNote": "RIXS measurement temperature,not an extracted superconducting transition",
           "criterion": "RIXS-mode-spectrum",
           "pressureRegime": "unknown",
@@ -1424,6 +1424,77 @@
         "10.1103/PhysRevLett.96.237001"
       ],
       "text": " Scope\n\nIn a rotationally invariant continuum, f-wave means orbital angular momentum l=3. A crystal instead classifies a gap by its actual point group, spin or pseudospin structure and basis functions. An odd cubic polynomial, an experimentally inferred node and a particular irreducible representation are different statements. The discussion below assumes even-frequency pairing unless stated otherwise; orbital exchange and spin-orbit coupling must also be included when applying parity arguments to a multiorbital material. \n\nUPt3 is an important test case with competing descriptions of its superconducting phases. The historical E2u framework and a proposed E1u planar state organize different observations, but a candidate label is not a unique experimental determination. UTe2 has a different crystal symmetry and must not inherit UPt3's representation merely because both are uranium compounds.    \n\n Mathematical assumptions\n\nAn illustrative hexagonal E2u orbital doublet is [kz(kx^2-ky^2),2kzkxky]. With a fixed spin vector along z, its equal-amplitude chiral combination is proportional to kz(kx+iky)^2. It is odd under inversion. Under rotation by angle \\alpha about z, its orbital factor acquires e^{2i\\alpha}: the continuum harmonic has l=3 but axial projection m=2, not m=3. Four direct transformation checks and finite-difference Laplacians verify the polynomial identities. In a lattice, continuous angular momentum is only a comparison, not an exact conserved quantum number.  \n\nOn a unit sphere this chiral form has magnitude |\\cos\\theta|\\sin^2\\theta: an equatorial line zero and quadratic polar zeros. A planar E1u illustration uses two orthogonal spin vectors multiplying kx(5kz^2-1) and ky(5kz^2-1). Its magnitude is \\sin\\theta|5\\cos^2\\theta-1|, with polar point zeros and two horizontal zeros at \\cos^2\\theta=1/5. These are model angles, not measured node coordinates. Tsutsumi and colleagues use a related planar construction in their weak-spin-orbit scenario, with field-dependent spin orientation. \n\nThe constant one in the spherical E1u expressions represents kx^2+ky^2+kz^2. Restoring it makes each component a homogeneous harmonic cubic. Yet the lower-order pair (kx,ky) transforms as the same orbital doublet under the crystal's in-plane operations. In the chosen planar model, adding amplitude a(kx,ky) changes the horizontal-zero condition to kz^2=(1-a)/5. Five examples move or eliminate these zeros while preserving odd parity and the orbital transformation rule. A representation therefore need not fix the positions of every node.  \n\nThe polar zeros have different local phase space. Restricting to small polar caps, count the fraction of a unit sphere with imposed gap below \\epsilon. Doubling a sufficiently small cutoff approximately doubles this fraction for the quadratic E2u zero, but quadruples it for the linear E1u zero. Eight cap calculations verify these limits. This is a geometric illustration, not a density-of-states or thermal-conductivity calculation; real velocities, impurity scattering and other nodes still contribute to a measured power law.  \n\nA separate two-component illustration shows how split transitions can arise without determining a material representation. Set u=|\\eta1|^2, v=|\\eta2|^2 and relative phase \\delta, with dimensionless free energy F=(t-1)u+(t-0.8)v+(u^2+v^2)/2+(0.4+0.15\\cos2\\delta)uv. When both amplitudes are present, \\delta=\\pm\\pi/2 minimizes the phase term. The first onset is t=1; the second is t=(0.8-0.25)/(1-0.25)\\simeq0.7333. Five independent positive-amplitude grid comparisons agree with the analytic minima. These coefficients are chosen, not fitted to UPt3 or UTe2.  \n\n Experimental criteria\n\nThe 2002 Joynt–Taillefer review weighs UPt3's phase diagram, nodal responses and magnetic coupling. Its abstract favors E1g or E2u on balance while acknowledging that neither explains all observations. That historical conclusion is not a current universal assignment. Machida and colleagues' later angle-dependent thermal-conductivity study instead interprets the B/C-phase data using E1u. The 2011 author abstract and 2012 journal abstract differ in the stated phase coverage; this entry uses the latter and does not claim a complete version comparison.  \n\nSchemm and colleagues reported a UPt3 Kerr signal below about 0.46 K, separated from an upper susceptibility onset near 0.55 K. Their 1550 nm optical probe required an estimated local-heating allowance up to 50 mK; bulk heating inferred from mutual inductance was much smaller. Cooling in either sign of a 50 G field and then measuring with the field removed trained the signal's sign. These observations support additional time-reversal breaking in the lower-temperature phase within the experiment's controls; the optical signal alone does not select E2u. The Kerr onset is not the upper superconducting transition. \n\nNode assignment requires field direction, heat-current direction, temperature and the response model. A minimum in an angle-dependent signal is not automatically a node: vortex scattering and thermal weighting can reverse anisotropy. Compare multiple axes and independent probes before deciding between equatorial, off-equatorial and vertical zeros. The relative success of one calculation under selected assumptions does not eliminate every competing representation.   \n\nFor a null Kerr result, record illumination, surface, residual field, cooldown history and statistical sensitivity. Independent noise and domain signals add in variance, \\sigma{\\rm total}^2=\\sigma{\\rm noise}^2+\\sigma{\\rm signal}^2. A small constructed example verifies this identity for uncorrelated sequences. The equation requires its independence assumption; a measured absence of increased scatter is a constraint at finite sensitivity, not proof that all possible microscopic time-reversal breaking is absent. \n\n Limits and disputes\n\nHayes and colleagues reported UTe2 Kerr and calorimetric signatures supporting a multicomponent state. Their low-field warmups were compared with measurements following positive and negative training fields; the interpretation includes domains. Ajeesh and colleagues later found no spontaneous zero-field Kerr signal in four single-transition samples spanning two growth methods. Their heat-pulse procedure repeatedly crossed the transition, and trained signals varied with position and sample. The selected manuscript's optical and susceptibility sample sets are different: one must not attribute the separate double-transition susceptibility sample to the Kerr set. Retain this disagreement and its conditions rather than declaring all UTe2 samples chiral or all possible states excluded.  \n\nOrthorhombic D2h has one-dimensional ordinary point-group representations, unlike hexagonal E2u. A complex combination of distinct components can still break time reversal if the energetics permit it; multidimensional point-group representations are not a universal prerequisite. Spin degeneracy, orbital structure and accidental near-degeneracy must be specified. UTe2's discovery evidence for unusual spin pairing does not independently choose an f-wave basis or a unique multicomponent state.   \n\nThe spherical polynomial examples neglect UPt3's real multiband, nonsymmorphic band structure. The Ginzburg–Landau example does not reproduce its field–temperature phase diagram, and no surface-state or bulk-topology calculation is supplied. A change of polynomial order, a broken-symmetry signal or a high critical field cannot replace that missing analysis.  \n\n Discovery implications\n\nSpecify the crystal symmetry and basis first. Then test whether one proposed state explains phase splitting, directional nodes, spin response and symmetry-breaking observations under compatible conditions. Preserve null results, competing interpretations and source-version differences alongside positive evidence. Full scientific acceptance, complete final-version comparisons and raw-data review remain open; the model calculations here constrain language and logic, not the pairing state of a new material.    \n\n Related topics\n\nCompare , , , , and ."
+    },
+    {
+      "id": "scwiki-c7",
+      "topicId": "scwiki-topic-c7",
+      "code": "C7",
+      "slug": "chiral-pairing",
+      "title": "Chiral pairing: time reversal, topology and boundary evidence",
+      "summary": "Separate orbital handedness, broken time reversal, band topology and the signals used to test them.",
+      "aliases": [
+        "chiral pairing",
+        "chirality",
+        "Chern number",
+        "time reversal",
+        "TRSB",
+        "edge current",
+        "kagome",
+        "roton PDW",
+        "s+is"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experiment"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "c0798ee1ec11093557bc",
+      "materialCases": [
+        {
+          "id": "scwiki-c7-material-1",
+          "formula": "KV3Sb5",
+          "sample": "Mielke et al. aligned crystal mosaic, muon charge-order response",
+          "recordType": "experiment",
+          "tcK": null,
+          "reportedTemperatureK": 80,
+          "temperatureKind": "unassigned",
+          "temperatureNote": "Approximate charge-order scale; not superconducting Tc. Selected relaxation stays approximately constant across the separate low-temperature transition.",
+          "criterion": "charge-order-associated-relaxation",
+          "pressureRegime": "unknown",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Zero-field muon relaxation with residual-field compensation and longitudinal/high-field controls",
+          "sourceId": "source-484da7abcc165cd3"
+        },
+        {
+          "id": "scwiki-c7-material-2",
+          "formula": "CsV3Sb5",
+          "sample": "Chen et al. tunneling study on prepared surfaces",
+          "recordType": "experiment",
+          "tcK": null,
+          "reportedTemperatureK": 0.3,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Calibrated electron temperature for spectroscopy, not a transition temperature. Surface and bulk transitions reported separately.",
+          "criterion": "spectroscopy-temperature",
+          "pressureRegime": "unknown",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "STM/STS and Nb-tip Josephson spectroscopy; surface preparation and drift correction specified",
+          "sourceId": "source-057c43c86174f961"
+        }
+      ],
+      "dois": [
+        "10.1103/PhysRevB.61.10267",
+        "10.1088/0034-4885/79/5/054502",
+        "10.1103/PhysRevB.90.224519",
+        "10.1126/science.1248552",
+        "10.1038/s41586-019-1596-2",
+        "10.1038/s41586-021-04327-z",
+        "10.1038/s41586-021-03983-5",
+        "10.1103/PhysRevB.81.134522",
+        "10.1103/sgcz-9rc7"
+      ],
+      "text": " Scope\n\nChiral pairing describes a superconducting order with a handed orbital structure, such as a complex combination of two directional basis functions. Three questions must remain separate: whether time reversal is broken, whether the pairing is chiral, and whether a specified gapped Hamiltonian has a nonzero topological invariant. A Kerr signal, a complex coefficient or a named lattice does not answer all three. Kallin and Berlinsky's 2016 review is a historical guide; its candidate-material assignments are not current confirmations. \n\nBroken time reversal need not mean orbital chirality. For example, frustrated interband pair scattering can favor complex relative phases among otherwise s-wave gaps. Stanev and Tešanović studied this possibility in a three-band model. An illustrative vector of gaps on three inequivalent labelled bands, (1,e^{2\\pi i/3},e^{-2\\pi i/3}), cannot be made equal to its conjugate by one common phase, although each component has no angular winding. This statement assumes only a common U(1) freedom; it is not a stability calculation or a material assignment. \n\n Mathematical assumptions\n\nRead and Green distinguish weak- and strong-pairing phases of a two-dimensional spinless complex p-wave model. Their continuum chemical potential is measured relative to the band bottom: its zero marks a gap-closing transition in that model. The broken symmetry alone does not distinguish the two phases. This continuum criterion must not be copied unchanged into a lattice or multiband calculation. \n\nFor an independent lattice illustration, set hopping and pairing scales to one and use H(\\mathbf{k})=\\mathbf{h}(\\mathbf{k})\\cdot\\boldsymbol{\\tau}, with \\mathbf{h}=(\\sin kx,\\chi\\sin ky,-2\\cos kx-2\\cos ky-\\mu) and \\chi=\\pm1. In this Nambu convention the off-diagonal gap is \\sin kx-i\\chi\\sin ky. Define the occupied-band Berry connection as \\mathbf{A}=i\\langle u-|\\nabla{\\mathbf{k}}u-\\rangle. With the orientation (kx,ky), the lower-band Chern number for \\chi=1 is 0,-1,+1,0 in the intervals separated by \\mu=-4,0,4. Reversing \\chi reverses its sign.  \n\nSixteen calculations compare two mesh sizes, four chemical potentials and both handedness choices. Berry-link phases from explicit occupied eigenvectors agree with independently summed spherical solid angles. Four analytic gap-closing checks identify the excluded critical points; no gapped-band invariant is assigned there. The same complex gap can thus accompany a zero or nonzero Chern number. The calculation fixes the gap by hand and omits self-consistency, realistic bands and disorder. \n\nA boundary calculation illustrates a different distinction. In Huang, Taylor and Kallin's ideal sharp-edge continuum treatment, occupied bound states and continuum states both contribute to the integrated current. For axial harmonic index m=1, their respective values are 1/2 and -1/4 in units \\hbar kF^2/(4\\pi m^) per spin component. For integer m>1, each integrated contribution vanishes in this limit despite the chiral edge branches. Independent angular quadrature reproduces the analytic sums for six values of m. \n\nThat cancellation is not a universal absence of current in higher-order chiral pairing. The same paper shows that making the density vary slowly over distances much longer than the coherence length restores a current; lattice effects also matter. A sharp specular boundary, a smooth trap and a disordered multiband surface are different problems. The calculation above does not predict a magnetic-field amplitude for a real sample. \n\n Experimental criteria\n\nKerr rotation probes an optical response. In the clean Galilean-invariant limit, a spatially uniform electric field couples to center-of-mass motion and the charge Hall response vanishes even for complex pairing. At the single-particle level, the clean one-band current-vertex structure also gives a cancellation; multiband and impurity processes require separate treatment. Optical frequency, refractive response and geometry matter. Neither a null Kerr measurement nor one nonzero angle can be converted directly into a Chern number.  \n\nFor UPt3, retain Schemm and colleagues' distinction between the Kerr onset near 0.46 K and the upper susceptibility onset near 0.55 K, including optical heating and field-training controls. For Sr2RuO4, Pustogow and colleagues' oxygen NMR response constrains a simple fixed-d-vector interpretation. The later 2026 muon Knight-shift study also has field-dependent extraction and low-temperature magnetization limits. These are complementary constraints, not a license to restore a historically favored chiral p-wave label as settled fact.   \n\nMielke and colleagues studied KV3Sb5, not the whole AV3Sb5 family interchangeably. Their selected manuscript shows an increased muon relaxation below the charge-order scale near 80 K that remains approximately constant across the superconducting transition near 1.1 K. They explicitly discuss electric-field-gradient contributions and use high-field measurements to support an electronic interpretation. The methods report residual-field compensation better than 30 mG; a 50 G longitudinal field decouples the relaxation. These are charge-order constraints, not a new superconducting chirality onset at 80 K. \n\nChen and colleagues studied CsV3Sb5 with tunneling and Josephson spectroscopy. Their selected manuscript distinguishes bulk signatures near 2.8 K from a surface transition near 2.3 K, and uses a calibrated 300 mK electron temperature. Spatial gap and conductance modulations motivate their roton-PDW interpretation. The authors explicitly state that roton excitations were not directly observed. A proposed complex vortex–antivortex pattern is therefore an interpretation to test, not a measured uniform chiral d-wave order parameter. \n\n Limits and disputes\n\nLocal magnitude alone does not resolve handedness: |\\Delta|^2=|\\Delta^|^2. Four complex spatial examples verify this identity without making a tunneling-response model. A Josephson signal can support superconducting coherence, while determining orbital phase structure requires suitable reference geometry and controls. Fourier peaks, gap-depth maps and zero-bias peaks must retain their individual evidential roles. \n\nDo not require every time-reversal-breaking state to belong to a two-dimensional crystal representation. Complex combinations of distinct representations or interband phases can behave differently. Likewise, half-quantum vortices can occur in equal-spin-pairing states without establishing orbital chirality. A strain response or vortex signature must be interpreted in the actual symmetry and spin-orbit setting.  \n\nThe local topology check is a fully gapped two-dimensional model. Nodal three-dimensional superconductors may instead require momentum-resolved invariants; a single integer cannot simply be carried over. Edge spectra, thermal transport, optical response and screened equilibrium charge currents require distinct calculations. Complete scientific acceptance, final-version comparisons, raw-data review and material-specific modelling remain open.   \n\n Discovery implications\n\nFirst identify the transition and its probe. Then specify the order-parameter basis, domain controls, bulk gap and Hamiltonian used for any topology claim. Compare positive and null evidence under compatible conditions, retaining charge-order and superconducting temperature scales separately. A useful discovery target is a state that satisfies these linked tests, not a material selected merely for a complex gap notation or a kagome lattice.    \n\n Related topics\n\nContinue with , , , , and ."
     },
     {
       "id": "scwiki-d11",

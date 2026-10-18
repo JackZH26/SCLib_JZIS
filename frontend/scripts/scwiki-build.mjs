@@ -51,6 +51,8 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
   catch(error){fail(folder+" invalid math: "+error.message)}
  }
  for(const record of meta.materialCases){
+  if(!["transition","spectroscopic-gap","measurement","normal-state","transient-response","unassigned"].includes(record.temperatureKind))fail(folder+" invalid temperature kind");
+  if(record.reportedTemperatureK!==null&&(!Number.isFinite(record.reportedTemperatureK)||record.reportedTemperatureK<0))fail(folder+" invalid reported temperature");
   if(!refIds.has(record.sourceId)||!record.criterion||!record.sample||!record.probe||!record.equilibrium||!record.pressureRegime)fail(folder+" missing material conditions");
   if(record.temperatureKind!=="transition"&&record.tcK!==null)fail(folder+" non-transition temperature is not a transition Tc");
   if(record.tcK!==null&&(!Number.isFinite(record.tcK)||record.tcK<0))fail(folder+" invalid Tc");
