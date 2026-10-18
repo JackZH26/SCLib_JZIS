@@ -52,7 +52,7 @@
 .scwiki-prose pre{overflow-x:auto;background:var(--surface);padding:1rem;border-radius:7px}
 .scwiki-prose .katex-display{overflow-x:auto;overflow-y:hidden;padding:.4rem .1rem;max-width:100%}
 .scwiki-table-scroll{overflow-x:auto;margin:1.5rem 0;max-width:100%}
-.scwiki-prose table{border-collapse:collapse;font-size:.85rem;min-width:600px}
+.scwiki-prose table{border-collapse:collapse;font-size:.85rem;min-width:720px;overflow-wrap:normal}
 .scwiki-prose th,.scwiki-prose td{padding:.65rem .75rem;text-align:left;border-bottom:1px solid var(--border);vertical-align:top}
 .scwiki-prose th{background:var(--surface);font-weight:650}
 .scwiki-prose figure{margin:1.5rem 0}
