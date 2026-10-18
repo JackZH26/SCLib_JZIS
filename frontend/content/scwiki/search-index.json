@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "a0f4b4d1e7bde036e8fd",
+  "revision": "2e9d5690242faefa1f88",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -5400,6 +5400,99 @@
         "10.1103/PhysRevLett.39.1201"
       ],
       "text": " Scope\n\nSuperfluid weight is a current or phase-twist response defined with a particular thermodynamic and electromagnetic convention. In a multiband superconductor, its conventional part is associated with intraband dispersion, while geometric terms involve the wavefunctions and interband matrix elements. These are parts of a specified response calculation, not two experimentally separated streams of Cooper pairs.  \n\nA response kernel also depends on how frequency and wavevector approach zero. Scalapino, White and Zhang discuss distinct limiting procedures for diagnosing insulating, metallic and superconducting lattice states. A clean metal's ideal transport response should not be identified with the equilibrium Meissner response merely because both are called a stiffness. This entry checks that paper's original abstract; its full correlation-function derivation remains open. \n\n Mathematical assumptions\n\nFor an isotropic superconducting sheet, define the phase-energy density by f=\\rhos|\\nabla\\theta-(2e/\\hbar)\\mathbf A|^2/2, with \\rhos in joules. The sheet electromagnetic kernel is K\\square=4e^2\\rhos/\\hbar^2=1/L\\square, where L\\square is sheet kinetic inductance. Peotta and Törmä instead define a mass-normalized weight through f=Ds ps^2/8, with ps=\\hbar\\nabla\\theta in zero field. Thus their convention gives \\rhos=\\hbar^2Ds/4 and K\\square=e^2Ds. These quantities have different units even when each is called superfluid weight.  \n\nA pair phase written as \\theta=2\\mathbf q\\cdot\\mathbf r introduces another factor: the curvature with respect to \\mathbf q is four times the curvature with respect to \\nabla\\theta. For a hypothetical L\\square=10 nH, the sheet convention above gives \\rhos/kB\\approx0.7845 K. Three illustrative inductances were checked with SI charge, Planck and Boltzmann constants. These are conversion examples, not measured superconducting transition temperatures.  \n\nIn a fixed orbital basis, differentiating H|m\\rangle=\\varepsilonm|m\\rangle gives \\langle n|\\partialiH|m\\rangle=\\delta{nm}\\partiali\\varepsilonm+(\\varepsilonm-\\varepsilonn)\\langle n|\\partiali m\\rangle. Flat eigenvalues set the diagonal velocity to zero without forcing the interband matrix elements to vanish. Fifteen checks in an illustrative two-band model reproduce this identity and g{kk}=1/4 for a rotating eigenvector; multiplying either eigenvector by a smooth phase leaves the metric unchanged. This checks a band identity, not superconductivity or a self-consistent current response.  \n\nThe familiar isolated-band expression D{s,ij}^{\\rm geom}\\propto\\sum{\\mathbf k}(|\\Delta|^2/E{\\mathbf k})\\tanh[E{\\mathbf k}/(2kBT)]g{ij}(\\mathbf k) displays a geometric structure, not a convention-free numerical formula. It requires stated pairing, band-isolation and symmetry assumptions, a wavevector integration measure and charge factors. The metric used in the checked Liang manuscript is twice the Wiki convention g{ij}=\\operatorname{Re}\\langle\\partiali u|(1-|u\\rangle\\langle u|)|\\partialj u\\rangle. Translate that normalization before comparing prefactors.  \n\nThe internal pairing fields must also respond to the twist. Under the time-reversal and equilibrium-minimum assumptions studied by Huhtinen and colleagues, the total free-energy curvature contains a negative-semidefinite relaxation correction to the frozen-field result. In their isolated flat-band uniform-pairing setting, the relevant integrated metric has minimal trace with respect to orbital positions. Equal pairing at zero twist does not justify freezing all relative phases at nonzero twist. A nonzero unrelaxed result can even become zero after relaxation. The scalar illustration in the flat-band article shows this possibility without claiming to reproduce the complete lattice response. \n\n Experimental criteria\n\nMeasure and report the total response with its units, dimensionality, frequency, geometry and fitting model. Tanaka and colleagues obtain stiffness through microwave kinetic inductance with a parallel electrode-proximitized edge in the circuit model. Their conversion uses an assumed active-region aspect ratio equal to the device aspect ratio; their reported Ds=l/(wL{\\rm total}) corresponds to inverse sheet inductance. A comparison with a conventional estimate can support a geometric interpretation without constituting a model-independent measurement of its fraction. \n\nThe selected author manuscript distinguishes a 20 mK refrigerator base from an approximately 40 mK wired-device temperature. Its roughly 1 K resistive scale uses half the normal-state resistance. Neither the measurement temperature nor that resistive criterion should automatically be labelled a BKT transition. Full published-version and raw-data comparisons remain open. \n\nFor an effective isotropic two-dimensional BKT description, the jump involves the renormalized total sheet phase stiffness: kBT{\\rm BKT}=\\pi\\rhos(T{\\rm BKT}^-)/2. It does not determine a separate geometric component. Substituting a zero-temperature stiffness gives only an upper estimate if the stiffness at the transition does not exceed that zero-temperature value. With the hypothetical 10 nH example this estimate is about 1.232 K; it is neither a measured transition nor evidence that the BKT assumptions hold in a particular device.  \n\n Limits and disputes\n\nA nonzero Chern number can provide a geometric lower bound in specified models, but it is not necessary for every geometric contribution. The Chern-trivial Lieb-lattice example has a finite flat-band response under its interaction assumptions. A bound on an integrated metric is not automatically a numerical bound on a dimensionful measured stiffness: filling, interaction, normalization and the complete response matter.   \n\nSelected original passages and equations, the band-current identity and unit conversions have been checked. Complete scientific acceptance has not been reached. Full current-correlation and BKT derivations, self-consistent multiband response, remote-band convergence and experimental data audits remain open. Disorder, finite frequency, sample inhomogeneity and phase fluctuations can affect the comparison between a theoretical weight and a measured response.     \n\n Discovery implications\n\nReport conventional, geometric and total response using a common convention, including internal-field relaxation. Check a band model's current operator and geometry before applying a flat-band formula, and retain the uncertainty of the experimental baseline. Geometry can constrain transport by pairs; it does not automatically supply the attraction, determine gap symmetry or ensure macroscopic phase coherence.   \n\n Related topics\n\nContinue with , , ,  and ."
+    },
+    {
+      "id": "scwiki-f8",
+      "topicId": "scwiki-topic-f8",
+      "code": "F8",
+      "slug": "bkt-transition",
+      "title": "BKT transition: phase coherence and experimental diagnostics",
+      "summary": "Connect vortex unbinding and renormalized stiffness with transport criteria, finite-size limits and explicit tests of misleading fits.",
+      "aliases": [
+        "BKT transition",
+        "Berezinskii Kosterlitz Thouless",
+        "vortex unbinding",
+        "Halperin Nelson resistance",
+        "nonlinear current voltage",
+        "universal stiffness jump"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experimental"
+      ],
+      "editorialStatus": "scoped-check",
+      "revision": "7040364692af1888676d",
+      "materialCases": [
+        {
+          "id": "scwiki-f8-material-1",
+          "formula": "NbSe2",
+          "sample": "Xi encapsulated monolayer",
+          "recordType": "experiment",
+          "reportedTemperatureK": 3,
+          "tcK": 3,
+          "temperatureKind": "transition",
+          "temperatureNote": "Approximate fit temperature from author Figure2; not the distinct BKT or zero-resistance criterion.",
+          "criterion": "aslamazov-larkin-fit",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Four-terminal transport fluctuation-conductivity fit",
+          "sourceId": "source-c80fb39cdf748a83",
+          "aliases": [
+            "niobium diselenide",
+            "Ising NbSe2"
+          ]
+        },
+        {
+          "id": "scwiki-f8-material-2",
+          "formula": "NbSe2",
+          "sample": "Xi high-field measurement floor",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.3,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "Measurement floor only; not the AL-fit, BKT or zero-resistance temperature.",
+          "criterion": "measurement-floor",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Magnetotransport",
+          "sourceId": "source-c80fb39cdf748a83",
+          "aliases": [
+            "niobium diselenide",
+            "Ising NbSe2"
+          ]
+        },
+        {
+          "id": "scwiki-f8-material-3",
+          "formula": "NbSe2",
+          "sample": "Xi normal-resistance reference",
+          "recordType": "experiment",
+          "reportedTemperatureK": 8,
+          "tcK": null,
+          "temperatureKind": "normal-state",
+          "temperatureNote": "Reference temperature for Rn; not Tc.",
+          "criterion": "normal-resistance-reference",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Transport",
+          "sourceId": "source-c80fb39cdf748a83",
+          "aliases": [
+            "niobium diselenide",
+            "Ising NbSe2"
+          ]
+        }
+      ],
+      "dois": [
+        "10.1088/0022-3719/6/7/010",
+        "10.1103/PhysRevLett.39.1201",
+        "10.1007/BF00116988",
+        "10.1103/PhysRevB.80.214506",
+        "10.1038/nphys3538",
+        "10.1126/science.1228006"
+      ],
+      "text": " Scope\n\nThe Berezinskii–Kosterlitz–Thouless (BKT) framework describes vortex–antivortex unbinding in an appropriate two-dimensional phase system. The ideal short-range XY model has algebraically decaying correlations below the transition, rather than ordinary finite-temperature long-range order. Above it, free vortices destroy that quasi-long-range order. A resistance drop in a thin film does not by itself establish this mechanism.  \n\nCharged superconducting films require a further qualification: magnetic screening changes the vortex interaction at sufficiently long distance. Kosterlitz and Thouless explicitly identified this limitation in their original paper. Effective BKT behavior can be relevant over experimentally accessible scales, but finite size, screening, interlayer coupling and spatial inhomogeneity must be assessed before transferring the infinite neutral-system result.   \n\n Mathematical assumptions\n\nDefine the sheet phase stiffness in energy units by F\\theta=(\\rhos/2)\\int d^2r\\,|\\nabla\\theta|^2. The universal jump uses the long-distance renormalized total stiffness, \\rhos^R(T{\\rm BKT}^-)=2kBT{\\rm BKT}/\\pi. A bare pairing calculation or finite-frequency inductive response is not automatically this quantity. In the local sheet convention, \\rhos=\\hbar^2/(4e^2L\\square); frequency, vortex dynamics and geometry enter its experimental interpretation. The jump does not separate conventional and geometric contributions.   \n\nFor dimensionless K=\\rhos/(kBT) and dilute vortex fugacity y, one convention gives dK/d\\ell=-4\\pi^3K^2y^2 and dy/d\\ell=(2-\\pi K)y. The Benfatto manuscript instead uses K{\\rm B}=\\pi K and g=2\\pi y; its stiffness is expressed in temperature units. Keeping these factors prevents a spurious disagreement between equations. Two illustrative flows from K0=0.5,0.8 and y0=0.01 were checked at three step sizes, stopping at \\ell=4 while y\\lt0.1. They illustrate proliferation versus suppression within a dilute approximation; they do not determine a material transition or justify continuation to strong fugacity.  \n\nOn the disordered side, an asymptotic resistance form is R=R0\\exp[-b/\\sqrt{t}], with t=T/T{\\rm BKT}-1\\gt0 and nonuniversal R0,b. This is the near-transition limit, not the full Halperin–Nelson interpolation into the Gaussian fluctuation regime. If those parameters are temperature independent over the fit window, [d\\ln R/dT]^{-2/3}=(2T{\\rm BKT}/b)^{2/3}(T/T{\\rm BKT}-1). Its linear extrapolation is a consistency test under those assumptions. Derivatives amplify measurement noise, and a temperature-dependent background changes the result.  \n\n Experimental criteria\n\nCompare the jump, nonlinear transport and resistance tail on the same sample and temperature scale, using independent observables where available. Report the measurement frequency, current interval, contact configuration, geometry and uncertainty. Agreement across probes strengthens a BKT interpretation; it is not a universal requirement that every experiment resolve all three ideal signatures. A broadened or unobserved jump needs a quantitative account of resolution, finite scales and inhomogeneity.   \n\nIn the commonly used homogeneous vortex-transport regime, V\\propto I^{a(T)} with a=1+\\pi\\rhos^R/(kBT) gives a=3 at the ideal jump. This is a dynamical response relation with an applicable current window. Finite samples can recover an ohmic low-current response; heating and contact effects need separate checks. As a logical counterexample, dimensionless v=i+i^3 has a finite zero-current resistance but an apparent log–log slope of approximately 2.996 between i=10 and 100. No phase transition is encoded in that example. \n\nA second synthetic example tests the resistance diagnostic. For dimensionless temperature x, the positive function R/R0=\\exp(-4/x) has no finite-temperature transition. Yet [d\\ln R/dx]^{-2/3} is nearly linear on x=3.96–4.04: a local fit has R^2\\gt0.999999 and extrapolates to approximately x=1. A visually impressive line over a narrow interval therefore does not identify a transition. This constructed example is not a diagnosis of any cited device. Fit-window stability and physically consistent parameters matter. \n\nXi and colleagues illustrate why temperature criteria must remain distinct. Their NbSe₂ author manuscript takes normal resistance at 8 K; the Aslamazov–Larkin fit temperature is close to the half-resistance temperature, while a BKT temperature inferred from current excitation is close to the one-percent-resistance criterion. The approximate 3 K monolayer AL-fit value must not be relabelled as a measured BKT temperature. The final supplement and raw nonlinear traces have not been audited here. Ye's gate-tuned MoS₂ dome provides another material context, but its checked institutional abstract alone does not verify BKT behavior.  \n\n Limits and disputes\n\nPair formation, gap closing, resistive onset, phase coherence and an instrumental zero-resistance threshold can differ. A BKT interpretation addresses phase ordering and vortex physics; it does not identify the pairing interaction or gap symmetry. The accessible range of logarithmic vortex interactions and the crossover into amplitude fluctuations constrain how far a BKT fit can be extrapolated. Spatially varying stiffness and percolative transport deserve sample-specific comparison rather than automatic assignment to one mechanism.   \n\nThis review covers selected original KT/NK passages, selected Benfatto and Xi author passages, and bounded local calculations. The original Halperin–Nelson full derivation, full author-to-journal comparisons, supplements and raw experimental data remain open. The selected Nelson–Kosterlitz text was not visually checked. Mathematical counterexamples and passing software tests do not complete scientific acceptance.      \n\n Discovery implications\n\nFor thin-film screening, preserve the sample, density, thickness, field, current and frequency alongside each fitted or measured temperature. Compare stiffness with pairing indicators and test size or frequency dependence when possible. Improving a pairing scale need not improve phase coherence; conversely, a small stiffness does not by itself prove a BKT transition. Keep alternative interpretations and source-access limits visible in exported records.    \n\n Related topics\n\n, , , and ."
     },
     {
       "id": "scwiki-g7",
