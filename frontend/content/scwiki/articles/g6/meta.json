@@ -1,0 +1,357 @@
+{
+  "id": "scwiki-g6",
+  "topicId": "scwiki-topic-g6",
+  "code": "G6",
+  "slug": "pauli-limit",
+  "title": "Pauli limit: assumptions, measurements and apparent violations",
+  "summary": "Separate the weak-coupling spin-energy benchmark from measured critical fields, fitted scales and evidence for pairing symmetry.",
+  "aliases": [
+    "Pauli limit",
+    "paramagnetic limit",
+    "Chandrasekhar-Clogston limit",
+    "Pauli limit violation",
+    "Ising protection"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experimental"
+  ],
+  "relatedCodes": [
+    "E5",
+    "C9",
+    "G5",
+    "G3"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T15:54:21.040256+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected original TMD methods and figures, scoped CeCoIn5/WHH evidence, historical identities and independent SI energy-balance calculations.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Original historical derivations, full final-version comparisons and raw experimental calibration remain incomplete.",
+      "Synthetic energy crossings do not select a stable microscopic pairing state.",
+      "Measured ranges, fitted critical scales and finite-resistance criteria remain distinct."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "G_magnetism_interplay/G6_Pauli_limit_violation.md",
+    "sha256": "ed142b611d43d0ddcf6a85b681e85043b05cc2ee1f8ffc448905ac23b8311954",
+    "sourceId": "file-f53ced33d3b9350a"
+  },
+  "references": [
+    {
+      "id": "source-d32df19524b2a1c8",
+      "doi": "10.1103/PhysRevLett.9.266",
+      "title": "Upper Limit for the Critical Field in Hard Superconductors",
+      "year": 1962,
+      "url": "https://doi.org/10.1103/PhysRevLett.9.266",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "reused-publisher-identity-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.9.266",
+        "note": "A6 identity check reused; complete original derivation not retrieved. Pauli calculation uses explicit weak-coupling assumptions and separately checked perspective."
+      }
+    },
+    {
+      "id": "source-b31f8fbbf312e41d",
+      "doi": "10.1063/1.1777362",
+      "title": "A Note on the Maximum Critical Field of High-Field Superconductors",
+      "year": 1962,
+      "url": "https://doi.org/10.1063/1.1777362",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-deposited-identity-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://api.crossref.org/works/10.1063/1.1777362",
+        "note": "Publisher-deposited Crossref identity/date1September1962 checked; complete original derivation not read."
+      }
+    },
+    {
+      "id": "source-16926b3817cff55d",
+      "doi": "10.1103/PhysRev.147.295",
+      "title": "Temperature and Purity Dependence of the Superconducting Critical Field, Hc2. III. Electron Spin and Spin-Orbit Effects",
+      "year": 1966,
+      "url": "https://doi.org/10.1103/PhysRev.147.295",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "reused-publisher-abstract-scope",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.147.295",
+        "note": "A6 original publisher-abstract check reused: orbital, Pauli and spin-orbit treatment. Full WHH derivation and experimental fits not independently reviewed. The restricted orbital coefficient is checked separately through Gurevich final text and explicit asymptote."
+      }
+    },
+    {
+      "id": "source-7ba854cc57960377",
+      "doi": "10.1103/PhysRevB.67.184515",
+      "title": "Enhancement of the upper critical field by nonmagnetic impurities in dirty two-gap superconductors",
+      "year": 2003,
+      "url": "https://doi.org/10.1103/PhysRevB.67.184515",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-equations-and-author-version-comparison",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://nationalmaglab.org/library/publications/nhmfl_publication-3151.pdf",
+        "note": "Final journal16May2003; selected pp4–5 equal-diffusivity limit, Eq31 and asymptotes read; p4 visually compared with arXiv0212129v1 p4. Final U(x) has minus; v1 prints plus. Detailed Usadel solution, full curves and experimental fits not reproduced."
+      }
+    },
+    {
+      "id": "source-a626e7fcb17b94fa",
+      "doi": "10.1103/PhysRevLett.91.187004",
+      "title": "Possible Fulde-Ferrell-Larkin-Ovchinnikov Superconducting State in CeCoIn5",
+      "year": 2003,
+      "url": "https://doi.org/10.1103/PhysRevLett.91.187004",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-calorimetry-and-final-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0304420v1",
+        "note": "Authorv1 submitted18April2003; selected pp1–4 text and p2Fig1 visual checked. Final publisher title/abstract and28October2003 publication checked; final adds Possible and authorlist differs. Internal PDF typesettingdate2018 is not publication. Full final comparison/rawdata remain open."
+      }
+    },
+    {
+      "id": "source-fda01ade7737b638",
+      "doi": "10.1126/science.1161818",
+      "title": "Coupled Superconducting and Magnetic Order in CeCoIn5",
+      "year": 2008,
+      "url": "https://doi.org/10.1126/science.1161818",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "original-abstract-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/18719250/",
+        "note": "Online21August2008,issue19September. Original abstract via PubMed and authors LANL record read; magnetic order and symmetry interpretation distinct. Full methods and supplement not retrieved."
+      }
+    },
+    {
+      "id": "source-c80fb39cdf748a83",
+      "doi": "10.1038/nphys3538",
+      "title": "Ising pairing in superconducting NbSe2 atomic layers",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nphys3538",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1507.08731v1",
+        "note": "Authorv1 dated31July2015; selectedpp4–5,10methods,12Figure4 visually checked. Crossref publisher-depositedonline9November2015 versus February2016issue. Body0.3K versuscaption0.36K keptdistinct; fullfinal/supplement/noise calibration open."
+      }
+    },
+    {
+      "id": "source-804e0c9690bde4d8",
+      "doi": "10.1038/s41467-018-03888-4",
+      "title": "Tuning Ising superconductivity with layer and spin–orbit coupling in two-dimensional transition-metal dichalcogenides",
+      "year": 2018,
+      "url": "https://doi.org/10.1038/s41467-018-03888-4",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-methods-results-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-018-03888-4.pdf",
+        "note": "Published12April2018. Selectedfinalpp3–5 and6–7methods read, p4Figures3–4 visually checked. 50%Rn,34.5Tinstrumentceiling,65.6TnearTcfitparameter andseparatecryostatlimits retained. Fullsupplement/rawdata/DFT not reproduced."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-g6-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "The Pauli paramagnetic limit compares the energy gained by a spin-polarized normal state with the condensation energy of a specified superconducting state. It is a model-dependent reference, not a universal upper bound on every superconductor. Exceeding a weak-coupling, g = 2 estimate signals that its assumptions need examination. It does not by itself establish triplet pairing, a spatially modulated state or a topological phase. Chandrasekhar and Clogston's 1962 publication identities are checked here; the following explicit calculation is independent rather than a claimed reproduction of their complete original papers.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-d32df19524b2a1c8",
+        "source-b31f8fbbf312e41d"
+      ],
+      "conditions": "Explicit SI B/chi/DOS convention, gap/g response assumptions; measurement criterion, fielddirection, sample thickness and observed versus fitted scales retained.",
+      "verificationScope": "Selected primary evidence and independent energy-balance examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g6-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Suppressing orbital depairing in a very thin film can expose spin depairing that would otherwise be hidden. Geometry alone does not remove the spin-energy cost. Spin–orbit coupling, an altered gap scale, anisotropic response, exchange compensation and multiband physics require distinct models. Keep the applied field, internal exchange field and spin–orbit energy scale separate when interpreting an apparently large critical field.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-16926b3817cff55d",
+        "source-7ba854cc57960377",
+        "source-c80fb39cdf748a83"
+      ],
+      "conditions": "Explicit SI B/chi/DOS convention, gap/g response assumptions; measurement criterion, fielddirection, sample thickness and observed versus fitted scales retained.",
+      "verificationScope": "Selected primary evidence and independent energy-balance examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g6-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Use $B$ in tesla and dimensionless SI volume susceptibilities. With positive zero-field condensation-energy density $U_c$, constant spin susceptibilities and no orbital contribution, the free-energy difference is $F_s-F_n=-U_c+(\\chi_n-\\chi_s)B^2/(2\\mu_0)$. For $\\chi_n\\gt\\chi_s$, its crossing occurs at $B_P=\\sqrt{2\\mu_0U_c/(\\chi_n-\\chi_s)}$. If the susceptibilities vary strongly with field, this quadratic expression must be replaced by the appropriate magnetization integral. Equal susceptibilities remove this particular quadratic penalty, not every physical limit on superconductivity.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-804e0c9690bde4d8"
+      ],
+      "conditions": "Explicit SI B/chi/DOS convention, gap/g response assumptions; measurement criterion, fielddirection, sample thickness and observed versus fitted scales retained.",
+      "verificationScope": "Selected primary evidence and independent energy-balance examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g6-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a simple uniform, fully gapped spin-singlet state at zero temperature, set $\\chi_s=0$. Let $n$ be the single-spin density of states per unit energy and volume. Taking $U_c=n\\Delta_0^2/2$ and $\\chi_n=\\mu_0n(g\\mu_B)^2/2$ yields $B_P=\\sqrt{2}\\Delta_0/(g\\mu_B)$. At $g=2$ and $\\Delta_0=1.764k_BT_c$, the numerical coefficient is about 1.857 T/K. The familiar approximate 1.84–1.86 T/K benchmark is meaningful only with its gap and response assumptions. It is a zero-temperature reference, not a measured transition curve at arbitrary temperature.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d32df19524b2a1c8",
+        "source-b31f8fbbf312e41d",
+        "source-804e0c9690bde4d8"
+      ],
+      "conditions": "Explicit SI B/chi/DOS convention, gap/g response assumptions; measurement criterion, fielddirection, sample thickness and observed versus fitted scales retained.",
+      "verificationScope": "Selected primary evidence and independent energy-balance examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g6-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An independent calculation checks eighteen combinations of transition temperature, g factor and gap ratio, and verifies the free-energy sign on both sides of each crossing. Holding the other assumptions fixed, halving g doubles the reference field; increasing the gap ratio from 1.764 to 2.2 multiplies it by about 1.247. A synthetic $T_c=3$ K, g = 2 example gives approximately 5.571 T with the first gap ratio. These parameter changes demonstrate sensitivity, not fitted explanations for a named material.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d32df19524b2a1c8",
+        "source-b31f8fbbf312e41d"
+      ],
+      "conditions": "Explicit SI B/chi/DOS convention, gap/g response assumptions; measurement criterion, fielddirection, sample thickness and observed versus fitted scales retained.",
+      "verificationScope": "Selected primary evidence and independent energy-balance examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g6-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A further controlled example fixes $U_c$ and $\\chi_n$ while assigning $r=\\chi_s/\\chi_n$. The crossing grows by $1/\\sqrt{1-r}$: r = 0, 0.25 and 0.75 give factors 1, approximately 1.155 and 2. This scaling cannot be carried unchanged into a system where spin–orbit coupling also changes the normal susceptibility or condensation energy. The finite checks verify the stated energy comparison; they do not solve a self-consistent gap equation or select the stable pairing state.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-804e0c9690bde4d8"
+      ],
+      "conditions": "Explicit SI B/chi/DOS convention, gap/g response assumptions; measurement criterion, fielddirection, sample thickness and observed versus fitted scales retained.",
+      "verificationScope": "Selected primary evidence and independent energy-balance examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g6-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "For Xi and colleagues' monolayer NbSe2 study, the approximately 35 T zero-temperature scale comes from fitting a spin–orbit-protected pair-breaking model. An independent contact-conductance measurement extends to 31.5 T and finds a strongly diminished Andreev-related feature. The author text gives 0.3 K, while its Figure 4 caption specifies 0.36 K for the inset; those labels are preserved here. The fitted effective spin–orbit scale near 660 T is not an applied laboratory field. Field-transition criteria and two-terminal versus four-terminal devices must also remain distinct.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-c80fb39cdf748a83"
+      ],
+      "conditions": "Explicit SI B/chi/DOS convention, gap/g response assumptions; measurement criterion, fielddirection, sample thickness and observed versus fitted scales retained.",
+      "verificationScope": "Selected primary evidence and independent energy-balance examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g6-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "De la Barrera and colleagues report that monolayer TaS2's parallel-field transition remains above their 34.5 T measurement ceiling below 2 K. Their quoted 65.6 T is a near-transition square-root fit parameter, not a directly measured critical field. They define phase-boundary points using half the normal-state resistance, which is distinct from zero resistance. Alignment is optimized at fixed temperature and field by minimizing resistance; maintaining alignment during a temperature sweep is harder. Their 25 mK/12 T and 300 mK/34.5 T apparatus limits must not be combined into one unperformed measurement.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-804e0c9690bde4d8"
+      ],
+      "conditions": "Explicit SI B/chi/DOS convention, gap/g response assumptions; measurement criterion, fielddirection, sample thickness and observed versus fitted scales retained.",
+      "verificationScope": "Selected primary evidence and independent energy-balance examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g6-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Calorimetry provides another kind of evidence. Bianchi and colleagues observe a high-field, low-temperature anomaly in CeCoIn5 and interpret it as a possible finite-momentum superconducting state. The final publication explicitly retains “Possible” in its title. Subsequent neutron evidence establishes coupled magnetic order in the high-field superconducting phase. An extra phase boundary therefore requires assessment of competing or coexisting order; it is not an automatic image of a spatially modulated superconducting gap. The older calorimetry and later magnetic observations have different review depths here.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-a626e7fcb17b94fa",
+        "source-fda01ade7737b638"
+      ],
+      "conditions": "Explicit SI B/chi/DOS convention, gap/g response assumptions; measurement criterion, fielddirection, sample thickness and observed versus fitted scales retained.",
+      "verificationScope": "Selected primary evidence and independent energy-balance examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g6-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The orbital field in a Maki ratio must come from an orbital model or suitable independent estimate: $\\alpha_M=\\sqrt{2}B_{c2}^{\\mathrm{orb}}/B_P$. Inserting an already Pauli-limited measured field into its numerator changes the meaning. The dirty, single-band orbital estimate involving 0.693 times $T_c$ and the magnitude of the near-transition slope has restricted assumptions. Unequal band diffusivities can change the extrapolation. A large ratio motivates further investigation; it does not certify a finite-momentum state or determine a universal onset threshold.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-16926b3817cff55d",
+        "source-7ba854cc57960377"
+      ],
+      "conditions": "Explicit SI B/chi/DOS convention, gap/g response assumptions; measurement criterion, fielddirection, sample thickness and observed versus fitted scales retained.",
+      "verificationScope": "Selected primary evidence and independent energy-balance examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g6-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. Selected TMD methods and figures have been checked, but raw transport, full supplementary calibration, complete final-version comparisons and material-specific susceptibility reconstructions remain incomplete. A fitted spin–orbit parameter, a resistance midpoint and a bulk thermodynamic boundary are different quantities. Even when a spin-sensitive probe agrees with a proposed interpretation, compare alternative states under the same field direction, temperature and experimental conditions before assigning pairing symmetry.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-a626e7fcb17b94fa",
+        "source-fda01ade7737b638",
+        "source-c80fb39cdf748a83",
+        "source-804e0c9690bde4d8"
+      ],
+      "conditions": "Explicit SI B/chi/DOS convention, gap/g response assumptions; measurement criterion, fielddirection, sample thickness and observed versus fitted scales retained.",
+      "verificationScope": "Selected primary evidence and independent energy-balance examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g6-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Record the measured field range and any censoring or extrapolation, the superconducting criterion, field direction, sample thickness and transition temperature used in the reference ratio. Report the chosen g factor, gap ratio, susceptibility assumptions and orbital model separately. Use departures from the simple benchmark to design discriminating measurements, not to rank triplet content by the size of a critical-field ratio. A future model must explain both the enhanced direction and the directions in which superconductivity is more easily destroyed.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-16926b3817cff55d",
+        "source-7ba854cc57960377",
+        "source-c80fb39cdf748a83"
+      ],
+      "conditions": "Explicit SI B/chi/DOS convention, gap/g response assumptions; measurement criterion, fielddirection, sample thickness and observed versus fitted scales retained.",
+      "verificationScope": "Selected primary evidence and independent energy-balance examples; complete scientific acceptance remains open."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "B_P=\\sqrt{2}\\Delta_0/(g\\mu_B)",
+      "check": "18SI energy-balance combinations and36bracketing free-energy signs verified;single-spinDOS convention explicit."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "B_P/B_{P,0}=1/\\sqrt{1-r}",
+      "check": "3fixed-condensation-energy andfixed-normal-susceptibility examples verified; not a materialSOCfit."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-g6-material-1",
+      "formula": "NbSe2",
+      "sample": "Xi monolayer contact-conductance Figure4 inset",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.36,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Caption measurement temperature atfields to31.5T; bodyrounded0.3K distinguished. Not Tc or fitted35Ttransition.",
+      "criterion": "Andreev-contact-conductance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Differential contact conductance",
+      "sourceId": "source-c80fb39cdf748a83",
+      "aliases": [
+        "Pauli limit",
+        "Ising pairing"
+      ]
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 298,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Original pinnedbytes retained; distinguish physical reference assumptions, measured/fitted fields,spin/orbital limitations and pairing-evidence levels."
+    }
+  ]
+}
