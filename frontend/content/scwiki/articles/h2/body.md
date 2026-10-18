@@ -39,7 +39,7 @@ Bruin and colleagues compared inferred rates across metals, while Legros and col
 
 ## Limits and disputes
 
-A quantum-chaos bound on a Lyapunov exponent is not automatically a charge-transport bound. Matching dimensions is not a proof that the two times are identical. Theoretical relations require their own assumptions about dynamics and correlation functions. [R5](#ref-source-8339743a9f1c3239)
+Maldacena, Shenker and Stanford bound the growth of a regularized out-of-time-order correlator by $\lambda_L\leq 2\pi k_BT/\hbar$. Their argument assumes analyticity and boundedness in a thermal complex-time strip, controlled factorization errors, and a separation between dissipation and scrambling times. It constrains a quantum-chaos exponent, not a measured charge-transport relaxation rate. Identifying $\lambda_L$ with $1/\tau_{\mathrm{tr}}$ requires additional model-specific justification; the bound does not establish a universal transport coefficient $\alpha=1$. [R5](#ref-source-8339743a9f1c3239) [R1](#ref-source-67da95cac5481029)
 
 The pinned chapter includes a 2026 FeTeSe frequency-domain report and a slow/fast-channel interpretation. That source's detailed sample and fitting claims are not independently re-extracted in this pilot. They are not used to prove a pairing mediator or to validate a separate multichannel theory. A fitted normal-state channel and a superconducting gap are different evidence objects. [R4](#ref-source-05b2d5ff6757b5eb)
 

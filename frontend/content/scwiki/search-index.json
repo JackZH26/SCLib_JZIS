@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "ac874ab6dee44a1ef95d",
+  "revision": "7385a7a9b5525815b665",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -20,7 +20,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "381873f3ffa38241d724",
+      "revision": "ba2cf0c3d6ba3295b79d",
       "materialCases": [
         {
           "formula": "K3C60",
@@ -65,7 +65,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "20ab415e7eb430b4c33c",
+      "revision": "a0c09d808b8998fc9544",
       "materialCases": [
         {
           "formula": "YBa2Cu3O7-delta",
@@ -110,7 +110,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "13fee2819c0fd1e81fd9",
+      "revision": "7c5cdb8a321b4232d578",
       "materialCases": [
         {
           "formula": "MgB2",
@@ -173,7 +173,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "03c4ecdaa242edf7deb3",
+      "revision": "461223f417c4849b2508",
       "materialCases": [
         {
           "formula": "KFe2As2",
@@ -236,7 +236,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "406d42bfd6e9fe168682",
+      "revision": "0d6976321f43cf32778f",
       "materialCases": [
         {
           "formula": "LaAlO3/SrTiO3",
@@ -301,7 +301,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "94929b2657a7520ad271",
+      "revision": "65101565b3f4a22d3ea2",
       "materialCases": [
         {
           "formula": "HgBa2Ca2Cu3O8+delta",
@@ -369,7 +369,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "bc3aac4d8c5b14b466eb",
+      "revision": "a4811bebbd5e88139944",
       "materialCases": [
         {
           "formula": "LaFeAsO1-xFx",
@@ -452,7 +452,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "f32611c352186ade05b2",
+      "revision": "590929a3f3c1a77c3bfd",
       "materialCases": [
         {
           "formula": "Nd0.8Sr0.2NiO2",
@@ -516,7 +516,7 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "56364ce1db9544e95c39",
+      "revision": "f0779eb52a157cad3291",
       "materialCases": [
         {
           "formula": "Sr2RuO4",
@@ -562,7 +562,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "4ddca27b2f78c0112662",
+      "revision": "b1793b1f64085155f4a4",
       "materialCases": [
         {
           "formula": "twisted bilayer graphene",
@@ -611,7 +611,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "60082241a0476155cf6a",
+      "revision": "bb7eb48e8976ec478ecb",
       "materialCases": [
         {
           "formula": "κ-(BEDT-TTF)2Cu2(CN)3",
@@ -659,7 +659,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "ce014d21895f5f53f51f",
+      "revision": "06df502ffb2828775690",
       "materialCases": [
         {
           "formula": "overdoped cuprates",
@@ -685,7 +685,7 @@
         "10.1038/s41567-026-03266-8",
         "10.1007/JHEP08(2016)106"
       ],
-      "text": " Scope\n\n“Planckian” commonly describes a specified relaxation rate on the scale kBT/\\hbar, with a dimensionless coefficient of order unity. It is not a theorem inferred from a resistivity curve that happens to be linear in temperature. Transport, optical, single-particle, thermalization and quantum-chaos times probe different correlation functions and need not be equal. \n\nA useful experimental statement names the channel, fitting range and assumptions. It also separates an empirical scale from a proposed universal bound. The phrase “of order one” must not become an exact \\alpha=1 assertion without uncertainties and a consistent convention.  \n\n Mathematical assumptions\n\nFor a specified transport lifetime, a total dimensionless ratio is\n\n\n\\alpha{\\mathrm{tot}}(T)=\\frac{\\hbar}{kBT\\,\\tau{\\mathrm{tr}}(T)}.\n\n\nA model with a residual rate can instead be parametrized as\n\n\n\\frac{1}{\\tau{\\mathrm{tr}}(T)}\n=\\frac{1}{\\tau0}+\\alpha{\\mathrm{inel}}\\frac{kBT}{\\hbar}.\n\n\nThe second coefficient describes the inelastic slope under this assumption; it is not the first ratio when a residual term is appreciable. This distinction is made explicit in converting the source's ASCII notation. \n\nIn a single-band Drude limit with temperature-independent effective inputs,\n\n\n\\rho=\\frac{m^\\ast}{ne^2\\tau{\\mathrm{tr}}},\\qquad\n\\alpha{\\mathrm{inel}}\n=\\frac{\\hbar}{kB}\\frac{ne^2}{m^\\ast}\\frac{d\\rho}{dT}.\n\n\nThe resistivity slope alone does not supply the carrier density n or transport mass m^\\ast. Multiband conduction, changing spectral weight, angular scattering and vertex effects can invalidate this simple inversion. Sheet resistance and bulk resistivity must also use consistent thickness conventions.  \n\n Experimental criteria\n\nSpecify the lifetime definition, residual subtraction, frequency convention, fitting interval and uncertainties. State whether a quoted rate is an angular frequency or ordinary frequency; confusing h with \\hbar introduces a factor of 2\\pi. Use independent optical or Fermi-surface constraints where available, and propagate their uncertainty into an inferred coefficient.\n\nBruin and colleagues compared inferred rates across metals, while Legros and colleagues examined overdoped cuprates with a per-plane scaling analysis. Those studies provide important constraints within their transport assumptions. They do not measure one exact universal coefficient for every composition and every relaxation channel.  \n\n Limits and disputes\n\nA quantum-chaos bound on a Lyapunov exponent is not automatically a charge-transport bound. Matching dimensions is not a proof that the two times are identical. Theoretical relations require their own assumptions about dynamics and correlation functions. \n\nThe pinned chapter includes a 2026 FeTeSe frequency-domain report and a slow/fast-channel interpretation. That source's detailed sample and fitting claims are not independently re-extracted in this pilot. They are not used to prove a pairing mediator or to validate a separate multichannel theory. A fitted normal-state channel and a superconducting gap are different evidence objects. \n\n Discovery implications\n\nUse a Planckian-scale observation to formulate a falsifiable normal-state model. Ask which spectral weight, carrier estimate and scattering anisotropy would support or reject the proposed interpretation. Proximity to superconductivity can motivate a mechanism study, but it does not establish that faster scattering raises the critical temperature.  \n\n Related topics\n\nSee , , and ."
+      "text": " Scope\n\n“Planckian” commonly describes a specified relaxation rate on the scale kBT/\\hbar, with a dimensionless coefficient of order unity. It is not a theorem inferred from a resistivity curve that happens to be linear in temperature. Transport, optical, single-particle, thermalization and quantum-chaos times probe different correlation functions and need not be equal. \n\nA useful experimental statement names the channel, fitting range and assumptions. It also separates an empirical scale from a proposed universal bound. The phrase “of order one” must not become an exact \\alpha=1 assertion without uncertainties and a consistent convention.  \n\n Mathematical assumptions\n\nFor a specified transport lifetime, a total dimensionless ratio is\n\n\n\\alpha{\\mathrm{tot}}(T)=\\frac{\\hbar}{kBT\\,\\tau{\\mathrm{tr}}(T)}.\n\n\nA model with a residual rate can instead be parametrized as\n\n\n\\frac{1}{\\tau{\\mathrm{tr}}(T)}\n=\\frac{1}{\\tau0}+\\alpha{\\mathrm{inel}}\\frac{kBT}{\\hbar}.\n\n\nThe second coefficient describes the inelastic slope under this assumption; it is not the first ratio when a residual term is appreciable. This distinction is made explicit in converting the source's ASCII notation. \n\nIn a single-band Drude limit with temperature-independent effective inputs,\n\n\n\\rho=\\frac{m^\\ast}{ne^2\\tau{\\mathrm{tr}}},\\qquad\n\\alpha{\\mathrm{inel}}\n=\\frac{\\hbar}{kB}\\frac{ne^2}{m^\\ast}\\frac{d\\rho}{dT}.\n\n\nThe resistivity slope alone does not supply the carrier density n or transport mass m^\\ast. Multiband conduction, changing spectral weight, angular scattering and vertex effects can invalidate this simple inversion. Sheet resistance and bulk resistivity must also use consistent thickness conventions.  \n\n Experimental criteria\n\nSpecify the lifetime definition, residual subtraction, frequency convention, fitting interval and uncertainties. State whether a quoted rate is an angular frequency or ordinary frequency; confusing h with \\hbar introduces a factor of 2\\pi. Use independent optical or Fermi-surface constraints where available, and propagate their uncertainty into an inferred coefficient.\n\nBruin and colleagues compared inferred rates across metals, while Legros and colleagues examined overdoped cuprates with a per-plane scaling analysis. Those studies provide important constraints within their transport assumptions. They do not measure one exact universal coefficient for every composition and every relaxation channel.  \n\n Limits and disputes\n\nMaldacena, Shenker and Stanford bound the growth of a regularized out-of-time-order correlator by \\lambdaL\\leq 2\\pi kBT/\\hbar. Their argument assumes analyticity and boundedness in a thermal complex-time strip, controlled factorization errors, and a separation between dissipation and scrambling times. It constrains a quantum-chaos exponent, not a measured charge-transport relaxation rate. Identifying \\lambdaL with 1/\\tau{\\mathrm{tr}} requires additional model-specific justification; the bound does not establish a universal transport coefficient \\alpha=1.  \n\nThe pinned chapter includes a 2026 FeTeSe frequency-domain report and a slow/fast-channel interpretation. That source's detailed sample and fitting claims are not independently re-extracted in this pilot. They are not used to prove a pairing mediator or to validate a separate multichannel theory. A fitted normal-state channel and a superconducting gap are different evidence objects. \n\n Discovery implications\n\nUse a Planckian-scale observation to formulate a falsifiable normal-state model. Ask which spectral weight, carrier estimate and scattering anisotropy would support or reject the proposed interpretation. Proximity to superconductivity can motivate a mechanism study, but it does not establish that faster scattering raises the critical temperature.  \n\n Related topics\n\nSee , , and ."
     }
   ]
 }

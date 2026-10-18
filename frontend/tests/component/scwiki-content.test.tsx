@@ -27,6 +27,31 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(a.editorialStatus).toBe("scoped-check");
   expect(a.corrections.some(c=>c.id==="scwiki-a1-correction-1")).toBe(true);
  });
+ it("keeps the conditional chaos bound theoretical and carries its review scope through section APIs",async()=>{
+  const a=articles().find(a=>a.code==="H2")!;
+  const response=await get(["articles",a.id,"sections","limits-and-disputes"]);
+  const payload=await response.json();
+  const claim=payload.claims.find((c:{id:string})=>c.id==="scwiki-h2-claim-limits-and-disputes-1");
+  expect(claim.evidenceType).toBe("theory");
+  expect(claim.conditions).toContain("factorization");
+  expect(claim.conditions).toContain("no transport-time identification");
+  expect(claim.verificationScope).toContain("Eq. (2.5)");
+  expect(payload.section.markdown).toContain(claim.statement);
+  expect(payload.section.markdown).toContain("not a measured charge-transport");
+  expect(payload.sources.find((r:{id:string})=>r.id==="source-8339743a9f1c3239").verification.scope).toBe("primary-full-text-scoped-check");
+  expect(payload.sources.find((r:{id:string})=>r.id==="source-67da95cac5481029").verification.scope).toBe("review-full-text-scoped-check");
+  expect(a.references.find(r=>r.doi==="10.1126/science.1227612")!.verification.scope).toBe("crossref-metadata-only");
+  expect(a.editorialStatus).toBe("scoped-check");
+ });
+ it("preserves source-specific review limitations in Markdown exports",async()=>{
+  for(const a of articles()){
+   const markdown=await (await get(["articles",a.id,"markdown"])).text();
+   for(const ref of a.references){
+    expect(markdown).toContain("Checked: "+ref.verification.checkedAt);
+    if(ref.verification.note)expect(markdown).toContain(ref.verification.note);
+   }
+  }
+ });
  it("disposes all 282 pinned files and keeps unpublished topics out of the catalogue",()=>{
   const m=JSON.parse(readFileSync("content/scwiki/source-manifest.json","utf8"));
   expect(m.commit).toBe("0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf");
@@ -50,7 +75,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(a.review.limitations.join(" ")).toContain("not");
    expect(a.references.every(r=>r.publicationStatus && r.verification.scope)).toBe(true);
    const {revision,body,markdown,sections,wordCount,...meta}=a;
-   expect(createHash("sha256").update(JSON.stringify(meta)+"\n"+body).digest("hex").slice(0,20)).toBe(revision);
+   expect(createHash("sha256").update("scwiki-export-v2\n"+JSON.stringify(meta)+"\n"+body).digest("hex").slice(0,20)).toBe(revision);
   }
  });
  it("resolves every claim, citation and published article link without treating rendering as proof",()=>{

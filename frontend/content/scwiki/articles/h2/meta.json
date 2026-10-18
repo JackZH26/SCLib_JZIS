@@ -25,10 +25,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-17T12:13:01Z",
+  "modifiedAt": "2026-10-18T05:43:01Z",
   "review": {
-    "checkedAt": "2026-10-17",
-    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below.",
+    "checkedAt": "2026-10-18",
+    "scope": "Edited English adaptation; notation, scientific-condition and citation mapping against the pinned chapter, DOI metadata checks, and only the named primary-source checks listed below. H2 follow-up: selected full-text passages of Maldacena-Shenker-Stanford (published version) and Hartnoll-Mackenzie (arXiv v3) checked for the chaos-bound assumptions, distinct lifetimes and Drude-inference caveats; other empirical sources remain pending.",
     "limitations": [
       "No full scientific validation, raw-data reanalysis or independent replication review has been completed.",
       "A metadata-only check verifies source identity, not the claim. Claims without a named primary check remain a source-note synthesis.",
@@ -148,6 +148,12 @@
       "description": "The converted formula distinguishes total alpha(T) from a residual-subtracted inelastic slope. A nonzero residual rate cannot be silently included in a temperature-independent Planckian coefficient.",
       "sourceId": "source-67da95cac5481029",
       "scope": "Notation and dimensions; no new fitted alpha values."
+    },
+    {
+      "id": "scwiki-h2-correction-2",
+      "description": "Reclassified the chaos-bound claim as theory, made its assumptions explicit, and removed experiment labels from conceptual guidance. Primary-source passage checks are scoped and do not validate the empirical references.",
+      "sourceId": "source-8339743a9f1c3239",
+      "scope": "Evidence classification and conditional chaos/transport distinction."
     }
   ],
   "equationChecks": [
@@ -185,21 +191,26 @@
       "targetSectionId": "mathematical-assumptions",
       "tex": "2\\pi",
       "check": "Transcribed and dimension/convention reviewed in the stated model. KaTeX syntax is checked at build time; successful rendering is not a proof."
+    },
+    {
+      "targetSectionId": "limits-and-disputes",
+      "tex": "\\lambda_L\\leq 2\\pi k_BT/\\hbar",
+      "check": "Compared with published Eq. (2.5), restoring k_B and hbar: both sides have inverse-time units. This is an upper bound on the chaos exponent under the stated assumptions, not a transport rate equality."
     }
   ],
   "references": [
     {
       "id": "source-67da95cac5481029",
       "doi": "10.1103/RevModPhys.94.041002",
-      "title": "Colloquium\n                    : Planckian dissipation in metals",
+      "title": "Colloquium: Planckian dissipation in metals",
       "year": 2022,
       "url": "https://doi.org/10.1103/RevModPhys.94.041002",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1103%2FRevModPhys.94.041002",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "review-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/html/2107.07802v3",
+        "note": "Author manuscript v3 (18 June 2022), sections 1.4, 4, 4.1 and 5, Eqs. (28)-(32): residual subtraction, distinct lifetimes, effective-mass/vertex caveats, and chaos versus transport. This review-level check does not verify the underlying experiments or every statement in H2."
       }
     },
     {
@@ -252,10 +263,10 @@
       "url": "https://doi.org/10.1007/JHEP08(2016)106",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "crossref-metadata-only",
-        "checkedAt": "2026-10-17",
-        "evidenceUrl": "https://api.crossref.org/works/10.1007%2FJHEP08%282016%29106",
-        "note": "Bibliographic identity only. Scientific statements are an edited synthesis of the pinned source chapter; primary results were not independently checked in this scope."
+        "scope": "primary-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.springer.com/content/pdf/10.1007/JHEP08(2016)106.pdf",
+        "note": "Published version: Eq. (2.5), sections 4.1-4.2 and 4.3.3, printed pp. 5, 7-11. Checked the conditional chaos bound and its failure cases; not a transport measurement or an independent verification of the entire proof."
       }
     }
   ],
@@ -282,24 +293,24 @@
       "id": "scwiki-h2-claim-scope-1",
       "sectionId": "scope",
       "statement": "“Planckian” commonly describes a specified relaxation rate on the scale $k_BT/\\hbar$, with a dimensionless coefficient of order unity. It is not a theorem inferred from a resistivity curve that happens to be linear in temperature. Transport, optical, single-particle, thermalization and quantum-chaos times probe different correlation functions and need not be equal.",
-      "evidenceType": "experiment",
+      "evidenceType": "theory",
       "sourceIds": [
         "source-67da95cac5481029"
       ],
       "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "verificationScope": "Conceptual distinction checked against Hartnoll-Mackenzie arXiv v3 sections 4-5; experimental universality is not established."
     },
     {
       "id": "scwiki-h2-claim-scope-2",
       "sectionId": "scope",
       "statement": "A useful experimental statement names the channel, fitting range and assumptions. It also separates an empirical scale from a proposed universal bound. The phrase “of order one” must not become an exact $\\alpha=1$ assertion without uncertainties and a consistent convention.",
-      "evidenceType": "experiment",
+      "evidenceType": "theory",
       "sourceIds": [
         "source-67da95cac5481029",
         "source-e6d342432f3409ae"
       ],
       "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "verificationScope": "Conceptual distinction checked against Hartnoll-Mackenzie arXiv v3 sections 4-5; experimental universality is not established."
     },
     {
       "id": "scwiki-h2-claim-mathematical-assumptions-1",
@@ -310,7 +321,7 @@
         "source-67da95cac5481029"
       ],
       "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "verificationScope": "Residual subtraction discussed in Hartnoll-Mackenzie arXiv v3 section 1.4. The two alpha definitions are algebraically distinct; no fitted value is verified."
     },
     {
       "id": "scwiki-h2-claim-mathematical-assumptions-2",
@@ -322,7 +333,7 @@
         "source-e6d342432f3409ae"
       ],
       "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "verificationScope": "Drude-inference limitations checked against Hartnoll-Mackenzie arXiv v3 sections 4 and 4.1; no material-specific lifetime extraction is verified."
     },
     {
       "id": "scwiki-h2-claim-experimental-criteria-1",
@@ -339,13 +350,14 @@
     {
       "id": "scwiki-h2-claim-limits-and-disputes-1",
       "sectionId": "limits-and-disputes",
-      "statement": "A quantum-chaos bound on a Lyapunov exponent is not automatically a charge-transport bound. Matching dimensions is not a proof that the two times are identical. Theoretical relations require their own assumptions about dynamics and correlation functions.",
-      "evidenceType": "experiment",
+      "statement": "Maldacena, Shenker and Stanford bound the growth of a regularized out-of-time-order correlator by $\\lambda_L\\leq 2\\pi k_BT/\\hbar$. Their argument assumes analyticity and boundedness in a thermal complex-time strip, controlled factorization errors, and a separation between dissipation and scrambling times. It constrains a quantum-chaos exponent, not a measured charge-transport relaxation rate. Identifying $\\lambda_L$ with $1/\\tau_{\\mathrm{tr}}$ requires additional model-specific justification; the bound does not establish a universal transport coefficient $\\alpha=1$.",
+      "evidenceType": "theory",
       "sourceIds": [
-        "source-8339743a9f1c3239"
+        "source-8339743a9f1c3239",
+        "source-67da95cac5481029"
       ],
-      "conditions": "A lifetime must specify transport/optical/single-particle/thermal/chaos channel, residual term and h-versus-hbar convention. Single-band Drude extraction assumes appropriate n and m*.",
-      "verificationScope": "See each source verification label; this ledger does not certify primary findings."
+      "conditions": "Thermal quantum systems with a suitable regularized correlator, analyticity/boundedness, controlled factorization error and separated dissipation/scrambling scales. The bound applies in the exponential-growth regime above the error; no transport-time identification is assumed.",
+      "verificationScope": "Selected primary passages: Maldacena-Shenker-Stanford Eq. (2.5), sections 4.1-4.2 and 4.3.3. Transport distinction cross-checked against Hartnoll-Mackenzie arXiv v3 section 5; no independent proof verification."
     },
     {
       "id": "scwiki-h2-claim-limits-and-disputes-2",
@@ -362,7 +374,7 @@
       "id": "scwiki-h2-claim-discovery-implications-1",
       "sectionId": "discovery-implications",
       "statement": "Use a Planckian-scale observation to formulate a falsifiable normal-state model. Ask which spectral weight, carrier estimate and scattering anisotropy would support or reject the proposed interpretation. Proximity to superconductivity can motivate a mechanism study, but it does not establish that faster scattering raises the critical temperature.",
-      "evidenceType": "experiment",
+      "evidenceType": "hypothesis",
       "sourceIds": [
         "source-67da95cac5481029",
         "source-c1ae7869b672a8e8"
