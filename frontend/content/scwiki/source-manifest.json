@@ -659,8 +659,8 @@
       "lineCount": 71,
       "topicId": "scwiki-topic-d9",
       "articleId": "scwiki-d9",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3640,6 +3640,13 @@
       "retractionNoticeDoi": "10.1038/s41586-023-06774-2",
       "retractedAt": "2023-11-07",
       "reason": "Known retracted claim must retain notice and cannot supply accepted experimental Tc."
+    },
+    {
+      "id": "scwiki-d9-retraction-52k",
+      "retractedDoi": "10.1038/35046008",
+      "retractionNoticeDoi": "10.1038/nature01466",
+      "retractedAt": "2003-03-06",
+      "reason": "Withdrawn52K field-effect claim must retain original notice and cannot supply accepted experimental Tc."
     }
   ]
 }

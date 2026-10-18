@@ -893,3 +893,22 @@ it("keeps heavy-fermion transition criteria separate from magnetic and normal-st
  expect(md).toContain("complete supplement remain outside this scoped review");
  expect(md).toContain("normal state at 4 K");
 });
+
+it("preserves fulleride polymorph and transport criteria while excluding driven and withdrawn Tc",async()=>{
+ const a=articles().find(a=>a.code==="D9")!;
+ const fcc=a.materialCases.filter(c=>c.formula==="Cs3C60"&&c.tcK!==null);
+ expect(fcc.map(c=>[c.tcK,c.pressureGPa])).toEqual([[25.6,.13],[29.7,.22],[35,.7]]);
+ const film=a.materialCases.filter(c=>c.formula==="Rb2.98C60");
+ expect(film.map(c=>[c.tcK,c.criterion])).toEqual([[26.4,"local-resistivity-maximum"],[14.5,"resistivity-derivative-threshold"]]);
+ expect(a.materialCases.find(c=>c.reportedTemperatureK===100)?.tcK).toBeNull();
+ expect(a.materialCases.find(c=>c.reportedTemperatureK===2.2)?.tcK).toBeNull();
+ expect(searchArticles(searchIndex().entries,"fullerides",{tcMin:30,pressureRegime:"high"}).some(a=>a.code==="D9")).toBe(true);
+ expect(searchArticles(searchIndex().entries,"fullerides",{tcMin:36}).some(a=>a.code==="D9")).toBe(false);
+ expect(searchArticles(searchIndex().entries,"fullerides",{tcMin:15,criterion:"resistivity-derivative-threshold"}).some(a=>a.code==="D9")).toBe(false);
+ const withdrawn=a.references.find(r=>r.doi==="10.1038/35046008")!;
+ expect(withdrawn.retraction?.noticeDoi).toBe("10.1038/nature01466");
+ expect(a.materialCases.some(c=>c.sourceId===withdrawn.id)).toBe(false);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("2003-03-06");expect(md).toContain("10.1038/nature01466");
+ expect(md).toContain("operational criterion");expect(md).toContain("no equilibrium Tc");
+});
