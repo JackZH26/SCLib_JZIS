@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "f9c8abb99d74126d93b5",
+  "revision": "2d046d5a14cf227466e2",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -663,49 +663,53 @@
         "two-band superconductivity",
         "multichannel superposition",
         "MgB2",
-        "Eliashberg kernel"
+        "Eliashberg kernel",
+        "multiband pairing",
+        "multichannel pairing",
+        "多能带配对",
+        "多通道配对"
       ],
       "evidenceTypes": [
         "theory",
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "321feb3909bef769f5a5",
+      "revision": "d90ef3f452244938eb39",
       "materialCases": [
         {
+          "id": "scwiki-b12-material-1",
           "formula": "MgB2",
-          "sample": "bulk magnesium diboride",
+          "sample": "Nagamatsu 2001 polycrystalline pellet, zero field",
           "recordType": "experiment",
+          "reportedTemperatureK": 39,
           "tcK": 39,
-          "temperatureNote": "approximate reported transition",
-          "criterion": "unknown",
+          "temperatureKind": "transition",
+          "temperatureNote": "Onset 39 K; endpoint 38 K. Synthesis pressure 196 MPa is not measurement pressure.",
+          "criterion": "four-probe-resistive-onset",
           "pressureRegime": "ambient",
           "pressureGPa": null,
-          "equilibrium": "equilibrium",
-          "probe": "discovery report; criterion not re-extracted in this review",
-          "id": "scwiki-b12-material-1",
-          "sourceId": "source-fade6558e7eafb2b",
-          "reportedTemperatureK": 39,
-          "temperatureKind": "transition"
+          "equilibrium": "unknown",
+          "probe": "Four-probe resistivity; separate 10 Oe magnetization",
+          "sourceId": "source-fade6558e7eafb2b"
         },
         {
+          "id": "scwiki-b12-material-2",
           "formula": "FeSe/SrTiO3",
-          "sample": "single-layer interface",
+          "sample": "Lee one-unit-cell film, author v6 Figure 2 mean-field fit",
           "recordType": "experiment",
           "tcK": null,
-          "temperatureNote": "spectroscopic pairing scale, not assigned a transport Tc",
-          "criterion": "spectroscopic-gap",
+          "reportedTemperatureK": 58,
+          "temperatureKind": "spectroscopic-gap",
+          "temperatureNote": "58±7 K ARPES gap-closing fit, not a zero-resistance transition.",
+          "criterion": "ARPES-mean-field-gap-closure",
           "pressureRegime": "ambient",
           "pressureGPa": null,
-          "equilibrium": "equilibrium",
-          "probe": "ARPES and replica bands",
-          "id": "scwiki-b12-material-2",
+          "equilibrium": "unknown",
+          "probe": "Temperature-dependent ARPES",
           "sourceId": "source-f9fe6e9bc3792dcc",
-          "reportedTemperatureK": null,
-          "temperatureKind": "spectroscopic-gap",
           "aliases": [
-            "iron-based",
-            "iron based superconductors"
+            "FeSe STO",
+            "single-layer FeSe"
           ]
         }
       ],
@@ -713,9 +717,12 @@
         "10.1103/PhysRevLett.3.552",
         "10.1038/35065039",
         "10.1038/nature00898",
-        "10.1038/nature13894"
+        "10.1038/nature13894",
+        "10.1103/PhysRevLett.87.137005",
+        "10.1103/PhysRevLett.120.237001",
+        "10.1103/PhysRevLett.127.016803"
       ],
-      "text": " Scope\n\nMultiband pairing concerns how superconducting gaps on distinct bands are coupled. Multichannel pairing concerns different interaction contributions to a Cooper-pair kernel. Neither concept is equivalent to parallel normal-state electrical conductivities, and neither means that two spatially separate superconducting phases form one homogeneous condensate. Keeping these distinctions explicit prevents apparent evidence for several channels from becoming an unsupported mechanism claim.  \n\n Mathematical assumptions\n\nFor a simplified weak-coupling model with a shared cutoff energy Ec, a linearized gap equation can be written\n\n\n\\Deltai=L(Tc)\\sumj\\lambda{ij}\\Deltaj,\n\\qquad\nL(Tc)=\\ln\\!\\left(\\frac{1.13Ec}{kBTc}\\right).\n\n\nIn this declared approximation, the largest relevant pairing eigenvalue sets the instability. Off-diagonal entries represent interband pair transfer and help constrain relative gap phases. A matrix eigenvalue is not the arithmetic sum of all its entries. The energy cutoff notation here makes the dimensions explicit when converting the original ASCII equation. \n\nThe full problem can have different frequency spectra, momentum structure, repulsive terms, Coulomb effects and normal self-energy renormalization. Combining a pairing attraction and a mass enhancement into one positive scalar can give a misleading temperature estimate. Interactions can cooperate, compete or favor different gap structures after projection into the pairing channel. \n\n Experimental criteria\n\nResolve gap magnitudes and their band assignments with complementary spectroscopy and thermodynamics. State the band or orbital basis, energy cutoff, Coulomb treatment and disorder model. Distinguish a measurement that observes two gaps from an inference that identifies two different mediating bosons. Normal-state two-component Drude fits do not by themselves establish two superconducting gaps.\n\nThe MgB2 discovery paper reports superconductivity near 39 K. The detailed sample and transition criterion have not been re-extracted in this review, so the material record keeps its criterion explicitly unknown. \n\nChoi and colleagues calculated band-dependent gaps in MgB2 using an anisotropic Eliashberg treatment of electron-phonon pairing. Their sigma- and pi-band gaps vanish at a common calculated transition temperature. This is a theoretical result consistent with multiple gaps within that model; it is not a direct measurement of two independent pairing mediators. \n\n Material interpretation\n\nIn single-layer FeSe/SrTiO3, replica-band observations support the relevance of an interface electron-phonon interaction. They do not independently extract every spin, interface and plasmon contribution as a set of additive coupling constants. The interface hypothesis must be tested together with charge transfer, the reconstructed electronic structure and phase-coherence limitations. \n\nA high pairing or gap-closing scale measured by ARPES is not automatically a zero-resistance transition. When an interface and intrinsic electronic interactions are both discussed, the useful object is a specified combined kernel with assumptions and uncertainties. This pilot deliberately contains no unsourced table of separate FeSe/SrTiO3 coupling constants. \n\n Limits and disputes\n\nA common transition temperature is compatible with interband locking, but does not establish beneficial synergy between distinct interactions. Changes in a band structure, density of states or scattering rate can alter the instability without revealing a unique mediator. Cross-material percentages assigned to a plasmon enhancement are not universal physical constants.  \n\n Discovery implications\n\nA testable multichannel proposal predicts a gap structure and its response to an independent control parameter. Show what would distinguish cooperation from competition, and check that the same interaction has not been counted twice. The most useful next measurement constrains a specific matrix element or spectral contribution rather than simply adding another possible mechanism to a list.  \n\n Related topics\n\nSee , , and ."
+      "text": " Scope\n\nMultiband pairing describes coupled gaps on different electronic bands. Multichannel pairing describes different interaction contributions to a Cooper-pair kernel. These are distinct from parallel normal-state conductivities and from spatially separate superconducting phases. Observing two gaps does not identify two mediating bosons; observing a resistance drop in two phases does not establish one homogeneous condensate. The band basis, sample and measurement conditions must accompany the claim.   \n\n Mathematical assumptions\n\nIn a real, reciprocal two-band weak-coupling illustration with a shared cutoff energy Ec, write \\Deltai=L(Tc)\\sumj\\lambda{ij}\\Deltaj, where L(T)=\\ln[2e^{\\gammaE}Ec/(\\pi kBT)] and \\lambda{ij}=-V{ij}Nj. Here V{ij}=V{ji} is the pair interaction, attraction has negative V, and Nj>0 is the one-spin density of states in band j. The largest positive eigenvalue gives the leading instability, kBTc=(2e^{\\gammaE}/\\pi)Ec\\exp(-1/\\lambda+). The approximation assumes kBTc\\ll Ec; a nonpositive leading eigenvalue gives no instability in this restricted model. This is a stated modern illustration, not a claim that the historical Suhl paper has been fully audited.  \n\nAlthough \\lambda need not be symmetric, K{ij}=-\\sqrt{Ni}V{ij}\\sqrt{Nj} is a symmetric similar matrix with eigenvector \\etai=\\sqrt{Ni}\\Deltai. For two bands, \\lambda+=[\\lambda{11}+\\lambda{22}+\\sqrt{(\\lambda{11}-\\lambda{22})^2+4\\lambda{12}\\lambda{21}}]/2. An independent check of 64 reciprocal kernels verifies this formula, the density-of-states transformation and the gap-vector residuals. All parameters are synthetic; no MgB2 or FeSe coupling is fitted. The eigenvalue is not the sum of every matrix entry.  \n\nConsider K=\\begin{pmatrix}0.3&-0.1\\\\-0.1&0.3\\end{pmatrix}, whose leading eigenvalue is 0.4 with opposite gap signs. Adding only positive off-diagonal entries of 0.05 lowers it to 0.35. That added matrix is not positive semidefinite: entrywise attraction and a nonnegative quadratic form are different conditions. In contrast, 31 positive-semidefinite additions do not lower the largest eigenvalue of the fixed kernel. This bounded example shows why cooperation must be assessed after projecting the interaction, with the other assumptions held fixed.  \n\nChanging both off-diagonal signs leaves the two eigenvalues unchanged but reverses the relative gap sign. A transition temperature alone therefore cannot determine the relative phase. With zero interband coupling, the two bands have independent instabilities, and the weaker band need not acquire a gap at the higher transition. A full calculation must also retain frequency dependence, different cutoffs, Coulomb terms and normal self-energy. Even an illustrative scalar increase from 0.3 to 0.4 loses to a mass factor Z=1.5, because 0.4/1.5<0.3; that arithmetic is not a complete Eliashberg calculation.  \n\n Experimental criteria\n\nNagamatsu and colleagues reported a resistive onset at 39 K and endpoint at 38 K in a polycrystalline MgB2 pellet, alongside separate 10 Oe magnetic measurements. The original paper's 196 MPa pressure concerns synthesis, not the superconducting measurement. This page now records the onset criterion explicitly instead of treating every reported 39 K value as an unspecified transition. Geometry, sample quality and criterion remain part of the record. \n\nChoi and colleagues calculated anisotropic MgB2 gaps using an electron–phonon Eliashberg model. Their band-dependent gap distributions close at a common calculated transition. These are theoretical results, not direct measurements of two independent mediators, and numerical agreement does not independently identify every interaction in a material. The corrected DOI is the MgB2 paper, not the unrelated biology article inherited by the pinned draft. \n\nSzabo and colleagues used Cu point contacts and two weighted BTK contributions to describe MgB2 spectra. Their selected author methods keep interface barrier and weighting parameters fixed across temperature, with applied fields helping distinguish the gap contributions. This is spectroscopic evidence interpreted through an interface model; it does not determine the relative gap sign or assign separate bosons to each gap. Cross-check band assignment and bulk thermodynamics before equating a fitted component with a unique condensate. \n\n Material interpretation\n\nLee and colleagues observed replica bands in one-unit-cell FeSe/SrTiO3 and interpreted them through forward-focused interface phonons. In the identified author v6, a mean-field fit gives a gap-closing scale of 58\\pm7 K, with Figure 2 showing closure between 50 and 64 K. This is an ARPES-derived scale, not a measured zero-resistance temperature. Their predicted enhancement assumes an electronic magnetic-pairing baseline and a specified model; neither it nor the fitted coupling is an experimentally separated budget of all pairing channels. \n\nReplica-band interpretation requires controls. Li and Sawatzky proposed predominantly extrinsic energy loss by the escaping photoelectron, using a dielectric model. Faeth and colleagues subsequently tested photon-energy dependence at 15 K over 21–75 eV and found a nearly constant replica-to-main intensity ratio; higher-order separations and line shapes also supported intrinsic coupling in their samples. Their forward-scattering comparison inferred \\lambda=0.19\\pm0.02. This selected-method check is stronger than a bare replica observation, but does not by itself uniquely partition the superconducting pairing kernel.  \n\nThe Faeth analysis also notes that the estimated gap enhancement under its chosen model cannot fully explain the difference between the reported high gap-closing scale and electron-doped bulk comparators. Distinguish that conditional inference from a universal phonon percentage, and distinguish measured spectra from a thermodynamic or zero-resistance transition. Differences between papers require matched coupling definitions, background subtraction, sample preparation and model assumptions; a single scalar cannot settle the mechanism. \n\n Limits and disputes\n\nA shared transition and multiple gap features are compatible with interband coupling, but do not independently establish beneficial cooperation between different interactions. Carrier transfer, density of states, scattering and phase coherence can change together. Claims of a unique mechanism require discriminating controls; phase-sensitive probes, spectroscopy and thermodynamics constrain different parts of the problem. The original Suhl text, full FeSe supplementary controls and complete raw-data analyses remain outside the completed checks. Complete scientific acceptance remains open.     \n\n Discovery implications\n\nSpecify what changes when an interaction is added and what is held fixed. Report the band and momentum basis, cutoff, Coulomb and self-energy treatment, and the eigenfunction as well as the leading eigenvalue. Avoid double-counting one screened interaction under two names. A useful proposal predicts a response to a controlled perturbation and explains which competing interpretation that measurement would exclude. Do not substitute a list of plausible bosons or an unsourced sum of coupling constants for a tested kernel.    \n\n Related topics\n\nSee , , ,  and ."
     },
     {
       "id": "scwiki-b13",

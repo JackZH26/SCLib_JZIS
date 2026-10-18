@@ -181,12 +181,33 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(bcs.articleChecks.find((c:{articleId:string})=>c.articleId==="scwiki-a1").verification.scope).toBe("crossref-metadata-only");
   expect(bcs.articleChecks.find((c:{articleId:string})=>c.articleId==="scwiki-b1").verification.scope).toBe("primary-full-text-scoped-check");
  });
+ it("keeps B12 spectroscopic gap closure out of transition filters and exports source-specific debate",async()=>{
+  const a=articles().find(a=>a.code==="B12")!;
+  const gap=a.materialCases.find(r=>r.formula==="FeSe/SrTiO3")!;
+  expect(gap.tcK).toBeNull();expect(gap.temperatureKind).toBe("spectroscopic-gap");
+  expect(gap.reportedTemperatureK).toBe(58);
+  const onset=a.materialCases.find(r=>r.formula==="MgB2")!;
+  expect(onset.tcK).toBe(39);expect(onset.criterion).toBe("four-probe-resistive-onset");
+  for(const query of ["多能带配对","multichannel pairing"]){
+   expect(searchArticles(searchIndex().entries,query).some(r=>r.code==="B12")).toBe(true);
+  }
+  for(const query of ["?q=FeSe%20STO&tcMin=1","?q=MgB2&criterion=ARPES-mean-field-gap-closure&tcMin=1"]){
+   const results=await(await get(["search"],query)).json();
+   expect(results.results.some((r:{code:string})=>r.code==="B12")).toBe(false);
+  }
+  const onsetResults=await(await get(["search"],"?q=MgB2&tcMin=38&criterion=four-probe-resistive-onset")).json();
+  expect(onsetResults.results.some((r:{code:string})=>r.code==="B12")).toBe(true);
+  const section=await(await get(["articles",a.id,"sections","material-interpretation"],"?format=markdown")).text();
+  for(const doi of ["10.1038/nature13894","10.1103/PhysRevLett.120.237001","10.1103/PhysRevLett.127.016803"])expect(section).toContain(doi);
+  expect(section).toContain("Full supplementary");
+  expect(section).toContain("Complete scientific acceptance remains open");
+ });
  it("corrects the unrelated biology DOI and separates calculated MgB2 gaps from experiments",()=>{
   const a=articles().find(a=>a.code==="B12")!;
   expect(a.references.some(r=>r.doi==="10.1038/nature00992")).toBe(false);
   const ref=a.references.find(r=>r.doi==="10.1038/nature00898")!;
   expect(ref.title).toContain("MgB2");
-  expect(ref.verification.scope).toBe("primary-full-text-scoped-check");
+  expect(ref.verification.scope).toBe("selected-published-anisotropic-gap-check");
   const computed=a.claims.find(c=>c.id==="scwiki-b12-claim-experimental-criteria-2")!;
   expect(computed.evidenceType).toBe("theory");
   expect(computed.sourceIds).toEqual([ref.id]);
