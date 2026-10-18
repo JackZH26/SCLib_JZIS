@@ -170,3 +170,11 @@ test("material generation rejects undeclared kinds and invalid observed temperat
   });
  }
 });
+
+test("noncentrosymmetric classification cannot drop the Frigeri SOC erratum",t=>{
+ const f=inventoryFixture(t),filename=path.join(f.directory,"articles/c9/meta.json");
+ const meta=JSON.parse(readFileSync(filename,"utf8"));
+ meta.references=meta.references.filter(r=>r.doi!=="10.1103/PhysRevLett.93.099903");
+ writeFileSync(filename,JSON.stringify(meta));const result=f.build();
+ assert.notEqual(result.status,0);assert.match(result.stderr,/missing required erratum 10\.1103\/PhysRevLett\.93\.099903/);
+});

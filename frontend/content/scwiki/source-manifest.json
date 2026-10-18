@@ -479,8 +479,8 @@
       "lineCount": 85,
       "topicId": "scwiki-topic-c9",
       "articleId": "scwiki-c9",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3590,14 +3590,30 @@
       "articleDoi": "10.1103/RevModPhys.47.331",
       "requiredCompanionDoi": "10.1103/RevModPhys.48.357",
       "affectedTopics": [
-        "C5"
+        "C5",
+        "C9"
       ],
       "affectedSourcePaths": [
-        "C_pairing_symmetry/C5_p_wave.md"
+        "C_pairing_symmetry/C5_p_wave.md",
+        "C_pairing_symmetry/C9_singlet_vs_triplet.md"
       ],
       "evidenceUrl": "https://journals.aps.org/rmp/pdf/10.1103/RevModPhys.48.357",
       "checkedAt": "2026-10-18",
-      "scope": "Withdrawn factor-of-two discrepancy statement onp401; full brief erratum text checked."
+      "scope": "Withdrawn factor-of-two discrepancy statement on p.401; full brief erratum text checked."
+    },
+    {
+      "id": "correction-frigeri2004-soc",
+      "articleDoi": "10.1103/PhysRevLett.92.097001",
+      "requiredCompanionDoi": "10.1103/PhysRevLett.93.099903",
+      "affectedTopics": [
+        "C9"
+      ],
+      "affectedSourcePaths": [
+        "C_pairing_symmetry/C9_singlet_vs_triplet.md"
+      ],
+      "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.93.099903",
+      "checkedAt": "2026-10-18",
+      "scope": "Omitted linear MnSi SOC term and Fig.2 alphaR rescaling; original alignment conclusion remains conditional on g and interaction."
     }
   ]
 }

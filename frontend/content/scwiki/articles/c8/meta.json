@@ -29,7 +29,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T10:10:02.614412+00:00",
+  "modifiedAt": "2026-10-18T10:20:14.610659+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected published Hamidian and Edkins methods/results; Berg stacking theory; inherited kagome passages; bounded historical and 2026 abstract checks; independent Fourier and overlap examples.",
@@ -189,7 +189,7 @@
         "scope": "selected-published-text-check",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://davis-group-quantum-matter-research.ie/publicationPDF/Science_364_976.pdf",
-        "note": "Published 7 June 2019; selected main-text pp.1–4, result passage p.5, Figs.1/4 pp.2/4 visually checked. Supplement and raw fits remain open. Distinct from Hamidian2016 SJTM."
+        "note": "Published 7 June 2019; selected main-text pp.1–4, result passage p.5, Figs.1/4 pp.2/4 visually checked. Supplement and raw fits remain open. Distinct from Hamidian 2016 SJTM."
       }
     },
     {
@@ -342,7 +342,7 @@
         "source-b33aab72ae697f3a",
         "source-7148789acde770d4"
       ],
-      "conditions": "Keep each study and probe separate: 2016 pair tunneling below50mK; 2019 single-electron 0/8.25T comparison at2K. Spectroscopy and phase interpretation are not interchangeable.",
+      "conditions": "Keep each study and probe separate: 2016 pair tunneling below 50 mK; 2019 single-electron 0/8.25T comparison at 2 K. Spectroscopy and phase interpretation are not interchangeable.",
       "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
     },
     {
@@ -353,7 +353,7 @@
       "sourceIds": [
         "source-66a2b2a9519f6f44"
       ],
-      "conditions": "Keep each study and probe separate: 2016 pair tunneling below50mK; 2019 single-electron 0/8.25T comparison at2K. Spectroscopy and phase interpretation are not interchangeable.",
+      "conditions": "Keep each study and probe separate: 2016 pair tunneling below 50 mK; 2019 single-electron 0/8.25T comparison at 2 K. Spectroscopy and phase interpretation are not interchangeable.",
       "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
     },
     {
@@ -364,7 +364,7 @@
       "sourceIds": [
         "source-d306adac5d567426"
       ],
-      "conditions": "Keep each study and probe separate: 2016 pair tunneling below50mK; 2019 single-electron 0/8.25T comparison at2K. Spectroscopy and phase interpretation are not interchangeable.",
+      "conditions": "Keep each study and probe separate: 2016 pair tunneling below 50 mK; 2019 single-electron 0/8.25T comparison at 2 K. Spectroscopy and phase interpretation are not interchangeable.",
       "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
     },
     {
@@ -375,7 +375,7 @@
       "sourceIds": [
         "source-057c43c86174f961"
       ],
-      "conditions": "Keep each study and probe separate: 2016 pair tunneling below50mK; 2019 single-electron 0/8.25T comparison at2K. Spectroscopy and phase interpretation are not interchangeable.",
+      "conditions": "Keep each study and probe separate: 2016 pair tunneling below 50 mK; 2019 single-electron 0/8.25T comparison at 2 K. Spectroscopy and phase interpretation are not interchangeable.",
       "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
     },
     {
@@ -386,7 +386,7 @@
       "sourceIds": [
         "source-ad66f48ab9369ce9"
       ],
-      "conditions": "Keep each study and probe separate: 2016 pair tunneling below50mK; 2019 single-electron 0/8.25T comparison at2K. Spectroscopy and phase interpretation are not interchangeable.",
+      "conditions": "Keep each study and probe separate: 2016 pair tunneling below 50 mK; 2019 single-electron 0/8.25T comparison at 2 K. Spectroscopy and phase interpretation are not interchangeable.",
       "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
     },
     {
@@ -431,13 +431,13 @@
   "corrections": [
     {
       "id": "scwiki-c8-correction-1",
-      "description": "Corrected inherited attribution: Hamidian2016 is Josephson imaging; field-induced vortex-halo single-electron spectroscopy is Edkins2019.",
+      "description": "Corrected inherited attribution: Hamidian 2016 is Josephson imaging; field-induced vortex-halo single-electron spectroscopy is Edkins 2019.",
       "sourceId": "source-d306adac5d567426",
       "scope": "Distinct probe, field, temperature and harmonic evidence."
     },
     {
       "id": "scwiki-c8-correction-2",
-      "description": "Separated the2007 stripe-layer proposal from the2009 thermal-melting charge-4e proposal.",
+      "description": "Separated the 2007 stripe-layer proposal from the 2009 thermal-melting charge-4e proposal.",
       "sourceId": "source-cb08c313e0597487",
       "scope": "Theory identity and bounded review."
     },
@@ -469,12 +469,12 @@
     {
       "id": "scwiki-c8-material-1",
       "formula": "Bi2Sr2CaCu2O8+x",
-      "sample": "Hamidian et al. Bi2212 sample, p approximately17%, superconducting nanoflake tip",
+      "sample": "Hamidian et al. Bi2212 sample, p approximately 17%, superconducting nanoflake tip",
       "recordType": "experiment",
       "tcK": null,
       "reportedTemperatureK": null,
       "temperatureKind": "measurement",
-      "temperatureNote": "Below0.05K operating condition, not an exact temperature or a superconducting transition. Effective noise temperature is separate.",
+      "temperatureNote": "Below 0.05 K operating condition, not an exact temperature or a superconducting transition. Effective noise temperature is separate.",
       "criterion": "pair-tunneling-operating-temperature",
       "pressureRegime": "unknown",
       "pressureGPa": null,
@@ -485,7 +485,7 @@
     {
       "id": "scwiki-c8-material-2",
       "formula": "Bi2Sr2CaCu2O8+x",
-      "sample": "Edkins et al. slightly underdoped sample, p approximately17%, same-tip same-view comparison",
+      "sample": "Edkins et al. slightly underdoped sample, p approximately 17%, same-tip same-view comparison",
       "recordType": "experiment",
       "tcK": null,
       "reportedTemperatureK": 2,
@@ -495,7 +495,7 @@
       "pressureRegime": "unknown",
       "pressureGPa": null,
       "equilibrium": "unknown",
-      "probe": "Single-electron STM; field-induced difference between8.25T and0T,58nm by58nm view",
+      "probe": "Single-electron STM; field-induced difference between 8.25 T and 0 T, 58 nm by 58 nm view",
       "sourceId": "source-d306adac5d567426"
     }
   ]

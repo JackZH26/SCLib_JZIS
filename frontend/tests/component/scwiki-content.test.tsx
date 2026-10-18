@@ -749,3 +749,19 @@ it("keeps the two Bi2212 PDW experiments and limited modern source checks distin
  expect(a.references.find(r=>r.doi===null)?.verification.scope).toBe("institutional-bibliographic-check");
  expect(a.references.find(r=>r.doi==="10.1038/s41586-026-10325-w")?.verification.scope).toBe("institutional-abstract-and-publication-check");
 });
+
+it("exports conditional spin classification with its erratum and searchable orbital exceptions",async()=>{
+ const a=articles().find(a=>a.code==="C9")!;
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("even-frequency pairing and a symmetric orbital");
+ expect(md).toContain("frequency exchange is not the physical time-reversal operation");
+ expect(md).toContain("imposed triplet gap is zero");
+ expect(md).toContain("adds an omitted linear term");
+ expect(md).toContain("not an unlimited physical upper critical field");
+ expect(a.references.some(r=>r.doi==="10.1103/PhysRevLett.93.099903")).toBe(true);
+ expect(a.references.find(r=>r.doi==="10.1103/PhysRevLett.98.037003")?.verification.scope).toBe("publisher-abstract-check");
+ expect(searchArticles(searchIndex().entries,"shadowed triplet",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"shadowed triplet",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const out=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(out).toContain("particle-hole-symmetric test point");expect(out).toContain("Full scientific acceptance");
+});
