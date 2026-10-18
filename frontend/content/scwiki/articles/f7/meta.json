@@ -26,15 +26,15 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T14:35:54.698504+00:00",
+  "modifiedAt": "2026-10-18T14:39:32.034909+00:00",
   "review": {
     "checkedAt": "2026-10-18",
-    "scope": "Selected Peotta/Liang/Huhtinen/Julku/Tanaka passages, explicit SI conventions and15flat-band current identities; originalabstract scope forlimit-order paper andselectedoriginalBKTtext.",
+    "scope": "Selected Peotta, Liang, Huhtinen, Julku and Tanaka passages, explicit SI conventions and 15 flat-band current identities. The limit-order paper was checked at original-abstract scope; selected original BKT passages were read.",
     "limitations": [
-      "Complete scientific acceptance and full author/final-version comparisons remain open.",
-      "No full current-correlation/BKT derivation or multiband self-consistent response reproduced.",
-      "No raw microwave dataset audit or model-independent geometric fraction extracted.",
-      "Flat-band identity and SI conversions are illustrative checks,not material evidence."
+      "Complete scientific acceptance and full author-to-journal version comparisons remain open.",
+      "The full current-correlation and BKT derivations and a self-consistent multiband response have not been reproduced.",
+      "The raw microwave data have not been audited, and no model-independent geometric fraction has been extracted.",
+      "Band identities and SI conversions are illustrative checks, not material evidence."
     ]
   },
   "provenance": {
@@ -57,22 +57,22 @@
         "related-topics"
       ],
       "decision": "edited-with-scoped-evidence",
-      "note": "Existingpilot expandedinplace. Pinnedsource retained; add2022internalfieldcorrection,explicitunits andbounded checks; selectedsource scopes upgradedwithactualreadings,notglobalacceptance."
+      "note": "The existing pilot was expanded in place while preserving the pinned source. Added the 2022 internal-field correction, explicit units and bounded checks. Selected source scopes were updated from actual readings; complete scientific acceptance remains open."
     }
   ],
   "corrections": [
     {
       "id": "scwiki-f7-correction-1",
-      "description": "The pinned2025stiffness reference names Randeria; the DOI identifies Tanaka and colleagues. Updated attribution and limited selected-manuscript review are retained.",
+      "description": "The pinned 2025 stiffness reference names Randeria; its DOI identifies Tanaka and colleagues. The public article corrects the attribution and retains the limited manuscript-review scope.",
       "sourceId": "source-be7282623ca96056",
-      "scope": "Bibliographic attribution,not a scientific correction to that paper."
+      "scope": "Bibliographic attribution, not a scientific correction to the paper."
     }
   ],
   "equationChecks": [
     {
       "targetSectionId": "mathematical-assumptions",
       "tex": "K_\\square=\\frac{4e^2\\rho_s}{\\hbar^2}=\\frac1{L_\\square}",
-      "check": "15flat-band interband-matrix/metric checks with smooth-phase changes;3SIinductance conversions andQ=2qcurvaturefactor4. No selfconsistentcurrent or materialTc claimed."
+      "check": "Fifteen flat-band current and metric checks with smooth phase changes; three SI inductance conversions and the factor of four for Q = 2q. No self-consistent current response or material transition temperature is claimed."
     }
   ],
   "references": [
@@ -87,7 +87,7 @@
         "scope": "selected-published-units-and-flat-band-assumptions",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://www.nature.com/articles/ncomms9944",
-        "note": "Published20November2015. Selectedpp3–6; actualp3 visuallychecked freeenergydefinition andEq1 frozen-fieldderivative,with2022responsecorrection considered. Priorp5uniformpairing/hierarchyreading retained. Not a fullsupplementaryreview."
+        "note": "Published 20 November 2015. Selected pages 3–6 were read. Page 3 was visually checked for the free-energy definition and frozen-field derivative in Eq. (1), interpreted with the 2022 response correction. The earlier page 5 review of uniform pairing and scale hierarchy is retained. The full supplementary derivation has not been reviewed."
       }
     },
     {
@@ -101,7 +101,7 @@
         "scope": "selected-author-lieb-model",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://arxiv.org/pdf/1603.03237v2",
-        "note": "Authorv2 8May2016,publication22July2016; selectedpp1–2,Chern-zero model,isolated-limit and orbital-pairing conditions; p2visuallychecked after xref warning. Full finalcomparison and modelresponse not reproduced."
+        "note": "Author version 2, dated 8 May 2016; journal publication 22 July 2016. Selected pages 1–2 cover the Chern-trivial Lieb model, isolated-band limit and orbital pairing conditions. Page 2 was visually checked after a PDF extraction warning. The final-version comparison and full model response remain open."
       }
     },
     {
@@ -115,7 +115,7 @@
         "scope": "selected-author-projector-and-metric-conventions",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://arxiv.org/pdf/1610.01803v2",
-        "note": "Authorv2 11January2017,selectedpp1–2,4–6; p5Eq21–24 visuallychecked. Published27January2017. R=2Tr(P dP dP) and gLiang=2gWiki. Final-version comparison and full response derivation remain open."
+        "note": "Author version 2, dated 11 January 2017; journal publication 27 January 2017. Selected pages 1–2 and 4–6 were read, and Eqs. (21)–(24) on page 5 were visually checked. The metric normalization is twice the Wiki convention. The final-version comparison and full response derivation remain open."
       }
     },
     {
@@ -129,7 +129,7 @@
         "scope": "selected-author-circuit-and-temperature-definitions",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://arxiv.org/pdf/2406.13740v2",
-        "note": "Tanaka et al, published5February2025. Authorv2selectedpp5–7 and prior B13/E9 Supplement3p31 circuitreview.20mKbase/40mKdevice,half-resistance near1K,active aspect ratio and parallel edge model; fullfinal/rawdata comparison open."
+        "note": "Tanaka and colleagues, published 5 February 2025. Selected author-version pages 5–7 and earlier circuit passages were reviewed: 20 mK base and approximately 40 mK device temperatures, the half-resistance criterion near 1 K, assumed active-region aspect ratio and parallel edge model. The full final-version and raw-data comparisons remain open."
       }
     },
     {
@@ -143,7 +143,7 @@
         "scope": "selected-published-relaxation-correction",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://aaltodoc.aalto.fi/server/api/core/bitstreams/e05db312-49b0-4769-b112-681407acd4b0/content",
-        "note": "Final reprint selectedpp1–5; actualp4 Eq13–17 visuallychecked: order-parameter derivatives,TRS and positive-Hessian conditions,representation dependence and relaxation. Minimal-integrated-trace statement reused from F1selectedp6. Full proof/multibandresponse not reproduced."
+        "note": "Published 26 July 2022. Selected final-reprint pages 1–5 were read; Eqs. (13)–(17) on page 4 were visually checked. The review covers order-parameter relaxation, time reversal, Hessian conditions and representation dependence. The earlier selected page 6 reading of minimal integrated trace is retained. The full proof and multiband response have not been reproduced."
       }
     },
     {
@@ -157,7 +157,7 @@
         "scope": "publisher-original-abstract",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.47.7995",
-        "note": "Published1April1993. Originalabstract only: wavevector/frequencylimit dependence andlattice-state criteria. Fullcorrelation-functionanalysis notread."
+        "note": "Published 1 April 1993. The original abstract discusses wavevector and frequency limits and criteria for lattice states. The full correlation-function analysis has not been read."
       }
     },
     {
@@ -171,7 +171,7 @@
         "scope": "selected-original-publisher-text",
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.39.1201",
-        "note": "Selected original pp1202–1203 extractedpublishertext reread: bare andrenormalized K,RGrelations anduniversaljump Eq10. Screenshot didnot yield inspectablepixels; no visualcheck. Fulloriginalderivation not reproduced;harvestdownload401 retained asaccesslimit."
+        "note": "Published 7 November 1977. Selected original publisher text on pages 1202–1203 was reread: bare and renormalized stiffness, recursion relations and the universal jump in Eq. (10). No inspectable screenshot was returned, so no visual equation check is claimed. The full derivation has not been reproduced."
       }
     }
   ],
@@ -208,8 +208,8 @@
         "source-fdf091e09e7f4a6f",
         "source-fa7a165c8c344a63"
       ],
-      "conditions": "Explicitsheet-energy,mass-normalized andinverseinductance conventions; fixedorbitalbasis andrelaxedpairingfields; BKTrenormalizedtotalstiffness anddevice-specificmodel.",
-      "verificationScope": "Selectedoriginalpassages,bandidentity andunitchecks; complete scientificacceptanceopen."
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
     },
     {
       "id": "scwiki-f7-claim-scope-2",
@@ -219,8 +219,8 @@
       "sourceIds": [
         "source-dd8fd5ac429b785f"
       ],
-      "conditions": "Explicitsheet-energy,mass-normalized andinverseinductance conventions; fixedorbitalbasis andrelaxedpairingfields; BKTrenormalizedtotalstiffness anddevice-specificmodel.",
-      "verificationScope": "Selectedoriginalpassages,bandidentity andunitchecks; complete scientificacceptanceopen."
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
     },
     {
       "id": "scwiki-f7-claim-mathematical-assumptions-1",
@@ -231,8 +231,8 @@
         "source-fdf091e09e7f4a6f",
         "source-be7282623ca96056"
       ],
-      "conditions": "Explicitsheet-energy,mass-normalized andinverseinductance conventions; fixedorbitalbasis andrelaxedpairingfields; BKTrenormalizedtotalstiffness anddevice-specificmodel.",
-      "verificationScope": "Selectedoriginalpassages,bandidentity andunitchecks; complete scientificacceptanceopen."
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
     },
     {
       "id": "scwiki-f7-claim-mathematical-assumptions-2",
@@ -243,8 +243,8 @@
         "source-fdf091e09e7f4a6f",
         "source-be7282623ca96056"
       ],
-      "conditions": "Explicitsheet-energy,mass-normalized andinverseinductance conventions; fixedorbitalbasis andrelaxedpairingfields; BKTrenormalizedtotalstiffness anddevice-specificmodel.",
-      "verificationScope": "Selectedoriginalpassages,bandidentity andunitchecks; complete scientificacceptanceopen."
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
     },
     {
       "id": "scwiki-f7-claim-mathematical-assumptions-3",
@@ -255,8 +255,8 @@
         "source-fa7a165c8c344a63",
         "source-72f7ddb9f13bbd81"
       ],
-      "conditions": "Explicitsheet-energy,mass-normalized andinverseinductance conventions; fixedorbitalbasis andrelaxedpairingfields; BKTrenormalizedtotalstiffness anddevice-specificmodel.",
-      "verificationScope": "Selectedoriginalpassages,bandidentity andunitchecks; complete scientificacceptanceopen."
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
     },
     {
       "id": "scwiki-f7-claim-mathematical-assumptions-4",
@@ -267,8 +267,8 @@
         "source-fdf091e09e7f4a6f",
         "source-fa7a165c8c344a63"
       ],
-      "conditions": "Explicitsheet-energy,mass-normalized andinverseinductance conventions; fixedorbitalbasis andrelaxedpairingfields; BKTrenormalizedtotalstiffness anddevice-specificmodel.",
-      "verificationScope": "Selectedoriginalpassages,bandidentity andunitchecks; complete scientificacceptanceopen."
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
     },
     {
       "id": "scwiki-f7-claim-mathematical-assumptions-5",
@@ -278,8 +278,8 @@
       "sourceIds": [
         "source-72f7ddb9f13bbd81"
       ],
-      "conditions": "Explicitsheet-energy,mass-normalized andinverseinductance conventions; fixedorbitalbasis andrelaxedpairingfields; BKTrenormalizedtotalstiffness anddevice-specificmodel.",
-      "verificationScope": "Selectedoriginalpassages,bandidentity andunitchecks; complete scientificacceptanceopen."
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
     },
     {
       "id": "scwiki-f7-claim-experimental-criteria-1",
@@ -289,8 +289,8 @@
       "sourceIds": [
         "source-be7282623ca96056"
       ],
-      "conditions": "Explicitsheet-energy,mass-normalized andinverseinductance conventions; fixedorbitalbasis andrelaxedpairingfields; BKTrenormalizedtotalstiffness anddevice-specificmodel.",
-      "verificationScope": "Selectedoriginalpassages,bandidentity andunitchecks; complete scientificacceptanceopen."
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
     },
     {
       "id": "scwiki-f7-claim-experimental-criteria-2",
@@ -300,8 +300,8 @@
       "sourceIds": [
         "source-be7282623ca96056"
       ],
-      "conditions": "Explicitsheet-energy,mass-normalized andinverseinductance conventions; fixedorbitalbasis andrelaxedpairingfields; BKTrenormalizedtotalstiffness anddevice-specificmodel.",
-      "verificationScope": "Selectedoriginalpassages,bandidentity andunitchecks; complete scientificacceptanceopen."
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
     },
     {
       "id": "scwiki-f7-claim-experimental-criteria-3",
@@ -312,8 +312,8 @@
         "source-be7282623ca96056",
         "source-8f81510a80c35e3a"
       ],
-      "conditions": "Explicitsheet-energy,mass-normalized andinverseinductance conventions; fixedorbitalbasis andrelaxedpairingfields; BKTrenormalizedtotalstiffness anddevice-specificmodel.",
-      "verificationScope": "Selectedoriginalpassages,bandidentity andunitchecks; complete scientificacceptanceopen."
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
     },
     {
       "id": "scwiki-f7-claim-limits-and-disputes-1",
@@ -325,8 +325,8 @@
         "source-b43340ce5c356e49",
         "source-72f7ddb9f13bbd81"
       ],
-      "conditions": "Explicitsheet-energy,mass-normalized andinverseinductance conventions; fixedorbitalbasis andrelaxedpairingfields; BKTrenormalizedtotalstiffness anddevice-specificmodel.",
-      "verificationScope": "Selectedoriginalpassages,bandidentity andunitchecks; complete scientificacceptanceopen."
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
     },
     {
       "id": "scwiki-f7-claim-limits-and-disputes-2",
@@ -340,8 +340,8 @@
         "source-dd8fd5ac429b785f",
         "source-8f81510a80c35e3a"
       ],
-      "conditions": "Explicitsheet-energy,mass-normalized andinverseinductance conventions; fixedorbitalbasis andrelaxedpairingfields; BKTrenormalizedtotalstiffness anddevice-specificmodel.",
-      "verificationScope": "Selectedoriginalpassages,bandidentity andunitchecks; complete scientificacceptanceopen."
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
     },
     {
       "id": "scwiki-f7-claim-discovery-implications-1",
@@ -353,8 +353,8 @@
         "source-fa7a165c8c344a63",
         "source-72f7ddb9f13bbd81"
       ],
-      "conditions": "Explicitsheet-energy,mass-normalized andinverseinductance conventions; fixedorbitalbasis andrelaxedpairingfields; BKTrenormalizedtotalstiffness anddevice-specificmodel.",
-      "verificationScope": "Selectedoriginalpassages,bandidentity andunitchecks; complete scientificacceptanceopen."
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
     }
   ]
 }
