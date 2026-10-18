@@ -125,3 +125,11 @@ test("known Kuroki erratum accompanies the original in newly authored and existi
   assert.notEqual(result.status,0);assert.match(result.stderr,/missing required erratum 10\.1103\/PhysRevLett\.102\.109902/);
  }
 });
+
+test("uranium discovery references reject both inherited incorrect DOIs",t=>{
+ for(const [correct,incorrect] of [["10.1038/35020500","10.1038/35050500"],["10.1038/35098048","10.1038/35065045"]]){
+  const f=inventoryFixture(t),filename=path.join(f.directory,"articles/b4/meta.json"),meta=JSON.parse(readFileSync(filename,"utf8"));
+  meta.references.find(r=>r.doi===correct).doi=incorrect;writeFileSync(filename,JSON.stringify(meta));
+  const result=f.build();assert.notEqual(result.status,0);assert.ok(result.stderr.includes("known incorrect DOI "+incorrect));
+ }
+});

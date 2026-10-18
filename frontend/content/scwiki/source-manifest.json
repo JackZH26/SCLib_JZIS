@@ -299,8 +299,8 @@
       "lineCount": 43,
       "topicId": "scwiki-topic-b4",
       "articleId": "scwiki-b4",
-      "disposition": "topic-awaiting-translation-and-review",
-      "publicBody": false,
+      "disposition": "translated-with-scoped-review",
+      "publicBody": true,
       "scientificVerification": "not-established-by-file-presence-or-historical-audit"
     },
     {
@@ -3512,6 +3512,34 @@
       "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.102.109902",
       "checkedAt": "2026-10-18",
       "scope": "Known published gap-plot erratum must accompany this original paper in any migrated article."
+    },
+    {
+      "id": "correction-b4-35050500",
+      "affectedTopics": [
+        "B4"
+      ],
+      "affectedSourcePaths": [
+        "B_mechanisms/B4_spin_fluctuation_FM.md"
+      ],
+      "incorrectDoi": "10.1038/35050500",
+      "correctDoi": "10.1038/35020500",
+      "evidenceUrl": "https://www.nature.com/articles/35020500",
+      "checkedAt": "2026-10-18",
+      "scope": "Correct UGe2 original identity verified; incorrect target unresolved."
+    },
+    {
+      "id": "correction-b4-35065045",
+      "affectedTopics": [
+        "B4"
+      ],
+      "affectedSourcePaths": [
+        "B_mechanisms/B4_spin_fluctuation_FM.md"
+      ],
+      "incorrectDoi": "10.1038/35065045",
+      "correctDoi": "10.1038/35098048",
+      "evidenceUrl": "https://www.nature.com/articles/35098048",
+      "checkedAt": "2026-10-18",
+      "scope": "Correct URhGe identity verified; incorrect target is semiconductor melting research."
     }
   ]
 }

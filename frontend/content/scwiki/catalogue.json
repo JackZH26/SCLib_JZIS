@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "7080b1cdf1083865be8a",
+  "revision": "0da31be18f69bee46570",
   "articles": [
     {
       "id": "scwiki-a1",
@@ -6535,6 +6535,510 @@
       ],
       "markdown": "# Antiferromagnetic spin fluctuations: pairing and evidence\n\nHow repulsive interactions can favor sign-changing gaps, why magnetic signals do not prove a mechanism, and how probe limits and published corrections constrain the evidence.\n\n## Scope\n\nAntiferromagnetic spin fluctuations are a candidate pairing interaction with substantial weight at a nonzero momentum transfer. A repulsive interaction can favor a gap that changes sign between the states it connects. This is a model-dependent mechanism proposal: observing magnetism, or finding superconductivity near an antiferromagnetic phase, does not establish causation. [R1](#ref-source-eaa3beeed4368f46)\n\nKeep three questions separate: are magnetic fluctuations present; do they change systematically with superconductivity; and can a consistently specified interaction reproduce pairing and other observables? An affirmative answer to the first two does not by itself answer the third. The relevant Fermi surfaces, orbitals, frequency dependence and competing channels must be specified.\n\n## Mathematical assumptions\n\nA dressed particle-particle eigenproblem can be written, with $k_B=1$ and $k$ including momentum and Matsubara frequency, as\n\n$$-\\frac{T}{N}\\sum_{k'}\\Gamma^{pp}(k,k')G_\\uparrow(k')G_\\downarrow(-k')\\phi(k')=\\Lambda(T)\\phi(k).$$\n\nHere $N$ is the number of lattice sites and the Green functions and irreducible pairing vertex must belong to the same approximation. A leading eigenvalue reaching one signals a pairing instability within that treatment; it is not a measurement of a material transition. The selected review gives this equation and distinguishes spin, charge and fully irreducible contributions. [R1](#ref-source-eaa3beeed4368f46)\n\nAn independently checked static illustration uses two patches with positive single-spin density-of-states weights $N_h,N_e$, a common pairing cutoff, constant gaps and repulsive interactions $U_h,U_e,V$. After the common energy logarithm is factored out, define $\\eta\\Delta_i=-\\sum_jV_{ij}N_j\\Delta_j$. The rescaling $x_i=\\sqrt{N_i}\\Delta_i$ gives a symmetric matrix with diagonal elements $-U_iN_i$ and off-diagonal element $-V\\sqrt{N_hN_e}$.\n\nIts larger eigenvalue is\n\n$$\\eta_+=-\\frac{U_hN_h+U_eN_e}{2}+\\sqrt{\\frac{(U_hN_h-U_eN_e)^2}{4}+V^2N_hN_e}.$$\n\nFor nonnegative intrapatch repulsions it is positive precisely when $V^2>U_hU_e$. If both $U_i$ vanish, $\\eta_+=V\\sqrt{N_hN_e}$ and $\\Delta_h/\\Delta_e=-\\sqrt{N_e/N_h}$. Five numerical checks verify the original and symmetrized equations, including unequal weights and the zero-eigenvalue boundary. These are illustrative pairing strengths, not the phonon spectral coupling $\\lambda$, a calculated transition temperature, or a fit to any material.\n\nA second independent check shows why a wavevector alone cannot select the gap symmetry. With lattice spacing one, both $\\cos k_x-\\cos k_y$ and $\\cos k_x+\\cos k_y$ reverse sign under $\\mathbf Q=(\\pi,\\pi)$. Under a ninety-degree rotation the former changes sign while the latter does not. Their values on the actual Fermi surface and their interaction-weighted eigenvalues still differ. A sign-reversal condition is therefore insufficient to select a unique representation.\n\n## Experimental criteria\n\nNeutron, RIXS and NMR measurements have different response functions, selection rules and energy windows. In the magnetic low-frequency limit, NMR relaxation has the schematic dependence $1/(T_1T)\\propto\\sum_{\\mathbf q,\\alpha\\perp H}|A_\\alpha(\\mathbf q)|^2\\lim_{\\omega\\to0}\\chi''_\\alpha(\\mathbf q,\\omega)/\\omega$. The hyperfine weights and perpendicular spin components matter. The cited spin-chain paper supplies the response formula; it does not make that chain a superconducting-material example. NMR is not a momentum-resolved magnetic spectrum. [R7](#ref-source-e5c4ccac05133124)\n\nRIXS intensities also require a scattering model. Ament and colleagues' indirect-RIXS treatment contains charge and spin response contributions whose relative weights depend on incident energy and the stated core-hole approximation. A measured peak should not automatically be identified with the pairing kernel. This abstract-scoped example is not a derivation for every direct-RIXS geometry. [R8](#ref-source-824b2cddc30b3c2a)\n\nA superconducting spin resonance can reflect feedback of a sign-changing gap through coherence factors. Its interpretation still needs the normal-state response and a susceptibility calculation; it is not independent proof that the resonance caused pairing. [R1](#ref-source-eaa3beeed4368f46)\n\nThe Tsuei–Kirtley review describes phase-sensitive evidence for predominantly d-wave pairing in specified optimally doped cuprates. Such symmetry evidence constrains mechanisms without uniquely identifying their microscopic origin. No sample-specific temperature or raw-data reanalysis is added here. [R5](#ref-source-e933e3bbd4beade6)\n\n## Limits and disputes\n\nMazin and colleagues proposed a compound-specific sign-changing extended-s state for fluorine-doped LaFeAsO. Their published note 8 revises the initial identification of the magnetic instability involved in the doping argument. Reading only the abstract can miss that qualification. Kuroki and colleagues' five-orbital RPA study likewise has parameter-dependent s- and d-wave competition. Neither result assigns one state to every iron-based material. [R3](#ref-source-7c2b55d128348e6c) [R4](#ref-source-f80a18149666bd31)\n\nKuroki's 2009 erratum corrects an orbital-to-band transformation error affecting the original gap plot. For the displayed parameter set, the corrected diagonal band gap is fully open on the Fermi surface. The authors retain strong anisotropy and parameter-dependent nodal or competing d-wave possibilities. Cite the original together with the erratum; the original nodal plot is not the corrected result. This check reads the erratum text, not a reproduction of its band calculation. [R4](#ref-source-f80a18149666bd31) [R6](#ref-source-6570d4401413e026)\n\nMonthoux–Pines report strong-coupling calculations for a YBCO model, including sensitivity to the spin spectrum and impurity treatment. Their calculated temperature is a theoretical result under chosen parameters. Agreement with selected data is a test of that model, not a mechanism proof that can be transferred to unrelated samples. [R2](#ref-source-7755cb2d156620a8)\n\nA kernel validated for one cuprate must not be transferred unchanged to iron-based compounds or nickelates. Band occupation, orbital weights, interlayer coupling and pressure or strain can alter the relevant low-energy problem. Nickelate material records remain separate; this entry makes no new nickelate gap assignment. Compare normal self-energy, gap structure, magnetic response and competing channels using compatible parameters.\n\n## Discovery implications\n\nRecord the measured composition, phase and conditions; spectral normalization and coverage; electronic structure; and the approximation linking response to pairing. Compare alternative channels and report the prediction that could discriminate them. Numerical convergence, agreement with one observable and uniqueness of a mechanism are separate checks. This article's finite-model calculations establish algebraic consistency only.\n\n## Related topics\n\nContinue with [BCS theory](/scwiki/bcs-weak-coupling), [Eliashberg theory](/scwiki/eliashberg-strong-coupling), [multiband pairing](/scwiki/multiband-pairing), [s± pairing](/scwiki/s-plus-minus), and [nickelates](/scwiki/nickelates).\n\n## Material cases\n\nNo sample-specific material records are included in this article. Model results are not experimental transition temperatures.\n\n## Sources\n\n### Ref source-eaa3beeed4368f46\n\n[R1] A common thread: The pairing interaction for unconventional superconductors (2012). [DOI 10.1103/RevModPhys.84.1383](https://doi.org/10.1103/RevModPhys.84.1383). Publication: journal-article. Check: author-review-scoped-check. Checked: 2026-10-18. Selected manuscript text pp. 4, 18–20, 39–46; p. 41 Eq. (13) visually checked. Full 87-page review and final-version equivalence not audited. Independent two-patch algebra is an illustration, not reproduction of a Hubbard calculation.\n### Ref source-7755cb2d156620a8\n\n[R2] Spin-fluctuation-induced superconductivity and normal-state properties of YBa2Cu3O7 (1994). [DOI 10.1103/PhysRevB.49.4261](https://doi.org/10.1103/PhysRevB.49.4261). Publication: journal-article. Check: primary-abstract-scoped-check. Checked: 2026-10-18. Monthoux–Pines publisher abstract: model calculations and parameter/impurity sensitivity. Full derivation, input spectrum and numerical data not reanalyzed.\n### Ref source-7c2b55d128348e6c\n\n[R3] Unconventional Superconductivity with a Sign Reversal in the Order Parameter of LaFeAsO1−xFx (2008). [DOI 10.1103/PhysRevLett.101.057003](https://doi.org/10.1103/PhysRevLett.101.057003). Publication: journal-article. Check: publisher-passages-scoped-check. Checked: 2026-10-18. Mazin et al. abstract and published note 8 checked. The note qualifies the initial identification of the magnetic instability; full electronic-structure calculation not reproduced.\n### Ref source-f80a18149666bd31\n\n[R4] Unconventional Pairing Originating from the Disconnected Fermi Surfaces of Superconducting LaFeAsO1−xFx (2008). [DOI 10.1103/PhysRevLett.101.087004](https://doi.org/10.1103/PhysRevLett.101.087004). Publication: journal-article. Check: primary-abstract-with-erratum-check. Checked: 2026-10-18. Kuroki et al. five-orbital RPA abstract checked alongside 2009 erratum 10.1103/PhysRevLett.102.109902. The original gap plot must not be used without its correction; full model not reproduced.\n### Ref source-e933e3bbd4beade6\n\n[R5] Pairing symmetry in cuprate superconductors (2000). [DOI 10.1103/RevModPhys.72.969](https://doi.org/10.1103/RevModPhys.72.969). Publication: journal-article. Check: primary-abstract-scoped-check. Checked: 2026-10-18. Tsuei–Kirtley publisher abstract: phase-sensitive evidence for predominantly d-wave in specified optimally doped cuprates. Original experiments, sample data and full review not audited here.\n### Ref source-6570d4401413e026\n\n[R6] Erratum: Unconventional Pairing Originating from the Disconnected Fermi Surfaces of Superconducting LaFeAsO1−xFx [Phys. Rev. Lett. 101, 087004 (2008)] (2009). [DOI 10.1103/PhysRevLett.102.109902](https://doi.org/10.1103/PhysRevLett.102.109902). Publication: journal-article. Check: primary-erratum-text-scoped-check. Checked: 2026-10-18. Complete one-page text read via web: orbital-to-band transformation correction, fully open diagonal gap for displayed parameters, parameter-dependent nodal competition retained. Direct download returned 403; figure was not visually audited or numerically reproduced.\n### Ref source-e5c4ccac05133124\n\n[R7] NMR relaxation rates for the spin-1/2 Heisenberg chain (1995). [DOI 10.1103/PhysRevB.52.R9831](https://doi.org/10.1103/PhysRevB.52.R9831). Publication: journal-article. Check: author-manuscript-scoped-check. Checked: 2026-10-18. Sandvik manuscript pp. 2–3; p. 3 Eq. (2) and response conventions visually checked. Used only for hyperfine-weighted low-frequency NMR relation, not as superconducting-material evidence or reproduction of QMC data.\n### Ref source-824b2cddc30b3c2a\n\n[R8] Ultrashort lifetime expansion for indirect resonant inelastic x-ray scattering (2007). [DOI 10.1103/PhysRevB.75.115118](https://doi.org/10.1103/PhysRevB.75.115118). Publication: journal-article. Check: author-abstract-scoped-check. Checked: 2026-10-18. Ament, Forte and van den Brink author abstract and linked journal identity. Indirect-RIXS core-hole approximation and mixed charge/spin contributions; full derivation and applicability to direct RIXS not audited.\n\n## Claim evidence and conditions\n\n### scwiki-b3-claim-scope-1\n\nAntiferromagnetic spin fluctuations are a candidate pairing interaction with substantial weight at a nonzero momentum transfer. A repulsive interaction can favor a gap that changes sign between the states it connects. This is a model-dependent mechanism proposal: observing magnetism, or finding superconductivity near an antiferromagnetic phase, does not establish causation.\n\nEvidence: theory. Sources: source-eaa3beeed4368f46.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-scope-2\n\nKeep three questions separate: are magnetic fluctuations present; do they change systematically with superconductivity; and can a consistently specified interaction reproduce pairing and other observables? An affirmative answer to the first two does not by itself answer the third. The relevant Fermi surfaces, orbitals, frequency dependence and competing channels must be specified.\n\nEvidence: hypothesis. Sources: source-eaa3beeed4368f46.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-mathematical-assumptions-1\n\nA dressed particle-particle eigenproblem can be written, with $k_B=1$ and $k$ including momentum and Matsubara frequency, as\n\nEvidence: theory. Sources: source-eaa3beeed4368f46.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-mathematical-assumptions-2\n\n$$-\\frac{T}{N}\\sum_{k'}\\Gamma^{pp}(k,k')G_\\uparrow(k')G_\\downarrow(-k')\\phi(k')=\\Lambda(T)\\phi(k).$$\n\nEvidence: theory. Sources: source-eaa3beeed4368f46.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-mathematical-assumptions-3\n\nHere $N$ is the number of lattice sites and the Green functions and irreducible pairing vertex must belong to the same approximation. A leading eigenvalue reaching one signals a pairing instability within that treatment; it is not a measurement of a material transition. The selected review gives this equation and distinguishes spin, charge and fully irreducible contributions.\n\nEvidence: theory. Sources: source-eaa3beeed4368f46.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-mathematical-assumptions-4\n\nAn independently checked static illustration uses two patches with positive single-spin density-of-states weights $N_h,N_e$, a common pairing cutoff, constant gaps and repulsive interactions $U_h,U_e,V$. After the common energy logarithm is factored out, define $\\eta\\Delta_i=-\\sum_jV_{ij}N_j\\Delta_j$. The rescaling $x_i=\\sqrt{N_i}\\Delta_i$ gives a symmetric matrix with diagonal elements $-U_iN_i$ and off-diagonal element $-V\\sqrt{N_hN_e}$.\n\nEvidence: theory. Sources: source-eaa3beeed4368f46.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-mathematical-assumptions-5\n\nIts larger eigenvalue is\n\nEvidence: theory. Sources: source-eaa3beeed4368f46.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-mathematical-assumptions-6\n\n$$\\eta_+=-\\frac{U_hN_h+U_eN_e}{2}+\\sqrt{\\frac{(U_hN_h-U_eN_e)^2}{4}+V^2N_hN_e}.$$\n\nEvidence: theory. Sources: source-eaa3beeed4368f46.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-mathematical-assumptions-7\n\nFor nonnegative intrapatch repulsions it is positive precisely when $V^2>U_hU_e$. If both $U_i$ vanish, $\\eta_+=V\\sqrt{N_hN_e}$ and $\\Delta_h/\\Delta_e=-\\sqrt{N_e/N_h}$. Five numerical checks verify the original and symmetrized equations, including unequal weights and the zero-eigenvalue boundary. These are illustrative pairing strengths, not the phonon spectral coupling $\\lambda$, a calculated transition temperature, or a fit to any material.\n\nEvidence: theory. Sources: source-eaa3beeed4368f46.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-mathematical-assumptions-8\n\nA second independent check shows why a wavevector alone cannot select the gap symmetry. With lattice spacing one, both $\\cos k_x-\\cos k_y$ and $\\cos k_x+\\cos k_y$ reverse sign under $\\mathbf Q=(\\pi,\\pi)$. Under a ninety-degree rotation the former changes sign while the latter does not. Their values on the actual Fermi surface and their interaction-weighted eigenvalues still differ. A sign-reversal condition is therefore insufficient to select a unique representation.\n\nEvidence: theory. Sources: source-eaa3beeed4368f46.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-experimental-criteria-1\n\nNeutron, RIXS and NMR measurements have different response functions, selection rules and energy windows. In the magnetic low-frequency limit, NMR relaxation has the schematic dependence $1/(T_1T)\\propto\\sum_{\\mathbf q,\\alpha\\perp H}|A_\\alpha(\\mathbf q)|^2\\lim_{\\omega\\to0}\\chi''_\\alpha(\\mathbf q,\\omega)/\\omega$. The hyperfine weights and perpendicular spin components matter. The cited spin-chain paper supplies the response formula; it does not make that chain a superconducting-material example. NMR is not a momentum-resolved magnetic spectrum.\n\nEvidence: theory. Sources: source-e5c4ccac05133124.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-experimental-criteria-2\n\nRIXS intensities also require a scattering model. Ament and colleagues' indirect-RIXS treatment contains charge and spin response contributions whose relative weights depend on incident energy and the stated core-hole approximation. A measured peak should not automatically be identified with the pairing kernel. This abstract-scoped example is not a derivation for every direct-RIXS geometry.\n\nEvidence: theory. Sources: source-824b2cddc30b3c2a.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-experimental-criteria-3\n\nA superconducting spin resonance can reflect feedback of a sign-changing gap through coherence factors. Its interpretation still needs the normal-state response and a susceptibility calculation; it is not independent proof that the resonance caused pairing.\n\nEvidence: theory. Sources: source-eaa3beeed4368f46.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-experimental-criteria-4\n\nThe Tsuei–Kirtley review describes phase-sensitive evidence for predominantly d-wave pairing in specified optimally doped cuprates. Such symmetry evidence constrains mechanisms without uniquely identifying their microscopic origin. No sample-specific temperature or raw-data reanalysis is added here.\n\nEvidence: experiment. Sources: source-e933e3bbd4beade6.\n\nConditions: Review abstract reports phase-sensitive evidence in specified optimally doped cuprates; not a fresh primary-experiment or sample-temperature audit.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-limits-and-disputes-1\n\nMazin and colleagues proposed a compound-specific sign-changing extended-s state for fluorine-doped LaFeAsO. Their published note 8 revises the initial identification of the magnetic instability involved in the doping argument. Reading only the abstract can miss that qualification. Kuroki and colleagues' five-orbital RPA study likewise has parameter-dependent s- and d-wave competition. Neither result assigns one state to every iron-based material.\n\nEvidence: theory. Sources: source-7c2b55d128348e6c, source-f80a18149666bd31.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-limits-and-disputes-2\n\nKuroki's 2009 erratum corrects an orbital-to-band transformation error affecting the original gap plot. For the displayed parameter set, the corrected diagonal band gap is fully open on the Fermi surface. The authors retain strong anisotropy and parameter-dependent nodal or competing d-wave possibilities. Cite the original together with the erratum; the original nodal plot is not the corrected result. This check reads the erratum text, not a reproduction of its band calculation.\n\nEvidence: theory. Sources: source-f80a18149666bd31, source-6570d4401413e026.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-limits-and-disputes-3\n\nMonthoux–Pines report strong-coupling calculations for a YBCO model, including sensitivity to the spin spectrum and impurity treatment. Their calculated temperature is a theoretical result under chosen parameters. Agreement with selected data is a test of that model, not a mechanism proof that can be transferred to unrelated samples.\n\nEvidence: theory. Sources: source-7755cb2d156620a8.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-limits-and-disputes-4\n\nA kernel validated for one cuprate must not be transferred unchanged to iron-based compounds or nickelates. Band occupation, orbital weights, interlayer coupling and pressure or strain can alter the relevant low-energy problem. Nickelate material records remain separate; this entry makes no new nickelate gap assignment. Compare normal self-energy, gap structure, magnetic response and competing channels using compatible parameters.\n\nEvidence: hypothesis. Sources: source-eaa3beeed4368f46.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n### scwiki-b3-claim-discovery-implications-1\n\nRecord the measured composition, phase and conditions; spectral normalization and coverage; electronic structure; and the approximation linking response to pairing. Compare alternative channels and report the prediction that could discriminate them. Numerical convergence, agreement with one observable and uniqueness of a mechanism are separate checks. This article's finite-model calculations establish algebraic consistency only.\n\nEvidence: hypothesis. Sources: source-eaa3beeed4368f46.\n\nConditions: Specified model, response function and source scope only. Independent two-patch and lattice examples are editorial algebra, not a published material prediction or measured Tc.\n\nVerification scope: Selected source locations; independent models do not certify a microscopic mechanism. Full claim-level scientific acceptance remains open.\n\n## Revision and review\n\nArticle ID: scwiki-b3. Revision: 6ebc5c1632a2a81f3d56. Updated: 2026-10-18T07:41:36.487323+00:00.\n\nReview scope: Selected pairing-vertex and NMR response equations, primary abstracts and published erratum text; independent two-patch and square-lattice checks.\n\n- Complete scientific acceptance, raw-data checks and material-model reproduction remain open.\n- Review summaries of phase-sensitive evidence do not replace a primary-experiment audit. No sample-specific Tc is extracted.\n- Kuroki erratum text was read; its figure and underlying band calculation were not independently reproduced.\n- Author-manuscript passage checks do not establish final-version equivalence. Model eigenvalues are not measured transitions.\n\nSource: [B_mechanisms/B3_spin_fluctuation_AFM.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/B_mechanisms/B3_spin_fluctuation_AFM.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 8bbed91652c4ebfe4d30d74844bd39c4f40d77e788d6f2a4670db256ae92f249.\n",
       "wordCount": 868
+    },
+    {
+      "id": "scwiki-b4",
+      "topicId": "scwiki-topic-b4",
+      "code": "B4",
+      "slug": "ferromagnetic-fluctuations",
+      "title": "Ferromagnetic fluctuations and odd-parity pairing",
+      "summary": "Separate triplet-pairing models from magnetic evidence, compare uranium compounds under stated conditions, and trace the limits of Knight shifts and critical fields.",
+      "aliases": [
+        "FM spin fluctuations",
+        "odd parity pairing",
+        "equal spin pairing",
+        "ferromagnetic superconductivity",
+        "UTe2",
+        "URhGe",
+        "UGe2",
+        "UCoGe",
+        "Knight shift"
+      ],
+      "evidenceTypes": [
+        "theory",
+        "experiment",
+        "hypothesis"
+      ],
+      "relatedCodes": [
+        "B1",
+        "B2",
+        "B3",
+        "A5",
+        "A6"
+      ],
+      "editorialStatus": "scoped-check",
+      "contentState": "pilot",
+      "modifiedAt": "2026-10-18T07:50:57.056432+00:00",
+      "review": {
+        "checkedAt": "2026-10-18",
+        "scope": "Selected primary abstracts, Sr2RuO4/Ran manuscript passages,2021 neutron extended-data text and2026 UTe2 publisher passages; independent spin, parity and angular-projection checks.",
+        "limitations": [
+          "Full scientific acceptance, raw-data review and a comprehensive current literature survey remain open.",
+          "Author-manuscript checks do not establish final-version equivalence; several historical references are abstract-scoped.",
+          "Independent illustrations do not predict a material transition or establish a pairing kernel.",
+          "UTe2 4 K is a normal-state measurement temperature, not a superconducting transition. Different field/probe windows cannot be conflated."
+        ]
+      },
+      "provenance": {
+        "repository": "JackZH26/jzis-superconductivity",
+        "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+        "path": "B_mechanisms/B4_spin_fluctuation_FM.md",
+        "sha256": "0440ac552dfaad93ae3a3e94517ee603ba14626f3af2745ec52dfd14479b39f7",
+        "sourceId": "file-429480e8c9d9c129"
+      },
+      "sourceMap": [
+        {
+          "startLine": 1,
+          "endLine": 5,
+          "targetSections": [
+            "scope"
+          ],
+          "decision": "edited-with-scoped-evidence",
+          "note": "Magnetic correlations versus state identification."
+        },
+        {
+          "startLine": 6,
+          "endLine": 11,
+          "targetSections": [
+            "mathematical-assumptions",
+            "limits-and-disputes"
+          ],
+          "decision": "edited-with-scoped-evidence",
+          "note": "Conditional FM model; independent spin/parity/angular illustrations."
+        },
+        {
+          "startLine": 12,
+          "endLine": 17,
+          "targetSections": [
+            "experimental-criteria"
+          ],
+          "decision": "edited-with-scoped-evidence",
+          "note": "Uranium material evidence; two inherited DOI identities corrected."
+        },
+        {
+          "startLine": 18,
+          "endLine": 23,
+          "targetSections": [
+            "experimental-criteria",
+            "limits-and-disputes"
+          ],
+          "decision": "edited-with-scoped-evidence",
+          "note": "Sr2RuO4 and UTe2 caveats extended with scoped primary passages."
+        },
+        {
+          "startLine": 24,
+          "endLine": 31,
+          "targetSections": [
+            "experimental-criteria",
+            "discovery-implications"
+          ],
+          "decision": "edited-with-scoped-evidence",
+          "note": "Probe conditions, symmetry and same-sample volume criteria."
+        },
+        {
+          "startLine": 32,
+          "endLine": 43,
+          "targetSections": [
+            "limits-and-disputes",
+            "related-topics"
+          ],
+          "decision": "edited-with-scoped-evidence",
+          "note": "All inherited source anchors retained with corrected links and review limits."
+        }
+      ],
+      "references": [
+        {
+          "id": "source-82c04c9061dbca4c",
+          "doi": "10.1103/PhysRevB.22.3173",
+          "title": "Coexistence of p-state superconductivity and itinerant ferromagnetism",
+          "year": 1980,
+          "url": "https://doi.org/10.1103/PhysRevB.22.3173",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "primary-abstract-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.22.3173",
+            "note": "Fay–Appel abstract: longitudinal-fluctuation equal-spin model and nonmonotonic calculated Tc. Full calculation not read or reproduced. The article two-spin/angular examples are independent editorial illustrations, not equations attributed to this paper."
+          }
+        },
+        {
+          "id": "source-db2917242488a101",
+          "doi": "10.1038/35020500",
+          "title": "Superconductivity on the border of itinerant-electron ferromagnetism in UGe2",
+          "year": 2000,
+          "url": "https://doi.org/10.1038/35020500",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-abstract-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.nature.com/articles/35020500",
+            "note": "Saxena et al. publisher indexed abstract and Crossref identity checked. Restricted-pressure superconductivity; original curves and microscopic coexistence not audited. Replaces inherited DOI35050500 whose actual target remained unresolved."
+          }
+        },
+        {
+          "id": "source-15aec45a868e9fb9",
+          "doi": "10.1038/35098048",
+          "title": "Coexistence of superconductivity and ferromagnetism in URhGe",
+          "year": 2001,
+          "url": "https://doi.org/10.1038/35098048",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-abstract-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.nature.com/articles/35098048",
+            "note": "Aoki et al. publisher indexed abstract: ambient-pressure thermodynamic evidence, with qualified triplet interpretation. Corrects inherited35065045, which identifies unrelated semiconductor melting research. Full data not reanalyzed."
+          }
+        },
+        {
+          "id": "source-e917adb251d93c59",
+          "doi": "10.1126/science.1115498",
+          "title": "Magnetic Field-Induced Superconductivity in the Ferromagnet URhGe",
+          "year": 2005,
+          "url": "https://doi.org/10.1126/science.1115498",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "primary-abstract-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/16123293/",
+            "note": "Levy et al. original abstract as indexed by PubMed: field along b, spin reorientation12T, second superconducting pocket. Full text and phase boundaries not audited; associated commentary1117436 is not the original research."
+          }
+        },
+        {
+          "id": "source-a4695ba5bfa789f3",
+          "doi": "10.1103/PhysRevLett.99.067006",
+          "title": "Superconductivity on the Border of Weak Itinerant Ferromagnetism in UCoGe",
+          "year": 2007,
+          "url": "https://doi.org/10.1103/PhysRevLett.99.067006",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-abstract-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.99.067006",
+            "note": "Huy et al. original abstract: ambient-pressure bulk signatures. Curie3K and best-sample resistive0.8K are distinct; no sample Tc extracted here. Full curves not reviewed."
+          }
+        },
+        {
+          "id": "source-c7f8b99a795aba41",
+          "doi": "10.1038/s41586-019-1596-2",
+          "title": "Constraints on the superconducting order parameter in Sr2RuO4 from oxygen-17 nuclear magnetic resonance",
+          "year": 2019,
+          "url": "https://doi.org/10.1038/s41586-019-1596-2",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "author-manuscript-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://arxiv.org/pdf/1904.00047v1",
+            "note": "Pustogow et al. v1 selected pp.4–7; p.7 RF-energy and heating passage visually checked. Zero-strain0.7107T versus strained1.9980T conditions distinguished. Published identity checked; full final-version equivalence and subsequent literature survey not completed."
+          }
+        },
+        {
+          "id": "source-ca6322be2694e430",
+          "doi": "10.1126/science.aav8645",
+          "title": "Nearly ferromagnetic spin-triplet superconductivity",
+          "year": 2019,
+          "url": "https://doi.org/10.1126/science.aav8645",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "primary-passages-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://vector.umd.edu/images/publications/Science365_6842019.pdf",
+            "note": "Ran et al. published paper pp.1–2; p.2 visually checked: maximum measured20T versus extrapolated b-axis40T. Historical spin/pairing interpretations are not adopted as settled consensus. Supplement and raw data not fully audited."
+          }
+        },
+        {
+          "id": "source-df199ac9453d6985",
+          "doi": "10.1038/s41586-021-04151-5",
+          "title": "Resonance from antiferromagnetic spin fluctuations for superconductivity in UTe2",
+          "year": 2021,
+          "url": "https://doi.org/10.1038/s41586-021-04151-5",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-passages-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.nature.com/articles/s41586-021-04151-5",
+            "note": "Duan et al. publisher indexed abstract and Extended Data Fig.7 text checked: AFM resonance and no FM signal above background within specified window. Complete spectra and raw data not reproduced; not an exclusion of all FM fluctuations."
+          }
+        },
+        {
+          "id": "source-15cfc4a2f9587af0",
+          "doi": "10.1038/s41467-026-71899-7",
+          "title": "Giant transverse magnetic fluctuations at the edge of re-entrant superconductivity in UTe2",
+          "year": 2026,
+          "url": "https://doi.org/10.1038/s41467-026-71899-7",
+          "publicationStatus": "journal-article",
+          "verification": {
+            "scope": "publisher-passages-scoped-check",
+            "checkedAt": "2026-10-18",
+            "evidenceUrl": "https://www.nature.com/articles/s41467-026-71899-7",
+            "note": "Zambra et al., published29April2026. Selected introduction/results, Eq.1 and Fig.1 caption checked:4K normal state, pulsedfields to60T, transverse relative to applied field;300mK phase boundaries reproduced from earlier work. No raw-data or complete spectral/pairing-kernel reconstruction."
+          }
+        }
+      ],
+      "claims": [
+        {
+          "id": "scwiki-b4-claim-scope-1",
+          "sectionId": "scope",
+          "statement": "Ferromagnetic fluctuations describe enhanced magnetic response near zero momentum transfer. They can support odd-parity pairing in specified models, but neither a large uniform susceptibility nor a large upper critical field identifies a superconducting spin state. Magnetic order, correlations, gap symmetry and the pairing interaction are separate questions. Fay and Appel calculated equal-spin p-state pairing from longitudinal fluctuations in an itinerant-electron model; this is a theoretical possibility, not a universal material classification.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-82c04c9061dbca4c"
+          ],
+          "conditions": "Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.",
+          "verificationScope": "Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition."
+        },
+        {
+          "id": "scwiki-b4-claim-mathematical-assumptions-1",
+          "sectionId": "mathematical-assumptions",
+          "statement": "For a simple effective exchange $V=-J\\boldsymbol{\\sigma}_1\\cdot\\boldsymbol{\\sigma}_2$ with $J>0$, the spin operator has eigenvalues $-3$ in the singlet and $+1$ in the triplet sector. The corresponding interaction eigenvalues are $+3J$ and $-J$. This independent two-spin illustration assumes a ferromagnetic effective interaction; it does not derive a material's exchange constant or its frequency dependence.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-82c04c9061dbca4c"
+          ],
+          "conditions": "Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.",
+          "verificationScope": "Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition."
+        },
+        {
+          "id": "scwiki-b4-claim-mathematical-assumptions-2",
+          "sectionId": "mathematical-assumptions",
+          "statement": "For even-frequency, single-orbital pairing, Fermi antisymmetry requires $\\Delta(\\mathbf k)=-\\Delta^T(-\\mathbf k)$. Writing a triplet matrix as $\\Delta=(\\mathbf d\\cdot\\boldsymbol\\sigma)i\\sigma_y$ gives a symmetric spin matrix, so $\\mathbf d(-\\mathbf k)=-\\mathbf d(\\mathbf k)$. Odd parity here follows from these assumptions. Strong spin–orbit coupling requires a suitable pseudospin description; additional orbital or frequency structure changes this elementary argument.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-82c04c9061dbca4c"
+          ],
+          "conditions": "Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.",
+          "verificationScope": "Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition."
+        },
+        {
+          "id": "scwiki-b4-claim-mathematical-assumptions-3",
+          "sectionId": "mathematical-assumptions",
+          "statement": "A second independent illustration uses a circular two-dimensional Fermi surface and an attractive angular kernel $V(\\theta)=-g/(a-b\\cos\\theta)$, with $g>0$ an energy scale and dimensionless $a>b>0$. Its dimensionless Fourier coefficients are",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-82c04c9061dbca4c"
+          ],
+          "conditions": "Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.",
+          "verificationScope": "Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition."
+        },
+        {
+          "id": "scwiki-b4-claim-mathematical-assumptions-4",
+          "sectionId": "mathematical-assumptions",
+          "statement": "$$C_\\ell=\\int_0^{2\\pi}\\frac{d\\theta}{2\\pi}\\frac{\\cos(\\ell\\theta)}{a-b\\cos\\theta}=\\frac{r^\\ell}{\\sqrt{a^2-b^2}},\\qquad r=\\frac{a-\\sqrt{a^2-b^2}}{b},\\quad \\ell\\geq0.$$",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-82c04c9061dbca4c"
+          ],
+          "conditions": "Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.",
+          "verificationScope": "Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition."
+        },
+        {
+          "id": "scwiki-b4-claim-mathematical-assumptions-5",
+          "sectionId": "mathematical-assumptions",
+          "statement": "The odd-parity projection $[V(\\theta)-V(\\theta+\\pi)]/2$ retains odd angular harmonics. Since $0<r<1$, the strongest attractive odd harmonic in this example is $\\ell=1$. Numerical quadrature checks the coefficients and projection. Crystal anisotropy, competing interactions and self-energy are absent: this example neither selects a universal p-wave state nor predicts a transition temperature.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-82c04c9061dbca4c"
+          ],
+          "conditions": "Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.",
+          "verificationScope": "Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition."
+        },
+        {
+          "id": "scwiki-b4-claim-experimental-criteria-1",
+          "sectionId": "experimental-criteria",
+          "statement": "UGe2 superconductivity was reported in a restricted pressure range within an itinerant-ferromagnetic setting. URhGe supplied ambient-pressure thermodynamic evidence for coexistence; UCoGe supplied ambient-pressure superconducting and ferromagnetic signatures. These primary abstracts support the historical observations, while microscopic volume overlap and a particular gap representation require more than proximity in a phase diagram. Corrected original links replace two inherited citation errors.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-db2917242488a101",
+            "source-15aec45a868e9fb9",
+            "source-a4695ba5bfa789f3"
+          ],
+          "conditions": "Source-specific temperature, pressure, field direction, frequency/momentum and sample limits; measured endpoints separated from extrapolations.",
+          "verificationScope": "Selected primary abstracts/passages as detailed in references; no raw-data reproduction or full scientific acceptance."
+        },
+        {
+          "id": "scwiki-b4-claim-experimental-criteria-2",
+          "sectionId": "experimental-criteria",
+          "statement": "Lévy and colleagues reported a second superconducting pocket in URhGe around spin-axis reorientation near 12 T for field parallel to the crystal b axis, after low-field superconductivity had already disappeared. This is an orientation-specific re-entrant phenomenon. The original abstract suggests a connection to spin rotation; it does not uniquely establish a microscopic pairing kernel.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-e917adb251d93c59"
+          ],
+          "conditions": "Source-specific temperature, pressure, field direction, frequency/momentum and sample limits; measured endpoints separated from extrapolations.",
+          "verificationScope": "Selected primary abstracts/passages as detailed in references; no raw-data reproduction or full scientific acceptance."
+        },
+        {
+          "id": "scwiki-b4-claim-experimental-criteria-3",
+          "sectionId": "experimental-criteria",
+          "statement": "Pustogow and colleagues' 2019 Sr2RuO4 author manuscript reports a reduced oxygen-17 Knight shift and strong pulse-energy sensitivity. Its unstrained example uses an in-plane b-axis field of 0.7107 T; 20 mK is the base temperature, not a transition temperature. Selected methods explain why RF heating and different electronic/nuclear relaxation times can make a relaxation check insufficient. These observations challenge older unchanged-susceptibility interpretations; this entry does not infer a unique order parameter from them.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-c7f8b99a795aba41"
+          ],
+          "conditions": "Source-specific temperature, pressure, field direction, frequency/momentum and sample limits; measured endpoints separated from extrapolations.",
+          "verificationScope": "Selected primary abstracts/passages as detailed in references; no raw-data reproduction or full scientific acceptance."
+        },
+        {
+          "id": "scwiki-b4-claim-experimental-criteria-4",
+          "sectionId": "experimental-criteria",
+          "statement": "UTe2's discovery paper reported unusual anisotropic critical fields in a paramagnetic normal state. Its page 2 distinguishes a highest measured field of 20 T from an estimated zero-temperature b-axis value of 40 T. The estimate is not a measured endpoint. Historical triplet and ferromagnetic-pairing interpretations remain interpretations; the paper's schematic does not establish one continuous phase diagram shared by different uranium compounds.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-ca6322be2694e430"
+          ],
+          "conditions": "Source-specific temperature, pressure, field direction, frequency/momentum and sample limits; measured endpoints separated from extrapolations.",
+          "verificationScope": "Selected primary abstracts/passages as detailed in references; no raw-data reproduction or full scientific acceptance."
+        },
+        {
+          "id": "scwiki-b4-claim-experimental-criteria-5",
+          "sectionId": "experimental-criteria",
+          "statement": "Record field direction, pressure, composition, purity and temperature for each probe. Separate orbital/background contributions and pulse heating in Knight shifts; retain coupling, g-factor, multiband and orbital-limiting assumptions in critical-field comparisons. Combine symmetry-sensitive measurements with magnetic and superconducting volume evidence from the same sample. A bulk signal alone does not identify the mediating fluctuation.",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "source-82c04c9061dbca4c"
+          ],
+          "conditions": "Editorial inference criteria; no unique gap symmetry or pairing causation inferred.",
+          "verificationScope": "Pinned chapter edited with explicit probe and source boundaries."
+        },
+        {
+          "id": "scwiki-b4-claim-limits-and-disputes-1",
+          "sectionId": "limits-and-disputes",
+          "statement": "In UTe2, Duan and colleagues reported a neutron resonance associated with antiferromagnetic wavevectors. Their extended-data comparison found no ferromagnetic signal above background in the stated measurement window. This is not absence of every possible small-momentum fluctuation at every field, energy and temperature; a resonance coupled to superconductivity also does not alone prove the direction of causation.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-df199ac9453d6985"
+          ],
+          "conditions": "Source-specific temperature, pressure, field direction, frequency/momentum and sample limits; measured endpoints separated from extrapolations.",
+          "verificationScope": "Selected primary abstracts/passages as detailed in references; no raw-data reproduction or full scientific acceptance."
+        },
+        {
+          "id": "scwiki-b4-claim-limits-and-disputes-2",
+          "sectionId": "limits-and-disputes",
+          "statement": "A study published on 29 April 2026 measured UTe2 magnetotropic response in pulsed fields up to 60 T at 4 K, where the studied superconducting phases were suppressed. It inferred enhanced transverse, near-zero-momentum susceptibility at high fields. Here transverse means perpendicular to the applied field, not an off-diagonal tensor component. These normal-state measurements differ from zero/low-field neutron conditions. The displayed 300 mK superconducting boundaries came from earlier work, and 4 K must not be recorded as this experiment's superconducting transition.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "source-15cfc4a2f9587af0"
+          ],
+          "conditions": "Source-specific temperature, pressure, field direction, frequency/momentum and sample limits; measured endpoints separated from extrapolations.",
+          "verificationScope": "Selected primary abstracts/passages as detailed in references; no raw-data reproduction or full scientific acceptance."
+        },
+        {
+          "id": "scwiki-b4-claim-limits-and-disputes-3",
+          "sectionId": "limits-and-disputes",
+          "statement": "Fluctuations can enhance attraction while also renormalizing quasiparticles and affecting pair breaking. Fay–Appel's model gives a maximum followed by a decrease of calculated transition temperature toward the magnetic transition. Neither that model nor the elementary angular projection proves a universal optimum at a ferromagnetic quantum critical point. Longitudinal/transverse spectral weight, spin–orbit coupling and band structure must be specified.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "source-82c04c9061dbca4c"
+          ],
+          "conditions": "Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.",
+          "verificationScope": "Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition."
+        },
+        {
+          "id": "scwiki-b4-claim-discovery-implications-1",
+          "sectionId": "discovery-implications",
+          "statement": "Treat small-momentum magnetic response as a candidate-screening observation. Test whether a proposed kernel simultaneously explains symmetry constraints, normal-state responses and field/pressure trends under matched conditions. Keep negative observations and alternative channels. The recent UTe2 comparison illustrates why distinct experiments should retain their conditions instead of being reduced to a single ferromagnetic or antiferromagnetic label. Selected source passages and model checks here leave full scientific acceptance open.",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "source-82c04c9061dbca4c"
+          ],
+          "conditions": "Editorial inference criteria; no unique gap symmetry or pairing causation inferred.",
+          "verificationScope": "Pinned chapter edited with explicit probe and source boundaries."
+        }
+      ],
+      "corrections": [
+        {
+          "id": "scwiki-b4-correction-1",
+          "description": "Replaced inherited UGe2 DOI35050500 with publisher-verified35020500; incorrect target remains unresolved.",
+          "sourceId": "source-db2917242488a101",
+          "scope": "Bibliographic correction to source lines14/35; no claim about the unresolved DOI target."
+        },
+        {
+          "id": "scwiki-b4-correction-2",
+          "description": "Replaced inherited URhGe DOI35065045, an unrelated semiconductor paper, with35098048.",
+          "sourceId": "source-15aec45a868e9fb9",
+          "scope": "Publisher identity correction to source lines14/36."
+        },
+        {
+          "id": "scwiki-b4-correction-3",
+          "description": "Qualified UTe2 magnetic/pairing labels by field and probe, and separated40T estimate from20T measured range.",
+          "sourceId": "source-ca6322be2694e430",
+          "scope": "Selected historical primary passage; contemporary2021/2026 conditions separately described."
+        }
+      ],
+      "equationChecks": [
+        {
+          "targetSectionId": "mathematical-assumptions",
+          "tex": "-J\\boldsymbol{\\sigma}_1\\cdot\\boldsymbol{\\sigma}_2",
+          "check": "Four explicit spin-sector eigenvectors."
+        },
+        {
+          "targetSectionId": "mathematical-assumptions",
+          "tex": "\\Delta(\\mathbf k)=-\\Delta^T(-\\mathbf k)",
+          "check": "Three complex triplet matrices satisfy transpose and odd-momentum antisymmetry."
+        },
+        {
+          "targetSectionId": "mathematical-assumptions",
+          "tex": "C_\\ell",
+          "check": "20 angular coefficient and odd-projection quadratures against analytic values."
+        }
+      ],
+      "materialCases": [
+        {
+          "id": "scwiki-b4-material-1",
+          "formula": "UTe2",
+          "sample": "Zambra et al.2026 single-crystal magnetotropic response",
+          "recordType": "experiment",
+          "tcK": null,
+          "reportedTemperatureK": 4,
+          "temperatureKind": "normal-state",
+          "temperatureNote": "4 K normal-state measurement;300mK superconducting boundaries in comparison figure are from earlier work",
+          "criterion": "magnetotropic-response",
+          "pressureRegime": "unknown",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Pulsed fields up to60T; field rotations in ac/bc planes; transverse susceptibility inferred from magnetotropic response",
+          "sourceId": "source-15cfc4a2f9587af0"
+        }
+      ],
+      "body": "## Scope\n\nFerromagnetic fluctuations describe enhanced magnetic response near zero momentum transfer. They can support odd-parity pairing in specified models, but neither a large uniform susceptibility nor a large upper critical field identifies a superconducting spin state. Magnetic order, correlations, gap symmetry and the pairing interaction are separate questions. Fay and Appel calculated equal-spin p-state pairing from longitudinal fluctuations in an itinerant-electron model; this is a theoretical possibility, not a universal material classification. [R1](#ref-source-82c04c9061dbca4c)\n\n## Mathematical assumptions\n\nFor a simple effective exchange $V=-J\\boldsymbol{\\sigma}_1\\cdot\\boldsymbol{\\sigma}_2$ with $J>0$, the spin operator has eigenvalues $-3$ in the singlet and $+1$ in the triplet sector. The corresponding interaction eigenvalues are $+3J$ and $-J$. This independent two-spin illustration assumes a ferromagnetic effective interaction; it does not derive a material's exchange constant or its frequency dependence.\n\nFor even-frequency, single-orbital pairing, Fermi antisymmetry requires $\\Delta(\\mathbf k)=-\\Delta^T(-\\mathbf k)$. Writing a triplet matrix as $\\Delta=(\\mathbf d\\cdot\\boldsymbol\\sigma)i\\sigma_y$ gives a symmetric spin matrix, so $\\mathbf d(-\\mathbf k)=-\\mathbf d(\\mathbf k)$. Odd parity here follows from these assumptions. Strong spin–orbit coupling requires a suitable pseudospin description; additional orbital or frequency structure changes this elementary argument.\n\nA second independent illustration uses a circular two-dimensional Fermi surface and an attractive angular kernel $V(\\theta)=-g/(a-b\\cos\\theta)$, with $g>0$ an energy scale and dimensionless $a>b>0$. Its dimensionless Fourier coefficients are\n\n$$C_\\ell=\\int_0^{2\\pi}\\frac{d\\theta}{2\\pi}\\frac{\\cos(\\ell\\theta)}{a-b\\cos\\theta}=\\frac{r^\\ell}{\\sqrt{a^2-b^2}},\\qquad r=\\frac{a-\\sqrt{a^2-b^2}}{b},\\quad \\ell\\geq0.$$\n\nThe odd-parity projection $[V(\\theta)-V(\\theta+\\pi)]/2$ retains odd angular harmonics. Since $0<r<1$, the strongest attractive odd harmonic in this example is $\\ell=1$. Numerical quadrature checks the coefficients and projection. Crystal anisotropy, competing interactions and self-energy are absent: this example neither selects a universal p-wave state nor predicts a transition temperature.\n\n## Experimental criteria\n\nUGe2 superconductivity was reported in a restricted pressure range within an itinerant-ferromagnetic setting. URhGe supplied ambient-pressure thermodynamic evidence for coexistence; UCoGe supplied ambient-pressure superconducting and ferromagnetic signatures. These primary abstracts support the historical observations, while microscopic volume overlap and a particular gap representation require more than proximity in a phase diagram. Corrected original links replace two inherited citation errors. [R2](#ref-source-db2917242488a101) [R3](#ref-source-15aec45a868e9fb9) [R5](#ref-source-a4695ba5bfa789f3)\n\nLévy and colleagues reported a second superconducting pocket in URhGe around spin-axis reorientation near 12 T for field parallel to the crystal b axis, after low-field superconductivity had already disappeared. This is an orientation-specific re-entrant phenomenon. The original abstract suggests a connection to spin rotation; it does not uniquely establish a microscopic pairing kernel. [R4](#ref-source-e917adb251d93c59)\n\nPustogow and colleagues' 2019 Sr2RuO4 author manuscript reports a reduced oxygen-17 Knight shift and strong pulse-energy sensitivity. Its unstrained example uses an in-plane b-axis field of 0.7107 T; 20 mK is the base temperature, not a transition temperature. Selected methods explain why RF heating and different electronic/nuclear relaxation times can make a relaxation check insufficient. These observations challenge older unchanged-susceptibility interpretations; this entry does not infer a unique order parameter from them. [R6](#ref-source-c7f8b99a795aba41)\n\nUTe2's discovery paper reported unusual anisotropic critical fields in a paramagnetic normal state. Its page 2 distinguishes a highest measured field of 20 T from an estimated zero-temperature b-axis value of 40 T. The estimate is not a measured endpoint. Historical triplet and ferromagnetic-pairing interpretations remain interpretations; the paper's schematic does not establish one continuous phase diagram shared by different uranium compounds. [R7](#ref-source-ca6322be2694e430)\n\nRecord field direction, pressure, composition, purity and temperature for each probe. Separate orbital/background contributions and pulse heating in Knight shifts; retain coupling, g-factor, multiband and orbital-limiting assumptions in critical-field comparisons. Combine symmetry-sensitive measurements with magnetic and superconducting volume evidence from the same sample. A bulk signal alone does not identify the mediating fluctuation.\n\n## Limits and disputes\n\nIn UTe2, Duan and colleagues reported a neutron resonance associated with antiferromagnetic wavevectors. Their extended-data comparison found no ferromagnetic signal above background in the stated measurement window. This is not absence of every possible small-momentum fluctuation at every field, energy and temperature; a resonance coupled to superconductivity also does not alone prove the direction of causation. [R8](#ref-source-df199ac9453d6985)\n\nA study published on 29 April 2026 measured UTe2 magnetotropic response in pulsed fields up to 60 T at 4 K, where the studied superconducting phases were suppressed. It inferred enhanced transverse, near-zero-momentum susceptibility at high fields. Here transverse means perpendicular to the applied field, not an off-diagonal tensor component. These normal-state measurements differ from zero/low-field neutron conditions. The displayed 300 mK superconducting boundaries came from earlier work, and 4 K must not be recorded as this experiment's superconducting transition. [R9](#ref-source-15cfc4a2f9587af0)\n\nFluctuations can enhance attraction while also renormalizing quasiparticles and affecting pair breaking. Fay–Appel's model gives a maximum followed by a decrease of calculated transition temperature toward the magnetic transition. Neither that model nor the elementary angular projection proves a universal optimum at a ferromagnetic quantum critical point. Longitudinal/transverse spectral weight, spin–orbit coupling and band structure must be specified. [R1](#ref-source-82c04c9061dbca4c)\n\n## Discovery implications\n\nTreat small-momentum magnetic response as a candidate-screening observation. Test whether a proposed kernel simultaneously explains symmetry constraints, normal-state responses and field/pressure trends under matched conditions. Keep negative observations and alternative channels. The recent UTe2 comparison illustrates why distinct experiments should retain their conditions instead of being reduced to a single ferromagnetic or antiferromagnetic label. Selected source passages and model checks here leave full scientific acceptance open.\n\n## Related topics\n\nCompare [antiferromagnetic spin fluctuations](/scwiki/spin-fluctuation-pairing), [Eliashberg theory](/scwiki/eliashberg-strong-coupling) and the keyword catalogue for gap symmetry, critical fields and uranium material families.",
+      "revision": "dffed0d8ec046a6dde4a",
+      "sections": [
+        {
+          "id": "scope",
+          "title": "Scope",
+          "markdown": "## Scope\n\nFerromagnetic fluctuations describe enhanced magnetic response near zero momentum transfer. They can support odd-parity pairing in specified models, but neither a large uniform susceptibility nor a large upper critical field identifies a superconducting spin state. Magnetic order, correlations, gap symmetry and the pairing interaction are separate questions. Fay and Appel calculated equal-spin p-state pairing from longitudinal fluctuations in an itinerant-electron model; this is a theoretical possibility, not a universal material classification. [R1](#ref-source-82c04c9061dbca4c)"
+        },
+        {
+          "id": "mathematical-assumptions",
+          "title": "Mathematical assumptions",
+          "markdown": "## Mathematical assumptions\n\nFor a simple effective exchange $V=-J\\boldsymbol{\\sigma}_1\\cdot\\boldsymbol{\\sigma}_2$ with $J>0$, the spin operator has eigenvalues $-3$ in the singlet and $+1$ in the triplet sector. The corresponding interaction eigenvalues are $+3J$ and $-J$. This independent two-spin illustration assumes a ferromagnetic effective interaction; it does not derive a material's exchange constant or its frequency dependence.\n\nFor even-frequency, single-orbital pairing, Fermi antisymmetry requires $\\Delta(\\mathbf k)=-\\Delta^T(-\\mathbf k)$. Writing a triplet matrix as $\\Delta=(\\mathbf d\\cdot\\boldsymbol\\sigma)i\\sigma_y$ gives a symmetric spin matrix, so $\\mathbf d(-\\mathbf k)=-\\mathbf d(\\mathbf k)$. Odd parity here follows from these assumptions. Strong spin–orbit coupling requires a suitable pseudospin description; additional orbital or frequency structure changes this elementary argument.\n\nA second independent illustration uses a circular two-dimensional Fermi surface and an attractive angular kernel $V(\\theta)=-g/(a-b\\cos\\theta)$, with $g>0$ an energy scale and dimensionless $a>b>0$. Its dimensionless Fourier coefficients are\n\n$$C_\\ell=\\int_0^{2\\pi}\\frac{d\\theta}{2\\pi}\\frac{\\cos(\\ell\\theta)}{a-b\\cos\\theta}=\\frac{r^\\ell}{\\sqrt{a^2-b^2}},\\qquad r=\\frac{a-\\sqrt{a^2-b^2}}{b},\\quad \\ell\\geq0.$$\n\nThe odd-parity projection $[V(\\theta)-V(\\theta+\\pi)]/2$ retains odd angular harmonics. Since $0<r<1$, the strongest attractive odd harmonic in this example is $\\ell=1$. Numerical quadrature checks the coefficients and projection. Crystal anisotropy, competing interactions and self-energy are absent: this example neither selects a universal p-wave state nor predicts a transition temperature."
+        },
+        {
+          "id": "experimental-criteria",
+          "title": "Experimental criteria",
+          "markdown": "## Experimental criteria\n\nUGe2 superconductivity was reported in a restricted pressure range within an itinerant-ferromagnetic setting. URhGe supplied ambient-pressure thermodynamic evidence for coexistence; UCoGe supplied ambient-pressure superconducting and ferromagnetic signatures. These primary abstracts support the historical observations, while microscopic volume overlap and a particular gap representation require more than proximity in a phase diagram. Corrected original links replace two inherited citation errors. [R2](#ref-source-db2917242488a101) [R3](#ref-source-15aec45a868e9fb9) [R5](#ref-source-a4695ba5bfa789f3)\n\nLévy and colleagues reported a second superconducting pocket in URhGe around spin-axis reorientation near 12 T for field parallel to the crystal b axis, after low-field superconductivity had already disappeared. This is an orientation-specific re-entrant phenomenon. The original abstract suggests a connection to spin rotation; it does not uniquely establish a microscopic pairing kernel. [R4](#ref-source-e917adb251d93c59)\n\nPustogow and colleagues' 2019 Sr2RuO4 author manuscript reports a reduced oxygen-17 Knight shift and strong pulse-energy sensitivity. Its unstrained example uses an in-plane b-axis field of 0.7107 T; 20 mK is the base temperature, not a transition temperature. Selected methods explain why RF heating and different electronic/nuclear relaxation times can make a relaxation check insufficient. These observations challenge older unchanged-susceptibility interpretations; this entry does not infer a unique order parameter from them. [R6](#ref-source-c7f8b99a795aba41)\n\nUTe2's discovery paper reported unusual anisotropic critical fields in a paramagnetic normal state. Its page 2 distinguishes a highest measured field of 20 T from an estimated zero-temperature b-axis value of 40 T. The estimate is not a measured endpoint. Historical triplet and ferromagnetic-pairing interpretations remain interpretations; the paper's schematic does not establish one continuous phase diagram shared by different uranium compounds. [R7](#ref-source-ca6322be2694e430)\n\nRecord field direction, pressure, composition, purity and temperature for each probe. Separate orbital/background contributions and pulse heating in Knight shifts; retain coupling, g-factor, multiband and orbital-limiting assumptions in critical-field comparisons. Combine symmetry-sensitive measurements with magnetic and superconducting volume evidence from the same sample. A bulk signal alone does not identify the mediating fluctuation."
+        },
+        {
+          "id": "limits-and-disputes",
+          "title": "Limits and disputes",
+          "markdown": "## Limits and disputes\n\nIn UTe2, Duan and colleagues reported a neutron resonance associated with antiferromagnetic wavevectors. Their extended-data comparison found no ferromagnetic signal above background in the stated measurement window. This is not absence of every possible small-momentum fluctuation at every field, energy and temperature; a resonance coupled to superconductivity also does not alone prove the direction of causation. [R8](#ref-source-df199ac9453d6985)\n\nA study published on 29 April 2026 measured UTe2 magnetotropic response in pulsed fields up to 60 T at 4 K, where the studied superconducting phases were suppressed. It inferred enhanced transverse, near-zero-momentum susceptibility at high fields. Here transverse means perpendicular to the applied field, not an off-diagonal tensor component. These normal-state measurements differ from zero/low-field neutron conditions. The displayed 300 mK superconducting boundaries came from earlier work, and 4 K must not be recorded as this experiment's superconducting transition. [R9](#ref-source-15cfc4a2f9587af0)\n\nFluctuations can enhance attraction while also renormalizing quasiparticles and affecting pair breaking. Fay–Appel's model gives a maximum followed by a decrease of calculated transition temperature toward the magnetic transition. Neither that model nor the elementary angular projection proves a universal optimum at a ferromagnetic quantum critical point. Longitudinal/transverse spectral weight, spin–orbit coupling and band structure must be specified. [R1](#ref-source-82c04c9061dbca4c)"
+        },
+        {
+          "id": "discovery-implications",
+          "title": "Discovery implications",
+          "markdown": "## Discovery implications\n\nTreat small-momentum magnetic response as a candidate-screening observation. Test whether a proposed kernel simultaneously explains symmetry constraints, normal-state responses and field/pressure trends under matched conditions. Keep negative observations and alternative channels. The recent UTe2 comparison illustrates why distinct experiments should retain their conditions instead of being reduced to a single ferromagnetic or antiferromagnetic label. Selected source passages and model checks here leave full scientific acceptance open."
+        },
+        {
+          "id": "related-topics",
+          "title": "Related topics",
+          "markdown": "## Related topics\n\nCompare [antiferromagnetic spin fluctuations](/scwiki/spin-fluctuation-pairing), [Eliashberg theory](/scwiki/eliashberg-strong-coupling) and the keyword catalogue for gap symmetry, critical fields and uranium material families."
+        },
+        {
+          "id": "material-cases",
+          "title": "Material cases",
+          "markdown": "## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| UTe2; Zambra et al.2026 single-crystal magnetotropic response | 4 K; 4 K normal-state measurement;300mK superconducting boundaries in comparison figure are from earlier work | normal-state; magnetotropic-response | Pulsed fields up to60T; field rotations in ac/bc planes; transverse susceptibility inferred from magnetotropic response | unknown; unknown GPa | unknown | experiment; [source](#ref-source-15cfc4a2f9587af0) |"
+        }
+      ],
+      "markdown": "# Ferromagnetic fluctuations and odd-parity pairing\n\nSeparate triplet-pairing models from magnetic evidence, compare uranium compounds under stated conditions, and trace the limits of Knight shifts and critical fields.\n\n## Scope\n\nFerromagnetic fluctuations describe enhanced magnetic response near zero momentum transfer. They can support odd-parity pairing in specified models, but neither a large uniform susceptibility nor a large upper critical field identifies a superconducting spin state. Magnetic order, correlations, gap symmetry and the pairing interaction are separate questions. Fay and Appel calculated equal-spin p-state pairing from longitudinal fluctuations in an itinerant-electron model; this is a theoretical possibility, not a universal material classification. [R1](#ref-source-82c04c9061dbca4c)\n\n## Mathematical assumptions\n\nFor a simple effective exchange $V=-J\\boldsymbol{\\sigma}_1\\cdot\\boldsymbol{\\sigma}_2$ with $J>0$, the spin operator has eigenvalues $-3$ in the singlet and $+1$ in the triplet sector. The corresponding interaction eigenvalues are $+3J$ and $-J$. This independent two-spin illustration assumes a ferromagnetic effective interaction; it does not derive a material's exchange constant or its frequency dependence.\n\nFor even-frequency, single-orbital pairing, Fermi antisymmetry requires $\\Delta(\\mathbf k)=-\\Delta^T(-\\mathbf k)$. Writing a triplet matrix as $\\Delta=(\\mathbf d\\cdot\\boldsymbol\\sigma)i\\sigma_y$ gives a symmetric spin matrix, so $\\mathbf d(-\\mathbf k)=-\\mathbf d(\\mathbf k)$. Odd parity here follows from these assumptions. Strong spin–orbit coupling requires a suitable pseudospin description; additional orbital or frequency structure changes this elementary argument.\n\nA second independent illustration uses a circular two-dimensional Fermi surface and an attractive angular kernel $V(\\theta)=-g/(a-b\\cos\\theta)$, with $g>0$ an energy scale and dimensionless $a>b>0$. Its dimensionless Fourier coefficients are\n\n$$C_\\ell=\\int_0^{2\\pi}\\frac{d\\theta}{2\\pi}\\frac{\\cos(\\ell\\theta)}{a-b\\cos\\theta}=\\frac{r^\\ell}{\\sqrt{a^2-b^2}},\\qquad r=\\frac{a-\\sqrt{a^2-b^2}}{b},\\quad \\ell\\geq0.$$\n\nThe odd-parity projection $[V(\\theta)-V(\\theta+\\pi)]/2$ retains odd angular harmonics. Since $0<r<1$, the strongest attractive odd harmonic in this example is $\\ell=1$. Numerical quadrature checks the coefficients and projection. Crystal anisotropy, competing interactions and self-energy are absent: this example neither selects a universal p-wave state nor predicts a transition temperature.\n\n## Experimental criteria\n\nUGe2 superconductivity was reported in a restricted pressure range within an itinerant-ferromagnetic setting. URhGe supplied ambient-pressure thermodynamic evidence for coexistence; UCoGe supplied ambient-pressure superconducting and ferromagnetic signatures. These primary abstracts support the historical observations, while microscopic volume overlap and a particular gap representation require more than proximity in a phase diagram. Corrected original links replace two inherited citation errors. [R2](#ref-source-db2917242488a101) [R3](#ref-source-15aec45a868e9fb9) [R5](#ref-source-a4695ba5bfa789f3)\n\nLévy and colleagues reported a second superconducting pocket in URhGe around spin-axis reorientation near 12 T for field parallel to the crystal b axis, after low-field superconductivity had already disappeared. This is an orientation-specific re-entrant phenomenon. The original abstract suggests a connection to spin rotation; it does not uniquely establish a microscopic pairing kernel. [R4](#ref-source-e917adb251d93c59)\n\nPustogow and colleagues' 2019 Sr2RuO4 author manuscript reports a reduced oxygen-17 Knight shift and strong pulse-energy sensitivity. Its unstrained example uses an in-plane b-axis field of 0.7107 T; 20 mK is the base temperature, not a transition temperature. Selected methods explain why RF heating and different electronic/nuclear relaxation times can make a relaxation check insufficient. These observations challenge older unchanged-susceptibility interpretations; this entry does not infer a unique order parameter from them. [R6](#ref-source-c7f8b99a795aba41)\n\nUTe2's discovery paper reported unusual anisotropic critical fields in a paramagnetic normal state. Its page 2 distinguishes a highest measured field of 20 T from an estimated zero-temperature b-axis value of 40 T. The estimate is not a measured endpoint. Historical triplet and ferromagnetic-pairing interpretations remain interpretations; the paper's schematic does not establish one continuous phase diagram shared by different uranium compounds. [R7](#ref-source-ca6322be2694e430)\n\nRecord field direction, pressure, composition, purity and temperature for each probe. Separate orbital/background contributions and pulse heating in Knight shifts; retain coupling, g-factor, multiband and orbital-limiting assumptions in critical-field comparisons. Combine symmetry-sensitive measurements with magnetic and superconducting volume evidence from the same sample. A bulk signal alone does not identify the mediating fluctuation.\n\n## Limits and disputes\n\nIn UTe2, Duan and colleagues reported a neutron resonance associated with antiferromagnetic wavevectors. Their extended-data comparison found no ferromagnetic signal above background in the stated measurement window. This is not absence of every possible small-momentum fluctuation at every field, energy and temperature; a resonance coupled to superconductivity also does not alone prove the direction of causation. [R8](#ref-source-df199ac9453d6985)\n\nA study published on 29 April 2026 measured UTe2 magnetotropic response in pulsed fields up to 60 T at 4 K, where the studied superconducting phases were suppressed. It inferred enhanced transverse, near-zero-momentum susceptibility at high fields. Here transverse means perpendicular to the applied field, not an off-diagonal tensor component. These normal-state measurements differ from zero/low-field neutron conditions. The displayed 300 mK superconducting boundaries came from earlier work, and 4 K must not be recorded as this experiment's superconducting transition. [R9](#ref-source-15cfc4a2f9587af0)\n\nFluctuations can enhance attraction while also renormalizing quasiparticles and affecting pair breaking. Fay–Appel's model gives a maximum followed by a decrease of calculated transition temperature toward the magnetic transition. Neither that model nor the elementary angular projection proves a universal optimum at a ferromagnetic quantum critical point. Longitudinal/transverse spectral weight, spin–orbit coupling and band structure must be specified. [R1](#ref-source-82c04c9061dbca4c)\n\n## Discovery implications\n\nTreat small-momentum magnetic response as a candidate-screening observation. Test whether a proposed kernel simultaneously explains symmetry constraints, normal-state responses and field/pressure trends under matched conditions. Keep negative observations and alternative channels. The recent UTe2 comparison illustrates why distinct experiments should retain their conditions instead of being reduced to a single ferromagnetic or antiferromagnetic label. Selected source passages and model checks here leave full scientific acceptance open.\n\n## Related topics\n\nCompare [antiferromagnetic spin fluctuations](/scwiki/spin-fluctuation-pairing), [Eliashberg theory](/scwiki/eliashberg-strong-coupling) and the keyword catalogue for gap symmetry, critical fields and uranium material families.\n\n## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n| UTe2; Zambra et al.2026 single-crystal magnetotropic response | 4 K; 4 K normal-state measurement;300mK superconducting boundaries in comparison figure are from earlier work | normal-state; magnetotropic-response | Pulsed fields up to60T; field rotations in ac/bc planes; transverse susceptibility inferred from magnetotropic response | unknown; unknown GPa | unknown | experiment; [source](#ref-source-15cfc4a2f9587af0) |\n\n## Sources\n\n### Ref source-82c04c9061dbca4c\n\n[R1] Coexistence of p-state superconductivity and itinerant ferromagnetism (1980). [DOI 10.1103/PhysRevB.22.3173](https://doi.org/10.1103/PhysRevB.22.3173). Publication: journal-article. Check: primary-abstract-scoped-check. Checked: 2026-10-18. Fay–Appel abstract: longitudinal-fluctuation equal-spin model and nonmonotonic calculated Tc. Full calculation not read or reproduced. The article two-spin/angular examples are independent editorial illustrations, not equations attributed to this paper.\n### Ref source-db2917242488a101\n\n[R2] Superconductivity on the border of itinerant-electron ferromagnetism in UGe2 (2000). [DOI 10.1038/35020500](https://doi.org/10.1038/35020500). Publication: journal-article. Check: publisher-abstract-scoped-check. Checked: 2026-10-18. Saxena et al. publisher indexed abstract and Crossref identity checked. Restricted-pressure superconductivity; original curves and microscopic coexistence not audited. Replaces inherited DOI35050500 whose actual target remained unresolved.\n### Ref source-15aec45a868e9fb9\n\n[R3] Coexistence of superconductivity and ferromagnetism in URhGe (2001). [DOI 10.1038/35098048](https://doi.org/10.1038/35098048). Publication: journal-article. Check: publisher-abstract-scoped-check. Checked: 2026-10-18. Aoki et al. publisher indexed abstract: ambient-pressure thermodynamic evidence, with qualified triplet interpretation. Corrects inherited35065045, which identifies unrelated semiconductor melting research. Full data not reanalyzed.\n### Ref source-e917adb251d93c59\n\n[R4] Magnetic Field-Induced Superconductivity in the Ferromagnet URhGe (2005). [DOI 10.1126/science.1115498](https://doi.org/10.1126/science.1115498). Publication: journal-article. Check: primary-abstract-scoped-check. Checked: 2026-10-18. Levy et al. original abstract as indexed by PubMed: field along b, spin reorientation12T, second superconducting pocket. Full text and phase boundaries not audited; associated commentary1117436 is not the original research.\n### Ref source-a4695ba5bfa789f3\n\n[R5] Superconductivity on the Border of Weak Itinerant Ferromagnetism in UCoGe (2007). [DOI 10.1103/PhysRevLett.99.067006](https://doi.org/10.1103/PhysRevLett.99.067006). Publication: journal-article. Check: publisher-abstract-scoped-check. Checked: 2026-10-18. Huy et al. original abstract: ambient-pressure bulk signatures. Curie3K and best-sample resistive0.8K are distinct; no sample Tc extracted here. Full curves not reviewed.\n### Ref source-c7f8b99a795aba41\n\n[R6] Constraints on the superconducting order parameter in Sr2RuO4 from oxygen-17 nuclear magnetic resonance (2019). [DOI 10.1038/s41586-019-1596-2](https://doi.org/10.1038/s41586-019-1596-2). Publication: journal-article. Check: author-manuscript-scoped-check. Checked: 2026-10-18. Pustogow et al. v1 selected pp.4–7; p.7 RF-energy and heating passage visually checked. Zero-strain0.7107T versus strained1.9980T conditions distinguished. Published identity checked; full final-version equivalence and subsequent literature survey not completed.\n### Ref source-ca6322be2694e430\n\n[R7] Nearly ferromagnetic spin-triplet superconductivity (2019). [DOI 10.1126/science.aav8645](https://doi.org/10.1126/science.aav8645). Publication: journal-article. Check: primary-passages-scoped-check. Checked: 2026-10-18. Ran et al. published paper pp.1–2; p.2 visually checked: maximum measured20T versus extrapolated b-axis40T. Historical spin/pairing interpretations are not adopted as settled consensus. Supplement and raw data not fully audited.\n### Ref source-df199ac9453d6985\n\n[R8] Resonance from antiferromagnetic spin fluctuations for superconductivity in UTe2 (2021). [DOI 10.1038/s41586-021-04151-5](https://doi.org/10.1038/s41586-021-04151-5). Publication: journal-article. Check: publisher-passages-scoped-check. Checked: 2026-10-18. Duan et al. publisher indexed abstract and Extended Data Fig.7 text checked: AFM resonance and no FM signal above background within specified window. Complete spectra and raw data not reproduced; not an exclusion of all FM fluctuations.\n### Ref source-15cfc4a2f9587af0\n\n[R9] Giant transverse magnetic fluctuations at the edge of re-entrant superconductivity in UTe2 (2026). [DOI 10.1038/s41467-026-71899-7](https://doi.org/10.1038/s41467-026-71899-7). Publication: journal-article. Check: publisher-passages-scoped-check. Checked: 2026-10-18. Zambra et al., published29April2026. Selected introduction/results, Eq.1 and Fig.1 caption checked:4K normal state, pulsedfields to60T, transverse relative to applied field;300mK phase boundaries reproduced from earlier work. No raw-data or complete spectral/pairing-kernel reconstruction.\n\n## Claim evidence and conditions\n\n### scwiki-b4-claim-scope-1\n\nFerromagnetic fluctuations describe enhanced magnetic response near zero momentum transfer. They can support odd-parity pairing in specified models, but neither a large uniform susceptibility nor a large upper critical field identifies a superconducting spin state. Magnetic order, correlations, gap symmetry and the pairing interaction are separate questions. Fay and Appel calculated equal-spin p-state pairing from longitudinal fluctuations in an itinerant-electron model; this is a theoretical possibility, not a universal material classification.\n\nEvidence: theory. Sources: source-82c04c9061dbca4c.\n\nConditions: Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.\n\nVerification scope: Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition.\n\n### scwiki-b4-claim-mathematical-assumptions-1\n\nFor a simple effective exchange $V=-J\\boldsymbol{\\sigma}_1\\cdot\\boldsymbol{\\sigma}_2$ with $J>0$, the spin operator has eigenvalues $-3$ in the singlet and $+1$ in the triplet sector. The corresponding interaction eigenvalues are $+3J$ and $-J$. This independent two-spin illustration assumes a ferromagnetic effective interaction; it does not derive a material's exchange constant or its frequency dependence.\n\nEvidence: theory. Sources: source-82c04c9061dbca4c.\n\nConditions: Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.\n\nVerification scope: Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition.\n\n### scwiki-b4-claim-mathematical-assumptions-2\n\nFor even-frequency, single-orbital pairing, Fermi antisymmetry requires $\\Delta(\\mathbf k)=-\\Delta^T(-\\mathbf k)$. Writing a triplet matrix as $\\Delta=(\\mathbf d\\cdot\\boldsymbol\\sigma)i\\sigma_y$ gives a symmetric spin matrix, so $\\mathbf d(-\\mathbf k)=-\\mathbf d(\\mathbf k)$. Odd parity here follows from these assumptions. Strong spin–orbit coupling requires a suitable pseudospin description; additional orbital or frequency structure changes this elementary argument.\n\nEvidence: theory. Sources: source-82c04c9061dbca4c.\n\nConditions: Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.\n\nVerification scope: Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition.\n\n### scwiki-b4-claim-mathematical-assumptions-3\n\nA second independent illustration uses a circular two-dimensional Fermi surface and an attractive angular kernel $V(\\theta)=-g/(a-b\\cos\\theta)$, with $g>0$ an energy scale and dimensionless $a>b>0$. Its dimensionless Fourier coefficients are\n\nEvidence: theory. Sources: source-82c04c9061dbca4c.\n\nConditions: Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.\n\nVerification scope: Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition.\n\n### scwiki-b4-claim-mathematical-assumptions-4\n\n$$C_\\ell=\\int_0^{2\\pi}\\frac{d\\theta}{2\\pi}\\frac{\\cos(\\ell\\theta)}{a-b\\cos\\theta}=\\frac{r^\\ell}{\\sqrt{a^2-b^2}},\\qquad r=\\frac{a-\\sqrt{a^2-b^2}}{b},\\quad \\ell\\geq0.$$\n\nEvidence: theory. Sources: source-82c04c9061dbca4c.\n\nConditions: Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.\n\nVerification scope: Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition.\n\n### scwiki-b4-claim-mathematical-assumptions-5\n\nThe odd-parity projection $[V(\\theta)-V(\\theta+\\pi)]/2$ retains odd angular harmonics. Since $0<r<1$, the strongest attractive odd harmonic in this example is $\\ell=1$. Numerical quadrature checks the coefficients and projection. Crystal anisotropy, competing interactions and self-energy are absent: this example neither selects a universal p-wave state nor predicts a transition temperature.\n\nEvidence: theory. Sources: source-82c04c9061dbca4c.\n\nConditions: Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.\n\nVerification scope: Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition.\n\n### scwiki-b4-claim-experimental-criteria-1\n\nUGe2 superconductivity was reported in a restricted pressure range within an itinerant-ferromagnetic setting. URhGe supplied ambient-pressure thermodynamic evidence for coexistence; UCoGe supplied ambient-pressure superconducting and ferromagnetic signatures. These primary abstracts support the historical observations, while microscopic volume overlap and a particular gap representation require more than proximity in a phase diagram. Corrected original links replace two inherited citation errors.\n\nEvidence: experiment. Sources: source-db2917242488a101, source-15aec45a868e9fb9, source-a4695ba5bfa789f3.\n\nConditions: Source-specific temperature, pressure, field direction, frequency/momentum and sample limits; measured endpoints separated from extrapolations.\n\nVerification scope: Selected primary abstracts/passages as detailed in references; no raw-data reproduction or full scientific acceptance.\n\n### scwiki-b4-claim-experimental-criteria-2\n\nLévy and colleagues reported a second superconducting pocket in URhGe around spin-axis reorientation near 12 T for field parallel to the crystal b axis, after low-field superconductivity had already disappeared. This is an orientation-specific re-entrant phenomenon. The original abstract suggests a connection to spin rotation; it does not uniquely establish a microscopic pairing kernel.\n\nEvidence: experiment. Sources: source-e917adb251d93c59.\n\nConditions: Source-specific temperature, pressure, field direction, frequency/momentum and sample limits; measured endpoints separated from extrapolations.\n\nVerification scope: Selected primary abstracts/passages as detailed in references; no raw-data reproduction or full scientific acceptance.\n\n### scwiki-b4-claim-experimental-criteria-3\n\nPustogow and colleagues' 2019 Sr2RuO4 author manuscript reports a reduced oxygen-17 Knight shift and strong pulse-energy sensitivity. Its unstrained example uses an in-plane b-axis field of 0.7107 T; 20 mK is the base temperature, not a transition temperature. Selected methods explain why RF heating and different electronic/nuclear relaxation times can make a relaxation check insufficient. These observations challenge older unchanged-susceptibility interpretations; this entry does not infer a unique order parameter from them.\n\nEvidence: experiment. Sources: source-c7f8b99a795aba41.\n\nConditions: Source-specific temperature, pressure, field direction, frequency/momentum and sample limits; measured endpoints separated from extrapolations.\n\nVerification scope: Selected primary abstracts/passages as detailed in references; no raw-data reproduction or full scientific acceptance.\n\n### scwiki-b4-claim-experimental-criteria-4\n\nUTe2's discovery paper reported unusual anisotropic critical fields in a paramagnetic normal state. Its page 2 distinguishes a highest measured field of 20 T from an estimated zero-temperature b-axis value of 40 T. The estimate is not a measured endpoint. Historical triplet and ferromagnetic-pairing interpretations remain interpretations; the paper's schematic does not establish one continuous phase diagram shared by different uranium compounds.\n\nEvidence: experiment. Sources: source-ca6322be2694e430.\n\nConditions: Source-specific temperature, pressure, field direction, frequency/momentum and sample limits; measured endpoints separated from extrapolations.\n\nVerification scope: Selected primary abstracts/passages as detailed in references; no raw-data reproduction or full scientific acceptance.\n\n### scwiki-b4-claim-experimental-criteria-5\n\nRecord field direction, pressure, composition, purity and temperature for each probe. Separate orbital/background contributions and pulse heating in Knight shifts; retain coupling, g-factor, multiband and orbital-limiting assumptions in critical-field comparisons. Combine symmetry-sensitive measurements with magnetic and superconducting volume evidence from the same sample. A bulk signal alone does not identify the mediating fluctuation.\n\nEvidence: hypothesis. Sources: source-82c04c9061dbca4c.\n\nConditions: Editorial inference criteria; no unique gap symmetry or pairing causation inferred.\n\nVerification scope: Pinned chapter edited with explicit probe and source boundaries.\n\n### scwiki-b4-claim-limits-and-disputes-1\n\nIn UTe2, Duan and colleagues reported a neutron resonance associated with antiferromagnetic wavevectors. Their extended-data comparison found no ferromagnetic signal above background in the stated measurement window. This is not absence of every possible small-momentum fluctuation at every field, energy and temperature; a resonance coupled to superconductivity also does not alone prove the direction of causation.\n\nEvidence: experiment. Sources: source-df199ac9453d6985.\n\nConditions: Source-specific temperature, pressure, field direction, frequency/momentum and sample limits; measured endpoints separated from extrapolations.\n\nVerification scope: Selected primary abstracts/passages as detailed in references; no raw-data reproduction or full scientific acceptance.\n\n### scwiki-b4-claim-limits-and-disputes-2\n\nA study published on 29 April 2026 measured UTe2 magnetotropic response in pulsed fields up to 60 T at 4 K, where the studied superconducting phases were suppressed. It inferred enhanced transverse, near-zero-momentum susceptibility at high fields. Here transverse means perpendicular to the applied field, not an off-diagonal tensor component. These normal-state measurements differ from zero/low-field neutron conditions. The displayed 300 mK superconducting boundaries came from earlier work, and 4 K must not be recorded as this experiment's superconducting transition.\n\nEvidence: experiment. Sources: source-15cfc4a2f9587af0.\n\nConditions: Source-specific temperature, pressure, field direction, frequency/momentum and sample limits; measured endpoints separated from extrapolations.\n\nVerification scope: Selected primary abstracts/passages as detailed in references; no raw-data reproduction or full scientific acceptance.\n\n### scwiki-b4-claim-limits-and-disputes-3\n\nFluctuations can enhance attraction while also renormalizing quasiparticles and affecting pair breaking. Fay–Appel's model gives a maximum followed by a decrease of calculated transition temperature toward the magnetic transition. Neither that model nor the elementary angular projection proves a universal optimum at a ferromagnetic quantum critical point. Longitudinal/transverse spectral weight, spin–orbit coupling and band structure must be specified.\n\nEvidence: theory. Sources: source-82c04c9061dbca4c.\n\nConditions: Effective ferromagnetic two-spin exchange; even-frequency single-orbital pairing; circular 2D Fermi surface a>b>0. Fay–Appel statements separately abstract-scoped.\n\nVerification scope: Independent spin/parity/quadrature checks; not reproduction of a material calculation or measured transition.\n\n### scwiki-b4-claim-discovery-implications-1\n\nTreat small-momentum magnetic response as a candidate-screening observation. Test whether a proposed kernel simultaneously explains symmetry constraints, normal-state responses and field/pressure trends under matched conditions. Keep negative observations and alternative channels. The recent UTe2 comparison illustrates why distinct experiments should retain their conditions instead of being reduced to a single ferromagnetic or antiferromagnetic label. Selected source passages and model checks here leave full scientific acceptance open.\n\nEvidence: hypothesis. Sources: source-82c04c9061dbca4c.\n\nConditions: Editorial inference criteria; no unique gap symmetry or pairing causation inferred.\n\nVerification scope: Pinned chapter edited with explicit probe and source boundaries.\n\n## Revision and review\n\nArticle ID: scwiki-b4. Revision: dffed0d8ec046a6dde4a. Updated: 2026-10-18T07:50:57.056432+00:00.\n\nReview scope: Selected primary abstracts, Sr2RuO4/Ran manuscript passages,2021 neutron extended-data text and2026 UTe2 publisher passages; independent spin, parity and angular-projection checks.\n\n- Full scientific acceptance, raw-data review and a comprehensive current literature survey remain open.\n- Author-manuscript checks do not establish final-version equivalence; several historical references are abstract-scoped.\n- Independent illustrations do not predict a material transition or establish a pairing kernel.\n- UTe2 4 K is a normal-state measurement temperature, not a superconducting transition. Different field/probe windows cannot be conflated.\n\nSource: [B_mechanisms/B4_spin_fluctuation_FM.md](https://github.com/JackZH26/jzis-superconductivity/blob/0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf/B_mechanisms/B4_spin_fluctuation_FM.md), commit 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf, SHA-256 0440ac552dfaad93ae3a3e94517ee603ba14626f3af2745ec52dfd14479b39f7.\n",
+      "wordCount": 862
     },
     {
       "id": "scwiki-c2",

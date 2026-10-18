@@ -449,3 +449,18 @@ it("exports spin-pairing probe limits and the published erratum without experime
   expect(json.article.references.some((r:{doi:string})=>r.doi==="10.1103/PhysRevLett.102.109902")).toBe(true);
  }
 });
+
+it("keeps normal-state magnetic temperatures and extrapolated fields explicit in FM pairing exports",async()=>{
+ const a=articles().find(a=>a.code==="B4")!;
+ expect(a.materialCases[0].reportedTemperatureK).toBe(4);expect(a.materialCases[0].temperatureKind).toBe("normal-state");expect(a.materialCases[0].tcK).toBeNull();
+ expect(searchArticles(searchIndex().entries,"ferromagnetic",{}).some(r=>r.id===a.id)).toBe(true);
+ expect(searchArticles(searchIndex().entries,"ferromagnetic",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
+ const md=await(await get(["articles",a.id,"markdown"])).text();
+ expect(md).toContain("highest measured field of 20 T");expect(md).toContain("estimated zero-temperature b-axis value of 40 T");
+ expect(md).toContain("29 April 2026");expect(md).toContain("4 K is a normal-state measurement temperature");
+ expect(md).toContain("10.1038/35020500");expect(md).toContain("10.1038/35098048");
+ expect(a.references.some(r=>["10.1038/35050500","10.1038/35065045"].includes(r.doi??""))).toBe(false);
+ const sec=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+ expect(sec).toContain("300 mK superconducting boundaries came from earlier work");expect(sec).toContain("10.1038/s41467-026-71899-7");
+ expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
+});
