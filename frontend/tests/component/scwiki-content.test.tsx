@@ -98,6 +98,24 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(searchArticles(searchIndex().entries,"isotope",{evidence:"theory",tcMin:1}).some(x=>x.id===a.id)).toBe(false);
   expect(a.references.filter(r=>r.year===1950).every(r=>r.verification.scope==="publisher-metadata-only")).toBe(true);
  });
+ it("separates spectral gap magnitude, phase evidence and calculated multiband gaps",async()=>{
+  const a=articles().find(a=>a.code==="A5")!;
+  expect(a.body).toContain("magnitude-only model");
+  expect(a.body).toContain("uncoupled spectral contributions");
+  expect(a.body).toContain("two unfrustrated NCCO geometries");
+  expect(a.body).toContain("spectroscopic gap-closing temperature");
+  expect(a.references.some(r=>r.doi==="10.1038/nature00992")).toBe(false);
+  const choi=a.references.find(r=>r.doi==="10.1038/nature00898")!;
+  const claim=a.claims.find(c=>c.sourceIds.includes(choi.id))!;
+  expect(claim.evidenceType).toBe("theory");
+  expect(claim.conditions).toContain("not direct measurements");
+  expect(a.materialCases).toEqual([]);
+  expect(searchArticles(searchIndex().entries,"gap nodes").some(x=>x.id===a.id)).toBe(true);
+  expect(searchArticles(searchIndex().entries,"gap",{tcMin:1}).some(x=>x.id===a.id)).toBe(false);
+  const section=await (await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+  expect(section).toContain(claim.conditions);
+  expect(section).toContain("image fits");
+ });
  it("publishes BCS as a conditional theory entry without inventing experimental Tc records",async()=>{
   const a=articles().find(a=>a.code==="B1")!;
   expect(a.evidenceTypes).toEqual(["theory","hypothesis"]);

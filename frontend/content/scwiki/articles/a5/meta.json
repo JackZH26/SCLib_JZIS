@@ -1,0 +1,451 @@
+{
+  "id": "scwiki-a5",
+  "topicId": "scwiki-topic-a5",
+  "code": "A5",
+  "slug": "superconducting-gap",
+  "title": "Superconducting gap: magnitude, nodes and phase",
+  "summary": "Read gap measurements with their probe and model. Distinguish an excitation scale from evidence for nodes, relative sign or bulk superconductivity.",
+  "aliases": [
+    "energy gap",
+    "gap ratio",
+    "quasiparticle density of states",
+    "coherence peak",
+    "phase-sensitive tests",
+    "gap nodes",
+    "spectroscopy"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "B1",
+    "B12",
+    "C2",
+    "A3",
+    "A6",
+    "A1"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T06:37:49.655522+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Edited pinned A5 chapter, selected BCS/Choi and phase-sensitive primary passages, review passages, Hardy/Carbotte abstracts and an independent ideal-DOS state-counting check.",
+    "limitations": [
+      "Selected source checks do not constitute full scientific validation or independent experimental replication.",
+      "Hardy is abstract-scoped; tricrystal image fits, uncertainties and all underlying review citations were not independently reproduced.",
+      "No sample-specific gap amplitude or transition temperature was re-extracted; calculated gaps are not experimental records.",
+      "The DOS check assumes a clean isotropic constant-DOS mean-field model, not a universal tunneling spectrum."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "A_phenomenology/A5_gap_features.md",
+    "sha256": "c52c880a645d4cb9d43edfe679bae0c21761f0c0df5166e6915d342b0a7a04e7",
+    "sourceId": "file-a42fab97a43ff990"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 5,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Separate excitation scales, magnitudes and phase."
+    },
+    {
+      "startLine": 6,
+      "endLine": 12,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Conditional BCS model; additional explicit DOS check."
+    },
+    {
+      "startLine": 13,
+      "endLine": 25,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Probe map retained as editorial reporting guide; no measurements inferred from table."
+    },
+    {
+      "startLine": 26,
+      "endLine": 31,
+      "targetSections": [
+        "experimental-criteria",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Power-law wording clarified; selected phase-sensitive primary evidence added."
+    },
+    {
+      "startLine": 32,
+      "endLine": 37,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Corrected MgB2 DOI and separated calculation from experiment; no unsupported gap-ratio table."
+    },
+    {
+      "startLine": 38,
+      "endLine": 45,
+      "targetSections": [
+        "discovery-implications"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Sample/criterion/fit controls retained."
+    },
+    {
+      "startLine": 46,
+      "endLine": 54,
+      "targetSections": [
+        "experimental-criteria",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Reference identities and checked scope recorded, including inherited citation correction."
+    },
+    {
+      "startLine": 55,
+      "endLine": 57,
+      "targetSections": [
+        "discovery-implications"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Model-discrimination conclusion, no unsupported numerical cross-family claims."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-ba10e800a1246bf6",
+      "doi": "10.1103/PhysRev.108.1175",
+      "title": "Theory of Superconductivity",
+      "year": 1957,
+      "url": "https://doi.org/10.1103/PhysRev.108.1175",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/pdf/10.1103/PhysRev.108.1175",
+        "note": "Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review."
+      }
+    },
+    {
+      "id": "source-2da854ce10895b5e",
+      "doi": "10.1103/RevModPhys.62.1027",
+      "title": "Properties of boson-exchange superconductors",
+      "year": 1990,
+      "url": "https://doi.org/10.1103/RevModPhys.62.1027",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.62.1027",
+        "note": "Publisher abstract: Eliashberg treatment and deviations from BCS with strong-coupling corrections. Detailed formulas, numerical predictions and experimental fits are not checked."
+      }
+    },
+    {
+      "id": "source-e933e3bbd4beade6",
+      "doi": "10.1103/RevModPhys.72.969",
+      "title": "Pairing symmetry in cuprate superconductors",
+      "year": 2000,
+      "url": "https://doi.org/10.1103/RevModPhys.72.969",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.physics.umd.edu/courses/Phys798C/AnlageFall25/Kirtley%20Tsuei%20RMP.pdf",
+        "note": "Selected journal PDF passages: section II pp. 974–976 on penetration depth, heat capacity, thermal conductivity and photoemission; section IV introduction p. 982 on phase-sensitive tests; pp. 998–999 on universality/impurity caveats. Historical review, not an exhaustive current survey or independent check of every cited experiment."
+      }
+    },
+    {
+      "id": "source-b7bc48c845a47b53",
+      "doi": "10.1103/PhysRevLett.70.3999",
+      "title": "Precision measurements of the temperature dependence of lambda in YBa2Cu3O6.95: Strong evidence for nodes in the gap function",
+      "year": 1993,
+      "url": "https://doi.org/10.1103/PhysRevLett.70.3999",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.70.3999",
+        "note": "Publisher abstract: single-crystal YBa2Cu3O6.95, 900 MHz resonator, penetration-depth change and linear term around 3–25 K. Full curves, fitting and defect interpretation not independently reproduced; not a phase measurement."
+      }
+    },
+    {
+      "id": "source-7c4eac077ae5e221",
+      "doi": "10.1038/nature00898",
+      "title": "The origin of the anomalous superconducting properties of MgB2",
+      "year": 2002,
+      "url": "https://doi.org/10.1038/nature00898",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www2.lbl.gov/Science-Articles/Archive/assets/images/2002/Aug-14-2002/MgB2Nature.pdf",
+        "note": "Selected passages on pp. 758-759 and Fig. 3: anisotropic Eliashberg calculation, band-dependent gaps and a common calculated transition temperature. Calculated gaps are theory, not direct measurements. Numerical convergence, raw experiments and general multichannel enhancement claims are not verified here."
+      }
+    },
+    {
+      "id": "source-7700f02a5390b1cf",
+      "doi": "10.1103/PhysRevLett.85.182",
+      "title": "Phase-Sensitive Evidence for d-Wave Pairing Symmetry in Electron-Doped Cuprate Superconductors",
+      "year": 2000,
+      "url": "https://doi.org/10.1103/PhysRevLett.85.182",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0002341v2",
+        "note": "Selected pp. 1–3 and Fig. 3 caption: NCCO/PCCO tricrystals, scanning SQUID, frustrated geometry and two unfrustrated NCCO controls. Raw images, Josephson-vortex fits and uncertainty not independently reproduced. arXiv v2 May 2000; typeset 2018 date is not a new publication. No universal claim across all compositions."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-a5-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A superconducting gap is an energy scale in a specified excitation spectrum. Its magnitude, momentum dependence and relative phase answer different questions. A suppression of spectral weight is not automatically a superconducting gap, and a fitted gap does not automatically define the temperature of bulk superconductivity. This entry organizes observations and model assumptions rather than ranking materials by a single gap ratio.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
+      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset."
+    },
+    {
+      "id": "scwiki-a5-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Specify whether $\\Delta$ denotes an order-parameter amplitude, a quasiparticle excitation threshold or a parameter extracted from a broadened spectrum. The relation between these quantities depends on the model. Keep the measured signal, the fit and the inferred state separate; otherwise apparently similar numbers can describe different observables.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
+      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset."
+    },
+    {
+      "id": "scwiki-a5-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a clean, isotropic, single-band weak-coupling BCS model, the quasiparticle spectrum and zero-temperature limiting ratio are",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Clean isotropic single-band weak-coupling spectrum and constant normal DOS; no broadening or fit. Magnitude-only sign invariance is not a statement about all interference experiments.",
+      "verificationScope": "Selected BCS passages, existing B1 gap-equation check and local DOS state-counting calculation; Carbotte remains abstract-scoped."
+    },
+    {
+      "id": "scwiki-a5-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$E_{\\mathbf k}=\\sqrt{\\xi_{\\mathbf k}^{\\,2}+|\\Delta|^2},\\qquad \\frac{2\\Delta_0}{k_BT_c}=2\\pi e^{-\\gamma_E}\\simeq3.528.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Clean isotropic single-band weak-coupling spectrum and constant normal DOS; no broadening or fit. Magnitude-only sign invariance is not a statement about all interference experiments.",
+      "verificationScope": "Selected BCS passages, existing B1 gap-equation check and local DOS state-counting calculation; Carbotte remains abstract-scoped."
+    },
+    {
+      "id": "scwiki-a5-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Here $\\xi_{\\mathbf k}$ is measured from the chemical potential and $\\gamma_E$ is Euler's constant. The existing BCS entry checks the gap equation and numerical limit. The ratio is not a universal threshold for identifying superconductivity or an interaction. Strong coupling and anisotropy require their own treatment; Carbotte's review abstract describes deviations from simple BCS results without supplying a universal correction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-2da854ce10895b5e"
+      ],
+      "conditions": "Clean isotropic single-band weak-coupling spectrum and constant normal DOS; no broadening or fit. Magnitude-only sign invariance is not a statement about all interference experiments.",
+      "verificationScope": "Selected BCS passages, existing B1 gap-equation check and local DOS state-counting calculation; Carbotte remains abstract-scoped."
+    },
+    {
+      "id": "scwiki-a5-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "With a constant normal density of states $N_n$ and the same spin convention in numerator and denominator, the ideal normalized density of states at positive excitation energy is",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Clean isotropic single-band weak-coupling spectrum and constant normal DOS; no broadening or fit. Magnitude-only sign invariance is not a statement about all interference experiments.",
+      "verificationScope": "Selected BCS passages, existing B1 gap-equation check and local DOS state-counting calculation; Carbotte remains abstract-scoped."
+    },
+    {
+      "id": "scwiki-a5-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\frac{N_s(E)}{N_n}=\\begin{cases}0,&0\\le E<|\\Delta|,\\\\ E/\\sqrt{E^2-|\\Delta|^2},&E>|\\Delta|.\\end{cases}$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Clean isotropic single-band weak-coupling spectrum and constant normal DOS; no broadening or fit. Magnitude-only sign invariance is not a statement about all interference experiments.",
+      "verificationScope": "Selected BCS passages, existing B1 gap-equation check and local DOS state-counting calculation; Carbotte remains abstract-scoped."
+    },
+    {
+      "id": "scwiki-a5-claim-mathematical-assumptions-6",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The factor above the edge follows from the change of variable $E=\\sqrt{\\xi^2+|\\Delta|^2}$ with the usual Bogoliubov spectral weights. The ideal edge is singular but integrable. A local numerical check integrates it up to a finite energy and recovers the corresponding normal-state $\\xi$ interval. The check assumes no lifetime broadening, gap anisotropy or experimental convolution.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Clean isotropic single-band weak-coupling spectrum and constant normal DOS; no broadening or fit. Magnitude-only sign invariance is not a statement about all interference experiments.",
+      "verificationScope": "Selected BCS passages, existing B1 gap-equation check and local DOS state-counting calculation; Carbotte remains abstract-scoped."
+    },
+    {
+      "id": "scwiki-a5-claim-mathematical-assumptions-7",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In this magnitude-only model, replacing a gap by its negative leaves the excitation energies unchanged. Likewise, independently summing two uncoupled spectral contributions cannot recover their relative sign. This is a limited counterexample to inferring phase from a gap magnitude; it does not say that every interference-sensitive spectrum is phase blind.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Clean isotropic single-band weak-coupling spectrum and constant normal DOS; no broadening or fit. Magnitude-only sign invariance is not a statement about all interference experiments.",
+      "verificationScope": "Selected BCS passages, existing B1 gap-equation check and local DOS state-counting calculation; Carbotte remains abstract-scoped."
+    },
+    {
+      "id": "scwiki-a5-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Use the following as a reporting map adapted from the pinned chapter. Each interpretation needs the stated model and a sample-specific source; these rows do not certify any material dataset.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
+      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset."
+    },
+    {
+      "id": "scwiki-a5-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "| Probe | Recorded quantity | What must be controlled |\n|---|---|---|\n| Tunneling or STS | Differential conductance versus bias | Tip and sample spectra, thermal/instrumental broadening, matrix elements and surface variation |\n| ARPES | Momentum-resolved photoemission intensity | Occupation, resolution, matrix elements and surface state; a leading edge is not automatically a gap amplitude |\n| Optical or THz spectroscopy | Frequency-dependent electrodynamic response | Scattering, multiple bands and the model linking absorption to an excitation threshold |\n| Heat capacity | Entropy and bulk excitation contribution | Lattice/magnetic backgrounds and normalization; no direct phase measurement |\n| Penetration depth or thermal transport | Low-energy electromagnetic or heat response | Disorder, nonlocality, background and multiple excitation channels |\n| Andreev or point-contact spectroscopy | Interface current and conductance | Barrier transparency, heating, contact regime and channel mixing |",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
+      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset."
+    },
+    {
+      "id": "scwiki-a5-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "A tunnel conductance resembles the sample density of states only with suitable assumptions about the counterelectrode and tunneling matrix element, and after accounting for the thermal convolution. Do not identify every conductance peak with $\\Delta$. Photoemission and thermodynamic measurements constrain different aspects of the state; the selected review discusses why magnitude-sensitive probes alone do not measure the relative phase.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
+      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset."
+    },
+    {
+      "id": "scwiki-a5-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Hardy and colleagues report a strong linear term in the penetration-depth change of YBa2Cu3O6.95 single crystals over approximately 3–25 K using a 900 MHz resonator. This is evidence relevant to low-energy excitations under their sample conditions, not a direct measurement of gap phase. The present check covers the publisher abstract.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-b7bc48c845a47b53"
+      ],
+      "conditions": "Named YBCO single crystals or designed NCCO/PCCO tricrystal geometries and stated probes; no universal material or doping assignment.",
+      "verificationScope": "Hardy publisher abstract or Tsuei/Kirtley selected author-manuscript passages; raw curves/images/fits not independently reproduced."
+    },
+    {
+      "id": "scwiki-a5-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "By contrast, Tsuei and Kirtley use scanning SQUID measurements of NCCO/PCCO tricrystals to test phase-sensitive predictions. Their designed frustrated geometry produces a half-flux signal, while two unfrustrated NCCO geometries serve as controls. The inference depends on junction geometry and the associated model, not merely on observing a spectral dip. Selected author-manuscript passages and the control description were checked; the image fits were not independently reproduced.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-7700f02a5390b1cf"
+      ],
+      "conditions": "Named YBCO single crystals or designed NCCO/PCCO tricrystal geometries and stated probes; no universal material or doping assignment.",
+      "verificationScope": "Hardy publisher abstract or Tsuei/Kirtley selected author-manuscript passages; raw curves/images/fits not independently reproduced."
+    },
+    {
+      "id": "scwiki-a5-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Nodes, relative sign and topology are distinct. A low-temperature power law can constrain low-energy excitations without uniquely selecting a pairing representation. A fully open gap on each Fermi-surface sheet can coexist with a relative sign change between sheets. Disorder and sample inhomogeneity must be considered before translating a temperature dependence into a symmetry assignment.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
+      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset."
+    },
+    {
+      "id": "scwiki-a5-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "A zero-bias feature alone is not a unique topology test. Identify its field, temperature, position and junction dependence, then compare explicit alternative models. Likewise, a spectroscopic gap-closing temperature must not silently replace a resistive or thermodynamic $T_c$ in a gap ratio. These are inference and reporting limits, not a claim that one alternative explains every observed feature.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
+      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset."
+    },
+    {
+      "id": "scwiki-a5-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "Choi and colleagues' MgB2 result is an anisotropic Eliashberg calculation of distinct band-dependent gap scales. Treat those calculated gaps as theory and compare them with separately identified measurements. The pinned chapter's DOI was mismatched; the correct source is nature00898. That correction does not validate a universal multiband gap ratio or independently reproduce the calculation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7c4eac077ae5e221"
+      ],
+      "conditions": "Anisotropic Eliashberg calculation for MgB2; calculated gaps are not direct measurements and not a universal ratio.",
+      "verificationScope": "Choi selected primary pp. 758–759 and Fig. 3, as checked in B12; no independent numerical reproduction."
+    },
+    {
+      "id": "scwiki-a5-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Record the specimen, pressure or strain, temperature criterion, spectral resolution, fit model and uncertainty together. Compare probes on the same or demonstrably comparable specimens. A disagreement can expose a surface effect, background assumption or a second energy scale; it should remain visible until tested.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
+      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset."
+    },
+    {
+      "id": "scwiki-a5-claim-discovery-implications-2",
+      "sectionId": "discovery-implications",
+      "statement": "A useful next measurement distinguishes competing interpretations. Establish which observation would separate a change of magnitude from a change of phase, and which control would rule out a contact artifact or another ordered state. Gap measurements constrain models; they do not replace a complete evidence chain for superconductivity.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e933e3bbd4beade6"
+      ],
+      "conditions": "Editorial reporting/inference guidance; sample-specific source, probe and model needed. No additional material measurement certified.",
+      "verificationScope": "Pinned chapter adapted with stated source-review boundaries; table is a reporting map, not a verified dataset."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-a5-correction-1",
+      "description": "Replaced the unrelated biology DOI nature00992 with Choi et al. nature00898 and explicitly classified its calculated gaps as theory.",
+      "sourceId": "source-7c4eac077ae5e221",
+      "scope": "Source identity and evidence type; does not certify all multiband claims."
+    },
+    {
+      "id": "scwiki-a5-correction-2",
+      "description": "Separated low-temperature power-law evidence from phase-sensitive measurements; a power law alone does not uniquely identify pairing representation.",
+      "sourceId": "source-e933e3bbd4beade6",
+      "scope": "Inference boundary and terminology; no experimental dataset altered."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "2\\Delta_0/(k_BT_c)=2\\pi e^{-\\gamma_E}",
+      "check": "Uses the previously checked B1 weak-coupling gap equation and limiting constants; not a measured ratio."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "N_s(E)/N_n=E/\\sqrt{E^2-|\\Delta|^2}",
+      "check": "Change-of-variables state counting checked by nine independent numerical integrals with edge-regularizing substitution; sign invariance limited to magnitude-only spectra."
+    }
+  ]
+}
