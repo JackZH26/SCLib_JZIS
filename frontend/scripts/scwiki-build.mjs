@@ -4,6 +4,7 @@ import {createHash} from "node:crypto";
 import katex from "katex";
 import {articleIdPattern,sectionAnchor,validateExtensionInventory,validateExtensionArticle} from "./scwiki-publication.mjs";
 import {validateReferenceIdentities} from "./scwiki-reference-identity.mjs";
+import {validateClaimEvidence} from "./scwiki-claim-evidence.mjs";
 
 const directory=path.join(process.cwd(),"content/scwiki");
 const sha=value=>createHash("sha256").update(value).digest("hex");
@@ -70,6 +71,7 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  }
  for(const claim of meta.claims)if(!sectionIds.has(claim.sectionId)||!claim.sourceIds.length||claim.sourceIds.some(id=>!refIds.has(id))||!claim.conditions)fail(folder+" claim mapping "+claim.id);
  for(const c of meta.claims){
+  validateClaimEvidence(c);
   if(c.sourceRelationship!==undefined&&(!["direct-support","context-for-local-derivation","context-for-editorial-analysis","mixed-source-and-local-derivation"].includes(c.sourceRelationship)||typeof c.derivationNote!=="string"||!c.derivationNote.trim()))fail(folder+" invalid claim source relationship "+c.id);
   if(c.derivationNote!==undefined&&c.sourceRelationship===undefined)fail(folder+" missing claim source relationship "+c.id);
  }

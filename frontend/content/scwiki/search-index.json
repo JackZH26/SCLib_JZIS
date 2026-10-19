@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "c50635c6fbd02299f29b",
+  "revision": "7d09adffa4f6fff621fa",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -2340,7 +2340,7 @@
         "hypothesis"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "0e6cc6413d2d4479fef3",
+      "revision": "6463be9c84e5e700c29a",
       "materialCases": [
         {
           "id": "scwiki-d12-material-1",

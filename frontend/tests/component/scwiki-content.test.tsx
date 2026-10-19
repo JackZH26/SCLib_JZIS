@@ -23,6 +23,36 @@ const getAll=async(key:"articles"|"sources"|"topics")=>{
  return {[key]:items};
 };
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("exports source-backed editorial analysis without presenting a retraction as a scientific hypothesis",async()=>{
+  const a=(await(await get(["articles","scwiki-d12"])).json()).article;
+  const c=a.claims.find((c:any)=>c.id==="scwiki-d12-claim-limits-and-disputes-1");
+  expect(c.evidenceType).toBe("editorial-analysis");expect(c.sourceRelationship).toBe("context-for-editorial-analysis");
+  const ref=a.references.find((r:any)=>r.doi==="10.1038/nature26142");expect(ref.retraction.retractedAt).toBe("2021-03-08");
+  const md=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+  expect(md).toContain("Evidence: editorial-analysis");expect(md).toContain("never positive confirmation");expect(md).toContain("not an uncertainty interval");
+ });
+ it("keeps editorial commentary out of material evidence and exposes the separate claim contract",async()=>{
+  const schema=(await(await get(["openapi.json"])).json());
+  expect(schema.info.version).toBe("1.4.0");expect(schema.components.schemas.Claim.properties.evidenceType.$ref).toBe("#/components/schemas/ClaimEvidenceType");
+  expect(schema.components.schemas.ClaimEvidenceType.enum).toContain("editorial-analysis");
+  expect(schema.components.schemas.ClaimEvidenceType.enum).toContain("experimental");
+  for(const c of articles().flatMap(a=>a.claims)) expect(schema.components.schemas.ClaimEvidenceType.enum).toContain(c.evidenceType);
+  expect(schema.components.schemas.MaterialCase.properties.recordType.$ref).toBe("#/components/schemas/EvidenceType");
+  expect(schema.components.schemas.EvidenceType.enum).not.toContain("editorial-analysis");
+  expect(schema.components.schemas.EvidenceType.enum).not.toContain("experimental");
+  expect(articles().flatMap(a=>a.materialCases).some(m=>String(m.recordType)==="editorial-analysis")).toBe(false);
+  const r=await get(["search"],"?q=topological&evidence=editorial-analysis");expect(r.status).toBe(400);
+ });
+ it("rejects unlabeled source roles for editorial claims and unknown claim evidence values",async()=>{
+  const {validateClaimEvidence}=await import("../../scripts/scwiki-claim-evidence.mjs");
+  const valid={id:"synthetic-editorial",evidenceType:"editorial-analysis",sourceRelationship:"context-for-editorial-analysis",derivationNote:"Compares source scope without claiming a new experiment."};
+  expect(()=>validateClaimEvidence(valid)).not.toThrow();
+  expect(()=>validateClaimEvidence({id:"legacy-experiment",evidenceType:"experimental"})).not.toThrow();
+  expect(()=>validateClaimEvidence({...valid,sourceRelationship:"direct-support"})).toThrow();
+  expect(()=>validateClaimEvidence({...valid,derivationNote:" "})).toThrow();
+  expect(()=>validateClaimEvidence({...valid,evidenceType:"editorial-typo"})).toThrow();
+ });
+
  it("retains magnetic-excitation windows and unresolved primary-source calibration conflicts",async()=>{
   const result=await(await get(["library"],"?q="+encodeURIComponent("10.1038/nmat3723"))).json();expect(result.total).toBe(1);
   const n=result.notes[0];expect(n.id).toBe("dean-lsco-magnetic-excitations");const md=await(await get(["library",n.id,"markdown"])).text();
