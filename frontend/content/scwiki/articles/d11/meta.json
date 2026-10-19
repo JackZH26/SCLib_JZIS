@@ -31,10 +31,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T18:53:56.725149+00:00",
+  "modifiedAt": "2026-10-20",
   "review": {
-    "checkedAt": "2026-10-19",
-    "scope": "Reyren selected final transport/BKT and figures;Gozar selected author layer-order/screening/methods;He selected author ARPES andFigure3;Logvenov originalabstract;inherited F8/B12/E3 named source scopes;independent sheet-response convention checks.",
+    "checkedAt": "2026-10-20",
+    "scope": "Reyren selected final transport/BKT and figures;Gozar selected author layer-order/screening/methods;He selected author ARPES andFigure3;Logvenov originalabstract;inherited F8/B12/E3 named source scopes;independent sheet-response convention checks. Follow-up Gozar thickness-model arithmetic, La-profile rms widths and selected London-current conversion; Logvenov remains original-abstract-only.",
     "limitations": [
       "Complete scientific acceptance remains open.",
       "Logvenov full methods and calibration notread;no new quantitative record extracted.",
@@ -152,6 +152,11 @@
       "description": "LAOoverlayerthickness,conditional~10nmSCbound,andZn-markerlocalization are different measurements/inferences;abstractonly scope retained.",
       "sourceId": "source-7fcd7faadf66481b",
       "scope": "Selected originalevidence,notfullscientificacceptance."
+    },
+    {
+      "id": "scwiki-d11-correction-thickness-evidence-types",
+      "description": "Separate deposited thickness, screening-model active thickness, La-profile rms width and Zn-marker localization. Restore structural uncertainties and model assumptions;20/21UC is arithmetic on approximate inputs, not a precise new measurement.",
+      "scope": "D11 body and exported claim/source context. No new Tc or material record; Logvenov full-methods access gap remains explicit."
     }
   ],
   "equationChecks": [
@@ -184,10 +189,10 @@
       "url": "https://doi.org/10.1038/nature07293",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-author-layer-order-screening-and-methods",
-        "checkedAt": "2026-10-19",
+        "scope": "selected-author-thickness-model-and-profile-width",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/0810.1890v1",
-        "note": "Authorv1 submitted10October2008. Selectedpp2–5,captions9–10,supplement15–17; p12Figure2,p13Figure3 visually checked. Thickness-series Tc midpoint; screening33.2K(S)/51.6K(M–S),10kHzmutualinductance. Finite cation-interdiffusion bound and model-based thickness retained. Complete final/supplement/raw review open."
+        "note": "Authorv1 submitted10October2008. Prior selected transport/screening scope retained. Follow-up pp3–5,9–10,19 andFigs3–4; p13screening andp14STEM/EELS visually inspected. Half-UC steps,1.3nmUC,20UC decomposition ratioabout20; La-profile rms widths1.2±0.4nm and0.8±0.4nm. London conversion uses lambda0about2000Angstrom and empiricallambda(T); width is model-dependent, cationprofile is notSCwidth oroxygen-defect exclusion. Full final/supplement/raw review remains open."
       }
     },
     {
@@ -199,9 +204,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "original-abstract-only",
-        "checkedAt": "2026-10-19",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/19900926/",
-        "note": "Original abstract: atomic-layer MBE bilayers and layer-selective Zn suppression localize response to a single CuO2 plane. Publisher PDF403; full methods/calibration notread. PubMed formula transcription is not used for quantitative composition or a new temperature record."
+        "note": "Indexed original abstract rechecked: atomic-layer MBE bilayers with three-UC constituent layers and selective Zn suppression support a singleCuO2-plane localization claim. Publisherfulltext403 and two original-paper mirror fetches timedout; no fullmethods/Znconcentration/layer-index calibration/transport criterion extracted. BNL authorpublicationlist confirms identity. PubMed formula transcription is not used for quantitative composition or a new temperature record."
       }
     },
     {
@@ -484,14 +489,16 @@
     {
       "id": "scwiki-d11-claim-oxide-interface-controls-3",
       "sectionId": "oxide-interface-controls",
-      "statement": "The layer-thickness and screening-current analyses constrain an interfacial region approximately one to two unit cells thick, subject to their structural and electrodynamic models. Microscopy bounds cation interdiffusion at roughly one unit cell; it does not establish perfectly abrupt chemistry. Logvenov's original abstract describes layer-selective Zn markers that suppress superconductivity and locate the response within a single CuO2 plane. That selected abstract supports the localization statement, while its full methods and calibration remain unchecked here.",
+      "statement": "Keep four distinct kinds of length-scale evidence separate:\n\n- **Deposited thickness:** Gozar increases the upper layer in half-unit-cell steps. The transition plateaus after approximately two unit cells in the thickness series. This constrains a characteristic interfacial length scale; it is not a direct image of a superconducting boundary. One LSCO unit cell along the growth direction is approximately 1.3 nm in this paper.\n- **Screening-current model:** The M–S response is decomposed into contributions with extrapolated transitions near 40 and 50 K. Interpreting their low-temperature current amplitudes as thickness weights gives $d_1/d_2\\approx20$ and $d_1+d_2=20$ unit cells, hence $d_2\\approx20/21\\approx0.95$ unit cells. This is the paper's approximate one-unit-cell inference, expressed arithmetically, not a measurement with two-decimal precision. Current conversion also assumes a London response, a typical penetration depth near 2000 Å and an empirical temperature dependence.\n- **Chemical interface width:** Error-function fits to the La EELS profile give rms widths of $1.2\\pm0.4$ nm at M–I and $0.8\\pm0.4$ nm at substrate–M. These set upper bounds on cation mixing within the structural measurement and fit. They neither measure the superconducting-sheet width nor establish perfectly abrupt chemistry or the absence of oxygen defects.\n- **Layer-selective suppression:** Logvenov's original abstract describes Zn substitutions used as markers to locate interface superconductivity within a single CuO2 plane in bilayers with three-unit-cell constituent layers. The deposited block thickness, chemical profile width and inferred active plane are different quantities. This remains an abstract-level check: Zn concentration, layer-index calibration, transport criteria and the full spatial profile have not been re-extracted from the original methods here.\n\nThe thickness evidence supports localization under the stated preparation and models. It does not make current amplitude a unique thickness meter or show that every microscopic interface has the same profile. Complete Gozar final-version comparison, raw-data reconstruction and Logvenov full-methods review remain open.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-684b96e9dbb65a64",
         "source-7fcd7faadf66481b"
       ],
-      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
-      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+      "conditions": "Gozar authorv1:0.5UC deposition steps, approximately1.3nm/UC; M-S current decomposition with d1/d2about20 and d1+d2=20UC. La-EELS rms widths1.2±0.4nm(M-I),0.8±0.4nm(substrate-M). Logvenov originalabstract only; three-UC constituent layers versus single active CuO2-plane localization.",
+      "verificationScope": "Selected Gozar author-v1 pp3–5,9–10,19 andFigs3–4; figure pixels inspected. Logvenov original abstract; full methods unavailable. No raw fit, complete final comparison or independent replication.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Gozar provides the thickness series, screening-current decomposition and structural-profile fits.20/(1+20)=0.95UC is local arithmetic applied to the paper's approximate ratio/total, not a new thickness fit. Logvenov provides only original-abstract layer-marker support here. Distinguishing deposited thickness, model-inferred active width and cation-profile width is editorial analysis."
     },
     {
       "id": "scwiki-d11-claim-fese-spectra-and-annealing-1",
