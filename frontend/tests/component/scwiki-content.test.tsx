@@ -761,6 +761,14 @@ describe("SCWiki source and scientific-content contracts",()=>{
  });
  it("preserves iron-based source-version criteria and excludes nondetection and gap scales",async()=>{
   const a=articles().find(a=>a.code==="D4")!;
+  const model=a.claims.find(c=>c.id==="scwiki-d4-claim-mathematical-assumptions-3")!;
+  expect(model.sourceRelationship).toBe("mixed-source-and-local-derivation");
+  expect(model.conditions).toContain("Near-Tc");expect(model.derivationNote).toContain("not source-fitted");
+  expect(model.sourceIds).toContain("source-5717dacf7df85626");
+  const modelExport=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+  for(const phrase of ["Opposite signs do not require equal gap magnitudes","zero-temperature prediction","mixed-source-and-local-derivation"]){expect(modelExport).toContain(phrase);}
+  const limits=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();expect(limits).toContain("initially described as ferromagnetic was misidentified");
+
   for(const [q,filters,expected] of [["Ba0.6K0.4Fe2As2","&tcMin=38&criterion=resistive-midpoint",true],["Ba0.6K0.4Fe2As2","&tcMin=38&criterion=reported-zero-resistance",false],["Fe1.03Se","&tcMin=1",false],["FeSe STO","&tcMin=1",false],["FeSe0.88","&tcMin=7&criterion=zero-resistance&pressure=ambient",true],["FeSe0.88","&tcMin=7&pressure=high",false]] as const){
    const data=await(await get(["search"],"?q="+encodeURIComponent(q)+filters)).json();expect(data.results.some((r:{code:string})=>r.code==="D4")).toBe(expected);
   }

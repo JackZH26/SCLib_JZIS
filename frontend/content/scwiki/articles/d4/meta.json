@@ -29,16 +29,17 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T18:37:54.087066+00:00",
+  "modifiedAt": "2026-10-19",
   "review": {
     "checkedAt": "2026-10-19",
-    "scope": "Rotter revised authorv2 transition/figures compared with v1; Hsu selected final methods/figures; Medvedev,McQueen andBendele selected author results/figures; inherited C2/B12 scopes; exact composition and overlap checks.",
+    "scope": "Rotter revised authorv2 transition/figures compared with v1; Hsu selected final methods/figures; Medvedev,McQueen andBendele selected author results/figures; inherited C2/B12 scopes; exact composition and overlap checks. Follow-up: Mazin selected final coupling/eigenvector and note8; Maier orbital-response passages; exact local pure-interband DOS/gap-ratio checks.",
     "limitations": [
       "Complete scientific acceptance remains open.",
       "Kamihara original abstract only; full operational criterion unassigned.",
       "Author manuscripts are versioned; final publication/supplement/raw comparisons remain open.",
       "Rotter37.2K reportedzero also appears asT10 inFigure4; preserve the threshold caveat.",
-      "Nominal chemistry and bulk fraction bounds do not establish crystal siteoccupancy or atomicscale coexistence."
+      "Nominal chemistry and bulk fraction bounds do not establish crystal siteoccupancy or atomicscale coexistence.",
+      "The new unequal-DOS example is restricted to the linearized common-cutoff model, not a material fit or a zero-temperature gap ratio; full DFT/RPA remains unreproduced."
     ]
   },
   "provenance": {
@@ -199,6 +200,11 @@
       "targetSectionId": "mathematical-assumptions",
       "tex": "\\delta=x/(1-x)",
       "check": "11Co notation cases,5Se normalization cases andtwo bulkvolume-overlap counterexamples; exact atom-count/set algebra,not material or muon-model fit."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta_h/\\Delta_e=-\\sqrt{N_e/N_h}",
+      "check": "Six exact rational pure-interband leading eigenvector/DOS-transform cases andsix attractive controls; nearTc,zero diagonal,constantpositiveDOS/commoncutoff; not a fitted orzero-temperaturegapratio."
     }
   ],
   "references": [
@@ -280,10 +286,10 @@
       "url": "https://doi.org/10.1103/PhysRevLett.101.057003",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "publisher-passages-scoped-check",
-        "checkedAt": "2026-10-18",
-        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.057003",
-        "note": "Mazin et al. abstract and published note 8 checked. The note qualifies the initial identification of the magnetic instability; full electronic-structure calculation not reproduced."
+        "scope": "selected-final-pairing-kernel-and-qualification-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.101.057003",
+        "note": "Published29July2008; selected final pp057003-1–4: x=.1 calculated pockets, singlet coupling matrix/eigenvector, susceptibility approximation and note8 qualification of originally misidentified ferromagnetic instability. arXivv4 identification also checked; typeset2018 not publication year. Full DFT/RPA and gap amplitudes not reproduced. Publisher PDF text read; screenshot request failed."
       }
     },
     {
@@ -340,6 +346,20 @@
         "checkedAt": "2026-10-19",
         "evidenceUrl": "https://arxiv.org/pdf/2102.03397v1",
         "note": "Author v1 submitted 5 February 2021; published 30 June 2021 per indexed final journal first page, not issue date 2 July. Selected pp. 2–4 methods/results; p. 3 Figures 2–3 visually checked. 15 K, photon energies 21–75 eV; photon-energy invariance, replica spacing and a forward-scattering fit. Final PDF download failed; supplements and full raw spectra/refits remain open."
+      }
+    },
+    {
+      "id": "source-5717dacf7df85626",
+      "doi": "10.1103/PhysRevB.78.020514",
+      "title": "Theory of neutron scattering as a probe of the superconducting gap in the iron pnictides",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevB.78.020514",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-two-orbital-response-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/0805.0316v1",
+        "note": "Journal published 31 July 2008. Author v1 submitted 3 May 2008; PDF typeset 2018 is not publication. Selected pp. 1–3, p. 2 equations visually checked. Orbital matrix elements, approximate velocities, singlet/triplet response distinguished. No full final-version or RPA numerical reproduction. D4 follow-up re-read author pp1–3 orbital matrix elements and RPA construction; no new numerical susceptibility reproduction."
       }
     }
   ],
@@ -527,7 +547,9 @@
         "source-7bc9538ec7783cf2"
       ],
       "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
-      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "McQueen supplies the stoichiometry/occupancy context. Atom-count normalization identities and checks are local arithmetic, not refined occupancies or mobile-carrier measurements."
     },
     {
       "id": "scwiki-d4-claim-mathematical-assumptions-2",
@@ -538,19 +560,23 @@
         "source-c817382f57bbb81d"
       ],
       "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
-      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Bendele supplies experimental coexistence context. Set-theoretic overlap bounds and explicit volume arrangements are local reasoning, not microscopic coexistence measurements."
     },
     {
       "id": "scwiki-d4-claim-mathematical-assumptions-3",
       "sectionId": "mathematical-assumptions",
-      "statement": "A multiband gap $\\Delta_i(\\mathbf{k})$ is defined on specified bands. Relative sign reversal can arise in a candidate s± pairing solution, but it does not follow simply from the presence of iron. Orbital weights, shallow bands and the accessible scattering channels affect the inference. The [multiband](/scwiki/multiband-pairing) and [s±](/scwiki/s-plus-minus) articles state their model assumptions and preserve alternative interpretations.",
+      "statement": "A multiband gap $\\Delta_i(\\mathbf{k})$ is defined on specified bands. Mazin and colleagues' LaFeAsO1−xFx model connects hole and electron pockets by repulsive singlet pair transfer; its leading eigenvector has opposite signs. This is a material-specific proposal, not a consequence of merely containing iron. Orbital weights and accessible momentum transfers enter the response, as the separate Maier–Scalapino two-orbital calculation makes explicit.\n\nOpposite signs do not require equal gap magnitudes. In a local near-transition illustration with positive constant one-spin densities of states $N_h,N_e$, a shared cutoff, reciprocal interband interaction $V>0$ and zero intraband terms, use $\\lambda_{ij}=-V_{ij}N_j$. The leading mode has $\\lambda_+=V\\sqrt{N_hN_e}$ and $\\Delta_h/\\Delta_e=-\\sqrt{N_e/N_h}$. In synthetic normalized units, $N_h=1$, $N_e=4$ and $V=0.1$ give $\\lambda_+=0.2$ and a gap vector proportional to $(2,-1)$. Six exact rational checks and six attractive-interband controls verify the eigenvectors and density-of-states transformation. This is a linearized model example, not a fitted iron-based gap ratio or a zero-temperature prediction. Band edges inside the pairing window, energy-dependent densities of states and unequal cutoffs require a more general kernel. The [multiband](/scwiki/multiband-pairing) and [s±](/scwiki/s-plus-minus) pages give the broader assumptions and probe limits.",
       "evidenceType": "theory",
       "sourceIds": [
-        "source-716c338ddfa726d3",
-        "source-7c2b55d128348e6c"
+        "source-7c2b55d128348e6c",
+        "source-5717dacf7df85626"
       ],
-      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
-      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+      "conditions": "Near-Tc linearized real reciprocal two-band model; zero intraband terms, positive constant one-spin DOS, shared cutoff, interband repulsionV>0. Numerical values synthetic. No zero-temperature gap-ratio prediction.",
+      "verificationScope": "Mazin final selected pp057003-1–4, including note8; Maier authorv1 selected pp1–3/Eqs13–17; exact local eigenvector/DOS checks. DFT, full RPA and material gap curves not reproduced.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Mazin supplies the LaFeAsO hole/electron-pocket sign-changing proposal and coupling-eigenvector framework; Maier supplies orbital/scattering context. The pure-interband unequal-DOS limit, chosen1:4DOS example and rational controls are local near-Tc derivations, not source-fitted material parameters."
     },
     {
       "id": "scwiki-d4-claim-experimental-criteria-1",
@@ -646,7 +672,7 @@
     {
       "id": "scwiki-d4-claim-limits-and-disputes-1",
       "sectionId": "limits-and-disputes",
-      "statement": "Several orbitals, correlations, nematicity and magnetic proximity help organize the evidence without selecting one universal pairing mechanism. A mass renormalization is not automatically a larger pairing eigenvalue. Complete scientific acceptance remains open, including final-version comparisons, full supplementary methods and raw-data analysis. Differences between a source's claim and this article's review scope are preserved in the references.",
+      "statement": "Several orbitals, correlations, nematicity and magnetic proximity help organize the evidence without selecting one universal pairing mechanism. A mass renormalization is not automatically a larger pairing eigenvalue. Complete scientific acceptance remains open, including final-version comparisons, full supplementary methods and raw-data analysis. Differences between a source's claim and this article's review scope are preserved in the references. The historical mechanism narrative also needs its published qualification: Mazin and colleagues' note 8 says that the magnetic instability they initially described as ferromagnetic was misidentified. Keep that qualification with the original abstract; it is not a universal statement that doping suppresses ferromagnetism in every iron-based superconductor.",
       "evidenceType": "hypothesis",
       "sourceIds": [
         "source-716c338ddfa726d3",
@@ -655,7 +681,9 @@
         "source-c817382f57bbb81d"
       ],
       "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
-      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "The published Mazin note8 explicitly qualifies its earlier instability assignment. General warnings about inference and remaining review limits are editorial synthesis, not a family-wide mechanism measurement."
     },
     {
       "id": "scwiki-d4-claim-discovery-implications-1",
