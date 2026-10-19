@@ -1,0 +1,33 @@
+name: API full regression
+
+on:
+  schedule:
+    - cron: '17 18 * * *'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: api-full-main
+  cancel-in-progress: false
+
+jobs:
+  baseline:
+    if: github.ref == 'refs/heads/main'
+    runs-on: ubuntu-latest
+    outputs:
+      base: ${{ steps.base.outputs.sha }}
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          fetch-depth: 2
+          persist-credentials: false
+      - id: base
+        run: echo "sha=$(git rev-parse HEAD^)" >> "$GITHUB_OUTPUT"
+  regression:
+    needs: baseline
+    uses: ./.github/workflows/api-regression.yml
+    with:
+      base: ${{ needs.baseline.outputs.base }}
+      force_full: true

@@ -98,7 +98,7 @@ class RuntimeInventoryTests(unittest.TestCase):
             self.assertIn("if-no-files-found: error", block)
             self.assertNotIn("uv pip install", block)
         self.assertIn("pnpm install --frozen-lockfile", workflow)
-        self.assertEqual(len([line for line in workflow.splitlines() if line.startswith("  ") and not line.startswith("   ") and line.endswith(":") and line.strip() not in {"pull_request:", "push:"}]), 6)
+        self.assertEqual(len([line for line in workflow.splitlines() if line.startswith("  ") and not line.startswith("   ") and line.endswith(":") and line.strip() not in {"pull_request:", "push:"}]), 7)
 
     def test_database_test_jobs_only_use_guarded_runner(self):
         workflow = (ROOT / ".github/workflows/test.yml").read_text()

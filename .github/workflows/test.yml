@@ -13,10 +13,7 @@ jobs:
   api-tests:
     name: API (pytest)
     runs-on: ubuntu-latest
-    # Native regression exceeded 44 minutes after only four of eight batches.
-    # These are bounded allowances, not measured Linux durations. Individual
-    # disposable service capabilities still expire after one hour unchanged.
-    timeout-minutes: 180
+    timeout-minutes: 35
     defaults:
       run:
         working-directory: api
@@ -77,17 +74,6 @@ jobs:
         run: |
           docker pull postgres:16-alpine
           docker pull redis:7-alpine
-      - name: Run all API modules in separate owned-service batches
-        timeout-minutes: 150
-        working-directory: .
-        run: api/.venv/bin/python -m scripts.tests.run_api_regression --backend docker --batches 8 --output "$RUNNER_TEMP/api-regression"
-      - name: Upload actual API module-batch evidence
-        if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: api-regression-attempt-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/api-regression/
-          if-no-files-found: error
       - name: Verify actual capacity boundaries in separate owned services
         run: .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite api -- -q tests_capacity
       - name: Upload test runtime inventory
@@ -359,3 +345,9 @@ jobs:
           name: private-ingress-rehearsal-attempt-${{ github.run_attempt }}
           path: ${{ runner.temp }}/sclib-private-ingress.json
           if-no-files-found: error
+
+  api-regression:
+    name: API selected regression
+    uses: ./.github/workflows/api-regression.yml
+    with:
+      base: ${{ github.event.pull_request.base.sha || github.event.before }}
