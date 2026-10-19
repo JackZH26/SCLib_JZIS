@@ -27,15 +27,16 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T09:04:57.758932+00:00",
+  "modifiedAt": "2026-10-19T00:52:02.851951+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected published Peotta/Cao passages, earlier Julku/Tanaka manuscripts, CsV3Sb5 abstract and versioned 2026 preprint abstract, plus independent reduced models.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected published Peotta/Cao passages, earlier Julku/Tanaka manuscripts, CsV3Sb5 abstract and versioned 2026 preprint abstract, plus independent reduced models. Follow-up checks Peotta published pp.2–5, Tanaka v2 constitutive response and Supplementary section6, and Nelson–Kosterlitz published pp.1202–1203 text; local SI conversion and conditional bound distinguished.",
     "limitations": [
       "Full scientific acceptance, final-version comparisons and raw-data review remain open.",
       "Frozen projected overlap curvature omits full multiband and self-consistent orbital response.",
       "Tanaka stiffness interpretation retains circuit and aspect-ratio assumptions; no unique geometric fraction established.",
-      "No cross-device or cross-compound transition ranking is inferred."
+      "No cross-device or cross-compound transition ranking is inferred.",
+      "A zero-temperature stiffness gives the stated BKT upper scale only under the explicit renormalized-stiffness inequality; finite-frequency inductance is not automatically its equilibrium counterpart."
     ]
   },
   "provenance": {
@@ -154,9 +155,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-earlier-author-manuscript-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://arxiv.org/html/2406.13740v2",
-        "note": "Selected device and stiffness sections:20 mK base / approximately 40 mK device,edge proximity model,active aspect ratio and half-resistance criterion. Published 5 February 2025; full published-version / raw-data review open."
+        "note": "Selected device and stiffness sections:20 mK base / approximately 40 mK device,edge proximity model,active aspect ratio and half-resistance criterion. Published 5 February 2025; full published-version / raw-data review open. Follow-up: Eq.(1), aspect-ratio conversion, Supplementary section6 pp.36–37 and section7 current-path caveats read; p.36 visually inspected. No final-version or raw-data reproduction."
       }
     },
     {
@@ -185,6 +186,20 @@
         "checkedAt": "2026-10-18",
         "evidenceUrl": "https://arxiv.org/abs/2603.24766v2",
         "note": "v2 9 September 2026 title/abstract differ from March v1; prediction, not measurement. Full methods not reviewed."
+      }
+    },
+    {
+      "id": "source-8f81510a80c35e3a",
+      "doi": "10.1103/PhysRevLett.39.1201",
+      "title": "Universal Jump in the Superfluid Density of Two-Dimensional Superfluids",
+      "year": 1977,
+      "url": "https://doi.org/10.1103/PhysRevLett.39.1201",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-original-publisher-text",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.39.1201",
+        "note": "Published 7 November 1977. Selected original publisher text on pages 1202–1203 was reread: bare and renormalized stiffness, recursion relations and the universal jump in Eq. (10). No inspectable screenshot was returned, so no visual equation check is claimed. The full derivation has not been reproduced."
       }
     }
   ],
@@ -221,7 +236,9 @@
         "source-fdf091e09e7f4a6f"
       ],
       "conditions": "Independent illustrative reduced pairing,atomic,projector and frozen-overlap checks are not full self-consistent lattice or material simulations. Pairing and BKT scales differ.",
-      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open."
+      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local reduced pairing, disconnected-site, projector and frozen-overlap illustrations; Peotta and Törmä provide multiband and geometric-response context, not these numerical examples or a self-consistent material calculation."
     },
     {
       "id": "scwiki-b13-claim-mathematical-assumptions-2",
@@ -232,7 +249,9 @@
         "source-fdf091e09e7f4a6f"
       ],
       "conditions": "Independent illustrative reduced pairing,atomic,projector and frozen-overlap checks are not full self-consistent lattice or material simulations. Pairing and BKT scales differ.",
-      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open."
+      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local reduced pairing, disconnected-site, projector and frozen-overlap illustrations; Peotta and Törmä provide multiband and geometric-response context, not these numerical examples or a self-consistent material calculation."
     },
     {
       "id": "scwiki-b13-claim-mathematical-assumptions-3",
@@ -243,7 +262,9 @@
         "source-fdf091e09e7f4a6f"
       ],
       "conditions": "Independent illustrative reduced pairing,atomic,projector and frozen-overlap checks are not full self-consistent lattice or material simulations. Pairing and BKT scales differ.",
-      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open."
+      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local reduced pairing, disconnected-site, projector and frozen-overlap illustrations; Peotta and Törmä provide multiband and geometric-response context, not these numerical examples or a self-consistent material calculation."
     },
     {
       "id": "scwiki-b13-claim-mathematical-assumptions-4",
@@ -254,7 +275,9 @@
         "source-fdf091e09e7f4a6f"
       ],
       "conditions": "Independent illustrative reduced pairing,atomic,projector and frozen-overlap checks are not full self-consistent lattice or material simulations. Pairing and BKT scales differ.",
-      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open."
+      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local reduced pairing, disconnected-site, projector and frozen-overlap illustrations; Peotta and Törmä provide multiband and geometric-response context, not these numerical examples or a self-consistent material calculation."
     },
     {
       "id": "scwiki-b13-claim-mathematical-assumptions-5",
@@ -265,7 +288,9 @@
         "source-fdf091e09e7f4a6f"
       ],
       "conditions": "Independent illustrative reduced pairing,atomic,projector and frozen-overlap checks are not full self-consistent lattice or material simulations. Pairing and BKT scales differ.",
-      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open."
+      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local reduced pairing, disconnected-site, projector and frozen-overlap illustrations; Peotta and Törmä provide multiband and geometric-response context, not these numerical examples or a self-consistent material calculation."
     },
     {
       "id": "scwiki-b13-claim-mathematical-assumptions-6",
@@ -276,7 +301,9 @@
         "source-fdf091e09e7f4a6f"
       ],
       "conditions": "Independent illustrative reduced pairing,atomic,projector and frozen-overlap checks are not full self-consistent lattice or material simulations. Pairing and BKT scales differ.",
-      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open."
+      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local reduced pairing, disconnected-site, projector and frozen-overlap illustrations; Peotta and Törmä provide multiband and geometric-response context, not these numerical examples or a self-consistent material calculation."
     },
     {
       "id": "scwiki-b13-claim-mathematical-assumptions-7",
@@ -287,7 +314,9 @@
         "source-fdf091e09e7f4a6f"
       ],
       "conditions": "Independent illustrative reduced pairing,atomic,projector and frozen-overlap checks are not full self-consistent lattice or material simulations. Pairing and BKT scales differ.",
-      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open."
+      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local reduced pairing, disconnected-site, projector and frozen-overlap illustrations; Peotta and Törmä provide multiband and geometric-response context, not these numerical examples or a self-consistent material calculation."
     },
     {
       "id": "scwiki-b13-claim-mathematical-assumptions-8",
@@ -298,18 +327,23 @@
         "source-fdf091e09e7f4a6f"
       ],
       "conditions": "Independent illustrative reduced pairing,atomic,projector and frozen-overlap checks are not full self-consistent lattice or material simulations. Pairing and BKT scales differ.",
-      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open."
+      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local reduced pairing, disconnected-site, projector and frozen-overlap illustrations; Peotta and Törmä provide multiband and geometric-response context, not these numerical examples or a self-consistent material calculation."
     },
     {
       "id": "scwiki-b13-claim-mathematical-assumptions-9",
       "sectionId": "mathematical-assumptions",
-      "statement": "For an isotropic superconducting sheet, define phase stiffness by $F/A=\\rho_s|\\nabla\\theta-(2e/\\hbar)\\mathbf A|^2/2$. Then sheet kinetic inductance $L_\\square$ gives $\\rho_s=\\hbar^2/(4e^2L_\\square)$. A hypothetical zero-temperature value of 10 nH per square corresponds to $\\rho_s/k_B\\approx0.784$ K and an upper BKT scale of about 1.232 K. The actual BKT jump uses the renormalized stiffness just below the transition, not this zero-temperature value. This is a unit-conversion illustration, not a material measurement.",
+      "statement": "For an isotropic superconducting sheet, define phase stiffness by $F/A=\\rho_s|\\nabla\\theta-(2e/\\hbar)\\mathbf A|^2/2$. Then sheet kinetic inductance $L_\\square$ gives $\\rho_s=\\hbar^2/(4e^2L_\\square)$. Here the electromagnetic response coefficient is $D_s=1/L_\\square=4e^2\\rho_s/\\hbar^2$; conventions using $D_s$ without the charge factors must be converted before comparing values. A hypothetical zero-temperature value of 10 nH per square gives $\\rho_s(0)/k_B\\approx0.784$ K and $\\pi\\rho_s(0)/(2k_B)\\approx1.232$ K. This is an upper BKT scale only if the renormalized stiffness at the transition does not exceed the stated zero-temperature stiffness. In the equilibrium BKT regime, the jump uses $k_BT_{\\mathrm{BKT}}=\\pi\\rho_s^{R}(T_{\\mathrm{BKT}}^-)/2$, not a zero-temperature substitution. Finite-frequency inductive response and spatially inhomogeneous current paths require separate interpretation before applying that thermodynamic relation. This is a unit-conversion illustration, not a material measurement.",
       "evidenceType": "theory",
       "sourceIds": [
-        "source-fdf091e09e7f4a6f"
+        "source-be7282623ca96056",
+        "source-8f81510a80c35e3a"
       ],
       "conditions": "Independent illustrative reduced pairing,atomic,projector and frozen-overlap checks are not full self-consistent lattice or material simulations. Pairing and BKT scales differ.",
-      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open."
+      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Tanaka author v2 Eq.(1) and Supplementary section6 use an electromagnetic stiffness equal to inverse sheet kinetic inductance. Nelson–Kosterlitz pp.1202–1203 Eq.(10) concerns the renormalized transition limit. The phase-energy convention, 10nH illustration and conditional zero-temperature bound are locally derived; finite-frequency measurement is not automatically the thermodynamic stiffness."
     },
     {
       "id": "scwiki-b13-claim-experimental-criteria-1",
@@ -361,10 +395,13 @@
       "statement": "Neither the finite models above nor a fit to total stiffness identifies a unique pairing interaction. Orbital relaxation, remote bands, disorder and spatial inhomogeneity can alter quantitative comparisons. Full scientific acceptance remains open, including final-version checks, raw-data review and material-specific self-consistent response calculations.",
       "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-fdf091e09e7f4a6f"
+        "source-fdf091e09e7f4a6f",
+        "source-be7282623ca96056"
       ],
       "conditions": "Independent illustrative reduced pairing,atomic,projector and frozen-overlap checks are not full self-consistent lattice or material simulations. Pairing and BKT scales differ.",
-      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open."
+      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial synthesis of isolated-band hierarchy and orbital-response assumptions in Peotta pp.3–5, and Tanaka v2 aspect-ratio, conventional-baseline and current-path caveats. Neither source uniquely identifies a pairing interaction from a stiffness fit or validates this general review workflow."
     },
     {
       "id": "scwiki-b13-claim-discovery-implications-1",
@@ -372,10 +409,13 @@
       "statement": "Optimize pairing and coherence together. State the bandwidth, interband separation, orbital interaction and filling; test the approximations before applying an isolated-band formula. Compare gap, transport and inductive response in the same specimen. Keep an inferred phase scale separate from measured resistive criteria, and preserve the uncertainty in the conventional baseline used to discuss geometry.",
       "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-fdf091e09e7f4a6f"
+        "source-fdf091e09e7f4a6f",
+        "source-be7282623ca96056"
       ],
       "conditions": "Independent illustrative reduced pairing,atomic,projector and frozen-overlap checks are not full self-consistent lattice or material simulations. Pairing and BKT scales differ.",
-      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open."
+      "verificationScope": "Selected primary passages and independent checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial synthesis of isolated-band hierarchy and orbital-response assumptions in Peotta pp.3–5, and Tanaka v2 aspect-ratio, conventional-baseline and current-path caveats. Neither source uniquely identifies a pairing interaction from a stiffness fit or validates this general review workflow."
     }
   ],
   "corrections": [
@@ -390,6 +430,12 @@
       "description": "Chern lower bound retains dimensional prefactors; no unconditional material-level stiffness inference from a flat dispersion.",
       "sourceId": "source-fdf091e09e7f4a6f",
       "scope": "Published pp5–6."
+    },
+    {
+      "id": "scwiki-b13-correction-3",
+      "description": "Zero-temperature BKT scale now conditional on the renormalized stiffness bound; charge-weighted response convention and finite-frequency limitations explicit.",
+      "sourceId": "source-8f81510a80c35e3a",
+      "scope": "Selected original publisher text and Tanaka v2 supplement; local unit conversion, not an experimental transition."
     }
   ],
   "equationChecks": [

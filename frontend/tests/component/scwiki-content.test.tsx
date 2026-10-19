@@ -1161,6 +1161,7 @@ it("keeps flat-band pairing, frozen geometry and measured stiffness conditions s
  expect(math).toContain("not a true finite-temperature superconducting transition");expect(math).toContain("one quarter");expect(math).toContain("frozen projected overlap response");expect(math).toContain("renormalized stiffness");
  const md=await(await get(["articles",a.id,"markdown"])).text();
  expect(md).toContain("parallel electrode-proximitized edge");expect(md).toContain("half normal-state resistance");expect(md).toContain("not an observed universal correlation");
+ expect(math).toContain("upper BKT scale only if");expect(math).toContain("Finite-frequency inductive response");expect(math).toContain("mixed-source-and-local-derivation");expect(a.claims.find(c=>c.id==="scwiki-b13-claim-mathematical-assumptions-9")?.sourceIds).toContain("source-8f81510a80c35e3a");
  const ref=a.references.find(r=>r.doi==="10.48550/arXiv.2603.24766")!;expect(ref.publicationStatus).toBe("preprint");expect(ref.url).toContain("v2");
  const f=articles().find(a=>a.code==="F7")!;const fm=await(await get(["articles",f.id,"markdown"])).text();expect(fm).toContain("assumed active-region aspect ratio");
  expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
