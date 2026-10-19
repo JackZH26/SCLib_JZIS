@@ -28,15 +28,16 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T18:17:47.277953+00:00",
+  "modifiedAt": "2026-10-19T00:47:10.029011+00:00",
   "review": {
     "checkedAt": "2026-10-19",
-    "scope": "Inherited D7 source-specific MgB2 checks; Lee author v6 selected results/Figure 2 and model caption; Faeth author v1 selected methods/Figures 2–3; Li–Sawatzky original abstract; 64 reciprocal-kernel cases, 31 PSD controls and bounded counterexamples.",
+    "scope": "Inherited D7 source-specific MgB2 checks; Lee author v6 selected results/Figure 2 and model caption; Faeth author v1 selected methods/Figures 2–3; Li–Sawatzky original abstract; 64 reciprocal-kernel cases, 31 PSD controls and bounded counterexamples. Nine exact rational similarity checks and four uncoupled/degenerate boundary cases.",
     "limitations": [
       "Complete scientific acceptance remains open.",
       "Suhl original full text remains metadata-only; the two-band illustration was checked independently, not attributed as a complete historical audit.",
       "Lee/Faeth final-version comparisons, complete supplementary controls and raw spectral fits remain open.",
-      "No unique multi-boson decomposition or full frequency-dependent Eliashberg solve is claimed."
+      "No unique multi-boson decomposition or full frequency-dependent Eliashberg solve is claimed.",
+      "At zero interband coupling, a degenerate quadratic instability does not fix a unique relative phase; local eigenvalue checks do not solve nonlinear phase selection."
     ]
   },
   "provenance": {
@@ -343,7 +344,9 @@
         "source-7c4eac077ae5e221"
       ],
       "conditions": "Preserve band basis, DOS, cutoff, normal self-energy, sample, probe and temperature type; model examples are not material fits.",
-      "verificationScope": "Named source-specific checks and bounded two-band model only; complete scientific acceptance remains open."
+      "verificationScope": "Local reciprocal-kernel spectra and residuals, nine exact rational similarities and four uncoupled boundary cases; Choi selected published passages provide context. Historical Suhl full-text and complete scientific acceptance remain open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "These common-cutoff two-band equations and synthetic counterexamples are local explanatory derivations. The Suhl reference has bibliographic verification only; its full text has not been audited. Choi et al., published pp.758–760, supplies anisotropic MgB2 context, not this reduced kernel or these numerical parameters. Positive band DOS and reciprocal real interactions are required for the stated similarity transform."
     },
     {
       "id": "scwiki-b12-claim-mathematical-assumptions-2",
@@ -355,7 +358,9 @@
         "source-7c4eac077ae5e221"
       ],
       "conditions": "Preserve band basis, DOS, cutoff, normal self-energy, sample, probe and temperature type; model examples are not material fits.",
-      "verificationScope": "Named source-specific checks and bounded two-band model only; complete scientific acceptance remains open."
+      "verificationScope": "Local reciprocal-kernel spectra and residuals, nine exact rational similarities and four uncoupled boundary cases; Choi selected published passages provide context. Historical Suhl full-text and complete scientific acceptance remain open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "These common-cutoff two-band equations and synthetic counterexamples are local explanatory derivations. The Suhl reference has bibliographic verification only; its full text has not been audited. Choi et al., published pp.758–760, supplies anisotropic MgB2 context, not this reduced kernel or these numerical parameters. Positive band DOS and reciprocal real interactions are required for the stated similarity transform."
     },
     {
       "id": "scwiki-b12-claim-mathematical-assumptions-3",
@@ -367,19 +372,23 @@
         "source-7c4eac077ae5e221"
       ],
       "conditions": "Preserve band basis, DOS, cutoff, normal self-energy, sample, probe and temperature type; model examples are not material fits.",
-      "verificationScope": "Named source-specific checks and bounded two-band model only; complete scientific acceptance remains open."
+      "verificationScope": "Local reciprocal-kernel spectra and residuals, nine exact rational similarities and four uncoupled boundary cases; Choi selected published passages provide context. Historical Suhl full-text and complete scientific acceptance remain open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "These common-cutoff two-band equations and synthetic counterexamples are local explanatory derivations. The Suhl reference has bibliographic verification only; its full text has not been audited. Choi et al., published pp.758–760, supplies anisotropic MgB2 context, not this reduced kernel or these numerical parameters. Positive band DOS and reciprocal real interactions are required for the stated similarity transform."
     },
     {
       "id": "scwiki-b12-claim-mathematical-assumptions-4",
       "sectionId": "mathematical-assumptions",
-      "statement": "Changing both off-diagonal signs leaves the two eigenvalues unchanged but reverses the relative gap sign. A transition temperature alone therefore cannot determine the relative phase. With zero interband coupling, the two bands have independent instabilities, and the weaker band need not acquire a gap at the higher transition. A full calculation must also retain frequency dependence, different cutoffs, Coulomb terms and normal self-energy. Even an illustrative scalar increase from $0.3$ to $0.4$ loses to a mass factor $Z=1.5$, because $0.4/1.5<0.3$; that arithmetic is not a complete Eliashberg calculation.",
+      "statement": "With nonzero reciprocal interband coupling, changing both off-diagonal signs leaves the two eigenvalues unchanged but reverses the relative gap sign of the nondegenerate leading mode. A transition temperature alone therefore cannot determine the relative phase. With zero interband coupling, the two bands have independent instabilities, and the weaker band need not acquire a gap at the higher transition. If the two uncoupled eigenvalues coincide, this quadratic model selects neither a unique gap vector nor a relative phase; additional terms are needed. A full calculation must also retain frequency dependence, different cutoffs, Coulomb terms and normal self-energy. Even an illustrative scalar increase from $0.3$ to $0.4$ loses to a mass factor $Z=1.5$, because $0.4/1.5<0.3$; that arithmetic is not a complete Eliashberg calculation.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-e6ac5c48a0e11fe3",
         "source-7c4eac077ae5e221"
       ],
       "conditions": "Preserve band basis, DOS, cutoff, normal self-energy, sample, probe and temperature type; model examples are not material fits.",
-      "verificationScope": "Named source-specific checks and bounded two-band model only; complete scientific acceptance remains open."
+      "verificationScope": "Local reciprocal-kernel spectra and residuals, nine exact rational similarities and four uncoupled boundary cases; Choi selected published passages provide context. Historical Suhl full-text and complete scientific acceptance remain open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "These common-cutoff two-band equations and synthetic counterexamples are local explanatory derivations. The Suhl reference has bibliographic verification only; its full text has not been audited. Choi et al., published pp.758–760, supplies anisotropic MgB2 context, not this reduced kernel or these numerical parameters. Positive band DOS and reciprocal real interactions are required for the stated similarity transform."
     },
     {
       "id": "scwiki-b12-claim-experimental-criteria-1",

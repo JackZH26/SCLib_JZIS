@@ -1114,6 +1114,15 @@ it("keeps RVB model results and organic spin-state alternatives distinct from me
  expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
 });
 
+it("retains local two-band derivation scope and the uncoupled phase boundary in exports",async()=>{
+ const a=articles().find(a=>a.code==="B12")!;
+ const math=a.claims.filter(c=>c.sectionId==="mathematical-assumptions");expect(math).toHaveLength(4);expect(math.every(c=>c.sourceRelationship==="context-for-local-derivation")).toBe(true);
+ const text=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(text).toContain("neither a unique gap vector nor a relative phase");expect(text).toContain("nondegenerate leading mode");
+ for(const c of math)expect(text).toContain(c.derivationNote!);
+ expect(text).toContain("bibliographic verification only");
+});
+
 it("retains Hund atomic-model limits, corrected material identity and calorimetry conditions",async()=>{
  const a=articles().find(a=>a.code==="B10")!;
  const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
