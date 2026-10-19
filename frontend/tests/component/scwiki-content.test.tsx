@@ -1172,6 +1172,8 @@ it("preserves Mottness model limits and the nickelate specimen-specific onset in
  const md=await(await get(["articles",a.id,"markdown"])).text();
  expect(md).toContain("does not establish a bulk Mott transition");
  expect(md).toContain("not a quantitative X-ray absorption spectrum");
+ expect(md).toContain("lower-branch addition weight becomes");
+ expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.sourceRelationship==="context-for-local-derivation")).toBe(true);
  expect(a.references.some(r=>r.doi==="10.1038/nature00898")).toBe(true);
  expect(a.references.some(r=>r.doi==="10.1038/nature00992")).toBe(false);
  expect(searchArticles(searchIndex().entries,"Mottness",{}).some(r=>r.id===a.id)).toBe(true);

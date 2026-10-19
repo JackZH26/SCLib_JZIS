@@ -27,15 +27,16 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T09:04:57.753572+00:00",
+  "modifiedAt": "2026-10-19",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected Sun published results and methods, earlier Lee/Keimer/Lefebvre manuscripts, scoped historical and XAS abstracts, and independent finite-model checks.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Sun published results and methods, earlier Lee/Keimer/Lefebvre manuscripts, scoped historical and XAS abstracts, and independent finite-model checks. Follow-up rereads Lee author v1 pp.4–6 and Chen publisher abstract, and checks six exact Fock-operator ensembles with finite double occupancy.",
     "limitations": [
       "Full scientific acceptance, final-version comparisons and raw-data review remain open.",
       "ZSA and Chen original full texts were not obtained; the classification anchor and absorption result retain limited review scopes.",
       "Finite dimer and atomic spectral weights are not bulk transition predictions or measured XAS intensities.",
-      "Kondo, charge-transfer and one-band parameters cannot be transferred unchanged between families."
+      "Kondo, charge-transfer and one-band parameters cannot be transferred unchanged between families.",
+      "The atomic 2x addition weight requires zero double occupancy; the generalized ensemble is prescribed, not a thermal or finite-hopping material calculation."
     ]
   },
   "provenance": {
@@ -151,9 +152,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "earlier-author-manuscript-selected-passages-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0410445v1",
-        "note": "Selected pp4–6 electronic structure, oxygen holes and restricted low-energy mapping, in addition to prior B9 passages. Full published-version comparison remains open."
+        "note": "Selected pp4–6 electronic structure, oxygen holes and restricted low-energy mapping, in addition to prior B9 passages. Full published-version comparison remains open. Follow-up pp.4–6 reread and p.5 visually checked; three-band oxygen-hole context and restricted low-energy mapping do not supply the local atomic examples."
       }
     },
     {
@@ -221,9 +222,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "publisher-abstract-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.66.104",
-        "note": "O K-edge fluorescence yield, Sr-dependent pre-edge features and core-hole excitonic model included. Full primary text unavailable."
+        "note": "O K-edge fluorescence yield, Sr-dependent pre-edge features and core-hole excitonic model included. Full primary text unavailable. Original publisher abstract reread; full text still requires subscription."
       }
     },
     {
@@ -289,7 +290,9 @@
         "source-2f6a1c773323226a"
       ],
       "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
-      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The finite dimer, prescribed atomic-ensemble spectral weights and two-configuration mixing are local explanatory derivations. Lee author v1 pp.4–6 provides model-reduction context; Chen is abstract-scoped XAS context with core-hole correlations, not the source of these synthetic cases or a direct intensity calibration."
     },
     {
       "id": "scwiki-b14-claim-mathematical-assumptions-2",
@@ -300,7 +303,9 @@
         "source-2f6a1c773323226a"
       ],
       "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
-      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The finite dimer, prescribed atomic-ensemble spectral weights and two-configuration mixing are local explanatory derivations. Lee author v1 pp.4–6 provides model-reduction context; Chen is abstract-scoped XAS context with core-hole correlations, not the source of these synthetic cases or a direct intensity calibration."
     },
     {
       "id": "scwiki-b14-claim-mathematical-assumptions-3",
@@ -311,7 +316,9 @@
         "source-2f6a1c773323226a"
       ],
       "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
-      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The finite dimer, prescribed atomic-ensemble spectral weights and two-configuration mixing are local explanatory derivations. Lee author v1 pp.4–6 provides model-reduction context; Chen is abstract-scoped XAS context with core-hole correlations, not the source of these synthetic cases or a direct intensity calibration."
     },
     {
       "id": "scwiki-b14-claim-mathematical-assumptions-4",
@@ -322,7 +329,9 @@
         "source-2f6a1c773323226a"
       ],
       "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
-      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The finite dimer, prescribed atomic-ensemble spectral weights and two-configuration mixing are local explanatory derivations. Lee author v1 pp.4–6 provides model-reduction context; Chen is abstract-scoped XAS context with core-hole correlations, not the source of these synthetic cases or a direct intensity calibration."
     },
     {
       "id": "scwiki-b14-claim-mathematical-assumptions-5",
@@ -333,19 +342,23 @@
         "source-2f6a1c773323226a"
       ],
       "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
-      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The finite dimer, prescribed atomic-ensemble spectral weights and two-configuration mixing are local explanatory derivations. Lee author v1 pp.4–6 provides model-reduction context; Chen is abstract-scoped XAS context with core-hole correlations, not the source of these synthetic cases or a direct intensity calibration."
     },
     {
       "id": "scwiki-b14-claim-mathematical-assumptions-6",
       "sectionId": "mathematical-assumptions",
-      "statement": "The total spectral weight is two; the lower-energy removal-plus-addition weight is $1+x$, rather than a fixed rigid band with only its occupation changed. Five enumerated cases check the sum rule. This is a zero-hopping state-counting result with a specified ensemble, not a quantitative X-ray absorption spectrum. Finite hopping, ligand character and a core hole alter the interpretation of a measured spectrum.",
+      "statement": "The total spectral weight is two; the lower-energy removal-plus-addition weight is $1+x$, rather than a fixed rigid band with only its occupation changed. Five enumerated cases check the sum rule. This is a zero-hopping state-counting result with a specified ensemble, not a quantitative X-ray absorption spectrum. Finite hopping, ligand character and a core hole alter the interpretation of a measured spectrum. With a double-occupancy probability $d$ at fixed density $n=1-x$, the empty-site probability is $x+d$ and the lower-branch addition weight becomes $2(x+d)$, while upper-branch removal carries $2d$. Six exact Fock-operator ensemble checks, including spin imbalance and nonzero double occupancy, retain total weight two and lower-branch total $1+x$. These are prescribed atomic populations for separated branches at $U>0$, not equilibrium populations or finite-hopping spectra.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-2f6a1c773323226a",
         "source-1756566a3dd37c2c"
       ],
       "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
-      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The finite dimer, prescribed atomic-ensemble spectral weights and two-configuration mixing are local explanatory derivations. Lee author v1 pp.4–6 provides model-reduction context; Chen is abstract-scoped XAS context with core-hole correlations, not the source of these synthetic cases or a direct intensity calibration."
     },
     {
       "id": "scwiki-b14-claim-mathematical-assumptions-7",
@@ -357,7 +370,9 @@
         "source-2f6a1c773323226a"
       ],
       "conditions": "Independent finite/atomic illustrations are not material calculations. Preserve orbital basis, filling, pressure medium, probe and temperature criterion.",
-      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The finite dimer, prescribed atomic-ensemble spectral weights and two-configuration mixing are local explanatory derivations. Lee author v1 pp.4–6 provides model-reduction context; Chen is abstract-scoped XAS context with core-hole correlations, not the source of these synthetic cases or a direct intensity calibration."
     },
     {
       "id": "scwiki-b14-claim-experimental-criteria-1",
@@ -441,6 +456,11 @@
       "description": "Finite charge gap distinguished from bulk Mottness; nickelate onset and magnetic signatures retain separate conditions.",
       "sourceId": "source-df0c15d62982f853",
       "scope": "Independent finite model and selected published figure/methods."
+    },
+    {
+      "id": "scwiki-b14-correction-2",
+      "description": "Makes the 2x no-double-occupancy restriction explicit by contrasting a prescribed finite-double-occupancy ensemble; source citations provide context rather than synthetic numerical results.",
+      "scope": "Local exact Fock-space counting and selected original source context; not an XAS or bulk material reproduction."
     }
   ],
   "equationChecks": [
@@ -452,7 +472,7 @@
     {
       "targetSectionId": "mathematical-assumptions",
       "tex": "W_{\\mathrm{add,low}}=2x",
-      "check": "Five atomic matrix-element counting and total-weight sum rules."
+      "check": "Five atomic matrix-element counting and total-weight sum rules. Six exact Fock-operator ensembles and four anticommutators distinguish the no-double-occupancy limit from finite-d addition/removal weights."
     },
     {
       "targetSectionId": "mathematical-assumptions",
