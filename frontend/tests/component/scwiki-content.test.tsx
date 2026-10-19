@@ -1414,6 +1414,12 @@ it("keeps node studies linked to their actual materials and measurement temperat
  expect(searchArticles(searchIndex().entries,"Pfaffian",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
  const out=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
  expect(out).toContain("KFe2As2, not P-substituted");expect(out).toContain("Full scientific acceptance");
+ const node=a.claims.find(c=>c.id==="scwiki-c10-claim-mathematical-assumptions-1")!;
+ expect(node.sourceRelationship).toBe("context-for-local-derivation");
+ expect(node.conditions).toContain("finite nonzero transverse velocities");
+ const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ for(const text of ["finite-window ambiguity", "only zero remains a point", "not their result or a material fit", "scalar impurity-self-energy approximation", "above relevant broadening scales"]) {expect(math).toContain(text);expect(md).toContain(text);}
+ expect(searchArticles(searchIndex().entries,"finite-window ambiguity",{}).some(r=>r.id===a.id)).toBe(true);
 });
 
 it("keeps elemental pressure cases and calculated temperatures distinct",async()=>{
