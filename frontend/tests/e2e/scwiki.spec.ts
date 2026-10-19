@@ -73,14 +73,15 @@ test("six topic sections pack without overlaps or long empty rows across screen 
    const boxes=nodes.map(node=>node.getBoundingClientRect());
    return boxes.every((a,i)=>boxes.every((b,j)=>i===j||a.right<=b.left||b.right<=a.left||a.bottom<=b.top||b.bottom<=a.top));
   })).toBe(true);
-  const boxes=await page.locator(".scwiki-topic-group").evaluateAll(nodes=>nodes.map(node=>{const r=node.getBoundingClientRect();return {top:r.top,bottom:r.bottom,left:r.left};}));
+  const boxes=await page.locator(".scwiki-topic-group").evaluateAll(nodes=>nodes.map(node=>{const r=node.getBoundingClientRect();return {top:r.top,bottom:r.bottom,left:r.left,width:r.width};}));
   if(width>640) {
    // Short reference sections should no longer wait below the longest topic.
    expect(boxes[4].top).toBeLessThan(boxes[3].bottom);
    for(const box of boxes){
-    const above=boxes.filter(other=>Math.abs(other.left-box.left)<1&&other.bottom<=box.top);
+    const above=boxes.filter(other=>Math.abs(other.left-box.left)<1&&Math.abs(other.width-box.width)<1&&other.bottom<=box.top);
     if(above.length)expect(box.top-Math.max(...above.map(other=>other.bottom))).toBeLessThan(41);
    }
+   if(width>900)expect(boxes[3].width).toBeGreaterThan(boxes[0].width*2);
   } else for(let i=1;i<boxes.length;i++)expect(boxes[i].top).toBeGreaterThanOrEqual(boxes[i-1].bottom);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
   await page.screenshot({path:`test-results/scwiki-topic-layout-${width}.png`,fullPage:true});
