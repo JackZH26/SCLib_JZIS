@@ -29,7 +29,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.202392+00:00",
+  "modifiedAt": "2026-10-19T01:56:52.038901+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected 2000 and 2004 tricrystal author manuscripts, early penetration-depth and ARPES abstracts, inherited scoped sources, and independent symmetry, nodal-state and finite-loop calculations.",
@@ -258,13 +258,15 @@
     {
       "id": "scwiki-c3-claim-mathematical-assumptions-1",
       "sectionId": "mathematical-assumptions",
-      "statement": "An illustrative lattice harmonic, with lattice spacing set to one, is $\\Delta(\\mathbf k)=\\Delta_0[\\cos k_x-\\cos k_y]/2$. Direct rotation, diagonal-reflection and inversion checks establish its B1g transformation. Its diagonal zero lines produce quasiparticle nodes only where they intersect the Fermi surface. A circular contour centered at the zone center intersects them; hypothetical small pockets around $(\\pi,0)$ and $(0,\\pi)$ do not. The latter have opposite gap signs while each pocket remains fully gapped. These checks establish a geometric possibility, not a band structure for a particular cuprate.",
+      "statement": "The calculations in this section are local explanatory models; the cited papers provide context rather than the synthetic numerical results. An illustrative lattice harmonic, with lattice spacing set to one, is $\\Delta(\\mathbf k)=\\Delta_0[\\cos k_x-\\cos k_y]/2$. Direct rotation, diagonal-reflection and inversion checks establish its B1g transformation. Its diagonal zero lines produce quasiparticle nodes only where they intersect the Fermi surface. A circular contour centered at the zone center intersects them; hypothetical small pockets around $(\\pi,0)$ and $(0,\\pi)$ do not. The latter have opposite gap signs while each pocket remains fully gapped. These checks establish a geometric possibility, not a band structure for a particular cuprate.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-e933e3bbd4beade6"
       ],
       "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
-      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local square-lattice and circular-gap examples, one-branch nodal thermodynamics, and a single-junction pi-loop model. The references provide pairing or tricrystal context; these calculations neither reproduce the measured geometry nor establish a material pairing state."
     },
     {
       "id": "scwiki-c3-claim-mathematical-assumptions-2",
@@ -275,7 +277,9 @@
         "source-e933e3bbd4beade6"
       ],
       "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
-      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local square-lattice and circular-gap examples, one-branch nodal thermodynamics, and a single-junction pi-loop model. The references provide pairing or tricrystal context; these calculations neither reproduce the measured geometry nor establish a material pairing state."
     },
     {
       "id": "scwiki-c3-claim-mathematical-assumptions-3",
@@ -286,7 +290,9 @@
         "source-e933e3bbd4beade6"
       ],
       "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
-      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local square-lattice and circular-gap examples, one-branch nodal thermodynamics, and a single-junction pi-loop model. The references provide pairing or tricrystal context; these calculations neither reproduce the measured geometry nor establish a material pairing state."
     },
     {
       "id": "scwiki-c3-claim-mathematical-assumptions-4",
@@ -297,7 +303,9 @@
         "source-a9db90b0ffeff826"
       ],
       "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
-      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local square-lattice and circular-gap examples, one-branch nodal thermodynamics, and a single-junction pi-loop model. The references provide pairing or tricrystal context; these calculations neither reproduce the measured geometry nor establish a material pairing state."
     },
     {
       "id": "scwiki-c3-claim-experimental-criteria-1",
@@ -365,7 +373,9 @@
         "source-22f5417afdec3a9f"
       ],
       "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
-      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "The cited experimental and review sources motivate probe distinctions. The non-uniqueness of a phase given only a magnitude is a local mathematical observation, subject to smoothness and physical-realizability constraints."
     },
     {
       "id": "scwiki-c3-claim-limits-and-disputes-2",
@@ -392,7 +402,7 @@
     {
       "id": "scwiki-c3-claim-discovery-implications-1",
       "sectionId": "discovery-implications",
-      "statement": "For a candidate material, first state its point group and measured Fermi surface. Then ask which experiments constrain node locations, spin response and relative phase, and whether those measurements describe comparable sample states. A useful next experiment should distinguish competing explanations within a specified geometry and resolution. Keep computed pairing preference, observed superconductivity and experimentally constrained symmetry as separate conclusions. Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
+      "statement": "The following is editorial guidance for comparing evidence, not a protocol validated by the cited experiments. For a candidate material, first state its point group and measured Fermi surface. Then ask which experiments constrain node locations, spin response and relative phase, and whether those measurements describe comparable sample states. A useful next experiment should distinguish competing explanations within a specified geometry and resolution. Keep computed pairing preference, observed superconductivity and experimentally constrained symmetry as separate conclusions. Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-e933e3bbd4beade6",
@@ -400,7 +410,9 @@
         "source-7700f02a5390b1cf"
       ],
       "conditions": "Declared ideal symmetry and toy-model assumptions; sample-specific geometry, measurement temperature and transition criteria kept separate.",
-      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent toy checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial comparison checklist motivated by the scoped review and tricrystal studies; not a universally validated experimental protocol or an inference of a unique mechanism."
     }
   ],
   "corrections": [
@@ -415,6 +427,11 @@
       "description": "Gap zero lines require Fermi-surface intersections; phase evidence remains attached to measured sample and geometry.",
       "sourceId": "source-7700f02a5390b1cf",
       "scope": "Independent geometry checks and selected original manuscript passages."
+    },
+    {
+      "id": "scwiki-c3-correction-3",
+      "description": "Explicitly separates local illustrative calculations and editorial comparison guidance from experimental source results.",
+      "scope": "Source attribution and export clarity; experimental conclusions and their review limitations retained."
     }
   ],
   "equationChecks": [
