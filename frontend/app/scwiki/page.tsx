@@ -3,6 +3,7 @@ import type {Metadata} from "next";
 import Link from "@/components/AppLink";
 import {SearchCatalogue} from "@/components/scwiki/SearchCatalogue";
 import {LegacyDocsAnchors} from "@/components/scwiki/LegacyDocsAnchors";
+import {TopicGrid} from "@/components/scwiki/TopicGrid";
 import {articles,catalogue} from "@/lib/scwiki/catalogue";
 import {formatResearchDate,topicGroups} from "@/lib/scwiki/home";
 import highlights from "@/content/scwiki/research-highlights.json";
@@ -40,10 +41,10 @@ export default function SCWikiPage(){
    </section>
    <section className="scwiki-topics" aria-labelledby="scwiki-topics-heading">
     <div className="scwiki-section-heading"><div><p className="scwiki-eyebrow">A connected field</p><h2 id="scwiki-topics-heading">Explore the key concepts</h2></div><p className="scwiki-updated">Choose a keyword to open its wiki article.</p></div>
-    <div className="scwiki-topic-grid">{topicGroups.map((group,index)=><nav className="scwiki-topic-group" key={group.id} aria-labelledby={"topic-"+group.id}>
+    <TopicGrid>{topicGroups.map((group,index)=><nav className="scwiki-topic-group" key={group.id} aria-labelledby={"topic-"+group.id}>
      <p className="scwiki-topic-number" aria-hidden="true">0{index+1}</p><h3 id={"topic-"+group.id}>{group.title}</h3><p>{group.description}</p>
      <ul>{group.topics.map(topic=>{const article=entries.find(a=>a.code===topic.code)!;return <li key={topic.code}><Link href={"/scwiki/"+article.slug}>{topic.label}<span aria-hidden="true">↗</span></Link></li>;})}</ul>
-    </nav>)}</div>
+    </nav>)}</TopicGrid>
    </section>
   </SearchCatalogue>
   <aside className="scwiki-home-editorial" aria-labelledby="scwiki-editorial-heading">

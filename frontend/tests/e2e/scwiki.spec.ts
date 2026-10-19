@@ -64,6 +64,28 @@ test("SCWiki ships complete server-rendered English content and lazy search",asy
  await expect(page.getByRole("heading",{name:"Latest research",exact:true})).toBeVisible();
  await page.screenshot({path:"test-results/scwiki-index-390.png",fullPage:true});
 });
+test("six topic sections pack without overlaps or long empty rows across screen sizes",async({page})=>{
+ await page.goto("/scwiki");
+ for (const width of [1440, 820, 390, 1440]) {
+  await page.setViewportSize({width,height:1000});
+  await expect(page.locator(".scwiki-topic-grid")).toHaveAttribute("data-packed",width>640?"true":"false");
+  await expect.poll(async()=>page.locator(".scwiki-topic-group").evaluateAll(nodes=>{
+   const boxes=nodes.map(node=>node.getBoundingClientRect());
+   return boxes.every((a,i)=>boxes.every((b,j)=>i===j||a.right<=b.left||b.right<=a.left||a.bottom<=b.top||b.bottom<=a.top));
+  })).toBe(true);
+  const boxes=await page.locator(".scwiki-topic-group").evaluateAll(nodes=>nodes.map(node=>{const r=node.getBoundingClientRect();return {top:r.top,bottom:r.bottom,left:r.left};}));
+  if(width>640) {
+   // Short reference sections should no longer wait below the longest topic.
+   expect(boxes[4].top).toBeLessThan(boxes[3].bottom);
+   for(const box of boxes){
+    const above=boxes.filter(other=>Math.abs(other.left-box.left)<1&&other.bottom<=box.top);
+    if(above.length)expect(box.top-Math.max(...above.map(other=>other.bottom))).toBeLessThan(41);
+   }
+  } else for(let i=1;i<boxes.length;i++)expect(boxes[i].top).toBeGreaterThanOrEqual(boxes[i-1].bottom);
+  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
+  await page.screenshot({path:`test-results/scwiki-topic-layout-${width}.png`,fullPage:true});
+ }
+});
 test("all published articles have formulas, real citation anchors and HTML/Markdown/JSON consistency",async({page,request})=>{
  for(const a of catalogue.articles){
   const response=await page.goto("/scwiki/"+a.slug);expect(response?.status()).toBe(200);
