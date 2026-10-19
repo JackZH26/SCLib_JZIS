@@ -90,7 +90,7 @@ test("SCWiki navigation order, keyboard focus and old docs anchors work",async({
  await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
  const toggle=page.getByRole("button",{name:"Open navigation"});await toggle.click();
  const menu=page.getByRole("navigation",{name:"Mobile navigation"});
- expect((await menu.getByRole("link").allTextContents()).filter(t=>!t.includes("Sign in")).map(t=>t.trim())).toEqual(["Search","SCWiki","Materials","Reported Tc Timeline","Discovery","About JZIS"]);
+ expect((await menu.getByRole("link").allTextContents()).filter(t=>!t.includes("Sign in")).map(t=>t.trim())).toEqual(["Home","SCWiki","Materials","Reported Tc Timeline","Discovery","About JZIS"]);
  await menu.getByRole("link",{name:"SCWiki",exact:true}).focus();await page.keyboard.press("Escape");await expect(toggle).toBeFocused();
  await page.goto("/docs#search-the-literature");
  await expect(page).toHaveURL(/\/scwiki\/using-sclib#search-the-literature$/);
