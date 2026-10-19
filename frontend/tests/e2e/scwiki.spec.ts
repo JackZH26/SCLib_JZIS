@@ -302,4 +302,12 @@ test("magnetic-excitation note preserves the sample discrepancy in mobile view a
  const data=await(await request.get("/api/scwiki/v1/library/dean-lsco-magnetic-excitations")).json();await expect(page.locator("main.scwiki")).toHaveAttribute("data-revision",data.note.revision);
  const bad=await page.locator('main.scwiki a[href^="#"]').evaluateAll(links=>links.map(a=>a.getAttribute("href")!.slice(1)).filter(id=>!document.getElementById(id)));expect(bad).toEqual([]);
  await page.screenshot({path:"test-results/scwiki-dean-390.png",fullPage:false});
+ const sourceLinks=page.locator("#thickness-discrepancy").locator("..").locator(".scwiki-note-citations a");
+ await expect(sourceLinks).toHaveText(["Source 1","Source 2"]);
+ const boxes=await sourceLinks.evaluateAll(links=>links.map(a=>({text:a.textContent,label:a.getAttribute("aria-label"),left:a.getBoundingClientRect().left,right:a.getBoundingClientRect().right,top:a.getBoundingClientRect().top})));
+ expect(boxes[0].label).not.toBe(boxes[1].label);if(Math.abs(boxes[0].top-boxes[1].top)<2)expect(boxes[1].left-boxes[0].right).toBeGreaterThanOrEqual(8);
+ await sourceLinks.nth(1).click();await expect(page.locator("#ref-dean-supplement")).toBeInViewport();
+ expect(await page.locator("#ref-dean-supplement").evaluate(e=>e.getBoundingClientRect().top)).toBeGreaterThanOrEqual(95);
+ await page.screenshot({path:"test-results/scwiki-source-links-390.png",fullPage:false});
+
 });

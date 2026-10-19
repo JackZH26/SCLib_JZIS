@@ -142,3 +142,7 @@
 .scwiki-library-reading h2{font-size:1.5rem;font-weight:650;line-height:1.35;margin:2.4rem 0 1rem;scroll-margin-top:100px}
 .scwiki-library-reading>section:first-child>h2{margin-top:0}
 .scwiki-library-reading h3{font-size:1.15rem;font-weight:650;margin:1.8rem 0 .7rem}
+
+.scwiki-note-citations{display:inline-flex;flex-wrap:wrap;gap:.35rem .75rem;margin-left:.3rem}
+.scwiki-note-citations a{white-space:nowrap;text-decoration:underline;text-underline-offset:3px}
+.scwiki-library-reading .scwiki-sources>div{scroll-margin-top:100px}
