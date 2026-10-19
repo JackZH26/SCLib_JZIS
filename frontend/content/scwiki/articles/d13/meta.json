@@ -26,10 +26,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T17:48:26.313761+00:00",
+  "modifiedAt": "2026-10-19T17:33:51.891454+00:00",
   "review": {
-    "checkedAt": "2026-10-19",
-    "scope": "Selected Saito,Costanzo and XiCDW author passages/figures; selected final WS2 HTML and Qi discussion; inherited E3/G6/F8 checks; current Marini2026original abstract; independent spinor normalization and Pauli scale.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected Saito,Costanzo and XiCDW author passages/figures; selected final WS2 HTML and Qi discussion; inherited E3/G6/F8 checks; current Marini2026original abstract; independent spinor normalization and Pauli scale. D13 follow-up: selected Saito model and de la Barrera discussion; explicit local spin-projector derivation with phase/rotation and degenerate-origin checks.",
     "limitations": [
       "Complete scientific acceptance remains open.",
       "Ye2012 and Marini2026 retain abstract-only scopes; full simulations and methods are not established by those checks.",
@@ -78,13 +78,19 @@
       "description": "Ising protection does not prove pure triplet or exclude mixed components. Metallic TMDs and polytypes are not all semiconductors.",
       "sourceId": "source-804e0c9690bde4d8",
       "scope": "Restrict family-wide pairing and material-class generalization."
+    },
+    {
+      "id": "scwiki-d13-correction-4",
+      "description": "Distinguish Hamiltonian half-splitting, squared antisymmetric spin matrix element and normalized ordered-product singlet probability. Neither overlap is a measured condensate fraction or an Hc2 calculation. The degenerate zero Hamiltonian selects no unique spin direction.",
+      "sourceId": "source-ec4b77f9e011c26e",
+      "scope": "Explicit local derivation and primary-model attribution boundary."
     }
   ],
   "equationChecks": [
     {
       "targetSectionId": "mathematical-assumptions",
       "tex": "|u_+^T i\\sigma_yu_-|^2=\\lambda^2/(\\lambda^2+b^2)",
-      "check": "12two-valley spinor diagonalizations,spin directions,pairing amplitude versus normalized-product singlet probability,factor2 distinction; weakcouplingg2Pauli coefficient1.85695T/K. No gap equation or material reproduction."
+      "check": "48 same-branch spinor/projector cases,144 spinor phase checks,48 common spin rotations,degenerate origin rejected. Previous12diagonalizations and weak-coupling Pauli reference retained in historical report. No gap equation or material reproduction."
     }
   ],
   "references": [
@@ -125,9 +131,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-high-field-criteria-and-methods",
-        "checkedAt": "2026-10-19",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/1506.04146v3",
-        "note": "Author v3, 11 June 2016; published online 7 December 2015. Selected pp4–5, p20 Figure3/caption and p22 methods read; p20 visually checked. High-field device 6.5K/52T uses 75% normal resistance and did not reach zero resistance; separate low-field sample 9.7K uses 50%. 1.5K is measurement temperature, not Tc. Full pulse/supplement/final comparison open."
+        "note": "Author v3, 11 June 2016; published online 7 December 2015. Selected pp4–5, p20 Figure3/caption and p22 methods read; p20 visually checked. High-field device 6.5K/52T uses 75% normal resistance and did not reach zero resistance; separate low-field sample 9.7K uses 50%. 1.5K is measurement temperature, not Tc. Full pulse/supplement/final comparison open. Additional selected model pp30-31 and33 read; pp30 and33 visually checked. Momentum-dependent kinetic/Ising/Rashba terms and separate pairing interaction/linearized gap equation establish context, not the local normalized-product identity. No full solver reproduction."
       }
     },
     {
@@ -167,9 +173,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-final-methods-results-and-figures",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://www.nature.com/articles/s41467-018-03888-4.pdf",
-        "note": "Published12April2018. Selectedfinalpp3–5 and6–7methods read, p4Figures3–4 visually checked. 50%Rn,34.5Tinstrumentceiling,65.6TnearTcfitparameter andseparatecryostatlimits retained. Fullsupplement/rawdata/DFT not reproduced."
+        "note": "Published12April2018. Selectedfinalpp3–5 and6–7methods read, p4Figures3–4 visually checked. 50%Rn,34.5Tinstrumentceiling,65.6TnearTcfitparameter andseparatecryostatlimits retained. Fullsupplement/rawdata/DFT not reproduced. Additional final p5 discussion read and visually checked; PMC fulltext discussion confirms theory/experiment discrepancy and Fermi-surface averaging. Does not establish the local two-spin overlap as a gap-equation solution."
       }
     },
     {
@@ -343,26 +349,30 @@
     {
       "id": "scwiki-d13-claim-mathematical-assumptions-1",
       "sectionId": "mathematical-assumptions",
-      "statement": "A restricted normal-state illustration uses $H_\\eta=\\eta\\lambda\\sigma_z+b\\sigma_x$, where $\\eta=\\pm1$ labels opposite valleys, $\\sigma$ acts on spin, $\\lambda$ is an Ising spin–orbit energy and $b$ an in-plane Zeeman energy. Its eigenvalues are $\\pm\\sqrt{\\lambda^2+b^2}$. On the positive branch the spin directions are $\\mathbf n_\\eta=(b,0,\\eta\\lambda)/\\sqrt{\\lambda^2+b^2}$: opposite out-of-plane components persist while the field cants both spins in-plane. This two-level model omits momentum-dependent bands, Rashba terms and other pockets.",
+      "statement": "A local normal-state illustration uses $H_\\eta=\\eta\\lambda\\sigma_z+b\\sigma_x$, where $\\eta=\\pm1$ labels opposite valleys and $\\sigma$ acts on spin. Here $\\lambda$ and $b$ are Hamiltonian energy coefficients: the zero-field spin splitting is $2|\\lambda|$, and $|b|=g\\mu_B|B_\\parallel|/2$ for an isotropic Zeeman coupling. Do not insert a reported full spin splitting directly as $\\lambda$ without checking conventions. With $R=\\sqrt{\\lambda^2+b^2}>0$, the eigenvalues are $\\pm R$ and the positive-branch spin directions are $\\mathbf n_\\eta=(b,0,\\eta\\lambda)/R$. The field cants both spins in-plane. This illustration omits band dispersion, occupations, other pockets, Rashba coupling and interactions; it is not the full band or pairing calculation of either cited paper.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-ec4b77f9e011c26e",
         "source-804e0c9690bde4d8"
       ],
-      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
-      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+      "conditions": "Two isolated valley spin Hamiltonians, normalized spinors on the same branch, R>0. lambda is half the zero-field splitting; b is a Zeeman energy. Ordered tensor-product singlet probability is not a condensate fraction.",
+      "verificationScope": "Selected primary model/discussion pages; 48 local spinor/projector cases,144 phase checks and48 common-rotation checks. Degenerate origin explicitly excluded; not independent scientific review.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local two-level reduction and spin-projector identity derived with explicit normalization. Saito authorv3 pp30-31 and33 supplies the more complete tight-binding/gap-equation context; de la Barrera final p5 supplies theory-versus-experiment limits. No material gap solution or raw-data fit reproduced."
     },
     {
       "id": "scwiki-d13-claim-mathematical-assumptions-2",
       "sectionId": "mathematical-assumptions",
-      "statement": "For corresponding spinors, $|u_+^T i\\sigma_yu_-|^2=\\lambda^2/(\\lambda^2+b^2)$ is the squared singlet pairing matrix element. It is twice the singlet probability of the normalized tensor-product state, so those quantities must not be confused. Twelve independent diagonalizations check this distinction and spin orientations. This normal-state calculation neither solves a superconducting gap equation nor establishes singlet dominance, a critical field or a material pairing mechanism.",
+      "statement": "Choose normalized spinors $u_+$ and $u_-$ on the same positive-energy branch. The antisymmetric spin contraction $A=u_+^T i\\sigma_yu_-$ obeys\n\n$$\n|A|^2=\\frac{1-\\mathbf n_+\\cdot\\mathbf n_-}{2}\n=\\frac{\\lambda^2}{\\lambda^2+b^2}.\n$$\n\nThis is a squared matrix element, not a measured fraction of singlet Cooper pairs. For the **ordered tensor product** $|u_+\\rangle\\otimes|u_-\\rangle$, projection onto the normalized spin singlet $|S\\rangle=(|\\uparrow\\downarrow\\rangle-|\\downarrow\\uparrow\\rangle)/\\sqrt2$ instead gives\n\n$$\nP_S=|\\langle S|u_+\\otimes u_-\\rangle|^2\n=\\frac{|A|^2}{2}.\n$$\n\nThe factor comes from the singlet's normalization, equivalently the spin projector $(1-\\boldsymbol\\sigma_1\\cdot\\boldsymbol\\sigma_2)/4$. At $b=0$ and $\\lambda\\ne0$, the opposite-spin product has $|A|^2=1$ but $P_S=1/2$. This does not imply a half-singlet superconducting condensate: an ordered product of two normal-state spinors is not a specified antisymmetrized orbital-spin pair wavefunction or a many-body order parameter. At $\\lambda=0$ and $b\\ne0$, same-branch spins are parallel and both quantities vanish. At $\\lambda=b=0$, the Hamiltonian is degenerate and selects no unique spinors; the ratio is undefined.\n\nLocal spinor and spin-projector checks include signed couplings, complex in-plane spin directions, arbitrary spinor phases and common spin rotations. They verify this limited identity, not a gap equation, pairing dominance, topology or critical field. Saito's supplementary model separately includes momentum-dependent bands, a pairing interaction and a linearized gap equation. De la Barrera's discussion compares more complete theories with experiment and retains quantitative disagreements. Their results motivate the example; neither paper is claimed to derive this exact local normalization exercise.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-ec4b77f9e011c26e",
         "source-804e0c9690bde4d8"
       ],
-      "conditions": "Preserve polytype, layers, sample/contact, field, voltage history, temperature type and resistance criterion. Spin protection is not a universal pairing verdict.",
-      "verificationScope": "Selected primary text/figures and restricted spinor checks; full scientific acceptance remains open."
+      "conditions": "Two isolated valley spin Hamiltonians, normalized spinors on the same branch, R>0. lambda is half the zero-field splitting; b is a Zeeman energy. Ordered tensor-product singlet probability is not a condensate fraction.",
+      "verificationScope": "Selected primary model/discussion pages; 48 local spinor/projector cases,144 phase checks and48 common-rotation checks. Degenerate origin explicitly excluded; not independent scientific review.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local two-level reduction and spin-projector identity derived with explicit normalization. Saito authorv3 pp30-31 and33 supplies the more complete tight-binding/gap-equation context; de la Barrera final p5 supplies theory-versus-experiment limits. No material gap solution or raw-data fit reproduced."
     },
     {
       "id": "scwiki-d13-claim-mathematical-assumptions-3",
