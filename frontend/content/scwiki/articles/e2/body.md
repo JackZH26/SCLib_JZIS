@@ -46,9 +46,9 @@ Compare the quantities before comparing the domes:
 | YBCO lattice calibration | 22°C lattice measurement, empirical model and chosen branch | An independent carrier-density measurement |
 | Nickelate 10% and 90% resistance thresholds | Each fraction and the same sample's 20 K reference | Cuprate 50% thresholds or magnetic midpoints |
 | Nickelate figure error bars | Sample extrema at fixed composition | Standard error or a stated confidence interval |
-| No observed transition below 50 mK | Sampled compositions and the reported measurement bound | An exact $T_c=0$ or a continuous phase boundary |
+| No transition observed down to below 50 mK | Sampled compositions and the reported measurement bound | An exact $T_c=0$ or a continuous phase boundary |
 
-This table is an editorial comparison of the checked experiments. Keep nominal composition, measured composition, formal valence and transport-model parameters separate; link each value to a specimen, preparation, probe and source version. Reduction, annealing or a static measurement alone is not this review's evidence of thermodynamic equilibrium. The two newly checked YBCO/nickelate records therefore use **unknown** equilibrium, without asserting nonequilibrium. The calculations verify only branch arithmetic; they do not optimize a synthesis or validate a carrier-density calibration. [R2](#ref-source-e24ef58054ac9b71) [R5](#ref-source-c636cc691b7ff013)
+This table is an editorial comparison of the checked experiments. Keep nominal composition, measured composition, formal valence and transport-model parameters separate; link each value to a specimen, preparation, probe and source version. Reduction, annealing or a static measurement alone is not this review's evidence of thermodynamic equilibrium. For the YBCO reference and nickelate records, equilibrium remains **unknown** at the checked source scope; this does not assert nonequilibrium. The calculations verify only branch arithmetic; they do not optimize a synthesis or validate a carrier-density calibration. [R2](#ref-source-e24ef58054ac9b71) [R5](#ref-source-c636cc691b7ff013)
 
 ## Related topics
 
