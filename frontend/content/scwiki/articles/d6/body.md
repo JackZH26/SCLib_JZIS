@@ -24,7 +24,15 @@ Drozdov's final 2019 LaH₁₀ paper reports zero resistance, isotope dependence
 
 The 2020 carbonaceous-sulfur-hydride article was retracted on 26 September 2022. The corrected notice identifies concerns about non-standard, user-defined magnetic-background subtraction; all authors disagreed with the retraction. The 2023 nitrogen-doped lutetium-hydride article was retracted on 7 November 2023 following concerns including sample provenance, measurements and processing. These original papers remain linked as historical claims, accompanied by their notices. Their claimed temperatures are not usable experimental benchmarks in this catalogue. A retraction notice is not a substitute for an independent misconduct finding. [R9](#ref-source-d04f7965dca4d5a5) [R10](#ref-source-754d75026e52d9ac) [R11](#ref-source-a7b93ad4f4896402) [R12](#ref-source-98bc73a5e1c86c78)
 
-An independent LuH₂±xNᵧ study reported no superconductivity above 2 K over 0.4–40.1 GPa in its transport measurements. That constrains its tested samples and synthesis route; it does not prove that every possible Lu–N–H composition is nonsuperconducting. The final published pressure range differs from an early preprint's narrower range. In particular, a blue-to-pink colour change is not a superconductivity measurement. [R13](#ref-source-151c87f0eda0236f)
+Ming's independent LuH₂±xNᵧ study found no superconductivity in its transport measurements down to 2 K at sampled pressures spanning 0.4–40.1 GPa. Samples were synthesized at 2 GPa and 300–350 °C for 10 hours. This preparation and finite measurement window do not exclude every possible Lu–N–H composition or an unmeasured pressure interval.
+
+| Probe in the final paper | Measurement window and preparation | What the result does not establish |
+|---|---|---|
+| Resistance, Fig. 4b | 2–350 K; sampled 0.4–40.1 GPa; NaCl medium | 2 K is a measurement floor, not a transition temperature |
+| Magnetization, Fig. 5a,b | 100–320 K; 1.0 and 2.1 GPa; 60 Oe; Daphne 7373 medium | This is not the full transport window; subtracting the cell background leaves a weak positive signal |
+| Optical colour, Fig. 4a | Up to 41 GPa; KBr medium | A blue-to-pink colour change is not a superconductivity measurement |
+
+The methods specify room-temperature ruby pressure calibration and four-probe van der Pauw resistance with platinum electrodes. EDS detects nitrogen but cannot detect hydrogen here; it does not fix both x and y. The pressure range is a sampled envelope, not continuous coverage. The [arXiv v3 abstract](https://arxiv.org/abs/2303.08759v3), dated 2 June 2023, still describes 1–6 GPa and a 10 K floor; this catalogue uses the expanded final-paper transport window. [R13](#ref-source-151c87f0eda0236f)
 
 ## Discovery implications
 

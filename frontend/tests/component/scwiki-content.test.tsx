@@ -1524,13 +1524,20 @@ it("carries retraction status through source, article, section and rendered refe
  expect(spec.components.schemas.Source.properties.retraction.required).toEqual(["noticeDoi","retractedAt","evidenceUrl"]);
  expect(html).toContain('"creativeWorkStatus":"Retracted"');
 });
-it("does not promote hydride negative measurement limits or predictions to measured transition temperatures",()=>{
+it("does not promote hydride negative measurement limits or predictions to measured transition temperatures",async()=>{
  const a=articles().find(a=>a.code==="D6")!;
  for(const formula of ["LuH2±xNy","Y3Fe4H20"]){const c=a.materialCases.find(c=>c.formula===formula)!;expect(c.tcK).toBeNull();expect(c.temperatureKind).toBe("measurement");}
  const prediction=a.materialCases.find(c=>c.recordType==="prediction")!;expect(prediction.tcK).toBeNull();
  expect(a.body).toContain("249 K and 180 K");expect(a.body).toContain("151 and 152 GPa");
  expect(a.body).toContain("not direct measurements at 136 T");
  expect(a.review.limitations[0]).toContain("remain open");
+ const negative=a.materialCases.find(c=>c.id==="scwiki-d6-material-4")!;
+ expect(negative.pressureGPa).toEqual({min:.4,max:40.1});expect(negative.reportedTemperatureK).toBe(2);
+ expect(negative.temperatureNote).toContain("not imply continuous coverage");expect(negative.probe).toContain("room-temperature ruby");
+ expect(searchArticles(searchIndex().entries,"LuH2±xNy",{tcMin:.01})).toEqual([]);
+ const exported=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+ for(const phrase of ["not the full transport window","cannot detect hydrogen","arxiv.org/abs/2303.08759v3","mixed-source-and-local-derivation"])expect(exported).toContain(phrase);
+ expect(a.claims.find(c=>c.id==="scwiki-d6-claim-limits-and-disputes-2")?.conditions).toContain("discrete pressures");
 });
 
 
