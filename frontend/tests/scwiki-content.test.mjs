@@ -305,3 +305,22 @@ test("publisher correction notices cannot omit their evidence and review boundar
  const source=m.references.find(r=>r.id==="source-6ee3670220e24ff1");delete source.updates[0].scope;
  writeFileSync(file,JSON.stringify(m));const result=f.build();assert.notEqual(result.status,0);assert.match(result.stderr,/invalid publisher update notice/);
 });
+
+
+test("optional preparation data rejects malformed or unbound conditions",async()=>{
+ const {validatePreparation,preparationMarkdown}=await import("../scripts/scwiki-preparation.mjs");
+ const ids=new Set(["source-fixture"]),base={method:"pressure-quench",pressureGPa:{min:18.9,max:18.9},temperatureK:4.2,releaseRateGPaPerSecond:null,sourceId:"source-fixture",sourceLocation:"Synthetic fixture",notes:"Preparation is separate from observation."};
+ assert.doesNotThrow(()=>validatePreparation(undefined,ids));assert.doesNotThrow(()=>validatePreparation(base,ids));
+ assert.doesNotThrow(()=>validatePreparation({...base,pressureGPa:null,temperatureK:null},ids));
+ for(const value of [null,[],{...base,method:"pressure-quenhc"},{...base,sourceId:"missing"},{...base,pressureGPa:{min:20,max:10}},{...base,pressureGPa:{min:1,max:2,unit:"GPa"}},{...base,temperatureK:"4.2"},{...base,releaseRateGPaPerSecond:-1},{...base,releaseRateGPaPerSecond:Infinity},{...base,releaseRateGPaPerSecond:undefined},{...base,sourceLocation:"<script>"},{...base,notes:"bad|cell"},{...base,releaseRate:12}])assert.throws(()=>validatePreparation(value,ids),/invalid material preparation/);
+ const {releaseRateGPaPerSecond,...missing}=base;assert.throws(()=>validatePreparation(missing,ids));
+ assert.equal(preparationMarkdown([{sample:"Legacy"}]),"");
+ assert.match(preparationMarkdown([{sample:"Fixture",preparation:base}]),/Unknown/);
+ assert.match(preparationMarkdown([{sample:"Fixture",preparation:{...base,releaseRateGPaPerSecond:0}}]),/0 GPa\/s/);
+});
+
+test("builder rejects an orphan preparation source before changing outputs",t=>{
+ const f=inventoryFixture(t),filename=path.join(f.directory,"articles/e10/meta.json"),meta=JSON.parse(readFileSync(filename,"utf8"));
+ meta.materialCases[0].preparation.sourceId="source-missing";writeFileSync(filename,JSON.stringify(meta));
+ const before=readFileSync(path.join(f.directory,"catalogue.json"),"utf8"),result=f.build();assert.notEqual(result.status,0);assert.match(result.stderr,/invalid material preparation/);assert.equal(readFileSync(path.join(f.directory,"catalogue.json"),"utf8"),before);
+});

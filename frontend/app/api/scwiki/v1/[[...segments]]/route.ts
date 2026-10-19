@@ -58,7 +58,7 @@ async function resource(request:NextRequest,{params}:{params:Promise<{segments?:
    const section=article.sections.find(s=>s.id===parts[3]);if(!section)return json({error:"Section not found."},404);
    const claims=article.claims.filter(c=>c.sectionId===section.id);
    const ids=new Set([...claims.flatMap(c=>c.sourceIds),...Array.from(section.markdown.matchAll(/\]\(#ref-([a-z0-9-]+)\)/g),m=>m[1])]);
-   const sources=article.references.filter(r=>ids.has(r.id)||section.id==="material-cases"&&article.materialCases.some(c=>c.sourceId===r.id));
+   const sources=article.references.filter(r=>ids.has(r.id)||section.id==="material-cases"&&article.materialCases.some(c=>c.sourceId===r.id||c.preparation?.sourceId===r.id));
    const scopeItems=(article.scopeItems??[]).filter(item=>item.sectionIds.includes(section.id));
    if(request.nextUrl.searchParams.get("format")==="markdown"){
     const sourceText=sources.map(r=>"### Ref "+r.id+"\n\n"+r.title+" ("+(r.year??"Publication date unknown")+"). ["+(r.doi?"DOI "+r.doi:"Source publication")+"]("+r.url+"). Publication: "+r.publicationStatus+". "+(r.retraction?"Retracted: "+r.retraction.retractedAt+". [Retraction notice]("+r.retraction.evidenceUrl+"). ":"")+"Check: "+r.verification.scope+". Checked: "+r.verification.checkedAt+". "+(r.verification.note??"")).join("\n\n");

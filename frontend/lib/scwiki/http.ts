@@ -1,7 +1,7 @@
 import {createHash} from "node:crypto";
 import type {NextRequest} from "next/server";
 
-export const API_CONTRACT_VERSION="1.4.0";
+export const API_CONTRACT_VERSION="1.5.0";
 export const DEFAULT_PAGE_LIMIT=20;
 export const MAX_PAGE_LIMIT=50;
 export const MAX_PAGE_BYTES=256*1024;
