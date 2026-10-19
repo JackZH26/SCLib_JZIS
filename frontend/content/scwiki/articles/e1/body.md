@@ -13,8 +13,10 @@ A measured pressure dependence is a path through several changing variables. Wit
 For an illustrative weak-coupling model, write
 
 $$
-T_c(P)=A\Theta(P)\exp[-1/\lambda(P)],\qquad
-\Theta=\hbar\omega_c/k_B.
+\begin{aligned}
+T_c(P)&=A\Theta(P)\exp[-1/\lambda(P)],\\
+\Theta&=\hbar\omega_c/k_B.
+\end{aligned}
 $$
 
 Here $\Theta$ is a cutoff temperature in kelvin, $A$ is dimensionless, and $\lambda>0$ is the effective attractive coupling of this simplified model. It is not automatically an experimentally determined Eliashberg coupling. The BCS source gives the weak-coupling cutoff form; the pressure derivative below is a local chain-rule calculation. Within one smooth phase and with $A$ fixed,
