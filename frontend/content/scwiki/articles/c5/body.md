@@ -6,7 +6,7 @@ Neutral liquid helium-3 provides the established triplet p-wave benchmark throug
 
 ## Mathematical assumptions
 
-For an even-frequency, single-band spin basis, write $\Delta(\mathbf k)=i[\mathbf d(\mathbf k)\cdot\boldsymbol\sigma]\sigma_y$, so $\Delta_{\uparrow\uparrow}=-d_x+id_y$, $\Delta_{\downarrow\downarrow}=d_x+id_y$ and $\Delta_{\uparrow\downarrow}=\Delta_{\downarrow\uparrow}=d_z$. Odd $\mathbf d(-\mathbf k)=-\mathbf d(\mathbf k)$ makes $\Delta(\mathbf k)=-\Delta^T(-\mathbf k)$, as required by fermionic exchange. In a centrosymmetric spin-orbit-coupled system the analogous pseudospin basis must be defined explicitly; these entries are not automatically laboratory spin populations. [R1](#ref-source-8d1b859d5ffcad9f)
+The calculations in this section are local explanatory models, not numerical results taken from the cited sources. For an even-frequency, single-band spin basis, write $\Delta(\mathbf k)=i[\mathbf d(\mathbf k)\cdot\boldsymbol\sigma]\sigma_y$, so $\Delta_{\uparrow\uparrow}=-d_x+id_y$, $\Delta_{\downarrow\downarrow}=d_x+id_y$ and $\Delta_{\uparrow\downarrow}=\Delta_{\downarrow\uparrow}=d_z$. Odd $\mathbf d(-\mathbf k)=-\mathbf d(\mathbf k)$ makes $\Delta(\mathbf k)=-\Delta^T(-\mathbf k)$, as required by fermionic exchange. In a centrosymmetric spin-orbit-coupled system the analogous pseudospin basis must be defined explicitly; these entries are not automatically laboratory spin populations. [R1](#ref-source-8d1b859d5ffcad9f)
 
 The identity $\Delta\Delta^\dagger=|\mathbf d|^2I+i(\mathbf d\times\mathbf d^*)\cdot\boldsymbol\sigma$ gives squared gaps $|\mathbf d|^2\pm|i\mathbf d\times\mathbf d^*|$. A unitary state has vanishing cross product; it need not preserve time reversal. Four complex examples verify the matrix identity and exchange symmetry. Independent diagonalization of 48 imposed-gap Bogoliubov matrices also agrees with $E_\pm^2=\xi^2+|\mathbf d|^2\pm|i\mathbf d\times\mathbf d^*|$. The normal band here is spin-degenerate: this spectrum is not a general formula for a ferromagnetic multiband metal. [R1](#ref-source-8d1b859d5ffcad9f)
 
@@ -38,7 +38,7 @@ Inversion absence permits singlet–triplet mixing; multiple orbitals and spin-o
 
 ## Discovery implications
 
-For each candidate, record inversion symmetry, the spin or pseudospin convention, field orientation, sample conditions and competing gap structures. Separate evidence for odd parity from evidence for chirality, nodes and topology. Use the explicit examples above to identify measurements that actually distinguish hypotheses. Full scientific acceptance, complete final-version comparisons and raw-data review remain open; the local model checks do not determine a material's pairing state. [R1](#ref-source-8d1b859d5ffcad9f) [R6](#ref-source-c7f8b99a795aba41) [R7](#ref-source-c4434644191d0174)
+The following is editorial comparison guidance. For each candidate, record inversion symmetry, the spin or pseudospin convention, field orientation, sample conditions and competing gap structures. Separate evidence for odd parity from evidence for chirality, nodes and topology. Use the explicit examples above to identify measurements that actually distinguish hypotheses. Full scientific acceptance, complete final-version comparisons and raw-data review remain open; the local model checks do not determine a material's pairing state. [R1](#ref-source-8d1b859d5ffcad9f) [R6](#ref-source-c7f8b99a795aba41) [R7](#ref-source-c4434644191d0174)
 
 ## Related topics
 

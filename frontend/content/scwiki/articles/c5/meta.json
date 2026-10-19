@@ -30,7 +30,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T09:38:17.343940+00:00",
+  "modifiedAt": "2026-10-19T05:34:51.926025+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected historical helium NMR, Leggett correction, Sr2RuO4 NMR/muon and uranium source checks; independent spin-matrix, imposed-gap and symmetry illustrations.",
@@ -281,7 +281,9 @@
         "source-8d1b859d5ffcad9f"
       ],
       "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
-      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local exchange-symmetry bookkeeping and imposed spin-degenerate gap-matrix examples. References provide theoretical context; local spectra, angular averages and counterexamples are not material fits or reproductions of the cited full derivations."
     },
     {
       "id": "scwiki-c5-claim-scope-2",
@@ -300,13 +302,15 @@
     {
       "id": "scwiki-c5-claim-mathematical-assumptions-1",
       "sectionId": "mathematical-assumptions",
-      "statement": "For an even-frequency, single-band spin basis, write $\\Delta(\\mathbf k)=i[\\mathbf d(\\mathbf k)\\cdot\\boldsymbol\\sigma]\\sigma_y$, so $\\Delta_{\\uparrow\\uparrow}=-d_x+id_y$, $\\Delta_{\\downarrow\\downarrow}=d_x+id_y$ and $\\Delta_{\\uparrow\\downarrow}=\\Delta_{\\downarrow\\uparrow}=d_z$. Odd $\\mathbf d(-\\mathbf k)=-\\mathbf d(\\mathbf k)$ makes $\\Delta(\\mathbf k)=-\\Delta^T(-\\mathbf k)$, as required by fermionic exchange. In a centrosymmetric spin-orbit-coupled system the analogous pseudospin basis must be defined explicitly; these entries are not automatically laboratory spin populations.",
+      "statement": "The calculations in this section are local explanatory models, not numerical results taken from the cited sources. For an even-frequency, single-band spin basis, write $\\Delta(\\mathbf k)=i[\\mathbf d(\\mathbf k)\\cdot\\boldsymbol\\sigma]\\sigma_y$, so $\\Delta_{\\uparrow\\uparrow}=-d_x+id_y$, $\\Delta_{\\downarrow\\downarrow}=d_x+id_y$ and $\\Delta_{\\uparrow\\downarrow}=\\Delta_{\\downarrow\\uparrow}=d_z$. Odd $\\mathbf d(-\\mathbf k)=-\\mathbf d(\\mathbf k)$ makes $\\Delta(\\mathbf k)=-\\Delta^T(-\\mathbf k)$, as required by fermionic exchange. In a centrosymmetric spin-orbit-coupled system the analogous pseudospin basis must be defined explicitly; these entries are not automatically laboratory spin populations.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-8d1b859d5ffcad9f"
       ],
       "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
-      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local exchange-symmetry bookkeeping and imposed spin-degenerate gap-matrix examples. References provide theoretical context; local spectra, angular averages and counterexamples are not material fits or reproductions of the cited full derivations."
     },
     {
       "id": "scwiki-c5-claim-mathematical-assumptions-2",
@@ -317,7 +321,9 @@
         "source-8d1b859d5ffcad9f"
       ],
       "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
-      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local exchange-symmetry bookkeeping and imposed spin-degenerate gap-matrix examples. References provide theoretical context; local spectra, angular averages and counterexamples are not material fits or reproductions of the cited full derivations."
     },
     {
       "id": "scwiki-c5-claim-mathematical-assumptions-3",
@@ -328,7 +334,9 @@
         "source-8d1b859d5ffcad9f"
       ],
       "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
-      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local exchange-symmetry bookkeeping and imposed spin-degenerate gap-matrix examples. References provide theoretical context; local spectra, angular averages and counterexamples are not material fits or reproductions of the cited full derivations."
     },
     {
       "id": "scwiki-c5-claim-mathematical-assumptions-4",
@@ -341,7 +349,9 @@
         "source-24556d6dba4d8cc1"
       ],
       "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
-      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local exchange-symmetry bookkeeping and imposed spin-degenerate gap-matrix examples. References provide theoretical context; local spectra, angular averages and counterexamples are not material fits or reproductions of the cited full derivations."
     },
     {
       "id": "scwiki-c5-claim-mathematical-assumptions-5",
@@ -354,7 +364,9 @@
         "source-c4434644191d0174"
       ],
       "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
-      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local exchange-symmetry bookkeeping and imposed spin-degenerate gap-matrix examples. References provide theoretical context; local spectra, angular averages and counterexamples are not material fits or reproductions of the cited full derivations."
     },
     {
       "id": "scwiki-c5-claim-experimental-criteria-1",
@@ -411,7 +423,9 @@
         "source-8d1b859d5ffcad9f"
       ],
       "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
-      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial guidance for comparing probes and hypotheses under matched sample conditions, not a protocol established by the cited sources."
     },
     {
       "id": "scwiki-c5-claim-limits-and-disputes-1",
@@ -451,7 +465,7 @@
     {
       "id": "scwiki-c5-claim-discovery-implications-1",
       "sectionId": "discovery-implications",
-      "statement": "For each candidate, record inversion symmetry, the spin or pseudospin convention, field orientation, sample conditions and competing gap structures. Separate evidence for odd parity from evidence for chirality, nodes and topology. Use the explicit examples above to identify measurements that actually distinguish hypotheses. Full scientific acceptance, complete final-version comparisons and raw-data review remain open; the local model checks do not determine a material's pairing state.",
+      "statement": "The following is editorial comparison guidance. For each candidate, record inversion symmetry, the spin or pseudospin convention, field orientation, sample conditions and competing gap structures. Separate evidence for odd parity from evidence for chirality, nodes and topology. Use the explicit examples above to identify measurements that actually distinguish hypotheses. Full scientific acceptance, complete final-version comparisons and raw-data review remain open; the local model checks do not determine a material's pairing state.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-8d1b859d5ffcad9f",
@@ -459,7 +473,9 @@
         "source-c4434644191d0174"
       ],
       "conditions": "Even-frequency one-band spin-degenerate illustrations; source-specific field, temperature, sample and response conventions kept separate.",
-      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open."
+      "verificationScope": "Named primary passages, abstracts and independent matrix checks only; full scientific acceptance open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial guidance for comparing probes and hypotheses under matched sample conditions, not a protocol established by the cited sources."
     }
   ],
   "corrections": [
@@ -480,6 +496,11 @@
       "description": "Added published2026 muon evidence without promoting singlet-like response to a unique orbital representation.",
       "sourceId": "source-c4434644191d0174",
       "scope": "Selected author manuscript pp.1–5 and publication metadata."
+    },
+    {
+      "id": "scwiki-c5-correction-4",
+      "description": "Explicitly distinguishes local exchange-symmetry, gap-matrix and response illustrations from source-reported results and editorial guidance.",
+      "scope": "Attribution and stated model assumptions; no new experimental pairing assignment."
     }
   ],
   "equationChecks": [
