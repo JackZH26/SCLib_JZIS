@@ -43,6 +43,8 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  const sectionIds=new Set(chunks.map(s=>s.id));
  if(sectionIds.size!==chunks.length)fail(folder+" duplicate section");
  const refIds=new Set(meta.references.map(r=>r.id));
+ const correctionIds=meta.corrections.map(c=>c.id);
+ if(correctionIds.some(id=>typeof id!=="string"||!id.trim())||new Set(correctionIds).size!==correctionIds.length)fail(folder+" duplicate or missing correction ID");
  for(const ref of meta.references)if(ref.year!==null&&(!Number.isInteger(ref.year)||ref.year<1000))fail(folder+" invalid source publication year");
  // Known identity corrections must also protect future migrations of pinned chapters.
  const incorrectDois=new Set((manifest.correctionRegister??[]).filter(c=>c.incorrectDoi&&(c.correctDoi||c.correctUrl)).map(c=>c.incorrectDoi.toLowerCase()));

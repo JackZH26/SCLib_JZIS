@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "3b0624d2e12ce100fc9d",
+  "revision": "6b7b63d60af05732261f",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -806,7 +806,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "7ef56a6bd827e4246228",
+      "revision": "756adadb5c4b0d70c098",
       "materialCases": [],
       "dois": [
         "10.1103/PhysRevLett.55.418",
