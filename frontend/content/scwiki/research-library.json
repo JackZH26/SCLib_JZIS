@@ -291,6 +291,171 @@
         }
       ],
       "rights": "Original editorial synthesis adapted from Lopa Bhatt and colleagues, cited below under CC BY 4.0; wording, organization and local arithmetic are new. No source figures are reproduced. Third-party materials retain any separately stated rights."
+    },
+    {
+      "id": "yang-eu-nickelate-reentrance",
+      "title": "Eu-doped nickelates: re-entrance without a settled pairing mechanism",
+      "summary": "Separate sample-specific zero resistance, diamagnetic screening and resistance-contour criteria in Sm/Ca/Eu infinite-layer films; keep exchange compensation, magnetic order and pairing symmetry as distinct questions.",
+      "kind": "research-note-and-cross-topic-analysis",
+      "modifiedAt": "2026-10-19T00:03:05.061061+00:00",
+      "aliases": [
+        "Yang",
+        "Eu-doped infinite-layer nickelate",
+        "Sm0.95-xCa0.05EuxNiO2",
+        "SCE",
+        "field reentrant superconductivity",
+        "Jaccarino Peter",
+        "磁场再入超导"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory"
+      ],
+      "relatedCodes": [
+        "D5",
+        "D15",
+        "G3",
+        "G5",
+        "H7",
+        "H9"
+      ],
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Selected passages and figures in author manuscript arXiv:2508.14666v3 (25 April 2026), compared with the publisher abstract. The complete final published text has not been checked.",
+        "limitations": [
+          "Author self-review, not independent scientific review or a reproduction of the transport measurements.",
+          "The later author version is not assumed identical to the final journal article; full final text, correction history, calibration and raw-data analysis remain open.",
+          "Resistance-contour criteria, zero resistance and screening are different observables. None alone settles the magnetic structure or pairing symmetry."
+        ]
+      },
+      "sections": [
+        {
+          "id": "material-and-version",
+          "title": "Identify the material and the version",
+          "markdown": "Yang and colleagues study Sm0.95−xCa0.05EuxNiO2 (SCEₓ), an infinite-layer nickelate film series with fixed nominal Ca substitution. It is not Eu-substituted bilayer La3Ni2O7. The measured Eu valence is mixed and varies with composition, so nominal x is not a direct count of identical Eu²⁺ moments.\n\nThis note reads the revised author manuscript dated 25 April 2026. The journal article was published online on 23 April 2026. The publisher abstract supports the broad re-entrance report, but access to that abstract does not establish equivalence of all final and author-version figures. The separate Nd/Eu nickelate study discussed in G3 and G5 concerns another material series; its magnetic interpretation cannot simply be transferred here.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "yang-author-v3"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "sample-conditions",
+          "title": "Keep each field scale with its sample and criterion",
+          "markdown": "The selected author text and Figure 2 distinguish the following observations. Fields are perpendicular to the film plane (H∥c) for these comparisons.\n\n| Sample | Temperature or protocol | Reported observation | Interpretation boundary |\n| --- | --- | --- | --- |\n| SCE0.34, about 54 unit cells | 2 K transport | Zero resistance returns above about 6.23 T | Recovery field, not a universal upper critical field |\n| Same SCE0.34 specimen | Temperature sweeps at fixed field | Mutual-inductance screening at 9 and 12 T; absent at 3 T | Supports the superconducting interpretation; no bulk volume fraction is inferred here |\n| SCE0.32 | 3 K transport | Resistance returns to zero near 13.04 T | Not the upper boundary of the high-field phase |\n| SCE0.32 | 1.7 K transport | High-field zero resistance persists above about 32 T | Different temperature from the 13.04 T statement |\n\nThese temperatures describe measurement conditions, not interchangeable transition temperatures. Figure 3 instead marks open-circle phase boundaries using 0.5Rn, with Rn the high-field normal-state resistance. Those contours must not be relabeled zero-resistance boundaries. No material-Tc record is created from this table.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "yang-author-v3"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "angles-and-version-correction",
+          "title": "Angular behavior and an unresolved inherited number",
+          "markdown": "The angle θ is measured from the film normal. The angular maps use different temperatures: 4.2 K for x=0.33 and 0.36, 1.5 K for x=0.38, and 0.3 K for x=0.40. Their changing angular windows cannot support a universal assertion that in-plane re-entrance is absent. The manuscript also distinguishes intermediate-doping compensation-like behavior from stronger deviations at x=0.40.\n\nThe inherited notes attribute persistence to 45 T at 0.3 K to SCE0.36. That exact sample–temperature–field tuple was not verified in the selected v3 pages. Extended Data Figure 9 labels SCE0.36 at 4.2 K and SCE0.40 at 0.3 K; it also has a caption saying “up to 45 T” although its upper panels extend to 60 T. These version and panel details require resolution before the inherited tuple is used as a current verified result. A measurement ceiling would in any case provide a bound, not a measured high-field endpoint.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "yang-author-v3"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "compensation-and-magnetism",
+          "title": "What the magnetic evidence can and cannot establish",
+          "markdown": "Nonlinear Hall response after linear-background subtraction and hysteretic magnetoresistance motivate magnetic explanations. They do not by themselves identify uniform ferromagnetism, its volume fraction, or a particular pairing state. The v3 discussion explicitly leaves long-range magnetic order and its structure undetermined.\n\nThe authors fit a WHH-based model including orbital and Pauli pair breaking, spin-orbit scattering and an exchange field. Compensation partially describes intermediate compositions; the fitted exchange fields and scattering parameters remain phenomenological. An empirical factor of two in a Brillouin-function argument improves some fits but is not universal and does not adequately describe x=0.40. Neither this adjustment nor analogy with other re-entrant systems proves spin-triplet pairing.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "yang-author-v3"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "cross-topic-use",
+          "title": "Use the result across the Wiki",
+          "markdown": "D5 supplies the material-family context; D15 separates substitution, scattering and magnetism; G3 and G5 distinguish re-entrance from a demonstrated compensation mechanism. For H7 and H9, superconducting recovery fields must not become Hall-sign-reversal or anomalous-Hall threshold fields. This note reports no extracted ordinary Hall coefficient.\n\nA stronger scientific assessment still needs version-resolved final figures, criterion and noise-floor checks, sample calibration and local magnetic probes. The present review neither fits the deposited source-data files nor certifies an intrinsic bulk phase or unique microscopic mechanism.",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "yang-author-v3"
+          ],
+          "sourceRelationship": "context-for-editorial-analysis"
+        }
+      ],
+      "sources": [
+        {
+          "id": "yang-author-v3",
+          "title": "Field re-entrant superconductivity in Eu-doped infinite-layer nickelates",
+          "authors": "Mingwei Yang and colleagues",
+          "url": "https://arxiv.org/abs/2508.14666v3",
+          "publicationStatus": "preprint",
+          "date": "2026-04-25",
+          "dateLabel": "Author version revised",
+          "version": "arXiv:2508.14666v3; first submitted 20 August 2025; later author manuscript associated with the published article",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected pages 2, 4–8, 12–14; Figure 2 (page 19), Figure 3 (page 20), and Extended Data Figure 9 (page 30) inspected. Full final-version equivalence and raw-data reproduction unverified.",
+          "doi": "10.48550/arXiv.2508.14666",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "licenseLabel": "CC BY 4.0 (author version)"
+        },
+        {
+          "id": "yang-journal",
+          "title": "Field re-entrant superconductivity in Eu-doped infinite-layer nickelates",
+          "authors": "Mingwei Yang and colleagues",
+          "url": "https://doi.org/10.1038/s41586-026-10547-y",
+          "publicationStatus": "journal-article",
+          "date": "2026-04-23",
+          "dateLabel": "Published online",
+          "version": "Nature 653, 1052–1059 (2026); publisher abstract only checked",
+          "checkedAt": "2026-10-19",
+          "scope": "Previously accessible publisher abstract and publication metadata. Complete final text is subscription restricted; the later author manuscript supplies the detailed selected evidence in this note.",
+          "doi": "10.1038/s41586-026-10547-y",
+          "licenseUrl": null,
+          "licenseLabel": null
+        }
+      ],
+      "provenance": [
+        {
+          "path": "papers/CROSS_D5_D15_Yang2026.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "33970aef30ac6c132f95921ae2553d6662681ba11301ae6daf97d4a0a056d6a6",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity"
+        },
+        {
+          "path": "papers/library/Yang_Eu-IL-Nickelate-Reentrant-SC_READING_NOTES.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "7c02489fdb5faf31238beec381fadf8a49c3e9a9fbb33426f7a2011b216fbd47",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity"
+        }
+      ],
+      "corrections": [
+        {
+          "issue": "Magnetic order and pairing",
+          "inherited": "Ferromagnetic superconductivity and a mixed compensation/triplet explanation stated too strongly.",
+          "resolution": "Retain the observed transport and screening, while magnetic order, pairing symmetry and a unique mechanism remain unresolved."
+        },
+        {
+          "issue": "Angular dependence",
+          "inherited": "In-plane re-entrance universally excluded.",
+          "resolution": "Retain sample-specific angle and temperature dependence, including the broader windows in higher-doping specimens."
+        },
+        {
+          "issue": "Unverified inherited 45 T tuple",
+          "inherited": "SCE0.36 at 0.3 K assigned a 45 T persistence result.",
+          "resolution": "Do not carry this tuple as verified by v3: selected later panels use SCE0.36 at 4.2 K and SCE0.40 at 0.3 K. Final/version reconciliation remains open."
+        },
+        {
+          "issue": "Threshold and contour criteria",
+          "inherited": "Recovery fields and measurement ceilings can be read as upper critical fields.",
+          "resolution": "Keep 6.23 T and 13.04 T with their specific samples and temperatures; distinguish zero resistance from the 0.5Rn contour criterion."
+        },
+        {
+          "issue": "Screening and Hall scope",
+          "inherited": "Meissner/bulk proof or Hall thresholds inferred from re-entrant transport.",
+          "resolution": "Describe mutual-inductance diamagnetic screening without deriving bulk volume fraction; do not invent Hall coefficients or reversal fields."
+        }
+      ],
+      "rights": "Original editorial synthesis adapted from Mingwei Yang and colleagues' CC BY 4.0 author manuscript, linked below. Wording, organization and cross-topic analysis have changed; no source figures are reproduced. The journal version and third-party materials retain their own stated rights."
     }
   ]
 }

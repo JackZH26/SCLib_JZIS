@@ -25,10 +25,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T17:13:55.102648+00:00",
+  "modifiedAt": "2026-10-19T00:04:06.225591+00:00",
   "review": {
     "checkedAt": "2026-10-19",
-    "scope": "Selected Sodemann author theory, Ma final response figures/methods, Kang author methods/figures, primary Ando/Nakatsuji/Hou abstracts and inherited Romero/Yang scoped evidence.",
+    "scope": "Selected Sodemann author theory, Ma final response figures/methods, Kang author methods/figures, primary Ando/Nakatsuji/Hou abstracts and inherited Romero/Yang scoped evidence. Yang v3 pp4–5 and Fig2 checked to distinguish magnetic-field curvature from second-order electric-field response.",
     "limitations": [
       "Complete scientific acceptance remains open.",
       "Full supplement artifact controls, source-version comparison and raw-data reproduction remain open.",
@@ -71,6 +71,12 @@
       "description": "Large bulk ferromagnetic magnetization and matching magnetization coercivity are not universal defining requirements for anomalous Hall response.",
       "sourceId": "source-40175a38d94ec950",
       "scope": "Distinguish magnetic symmetry from a simple empirical proportional-to-M fit."
+    },
+    {
+      "id": "scwiki-h7-correction-yang-field-response",
+      "description": "Yang v3 includes nonlinear-in-magnetic-field Hall data. This must not be described as absent transverse data or as proof of second-order electric-field Hall response.",
+      "sourceId": "source-3504ee9027165d0a",
+      "scope": "Selected author-version definition and figure correction."
     }
   ],
   "equationChecks": [
@@ -392,7 +398,7 @@
     {
       "id": "scwiki-h7-claim-limits-and-disputes-2",
       "sectionId": "limits-and-disputes",
-      "statement": "Romero's longitudinal terahertz/DC study and Yang's high-field re-entrant nickelate measurements do not supply nonlinear Hall evidence in the portions checked here. A scattering rate, nematic motivation or re-entrant zero-resistance field must not be relabelled a Hall coefficient or Hall switching field. Magnetic history can motivate additional measurements but cannot fill a missing transverse dataset.",
+      "statement": "Romero's selected longitudinal terahertz/DC measurements do not establish a transverse second-order Hall response. Yang's later author manuscript does report Hall resistance nonlinear in magnetic field after subtraction of a linear background, alongside magnetoresistance hysteresis. These are not measurements of the second-order electric-field response defined here. A scattering rate or re-entrant zero-resistance field must not be relabelled a Hall coefficient or Hall switching field; field curvature and history dependence do not by themselves prove ferromagnetic order.",
       "evidenceType": "hypothesis",
       "sourceIds": [
         "source-05b2d5ff6757b5eb",

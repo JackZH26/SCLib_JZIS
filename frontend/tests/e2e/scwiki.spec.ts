@@ -231,3 +231,19 @@ test("Agent guide exposes bounded field selection and complete-snapshot change d
  expect(records.length).toBe(catalogue.articles.length);expect(new Set(records.map(r=>r.id)).size).toBe(records.length);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(await page.evaluate(()=>innerWidth));
 });
+
+
+test("Yang note retains author-version limits and sample table on mobile",async({page,request})=>{
+ await page.goto("/scwiki/library/yang-eu-nickelate-reentrance");
+ await page.getByRole("button",{name:"Reject all",exact:true}).click();
+ await expect(page.locator(".scwiki-sources")).toContainText("Preprint");
+ await expect(page.locator(".scwiki-sources")).toContainText("Journal article");
+ await expect(page.locator("table")).toContainText("13.04 T");
+ await expect(page.locator("#angles-and-version-correction")).toHaveText("Angular behavior and an unresolved inherited number");
+ const data=await(await request.get("/api/scwiki/v1/library/yang-eu-nickelate-reentrance")).json();
+ await expect(page.locator("main.scwiki")).toHaveAttribute("data-revision",data.note.revision);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+ const bad=await page.locator('main.scwiki a[href^="#"]').evaluateAll(links=>links.map(a=>a.getAttribute("href")!.slice(1)).filter(id=>!document.getElementById(id)));
+ expect(bad).toEqual([]);await expect(page.locator(".katex-error")).toHaveCount(0);
+ await page.screenshot({path:"test-results/scwiki-yang-390.png",fullPage:true});
+});

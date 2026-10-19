@@ -21,6 +21,21 @@ const getAll=async(key:"articles"|"sources"|"topics")=>{
  return {[key]:items};
 };
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("keeps Yang version boundaries and sample criteria through research and core exports",async()=>{
+  const found=await(await get(["library"],"?q="+encodeURIComponent("10.1038/s41586-026-10547-y"))).json();expect(found.total).toBe(1);
+  const note=found.notes[0];expect(note.sources.map((s:any)=>s.publicationStatus)).toEqual(["preprint","journal-article"]);
+  const md=await(await get(["library",note.id,"markdown"])).text();
+  for(const phrase of ["6.23 T","13.04 T","0.5Rn","SCE0.36 at 4.2 K","SCE0.40 at 0.3 K","not verified","not a universal","CC BY 4.0","Mingwei Yang"])expect(md).toContain(phrase);
+  expect(md).toContain("https://arxiv.org/abs/2508.14666v3");
+  for(const section of note.sections)for(const id of section.sourceIds)expect(note.sources.some((s:any)=>s.id===id)).toBe(true);
+  for(const p of note.provenance)expect(createHash("sha256").update(readFileSync("../../sources/"+p.path)).digest("hex")).toBe(p.sha256);
+  const core=articles().find(a=>a.code==="D15")!;
+  expect(core.body).not.toContain("SCE0.36 remains superconducting to the 45 T measurement limit at 0.3 K");
+  const d15=await(await get(["articles",core.id,"sections","experimental-criteria"],"?format=markdown")).text();
+  expect(d15).toContain("withheld pending version and sample reconciliation");
+  const h7=articles().find(a=>a.code==="H7")!;expect(h7.body).toContain("does report Hall resistance nonlinear in magnetic field");expect(h7.body).toContain("not measurements of the second-order electric-field response");
+ });
+
  it("paginates research studies separately and keeps the final-paper sample criteria and license",async()=>{
   const first=await(await get(["library"],"?limit=1")).json();expect(first.total).toBeGreaterThan(1);
   const second=await(await get(["library"],"?limit=1&cursor="+first.page.nextCursor)).json();

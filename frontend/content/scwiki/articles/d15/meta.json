@@ -26,10 +26,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T18:03:38.929188+00:00",
+  "modifiedAt": "2026-10-19T00:03:05.062786+00:00",
   "review": {
     "checkedAt": "2026-10-19",
-    "scope": "Selected Yaron final methods and Figures1–3; Sugawara,Cava,Cho original abstracts; inherited E7/G5 evidence scopes; five matched-transition counterexamples and free-ion moment distinction.",
+    "scope": "Selected Yaron final methods and Figures1–3; Sugawara,Cava,Cho original abstracts; inherited E7/G5 evidence scopes; five matched-transition counterexamples and free-ion moment distinction. Yang v3 selected passages and Figures 2, 3, Extended Data 9 checked; inherited 45 T tuple withheld.",
     "limitations": [
       "Complete scientific acceptance remains open.",
       "Original AG and several classic full texts remain unaudited; review-paper equation conventions are identified separately.",
@@ -75,9 +75,15 @@
     },
     {
       "id": "scwiki-d15-correction-3",
-      "description": "Yaron vortex rotation below about4K is distinct from the6K antiferromagnetic transition and a1.6degree field misalignment. Yang2K/3K/0.3K are measurement temperatures on distinct samples.",
+      "description": "Yaron vortex rotation below about4K is distinct from the6K antiferromagnetic transition and a1.6degree field misalignment. Yang2K/3K values are measurement temperatures; the inherited SCE0.36/0.3K/45T tuple is not verified by the later selected panels.",
       "sourceId": "source-6666556b639390d7",
       "scope": "Preserve experimental geometry and temperature categories."
+    },
+    {
+      "id": "scwiki-d15-correction-4",
+      "description": "The inherited SCE0.36/0.3K/45T tuple is withheld: v3 Extended Data Figure9 labels SCE0.36 at4.2K and SCE0.40 at0.3K. Figure3 uses0.5Rn contours, not zero-resistance boundaries.",
+      "sourceId": "source-3504ee9027165d0a",
+      "scope": "Version-resolved sample and criterion correction; no final-text or raw-data verification claimed."
     }
   ],
   "equationChecks": [
@@ -423,7 +429,7 @@
     {
       "id": "scwiki-d15-claim-experimental-criteria-7",
       "sectionId": "experimental-criteria",
-      "statement": "Yang's 2026 Sm/Ca/Eu infinite-layer nickelate study involves rare-earth substitution, fixed nominal Ca content and film reduction. In the checked later author version, SCE0.34 regains zero resistance at 2 K beyond 6.23 T; SCE0.32 does so at 3 K by 13.04 T. SCE0.36 remains superconducting to the 45 T measurement limit at 0.3 K. These are different samples and measurement temperatures, not a single transition curve. Compensation-like and magnetic-fluctuation explanations remain under discussion; neither established uniform ferromagnetism nor triplet pairing follows from the reported reentrance alone.",
+      "statement": "Yang's 2026 Sm/Ca/Eu infinite-layer nickelate study involves rare-earth substitution, fixed nominal Ca content and film reduction. In the checked later author version, SCE0.34 regains zero resistance at 2 K beyond 6.23 T; SCE0.32 does so at 3 K by 13.04 T. The inherited SCE0.36 / 0.3 K / 45 T tuple is not verified by the selected later-author-version panels: Extended Data Figure 9 labels SCE0.36 at 4.2 K and SCE0.40 at 0.3 K. It is withheld pending version and sample reconciliation. These are different samples and measurement temperatures, not a single transition curve. Compensation-like explanations remain under discussion; neither established uniform ferromagnetism nor triplet pairing follows from the reported reentrance alone.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-3504ee9027165d0a"
