@@ -2,7 +2,7 @@
 
 Chemical doping changes a material's composition; it does not supply a universal carrier counter. Distinguish the starting mixture, measured site occupancy, formal ionic charge and mobile carriers. Substitution can also change disorder, bond geometry and competing order. Oxygen removal or chain ordering adds another control variable. A superconducting dome is therefore a relationship among specified samples and criteria, not a recipe transferable between families. [R2](#ref-source-e24ef58054ac9b71) [R3](#ref-source-cf1286d7701502f2) [R4](#ref-source-b9e77d2ee024ff3b) [R5](#ref-source-c636cc691b7ff013)
 
-Notation matters even before measurement. Takagi's 1989 paper uses $(\mathrm{La}_{1-x}\mathrm{Sr}_x)_2\mathrm{CuO}_4$ and studies $x\leq0.175$. In the alternative formula $\mathrm{La}_{2-y}\mathrm{Sr}_y\mathrm{CuO}_4$, the same composition has $y=2x$, reaching 0.35. The inherited draft attached 0.175 to the latter convention without converting it. This page corrects that factor-of-two mismatch; the original abstract, not its inaccessible full methods, was checked. [R1](#ref-source-5030a5999bf0420a)
+Notation matters even before measurement. Takagi's 1989 abstract uses $(\mathrm{La}_{1-x}\mathrm{Sr}_x)_2\mathrm{CuO}_4$ through $x=0.175$. Expanding the formula gives $\mathrm{La}_{2-2x}\mathrm{Sr}_{2x}\mathrm{CuO}_4$: in $\mathrm{La}_{2-y}\mathrm{Sr}_y\mathrm{CuO}_4$, therefore, $y=2x$ and the same endpoint is $y=0.35$. For example, site fraction $x=0.075$ corresponds to $y=0.15$, or $\mathrm{La}_{1.85}\mathrm{Sr}_{0.15}\mathrm{CuO}_4$. This is a composition conversion, not a measured hole density or an experimentally selected optimum. The publisher title and abstract were checked; full methods remain outside this review. [R1](#ref-source-5030a5999bf0420a)
 
 ## Mathematical assumptions
 
@@ -30,9 +30,20 @@ For the sampled $x=0$, $0.10$, $0.125$ and $0.25$ films, the caption reports no 
 
 ## Limits and disputes
 
-Changing composition and introducing pair-breaking disorder can occur together. Sidis's original abstract reports different neutron-resonance responses to Ni and Zn impurities in YBCO. That comparison does not justify a universal impurity ranking across pairing states or substitution sites. Separate scattering, magnetic moments, charge redistribution, structural effects and phase purity before inferring the origin of a $T_c$ trend. Abstract-only evidence cannot support a detailed impurity-dose reconstruction. [R6](#ref-source-9fd0a423b4e4de89)
+Sidis's author manuscript compares reported 3% Ni-substituted YBCO ($T_c=80$ K) with 1% Zn-substituted YBCO ($T_c=78$ K). The samples were chosen for similar transition temperatures, not equal impurity fractions. Their reported impurity ratios were inferred from the suppression of $T_c$ relative to the pure system; Ni content and homogeneity were additionally checked by microprobe. A corresponding independent Zn assay is not stated in the selected passage. These two samples alone do not determine an independent dose-response slope or a universal impurity ranking.
 
-Version and specimen checks remain necessary. Ni's author manuscript mentions 0.078 in its specific-heat discussion while the phase-summary maximum uses 0.074; this page does not silently identify them as one specimen. Kasahara's earlier and later manuscripts differ in the composition range and reported zero-resistance boundary, and the later figure's color description conflicts with the displayed onset/zero labels. Use the labeled criteria, not color alone. Final journal comparisons and raw-data reproduction remain open. [R3](#ref-source-cf1286d7701502f2) [R4](#ref-source-b9e77d2ee024ff3b)
+In the checked 20–50 meV neutron window, the Ni sample's normal-state response has a finite detection upper limit; an undetected signal is not exact zero. The low-temperature-minus-above-$T_c$ spectra peak near 35 meV for Ni and 38 meV for Zn. Those are neutron spectral energies, not transition temperatures or direct gap measurements. The manuscript's Figure 2 caption reverses the sample order relative to its panel labels and surrounding text: the panels label (a) 3% Ni and (b) 1% Zn. This account follows the panel labels and text together and flags the disagreement; final-version comparison and raw background subtraction remain unchecked. The proposed impurity scenarios do not uniquely establish a pairing mechanism. [R6](#ref-source-9fd0a423b4e4de89)
+
+Keep author versions and specimen labels attached to every value. Ni's v1 specific-heat paragraph and Figure 8 label $x=0.078$, while its WDS example averages $x=0.074$ and its phase-summary maximum spans $0.058\leq x\leq0.074$. Their numerical proximity does not establish one specimen identity; this review does not silently replace 0.078 with 0.074.
+
+Kasahara's author versions report different sampled ranges and zero-resistivity thresholds:
+
+| Author version | Composition range stated | Zero resistivity reported from |
+| --- | --- | --- |
+| v1, 27 May 2009 | $0\leq x\leq0.54$ | $x\geq0.16$ |
+| v3, 9 February 2010 | $0\leq x\leq0.71$ | $x\geq0.20$ |
+
+These are version-specific reports, not a statistical uncertainty interval or a continuously measured phase boundary. Version 3 Figure 2 labels the onset curve above the zero-resistivity curve, but its caption assigns their colors in the opposite order. Read the criteria and labels together; no precise onset/zero value is digitized here. Both versions caution that superconductivity in the low-composition coexistence region may lack bulk character. Neither a zero-resistance path nor simultaneous anomalies alone prove homogeneous microscopic coexistence. Full journal-version comparison and raw-data reproduction remain open. [R3](#ref-source-cf1286d7701502f2) [R4](#ref-source-b9e77d2ee024ff3b)
 
 A dome does not establish a unique pairing mechanism, homogeneous microscopic coexistence or a universal optimal carrier concentration. The nickelate manuscript notes sample-to-sample resistivity variations associated with microstructure and does not establish the origin of its small dip within the dome. Preserve that uncertainty; numerical resemblance to a cuprate anomaly is not an ordering measurement. [R5](#ref-source-c636cc691b7ff013)
 

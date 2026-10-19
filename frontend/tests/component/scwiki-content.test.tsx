@@ -1704,7 +1704,8 @@ it("binds recognized material names and curated aliases to the same record as nu
 it("keeps composition conventions and doping-series criteria intact across search and exports",async()=>{
  const a=articles().find(a=>a.code==="E2")!;
  const md=await(await get(["articles",a.id,"markdown"])).text();
- expect(md).toContain("y=2x");expect(md).toContain("factor-of-two mismatch");
+ expect(md).toContain("y=2x");expect(md).toContain("y=0.35");
+ expect(a.claims.find(c=>c.id==="scwiki-e2-claim-scope-2")?.sourceRelationship).toBe("mixed-source-and-local-derivation");
  expect(md).toContain("0.078");expect(md).toContain("final-version");
  expect(a.materialCases.find(c=>c.reportedTemperatureK===20)?.tcK).toBeNull();
  expect(a.materialCases.find(c=>c.tcK===23)?.criterion).toBe("series-maximum-multiple-criteria");
