@@ -1621,11 +1621,20 @@ it("keeps organic transition criteria separate from Mott endpoints and low-tempe
  expect(a.references.some(r=>r.doi==="10.1021/ic00331a012")).toBe(false);
  const br=a.materialCases.filter(c=>c.formula==="κ-(ET)2Cu[N(CN)2]Br");
  expect(br.map(c=>[c.tcK,c.criterion])).toEqual([[11.6,"inductive-onset"],[12.5,"resistive-onset"]]);
- for(const t of [39.7,13.1,24,.43,.1,.032])expect(a.materialCases.find(c=>c.reportedTemperatureK===t)?.tcK).toBeNull();
+ for(const t of [39.7,13.1,24,.43,.52,.72,.1,.032]){
+  const records=a.materialCases.filter(c=>c.reportedTemperatureK===t);
+  expect(records.length).toBeGreaterThan(0);expect(records.every(c=>c.tcK===null)).toBe(true);
+ }
+ for(const criterion of ["angular-thermal-conductivity-probe","high-field-knight-shift-probe"]){
+  expect(searchArticles(searchIndex().entries,"organic",{criterion}).some(a=>a.code==="D10")).toBe(true);
+  expect(searchArticles(searchIndex().entries,"organic",{tcMin:.01,criterion}).some(a=>a.code==="D10")).toBe(false);
+ }
  expect(a.materialCases.find(c=>c.reportedTemperatureK===39.7)?.pressureGPa).toEqual({min:.0248,max:.0248});
  expect(searchArticles(searchIndex().entries,"organic",{tcMin:13}).some(a=>a.code==="D10")).toBe(false);
  expect(searchArticles(searchIndex().entries,"organic",{tcMin:12,criterion:"inductive-onset"}).some(a=>a.code==="D10")).toBe(false);
  expect(searchArticles(searchIndex().entries,"organic",{tcMin:12,criterion:"resistive-onset"}).some(a=>a.code==="D10")).toBe(true);
+ expect(searchArticles(searchIndex().entries,"organic",{tcMin:10,criterion:"reported-transition-unspecified"}).some(a=>a.code==="D10")).toBe(true);
+ expect(searchArticles(searchIndex().entries,"organic",{tcMin:10,criterion:"resistive-transition"}).some(a=>a.code==="D10")).toBe(false);
  const md=await(await get(["articles",a.id,"markdown"])).text();
  expect(md).toContain("0.0248 to 0.0248 GPa");expect(md).toContain("0.0282 to 0.0282 GPa");
  expect(md).toContain("anion-ordering-temperature");expect(md).toContain("7mK/min");

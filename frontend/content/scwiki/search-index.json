@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "af3ff0d51cbb18b500c3",
+  "revision": "098a2d561aecedb1b66a",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -1911,7 +1911,7 @@
         "experiment"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "1c17af040ee086fb7fc9",
+      "revision": "3110dc62b5d43e33df86",
       "materialCases": [
         {
           "id": "scwiki-d10-material-1",
@@ -2007,12 +2007,12 @@
           "reportedTemperatureK": 10.4,
           "tcK": 10.4,
           "temperatureKind": "transition",
-          "temperatureNote": "Characterization transition distinct from low-temperature angular probe conditions.",
-          "criterion": "resistive-transition",
+          "temperatureNote": "10.4K reported Tc; onset/zero/bulk criterion not independently established in the accessed manuscript. Simultaneous resistivity checks field alignment and does not establish this Tc criterion.",
+          "criterion": "reported-transition-unspecified",
           "pressureRegime": "ambient",
           "pressureGPa": null,
           "equilibrium": "equilibrium",
-          "probe": "Electrical resistance characterization",
+          "probe": "Reported Tc in manuscript abstract; transition criterion not specified",
           "sourceId": "source-9fb11dd7e1fcdc76",
           "aliases": [
             "organic",
@@ -2027,7 +2027,7 @@
           "reportedTemperatureK": 0.43,
           "tcK": null,
           "temperatureKind": "measurement",
-          "temperatureNote": "Probe temperature with about0.2%fourfold modulation, not Tc.",
+          "temperatureNote": "2T probe temperature; approximately0.2% C4 amplitude relative to total normal-state conductivity, not peak-to-peak span or electronic-only fraction; not Tc.",
           "criterion": "angular-thermal-conductivity-probe",
           "pressureRegime": "ambient",
           "pressureGPa": null,
@@ -2087,12 +2087,12 @@
           "reportedTemperatureK": 0.1,
           "tcK": null,
           "temperatureKind": "measurement",
-          "temperatureNote": "Temperature of field-swept spin probe; high-field state unresolved.",
+          "temperatureNote": "100mK field sweep; crossover around15kOe within superconductivity, not Hc2 or Tc. Fig3 uses(T1T)^-1 and multiplies a-direction rates by6; resistance data are sampleA only due to missing B contact.",
           "criterion": "spin-relaxation-probe",
           "pressureRegime": "ambient",
           "pressureGPa": null,
           "equilibrium": "equilibrium",
-          "probe": "Low-tip-angle NMR at100mK, crossover near15kOe",
+          "probe": "77Se NMR near a and b-prime; a-direction interlayer transport comparison, crossover near15kOe",
           "sourceId": "source-c08f058f3170fafa",
           "aliases": [
             "organic",
@@ -2118,6 +2118,66 @@
             "organic",
             "organic superconductors"
           ]
+        },
+        {
+          "id": "scwiki-d10-material-11",
+          "formula": "κ-(BEDT-TTF)2Cu(NCS)2",
+          "sample": "Izawa2T angular thermal transport",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.52,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "2T angular probe. Approximately0.2% C4 amplitude relative to total normal-state conductivity. Measurement condition, not superconducting Tc.",
+          "criterion": "angular-thermal-conductivity-probe",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Heat current b, in-plane2T field, alignment better than0.01degree",
+          "sourceId": "source-9fb11dd7e1fcdc76",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
+        },
+        {
+          "id": "scwiki-d10-material-12",
+          "formula": "κ-(BEDT-TTF)2Cu(NCS)2",
+          "sample": "Izawa2T angular thermal transport",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.72,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "2T angular probe. C4 amplitude below0.1% of total normal-state conductivity. Measurement condition, not superconducting Tc.",
+          "criterion": "angular-thermal-conductivity-probe",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "Heat current b, in-plane2T field, alignment better than0.01degree",
+          "sourceId": "source-9fb11dd7e1fcdc76",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
+        },
+        {
+          "id": "scwiki-d10-material-13",
+          "formula": "(TMTSF)2ClO4",
+          "sample": "Shinagawa40kOe shift measurement at100mK",
+          "recordType": "experiment",
+          "reportedTemperatureK": 0.1,
+          "tcK": null,
+          "temperatureKind": "measurement",
+          "temperatureNote": "No observable shift change down to100mK at40kOe. Measurement floor, not Tc; high-field state remains unresolved.",
+          "criterion": "high-field-knight-shift-probe",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "equilibrium",
+          "probe": "77Se relative shifts at40kOe, with normal-state first moment set to zero",
+          "sourceId": "source-c08f058f3170fafa",
+          "aliases": [
+            "organic",
+            "organic superconductors"
+          ]
         }
       ],
       "dois": [
@@ -2134,7 +2194,7 @@
         "10.1038/s41467-023-37491-z",
         "10.1103/PhysRevLett.100.026408"
       ],
-      "text": " Scope\n\nOrganic charge-transfer salts provide distinct low-dimensional settings for superconductivity. The Bechgaard salts (TMTSF)₂X have strongly anisotropic electronic motion; the κ-(BEDT-TTF)₂X family has conducting molecular layers and is widely studied near a pressure-controlled Mott transition. The anion, molecular packing, sample history and field direction are part of the material identity. A pairing assignment for one salt or field regime is not a classification of the entire family.   \n\nThe 1980 Jérome report identifies superconductivity in (TMTSF)₂PF₆. Its bibliographic identity is checked here, while the original experimental text remains an access gap. For κ-Br, the 1990 Kini paper explicitly distinguishes an inductive onset of 11.6 K from a resistive onset of 12.5 K in its title. Those criteria should survive quotation and database export. Its original publication is July 1990; the publisher's 2002 online date does not move the discovery into a later decade.  \n\n Mathematical assumptions\n\nIzawa's rotating-field thermal-conductivity analysis separates \\kappa(\\theta)=C0+C2\\cos(2\\theta)+C4\\cos(4\\theta), where the angle is between the heat current and the in-plane field. The large twofold term has a substantial phonon-scattering contribution, whereas the low-temperature fourfold term is interpreted through nodal quasiparticles. An independent synthetic harmonic-recovery check confirms the decomposition algebra, not the original fit or the inferred gap symmetry. A 45° rotation reverses the sign of the fourfold basis function, so node labels require a stated crystallographic convention. \n\nThe normal-state anisotropic shift used by Shinagawa is K=K{\\mathrm{iso}}+K{\\mathrm{ax}}(3\\cos^2\\theta-1), with K{\\mathrm{iso}}=3.9\\times10^{-4} and K{\\mathrm{ax}}=10.5\\times10^{-4}. Substitution gives 2,490 ppm at 0° and −660 ppm at 90°. These are signed model contributions, not directly the observed superconducting change. Reducing the spin contribution can move resonance shifts in opposite directions for two orientations. Hyperfine calibration, chemical shifts, screening fields and pulse heating must therefore accompany a spin-pairing inference. \n\nKagawa's transport analysis found approximate exponents (\\delta,\\beta,\\gamma)=(2,1,1), satisfying \\delta=1+\\gamma/\\beta. Checking that identity does not independently validate a universality class. The analysis maps conductance onto an order parameter and treats pressure/temperature mixing within stated approximations; it excludes the closest region to the endpoint because of calibration and sample limitations. A later theoretical treatment shows how conductivity can couple to singular quantities other than the thermodynamic order parameter. Transport exponents and thermodynamic exponents must not be equated automatically.  \n\n Experimental criteria\n\nLefebvre's κ-Cl phase diagram combines proton NMR with AC susceptibility under helium-gas pressure. NMR uses a 0.5 T field perpendicular to the layers; susceptibility uses an approximately 0.05 Oe oscillating field parallel to them, without a static field. Slow pressure and temperature sweeps, restricted to helium's fluid region, resolve hysteresis and changing phase fractions. The reported meeting region near 282 bar and 13.1 K is not evidence that antiferromagnetism and superconductivity occupy every microscopic volume together: the paper explicitly discusses inhomogeneous coexistence. \n\nIn the separate κ-Cl conductance experiment, a critical endpoint occurs near 39.7 ± 0.1 K and 24.8 ± 0.1 MPa. Here the paper's symbol Tc denotes the Mott endpoint, not a superconducting transition. Four-probe measurements, helium pressure sweeps near 3 MPa per hour and a current-independence check over two orders of magnitude underpin this assignment. The endpoint pressure is 0.0248 GPa; confusing MPa with GPa would introduce a factor of one thousand. \n\nIzawa studies κ-(BEDT-TTF)₂Cu(NCS)₂ with a reported resistive transition near 10.4 K. Heat flows along the b axis, with in-plane field alignment better than 0.01°. At 2 T the fourfold component becomes visible around 0.52 and 0.43 K, at approximately 0.2% of the normal-state total conductivity. These low temperatures are probe conditions, not additional transition temperatures. Extracting such a small electronic modulation requires separating phonons, vortex scattering and the field/temperature regime; the sign cannot be interpreted without that model. \n\nFor (TMTSF)₂ClO₄, Shinagawa's samples were cooled at 7 mK per minute through anion ordering near 24 K and showed resistive/rf onset near 1.4 K. NMR pulses with tip angles below 3° were checked for heating using simultaneous resistance measurements. Low-field shifts support reduced spin susceptibility, while relaxation near 100 mK changes sharply around 15 kOe. That crossover field is neither a superconducting temperature nor, by itself, a unique identification of an FFLO or triplet state. \n\n Limits and disputes\n\nThe earlier Lee result concerns a different salt, (TMTSF)₂PF₆, at 7 kbar with field along the conducting a axis; its abstract reports little Knight-shift change and argues for triplet pairing. The later ClO₄ study finds a low-field singlet-compatible response and leaves its high-field state unresolved. These are condition-specific observations. High upper critical fields, unchanged shifts in one regime or proximity to spin-density-wave order cannot alone establish family-wide p-wave superconductivity.  \n\nFor κ-(BEDT-TTF)₂Cu₂(CN)₃, absence of magnetic ordering down to 32 mK motivated a spin-liquid interpretation, while pressure studies found a neighboring superconducting region. Subsequent spin-gap work supports a valence-bond interpretation but does not uniquely exclude a gapped chiral spin liquid. Mounting strain and microcracks complicate comparison with a nominally hydrostatic experiment. Neither an exchange scale nor a spin-gap anomaly should become a superconducting Tc record.   \n\nThe original κ-Br reference in the pinned draft had an unrelated DOI. The correct identifier is 10.1021/ic00339a004; 10.1021/ic00331a012 identifies a metal-complex structural-analysis paper. This public article corrects the citation while preserving the fixed source file. Discovery-era methods, complete supplements, final-version comparisons and original-data refits remain outside parts of this scoped review. \n\n Discovery implications\n\nCompare pressure, chemical substitution and strain through measured phase diagrams rather than treating them as interchangeable tuning knobs. Report the exact salt, cooling protocol, pressure medium, field orientation and transition criterion before comparing performance. A useful next measurement should distinguish competing explanations—for example by combining bulk thermodynamics, low-heating spin probes and controlled-disorder studies on the same specimen. A nearby Mott state constrains a mechanism without identifying it uniquely.   \n\nMolecular superconductors also provide a warning against copying symmetry names between coordinate systems. The κ-NCS thermal-conductivity paper discusses nodal directions relative to b and c as well as a rotated convention. Preserve those directions and the observable itself when comparing with theories. Fullerides belong to a separate molecular family with different orbital degeneracy and vibronic physics; the shared word “organic” does not make their pairing evidence interchangeable.  \n\n Related topics\n\nContinue with , , ,  and ."
+      "text": " Scope\n\nOrganic charge-transfer salts provide distinct low-dimensional settings for superconductivity. The Bechgaard salts (TMTSF)₂X have strongly anisotropic electronic motion; the κ-(BEDT-TTF)₂X family has conducting molecular layers and is widely studied near a pressure-controlled Mott transition. The anion, molecular packing, sample history and field direction are part of the material identity. A pairing assignment for one salt or field regime is not a classification of the entire family.   \n\nThe 1980 Jérome report identifies superconductivity in (TMTSF)₂PF₆. Its bibliographic identity is checked here, while the original experimental text remains an access gap. For κ-Br, the 1990 Kini paper explicitly distinguishes an inductive onset of 11.6 K from a resistive onset of 12.5 K in its title. Those criteria should survive quotation and database export. Its original publication is July 1990; the publisher's 2002 online date does not move the discovery into a later decade.  \n\n Mathematical assumptions\n\nIzawa's rotating-field thermal-conductivity analysis separates \\kappa(\\theta)=C0+C2\\cos(2\\theta)+C4\\cos(4\\theta), where the angle is between the heat current and the in-plane field. The large twofold term has a substantial phonon-scattering contribution, whereas the low-temperature fourfold term is interpreted through nodal quasiparticles. An independent synthetic harmonic-recovery check confirms the decomposition algebra, not the original fit or the inferred gap symmetry. A 45° rotation reverses the sign of the fourfold basis function, so node labels require a stated crystallographic convention. \n\nThe normal-state anisotropic shift used by Shinagawa is K=K{\\mathrm{iso}}+K{\\mathrm{ax}}(3\\cos^2\\theta-1), with K{\\mathrm{iso}}=3.9\\times10^{-4} and K{\\mathrm{ax}}=10.5\\times10^{-4}. Substitution gives 2,490 ppm at 0° and −660 ppm at 90°. These are signed model contributions, not directly the observed superconducting change. Reducing the spin contribution can move resonance shifts in opposite directions for two orientations. Hyperfine calibration, chemical shifts, screening fields and pulse heating must therefore accompany a spin-pairing inference. \n\nKagawa's transport analysis found approximate exponents (\\delta,\\beta,\\gamma)=(2,1,1), satisfying \\delta=1+\\gamma/\\beta. Checking that identity does not independently validate a universality class. The analysis maps conductance onto an order parameter and treats pressure/temperature mixing within stated approximations; it excludes the closest region to the endpoint because of calibration and sample limitations. A later theoretical treatment shows how conductivity can couple to singular quantities other than the thermodynamic order parameter. Transport exponents and thermodynamic exponents must not be equated automatically.  \n\n Experimental criteria\n\nLefebvre's κ-Cl phase diagram combines proton NMR with AC susceptibility under helium-gas pressure. NMR uses a 0.5 T field perpendicular to the layers; susceptibility uses an approximately 0.05 Oe oscillating field parallel to them, without a static field. Slow pressure and temperature sweeps, restricted to helium's fluid region, resolve hysteresis and changing phase fractions. The reported meeting region near 282 bar and 13.1 K is not evidence that antiferromagnetism and superconductivity occupy every microscopic volume together: the paper explicitly discusses inhomogeneous coexistence. \n\nIn the separate κ-Cl conductance experiment, a critical endpoint occurs near 39.7 ± 0.1 K and 24.8 ± 0.1 MPa. Here the paper's symbol Tc denotes the Mott endpoint, not a superconducting transition. Four-probe measurements, helium pressure sweeps near 3 MPa per hour and a current-independence check over two orders of magnitude underpin this assignment. The endpoint pressure is 0.0248 GPa; confusing MPa with GPa would introduce a factor of one thousand. \n\nIzawa studies κ-(BEDT-TTF)₂Cu(NCS)₂ with a reported transition near 10.4 K. The accessed manuscript does not specify an onset criterion for that value; its resistivity check establishes field alignment, not a separately documented resistive Tc. Heat flows along b; the field rotates in the bc plane with alignment better than 0.01°. The sample is field-cooled with the field along b, and reversing the rotation produced no observed hysteresis. Figures 3–4 separate the constant and twofold terms before reporting the fourfold component at 2 T:\n\n| Probe temperature | Fourfold amplitude relative to normal-state total conductivity |\n|---|---|\n| 0.72 K | Less than 0.1% |\n| 0.52 K | Approximately 0.2% |\n| 0.43 K | Approximately 0.2% |\n\nHere the quoted fraction is |C4|/\\kappan, not a peak-to-peak span and not a fraction of electronic conductivity alone. A pure cosine with 0.2% amplitude has a 0.4% peak-to-peak span; this is arithmetic from the stated harmonic, not a refit. These temperatures are measurement conditions, not additional Tc values. In the authors' low-temperature density-of-states interpretation, fourfold maxima for fields along b and c imply nodes rotated 45° from those axes. Competing vortex-scattering effects can change the transport interpretation with temperature and field; a symmetry label without that regime and coordinate convention is insufficient. \n\nFor (TMTSF)₂ClO₄, Shinagawa's samples were cooled at 7 mK per minute through anion ordering near 24 K and showed resistive/rf onset near 1.4 K. Sample A was aligned near a, while sample B was aligned near b′. NMR pulses with tip angles below 3° were checked for heating by time-synchronous resistance measurements. Around 9.6 kOe, the resonance shifts move in opposite directions for these orientations, consistently with reduced spin susceptibility and anisotropic hyperfine coupling. The screening-field estimate below 100 ppm was obtained for sample B; it is not a universal correction for both samples.\n\nAt 100 mK, the relaxation crossover near 15 kOe lies within the superconducting regime. Figure 3 plots (T1T)^{-1} and multiplies the a-direction data by six: apparent overlap of the plotted curves does not mean equal unscaled rates. The accompanying interlayer resistance is for sample A with field along a; a missing contact prevented the corresponding reliable sample-B measurement. Resistance remains undetectable up to about 30 kOe in sample A, so the approximately 15 kOe crossover must not be substituted for its upper critical field. At 40 kOe the Knight shift shows no detectable change from the normal-state value down to 100 mK. Neither that observation nor the crossover uniquely identifies an FFLO or triplet state; the paper leaves the high-field state unresolved. Probe temperatures and anion ordering remain separate from superconducting Tc. \n\n Limits and disputes\n\nThe earlier Lee result concerns a different salt, (TMTSF)₂PF₆, at 7 kbar with field along the conducting a axis; its abstract reports little Knight-shift change and argues for triplet pairing. The later ClO₄ study finds a low-field singlet-compatible response and leaves its high-field state unresolved. These are condition-specific observations. High upper critical fields, unchanged shifts in one regime or proximity to spin-density-wave order cannot alone establish family-wide p-wave superconductivity.  \n\nFor κ-(BEDT-TTF)₂Cu₂(CN)₃, absence of magnetic ordering down to 32 mK motivated a spin-liquid interpretation, while pressure studies found a neighboring superconducting region. Subsequent spin-gap work supports a valence-bond interpretation but does not uniquely exclude a gapped chiral spin liquid. Mounting strain and microcracks complicate comparison with a nominally hydrostatic experiment. Neither an exchange scale nor a spin-gap anomaly should become a superconducting Tc record.   \n\nThe original κ-Br reference in the pinned draft had an unrelated DOI. The correct identifier is 10.1021/ic00339a004; 10.1021/ic00331a012 identifies a metal-complex structural-analysis paper. This public article corrects the citation while preserving the fixed source file. Discovery-era methods, complete supplements, final-version comparisons and original-data refits remain outside parts of this scoped review. \n\n Discovery implications\n\nCompare pressure, chemical substitution and strain through measured phase diagrams rather than treating them as interchangeable tuning knobs. Report the exact salt, cooling protocol, pressure medium, field orientation and transition criterion before comparing performance. A useful next measurement should distinguish competing explanations—for example by combining bulk thermodynamics, low-heating spin probes and controlled-disorder studies on the same specimen. A nearby Mott state constrains a mechanism without identifying it uniquely.   \n\nMolecular superconductors also provide a warning against copying symmetry names between coordinate systems. The κ-NCS thermal-conductivity paper discusses nodal directions relative to b and c as well as a rotated convention. Preserve those directions and the observable itself when comparing with theories. Fullerides belong to a separate molecular family with different orbital degeneracy and vibronic physics; the shared word “organic” does not make their pairing evidence interchangeable.  \n\n Related topics\n\nContinue with , , ,  and ."
     },
     {
       "id": "scwiki-d11",
