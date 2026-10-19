@@ -16,6 +16,6 @@ export function libraryMarkdown(note:typeof libraryNotes[number]){
  note.sections.map(s=>"\n\n## "+s.title+"\n\n"+s.markdown+"\n\nEvidence: "+s.evidenceType+". Source relationship: "+s.sourceRelationship+". Sources: "+s.sourceIds.join(", ")+".").join("")+
  "\n\n## Sources\n\n"+note.sources.map(s=>s.id+": "+s.authors+". ["+s.title+"]("+s.url+"). "+s.publicationStatus+"; "+s.dateLabel+" "+s.date+"; "+s.version+". "+s.scope+(s.licenseUrl?" Source license: ["+s.licenseLabel+"]("+s.licenseUrl+"). Editorial wording and organization changed.":"")).join("\n\n")+
  "\n\n## Editorial corrections\n\n"+note.corrections.map(c=>"- "+c.issue+": "+c.resolution).join("\n")+
- "\n\n## Provenance\n\n"+note.provenance.map(p=>p.path+"; commit "+p.commit+"; SHA-256 "+p.sha256+"; "+p.disposition).join("\n\n")+
+ "\n\n## Provenance\n\n"+note.provenance.map(p=>p.path+"; commit "+p.commit+"; SHA-256 "+p.sha256+"; "+p.disposition+". Coverage: "+p.coverage).join("\n\n")+
  "\n\n"+note.rights+"\n\nNote ID: "+note.id+". Revision: "+note.revision+".\n";
 }

@@ -6,7 +6,7 @@
       "title": "Parallel conduction and Planckian scattering in FeTeSe",
       "summary": "Connect optical parallel-channel fits with Planckian rate conventions and nonlinear resistance, while keeping the pairing mechanism unresolved.",
       "kind": "research-note-and-cross-topic-analysis",
-      "modifiedAt": "2026-10-18T23:53:19.022135+00:00",
+      "modifiedAt": "2026-10-19T00:19:22.328955+00:00",
       "aliases": [
         "Romero",
         "FeTeSe",
@@ -101,14 +101,16 @@
           "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
           "sha256": "aef4a2f9efe186b0fc094ab424bba412128be75bae28d4c15fe6ad1797ba478e",
           "disposition": "merge-into",
-          "repository": "JackZH26/jzis-superconductivity"
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
         },
         {
           "path": "papers/library/Romero_Planckian-FeTeSe_READING_NOTES.md",
           "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
           "sha256": "c26198323fa69f7603870d26b455aca4ee4ae4edbbf7aa9a94ce6bb8f7f4acd5",
           "disposition": "merge-into",
-          "repository": "JackZH26/jzis-superconductivity"
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
         }
       ],
       "corrections": [
@@ -145,7 +147,7 @@
       "title": "Nickelate strain: structural parallels, different mechanical paths",
       "summary": "Compare measured lattice deformation, resistive criteria and orbital-model conclusions in strained La3Ni2O7 films without treating a structural correlation as a demonstrated pairing mechanism.",
       "kind": "research-note-and-cross-topic-analysis",
-      "modifiedAt": "2026-10-18T23:53:19.022135+00:00",
+      "modifiedAt": "2026-10-19T00:19:22.329108+00:00",
       "aliases": [
         "Bhatt",
         "La3Ni2O7",
@@ -248,14 +250,16 @@
           "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
           "sha256": "d4a733b8f2299e92df1ec3b99a0bf7d3d25ac144019dc45c91d256b0f9978657",
           "disposition": "merge-into",
-          "repository": "JackZH26/jzis-superconductivity"
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
         },
         {
           "path": "papers/library/Bhatt_Structural-Origins-SC-Strain-LNO_2026_NOTE.md",
           "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
           "sha256": "d04c248a0eba4d37a3c3c46ca60486ddb8a7e0366ffa9acfcecd03dfc6f87745",
           "disposition": "merge-into",
-          "repository": "JackZH26/jzis-superconductivity"
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
         }
       ],
       "corrections": [
@@ -297,7 +301,7 @@
       "title": "Eu-doped nickelates: re-entrance without a settled pairing mechanism",
       "summary": "Separate sample-specific zero resistance, diamagnetic screening and resistance-contour criteria in Sm/Ca/Eu infinite-layer films; keep exchange compensation, magnetic order and pairing symmetry as distinct questions.",
       "kind": "research-note-and-cross-topic-analysis",
-      "modifiedAt": "2026-10-19T00:03:05.061061+00:00",
+      "modifiedAt": "2026-10-19T00:19:22.329110+00:00",
       "aliases": [
         "Yang",
         "Eu-doped infinite-layer nickelate",
@@ -418,14 +422,16 @@
           "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
           "sha256": "33970aef30ac6c132f95921ae2553d6662681ba11301ae6daf97d4a0a056d6a6",
           "disposition": "merge-into",
-          "repository": "JackZH26/jzis-superconductivity"
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
         },
         {
           "path": "papers/library/Yang_Eu-IL-Nickelate-Reentrant-SC_READING_NOTES.md",
           "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
           "sha256": "7c02489fdb5faf31238beec381fadf8a49c3e9a9fbb33426f7a2011b216fbd47",
           "disposition": "merge-into",
-          "repository": "JackZH26/jzis-superconductivity"
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
         }
       ],
       "corrections": [
@@ -462,7 +468,7 @@
       "title": "Pressure-quenched Hg1223: onset, magnetic response and stability",
       "summary": "Follow the sample histories behind the reported 151 K resistive onset. Magnetic-volume estimates, storage tests and an unreproduced 172 K anomaly belong to distinct specimens and protocols.",
       "kind": "research-note-and-cross-topic-analysis",
-      "modifiedAt": "2026-10-19T00:11:00.427929+00:00",
+      "modifiedAt": "2026-10-19T00:19:22.329111+00:00",
       "aliases": [
         "Deng",
         "Hg1223",
@@ -594,7 +600,8 @@
           "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
           "sha256": "9a089d5a903ff7cc105bfea60009a0c0efbfd1a67558b7da00e31848a6d47f3b",
           "disposition": "merge-into",
-          "repository": "JackZH26/jzis-superconductivity"
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
         }
       ],
       "corrections": [
@@ -625,6 +632,151 @@
         }
       ],
       "rights": "Original editorial synthesis adapted from Liangzi Deng and colleagues' CC BY 4.0 author manuscript, linked below. Wording, organization and local arithmetic have changed; no source figures are reproduced. Third-party material retains any separately stated rights."
+    },
+    {
+      "id": "cuprate-interface-layer-order",
+      "title": "Cuprate interfaces: layer order and localization",
+      "summary": "Compare an interface study with a layer-selective localization experiment, while keeping measurement criteria and source access separate.",
+      "kind": "research-note-and-cross-topic-analysis",
+      "modifiedAt": "2026-10-19T00:18:47.242615+00:00",
+      "aliases": [
+        "Gozar",
+        "Logvenov",
+        "Bozovic",
+        "Božović",
+        "cuprate interface",
+        "single CuO2 plane",
+        "layer selective Zn",
+        "铜氧化物界面"
+      ],
+      "evidenceTypes": [
+        "experiment"
+      ],
+      "relatedCodes": [
+        "D3",
+        "D11",
+        "A1",
+        "A2",
+        "E10"
+      ],
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Two of ten studies in the inherited series are covered here at different depths: selected Gozar author text/figures and the Logvenov original abstract. This is a partial source-note merge, not completion of the whole series.",
+        "limitations": [
+          "Author self-review, not independent scientific acceptance.",
+          "Logvenov full text and calibration remain unavailable in this review; the abstract does not justify a new quantitative material record.",
+          "The remaining eight inherited studies require individual primary-source review. Full source-note merging is not claimed."
+        ]
+      },
+      "sections": [
+        {
+          "id": "layer-order",
+          "title": "Read layer order and criterion together",
+          "markdown": "Gozar’s author version defines I as La2CuO4, M as La1.55Sr0.45CuO4, and S as oxygen-doped La2CuO4+δ. The first letter denotes the layer nearest the substrate. Its typical resistive midpoints are approximately 15 K for I–M and 30 K for M–I; ozone-treated M–S structures reach about 50 K. These are distinct preparations.\n\nThickness and screening analyses constrain a roughly one-to-two-unit-cell interfacial region within their models. Microscopy bounds cation intermixing around one unit cell; it does not prove atomically perfect chemistry. The authors retain several possible enhancement mechanisms.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "gozar-author-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "single-plane",
+          "title": "What the single-plane abstract supports",
+          "markdown": "Logvenov and colleagues describe molecular-beam-grown metal/insulator bilayers, with each block three unit cells thick. Layer-selective Zn substitution acts as a suppressing marker; their abstract attributes the interface superconductivity to one CuO2 plane.\n\nThis is a localization inference in a heterostructure, not an isolated free-standing plane. The full methods, Zn profile and calibration have not been reviewed here. No new composition or transition-temperature record is assigned from the abstract. The publisher’s deposited editorial summary and the original abstract are also kept distinct.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "logvenov-2009"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "compare-evidence",
+          "title": "Compare evidence without combining experiments",
+          "markdown": "An editorial comparison should retain the sample stack, treatment, observable and criterion for each result. A thickness-dependent transition, a screening model and a layer-selective perturbation answer related but different questions. A model-dependent length estimate should not be silently converted to a direct spatial image. Nor does localization alone determine the highest achievable transition temperature or select a unique pairing mechanism.\n\nPressure-quenched Hg1223 is a separate preparation problem. The [Hg1223 research note](/scwiki/library/deng-hg1223-pressure-quench) preserves its specimen histories; those results should not be entered as cuprate-interface measurements.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "gozar-author-v1",
+            "logvenov-2009"
+          ],
+          "sourceRelationship": "context-for-editorial-analysis"
+        },
+        {
+          "id": "series-coverage",
+          "title": "What remains in the inherited series",
+          "markdown": "This note covers study sections 2 and 9 only. Superfluid-density scaling, magnetic excitations, ultrafast crystallography, above-transition THz correlations, proximity effects, antiferromagnetism, the superconductor–insulator transition and the unresolved plasmon citation remain separate review tasks.\n\nThe old parsed-file directory explicitly identifies its repaired files as curated source notes, not original-paper transcriptions. The provenance below therefore states partial coverage. Neither the reading-note title nor a repaired bibliography substitutes for a checked primary passage.",
+          "evidenceType": "experiment",
+          "sourceIds": [],
+          "sourceRelationship": "context-for-editorial-analysis"
+        }
+      ],
+      "sources": [
+        {
+          "id": "gozar-author-v1",
+          "title": "High-temperature interface superconductivity between metallic and insulating cuprates",
+          "authors": "A. Gozar and colleagues",
+          "url": "https://arxiv.org/abs/0810.1890v1",
+          "publicationStatus": "preprint",
+          "date": "2008-10-10",
+          "dateLabel": "Author version submitted",
+          "version": "arXiv:0810.1890v1; author version of the Nature 455, 782–785 (2008) article",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected pages 2–5 and captions 8–10; Figures 1–3 inspected. Final/supplement equivalence and raw-data reconstruction remain open.",
+          "doi": "10.1038/nature07293",
+          "licenseUrl": null,
+          "licenseLabel": null
+        },
+        {
+          "id": "logvenov-2009",
+          "title": "High-Temperature Superconductivity in a Single Copper-Oxygen Plane",
+          "authors": "G. Logvenov, A. Gozar and I. Bozovic",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/19900926/",
+          "publicationStatus": "journal-article",
+          "date": "2009-10-30",
+          "dateLabel": "Published in issue",
+          "version": "Science 326, 699–702; original abstract indexed by PubMed",
+          "checkedAt": "2026-10-19",
+          "scope": "Original abstract only. Crossref supplies a separate publisher editorial summary; neither is a full-methods review.",
+          "doi": "10.1126/science.1178863",
+          "licenseUrl": null,
+          "licenseLabel": null
+        }
+      ],
+      "provenance": [
+        {
+          "path": "papers/CROSS_D3_D11_BozovicInterface.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "8f299055adac85ea95c5dca9a35c6939305162fa1c0f36e4a8f6d58211a7be83",
+          "disposition": "partial-merge",
+          "coverage": "Interface localization and separation from pressure-quench results only. Other cited studies and cross-topic claims remain pending.",
+          "repository": "JackZH26/jzis-superconductivity"
+        },
+        {
+          "path": "papers/library/Bozovic_Cuprate-Interface-Series_READING_NOTES.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "6c0b3484dbfe9831b95e8f1ad578c2889e9c88b5e25c6954bb09160df741f0ee",
+          "disposition": "partial-merge",
+          "coverage": "Study sections 2 (Logvenov 2009, abstract scope) and 9 (Gozar 2008, selected author passages) only. The other eight study sections remain pending.",
+          "repository": "JackZH26/jzis-superconductivity"
+        }
+      ],
+      "corrections": [
+        {
+          "issue": "Source coverage",
+          "inherited": "One series note combines ten studies and web-derived interpretation.",
+          "resolution": "Only sections 2 and 9 are represented here; eight studies and other CROSS claims remain pending."
+        },
+        {
+          "issue": "Evidence depth",
+          "inherited": "Abstract and full-text claims can appear equally verified.",
+          "resolution": "Separate selected author passages from abstract-only localization evidence; retain the unresolved methods review."
+        },
+        {
+          "issue": "Transfer of conclusions",
+          "inherited": "Interface localization treated as a general mechanism verdict.",
+          "resolution": "Keep localization, transition criteria and mechanistic interpretation separate."
+        }
+      ],
+      "rights": "Original concise editorial synthesis with linked sources. No paper text, figures or old parsed images are reproduced; no open redistribution license is asserted for the source articles."
     }
   ]
 }

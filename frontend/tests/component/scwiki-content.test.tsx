@@ -21,6 +21,17 @@ const getAll=async(key:"articles"|"sources"|"topics")=>{
  return {[key]:items};
 };
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("exports partial research coverage without implying the whole source series is complete",async()=>{
+  const n=(await(await get(["library","cuprate-interface-layer-order"])).json()).note;
+  expect(n.provenance).toHaveLength(2);expect(n.provenance.every((p:any)=>p.disposition==="partial-merge")).toBe(true);
+  const md=await(await get(["library",n.id,"markdown"])).text();
+  for(const p of n.provenance){expect(md).toContain(p.coverage);expect(createHash("sha256").update(readFileSync("../../sources/"+p.path)).digest("hex")).toBe(p.sha256);}
+  expect(md).toContain("other eight study sections remain pending");expect(md).toContain("resistive midpoints");expect(md).toContain("ozone-treated");expect(md).toContain("full methods, Zn profile and calibration have not been reviewed");
+  const spec=await(await get(["openapi.json"])).json();expect(spec.components.schemas.ResearchNote.properties.provenance.items.required).toContain("coverage");
+  const first=(await(await get(["library","romero-parallel-conduction"])).json()).note;
+  expect(first.provenance.every((p:any)=>p.disposition==="merge-into"&&p.coverage.includes("scientific review remains limited"))).toBe(true);
+ });
+
  it("preserves pressure-quench specimen histories and limits in library exports",async()=>{
   const result=await(await get(["library"],"?q="+encodeURIComponent("10.1073/pnas.2536178123"))).json();expect(result.total).toBe(1);
   const n=result.notes[0];const md=await(await get(["library",n.id,"markdown"])).text();

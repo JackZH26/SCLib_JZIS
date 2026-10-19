@@ -264,3 +264,17 @@ test("pressure-quench note keeps source versions and specimen conditions readabl
  const bad=await page.locator('main.scwiki a[href^="#"]').evaluateAll(links=>links.map(a=>a.getAttribute("href")!.slice(1)).filter(id=>!document.getElementById(id)));expect(bad).toEqual([]);
  await page.screenshot({path:"test-results/scwiki-deng-390.png",fullPage:false});
 });
+
+
+test("interface note distinguishes partial provenance and abstract-only review",async({page,request})=>{
+ await page.goto("/scwiki/library/cuprate-interface-layer-order");await page.getByRole("button",{name:"Reject all",exact:true}).click();
+ await expect(page.locator(".scwiki-scope-note")).toContainText("Two of ten studies");
+ await expect(page.locator(".scwiki-scope-note")).toContainText("partial source-note merge");
+ await page.getByText("Source-note provenance",{exact:true}).click();
+ await expect(page.locator("details")).toContainText("partial-merge");await expect(page.locator("details")).toContainText("other eight study sections remain pending");
+ const data=await(await request.get("/api/scwiki/v1/library/cuprate-interface-layer-order")).json();await expect(page.locator("main.scwiki")).toHaveAttribute("data-revision",data.note.revision);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+ const bad=await page.locator('main.scwiki a[href^="#"]').evaluateAll(links=>links.map(a=>a.getAttribute("href")!.slice(1)).filter(id=>!document.getElementById(id)));expect(bad).toEqual([]);
+ await page.getByRole("navigation",{name:"Note contents"}).getByRole("link",{name:"Read layer order and criterion together"}).click();await expect(page.locator("#layer-order")).toBeInViewport();
+ await page.screenshot({path:"test-results/scwiki-interface-390.png",fullPage:false});
+});
