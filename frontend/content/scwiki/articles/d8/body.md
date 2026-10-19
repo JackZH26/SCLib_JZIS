@@ -16,7 +16,19 @@ Pang's simplified band-mixing model uses $|\Delta(\varphi)|=\sqrt{a^2\cos^2(2\va
 
 The CeCu₂Si₂ specific-heat study used a 13.8 mg S-type crystal, measurements down to 40 mK and a nuclear correction constrained by high-field normal-state data. It reported low-energy behavior consistent with full gaps and no detected in-plane angular oscillation within stated sensitivity. The result constrains quasiparticles weighted strongly by thermodynamics; it is not a universal exclusion of every possible small-band node. The author manuscript's February 2014 version must not be dated from its later PDF generation stamp. [R3](#ref-source-2764bce38246bfae)
 
-Pang's penetration-depth measurements reached 40 mK. Its S-type sample showed a specific-heat transition near 0.64 K; an A/S-type sample showed superconducting and antiferromagnetic anomalies near 0.53 and 0.7 K. These are different transitions. Nodeless low-temperature behavior motivates the proposed d+d description, but fitting these data does not uniquely settle the order parameter. Raw-data refitting and the complete supplement remain outside this scoped review. [R4](#ref-source-e721bddb9ef11661)
+Pang measured penetration-depth shifts down to about 40 mK using a tunnel-diode oscillator. Keep each reported temperature tied to its sample and criterion:
+
+| Sample | Criterion in Pang | Approximate temperature |
+|---|---|---|
+| S-type | Resistive onset | 0.65 K |
+| S-type | Zero resistivity | 0.60 K |
+| S-type | Superconducting specific-heat anomaly | 0.64 K |
+| S-type | Penetration-depth onset | 0.62 K |
+| A/S-type | Resistive onset | 0.62 K |
+| A/S-type | Superconducting specific-heat anomaly | 0.53 K |
+| A/S-type | Antiferromagnetic specific-heat anomaly | 0.70 K; not superconducting Tc |
+
+Low-temperature exponential fits extend to 0.12 K. Finite-window power-law fits are also reported; their exponents increase as the upper fitting temperature decreases. This supports a low-temperature full gap without uniquely selecting the pairing state. Superfluid-density conversion assumes a zero-temperature penetration depth of 2000 Å, and both two-gap s-wave and d+d fits describe it. The paper's sign-change argument additionally invokes earlier neutron and NQR evidence; it is not a direct phase measurement by the oscillator. Its later heat-capacity fit uses data digitized from Kittaka. Raw-data refitting and the complete supplement remain outside this scoped review. [R4](#ref-source-e721bddb9ef11661)
 
 For CeCoIn₅, the discovery study combined zero resistance, magnetic shielding and a heat-capacity anomaly near 2.3 K. It also found substantially different upper critical fields parallel and perpendicular to the c axis. Later neutron work found magnetic order that disappears with superconductivity at the high-field boundary. A coupled magnetic Q phase therefore cannot be described as a clean demonstration of a standalone textbook FFLO state. [R5](#ref-source-5962cf8038597944) [R7](#ref-source-fda01ade7737b638)
 

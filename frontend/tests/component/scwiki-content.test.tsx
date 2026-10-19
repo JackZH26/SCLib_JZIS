@@ -1571,7 +1571,13 @@ it("keeps MgB2 isotope transitions separate from probe temperatures and unresolv
 it("keeps heavy-fermion transition criteria separate from magnetic and normal-state temperatures",async()=>{
  const a=articles().find(a=>a.code==="D8")!;
  const pang=a.references.find(r=>r.doi==="10.1073/pnas.1720291115")!;
- expect(a.materialCases.filter(c=>c.sourceId===pang.id).map(c=>c.tcK)).toEqual([.64,.53]);
+ expect(a.materialCases.filter(c=>c.sourceId===pang.id&&c.criterion==="specific-heat-anomaly").map(c=>c.tcK)).toEqual([.64,.53]);
+ const magnetic=a.materialCases.find(c=>c.criterion==="antiferromagnetic-specific-heat-anomaly")!;
+ expect(magnetic.reportedTemperatureK).toBe(.7);expect(magnetic.tcK).toBeNull();
+ expect(a.materialCases.filter(c=>c.sourceId===pang.id&&c.criterion==="resistive-onset").map(c=>c.tcK)).toEqual([.65,.62]);
+ expect(a.materialCases.find(c=>c.criterion==="zero-resistivity")?.tcK).toBe(.6);
+ expect(searchArticles(searchIndex().entries,"CeCu2Si2",{tcMin:.66}).some(a=>a.code==="D8")).toBe(false);
+ expect(searchArticles(searchIndex().entries,"CeCu2Si2",{tcMin:.64,criterion:"resistive-onset"}).some(a=>a.code==="D8")).toBe(true);
  expect(a.materialCases.find(c=>c.temperatureKind==="normal-state")?.tcK).toBeNull();
  expect(a.materialCases.filter(c=>c.temperatureKind==="measurement").every(c=>c.tcK===null)).toBe(true);
  expect(searchArticles(searchIndex().entries,"heavy fermion",{tcMin:2,criterion:"zero-resistance-and-shielding"}).some(a=>a.code==="D8")).toBe(true);
