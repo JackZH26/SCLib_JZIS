@@ -1361,6 +1361,17 @@ it("keeps the two Bi2212 PDW experiments and limited modern source checks distin
  expect(out).toContain("8.25 T");expect(out).toContain("Full scientific acceptance");
  expect(a.references.find(r=>r.doi==="10.1038/nature17411")?.verification.scope).toBe("selected-published-and-author-text-check");
  expect(a.references.find(r=>r.doi===null)?.verification.scope).toBe("institutional-bibliographic-check");
+ const lo=a.references.find(r=>r.doi===null)!;
+ const migdal=articles().find(a=>a.code==="B2")!.references.find(r=>r.id==="source-21442c6eb33d9b94")!;
+ expect(lo.id).not.toBe(migdal.id);expect(lo.year).toBe(1965);expect(migdal.year).toBe(1958);
+ expect(lo.url).toContain("itp.ac.ru");expect(migdal.url).toContain("e_007_06_0996.pdf");
+ const all=await getAll("sources");
+ expect(all.sources.find((r:any)=>r.id===lo.id).usedBy).toEqual(["scwiki-c8"]);
+ expect(all.sources.find((r:any)=>r.id===migdal.id).usedBy).toEqual(["scwiki-b2"]);
+ expect(md).toContain("quadrature component does not");
+ expect(md).toContain("equilibrium total current is zero");
+ const harmonic=await(await get(["articles",a.id,"sections","mathematical-assumptions"])).json();
+ expect(harmonic.claims.find((c:any)=>c.id==="scwiki-c8-claim-mathematical-assumptions-2").sourceRelationship).toBe("context-for-local-derivation");
  expect(a.references.find(r=>r.doi==="10.1038/s41586-026-10325-w")?.verification.scope).toBe("institutional-abstract-and-publication-check");
 });
 

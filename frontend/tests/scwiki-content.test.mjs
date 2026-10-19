@@ -27,6 +27,17 @@ function inventoryFixture(t){
  return {cwd,directory,manifest,save,build};
 }
 
+test("content generation rejects conflicting publication identities before writing outputs",t=>{
+ const f=inventoryFixture(t),filename=path.join(f.directory,"articles/c8/meta.json");
+ const meta=JSON.parse(readFileSync(filename,"utf8"));
+ const migdal=JSON.parse(readFileSync(path.join(f.directory,"articles/b2/meta.json"),"utf8")).references.find(r=>r.id==="source-21442c6eb33d9b94");
+ meta.references.push({...migdal,title:"Nonuniform state of superconductors"});
+ writeFileSync(filename,JSON.stringify(meta));
+ const original=readFileSync(path.join(f.directory,"catalogue.json"),"utf8"),result=f.build();
+ assert.notEqual(result.status,0);assert.match(result.stderr,/conflicting publication identities/);
+ assert.equal(readFileSync(path.join(f.directory,"catalogue.json"),"utf8"),original);
+});
+
 test("pressure ranges reject malformed values before rendering material conditions",async t=>{
  for(const [name,pressure] of [["scalar",.13],["missing",undefined],["text",{min:"0.13",max:.13}],["partial",{min:.13}],["reversed",{min:2,max:1}],["negative",{min:-1,max:0}],["array",[.13,.13]]]){
   await t.test(name,t=>{
@@ -123,6 +134,14 @@ test("DOI fields distinguish a canonical historical link from malformed identifi
   await t.test(String(value),t=>{
    const f=inventoryFixture(t),filename=path.join(f.directory,"articles/a1/meta.json");
    const meta=JSON.parse(readFileSync(filename,"utf8"));meta.references[0].doi=value;
+   if(value===null){
+    // This schema example changes identity; do not mutate one copy of a shared paper.
+    const oldId=meta.references[0].id,newId="source-0000000000000002";
+    const remapped=JSON.parse(JSON.stringify(meta).replaceAll(oldId,newId));
+    Object.assign(meta,remapped);
+    const body=path.join(f.directory,"articles/a1/body.md");
+    writeFileSync(body,readFileSync(body,"utf8").replaceAll(oldId,newId));
+   }
    writeFileSync(filename,JSON.stringify(meta));const result=f.build();
    if(value===null){assert.equal(result.status,0,result.stderr);const cat=JSON.parse(readFileSync(path.join(f.directory,"catalogue.json"),"utf8"));assert.ok(cat.articles.find(a=>a.code==="A1").markdown.includes("[Source publication]"));}
    else {assert.notEqual(result.status,0);assert.match(result.stderr,/reference schema/);}

@@ -3,6 +3,7 @@ import path from "node:path";
 import {createHash} from "node:crypto";
 import katex from "katex";
 import {articleIdPattern,sectionAnchor,validateExtensionInventory,validateExtensionArticle} from "./scwiki-publication.mjs";
+import {validateReferenceIdentities} from "./scwiki-reference-identity.mjs";
 
 const directory=path.join(process.cwd(),"content/scwiki");
 const sha=value=>createHash("sha256").update(value).digest("hex");
@@ -103,6 +104,7 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  articles.push({...meta,body,revision,sections:[...chunks,{id:"material-cases",title:"Material cases",markdown:conditions}],markdown,wordCount:body.split(/\s+/).length});
 }
 if(articles.length!==expectedIds.size||articles.some(a=>!expectedIds.has(a.id)))fail("published articles do not match the publication inventory");
+validateReferenceIdentities(articles);
 for(const a of articles)for(const code of a.relatedCodes)if(!articles.some(other=>other.code===code))fail("unpublished related article "+code);
 const revision=sha(articles.map(a=>a.revision).join("\n")).slice(0,20);
 const catalogue={schemaVersion:"1.0",revision,articles};

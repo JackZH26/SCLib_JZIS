@@ -29,10 +29,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.204540+00:00",
+  "modifiedAt": "2026-10-19T14:56:05.646640+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected published Hamidian and Edkins methods/results; Berg stacking theory; inherited kagome passages; bounded historical and 2026 abstract checks; independent Fourier and overlap examples.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected published Hamidian and Edkins methods/results; Berg stacking theory; inherited kagome passages; bounded historical and 2026 abstract checks; independent Fourier and overlap examples. Follow-up: corrected LO identity; FF abstract current conditions; scalar intensity harmonics and quadrature coexistence.",
     "limitations": [
       "Full scientific acceptance, complete source-version comparisons and raw-data reproduction remain open.",
       "Original Larkin–Ovchinnikov full text was unavailable; bibliographic identity only is checked.",
@@ -117,23 +117,23 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "publisher-abstract-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.135.A550",
         "note": "Published 3 August 1964. Clean exchange-field and compensated-current abstract checked; original derivation not fully reviewed."
       }
     },
     {
-      "id": "source-21442c6eb33d9b94",
+      "id": "source-739939afd549524f",
       "doi": null,
       "title": "Nonuniform state of superconductors",
-      "year": 1958,
-      "url": "https://www.jetp.ras.ru/cgi-bin/dn/e_007_06_0996.pdf",
+      "year": 1965,
+      "url": "https://www.itp.ac.ru/ru/persons/ovchinnikov-yurii-nikolaevich/",
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "institutional-bibliographic-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://www.itp.ac.ru/ru/persons/ovchinnikov-yurii-nikolaevich/",
-        "note": "Larkin and Ovchinnikov: institutional record lists Russian JETP 47, 1136–1146 (1964), English Sov. Phys. JETP 20, 762–769 (1965). Original PDF retrieval returned 404; no full-text check claimed."
+        "note": "Landau Institute author bibliography, entry262: Russian JETP47(3),1136-1146(1964); English Sov.Phys.JETP20(3),762-769(1965). Year here denotes the English translation. Original full text remains inaccessible. Corrected an erroneous shared identity with Migdal1958; no DOI invented."
       }
     },
     {
@@ -159,9 +159,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-published-text-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://eunahkim.ccmr.cornell.edu/sites/kim/files/publications/Phys.%20Rev.%20Lett%202007%20Berg.pdf",
-        "note": "Published text pp.1–4 read for stacking, lowest-order cancellation, residual coupling and defects. Figures and complete microscopic derivation not reproduced. Local scalar overlaps are independent illustrations."
+        "note": "Published text pp.1–4 read for stacking, lowest-order cancellation, residual coupling and defects. Figures and complete microscopic derivation not reproduced. Local scalar overlaps are independent illustrations. Follow-up: abstract, antiphase pattern and interplane coupling discussion aroundEq.1; supports conditional model context, not the local quadrature example."
       }
     },
     {
@@ -187,9 +187,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-published-text-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://davis-group-quantum-matter-research.ie/publicationPDF/Science_364_976.pdf",
-        "note": "Published 7 June 2019; selected main-text pp.1–4, result passage p.5, Figs.1/4 pp.2/4 visually checked. Supplement and raw fits remain open. Distinct from Hamidian 2016 SJTM."
+        "note": "Published 7 June 2019; selected main-text pp.1–4, result passage p.5, Figs.1/4 pp.2/4 visually checked. Supplement and raw fits remain open. Distinct from Hamidian 2016 SJTM. Follow-up: publishedp1,Eqs.2-3 distinguish symmetry-allowed density-like products from an imposed scalar intensity identity. No new full supplement or data fit."
       }
     },
     {
@@ -265,15 +265,16 @@
     {
       "id": "scwiki-c8-claim-scope-2",
       "sectionId": "scope",
-      "statement": "The conventional Fulde–Ferrell–Larkin–Ovchinnikov (FFLO) problem uses spin imbalance to motivate finite-momentum pairing. Fulde and Ferrell's clean exchange-field model includes a compensating normal contribution to the current: a phase gradient must not be equated with an uncompensated equilibrium current. The Larkin–Ovchinnikov paper appeared in Russian in 1964 and English translation in 1965; its institutional publication record is checked here, but the original full text remains an access gap. Modern orbital-FFLO proposals require separate assumptions.",
+      "statement": "Fulde and Ferrell's 1964 publisher abstract specifies a spatially uniform spin-exchange field with no scattering. Their finite-momentum state has a compensating contribution from unpaired electrons, so its equilibrium total current is zero despite the spatial phase variation. This statement concerns their idealized model; the original derivation is not reproduced here. Larkin and Ovchinnikov's paper appeared in Russian in 1964 and in English translation in 1965. The author institute's bibliography confirms that identity, but the original full text remains an access gap and its derivation has not been checked. These historical assumptions do not by themselves validate a modern orbital-FFLO interpretation.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-824e7016c4d4c3a8",
-        "source-21442c6eb33d9b94",
-        "source-ad66f48ab9369ce9"
+        "source-739939afd549524f"
       ],
-      "conditions": "Finite wavevector is stated relative to a lattice and gauge. Conventional exchange-field FFLO and orbital proposals have different drivers.",
-      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+      "conditions": "Fulde-Ferrell ideal uniform exchange field and no scattering, as stated in its publisher abstract. Larkin-Ovchinnikov identity only: Russian1964, English1965; no original full-text derivation reviewed.",
+      "verificationScope": "Selected primary abstract/text and institutional identity checked2026-10-19; local Fourier examples checked separately. No independent review or experimental replication.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "The current cancellation is a reported model result from the abstract; the historical identity is bibliographic, and the warning against extending the model is editorial."
     },
     {
       "id": "scwiki-c8-claim-mathematical-assumptions-1",
@@ -285,20 +286,24 @@
         "source-d306adac5d567426"
       ],
       "conditions": "Fixed scalar amplitudes and imposed wavevectors; complete periods for zero-overlap result. No self-consistent stability or material response fit. Envelope ratio requires a constant uniform background.",
-      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The exact scalar Fourier coefficients are local algebra; cited stripe/halo work supplies physical context, not a fitted response."
     },
     {
       "id": "scwiki-c8-claim-mathematical-assumptions-2",
       "sectionId": "mathematical-assumptions",
-      "statement": "For $d_0=d_-=0$, the Fulde–Ferrell-type plane wave has constant $|\\Delta|$. Equal real $d_+=d_-=d/2$ instead give the Larkin–Ovchinnikov-type standing wave $d\\cos Qx$: the pair field has period $2\\pi/Q$, while its squared magnitude has period $\\pi/Q$. Adding a real uniform component produces a Q harmonic through interference. A missing Q intensity harmonic therefore does not rule out a pure standing-wave pair field, and a detected 2Q charge harmonic does not uniquely identify one. These imposed examples do not compare free energies.",
+      "statement": "For $d_0=d_-=0$, the Fulde–Ferrell-type plane wave has constant $|\\Delta|$. Nonzero equal real $d_+=d_-=d/2$ instead give a Larkin–Ovchinnikov-type standing wave $d\\cos Qx$. In this fixed gauge and for $Q\\ne0$, the pair field has period $2\\pi/|Q|$, while $|\\Delta|^2$ has period $\\pi/|Q|$. A nonzero real uniform component $u$ adds a Q harmonic, but a quadrature component does not: $\\Delta=iu+d\\cos Qx$ gives $|\\Delta|^2=u^2+d^2\\cos^2Qx$ for real $u,d$. Thus a missing Q intensity harmonic need not exclude even coexistence with a uniform component. These are imposed scalar-field identities, not calculated electronic charge harmonics: a measured 2Q density signal also requires a response model and does not uniquely identify a PDW. No free energies are compared.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-824e7016c4d4c3a8",
         "source-7148789acde770d4",
         "source-d306adac5d567426"
       ],
-      "conditions": "Fixed scalar amplitudes and imposed wavevectors; complete periods for zero-overlap result. No self-consistent stability or material response fit. Envelope ratio requires a constant uniform background.",
-      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+      "conditions": "Imposed scalar amplitudes in a fixed gauge, Q nonzero and real nonzero standing-wave amplitude d. A real u is aligned; iu is in quadrature. |Delta|^2 is not a measured charge-density or tunneling signal.",
+      "verificationScope": "Selected primary abstract/text and institutional identity checked2026-10-19; local Fourier examples checked separately. No independent review or experimental replication.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Plane and standing waves and the quadrature counterexample are author-imposed fields. Source models motivate the distinction; no ground state or experimental density is derived."
     },
     {
       "id": "scwiki-c8-claim-mathematical-assumptions-3",
@@ -309,7 +314,9 @@
         "source-cb08c313e0597487"
       ],
       "conditions": "Fixed scalar amplitudes and imposed wavevectors; complete periods for zero-overlap result. No self-consistent stability or material response fit. Envelope ratio requires a constant uniform background.",
-      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Local gauge-product checks are distinguished from the cited thermodynamic melting proposal."
     },
     {
       "id": "scwiki-c8-claim-mathematical-assumptions-4",
@@ -320,7 +327,9 @@
         "source-7148789acde770d4"
       ],
       "conditions": "Fixed scalar amplitudes and imposed wavevectors; complete periods for zero-overlap result. No self-consistent stability or material response fit. Envelope ratio requires a constant uniform background.",
-      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "The source analyzes stacking and residual couplings; local scalar overlaps illustrate only selected symmetry and integration-window conditions."
     },
     {
       "id": "scwiki-c8-claim-mathematical-assumptions-5",
@@ -331,7 +340,9 @@
         "source-d306adac5d567426"
       ],
       "conditions": "Fixed scalar amplitudes and imposed wavevectors; complete periods for zero-overlap result. No self-consistent stability or material response fit. Envelope ratio requires a constant uniform background.",
-      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The chosen exponential envelopes and logarithmic derivatives are local checks inspired by the source response model; no raw-data fit."
     },
     {
       "id": "scwiki-c8-claim-experimental-criteria-1",
@@ -354,7 +365,9 @@
         "source-66a2b2a9519f6f44"
       ],
       "conditions": "Keep each study and probe separate: 2016 pair tunneling below 50 mK; 2019 single-electron 0/8.25T comparison at 2 K. Spectroscopy and phase interpretation are not interchangeable.",
-      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Reported Josephson measurement and phase-diffusion formula are separated from the local numerical peak checks; noise temperature is not fitted here."
     },
     {
       "id": "scwiki-c8-claim-experimental-criteria-3",
@@ -446,6 +459,12 @@
       "description": "Conventional Zeeman-driven FFLO is not the only modern use of FFLO terminology; orbital proposals and moiré-induced CPDM require separate assumptions.",
       "sourceId": "source-ad66f48ab9369ce9",
       "scope": "2026 selected publisher/institutional passages only."
+    },
+    {
+      "id": "scwiki-c8-correction-4",
+      "description": "Separated Larkin-Ovchinnikov English1965 from the unrelated Migdal1958 source identity, year and URL. The new reference links the verified author-institute bibliography while original full text remains unavailable.",
+      "sourceId": "source-739939afd549524f",
+      "scope": "Publication identity correction; not a new full-text scientific review."
     }
   ],
   "equationChecks": [
@@ -463,6 +482,11 @@
       "targetSectionId": "mathematical-assumptions",
       "tex": "\\langle\\cos Qx\\cos Qy\\rangle=0",
       "check": "Five overlap examples including uniform admixture, quartic coupling and finite window; four conditional envelope-decay checks and three gauge checks."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "|iu+d\\cos Qx|^2=u^2+d^2\\cos^2Qx",
+      "check": "Five scalar Fourier cases on1024points each and four period-check points. Quadrature coexistence retains a uniform component without a Q intensity coefficient; no physical response/free-energy model."
     }
   ],
   "materialCases": [
