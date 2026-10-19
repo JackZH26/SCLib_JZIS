@@ -271,7 +271,7 @@ test("interface note distinguishes partial provenance and abstract-only review",
  await expect(page.locator(".scwiki-scope-note")).toContainText("Two of ten studies");
  await expect(page.locator(".scwiki-scope-note")).toContainText("partial source-note merge");
  await page.getByText("Source-note provenance",{exact:true}).click();
- await expect(page.locator("details")).toContainText("partial-merge");await expect(page.locator("details")).toContainText("other seven study sections remain pending");
+ await expect(page.locator("details")).toContainText("partial-merge");await expect(page.locator("details")).toContainText("other six study sections remain pending");
  const data=await(await request.get("/api/scwiki/v1/library/cuprate-interface-layer-order")).json();await expect(page.locator("main.scwiki")).toHaveAttribute("data-revision",data.note.revision);
  expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
  const bad=await page.locator('main.scwiki a[href^="#"]').evaluateAll(links=>links.map(a=>a.getAttribute("href")!.slice(1)).filter(id=>!document.getElementById(id)));expect(bad).toEqual([]);
@@ -282,7 +282,7 @@ test("interface note distinguishes partial provenance and abstract-only review",
 
 test("THz note keeps angular and cyclic rates readable with source and partial coverage",async({page,request})=>{
  await page.goto("/scwiki/library/bilbro-thz-fluctuation-window");await page.getByRole("button",{name:"Reject all",exact:true}).click();
- await expect(page.locator(".scwiki-scope-note")).toContainText("three of ten");
+ await expect(page.locator(".scwiki-scope-note")).toContainText("four of ten");
  await expect(page.locator(".scwiki-sources")).toContainText("Author version deposited");
  await page.getByRole("navigation",{name:"Note contents"}).getByRole("link",{name:"Keep the rate convention and scale uncertainty"}).click();
  await expect(page.locator("#rate-normalization")).toBeInViewport();await expect(page.locator("main.scwiki")).toContainText("roughly 40% spread");await expect(page.locator(".katex-error")).toHaveCount(0);
@@ -290,4 +290,16 @@ test("THz note keeps angular and cyclic rates readable with source and partial c
  const data=await(await request.get("/api/scwiki/v1/library/bilbro-thz-fluctuation-window")).json();await expect(page.locator("main.scwiki")).toHaveAttribute("data-revision",data.note.revision);
  const bad=await page.locator('main.scwiki a[href^="#"]').evaluateAll(links=>links.map(a=>a.getAttribute("href")!.slice(1)).filter(id=>!document.getElementById(id)));expect(bad).toEqual([]);
  await page.screenshot({path:"test-results/scwiki-bilbro-390.png",fullPage:false});
+});
+
+
+test("magnetic-excitation note preserves the sample discrepancy in mobile view and exports",async({page,request})=>{
+ await page.goto("/scwiki/library/dean-lsco-magnetic-excitations");await page.getByRole("button",{name:"Reject all",exact:true}).click();
+ await expect(page.locator(".scwiki-scope-note")).toContainText("sample-thickness discrepancy remains unresolved");
+ await page.getByRole("navigation",{name:"Note contents"}).getByRole("link",{name:"An unresolved sample-thickness discrepancy"}).click();await expect(page.locator("#thickness-discrepancy")).toBeInViewport();
+ await expect(page.locator("main.scwiki")).toContainText("not been independently reproduced");await expect(page.locator(".katex-error")).toHaveCount(0);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+ const data=await(await request.get("/api/scwiki/v1/library/dean-lsco-magnetic-excitations")).json();await expect(page.locator("main.scwiki")).toHaveAttribute("data-revision",data.note.revision);
+ const bad=await page.locator('main.scwiki a[href^="#"]').evaluateAll(links=>links.map(a=>a.getAttribute("href")!.slice(1)).filter(id=>!document.getElementById(id)));expect(bad).toEqual([]);
+ await page.screenshot({path:"test-results/scwiki-dean-390.png",fullPage:false});
 });

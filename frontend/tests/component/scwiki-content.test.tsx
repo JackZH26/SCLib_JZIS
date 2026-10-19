@@ -21,11 +21,21 @@ const getAll=async(key:"articles"|"sources"|"topics")=>{
  return {[key]:items};
 };
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("retains magnetic-excitation windows and unresolved primary-source calibration conflicts",async()=>{
+  const result=await(await get(["library"],"?q="+encodeURIComponent("10.1038/nmat3723"))).json();expect(result.total).toBe(1);
+  const n=result.notes[0];expect(n.id).toBe("dean-lsco-magnetic-excitations");const md=await(await get(["library",n.id,"markdown"])).text();
+  for(const term of ["0.18","HWHM","FWHM","0.78","97","52","not reconciled","not been independently reproduced","unmeasured diagonal","six inherited series studies remain pending"])expect(md).toContain(term);
+  expect(n.sources).toHaveLength(2);expect(n.sources.every((s:any)=>s.date==="2013-08-04"&&s.licenseUrl===null)).toBe(true);
+  for(const pr of n.provenance){expect(pr.disposition).toBe("partial-merge");expect(createHash("sha256").update(readFileSync("../../sources/"+pr.path)).digest("hex")).toBe(pr.sha256);expect(md).toContain(pr.coverage);}
+  const entries=(await import("@/lib/scwiki/library")).librarySearchEntries();expect(searchArticles(entries,"paramagnon").some(x=>x.id===n.id)).toBe(true);expect(searchArticles(entries,"paramagnon",{tcMin:1}).some(x=>x.id===n.id)).toBe(false);
+  for(const section of n.sections){expect(renderToStaticMarkup(<ScientificMarkdown markdown={section.markdown}/>)).not.toContain("katex-error");for(const id of section.sourceIds)expect(n.sources.some((s:any)=>s.id===id)).toBe(true);}
+ });
+
  it("keeps THz criterion, scale uncertainty and partial series coverage in discovery and exports",async()=>{
   const result=await(await get(["library"],"?q="+encodeURIComponent("10.1038/nphys1912"))).json();expect(result.total).toBe(1);
   const n=result.notes[0];expect(n.id).toBe("bilbro-thz-fluctuation-window");
   const md=await(await get(["library",n.id,"markdown"])).text();
-  for(const phrase of ["5–16 K","0.8 THz","23.5","roughly 40% spread","not a precision universal constant","normal-state masking","Not verified","not a public reuse license","seven remain pending"])expect(md).toContain(phrase);
+  for(const phrase of ["5–16 K","0.8 THz","23.5","roughly 40% spread","not a precision universal constant","normal-state masking","Not verified","not a public reuse license","six remain pending"])expect(md).toContain(phrase);
   expect(n.sources[0].dateLabel).toBe("Author version deposited");expect(n.sources[0].date).toBe("2011-10-10");
   for(const pr of n.provenance){expect(pr.disposition).toBe("partial-merge");expect(md).toContain(pr.coverage);expect(createHash("sha256").update(readFileSync("../../sources/"+pr.path)).digest("hex")).toBe(pr.sha256);}
   const entries=(await import("@/lib/scwiki/library")).librarySearchEntries();expect(searchArticles(entries,"terahertz").some(x=>x.id===n.id)).toBe(true);expect(searchArticles(entries,"terahertz",{tcMin:20}).some(x=>x.id===n.id)).toBe(false);
@@ -37,7 +47,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(n.provenance).toHaveLength(2);expect(n.provenance.every((p:any)=>p.disposition==="partial-merge")).toBe(true);
   const md=await(await get(["library",n.id,"markdown"])).text();
   for(const p of n.provenance){expect(md).toContain(p.coverage);expect(createHash("sha256").update(readFileSync("../../sources/"+p.path)).digest("hex")).toBe(p.sha256);}
-  expect(md).toContain("other seven study sections remain pending");expect(md).toContain("resistive midpoints");expect(md).toContain("ozone-treated");expect(md).toContain("full methods, Zn profile and calibration have not been reviewed");
+  expect(md).toContain("other six study sections remain pending");expect(md).toContain("resistive midpoints");expect(md).toContain("ozone-treated");expect(md).toContain("full methods, Zn profile and calibration have not been reviewed");
   const spec=await(await get(["openapi.json"])).json();expect(spec.components.schemas.ResearchNote.properties.provenance.items.required).toContain("coverage");
   const first=(await(await get(["library","romero-parallel-conduction"])).json()).note;
   expect(first.provenance.every((p:any)=>p.disposition==="merge-into"&&p.coverage.includes("scientific review remains limited"))).toBe(true);
