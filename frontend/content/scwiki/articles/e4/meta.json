@@ -27,14 +27,15 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:38:59.945312+00:00",
+  "modifiedAt": "2026-10-19T18:47:38.003103+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected Hicks apparatus and Steppke accepted-manuscript methods/figures; Bhatt final-journal structure/growth passages and figures; complete Ko correction; bounded elastic checks.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected Hicks author-v2 pp. 2–3 and 6–7, Steppke accepted-v2 pp. 6–8 and Figure 4, Bhatt final-journal passages, Ko archived author-manuscript pp. 3–4, 11–13 and Figures 1/3, plus the complete 2026 correction; bounded displacement and adhesive arithmetic.",
     "limitations": [
       "Complete scientific acceptance, remaining final-version comparisons, full supplements and raw-data reproduction remain open.",
-      "Hicks2014Science and Ko original methods remain abstract/institution-summary scope; Bhatt final passage supplies film temperature records.",
-      "Isotropic elasticity and ideal adhesive calculations are illustrations, not anisotropic film fits or an equivalent-pressure calibration."
+      "Hicks's 2014 Science paper remains within institutional-abstract scope. Selected passages of Ko's author manuscript have now been read; its figures are not a verified copy of the corrected final journal version.",
+      "Isotropic and ideal adhesive arithmetic does not calibrate real anisotropic specimens or cryogenic glue strength. The Hicks printed shear/stress example is not reproduced by its stated inputs.",
+      "Onset, zero-resistance bounds, magnetic midpoints and critical-field fit criteria remain separate. Thermodynamic equilibrium has not been certified."
     ]
   },
   "provenance": {
@@ -93,6 +94,11 @@
       "targetSectionId": "mathematical-assumptions",
       "tex": "f=(a_{\\rm sub}-a_{\\rm ref})/a_{\\rm ref}",
       "check": "Four nominal mismatches computed with3.833Angstrom reference; measured film strain is separate."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\epsilon_{\\rm app}\\lambda/d",
+      "check": "Printed-parameter substitution gives about 1.74% and 105 MPa; the author-v2 prose values of 1.3% and 80 MPa remain an unresolved discrepancy, not a successfully reproduced observation."
     }
   ],
   "references": [
@@ -105,9 +111,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-apparatus-and-adhesive-model",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/1403.4368v2",
-        "note": "Author v2 revised8August2014; selected apparatus passages and AppendixA pp6–7 read, p6Fig5/equation visually checked. Transfer-length assumptions retained. No finite-element replication or complete final-version comparison."
+        "note": "Author v2 revised 8 August 2014. Selected pp. 2–3 and Appendix A pp. 6–7 read; p. 7 visually inspected. Ideal uniaxial stress permits transverse Poisson strains. The printed parameters reproduce about 87 micrometres but give 1.74%/105 MPa for Eq. A1, unlike the adjacent 1.3%/80 MPa prose. This discrepancy is retained without claiming an erratum. No final-version comparison, glue-strength certification or finite-element replication."
       }
     },
     {
@@ -133,9 +139,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-accepted-author-methods-and-figure",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/1604.06669v2",
-        "note": "Accepted authorv2 revised14December2016; journal13January2017. Selected pp6–8 experimental methods/calibration and p32Fig4 checked visually. Magnetic50percent criterion,20/80width,distinct sample5peak and broken-sample artefact retained. Full supplement, final comparison, multiband calculation and raw-data reproduction remain open."
+        "note": "Accepted author v2 revised 14 December 2016; journal publication 13 January 2017. Selected pp. 6–8 and Figure 4 on p. 32 reread; figure visually inspected. Figure 4 uses a magnetic 50% midpoint, with 20–80% width and normalized strain scales. Sample 4 field scans instead use intersections around a cusp. Sample 5's 3.5 K peak, contacted samples 3/5 and broken sample 1 remain distinct. No complete supplement, final comparison, raw-data or equilibrium certification."
       }
     },
     {
@@ -160,10 +166,10 @@
       "url": "https://doi.org/10.1038/s41586-024-08525-3",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "publisher-metadata-and-author-institution-summary",
-        "checkedAt": "2026-10-18",
-        "evidenceUrl": "https://www.paradim.org/highlights/MIP_104",
-        "note": "Online19December2024; issue27February2025. Author institutional summary supports onset26–42K versuszeroaround2K. Final-PDF request returned non-PDF and OSTIaccepted download timed out; full methods not read. March2026correction accompanies this reference."
+        "scope": "selected-publicly-archived-author-manuscript-and-correction-comparison",
+        "checkedAt": "2026-10-20",
+        "evidenceUrl": "https://www.osti.gov/servlets/purl/2509524",
+        "note": "Public 34-page author manuscript downloaded; review covers selected pp. 3–4, 11–13 and Figures 1/3 on pp. 20/22, both visually inspected. A1 onset is 42.4 K and zero resistance is reported below 2.2 K. Field analysis uses a 90% resistance criterion; A12 magnetic evidence is separate. Approximately 100 kHz filtering is described. Author Figure 3 has mΩ cm but still labels its horizontal axis Tc; the final 2026 correction specifies T. No complete final/supplement comparison, raw fit or noise-threshold calibration."
       }
     },
     {
@@ -175,9 +181,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "complete-correction-text",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://www.nature.com/articles/s41586-026-10335-8.pdf",
-        "note": "Complete one-page correction read. Published31March2026,issue16April. Resistivity unit mOhm cm replaces mOhm cm^-1; Fig3dx-axisT replacesTc. Not a retraction or new transition measurement."
+        "note": "Complete one-page correction reread. Published 31 March 2026; issue 16 April. Corrected journal resistivity units are mΩ cm and the Figure 3d horizontal variable is T. The archived author figure already has the corrected resistivity unit but still shows Tc horizontally; it is not a verified corrected final version. Not a retraction or a new transition measurement."
       }
     }
   ],
@@ -185,32 +191,32 @@
     {
       "id": "scwiki-e4-material-1",
       "formula": "Sr2RuO4",
-      "sample": "Steppke representative peak under approximately0.6percent a-axis compression",
+      "sample": "Steppke representative peak under approximately 0.6% a-axis compression",
       "recordType": "experiment",
       "reportedTemperatureK": 3.4,
       "tcK": 3.4,
       "temperatureKind": "transition",
-      "temperatureNote": "Representative magnetic midpoint, not resistive zero or universal maximum.",
+      "temperatureNote": "Representative magnetic midpoint, not resistive zero or universal maximum. Thermodynamic equilibrium is not established by the selected report.",
       "criterion": "magnetic-susceptibility-50-percent",
       "pressureRegime": "unknown",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Mutual inductance",
       "sourceId": "source-c9a97c501c718b62"
     },
     {
       "id": "scwiki-e4-material-2",
       "formula": "Sr2RuO4",
-      "sample": "Steppke sample5 peak",
+      "sample": "Steppke sample 5 peak",
       "recordType": "experiment",
       "reportedTemperatureK": 3.5,
       "tcK": 3.5,
       "temperatureKind": "transition",
-      "temperatureNote": "Approximate sample5 peak; strain scale normalized in Fig4. Not a hydrostatic-pressure record.",
+      "temperatureNote": "Approximate sample 5 peak; strain scale normalized in Figure 4. Not a hydrostatic-pressure record. Thermodynamic equilibrium is not established by the selected report.",
       "criterion": "magnetic-susceptibility-50-percent",
       "pressureRegime": "unknown",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Mutual inductance",
       "sourceId": "source-c9a97c501c718b62"
     },
@@ -222,11 +228,11 @@
       "reportedTemperatureK": 42,
       "tcK": 42,
       "temperatureKind": "transition",
-      "temperatureNote": "Approximate onset; exact original operational onset algorithm not independently reviewed. Film geometry,not bulk.",
+      "temperatureNote": "Approximate onset; exact original operational onset algorithm not independently reviewed. Film geometry,not bulk. Thermodynamic equilibrium is not established by the selected report.",
       "criterion": "resistive-onset",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Resistivity",
       "sourceId": "source-4b5b65a5047eb1a9",
       "aliases": [
@@ -242,31 +248,54 @@
       "reportedTemperatureK": 2,
       "tcK": 2,
       "temperatureKind": "transition",
-      "temperatureNote": "Approximate zero-resistance endpoint, distinct from42Konset. Does not reproduce raw measurement uncertainty.",
+      "temperatureNote": "Approximate zero-resistance endpoint, distinct from42Konset. Does not reproduce raw measurement uncertainty. Thermodynamic equilibrium is not established by the selected report.",
       "criterion": "zero-resistance",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Resistivity",
       "sourceId": "source-4b5b65a5047eb1a9",
       "aliases": [
         "nickelate",
         "nickelates"
       ]
+    },
+    {
+      "id": "scwiki-e4-material-5",
+      "formula": "La3Ni2O7",
+      "sample": "Ko A1 ozone-annealed SLAO thin film; archived author manuscript",
+      "aliases": [
+        "Ko A1",
+        "nickelate",
+        "nickelates"
+      ],
+      "recordType": "experiment",
+      "reportedTemperatureK": 42.4,
+      "tcK": 42.4,
+      "temperatureKind": "transition",
+      "temperatureNote": "Source-reported onset, not a 90% or zero-resistance value. The separate zero-resistance statement below 2.2 K is a bound, not an exact transition assigned here. A12 magnetic evidence comes from another specimen. Final-version comparison and thermodynamic equilibrium remain unverified.",
+      "criterion": "resistive-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Resistivity",
+      "sourceId": "source-98849f3ad0a2df49"
     }
   ],
   "claims": [
     {
       "id": "scwiki-e4-claim-scope-1",
       "sectionId": "scope",
-      "statement": "Strain is a directional deformation relative to a stated reference structure. A uniaxially loaded crystal, a clamped epitaxial film and a hydrostatically compressed sample follow different mechanical paths. Applied displacement is not necessarily sample strain: mounting adhesive, thermal contraction, bending and fracture can all intervene. The useful control variable is the calibrated deformation in the region probed, together with its uncertainty and history.",
+      "statement": "Strain is a directional deformation relative to a stated reference structure. A uniaxially loaded crystal, a clamped epitaxial film and a hydrostatically compressed sample follow different mechanical paths. Applied displacement is not necessarily sample strain: mounting adhesive, thermal contraction, bending and fracture can all intervene. The useful control variable is the calibrated deformation in the region probed, together with its uncertainty and history. In the ideal uniaxial-stress geometry, transverse Poisson strains remain nonzero: controlling one loading axis does not set every other strain component to zero. A displacement sensor also does not directly measure the strain throughout a specimen.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-363388aa03563c00",
         "source-c9a97c501c718b62"
       ],
-      "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
-      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+      "conditions": "Retain source version, specimen, reference state, mechanical boundary condition and probe-specific transition criterion. Unknown equilibrium does not establish nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Selected source passages support the reported apparatus and observations; recommendations and comparisons are scoped editorial analysis."
     },
     {
       "id": "scwiki-e4-claim-scope-2",
@@ -277,8 +306,10 @@
         "source-2c98c9257f2c4d46",
         "source-c9a97c501c718b62"
       ],
-      "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
-      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+      "conditions": "Retain source version, specimen, reference state, mechanical boundary condition and probe-specific transition criterion. Unknown equilibrium does not establish nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Selected source passages support the reported apparatus and observations; recommendations and comparisons are scoped editorial analysis."
     },
     {
       "id": "scwiki-e4-claim-mathematical-assumptions-1",
@@ -288,8 +319,10 @@
       "sourceIds": [
         "source-4b5b65a5047eb1a9"
       ],
-      "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
-      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+      "conditions": "Retain source version, specimen, reference state, mechanical boundary condition and probe-specific transition criterion. Unknown equilibrium does not establish nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source equations and parameters are distinguished from local arithmetic; no material calibration or empirical fit is implied."
     },
     {
       "id": "scwiki-e4-claim-mathematical-assumptions-2",
@@ -300,19 +333,23 @@
         "source-363388aa03563c00",
         "source-4b5b65a5047eb1a9"
       ],
-      "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
-      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+      "conditions": "Retain source version, specimen, reference state, mechanical boundary condition and probe-specific transition criterion. Unknown equilibrium does not establish nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source equations and parameters are distinguished from local arithmetic; no material calibration or empirical fit is implied."
     },
     {
       "id": "scwiki-e4-claim-mathematical-assumptions-3",
       "sectionId": "mathematical-assumptions",
-      "statement": "Hicks's simplified adhesive model gives a load-transfer length $\\lambda=\\sqrt{Etd/(nG_e)}$, with sample Young's modulus $E$, sample thickness $t$, adhesive thickness $d$, adhesive shear modulus $G_e$, and one or two bonded faces $n$. For symmetric ends, displacement is distributed over approximately $L+2\\lambda$, not just the exposed length $L$. The stated illustrative parameters give about 90 micrometres. Rigid plates, a much softer adhesive and uniform sample strain across its section are assumptions; finite-element bending and real adhesive failure require additional treatment.",
+      "statement": "Hicks's simplified adhesive model gives a load-transfer length $\\lambda=\\sqrt{Etd/(nG_e)}$, with sample Young's modulus $E$, sample thickness $t$, adhesive thickness $d$, adhesive shear modulus $G_e$, and one or two bonded faces $n$. For symmetric ends, displacement is distributed over approximately $L+2\\lambda$, not just the exposed length $L$. With $E=182$ GPa, $t=50$ micrometres, $d=10$ micrometres, $n=2$ and $G_e=6$ GPa, the model gives 87 micrometres, consistent with the paper's approximately 90 micrometres. For an illustrative 1 mm exposed length, dividing displacement by $L$ alone overestimates the model's central strain by about 17% relative to that strain. This is local arithmetic, not a recalibration of Steppke's samples. Rigid plates, much softer adhesive, long bonded regions and uniform strain across the sample cross-section are assumptions.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-363388aa03563c00"
       ],
-      "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
-      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+      "conditions": "Retain source version, specimen, reference state, mechanical boundary condition and probe-specific transition criterion. Unknown equilibrium does not establish nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source equations and parameters are distinguished from local arithmetic; no material calibration or empirical fit is implied."
     },
     {
       "id": "scwiki-e4-claim-experimental-criteria-1",
@@ -322,19 +359,23 @@
       "sourceIds": [
         "source-c9a97c501c718b62"
       ],
-      "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
-      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+      "conditions": "Retain source version, specimen, reference state, mechanical boundary condition and probe-specific transition criterion. Unknown equilibrium does not establish nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Selected original passages support only the stated specimen, probe and criterion; final/supplement/raw-data review remains bounded."
     },
     {
       "id": "scwiki-e4-claim-experimental-criteria-2",
       "sectionId": "experimental-criteria",
-      "statement": "The often-quoted 3.4 K scale is not a universal sample maximum: sample 5 reached approximately 3.5 K. Resistive transitions in the two contacted specimens did not exceed the highest magnetic transition by more than 0.08 K. That comparison does not redefine a magnetic midpoint as zero resistance. A flat feature near zero strain in sample 1 arose after the sample broke during cooling and needed compression to re-engage; it should not be fitted as an intrinsic phase boundary.",
+      "statement": "The often-quoted 3.4 K scale is not a universal sample maximum: sample 5 reached approximately 3.5 K. Resistive transitions in the two contacted specimens did not exceed the highest magnetic transition by more than 0.08 K. That comparison does not redefine a magnetic midpoint as zero resistance. A flat feature near zero strain in sample 1 arose after the sample broke during cooling and needed compression to re-engage; it should not be fitted as an intrinsic phase boundary. Reported recovery of magnetic curves after unloading other checks supports reversible deformation under those conditions, not a guarantee that every mounting survives or that thermodynamic equilibrium has been established. The critical-field measurements on sample 4 use intersections of linear fits around a susceptibility cusp; that separate procedure must not replace the 50% criterion for the Figure 4 temperature-versus-strain data.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-c9a97c501c718b62"
       ],
-      "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
-      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+      "conditions": "Retain source version, specimen, reference state, mechanical boundary condition and probe-specific transition criterion. Unknown equilibrium does not establish nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Selected original passages support only the stated specimen, probe and criterion; final/supplement/raw-data review remains bounded."
     },
     {
       "id": "scwiki-e4-claim-experimental-criteria-3",
@@ -344,21 +385,25 @@
       "sourceIds": [
         "source-4b5b65a5047eb1a9"
       ],
-      "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
-      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+      "conditions": "Retain source version, specimen, reference state, mechanical boundary condition and probe-specific transition criterion. Unknown equilibrium does not establish nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Selected original passages support only the stated specimen, probe and criterion; final/supplement/raw-data review remains bounded."
     },
     {
       "id": "scwiki-e4-claim-experimental-criteria-4",
       "sectionId": "experimental-criteria",
-      "statement": "Ko's original thin-film report also distinguishes onset and zero resistance. Its March 2026 correction fixes resistivity-axis units to mΩ cm and the Figure 3d horizontal label to temperature $T$, not $T_c$. The correction was read in full; the original paper's detailed methods were not retrieved here. The source-linked temperature records below therefore cite Bhatt's checked final passage, rather than implying a complete reanalysis of Ko's experiment.",
+      "statement": "Ko's publicly archived author manuscript now supplies selected original methods and criteria. It reports sample A1 with onset at 42.4 K and zero resistance below 2.2 K; the latter is not an exact 2.2 K transition value. Its field-dependent analysis instead uses 90% of the normal-state resistance near onset. The methods describe approximately 100 kHz low-pass filtering; the text warns that observing zero resistance requires adequate radiation filtering. The reported diamagnetic response belongs to sample A12, so it must not be attached to A1 as a same-specimen measurement. The March 2026 correction fixes published resistivity-axis units to mΩ cm and the Figure 3d horizontal label to temperature $T$, not $T_c$. The archived manuscript already has mΩ cm but still labels that axis $T_c$; it is not a verified copy of the corrected journal version. Existing rounded film records retain Bhatt's final passage, while the added A1 onset record cites the author manuscript. No raw-data refit or full final-version comparison is claimed.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-4b5b65a5047eb1a9",
         "source-98849f3ad0a2df49",
         "source-acee7fe0af86cc44"
       ],
-      "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
-      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+      "conditions": "Retain source version, specimen, reference state, mechanical boundary condition and probe-specific transition criterion. Unknown equilibrium does not establish nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Selected original passages support only the stated specimen, probe and criterion; final/supplement/raw-data review remains bounded."
     },
     {
       "id": "scwiki-e4-claim-limits-and-disputes-1",
@@ -368,8 +413,10 @@
       "sourceIds": [
         "source-4b5b65a5047eb1a9"
       ],
-      "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
-      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+      "conditions": "Retain source version, specimen, reference state, mechanical boundary condition and probe-specific transition criterion. Unknown equilibrium does not establish nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Selected source passages support the reported apparatus and observations; recommendations and comparisons are scoped editorial analysis."
     },
     {
       "id": "scwiki-e4-claim-limits-and-disputes-2",
@@ -379,8 +426,10 @@
       "sourceIds": [
         "source-c9a97c501c718b62"
       ],
-      "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
-      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+      "conditions": "Retain source version, specimen, reference state, mechanical boundary condition and probe-specific transition criterion. Unknown equilibrium does not establish nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Selected source passages support the reported apparatus and observations; recommendations and comparisons are scoped editorial analysis."
     },
     {
       "id": "scwiki-e4-claim-discovery-implications-1",
@@ -392,8 +441,23 @@
         "source-c9a97c501c718b62",
         "source-4b5b65a5047eb1a9"
       ],
-      "conditions": "Measured strain,nominal mismatch,stress path,device history and magnetic/resistive criteria remain distinct.",
-      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open."
+      "conditions": "Retain source version, specimen, reference state, mechanical boundary condition and probe-specific transition criterion. Unknown equilibrium does not establish nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Selected source passages support the reported apparatus and observations; recommendations and comparisons are scoped editorial analysis."
+    },
+    {
+      "id": "scwiki-e4-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The same author manuscript's Appendix A contains a numerical discrepancy worth preserving. Using its printed Eq. A1 and the parameters above, a 0.2% sample strain gives a displacement-over-glue-thickness shear of approximately 1.74% and a shear stress of 105 MPa; the adjacent prose instead reports 1.3% and 80 MPa. The scalar shear here follows that equation's convention, not the half-sized off-diagonal strain-tensor component. This substitution check does not establish a formal correction or a failure threshold. The paper itself notes uncertain low-temperature adhesive properties; room-temperature tensile strength is not a measured cryogenic shear-strength limit.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-363388aa03563c00"
+      ],
+      "conditions": "Retain source version, specimen, reference state, mechanical boundary condition and probe-specific transition criterion. Unknown equilibrium does not establish nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures and bounded elastic arithmetic; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source equations and parameters are distinguished from local arithmetic; no material calibration or empirical fit is implied."
     }
   ]
 }

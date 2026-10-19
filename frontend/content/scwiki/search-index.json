@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "e7fd341ece8f94443134",
+  "revision": "67597df7d6de11f389f4",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -5023,37 +5023,37 @@
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "138b5d11d4ac9c9142d7",
+      "revision": "e2cbe21b34ca82ff136a",
       "materialCases": [
         {
           "id": "scwiki-e4-material-1",
           "formula": "Sr2RuO4",
-          "sample": "Steppke representative peak under approximately0.6percent a-axis compression",
+          "sample": "Steppke representative peak under approximately 0.6% a-axis compression",
           "recordType": "experiment",
           "reportedTemperatureK": 3.4,
           "tcK": 3.4,
           "temperatureKind": "transition",
-          "temperatureNote": "Representative magnetic midpoint, not resistive zero or universal maximum.",
+          "temperatureNote": "Representative magnetic midpoint, not resistive zero or universal maximum. Thermodynamic equilibrium is not established by the selected report.",
           "criterion": "magnetic-susceptibility-50-percent",
           "pressureRegime": "unknown",
           "pressureGPa": null,
-          "equilibrium": "equilibrium",
+          "equilibrium": "unknown",
           "probe": "Mutual inductance",
           "sourceId": "source-c9a97c501c718b62"
         },
         {
           "id": "scwiki-e4-material-2",
           "formula": "Sr2RuO4",
-          "sample": "Steppke sample5 peak",
+          "sample": "Steppke sample 5 peak",
           "recordType": "experiment",
           "reportedTemperatureK": 3.5,
           "tcK": 3.5,
           "temperatureKind": "transition",
-          "temperatureNote": "Approximate sample5 peak; strain scale normalized in Fig4. Not a hydrostatic-pressure record.",
+          "temperatureNote": "Approximate sample 5 peak; strain scale normalized in Figure 4. Not a hydrostatic-pressure record. Thermodynamic equilibrium is not established by the selected report.",
           "criterion": "magnetic-susceptibility-50-percent",
           "pressureRegime": "unknown",
           "pressureGPa": null,
-          "equilibrium": "equilibrium",
+          "equilibrium": "unknown",
           "probe": "Mutual inductance",
           "sourceId": "source-c9a97c501c718b62"
         },
@@ -5065,11 +5065,11 @@
           "reportedTemperatureK": 42,
           "tcK": 42,
           "temperatureKind": "transition",
-          "temperatureNote": "Approximate onset; exact original operational onset algorithm not independently reviewed. Film geometry,not bulk.",
+          "temperatureNote": "Approximate onset; exact original operational onset algorithm not independently reviewed. Film geometry,not bulk. Thermodynamic equilibrium is not established by the selected report.",
           "criterion": "resistive-onset",
           "pressureRegime": "ambient",
           "pressureGPa": null,
-          "equilibrium": "equilibrium",
+          "equilibrium": "unknown",
           "probe": "Resistivity",
           "sourceId": "source-4b5b65a5047eb1a9",
           "aliases": [
@@ -5085,17 +5085,38 @@
           "reportedTemperatureK": 2,
           "tcK": 2,
           "temperatureKind": "transition",
-          "temperatureNote": "Approximate zero-resistance endpoint, distinct from42Konset. Does not reproduce raw measurement uncertainty.",
+          "temperatureNote": "Approximate zero-resistance endpoint, distinct from42Konset. Does not reproduce raw measurement uncertainty. Thermodynamic equilibrium is not established by the selected report.",
           "criterion": "zero-resistance",
           "pressureRegime": "ambient",
           "pressureGPa": null,
-          "equilibrium": "equilibrium",
+          "equilibrium": "unknown",
           "probe": "Resistivity",
           "sourceId": "source-4b5b65a5047eb1a9",
           "aliases": [
             "nickelate",
             "nickelates"
           ]
+        },
+        {
+          "id": "scwiki-e4-material-5",
+          "formula": "La3Ni2O7",
+          "sample": "Ko A1 ozone-annealed SLAO thin film; archived author manuscript",
+          "aliases": [
+            "Ko A1",
+            "nickelate",
+            "nickelates"
+          ],
+          "recordType": "experiment",
+          "reportedTemperatureK": 42.4,
+          "tcK": 42.4,
+          "temperatureKind": "transition",
+          "temperatureNote": "Source-reported onset, not a 90% or zero-resistance value. The separate zero-resistance statement below 2.2 K is a bound, not an exact transition assigned here. A12 magnetic evidence comes from another specimen. Final-version comparison and thermodynamic equilibrium remain unverified.",
+          "criterion": "resistive-onset",
+          "pressureRegime": "ambient",
+          "pressureGPa": null,
+          "equilibrium": "unknown",
+          "probe": "Resistivity",
+          "sourceId": "source-98849f3ad0a2df49"
         }
       ],
       "dois": [
@@ -5106,7 +5127,7 @@
         "10.1038/s41586-024-08525-3",
         "10.1038/s41586-026-10335-8"
       ],
-      "text": " Scope\n\nStrain is a directional deformation relative to a stated reference structure. A uniaxially loaded crystal, a clamped epitaxial film and a hydrostatically compressed sample follow different mechanical paths. Applied displacement is not necessarily sample strain: mounting adhesive, thermal contraction, bending and fracture can all intervene. The useful control variable is the calibrated deformation in the region probed, together with its uncertainty and history.  \n\nSeparate the early Sr2RuO4 experiments. Hicks's 2014 Science study reported different responses for loading along the crystallographic ⟨100⟩ and ⟨110⟩ directions, within an approximately 0.23% accessible range. The later Steppke study reached the much larger compressive strain associated with a transition near 3.4 K. These are distinct measurements, not interchangeable references for one apparatus or peak. The earlier result is checked here only through the authors' institutional abstract.  \n\n Mathematical assumptions\n\nFor a lattice parameter relative to a relaxed reference, engineering strain is \\epsilon=(a-a0)/a0. Nominal epitaxial mismatch uses f=(a{\\rm sub}-a{\\rm ref})/a{\\rm ref} instead. Neither a substrate name nor this calculation establishes the strain remaining after relaxation. Report reference composition, phase, temperature and orientation; compare actual film lattice parameters with that same reference. \n\nIn small-deformation elasticity, \\epsilon{ij}=(\\partiali uj+\\partialj ui)/2 and \\sigma{ij}=C{ijkl}\\epsilon{kl}. As an explicitly isotropic illustration, a film with equal in-plane strains \\epsilon{xx}=\\epsilon{yy}=f and a traction-free surface has \\epsilon{zz}=-2\\nu f/(1-\\nu). Positive Poisson ratio therefore permits out-of-plane expansion under in-plane compression. This illustration is not an anisotropic nickelate fit, and it does not convert epitaxial mismatch into an equivalent hydrostatic pressure.  \n\nHicks's simplified adhesive model gives a load-transfer length \\lambda=\\sqrt{Etd/(nGe)}, with sample Young's modulus E, sample thickness t, adhesive thickness d, adhesive shear modulus Ge, and one or two bonded faces n. For symmetric ends, displacement is distributed over approximately L+2\\lambda, not just the exposed length L. The stated illustrative parameters give about 90 micrometres. Rigid plates, a much softer adhesive and uniform sample strain across its section are assumptions; finite-element bending and real adhesive failure require additional treatment. \n\n Experimental criteria\n\nSteppke measured magnetic transitions using mutual inductance, with approximately 0.2 Oe excitation at 1–20 kHz, and used a capacitive displacement sensor. Figure 4 defines the plotted transition temperatures at 50% of the magnetic response; the 20% and 80% levels show transition width. The reported peak strain is approximately −0.60% with a ±0.06 percentage-point uncertainty from four samples, while individual strain calibration was estimated to have roughly 20% uncertainty. These are different uncertainty statements. \n\nThe often-quoted 3.4 K scale is not a universal sample maximum: sample 5 reached approximately 3.5 K. Resistive transitions in the two contacted specimens did not exceed the highest magnetic transition by more than 0.08 K. That comparison does not redefine a magnetic midpoint as zero resistance. A flat feature near zero strain in sample 1 arose after the sample broke during cooling and needed compression to re-engage; it should not be fitted as an intrinsic phase boundary. \n\nBhatt's final Figure 1 labels nominal/measured mismatch pairs, respectively, as SLAO −2.0%/−1.6%, LAO −1.2%/−0.9%, NGO +0.7%/+0.6% and STO +1.9%/+1.8%. These final labels replace several different measured values in the inherited chapter. The SLAO film has a broad resistive transition, with onset near 42 K and zero near 2 K; those endpoints cannot be merged into a 42 K zero-resistance claim. \n\nKo's original thin-film report also distinguishes onset and zero resistance. Its March 2026 correction fixes resistivity-axis units to mΩ cm and the Figure 3d horizontal label to temperature T, not Tc. The correction was read in full; the original paper's detailed methods were not retrieved here. The source-linked temperature records below therefore cite Bhatt's checked final passage, rather than implying a complete reanalysis of Ko's experiment.   \n\n Limits and disputes\n\nBhatt's films on SLAO used pulsed-laser deposition, whereas the other substrate films used molecular-beam epitaxy. Oxygen annealing and uncertain oxygen occupancy remain relevant covariates. Figure 3 supports out-of-plane expansion under in-plane compression, contrasting with hydrostatic contraction. It does not support the inherited universal superlative that the SLAO film has the largest c-axis: the plotted LAO values are comparable or higher. Avoid turning a qualitative structural contrast into an unsupported ranking. \n\nA peak near a calculated Lifshitz transition constrains possible models without uniquely identifying pairing symmetry. Steppke's electronic-structure and order-parameter calculations are model-dependent; their discussion should not be read as a present-day determination of Sr2RuO4's order parameter. This scoped review checked selected experimental passages and a figure, not the full multiband calculation, all supplements or experimental raw data. \n\n Discovery implications\n\nDesign a strain study around a measured mechanical path and a defined superconducting criterion. Retain loading direction, reference state, adhesive or substrate constraints, thermal history and reversibility. Check whether a broadened transition tracks strain inhomogeneity or a changed specimen, and compare transport with magnetic or thermodynamic evidence where feasible. Local arithmetic here verifies mismatch, ideal elastic identities and the adhesive model; it neither predicts a superconducting transition nor establishes a unique strain mechanism.   \n\n Related topics\n\nCompare , , ,  and ."
+      "text": " Scope\n\nStrain is a directional deformation relative to a stated reference structure. A uniaxially loaded crystal, a clamped epitaxial film and a hydrostatically compressed sample follow different mechanical paths. Applied displacement is not necessarily sample strain: mounting adhesive, thermal contraction, bending and fracture can all intervene. The useful control variable is the calibrated deformation in the region probed, together with its uncertainty and history. In the ideal uniaxial-stress geometry, transverse Poisson strains remain nonzero: controlling one loading axis does not set every other strain component to zero. A displacement sensor also does not directly measure the strain throughout a specimen.  \n\nSeparate the early Sr2RuO4 experiments. Hicks's 2014 Science study reported different responses for loading along the crystallographic ⟨100⟩ and ⟨110⟩ directions, within an approximately 0.23% accessible range. The later Steppke study reached the much larger compressive strain associated with a transition near 3.4 K. These are distinct measurements, not interchangeable references for one apparatus or peak. The earlier result is checked here only through the authors' institutional abstract.  \n\n Mathematical assumptions\n\nFor a lattice parameter relative to a relaxed reference, engineering strain is \\epsilon=(a-a0)/a0. Nominal epitaxial mismatch uses f=(a{\\rm sub}-a{\\rm ref})/a{\\rm ref} instead. Neither a substrate name nor this calculation establishes the strain remaining after relaxation. Report reference composition, phase, temperature and orientation; compare actual film lattice parameters with that same reference. \n\nIn small-deformation elasticity, \\epsilon{ij}=(\\partiali uj+\\partialj ui)/2 and \\sigma{ij}=C{ijkl}\\epsilon{kl}. As an explicitly isotropic illustration, a film with equal in-plane strains \\epsilon{xx}=\\epsilon{yy}=f and a traction-free surface has \\epsilon{zz}=-2\\nu f/(1-\\nu). Positive Poisson ratio therefore permits out-of-plane expansion under in-plane compression. This illustration is not an anisotropic nickelate fit, and it does not convert epitaxial mismatch into an equivalent hydrostatic pressure.  \n\nHicks's simplified adhesive model gives a load-transfer length \\lambda=\\sqrt{Etd/(nGe)}, with sample Young's modulus E, sample thickness t, adhesive thickness d, adhesive shear modulus Ge, and one or two bonded faces n. For symmetric ends, displacement is distributed over approximately L+2\\lambda, not just the exposed length L. With E=182 GPa, t=50 micrometres, d=10 micrometres, n=2 and Ge=6 GPa, the model gives 87 micrometres, consistent with the paper's approximately 90 micrometres. For an illustrative 1 mm exposed length, dividing displacement by L alone overestimates the model's central strain by about 17% relative to that strain. This is local arithmetic, not a recalibration of Steppke's samples. Rigid plates, much softer adhesive, long bonded regions and uniform strain across the sample cross-section are assumptions. \n\nThe same author manuscript's Appendix A contains a numerical discrepancy worth preserving. Using its printed Eq. A1 and the parameters above, a 0.2% sample strain gives a displacement-over-glue-thickness shear of approximately 1.74% and a shear stress of 105 MPa; the adjacent prose instead reports 1.3% and 80 MPa. The scalar shear here follows that equation's convention, not the half-sized off-diagonal strain-tensor component. This substitution check does not establish a formal correction or a failure threshold. The paper itself notes uncertain low-temperature adhesive properties; room-temperature tensile strength is not a measured cryogenic shear-strength limit. \n\n Experimental criteria\n\nSteppke measured magnetic transitions using mutual inductance, with approximately 0.2 Oe excitation at 1–20 kHz, and used a capacitive displacement sensor. Figure 4 defines the plotted transition temperatures at 50% of the magnetic response; the 20% and 80% levels show transition width. The reported peak strain is approximately −0.60% with a ±0.06 percentage-point uncertainty from four samples, while individual strain calibration was estimated to have roughly 20% uncertainty. These are different uncertainty statements. \n\nThe often-quoted 3.4 K scale is not a universal sample maximum: sample 5 reached approximately 3.5 K. Resistive transitions in the two contacted specimens did not exceed the highest magnetic transition by more than 0.08 K. That comparison does not redefine a magnetic midpoint as zero resistance. A flat feature near zero strain in sample 1 arose after the sample broke during cooling and needed compression to re-engage; it should not be fitted as an intrinsic phase boundary. Reported recovery of magnetic curves after unloading other checks supports reversible deformation under those conditions, not a guarantee that every mounting survives or that thermodynamic equilibrium has been established. The critical-field measurements on sample 4 use intersections of linear fits around a susceptibility cusp; that separate procedure must not replace the 50% criterion for the Figure 4 temperature-versus-strain data. \n\nBhatt's final Figure 1 labels nominal/measured mismatch pairs, respectively, as SLAO −2.0%/−1.6%, LAO −1.2%/−0.9%, NGO +0.7%/+0.6% and STO +1.9%/+1.8%. These final labels replace several different measured values in the inherited chapter. The SLAO film has a broad resistive transition, with onset near 42 K and zero near 2 K; those endpoints cannot be merged into a 42 K zero-resistance claim. \n\nKo's publicly archived author manuscript now supplies selected original methods and criteria. It reports sample A1 with onset at 42.4 K and zero resistance below 2.2 K; the latter is not an exact 2.2 K transition value. Its field-dependent analysis instead uses 90% of the normal-state resistance near onset. The methods describe approximately 100 kHz low-pass filtering; the text warns that observing zero resistance requires adequate radiation filtering. The reported diamagnetic response belongs to sample A12, so it must not be attached to A1 as a same-specimen measurement. The March 2026 correction fixes published resistivity-axis units to mΩ cm and the Figure 3d horizontal label to temperature T, not Tc. The archived manuscript already has mΩ cm but still labels that axis Tc; it is not a verified copy of the corrected journal version. Existing rounded film records retain Bhatt's final passage, while the added A1 onset record cites the author manuscript. No raw-data refit or full final-version comparison is claimed.   \n\n\nThe comparisons below retain the measured quantity and specimen history; none supplies a universal conversion from applied strain to superconducting temperature.\n\n| Experiment or model | Measured or defined quantity | Interpretation boundary |\n|---|---|---|\n| Hicks adhesive model  | Displacement shared by exposed crystal and bonded ends | Ideal geometry and uncertain glue modulus; local arithmetic is not a strain map |\n| Steppke Figure 4  | Magnetic 50% midpoint; 20–80% transition width | Normalized strain scales; broken sample 1 is identified |\n| Steppke sample 4 critical-field scans  | Intersection of fitted slopes around a magnetic cusp | A different protocol from Figure 4; no automatic zero-resistance interpretation |\n| Bhatt SLAO film passage  | Resistive onset near 42 K and zero near 2 K | Broad transition in a film; two endpoints are separate records |\n| Ko A1 field analysis  | 90% of normal-state resistance near onset | Separate from zero resistance and from sample A12 magnetic response |\n| Ko 2026 correction  | Resistivity units and a temperature-axis label | Publication correction, not a new transition or a retraction |\n\n Limits and disputes\n\nBhatt's films on SLAO used pulsed-laser deposition, whereas the other substrate films used molecular-beam epitaxy. Oxygen annealing and uncertain oxygen occupancy remain relevant covariates. Figure 3 supports out-of-plane expansion under in-plane compression, contrasting with hydrostatic contraction. It does not support the inherited universal superlative that the SLAO film has the largest c-axis: the plotted LAO values are comparable or higher. Avoid turning a qualitative structural contrast into an unsupported ranking. \n\nA peak near a calculated Lifshitz transition constrains possible models without uniquely identifying pairing symmetry. Steppke's electronic-structure and order-parameter calculations are model-dependent; their discussion should not be read as a present-day determination of Sr2RuO4's order parameter. This scoped review checked selected experimental passages and a figure, not the full multiband calculation, all supplements or experimental raw data. \n\n Discovery implications\n\nDesign a strain study around a measured mechanical path and a defined superconducting criterion. Retain loading direction, reference state, adhesive or substrate constraints, thermal history and reversibility. Check whether a broadened transition tracks strain inhomogeneity or a changed specimen, and compare transport with magnetic or thermodynamic evidence where feasible. Local arithmetic here verifies mismatch, ideal elastic identities and the adhesive model; it neither predicts a superconducting transition nor establishes a unique strain mechanism.   \n\n Related topics\n\nCompare , , ,  and ."
     },
     {
       "id": "scwiki-e5",

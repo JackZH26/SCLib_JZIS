@@ -1773,7 +1773,12 @@ it("separates calibrated strain, magnetic midpoints and film resistive endpoints
  const md=await(await get(["articles",a.id,"markdown"])).text();
  expect(md).toContain("−2.0%/−1.6%");expect(md).toContain("−1.2%/−0.9%");expect(md).toContain("+1.9%/+1.8%");
  expect(md).toContain("10.1038/s41586-026-10335-8");expect(md).toContain("mΩ cm");
- expect(md).toContain("sample broke");expect(md).toContain("not retrieved");
+ expect(md).toContain("sample broke");expect(md).toContain("not a verified copy of the corrected journal version");
+ const ko=a.references.find(r=>r.id==="source-98849f3ad0a2df49")!;
+ expect(ko.verification.evidenceUrl).toBe("https://www.osti.gov/servlets/purl/2509524");
+ expect(searchArticles(index,"Ko A1",{tcMin:42.1,criterion:"resistive-onset"}).some(a=>a.code==="E4")).toBe(true);
+ expect(searchArticles(index,"Ko A1",{criterion:"zero-resistance"}).some(a=>a.code==="E4")).toBe(false);
+ expect(a.materialCases.every(c=>c.equilibrium==="unknown")).toBe(true);
  expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
  const data=await(await get(["search"],"?q=nickelate&tcMin=40&criterion=zero-resistance&pressure=ambient")).json();
  expect(data.results.some((r:{code:string})=>r.code==="E4")).toBe(false);
