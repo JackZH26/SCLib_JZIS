@@ -638,7 +638,7 @@
       "title": "Cuprate interfaces: layer order and localization",
       "summary": "Compare an interface study with a layer-selective localization experiment, while keeping measurement criteria and source access separate.",
       "kind": "research-note-and-cross-topic-analysis",
-      "modifiedAt": "2026-10-19T00:18:47.242615+00:00",
+      "modifiedAt": "2026-10-19T00:26:06.669243+00:00",
       "aliases": [
         "Gozar",
         "Logvenov",
@@ -665,7 +665,7 @@
         "limitations": [
           "Author self-review, not independent scientific acceptance.",
           "Logvenov full text and calibration remain unavailable in this review; the abstract does not justify a new quantitative material record.",
-          "The remaining eight inherited studies require individual primary-source review. Full source-note merging is not claimed."
+          "Seven other inherited studies still require individual primary-source review; study5 has a separate THz note. Full source-note merging is not claimed."
         ]
       },
       "sections": [
@@ -703,7 +703,7 @@
         {
           "id": "series-coverage",
           "title": "What remains in the inherited series",
-          "markdown": "This note covers study sections 2 and 9 only. Superfluid-density scaling, magnetic excitations, ultrafast crystallography, above-transition THz correlations, proximity effects, antiferromagnetism, the superconductor–insulator transition and the unresolved plasmon citation remain separate review tasks.\n\nThe old parsed-file directory explicitly identifies its repaired files as curated source notes, not original-paper transcriptions. The provenance below therefore states partial coverage. Neither the reading-note title nor a repaired bibliography substitutes for a checked primary passage.",
+          "markdown": "This note covers study sections2 and9 only. Study5 now has a [separate THz conductivity note](/scwiki/library/bilbro-thz-fluctuation-window). Superfluid-density scaling, magnetic excitations, ultrafast crystallography, proximity effects, antiferromagnetism, the superconductor–insulator transition and the unresolved plasmon citation remain separate review tasks.\n\nThe old parsed-file directory identifies its repaired files as curated source notes, not original-paper transcriptions. Neither a repaired bibliography nor a series title substitutes for a checked primary passage.",
           "evidenceType": "experiment",
           "sourceIds": [],
           "sourceRelationship": "context-for-editorial-analysis"
@@ -755,7 +755,7 @@
           "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
           "sha256": "6c0b3484dbfe9831b95e8f1ad578c2889e9c88b5e25c6954bb09160df741f0ee",
           "disposition": "partial-merge",
-          "coverage": "Study sections 2 (Logvenov 2009, abstract scope) and 9 (Gozar 2008, selected author passages) only. The other eight study sections remain pending.",
+          "coverage": "Study sections2(Logvenov abstract) and9(Gozar selected author passages) only. Study5 has a separate THz note; the other seven study sections remain pending.",
           "repository": "JackZH26/jzis-superconductivity"
         }
       ],
@@ -763,7 +763,7 @@
         {
           "issue": "Source coverage",
           "inherited": "One series note combines ten studies and web-derived interpretation.",
-          "resolution": "Only sections 2 and 9 are represented here; eight studies and other CROSS claims remain pending."
+          "resolution": "Only sections2 and9 are represented here; section5 has a separate note. Seven studies and other CROSS claims remain pending."
         },
         {
           "issue": "Evidence depth",
@@ -777,6 +777,134 @@
         }
       ],
       "rights": "Original concise editorial synthesis with linked sources. No paper text, figures or old parsed images are reproduced; no open redistribution license is asserted for the source articles."
+    },
+    {
+      "id": "bilbro-thz-fluctuation-window",
+      "title": "LSCO fluctuations: what THz conductivity resolves",
+      "summary": "Read a finite-frequency fluctuation signal with its measurement window, rate normalization and unresolved alternatives.",
+      "kind": "research-note-and-cross-topic-analysis",
+      "modifiedAt": "2026-10-19T00:26:06.669243+00:00",
+      "aliases": [
+        "Bilbro",
+        "Bozovic",
+        "Armitage",
+        "THz conductivity",
+        "terahertz",
+        "LSCO fluctuations",
+        "太赫兹超导涨落"
+      ],
+      "evidenceTypes": [
+        "experiment"
+      ],
+      "relatedCodes": [
+        "A8",
+        "D3",
+        "H1",
+        "H2",
+        "D11"
+      ],
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Selected author-version text and figures, with methods and supplementary characterization; no raw-data reproduction or independent review.",
+        "limitations": [
+          "The final journal version has not been compared with this archived author version.",
+          "This note covers study5 only. Together with the interface note, three of ten inherited studies have limited coverage; seven remain pending.",
+          "A scoped author review does not establish full scientific acceptance."
+        ]
+      },
+      "sections": [
+        {
+          "id": "conductivity-window",
+          "title": "A conductivity window, not a universal pairing cutoff",
+          "markdown": "Bilbro and colleagues studied eight LSCO films, $x=0.09$–$0.25$. Their THz conductivity criterion places the fluctuation onset 5–16 K above $T_c$. They determine onset from the curvature of $\\omega\\sigma_2$ at 0.8 THz. This is a probe-dependent transport result, not exclusion of all higher-temperature pairing. Figure3 assigns $T_c=23.5$ K to $x=0.25$.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "bilbro-author-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "rate-normalization",
+          "title": "Keep the rate convention and scale uncertainty",
+          "markdown": "The angular-rate form is $\\Omega=\\alpha k_BT/\\hbar$; the plotted cyclic frequency is $\\Omega/(2\\pi)=\\alpha k_BT/h$. Methods set $\\alpha=0.4$ to the mean after a loss-peak normalization gives a roughly 40% spread. It is not a precision universal constant. The authors cannot distinguish normal-state masking from intrinsically linear-in-temperature fluctuations.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "bilbro-author-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "comparison-checklist",
+          "title": "Use the measured observable in comparisons",
+          "markdown": "An editorial comparison should record the sample, probe frequency, onset criterion, background treatment and rate definition before comparing a transport result with a magnetic signal. A common temperature dependence alone does not identify a common mechanism.\n\nKeep these film measurements separate from [interface localization](/scwiki/library/cuprate-interface-layer-order). This note is not a new transition-temperature record in the material-condition catalogue.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "bilbro-author-v1"
+          ],
+          "sourceRelationship": "context-for-editorial-analysis"
+        },
+        {
+          "id": "series-coverage",
+          "title": "Coverage and source version",
+          "markdown": "This note covers study5 of the inherited ten-study series. Studies2 and9 have [separate interface coverage](/scwiki/library/cuprate-interface-layer-order); the other seven remain pending. The provenance records partial coverage of both source notes.\n\nUse the archive submission date for this source version. Its printed typesetting date is not the journal publication date. The arXiv distribution license is not a general permission to reproduce the paper.",
+          "evidenceType": "experiment",
+          "sourceIds": [],
+          "sourceRelationship": "context-for-editorial-analysis"
+        }
+      ],
+      "sources": [
+        {
+          "id": "bilbro-author-v1",
+          "title": "Temporal correlations of superconductivity above the transition temperature in La2−xSrxCuO4 probed by terahertz spectroscopy",
+          "authors": "L. S. Bilbro, R. Valdés Aguilar, G. Logvenov, O. Pelleg, I. Bozovic and N. P. Armitage",
+          "url": "https://arxiv.org/abs/1110.2097v1",
+          "publicationStatus": "journal-article",
+          "date": "2011-10-10",
+          "dateLabel": "Author version deposited",
+          "version": "arXiv:1110.2097v1, archived author version of Nature Physics7,298–302(2011); not the version of record",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected text pp1–6,8–9; pixels4,6,9 checked. Final-version comparison and raw data remain unreviewed.",
+          "doi": "10.1038/nphys1912",
+          "licenseUrl": "https://arxiv.org/licenses/nonexclusive-distrib/1.0/license.html",
+          "licenseLabel": "arXiv distribution grant; not a public reuse license"
+        }
+      ],
+      "provenance": [
+        {
+          "path": "papers/CROSS_D3_D11_BozovicInterface.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "8f299055adac85ea95c5dca9a35c6939305162fa1c0f36e4a8f6d58211a7be83",
+          "disposition": "partial-merge",
+          "coverage": "Section4.3: Bilbro temporal correlations only. Interface studies have a separate note; other CROSS comparisons remain pending.",
+          "repository": "JackZH26/jzis-superconductivity"
+        },
+        {
+          "path": "papers/library/Bozovic_Cuprate-Interface-Series_READING_NOTES.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "6c0b3484dbfe9831b95e8f1ad578c2889e9c88b5e25c6954bb09160df741f0ee",
+          "disposition": "partial-merge",
+          "coverage": "Study section 5: Bilbro THz conductivity and its stated limits only. Seven series studies and other CROSS claims remain pending.",
+          "repository": "JackZH26/jzis-superconductivity"
+        }
+      ],
+      "corrections": [
+        {
+          "issue": "Sample temperature",
+          "inherited": "The inherited note assigns33.5K to x=0.25.",
+          "resolution": "Figure3 instead labels23.5K; retain specimen identity."
+        },
+        {
+          "issue": "Rate scale",
+          "inherited": "The coefficient0.4 appears without normalization uncertainty.",
+          "resolution": "Retain the stated scale-setting procedure and spread."
+        },
+        {
+          "issue": "Unsupported acquisition limit",
+          "inherited": "The inherited note specifies0.3K and a helium-3 system.",
+          "resolution": "Not verified in the selected source; do not transfer this acquisition claim."
+        }
+      ],
+      "rights": "Original concise synthesis and editorial analysis. No source figures or substantial paper text reproduced; arXiv redistribution rights are not assumed to grant public reuse."
     }
   ]
 }

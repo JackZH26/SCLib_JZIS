@@ -21,12 +21,23 @@ const getAll=async(key:"articles"|"sources"|"topics")=>{
  return {[key]:items};
 };
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("keeps THz criterion, scale uncertainty and partial series coverage in discovery and exports",async()=>{
+  const result=await(await get(["library"],"?q="+encodeURIComponent("10.1038/nphys1912"))).json();expect(result.total).toBe(1);
+  const n=result.notes[0];expect(n.id).toBe("bilbro-thz-fluctuation-window");
+  const md=await(await get(["library",n.id,"markdown"])).text();
+  for(const phrase of ["5–16 K","0.8 THz","23.5","roughly 40% spread","not a precision universal constant","normal-state masking","Not verified","not a public reuse license","seven remain pending"])expect(md).toContain(phrase);
+  expect(n.sources[0].dateLabel).toBe("Author version deposited");expect(n.sources[0].date).toBe("2011-10-10");
+  for(const pr of n.provenance){expect(pr.disposition).toBe("partial-merge");expect(md).toContain(pr.coverage);expect(createHash("sha256").update(readFileSync("../../sources/"+pr.path)).digest("hex")).toBe(pr.sha256);}
+  const entries=(await import("@/lib/scwiki/library")).librarySearchEntries();expect(searchArticles(entries,"terahertz").some(x=>x.id===n.id)).toBe(true);expect(searchArticles(entries,"terahertz",{tcMin:20}).some(x=>x.id===n.id)).toBe(false);
+  const html=renderToStaticMarkup(<ScientificMarkdown markdown={n.sections[1].markdown}/>);expect(html).not.toContain("katex-error");
+ });
+
  it("exports partial research coverage without implying the whole source series is complete",async()=>{
   const n=(await(await get(["library","cuprate-interface-layer-order"])).json()).note;
   expect(n.provenance).toHaveLength(2);expect(n.provenance.every((p:any)=>p.disposition==="partial-merge")).toBe(true);
   const md=await(await get(["library",n.id,"markdown"])).text();
   for(const p of n.provenance){expect(md).toContain(p.coverage);expect(createHash("sha256").update(readFileSync("../../sources/"+p.path)).digest("hex")).toBe(p.sha256);}
-  expect(md).toContain("other eight study sections remain pending");expect(md).toContain("resistive midpoints");expect(md).toContain("ozone-treated");expect(md).toContain("full methods, Zn profile and calibration have not been reviewed");
+  expect(md).toContain("other seven study sections remain pending");expect(md).toContain("resistive midpoints");expect(md).toContain("ozone-treated");expect(md).toContain("full methods, Zn profile and calibration have not been reviewed");
   const spec=await(await get(["openapi.json"])).json();expect(spec.components.schemas.ResearchNote.properties.provenance.items.required).toContain("coverage");
   const first=(await(await get(["library","romero-parallel-conduction"])).json()).note;
   expect(first.provenance.every((p:any)=>p.disposition==="merge-into"&&p.coverage.includes("scientific review remains limited"))).toBe(true);
