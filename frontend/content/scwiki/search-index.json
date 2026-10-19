@@ -1,6 +1,6 @@
 {
   "schemaVersion": "1.0",
-  "revision": "15735891da281327cd34",
+  "revision": "6f1250b56ef4dee7fe59",
   "entries": [
     {
       "id": "scwiki-a1",
@@ -5343,14 +5343,15 @@
         "pump probe",
         "Floquet",
         "transient superconductivity",
-        "optical saturation"
+        "optical saturation",
+        "light-driven superconductivity"
       ],
       "evidenceTypes": [
         "experiment",
         "theory"
       ],
       "editorialStatus": "scoped-check",
-      "revision": "34bd87bf77e8f24c672d",
+      "revision": "5181b51f1acd6e320368",
       "materialCases": [
         {
           "id": "scwiki-e6-material-1",

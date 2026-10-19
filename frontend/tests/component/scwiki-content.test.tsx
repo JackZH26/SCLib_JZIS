@@ -1583,6 +1583,7 @@ it("matches every material condition to the public search/API enum and retrieves
 
 it("keeps a driven magnetic null-result temperature out of transition filters and exports its detection limits",async()=>{
  const a=articles().find(a=>a.code==="E6")!;
+ expect(searchArticles(searchIndex().entries,"light-driven superconductivity")[0].code).toBe("E6");
  const c=a.materialCases.find(c=>c.criterion==="sensitivity-limited-magnetic-nonobservation")!;
  expect(c.reportedTemperatureK).toBe(50);expect(c.tcK).toBeNull();expect(c.temperatureKind).toBe("measurement");
  const includes=(q:string,filters:any)=>searchArticles(searchIndex().entries,q,filters).some(a=>a.code==="E6");
