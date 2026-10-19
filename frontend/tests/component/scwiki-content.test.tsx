@@ -4,6 +4,8 @@ import {middleware} from "../../middleware";
 import {describe,it,expect} from "vitest";
 import {readFileSync,existsSync} from "node:fs";
 import {createHash} from "node:crypto";
+import {join} from "node:path";
+const sourceRoot=process.env.SCWIKI_SOURCE_ROOT || "../../sources";
 import {renderToStaticMarkup} from "react-dom/server";
 import {NextRequest} from "next/server";
 import {ScientificMarkdown} from "@/components/scwiki/ScientificMarkdown";
@@ -26,7 +28,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
   const n=result.notes[0];expect(n.id).toBe("dean-lsco-magnetic-excitations");const md=await(await get(["library",n.id,"markdown"])).text();
   for(const term of ["0.18","HWHM","FWHM","0.78","97","52","not reconciled","not been independently reproduced","unmeasured diagonal","six inherited series studies remain pending"])expect(md).toContain(term);
   expect(n.sources).toHaveLength(2);expect(n.sources.every((s:any)=>s.date==="2013-08-04"&&s.licenseUrl===null)).toBe(true);
-  for(const pr of n.provenance){expect(pr.disposition).toBe("partial-merge");expect(createHash("sha256").update(readFileSync("../../sources/"+pr.path)).digest("hex")).toBe(pr.sha256);expect(md).toContain(pr.coverage);}
+  for(const pr of n.provenance){expect(pr.disposition).toBe("partial-merge");expect(createHash("sha256").update(readFileSync(join(sourceRoot,pr.path))).digest("hex")).toBe(pr.sha256);expect(md).toContain(pr.coverage);}
   const entries=(await import("@/lib/scwiki/library")).librarySearchEntries();expect(searchArticles(entries,"paramagnon").some(x=>x.id===n.id)).toBe(true);expect(searchArticles(entries,"paramagnon",{tcMin:1}).some(x=>x.id===n.id)).toBe(false);
   for(const section of n.sections){expect(renderToStaticMarkup(<ScientificMarkdown markdown={section.markdown}/>)).not.toContain("katex-error");for(const id of section.sourceIds)expect(n.sources.some((s:any)=>s.id===id)).toBe(true);}
  });
@@ -37,7 +39,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
   const md=await(await get(["library",n.id,"markdown"])).text();
   for(const phrase of ["5–16 K","0.8 THz","23.5","roughly 40% spread","not a precision universal constant","normal-state masking","Not verified","not a public reuse license","six remain pending"])expect(md).toContain(phrase);
   expect(n.sources[0].dateLabel).toBe("Author version deposited");expect(n.sources[0].date).toBe("2011-10-10");
-  for(const pr of n.provenance){expect(pr.disposition).toBe("partial-merge");expect(md).toContain(pr.coverage);expect(createHash("sha256").update(readFileSync("../../sources/"+pr.path)).digest("hex")).toBe(pr.sha256);}
+  for(const pr of n.provenance){expect(pr.disposition).toBe("partial-merge");expect(md).toContain(pr.coverage);expect(createHash("sha256").update(readFileSync(join(sourceRoot,pr.path))).digest("hex")).toBe(pr.sha256);}
   const entries=(await import("@/lib/scwiki/library")).librarySearchEntries();expect(searchArticles(entries,"terahertz").some(x=>x.id===n.id)).toBe(true);expect(searchArticles(entries,"terahertz",{tcMin:20}).some(x=>x.id===n.id)).toBe(false);
   const html=renderToStaticMarkup(<ScientificMarkdown markdown={n.sections[1].markdown}/>);expect(html).not.toContain("katex-error");
  });
@@ -46,7 +48,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
   const n=(await(await get(["library","cuprate-interface-layer-order"])).json()).note;
   expect(n.provenance).toHaveLength(2);expect(n.provenance.every((p:any)=>p.disposition==="partial-merge")).toBe(true);
   const md=await(await get(["library",n.id,"markdown"])).text();
-  for(const p of n.provenance){expect(md).toContain(p.coverage);expect(createHash("sha256").update(readFileSync("../../sources/"+p.path)).digest("hex")).toBe(p.sha256);}
+  for(const p of n.provenance){expect(md).toContain(p.coverage);expect(createHash("sha256").update(readFileSync(join(sourceRoot,p.path))).digest("hex")).toBe(p.sha256);}
   expect(md).toContain("other six study sections remain pending");expect(md).toContain("resistive midpoints");expect(md).toContain("ozone-treated");expect(md).toContain("full methods, Zn profile and calibration have not been reviewed");
   const spec=await(await get(["openapi.json"])).json();expect(spec.components.schemas.ResearchNote.properties.provenance.items.required).toContain("coverage");
   const first=(await(await get(["library","romero-parallel-conduction"])).json()).note;
@@ -60,7 +62,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
    if(text==="S2 at 151 K")expect(md).not.toContain(text);else expect(md).toContain(text);
   }
   expect(n.sources[0].date).toBe("2026-03-12");expect(n.sources[1].date).toBe("2026-03-09");
-  for(const p of n.provenance)expect(createHash("sha256").update(readFileSync("../../sources/"+p.path)).digest("hex")).toBe(p.sha256);
+  for(const p of n.provenance)expect(createHash("sha256").update(readFileSync(join(sourceRoot,p.path))).digest("hex")).toBe(p.sha256);
   for(const section of n.sections)for(const id of section.sourceIds)expect(n.sources.some((s:any)=>s.id===id)).toBe(true);
   const idx=await(await import("@/lib/scwiki/library")).librarySearchEntries();
   expect(searchArticles(idx,"pressure quench").some(x=>x.id===n.id)).toBe(true);
@@ -74,7 +76,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
   for(const phrase of ["6.23 T","13.04 T","0.5Rn","SCE0.36 at 4.2 K","SCE0.40 at 0.3 K","not verified","not a universal","CC BY 4.0","Mingwei Yang"])expect(md).toContain(phrase);
   expect(md).toContain("https://arxiv.org/abs/2508.14666v3");
   for(const section of note.sections)for(const id of section.sourceIds)expect(note.sources.some((s:any)=>s.id===id)).toBe(true);
-  for(const p of note.provenance)expect(createHash("sha256").update(readFileSync("../../sources/"+p.path)).digest("hex")).toBe(p.sha256);
+  for(const p of note.provenance)expect(createHash("sha256").update(readFileSync(join(sourceRoot,p.path))).digest("hex")).toBe(p.sha256);
   const core=articles().find(a=>a.code==="D15")!;
   expect(core.body).not.toContain("SCE0.36 remains superconducting to the 45 T measurement limit at 0.3 K");
   const d15=await(await get(["articles",core.id,"sections","experimental-criteria"],"?format=markdown")).text();
@@ -93,7 +95,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
   expect(md).toContain("hypothetical controls");expect(md).toContain("not a demonstration");expect(md).toContain("importance of this reduced mixing for superconductivity remains to be established");
   expect(md).toContain("https://creativecommons.org/licenses/by/4.0/");expect(md).toContain("Lopa Bhatt");
   for(const section of note.sections)for(const id of section.sourceIds)expect(note.sources.some((s:any)=>s.id===id)).toBe(true);
-  for(const p of note.provenance)expect(createHash("sha256").update(readFileSync("../../sources/"+p.path)).digest("hex")).toBe(p.sha256);
+  for(const p of note.provenance)expect(createHash("sha256").update(readFileSync(join(sourceRoot,p.path))).digest("hex")).toBe(p.sha256);
   expect((await get(["library"],"?q=Bhatt&limit=1&cursor="+first.page.nextCursor)).status).toBe(400);
  });
  it("exports separate research notes with source versions, local derivations and review limits",async()=>{
@@ -104,7 +106,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
   const md=await(await get(["library",note.id,"markdown"])).text();
   expect(md).toContain("Selected preprint passages");expect(md).toContain("context-for-local-derivation");expect(md).toContain("SHA-256");expect(md).toContain("missing-area");
   for(const s of note.sources)expect(md).toContain(s.url);
-  for(const p of note.provenance)expect(createHash("sha256").update(readFileSync("../../sources/"+p.path)).digest("hex")).toBe(p.sha256);
+  for(const p of note.provenance)expect(createHash("sha256").update(readFileSync(join(sourceRoot,p.path))).digest("hex")).toBe(p.sha256);
   const conditional=new NextRequest("http://localhost/api/scwiki/v1/library/"+note.id,{headers:{"If-None-Match":detail.headers.get("ETag")!}});
   expect((await GET(conditional,{params:Promise.resolve({segments:["library",note.id]})})).status).toBe(304);
   expect((await get(["library"],"?q=absentunique987")).status).toBe(200);
@@ -746,9 +748,8 @@ describe("SCWiki source and scientific-content contracts",()=>{
    expect(createHash("sha256").update("scwiki-export-v4\n"+JSON.stringify(meta)+"\n"+body).digest("hex").slice(0,20)).toBe(revision);
   }
  });
- it("resolves every claim, citation and published article link without treating rendering as proof",()=>{
+ it.each(articles())("$code resolves claims, citations and article links without treating rendering as proof",(a)=>{
   const slugs=new Set(articles().map(a=>a.slug));
-  for(const a of articles()){
    const refs=new Set(a.references.map(r=>r.id)),sections=new Set(a.sections.map(s=>s.id));
    expect(a.claims.length).toBeGreaterThan(5);
    for(const c of a.claims){expect(sections.has(c.sectionId)).toBe(true);expect(c.conditions.length).toBeGreaterThan(30);expect(c.sourceIds.every(id=>refs.has(id))).toBe(true);}
@@ -757,7 +758,6 @@ describe("SCWiki source and scientific-content contracts",()=>{
    const html=renderToStaticMarkup(<ScientificMarkdown markdown={a.body}/>);
    expect(html).not.toContain('class="katex-error"');expect(html).not.toContain("language-text");
    if(a.body.includes("$$"))expect(html).toContain('class="katex"');
-  }
  });
  it("preserves iron-based source-version criteria and excludes nondetection and gap scales",async()=>{
   const a=articles().find(a=>a.code==="D4")!;

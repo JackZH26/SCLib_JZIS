@@ -277,3 +277,8 @@ docker compose --profile observability \
 Postgres data lives in the `postgres_data` named volume and survives
 image replacement. Alembic migrations are forward-only — if a migration
 needs reverting, write a new migration.
+
+
+### SCWiki source checks in clean CI
+
+The frontend content contracts read the frozen `JackZH26/jzis-superconductivity` source revision `0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf` and compare its actual bytes to each published provenance hash. CI checks out that public revision into `.scwiki-sources` and sets `SCWIKI_SOURCE_ROOT` to its absolute path. For local tests, set the same variable to a checkout of that revision, or retain the existing sibling `sources/` directory. Missing sources and hash mismatches fail the tests. Article content and browser rendering checks run separately for each article, preserving the normal per-test time limits as the catalogue grows.

@@ -87,8 +87,9 @@ test("six topic sections pack without overlaps or long empty rows across screen 
   await page.screenshot({path:`test-results/scwiki-topic-layout-${width}.png`,fullPage:true});
  }
 });
-test("all published articles have formulas, real citation anchors and HTML/Markdown/JSON consistency",async({page,request})=>{
- for(const a of catalogue.articles){
+// Each article keeps its own timeout and browser context as the catalogue grows.
+for(const a of catalogue.articles){
+ test(`${a.code} ${a.title} preserves formulas, citations and HTML/Markdown/JSON consistency`,async({page,request})=>{
   const response=await page.goto("/scwiki/"+a.slug);expect(response?.status()).toBe(200);
   await expect(page.getByRole("heading",{name:a.title,exact:true})).toBeVisible();
   await expect(page.locator("main.scwiki")).toHaveAttribute("data-revision",a.revision);
@@ -102,7 +103,9 @@ test("all published articles have formulas, real citation anchors and HTML/Markd
   const md=await request.get("/api/scwiki/v1/articles/"+a.id+"/markdown");
   expect(await md.text()).toBe(a.markdown);expect(md.headers()["x-scwiki-revision"]).toBe(a.revision);
   for(const c of a.materialCases)if(c.reportedTemperatureK!==null)await expect(page.locator(".scwiki-reading-body")).toContainText(c.reportedTemperatureK+" K");
- }
+ });
+}
+test("representative pairing and geometry articles retain mobile and desktop views",async({page})=>{
  await page.goto("/scwiki/s-plus-minus");
  await page.getByRole("button",{name:"Reject all",exact:true}).click();
  await page.screenshot({path:"test-results/scwiki-c2-390.png",fullPage:true});
