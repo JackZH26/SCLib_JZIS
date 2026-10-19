@@ -2,7 +2,15 @@
 
 Magnetic substitution can change carrier balance, crystal structure, potential scattering, spin-flip scattering and exchange fields at the same time. These effects are distinguishable experimental questions, not mutually exclusive channels. A falling superconducting transition temperature does not uniquely identify magnetic pair breaking, and the presence of a magnetic element does not establish magnetically mediated pairing. Compare actual composition, valence, phase purity and preparation before treating concentration as a single physical control. [R3](#ref-source-8d0e592da8ec9c7b) [R4](#ref-source-23c62b46f5681d83) [R5](#ref-source-9ff1d5edeb007a39) [R11](#ref-source-3504ee9027165d0a)
 
-Dilute paramagnetic impurities, an ordered lattice of rare-earth moments and a concentrated magnetic film require different models. Independent magnetic ions can scatter Cooper pairs, while their ordering, screening and coupling to itinerant states change the relevant timescales and fields. A material that contains both magnetic and superconducting signals may also be spatially inhomogeneous; their coexistence must be tested at the relevant volume and length scale. [R1](#ref-source-daf8f301de81a726) [R2](#ref-source-3a528aeee1b7cf04) [R7](#ref-source-e4fdbfe063c34217) [R8](#ref-source-6666556b639390d7)
+Dilute paramagnetic impurities, an ordered rare-earth sublattice and a concentrated magnetic film are different physical regimes. Balatsky et al.'s review distinguishes dynamic impurity spins from the classical-spin limit. Its ensemble treatment neglects interactions between impurity spins and interference between different scatterers. Those assumptions cannot simply be carried over to an ordered magnetic lattice. The original AG paper remains a historical citation here; its full derivation has not been checked.
+
+For a claim of magnetic–superconducting coexistence, separate three questions:
+
+1. **Same sample?** Check composition, phase purity, field, temperature and the volume sampled by each probe. Two bulk signals alone leave spatial separation as a possibility.
+2. **Coupled orders?** Seek a response of one ordered state to the other. In Yaron's ErNi2B2C experiment, the changing vortex orientation was also consistent with transverse magnetization. This supports a coupling-based argument for microscopic coexistence, beyond coincident transition anomalies.
+3. **Which spatial scale?** Report what the measurement resolves. The authors retain longer-scale vortex-orientation variation as an explanation of rocking-curve broadening. Broadening alone does not identify microscopic pinning. Their experiment is not an atom-by-atom map or a calibrated superconducting volume-fraction measurement.
+
+These are editorial criteria for comparing evidence, not a new model fit. Neither a magnetic element nor coexistence by itself establishes magnetic pairing, triplet pairing or a universal impurity threshold. [R1](#ref-source-daf8f301de81a726) [R2](#ref-source-3a528aeee1b7cf04) [R7](#ref-source-e4fdbfe063c34217) [R8](#ref-source-6666556b639390d7)
 
 ## Mathematical assumptions
 
