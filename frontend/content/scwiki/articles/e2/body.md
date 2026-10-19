@@ -16,11 +16,17 @@ Liang's empirical YBCO calibration uses $p=11.491u+5.17\times10^9u^6$, $u=1-c/c_
 
 Measure composition on the specimens whose transitions are compared. Ni's Co-substituted Ba122 series used wavelength-dispersive spectroscopy (WDS): actual Co fraction was about 0.74 times the nominal fraction for that growth series. A nominal 0.10 batch averaged approximately 0.074. Its phase diagram distinguishes resistance, magnetization and heat capacity. Resistive offset means maximum-slope extrapolation to zero, rather than an independently established instrumental zero. The reported maximum near 23 K spans measured fractions approximately 0.058–0.074. [R3](#ref-source-cf1286d7701502f2)
 
-For YBCO, oxygen content alone omits chain configuration. Liang combined oxygen control, ordered-chain preparations and room-temperature lattice measurements; $T_c$ was the midpoint of field-cooled magnetization in 1 Oe along the c axis. Fully oxygenated material's 85.3 K transition anchors the overdoped calibration through the empirical parabola. It is not a new direct measurement of $p$. Record thermal history, chain order, calibration assumptions and their uncertainty alongside oxygen stoichiometry. [R2](#ref-source-e24ef58054ac9b71)
+For YBCO, oxygen content alone omits chain configuration. Liang determined oxygen content by weight analysis with a stated precision of $\pm0.002$ in $x$; that is not an uncertainty in planar hole concentration $p$. The chain-ordered ortho-II, ortho-VIII and ortho-III preparations use $x=0.50$, $0.67$ and $0.75$. The superconducting $T_c$ is the midpoint of field-cooled magnetization in 1 Oe along the c axis; the lattice parameter is measured separately at 22°C.
+
+The fully oxygenated reference has $T_c=85.3$ K. With the paper's $T_{c,\max}=94.3$ K, algebraic inversion of the empirical parabola gives $p\approx0.126$ or $0.194$. The paper uses the latter because it treats that reference as slightly overdoped. Temperature alone does not choose a branch; the lower algebraic root also lies near the one-eighth region where the uncorrected calibration is unreliable. The quoted $p$ is a model-dependent estimate, not a directly measured carrier count. Record oxygen/order history, calibration assumptions and uncertainty with the result. [R2](#ref-source-e24ef58054ac9b71)
 
 In the P-substituted Ba122 author manuscript, composition was measured by energy-dispersive X-ray analysis. Figure 2 separates onset and zero-resistivity temperatures. Version 3 reports zero resistance from $x\geq0.20$ and a maximum transition around 31 K, while observing a narrow transition at $x=0.33$. Do not turn “isovalent” into proof of unchanged Fermi surfaces, scattering or carrier populations. Nor does a similar phase diagram make chemical substitution physically identical to applied pressure. [R4](#ref-source-b9e77d2ee024ff3b)
 
-Li's nickelate study concerns 8–10 nm films on SrTiO3, capped and reduced from perovskite precursors. Its superconducting compositions lie inside $0.125<x<0.25$. Figure 2 defines two temperatures at 10% and 90% of each sample's resistance at 20 K; symbols average multiple samples and error bars show extrema. The comparison cuprate curve instead uses 50%. These are unequal criteria. The 20 K normalization is not a superconducting transition, and the sign-changing Hall response is interpreted through multiple bands. [R5](#ref-source-c636cc691b7ff013)
+Li's nickelate study uses 8–10 nm films on SrTiO3, capped and reduced from perovskite precursors. The reported preparation couples approximately 25 nm caps to 280°C for 4–6 h and approximately 2 nm caps to 260°C for 1–3 h. The source reports no notable differences between those cap groups at the same composition; these are its preparation conditions, not a universal synthesis prescription. The in-plane lattice constants are locked to the substrate at 3.91 Å in the checked measurements.
+
+The sampled superconducting compositions are $x=0.15$, $0.175$, $0.20$ and $0.225$, inside the reported $0.125<x<0.25$ dome. Figure 2 defines $T_{c,10\%R}$ and $T_{c,90\%R}$ using 10% and 90% of each sample's resistance at 20 K. Symbols average multiple samples at the same $x$; error bars span the observed extrema, not a stated standard error or confidence interval. The comparison cuprate curve uses a 50% criterion. These temperatures cannot be pooled as one uniform definition of $T_c$.
+
+For the sampled $x=0$, $0.10$, $0.125$ and $0.25$ films, the caption reports no superconducting sign down to below 50 mK. That is a finite measurement bound, not an exact zero transition temperature or a precisely located continuous phase boundary. The 20 K resistance reference is also not a transition. No numerical nickelate $T_c$ is digitized here, and the small Hall response remains interpreted through multiple bands. [R5](#ref-source-c636cc691b7ff013)
 
 ## Limits and disputes
 
@@ -32,7 +38,17 @@ A dome does not establish a unique pairing mechanism, homogeneous microscopic co
 
 ## Discovery implications
 
-Store nominal and measured composition separately, including the chemical formula convention, analytical method, uncertainty and spatial variation. Link each transition to its specimen, phase, oxygen/reduction history, substrate or strain, measurement criterion and source version. Keep Hall-derived model parameters separate from valence arithmetic. Prioritize reproducible composition–structure–property relationships and independent magnetic or thermodynamic checks before ranking a tuning series. The calculations here verify notation and algebra, not an optimal synthesis or a carrier-density calibration. [R2](#ref-source-e24ef58054ac9b71) [R3](#ref-source-cf1286d7701502f2) [R4](#ref-source-b9e77d2ee024ff3b) [R5](#ref-source-c636cc691b7ff013)
+Compare the quantities before comparing the domes:
+
+| Reported quantity | Preserve in a reusable record | Do not substitute |
+| --- | --- | --- |
+| YBCO oxygen $x$ | Weight-analysis precision, chain-order preparation and specimen | Direct planar hole concentration $p$ |
+| YBCO lattice calibration | 22°C lattice measurement, empirical model and chosen branch | An independent carrier-density measurement |
+| Nickelate 10% and 90% resistance thresholds | Each fraction and the same sample's 20 K reference | Cuprate 50% thresholds or magnetic midpoints |
+| Nickelate figure error bars | Sample extrema at fixed composition | Standard error or a stated confidence interval |
+| No observed transition below 50 mK | Sampled compositions and the reported measurement bound | An exact $T_c=0$ or a continuous phase boundary |
+
+This table is an editorial comparison of the checked experiments. Keep nominal composition, measured composition, formal valence and transport-model parameters separate; link each value to a specimen, preparation, probe and source version. Reduction, annealing or a static measurement alone is not this review's evidence of thermodynamic equilibrium. The two newly checked YBCO/nickelate records therefore use **unknown** equilibrium, without asserting nonequilibrium. The calculations verify only branch arithmetic; they do not optimize a synthesis or validate a carrier-density calibration. [R2](#ref-source-e24ef58054ac9b71) [R5](#ref-source-c636cc691b7ff013)
 
 ## Related topics
 

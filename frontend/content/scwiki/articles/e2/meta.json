@@ -29,15 +29,16 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.214690+00:00",
+  "modifiedAt": "2026-10-19T18:10:27.169383+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected YBCO, Co/P Ba122 and nickelate author passages and figures; Takagi and Sidis publisher abstracts; bounded charge-balance and Hall/calibration algebra.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected YBCO, Co/P Ba122 and nickelate author passages and figures; Takagi and Sidis publisher abstracts; bounded charge-balance and Hall/calibration algebra. Follow-up: YBCO oxygen precision and calibration branches, nickelate preparation/probe criteria, sample extrema and finite-range non-observation. Two unsupported equilibrium labels changed to unknown.",
     "limitations": [
       "Complete scientific acceptance, final-version comparisons, full supplements and raw-data reproduction remain open.",
       "Takagi and Sidis checks are abstract-only; no original full-method review claimed.",
       "Ni 0.078/0.074 specimen mismatch and Kasahara caption-color/version differences remain explicit.",
-      "Formal valence, empirical YBCO calibration and illustrative two-band algebra are not a measured carrier-density determination."
+      "Formal valence, empirical YBCO calibration and illustrative two-band algebra are not a measured carrier-density determination.",
+      "Finite-temperature non-observation does not establish exact Tc = 0. No equilibrium certification, raw reanalysis, full supplemental review or digitized nickelate Tc is supplied."
     ]
   },
   "provenance": {
@@ -87,9 +88,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-calibration-methods-and-equations",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0510674v1",
-        "note": "Published 25 May 2006; author v1 selected pp. 1–4 read, p. 3 Eq. 2 and figures visually checked. Chain-order assumptions, 22°C c-axis calibration, magnetization midpoint and empirical parabola exception retained. Independent algebra is not a raw-data fit. Final-version comparison remains open."
+        "note": "Published 25 May 2006; author v1 selected pp. 1–4 read, p. 3 Eq. 2 and figures visually checked. Chain-order assumptions, 22°C c-axis calibration, magnetization midpoint and empirical parabola exception retained. Independent algebra is not a raw-data fit. Final-version comparison remains open. Follow-up: author v1 pp.1–3 reread, pp.2–3 visually inspected. Oxygen precision ±0.002 belongs to x; 22°C lattice measurement and 1 Oe field-cooled midpoint are distinct. Tc,max 94.3 K and 85.3 K give two algebraic roots; the source selects the slightly overdoped branch. No direct hole-count measurement or raw-data refit."
       }
     },
     {
@@ -129,9 +130,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-film-methods-and-phase-diagram",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/2003.08506v2",
-        "note": "Author v2 submitted 23 June 2020; journal published 7 July 2020. Selected pp. 1–4 and Fig. 2 p. 12 read and visually checked: films, reduction/capping, resistance normalization, criterion and sample extrema. Complete supplement, final-version comparison and raw data not reviewed; no exact digitized Tc is introduced."
+        "note": "Author v2 submitted 23 June 2020; journal published 7 July 2020. Selected pp. 1–4 and Fig. 2 p. 12 read and visually checked: films, reduction/capping, resistance normalization, criterion and sample extrema. Complete supplement, final-version comparison and raw data not reviewed; no exact digitized Tc is introduced. Follow-up: author v2 pp.2–4 and Fig.2/p.12 reread, pp.3/12 visually inspected. Cap/reduction pairings, 3.91 Å substrate constraint, sampled compositions, 10/90 versus 50% criteria, sample-extrema bars and below-50-mK non-observation retained. No exact Tc extracted or continuous boundary inferred."
       }
     },
     {
@@ -223,13 +224,15 @@
     {
       "id": "scwiki-e2-claim-experimental-criteria-2",
       "sectionId": "experimental-criteria",
-      "statement": "For YBCO, oxygen content alone omits chain configuration. Liang combined oxygen control, ordered-chain preparations and room-temperature lattice measurements; $T_c$ was the midpoint of field-cooled magnetization in 1 Oe along the c axis. Fully oxygenated material's 85.3 K transition anchors the overdoped calibration through the empirical parabola. It is not a new direct measurement of $p$. Record thermal history, chain order, calibration assumptions and their uncertainty alongside oxygen stoichiometry.",
+      "statement": "For YBCO, oxygen content alone omits chain configuration. Liang determined oxygen content by weight analysis with a stated precision of $\\pm0.002$ in $x$; that is not an uncertainty in planar hole concentration $p$. The chain-ordered ortho-II, ortho-VIII and ortho-III preparations use $x=0.50$, $0.67$ and $0.75$. The superconducting $T_c$ is the midpoint of field-cooled magnetization in 1 Oe along the c axis; the lattice parameter is measured separately at 22°C.\n\nThe fully oxygenated reference has $T_c=85.3$ K. With the paper's $T_{c,\\max}=94.3$ K, algebraic inversion of the empirical parabola gives $p\\approx0.126$ or $0.194$. The paper uses the latter because it treats that reference as slightly overdoped. Temperature alone does not choose a branch; the lower algebraic root also lies near the one-eighth region where the uncorrected calibration is unreliable. The quoted $p$ is a model-dependent estimate, not a directly measured carrier count. Record oxygen/order history, calibration assumptions and uncertainty with the result.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-e24ef58054ac9b71"
       ],
-      "conditions": "Formula convention, nominal versus measured composition, oxygen/order history, sample and probe-specific criteria remain distinct. Formal valence and simple Hall models are not direct carrier measurements.",
-      "verificationScope": "Selected primary passages, figures and bounded algebra; full scientific acceptance remains open."
+      "conditions": "YBCO author-v1 calibration; weight-analysis precision belongs to oxygen x, not plane doping p. The slightly overdoped branch and chain-order assumptions are required.",
+      "verificationScope": "Selected author v1 pp.1–3 read; pp.2–3 visually inspected. Reference branch arithmetic checked; no raw magnetization/lattice refit or final-version equivalence claimed.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Liang author v1 pp.2–3 supplies oxygen precision, ordered preparations, probe criteria, Tc,max and the selected overdoped reference. The second algebraic root is calculated here to expose branch ambiguity; it is not a competing measured hole concentration."
     },
     {
       "id": "scwiki-e2-claim-experimental-criteria-3",
@@ -245,13 +248,15 @@
     {
       "id": "scwiki-e2-claim-experimental-criteria-4",
       "sectionId": "experimental-criteria",
-      "statement": "Li's nickelate study concerns 8–10 nm films on SrTiO3, capped and reduced from perovskite precursors. Its superconducting compositions lie inside $0.125<x<0.25$. Figure 2 defines two temperatures at 10% and 90% of each sample's resistance at 20 K; symbols average multiple samples and error bars show extrema. The comparison cuprate curve instead uses 50%. These are unequal criteria. The 20 K normalization is not a superconducting transition, and the sign-changing Hall response is interpreted through multiple bands.",
+      "statement": "Li's nickelate study uses 8–10 nm films on SrTiO3, capped and reduced from perovskite precursors. The reported preparation couples approximately 25 nm caps to 280°C for 4–6 h and approximately 2 nm caps to 260°C for 1–3 h. The source reports no notable differences between those cap groups at the same composition; these are its preparation conditions, not a universal synthesis prescription. The in-plane lattice constants are locked to the substrate at 3.91 Å in the checked measurements.\n\nThe sampled superconducting compositions are $x=0.15$, $0.175$, $0.20$ and $0.225$, inside the reported $0.125<x<0.25$ dome. Figure 2 defines $T_{c,10\\%R}$ and $T_{c,90\\%R}$ using 10% and 90% of each sample's resistance at 20 K. Symbols average multiple samples at the same $x$; error bars span the observed extrema, not a stated standard error or confidence interval. The comparison cuprate curve uses a 50% criterion. These temperatures cannot be pooled as one uniform definition of $T_c$.\n\nFor the sampled $x=0$, $0.10$, $0.125$ and $0.25$ films, the caption reports no superconducting sign down to below 50 mK. That is a finite measurement bound, not an exact zero transition temperature or a precisely located continuous phase boundary. The 20 K resistance reference is also not a transition. No numerical nickelate $T_c$ is digitized here, and the small Hall response remains interpreted through multiple bands.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-c636cc691b7ff013"
       ],
-      "conditions": "Formula convention, nominal versus measured composition, oxygen/order history, sample and probe-specific criteria remain distinct. Formal valence and simple Hall models are not direct carrier measurements.",
-      "verificationScope": "Selected primary passages, figures and bounded algebra; full scientific acceptance remains open."
+      "conditions": "Specific capped, reduced thin-film series on SrTiO3. Preserve sampled composition, specimen, criterion, reference temperature and range meaning; below-50-mK bound is not Tc=0.",
+      "verificationScope": "Selected author v2 pp.2–4 and p.12 read; pp.3/12 visually inspected. Full supplement, final comparison, raw measurements and continuous-boundary inference remain outside scope.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Li author v2 pp.3–4 and Fig.2/p.12 distinguish cap-dependent preparation, substrate constraint, sample selection, resistance fractions and extrema. No new curve fit or boundary interpolation."
     },
     {
       "id": "scwiki-e2-claim-limits-and-disputes-1",
@@ -290,16 +295,16 @@
     {
       "id": "scwiki-e2-claim-discovery-implications-1",
       "sectionId": "discovery-implications",
-      "statement": "Store nominal and measured composition separately, including the chemical formula convention, analytical method, uncertainty and spatial variation. Link each transition to its specimen, phase, oxygen/reduction history, substrate or strain, measurement criterion and source version. Keep Hall-derived model parameters separate from valence arithmetic. Prioritize reproducible composition–structure–property relationships and independent magnetic or thermodynamic checks before ranking a tuning series. The calculations here verify notation and algebra, not an optimal synthesis or a carrier-density calibration.",
-      "evidenceType": "theory",
+      "statement": "Compare the quantities before comparing the domes:\n\n| Reported quantity | Preserve in a reusable record | Do not substitute |\n| --- | --- | --- |\n| YBCO oxygen $x$ | Weight-analysis precision, chain-order preparation and specimen | Direct planar hole concentration $p$ |\n| YBCO lattice calibration | 22°C lattice measurement, empirical model and chosen branch | An independent carrier-density measurement |\n| Nickelate 10% and 90% resistance thresholds | Each fraction and the same sample's 20 K reference | Cuprate 50% thresholds or magnetic midpoints |\n| Nickelate figure error bars | Sample extrema at fixed composition | Standard error or a stated confidence interval |\n| No observed transition below 50 mK | Sampled compositions and the reported measurement bound | An exact $T_c=0$ or a continuous phase boundary |\n\nThis table is an editorial comparison of the checked experiments. Keep nominal composition, measured composition, formal valence and transport-model parameters separate; link each value to a specimen, preparation, probe and source version. Reduction, annealing or a static measurement alone is not this review's evidence of thermodynamic equilibrium. The two newly checked YBCO/nickelate records therefore use **unknown** equilibrium, without asserting nonequilibrium. The calculations verify only branch arithmetic; they do not optimize a synthesis or validate a carrier-density calibration.",
+      "evidenceType": "editorial-analysis",
       "sourceIds": [
         "source-e24ef58054ac9b71",
-        "source-cf1286d7701502f2",
-        "source-b9e77d2ee024ff3b",
         "source-c636cc691b7ff013"
       ],
-      "conditions": "Formula convention, nominal versus measured composition, oxygen/order history, sample and probe-specific criteria remain distinct. Formal valence and simple Hall models are not direct carrier measurements.",
-      "verificationScope": "Selected primary passages, figures and bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep the experiment, criterion, composition definition, calibration branch and meaning of an uncertainty attached to the reported value.",
+      "verificationScope": "Selected source text and four source pages visually checked; author interpretation only, not independent scientific acceptance.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial reuse rules derived from contrasting Liang author v1 pp.2–3 and Li author v2 pp.3–4/12. No additional measurement, independent calibration or equilibrium determination."
     }
   ],
   "corrections": [
@@ -310,6 +315,12 @@
       "scope": "Original publisher title/abstract and independent formula-expansion algebra; full methods unavailable.",
       "originalSourceLines": [],
       "targetSectionId": "scope"
+    },
+    {
+      "id": "scwiki-e2-correction-observation-and-equilibrium",
+      "description": "Two reviewed YBCO/nickelate records no longer assert an unverified equilibrium state. Nickelate sample extrema and the below-50-mK non-observation bound are explicit; the added measurement record has null Tc and no invented exact base temperature.",
+      "sourceId": "source-c636cc691b7ff013",
+      "scope": "Scoped source-interpretation correction; no new experiment or phase determination."
     }
   ],
   "equationChecks": [
@@ -353,11 +364,11 @@
       "reportedTemperatureK": 85.3,
       "tcK": 85.3,
       "temperatureKind": "transition",
-      "temperatureNote": "Calibration reference; hole count inferred through an empirical overdoped branch, not directly measured.",
+      "temperatureNote": "Calibration reference; hole count inferred through an empirical overdoped branch, not directly measured. Thermodynamic equilibrium is unverified in the checked source scope.",
       "criterion": "field-cooled-magnetization-midpoint",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "1 Oe along c",
       "sourceId": "source-e24ef58054ac9b71",
       "aliases": [
@@ -393,12 +404,32 @@
       "reportedTemperatureK": 20,
       "tcK": null,
       "temperatureKind": "normal-state",
-      "temperatureNote": "Reference temperature for 10% and 90% resistive thresholds; not Tc. No numerical transition temperature digitized from the figure.",
+      "temperatureNote": "Reference temperature for 10% and 90% resistive thresholds; not Tc. No numerical transition temperature digitized from the figure. Thermodynamic equilibrium is unverified in the checked source scope.",
       "criterion": "resistance-normalization-temperature",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Hall-bar magnetotransport",
+      "sourceId": "source-c636cc691b7ff013",
+      "aliases": [
+        "nickelate",
+        "nickelates"
+      ]
+    },
+    {
+      "id": "scwiki-e2-material-5",
+      "formula": "Nd1−xSrxNiO2",
+      "sample": "Li author v2 films at sampled x = 0, 0.10, 0.125 and 0.25",
+      "recordType": "experiment",
+      "reportedTemperatureK": null,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Figure 2 reports no superconducting sign down to below 50 mK. The exact base temperature is not specified in this caption; 50 mK is a bound, not a measured Tc or a claim of Tc = 0. Thermodynamic equilibrium is unverified.",
+      "criterion": "no-transition-observed-within-measurement-range",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Thin-film resistance; sampled-composition non-observation",
       "sourceId": "source-c636cc691b7ff013",
       "aliases": [
         "nickelate",
