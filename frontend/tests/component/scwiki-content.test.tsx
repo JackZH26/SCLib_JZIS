@@ -1594,7 +1594,13 @@ it("preserves fulleride polymorph and transport criteria while excluding driven 
  expect(fcc.map(c=>[c.tcK,c.pressureGPa])).toEqual([[25.6,{min:.13,max:.13}],[29.7,{min:.22,max:.22}],[35,{min:.7,max:.7}]]);
  const film=a.materialCases.filter(c=>c.formula==="Rb2.98C60");
  expect(film.map(c=>[c.tcK,c.criterion])).toEqual([[26.4,"local-resistivity-maximum"],[14.5,"resistivity-derivative-threshold"]]);
- expect(a.materialCases.find(c=>c.reportedTemperatureK===100)?.tcK).toBeNull();
+ const driven=a.materialCases.filter(c=>c.reportedTemperatureK===100);
+ expect(driven).toHaveLength(2);
+ for(const record of driven){
+  expect(record.tcK).toBeNull();expect(record.equilibrium).toBe("transient");
+  expect(searchArticles(searchIndex().entries,"fullerides",{criterion:record.criterion}).some(a=>a.code==="D9")).toBe(true);
+  expect(searchArticles(searchIndex().entries,"fullerides",{tcMin:1,criterion:record.criterion}).some(a=>a.code==="D9")).toBe(false);
+ }
  expect(a.materialCases.find(c=>c.reportedTemperatureK===2.2)?.tcK).toBeNull();
  expect(searchArticles(searchIndex().entries,"fullerides",{tcMin:30,pressureRegime:"high"}).some(a=>a.code==="D9")).toBe(true);
  expect(searchArticles(searchIndex().entries,"fullerides",{tcMin:36}).some(a=>a.code==="D9")).toBe(false);

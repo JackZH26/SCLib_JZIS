@@ -1,6 +1,8 @@
 ## Scope
 
-Alkali-doped fullerides join molecular vibrations, narrow electronic bands and strong local interactions in one material family. In ideal A₃C₆₀, three donated electrons half-fill the three molecular t₁ᵤ orbitals, whose spin capacity is six. Potassium, rubidium and cesium compounds must be identified by stoichiometry, crystal structure and preparation. Pressure-induced equilibrium superconductivity and light-driven responses are separate evidence classes. [R5](#ref-source-e2b9d469a7c556df) [R7](#ref-source-07be806c0002c690)
+Alkali-doped fullerides combine molecular vibrations, narrow electronic bands and strong local interactions. Ideal A₃C₆₀ has three donated electrons in a molecular t₁ᵤ manifold with six spin-orbital states: half-filling describes electron counting, not a guarantee of metallic transport or superconductivity. The same nominal Cs₃C₆₀ composition supports fcc and A15 packings with different magnetic and pressure-dependent superconducting behavior. Specify composition, structure, preparation and measurement conditions before comparing temperatures. Pressure-induced equilibrium superconductivity and optically driven responses are separate evidence classes. [R5](#ref-source-e2b9d469a7c556df) [R4](#ref-source-5e6d3e7ed715ad6a) [R7](#ref-source-07be806c0002c690)
+
+Nominal composition is not a sample assay. Ganin's fcc-rich powder had refined composition Cs₂.₉₀₁₍₆₎C₆₀ and an fcc fraction of about 86%, with minority phases. Its ambient-pressure magnetic insulating behavior illustrates why three donated electrons alone cannot define the phase. These preparation and phase-fraction qualifications accompany the idealized A₃C₆₀ description. [R4](#ref-source-5e6d3e7ed715ad6a)
 
 The 1991 potassium discovery already illustrates why one temperature is insufficient: the abstract reports a thin-film resistive onset near 16 K and essentially vanishing resistance by 5 K, while bulk magnetic and microwave measurements indicate an 18 K transition. The subsequent rubidium report gives a maximum of 28 K from bulk magnetic and microwave evidence. These abstract-level checks establish historical observations; they do not constitute a complete reassessment of the original specimens. [R1](#ref-source-51b1a52d16139e58) [R2](#ref-source-0fb5ae1290bd2998)
 
@@ -24,7 +26,14 @@ That experiment uses Raman analysis with relative scattering cross sections to e
 
 ## Limits and disputes
 
-Mitrano's optical study and Budden's longer-lived driven response concern pumped K₃C₆₀. A finite-frequency inductive response and suppressed transient resistance constrain the nonequilibrium state, but do not by themselves establish an equilibrium thermodynamic transition. Budden's 100 K operating condition is therefore recorded as a transient-response temperature with no equilibrium Tc. Its pulsed two-terminal readout and static four-terminal contact calibration are distinct measurement steps. Pulse conditions, delay, lifetime and alternative conductivity models remain essential. [R6](#ref-source-6ee3670220e24ff1) [R7](#ref-source-07be806c0002c690)
+Mitrano's optical study and Budden's longer-lived driven response concern pumped K₃C₆₀. A finite-frequency inductive response and suppressed transient resistance constrain the nonequilibrium state, but do not by themselves establish an equilibrium thermodynamic transition. Budden's final Figure 4 separates two measurements at a 100 K base temperature and approximately 25 mJ cm⁻² pump fluence:
+
+| Measurement | What the reported value means |
+|---|---|
+| Optical, Fig. 4a; 200 ps pump | Zero-frequency resistivity extrapolated from a Drude–Lorentz fit to transient optical conductivity; error bars reflect the fit confidence interval. |
+| Electrical, Fig. 4b; 75 ps pump | Transient two-terminal resistance after contact correction from a separate static four-terminal measurement; the shaded band estimates calibration error. |
+
+The electrical readout uses a 1 ns voltage probe pulse. The corrected resistance is compatible with zero within the stated calibration uncertainty, and recovers on a tens-of-nanoseconds timescale. This supports the authors' assignment of a metastable superconducting state; it does not turn the 100 K measurement condition into an equilibrium Tc. Neither the pump duration nor the probe duration is the state lifetime. Both records retain `transient-response` temperatures with no equilibrium Tc. Complete supplement review, raw-data refitting and comparison of alternative conductivity models remain open. [R6](#ref-source-6ee3670220e24ff1) [R7](#ref-source-07be806c0002c690)
 
 The historical hole-doped C₆₀ claim at 52 K was retracted on 6 March 2003. The original paper and its notice are retained together for traceability; the withdrawn value is excluded from experimental transition records. The notice identifies concerns about device-measurement data following an independent investigation. A citation in an older, otherwise valid paper does not restore the withdrawn claim. [R9](#ref-source-091fb85b144daad9) [R10](#ref-source-8822fee6435cf8cc)
 
