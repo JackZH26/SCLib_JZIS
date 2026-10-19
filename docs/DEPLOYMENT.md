@@ -180,6 +180,19 @@ through the GitHub API and rejects a run from another workflow, branch, event,
 or failed conclusion. Manual deployment therefore cannot bypass tests, scans,
 signatures, or immutable digests.
 
+The deployment also runs `scripts/verify_scwiki_release.py` before persisting
+the new release image pins. It compares the public Wiki against that checkout:
+every article revision, the full research-note payload, representative core,
+handbook and open-question articles, Markdown, topic links and the old search
+redirect. Requests are read-only, paced and size-bounded; redirects and paginated
+URLs cannot escape the configured origin. A noindex exception is available only
+for loopback previews and is never passed by production deployment. JSON reports
+are retained under `/var/log/sclib/scwiki-release-*.json`. A failure stops the
+workflow before pin persistence; it does not automatically roll back already
+replaced application containers. Use the prepared rollback procedure and record
+the actual recovery checks. This HTTP verification does not replace authenticated
+browser acceptance, science review, or a database restore rehearsal.
+
 Before the first automated deployment, complete all three workload-identity
 credentials, backup configuration and restore drill, and the monitoring sample
 required by [`OBSERVABILITY_SLO.md`](OBSERVABILITY_SLO.md). The deployment gate
