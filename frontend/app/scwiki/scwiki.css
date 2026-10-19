@@ -122,6 +122,7 @@
 .scwiki-topic-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:2rem;align-items:start}
 .scwiki-topic-grid[data-packed="true"]{grid-auto-rows:8px;grid-auto-flow:row dense;row-gap:0}
 .scwiki-topic-slot{min-width:0}
+@media(min-width:901px){.scwiki-topic-slot:nth-child(4){grid-column:span 2}.scwiki-topic-slot:nth-child(4) ul{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));column-gap:2rem}}
 .scwiki-topic-number{font-size:.75rem;color:var(--accent);font-variant-numeric:tabular-nums;padding-bottom:.6rem}
 .scwiki-topic-group h3{font-size:1.08rem;font-weight:650;line-height:1.4;margin-bottom:.5rem}
 .scwiki-topic-group>p:not(.scwiki-topic-number){font-size:.8rem;line-height:1.75;color:var(--text-secondary)}
