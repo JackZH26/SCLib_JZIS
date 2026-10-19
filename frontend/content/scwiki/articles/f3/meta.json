@@ -1,0 +1,327 @@
+{
+  "id": "scwiki-f3",
+  "topicId": "scwiki-topic-f3",
+  "code": "F3",
+  "slug": "chern-number",
+  "title": "Chern number: gapped subspaces and superconducting topology",
+  "summary": "Define the selected quantum subspace, test numerical convergence, and distinguish normal-state Hall response from a superconducting BdG invariant.",
+  "aliases": [
+    "Chern number",
+    "Chern invariant",
+    "TKNN",
+    "BdG Chern number",
+    "Fukui Hatsugai Suzuki",
+    "bulk-edge correspondence"
+  ],
+  "evidenceTypes": [
+    "theory"
+  ],
+  "relatedCodes": [
+    "F2",
+    "F1",
+    "C7",
+    "B11"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T14:06:37.463989+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected FHS author equations, Read–Green topology and edge assumptions, reused response-convention checks, and independent two-band lattice examples.",
+    "limitations": [
+      "Complete scientific acceptance and full final-version comparisons remain open.",
+      "TKNN, Haldane 1988 and Hatsugai 1993 are original publisher-abstract checks, not full derivation audits.",
+      "No material-specific BdG solution, edge spectrum, interacting invariant or experimental transition temperature is reconstructed.",
+      "Finite-grid integers alone do not establish continuum convergence or a general unsampled spectral gap."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "F_quantum_geometry/F3_Chern_number.md",
+    "sha256": "b5346bfc8ac17025b41090139c1ed586770f11ea4285497c20480cec749c011f",
+    "sourceId": "file-e25d47b4fd6f24ad"
+  },
+  "references": [
+    {
+      "id": "source-5052964ec3dcf748",
+      "doi": "10.1103/PhysRevLett.49.405",
+      "title": "Quantized Hall Conductance in a Two-Dimensional Periodic Potential",
+      "year": 1982,
+      "url": "https://doi.org/10.1103/PhysRevLett.49.405",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.49.405",
+        "note": "Published 9 August 1982. Original abstract establishes Kubo quantization with Fermi energy in gap; fulltext retrieval returned 401, so full original derivation not claimed."
+      }
+    },
+    {
+      "id": "source-9b742057f40ad284",
+      "doi": "10.1103/PhysRevLett.61.2015",
+      "title": "Model for a Quantum Hall Effect without Landau Levels: Condensed-Matter Realization of the \"Parity Anomaly\"",
+      "year": 1988,
+      "url": "https://doi.org/10.1103/PhysRevLett.61.2015",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.61.2015",
+        "note": "Published 31 October 1988. Original abstract establishes lattice model without external field; detailed honeycomb derivation not audited here."
+      }
+    },
+    {
+      "id": "source-98d514f68fd6edc2",
+      "doi": "10.1103/PhysRevLett.71.3697",
+      "title": "Chern number and edge states in the integer quantum Hall effect",
+      "year": 1993,
+      "url": "https://doi.org/10.1103/PhysRevLett.71.3697",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.71.3697",
+        "note": "Published 29 November 1993. Original abstract identifies square lattice, rational magnetic flux and bulk/edge winding relation; fulltext endpoint 401, complete proof not read."
+      }
+    },
+    {
+      "id": "source-a33c639b7db4f05a",
+      "doi": "10.1103/PhysRevB.61.10267",
+      "title": "Paired states of fermions in two dimensions with breaking of parity and time-reversal symmetries and the fractional quantum Hall effect",
+      "year": 2000,
+      "url": "https://doi.org/10.1103/PhysRevB.61.10267",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-topology-and-edge-passages",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/9906453v3",
+        "note": "Author v3 24 January 2000; published 15 April 2000. Selected introduction p.4, section IIA pp.5–7 and IIB pp.8–9 read, including fixed-gap edge assumptions. Full journal comparison and self-consistent material calculation open."
+      }
+    },
+    {
+      "id": "source-688ad98fc33198c0",
+      "doi": "10.1143/JPSJ.74.1674",
+      "title": "Chern Numbers in Discretized Brillouin Zone: Efficient Method of Computing (Spin) Hall Conductances",
+      "year": 2005,
+      "url": "https://doi.org/10.1143/JPSJ.74.1674",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-discrete-invariant-equations",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0503172v2",
+        "note": "Author v2 6 April 2005, selected pp.1–3 read; p.2 Eqs.7–14 visually inspected. Imaginary connection, principal logarithm, nonzero overlap, gap/mesh conditions and determinant-link extension checked. Full final-version comparison open."
+      }
+    },
+    {
+      "id": "source-113ed6da444bd207",
+      "doi": "10.1103/PhysRevB.59.14915",
+      "title": "Wave-packet dynamics in slowly perturbed crystals: Gradient corrections and Berry-phase effects",
+      "year": 1999,
+      "url": "https://doi.org/10.1103/PhysRevB.59.14915",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-response-convention",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/9908003v1",
+        "note": "Reuse F2 selected section IIIA–B Eq.3.4–3.9; electron charge and current sign restored explicitly. Published 15 June 1999; author v1 31 July 1999. Full journal comparison open."
+      }
+    },
+    {
+      "id": "source-381ad96944c0fa47",
+      "doi": "10.1103/PhysRevLett.93.206602",
+      "title": "Berry Curvature on the Fermi Surface: Anomalous Hall Effect as a Topological Fermi-Liquid Property",
+      "year": 2004,
+      "url": "https://doi.org/10.1103/PhysRevLett.93.206602",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-metallic-occupation",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0408417v5",
+        "note": "Reuse F2 author v5 selected pp.1–3 and p.1 visual; nonquantized metallic contribution distinguished from integer band invariant. Opposite connection convention translated; full final comparison open."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-f3-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A Chern number characterizes a smooth, isolated family of quantum subspaces over a closed two-dimensional parameter surface. In a periodic crystal that surface can be the Brillouin-zone torus. The normal-state occupied-electron subspace and the negative-energy Bogoliubov–de Gennes (BdG) subspace are different constructions: calculate and label them separately. Local Berry curvature, an integer band invariant and an observed transport coefficient should not be used interchangeably.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-5052964ec3dcf748",
+        "source-a33c639b7db4f05a",
+        "source-688ad98fc33198c0"
+      ],
+      "conditions": "Selected subspace and gap, +i connection, orientation and response convention; model results separated from material evidence.",
+      "verificationScope": "Selected primary passages and bounded independent lattice checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f3-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The TKNN work connects a gap in a two-dimensional electron problem to quantized Hall conductance. Haldane's later lattice model shows that Landau levels are not required for a nonzero quantized Hall response. These are foundational model results, not evidence that a normal-state Chern band necessarily becomes a topological superconductor. Here their original publisher abstracts establish this historical context; complete original-paper audits remain open.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-5052964ec3dcf748",
+        "source-9b742057f40ad284"
+      ],
+      "conditions": "Selected subspace and gap, +i connection, orientation and response convention; model results separated from material evidence.",
+      "verificationScope": "Selected primary passages and bounded independent lattice checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f3-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Use the convention of the [Berry-curvature article](/scwiki/berry-curvature): $\\mathcal A_i=i\\Psi^\\dagger\\partial_i\\Psi$ for an orthonormal frame of the selected subspace, $\\mathcal F_{xy}=\\partial_x\\mathcal A_y-\\partial_y\\mathcal A_x-i[\\mathcal A_x,\\mathcal A_y]$, and $C=(2\\pi)^{-1}\\int_{\\rm BZ}\\mathrm{Tr}\\,\\mathcal F_{xy}\\,d^2k$. The subspace must remain separated from its complement throughout the Brillouin zone. Degeneracies inside the selected multiplet do not invalidate its total invariant, but arbitrary individual-band assignments at those degeneracies can fail.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-688ad98fc33198c0"
+      ],
+      "conditions": "Selected subspace and gap, +i connection, orientation and response convention; model results separated from material evidence.",
+      "verificationScope": "Selected primary passages and bounded independent lattice checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f3-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A nonzero invariant obstructs a single globally smooth periodic frame. One uses compatible local frames or a gauge-invariant discrete construction. For a continuous deformation that preserves the subspace gap and the closed integration surface, the integer cannot change. This is a statement about the quantum-state bundle, not an identification of momentum-space Berry curvature with the Gaussian curvature of a physical surface.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-688ad98fc33198c0"
+      ],
+      "conditions": "Selected subspace and gap, +i connection, orientation and response convention; model results separated from material evidence.",
+      "verificationScope": "Selected primary passages and bounded independent lattice checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f3-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For the clean, zero-temperature filled-electron-band response, with electron charge $-e$, $e>0$, positive $(k_x,k_y)$ orientation and $j_x=\\sigma_{xy}E_y$, the convention used here gives $\\sigma_{xy}=-Ce^2/h$. This sign follows the anomalous velocity and charge current used in F2; reversing orientation or the curvature definition changes the displayed relation. A partially occupied metallic band need not give an integer Hall response even when its complete band has an integer Chern number. Do not apply this electron charge-transport formula to a BdG integer without deriving the appropriate physical response.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-5052964ec3dcf748",
+        "source-a33c639b7db4f05a",
+        "source-113ed6da444bd207",
+        "source-381ad96944c0fa47"
+      ],
+      "conditions": "Selected subspace and gap, +i connection, orientation and response convention; model results separated from material evidence.",
+      "verificationScope": "Selected primary passages and bounded independent lattice checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f3-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a bounded numerical example, take $H=\\sin k_x\\,\\sigma_x+\\sin k_y\\,\\sigma_y+(m+\\cos k_x+\\cos k_y)\\sigma_z$, with dimensionless momenta and a fixed energy unit. The lower-band curvature is $\\Omega_{xy}=\\mathbf d\\cdot(\\partial_x\\mathbf d\\times\\partial_y\\mathbf d)/(2|\\mathbf d|^3)$ in our convention. Analytic gap zeros occur only at $m=-2,0,2$. The lower-band values at $m=-3,-1,1,3$ are respectively $0,1,-1,0$. These are illustrative Hamiltonian results, not measured material properties.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-688ad98fc33198c0",
+        "source-113ed6da444bd207"
+      ],
+      "conditions": "Selected subspace and gap, +i connection, orientation and response convention; model results separated from material evidence.",
+      "verificationScope": "Selected primary passages and bounded independent lattice checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f3-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "We compare normalized-overlap lattice sums on $12^2$, $24^2$ and $48^2$ meshes against an independently integrated analytic curvature on $64^2$ and $128^2$ meshes. Pointwise phase changes leave the result unchanged; reversing one momentum direction reverses its sign. We also reject the analytically identified gap-closing points. A positive gap sampled on a finite grid alone would not exclude an unsampled closing in a general Hamiltonian.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-688ad98fc33198c0"
+      ],
+      "conditions": "Selected subspace and gap, +i connection, orientation and response convention; model results separated from material evidence.",
+      "verificationScope": "Selected primary passages and bounded independent lattice checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f3-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "For a normal-state Hall interpretation, identify the carrier subspace, occupation, bulk gap and response convention. Hatsugai's original work relates the bulk TKNN integer to edge-state winding for a square-lattice quantum Hall model. The measured presence of an edge signal is not by itself a complete reconstruction of that model's invariant; boundary conditions, additional states and the probe must be addressed. The full edge-state proof is not reproduced here.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-5052964ec3dcf748",
+        "source-98d514f68fd6edc2"
+      ],
+      "conditions": "Selected subspace and gap, +i connection, orientation and response convention; model results separated from material evidence.",
+      "verificationScope": "Selected primary passages and bounded independent lattice checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f3-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "For superconductivity, specify the Nambu basis, negative-energy projector and a bulk quasiparticle gap. Read and Green distinguish weak and strong pairing in a spinless continuum chiral p-wave model: positive and negative chemical potential give distinct phases, separated at zero chemical potential under their assumptions. Their weak-pairing phase is connected to weak coupling, but the two phrases are not synonymous. Their selected edge calculation uses a prescribed gap function and a domain wall between the phases to obtain a chiral Majorana branch; it does not solve a material-specific self-consistent edge.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a33c639b7db4f05a"
+      ],
+      "conditions": "Selected subspace and gap, +i connection, orientation and response convention; model results separated from material evidence.",
+      "verificationScope": "Selected primary passages and bounded independent lattice checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f3-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "A time-reversal-breaking signal does not establish a full quasiparticle gap or a nonzero BdG Chern number. A zero-bias feature likewise does not supply the negative-energy projector or identify a chiral boundary mode. Charge Hall response is especially delicate: Read and Green explicitly discuss collective response and the order of limits, rather than equating it to the paired-state topological integer. No sample-specific transition-temperature records are assigned to this theoretical article.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a33c639b7db4f05a"
+      ],
+      "conditions": "Selected subspace and gap, +i connection, orientation and response convention; model results separated from material evidence.",
+      "verificationScope": "Selected primary passages and bounded independent lattice checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f3-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "In the Fukui–Hatsugai–Suzuki method, normalized overlaps define links and a principal-branch logarithm defines plaquette flux. Overlaps must not vanish. The finite-grid integer is gauge invariant, but agreement with the continuum requires adequate resolution and an isolated subspace. The multiplet version uses the determinant of the overlap matrix. In our $+i$ connection convention, the curvature flux is minus the oriented overlap-product phase; translate the original paper's imaginary-connection convention explicitly.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-688ad98fc33198c0"
+      ],
+      "conditions": "Selected subspace and gap, +i connection, orientation and response convention; model results separated from material evidence.",
+      "verificationScope": "Selected primary passages and bounded independent lattice checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f3-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Selected author pages and a visual check of the discrete equations support this account. Full final-version comparisons, the TKNN and Hatsugai derivations, interacting/disordered invariants, edge-spectrum computations and material data remain outside the completed checks. Complete scientific acceptance has not been reached. A lattice-model regression is neither an experimental replication nor proof that every proposed topological superconductor is correctly classified.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-5052964ec3dcf748",
+        "source-98d514f68fd6edc2",
+        "source-a33c639b7db4f05a",
+        "source-688ad98fc33198c0"
+      ],
+      "conditions": "Selected subspace and gap, +i connection, orientation and response convention; model results separated from material evidence.",
+      "verificationScope": "Selected primary passages and bounded independent lattice checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f3-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "A useful report names the Hamiltonian, selected projector, orientation, gap criterion, mesh sequence and independent checks before giving an integer. For superconducting candidates, repeat the analysis for the actual pairing structure and compare appropriate boundary or response predictions with measurements. Preserve the distinction between a promising normal band, a model BdG phase and an established property of a specimen.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a33c639b7db4f05a",
+        "source-688ad98fc33198c0"
+      ],
+      "conditions": "Selected subspace and gap, +i connection, orientation and response convention; model results separated from material evidence.",
+      "verificationScope": "Selected primary passages and bounded independent lattice checks; full scientific acceptance open."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "C=(2\\pi)^{-1}\\int\\mathrm{Tr}\\,\\mathcal F_{xy}\\,d^2k",
+      "check": "Four lower-band model regimes, three overlap meshes, two independent analytic-curvature meshes, phase gauges and orientation reversal. Analytic gap-closing masses rejected."
+    }
+  ],
+  "materialCases": [],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 59,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source retained; use explicit Hall/curvature sign and subspace conventions, original numerical assumptions and separate model versus material claims."
+    }
+  ]
+}

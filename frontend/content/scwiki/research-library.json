@@ -1,0 +1,1069 @@
+{
+  "schemaVersion": "1.0",
+  "notes": [
+    {
+      "id": "romero-parallel-conduction",
+      "title": "Parallel conduction and Planckian scattering in FeTeSe",
+      "summary": "Connect optical parallel-channel fits with Planckian rate conventions and nonlinear resistance, while keeping the pairing mechanism unresolved.",
+      "kind": "research-note-and-cross-topic-analysis",
+      "modifiedAt": "2026-10-19T00:19:22.328955+00:00",
+      "aliases": [
+        "Romero",
+        "FeTeSe",
+        "parallel conduction channels",
+        "Planckian scattering",
+        "arXiv:2505.00623"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory",
+        "hypothesis"
+      ],
+      "relatedCodes": [
+        "A8",
+        "H2",
+        "H8",
+        "B5",
+        "D4"
+      ],
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Selected author-version passages; final-version comparison and independent review pending.",
+        "limitations": [
+          "Author self-review; no independent scientific review or raw-data reproduction.",
+          "Selected preprint passages, not a complete final published-version comparison.",
+          "The missing-area normalization and precise condensate fractions remain unresolved."
+        ]
+      },
+      "sections": [
+        {
+          "id": "measurement",
+          "title": "What was measured",
+          "markdown": "Romero and colleagues analyzed complex terahertz conductivity alongside DC resistance in two FeTe1−xSex films. Their model separates a narrow Drude response from a much broader background. Within the measured frequency window, the narrow-channel width is approximately linear in temperature, while the total resistance need not be. The inferred condensate weight is mainly associated with that channel. This is an author-version interpretation, not a unique determination of the pairing interaction.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "romero-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "frequency-convention",
+          "title": "Keep the frequency convention explicit",
+          "markdown": "For a Drude denominator $\\Gamma-i\\nu$, both variables use ordinary frequency. The corresponding pole decay rate is $\\gamma=2\\pi\\Gamma$. Thus $\\Gamma=\\alpha k_BT/h$ and $\\gamma=\\alpha k_BT/\\hbar$ express the same coefficient after conversion. The inherited reading note mixed these conventions. Its numerical expressions must not be copied unchanged.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "romero-v1"
+          ],
+          "sourceRelationship": "context-for-local-derivation"
+        },
+        {
+          "id": "parallel-channels",
+          "title": "Why parallel channels matter",
+          "markdown": "As a separate local illustration, take fixed $S>0$, $\\sigma_0\\geq0$, $c>0$, $\\Gamma_0\\geq0$ and $T>0$:\n\n$$\\sigma_{\\rm DC}=\\sigma_0+\\frac{S}{\\Gamma_0+cT},\\qquad \\rho_{\\rm DC}=\\frac{\\Gamma_0+cT}{S+\\sigma_0(\\Gamma_0+cT)}.$$\n\nDifferentiation gives $d\\rho_{\\rm DC}/dT=cS/[S+\\sigma_0(\\Gamma_0+cT)]^2$. A linear narrow-channel rate therefore need not give linear total resistivity. When $\\sigma_0=0$, this model does recover a linear resistivity. The approximation $\\sigma_{\\rm DC}=a+b/T$ additionally neglects $\\Gamma_0$ and assumes sufficiently constant amplitudes. This algebra is not a fit to the experimental data.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "romero-v1"
+          ],
+          "sourceRelationship": "context-for-local-derivation"
+        },
+        {
+          "id": "limits",
+          "title": "What remains unresolved",
+          "markdown": "The broad contribution is not resolved as an independent complete Drude peak. Its microscopic origin and a unique relaxation coefficient are therefore not established by this fit. The manuscript discusses nematic pairing qualitatively and leaves the mechanism open. Its printed missing-area prefactor requires comparison with the final paper and normalization before precise condensate fractions are imported. No third-party figures or full text are reproduced here.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "romero-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        }
+      ],
+      "sources": [
+        {
+          "id": "romero-v1",
+          "title": "Planckian scattering and parallel conduction channels in the iron chalcogenide superconductors FeTe1−xSex",
+          "url": "https://arxiv.org/abs/2505.00623v1",
+          "publicationStatus": "preprint",
+          "submittedAt": "2025-05-01",
+          "version": "v1; manuscript dated 2 May 2025",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected PDF pages 1–5; page 4 figure and equations inspected visually. Final-version comparison pending.",
+          "doi": null,
+          "authors": "Ralph Romero III, Hee Taek Yi, Seongshik Oh and N. P. Armitage",
+          "date": "2025-05-01",
+          "dateLabel": "Submitted",
+          "licenseUrl": null,
+          "licenseLabel": null
+        }
+      ],
+      "provenance": [
+        {
+          "path": "papers/CROSS_H2_H8_RomeroPlanckian.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "aef4a2f9efe186b0fc094ab424bba412128be75bae28d4c15fe6ad1797ba478e",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
+        },
+        {
+          "path": "papers/library/Romero_Planckian-FeTeSe_READING_NOTES.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "c26198323fa69f7603870d26b455aca4ee4ae4edbbf7aa9a94ce6bb8f7f4acd5",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
+        }
+      ],
+      "corrections": [
+        {
+          "issue": "Frequency convention",
+          "inherited": "Gamma denominator uses ordinary frequency nu but slope uses kBT/hbar.",
+          "resolution": "Use Gamma=Gamma0+alpha*kBT/h; gamma=2*pi*Gamma is the angular pole decay rate. Manuscript p3 and p4 Fig3."
+        },
+        {
+          "issue": "Composition label",
+          "inherited": "x labelled Se/Te ratio.",
+          "resolution": "x is Se fraction in FeTe(1-x)Se(x); the Se/Te ratio would be x/(1-x)."
+        },
+        {
+          "issue": "Residual-rate omission",
+          "inherited": "sigmaDC=sigma0+S/Gamma immediately equals a+b/T.",
+          "resolution": "Retain Gamma0; a+b/T is approximate when Gamma0 is negligible and S/background are sufficiently constant."
+        },
+        {
+          "issue": "Condensate attribution",
+          "inherited": "All condensate spectral weight and nematic pairing asserted too strongly.",
+          "resolution": "Author claims mainly slow-channel origin; pairing mechanism remains open on p4. Treat nematic comparison as qualitative."
+        },
+        {
+          "issue": "Sum-rule normalization",
+          "inherited": "Unqualified exact condensate fractions imported.",
+          "resolution": "Author p2 numerator implies integral pi*S/2, whereas p4 printed SU=pi/2*integral creates inconsistent normalization. Final-version/calibration comparison unresolved. Do not import fractions as validated measurements."
+        }
+      ],
+      "rights": "Original editorial summary and local explanatory calculations. Linked papers retain their own rights; no third-party figures or full text are reproduced."
+    },
+    {
+      "id": "bhatt-nickelate-strain-structure",
+      "title": "Nickelate strain: structural parallels, different mechanical paths",
+      "summary": "Compare measured lattice deformation, resistive criteria and orbital-model conclusions in strained La3Ni2O7 films without treating a structural correlation as a demonstrated pairing mechanism.",
+      "kind": "research-note-and-cross-topic-analysis",
+      "modifiedAt": "2026-10-19T00:19:22.329108+00:00",
+      "aliases": [
+        "Bhatt",
+        "La3Ni2O7",
+        "bilayer nickelate",
+        "epitaxial strain",
+        "multislice electron ptychography",
+        "t2g mixing"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory"
+      ],
+      "relatedCodes": [
+        "D5",
+        "E4",
+        "A1",
+        "B14"
+      ],
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Selected final published passages and figures, including transport, structural interpretation and methods. Supplement-wide and independent scientific review remain open.",
+        "limitations": [
+          "Author self-review; no independent review or reproduction of imaging, transport or DFT data.",
+          "The full supplementary analysis, data repository and correction history have not been audited.",
+          "Structural association and hypothetical distortion calculations do not establish a unique pairing mechanism."
+        ]
+      },
+      "sections": [
+        {
+          "id": "sample-series",
+          "title": "Read the sample series before the headline",
+          "markdown": "Bhatt and colleagues compare bilayer La3Ni2O7−δ films on four substrates. The final Figure 1 distinguishes nominal substrate mismatch from measured film strain. Negative values denote compression. The film on SLAO has a broad resistive transition; the other listed films do not establish superconductivity merely because one also has compressive strain.\n\n| Substrate | Nominal strain | Measured strain | Reported transport in this study |\n| --- | ---: | ---: | --- |\n| SLAO | −2.0% | −1.6% | Onset near 42 K; zero resistance around 2 K |\n| LAO | −1.2% | −0.9% | Metallic |\n| NGO | +0.7% | +0.6% | Metallic |\n| STO | +1.9% | +1.8% | Insulating |\n\nThese temperature endpoints belong to the SLAO film's ambient-pressure transport report, cited by the structural paper to Ko and colleagues. They are different criteria, not two interchangeable values of a precisely established bulk transition. The growth methods also differ: SLAO uses pulsed-laser deposition, whereas the main comparison films on LAO, NGO and STO use molecular-beam epitaxy. The authors do not definitively exclude sensitivity to synthesis details.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "bhatt-2026"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "strain-definition",
+          "title": "Nominal mismatch is not the remaining film strain",
+          "markdown": "The methods define nominal mismatch as $\\epsilon_{\\rm nom}=(a_{\\rm sub}-a_{\\rm bulk})/a_{\\rm bulk}$, using the bulk pseudo-tetragonal reference $a_{\\rm bulk}=3.833$ Å. The substrate values are 3.756, 3.787, 3.858 and 3.905 Å for SLAO, LAO, NGO and STO. Direct arithmetic reproduces the rounded nominal percentages in the table; it does not calculate the film's measured relaxation.\n\nIn-plane compression and higher octahedral symmetry are common features identified in the superconducting film and pressurized bulk structures. Their out-of-plane responses differ: the film can expand along the stacking direction while a hydrostatically compressed bulk sample contracts. This contrast does not convert epitaxial strain into an equivalent pressure. Nor does it establish that the SLAO film has the largest c-axis among all substrates.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "bhatt-2026"
+          ],
+          "sourceRelationship": "mixed-source-and-local-derivation"
+        },
+        {
+          "id": "orbital-model",
+          "title": "What the orbital calculations do and do not establish",
+          "markdown": "The study decomposes structural changes into bond-length changes, internal-angle changes and rigid octahedral rotations. Calculations on those separated distortions are hypothetical controls, not independently prepared experimental samples. The reported suppression concerns local $t_{2g}$ admixture in predominantly $e_g$ low-energy bands; it is not a demonstration that the $d_{z^2}$ orbital disappears from the Fermi surface.\n\nThe final discussion says the importance of this reduced mixing for superconductivity remains to be established. Rotation effects are considered together with phenomenological Hubbard interactions. The calculations compare band structures, not a reproduced superconducting transition or a uniquely selected pairing mechanism. The metallic LAO film also has similar higher octahedral symmetry, so symmetry alone cannot be treated as a sufficient condition in this series.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "bhatt-2026"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "measurement-limits",
+          "title": "Keep local structure and superconductivity evidence distinct",
+          "markdown": "STEM cannot directly identify which microscopic regions are superconducting. The paper examines defects, mixed structural phases and variable oxygen occupancy that can affect bulk-sensitive transport and diffraction. Its methods coordinate microscopy preparation and measurements within three days of oxygen annealing to mitigate oxygen loss. That protocol is part of the evidence context, not proof of exact oxygen stoichiometry.\n\nThe study reports 40 distinct ptychography fields of view for bond analysis. Thousands of bonds within those images are not thousands of independently synthesized superconducting specimens. A low-temperature reversal of oxygen-distortion direction, analogous to that reported in bulk, remains unresolved for the films. Raw imaging reconstructions, transport data, full supplements and DFT convergence have not been reproduced in this editorial check.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "bhatt-2026"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "comparison",
+          "title": "Use the structural comparison as a constraint",
+          "markdown": "When comparing a new film, retain its growth and annealing history, composition, reference lattice, measured strain, local structural probe and transition criterion. Compare nominally similar samples before attributing transport changes solely to strain. This note connects the nickelate, strain and transport articles; it does not supply a validated recipe for raising the transition temperature.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "bhatt-2026"
+          ],
+          "sourceRelationship": "context-for-local-derivation"
+        }
+      ],
+      "sources": [
+        {
+          "id": "bhatt-2026",
+          "title": "Structural modifications in strain-engineered bilayer nickelate thin films",
+          "authors": "Lopa Bhatt and colleagues",
+          "url": "https://doi.org/10.1038/s41586-026-10446-2",
+          "publicationStatus": "journal-article",
+          "date": "2026-04-01",
+          "dateLabel": "Published online",
+          "version": "Final published article; Nature 653, 76–82 (7 May 2026 issue)",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected published PDF pages 2, 4–6 and 8–9; Figure 1 and lattice comparison inspected. Methods and author-stated limitations retained; full supplement and data reproduction pending.",
+          "doi": "10.1038/s41586-026-10446-2",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "licenseLabel": "CC BY 4.0"
+        }
+      ],
+      "provenance": [
+        {
+          "path": "papers/library/Bhatt_LNO-Structural-Modifications_Nature2026_NOTE.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "d4a733b8f2299e92df1ec3b99a0bf7d3d25ac144019dc45c91d256b0f9978657",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
+        },
+        {
+          "path": "papers/library/Bhatt_Structural-Origins-SC-Strain-LNO_2026_NOTE.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "d04c248a0eba4d37a3c3c46ca60486ddb8a7e0366ffa9acfcecd03dfc6f87745",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
+        }
+      ],
+      "corrections": [
+        {
+          "issue": "Duplicate study",
+          "inherited": "Two reading notes with different titles.",
+          "resolution": "Both refer to the same DOI and are merged into this single note, preserving both source hashes."
+        },
+        {
+          "issue": "Strain and superconductivity",
+          "inherited": "Compressive samples marked superconducting together.",
+          "resolution": "The LAO film is metallic in this series; compression and higher symmetry are not sufficient evidence for superconductivity."
+        },
+        {
+          "issue": "Measured strain values",
+          "inherited": "Several measured values differ from the final figure.",
+          "resolution": "Final nominal/measured pairs are SLAO −2.0%/−1.6%, LAO −1.2%/−0.9%, NGO +0.7%/+0.6%, STO +1.9%/+1.8%."
+        },
+        {
+          "issue": "Transition criterion",
+          "inherited": "42 K used as an unqualified transition.",
+          "resolution": "Retain the approximately 42 K resistive onset and 2 K zero-resistance endpoint separately."
+        },
+        {
+          "issue": "Orbital interpretation",
+          "inherited": "Strain-induced removal of dz2 implied as the mechanism.",
+          "resolution": "The final model emphasizes reduced t2g admixture; its importance for pairing remains unresolved."
+        },
+        {
+          "issue": "c-axis ranking",
+          "inherited": "SLAO described as having the largest c-axis.",
+          "resolution": "Retain the film-versus-hydrostatic trend without claiming an unsupported ranking among substrate films."
+        }
+      ],
+      "rights": "Original editorial synthesis adapted from Lopa Bhatt and colleagues, cited below under CC BY 4.0; wording, organization and local arithmetic are new. No source figures are reproduced. Third-party materials retain any separately stated rights."
+    },
+    {
+      "id": "yang-eu-nickelate-reentrance",
+      "title": "Eu-doped nickelates: re-entrance without a settled pairing mechanism",
+      "summary": "Separate sample-specific zero resistance, diamagnetic screening and resistance-contour criteria in Sm/Ca/Eu infinite-layer films; keep exchange compensation, magnetic order and pairing symmetry as distinct questions.",
+      "kind": "research-note-and-cross-topic-analysis",
+      "modifiedAt": "2026-10-19T00:19:22.329110+00:00",
+      "aliases": [
+        "Yang",
+        "Eu-doped infinite-layer nickelate",
+        "Sm0.95-xCa0.05EuxNiO2",
+        "SCE",
+        "field reentrant superconductivity",
+        "Jaccarino Peter",
+        "磁场再入超导"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory"
+      ],
+      "relatedCodes": [
+        "D5",
+        "D15",
+        "G3",
+        "G5",
+        "H7",
+        "H9"
+      ],
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Selected passages and figures in author manuscript arXiv:2508.14666v3 (25 April 2026), compared with the publisher abstract. The complete final published text has not been checked.",
+        "limitations": [
+          "Author self-review, not independent scientific review or a reproduction of the transport measurements.",
+          "The later author version is not assumed identical to the final journal article; full final text, correction history, calibration and raw-data analysis remain open.",
+          "Resistance-contour criteria, zero resistance and screening are different observables. None alone settles the magnetic structure or pairing symmetry."
+        ]
+      },
+      "sections": [
+        {
+          "id": "material-and-version",
+          "title": "Identify the material and the version",
+          "markdown": "Yang and colleagues study Sm0.95−xCa0.05EuxNiO2 (SCEₓ), an infinite-layer nickelate film series with fixed nominal Ca substitution. It is not Eu-substituted bilayer La3Ni2O7. The measured Eu valence is mixed and varies with composition, so nominal x is not a direct count of identical Eu²⁺ moments.\n\nThis note reads the revised author manuscript dated 25 April 2026. The journal article was published online on 23 April 2026. The publisher abstract supports the broad re-entrance report, but access to that abstract does not establish equivalence of all final and author-version figures. The separate Nd/Eu nickelate study discussed in G3 and G5 concerns another material series; its magnetic interpretation cannot simply be transferred here.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "yang-author-v3"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "sample-conditions",
+          "title": "Keep each field scale with its sample and criterion",
+          "markdown": "The selected author text and Figure 2 distinguish the following observations. Fields are perpendicular to the film plane (H∥c) for these comparisons.\n\n| Sample | Temperature or protocol | Reported observation | Interpretation boundary |\n| --- | --- | --- | --- |\n| SCE0.34, about 54 unit cells | 2 K transport | Zero resistance returns above about 6.23 T | Recovery field, not a universal upper critical field |\n| Same SCE0.34 specimen | Temperature sweeps at fixed field | Mutual-inductance screening at 9 and 12 T; absent at 3 T | Supports the superconducting interpretation; no bulk volume fraction is inferred here |\n| SCE0.32 | 3 K transport | Resistance returns to zero near 13.04 T | Not the upper boundary of the high-field phase |\n| SCE0.32 | 1.7 K transport | High-field zero resistance persists above about 32 T | Different temperature from the 13.04 T statement |\n\nThese temperatures describe measurement conditions, not interchangeable transition temperatures. Figure 3 instead marks open-circle phase boundaries using 0.5Rn, with Rn the high-field normal-state resistance. Those contours must not be relabeled zero-resistance boundaries. No material-Tc record is created from this table.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "yang-author-v3"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "angles-and-version-correction",
+          "title": "Angular behavior and an unresolved inherited number",
+          "markdown": "The angle θ is measured from the film normal. The angular maps use different temperatures: 4.2 K for x=0.33 and 0.36, 1.5 K for x=0.38, and 0.3 K for x=0.40. Their changing angular windows cannot support a universal assertion that in-plane re-entrance is absent. The manuscript also distinguishes intermediate-doping compensation-like behavior from stronger deviations at x=0.40.\n\nThe inherited notes attribute persistence to 45 T at 0.3 K to SCE0.36. That exact sample–temperature–field tuple was not verified in the selected v3 pages. Extended Data Figure 9 labels SCE0.36 at 4.2 K and SCE0.40 at 0.3 K; it also has a caption saying “up to 45 T” although its upper panels extend to 60 T. These version and panel details require resolution before the inherited tuple is used as a current verified result. A measurement ceiling would in any case provide a bound, not a measured high-field endpoint.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "yang-author-v3"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "compensation-and-magnetism",
+          "title": "What the magnetic evidence can and cannot establish",
+          "markdown": "Nonlinear Hall response after linear-background subtraction and hysteretic magnetoresistance motivate magnetic explanations. They do not by themselves identify uniform ferromagnetism, its volume fraction, or a particular pairing state. The v3 discussion explicitly leaves long-range magnetic order and its structure undetermined.\n\nThe authors fit a WHH-based model including orbital and Pauli pair breaking, spin-orbit scattering and an exchange field. Compensation partially describes intermediate compositions; the fitted exchange fields and scattering parameters remain phenomenological. An empirical factor of two in a Brillouin-function argument improves some fits but is not universal and does not adequately describe x=0.40. Neither this adjustment nor analogy with other re-entrant systems proves spin-triplet pairing.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "yang-author-v3"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "cross-topic-use",
+          "title": "Use the result across the Wiki",
+          "markdown": "D5 supplies the material-family context; D15 separates substitution, scattering and magnetism; G3 and G5 distinguish re-entrance from a demonstrated compensation mechanism. For H7 and H9, superconducting recovery fields must not become Hall-sign-reversal or anomalous-Hall threshold fields. This note reports no extracted ordinary Hall coefficient.\n\nA stronger scientific assessment still needs version-resolved final figures, criterion and noise-floor checks, sample calibration and local magnetic probes. The present review neither fits the deposited source-data files nor certifies an intrinsic bulk phase or unique microscopic mechanism.",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "yang-author-v3"
+          ],
+          "sourceRelationship": "context-for-editorial-analysis"
+        }
+      ],
+      "sources": [
+        {
+          "id": "yang-author-v3",
+          "title": "Field re-entrant superconductivity in Eu-doped infinite-layer nickelates",
+          "authors": "Mingwei Yang and colleagues",
+          "url": "https://arxiv.org/abs/2508.14666v3",
+          "publicationStatus": "preprint",
+          "date": "2026-04-25",
+          "dateLabel": "Author version revised",
+          "version": "arXiv:2508.14666v3; first submitted 20 August 2025; later author manuscript associated with the published article",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected pages 2, 4–8, 12–14; Figure 2 (page 19), Figure 3 (page 20), and Extended Data Figure 9 (page 30) inspected. Full final-version equivalence and raw-data reproduction unverified.",
+          "doi": "10.48550/arXiv.2508.14666",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "licenseLabel": "CC BY 4.0 (author version)"
+        },
+        {
+          "id": "yang-journal",
+          "title": "Field re-entrant superconductivity in Eu-doped infinite-layer nickelates",
+          "authors": "Mingwei Yang and colleagues",
+          "url": "https://doi.org/10.1038/s41586-026-10547-y",
+          "publicationStatus": "journal-article",
+          "date": "2026-04-23",
+          "dateLabel": "Published online",
+          "version": "Nature 653, 1052–1059 (2026); publisher abstract only checked",
+          "checkedAt": "2026-10-19",
+          "scope": "Previously accessible publisher abstract and publication metadata. Complete final text is subscription restricted; the later author manuscript supplies the detailed selected evidence in this note.",
+          "doi": "10.1038/s41586-026-10547-y",
+          "licenseUrl": null,
+          "licenseLabel": null
+        }
+      ],
+      "provenance": [
+        {
+          "path": "papers/CROSS_D5_D15_Yang2026.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "33970aef30ac6c132f95921ae2553d6662681ba11301ae6daf97d4a0a056d6a6",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
+        },
+        {
+          "path": "papers/library/Yang_Eu-IL-Nickelate-Reentrant-SC_READING_NOTES.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "7c02489fdb5faf31238beec381fadf8a49c3e9a9fbb33426f7a2011b216fbd47",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
+        }
+      ],
+      "corrections": [
+        {
+          "issue": "Magnetic order and pairing",
+          "inherited": "Ferromagnetic superconductivity and a mixed compensation/triplet explanation stated too strongly.",
+          "resolution": "Retain the observed transport and screening, while magnetic order, pairing symmetry and a unique mechanism remain unresolved."
+        },
+        {
+          "issue": "Angular dependence",
+          "inherited": "In-plane re-entrance universally excluded.",
+          "resolution": "Retain sample-specific angle and temperature dependence, including the broader windows in higher-doping specimens."
+        },
+        {
+          "issue": "Unverified inherited 45 T tuple",
+          "inherited": "SCE0.36 at 0.3 K assigned a 45 T persistence result.",
+          "resolution": "Do not carry this tuple as verified by v3: selected later panels use SCE0.36 at 4.2 K and SCE0.40 at 0.3 K. Final/version reconciliation remains open."
+        },
+        {
+          "issue": "Threshold and contour criteria",
+          "inherited": "Recovery fields and measurement ceilings can be read as upper critical fields.",
+          "resolution": "Keep 6.23 T and 13.04 T with their specific samples and temperatures; distinguish zero resistance from the 0.5Rn contour criterion."
+        },
+        {
+          "issue": "Screening and Hall scope",
+          "inherited": "Meissner/bulk proof or Hall thresholds inferred from re-entrant transport.",
+          "resolution": "Describe mutual-inductance diamagnetic screening without deriving bulk volume fraction; do not invent Hall coefficients or reversal fields."
+        }
+      ],
+      "rights": "Original editorial synthesis adapted from Mingwei Yang and colleagues' CC BY 4.0 author manuscript, linked below. Wording, organization and cross-topic analysis have changed; no source figures are reproduced. The journal version and third-party materials retain their own stated rights."
+    },
+    {
+      "id": "deng-hg1223-pressure-quench",
+      "title": "Pressure-quenched Hg1223: onset, magnetic response and stability",
+      "summary": "Follow the sample histories behind the reported 151 K resistive onset. Magnetic-volume estimates, storage tests and an unreproduced 172 K anomaly belong to distinct specimens and protocols.",
+      "kind": "research-note-and-cross-topic-analysis",
+      "modifiedAt": "2026-10-19T00:19:22.329111+00:00",
+      "aliases": [
+        "Deng",
+        "Hg1223",
+        "Hg-1223",
+        "HgBa2Ca2Cu3O8",
+        "pressure quench",
+        "PQP",
+        "151 K",
+        "高压淬火"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory"
+      ],
+      "relatedCodes": [
+        "D3",
+        "E1",
+        "E10",
+        "A1",
+        "A2",
+        "N1"
+      ],
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Selected arXiv:2603.12437v1 text, methods and figures, including supplementary figures contained in that author PDF. Publication metadata checked separately; complete final-version and final-supplement equivalence remain open.",
+        "limitations": [
+          "Author self-review; no independent replication, raw-data refitting or material certification.",
+          "The 151 K value is an onset criterion for S4. Retrieved S2 magnetization and S3 storage tests cannot be transferred to that specimen.",
+          "This note does not assign a superconducting transition to the unreproduced 172 K anomaly or establish room-temperature storage durability."
+        ]
+      },
+      "sections": [
+        {
+          "id": "protocol-and-criterion",
+          "title": "Preparation pressure is not measurement pressure",
+          "markdown": "Deng and colleagues compress HgBa2Ca2Cu3O8+δ, cool it, and release pressure at a chosen quench temperature. Their quoted post-quench transitions are measured at ambient pressure, after a high-pressure preparation history. The transition criterion is the rapid change of dR/dT used to identify resistive onset; it is not a zero-resistance temperature.\n\nThe selected author manuscript defines a transition width as onset minus the temperature at 50% of the onset resistance. Reported widths therefore cannot silently become onset-to-zero widths. Multiple experiments within the paper are not independent laboratory replication.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "deng-author-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "sample-ledger",
+          "title": "Read the experiments as separate sample histories",
+          "markdown": "The author text and Figure 2 report the following ambient-pressure onsets after quenching. The pressure and temperature columns describe preparation.\n\n| Experiment / sample | Quench pressure | Quench temperature | Retained resistive onset |\n| --- | ---: | ---: | --- |\n| 1 / S1 | 26.0 GPa | 77 K | 139 K on repeated warming |\n| 2 / S1 | 28.4 GPa | 4.2 K | 147 K warming and cooling |\n| 3 / S2 | 10.1 GPa | 4.2 K | 147 K warming and cooling |\n| 4 / S3 | 10.9 GPa | 4.2 K | 149 K warming; 148 K cooling |\n| 5 / S4 | 18.9 GPa | 4.2 K | 151 K warming; 150 K cooling |\n\nS1 is used twice; the rows are not five independent specimens. The five specimens S1–S5 came from three parent crystals, with S1, S2 and S4 cut from the same parent crystal. Different quench pressure, thermal history and specimen identity prevent interpreting this table as a one-variable controlled comparison. The highest onset in these rows is not evidence for a 151 K zero-resistance threshold.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "deng-author-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "magnetic-estimate",
+          "title": "The magnetic estimate belongs to retrieved S2",
+          "markdown": "After its 10.1 GPa / 4.2 K preparation and retrieval from the pressure cell, S2 shows a magnetic transition near 140 K in 10 Oe. The approximately 78% estimate uses its magnetic moment at 70 K and an approximate disk geometry. It is not a 78% superconducting-volume measurement on S4 at 151 K.\n\nThe methods use $f\\simeq\\pi(|M|/H)/r^3$ in their stated cgs convention, with $|M|/H=1.9\\times10^{-8}$ emu/Oe and $r=42.5\\times10^{-4}$ cm. Direct substitution gives $f\\simeq0.778$, matching the reported rounded estimate. This arithmetic check does not validate the sample geometry, background subtraction or demagnetization approximation. The cubic radius dependence makes geometry consequential.\n\nFigure S6 multiplies the post-quench curve by ten for display and compares it with the pristine parent crystal. Comparing the plotted amplitudes as if they were unscaled, identical-volume specimens would mislead.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "deng-author-v1"
+          ],
+          "sourceRelationship": "mixed-source-and-local-derivation"
+        },
+        {
+          "id": "stability-and-anomaly",
+          "title": "Cold retention and the unreproduced anomaly",
+          "markdown": "The temporal test uses S3 after a 10.9 GPa / 4.2 K quench. Storage at 77 K for up to three days, interrupted by measurements reaching 160–170 K, retains the elevated onset with a small decrease. A separate S2 thermal cycle reaching 293 K lowers its onset from about 147 K to 143 K. These observations do not establish room-temperature shelf life for the highest-onset S4 specimen.\n\nS5, quenched from 29.7 GPa at 4.2 K, shows a broad warming anomaly extending to about 172 K. The author text describes warming to 193 K and subsequent cooling from 180 K; the high-temperature feature disappears on cooling and was not reproduced. Its nature remains unresolved. This note keeps it as an unassigned anomaly, not an accepted superconducting transition or a searchable material-Tc record.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "deng-author-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "structure-and-theory",
+          "title": "Separate structural observations from a proposed mechanism",
+          "markdown": "Selected diffraction measurements retain the average tetragonal assignment through the measured pressure range, up to about 15 GPa, and after quenching. The (200) peak width increases from about 0.12° before compression to 0.20° after quenching. Figure 3 also marks unidentified peaks and distinguishes apparatus-related peaks. These observations cannot exclude every minority phase or prove a unique defect-stabilization mechanism.\n\nCalculations predict a pressure-driven Lifshitz change near 12.5 GPa, involving apical-oxygen-derived states. A calculated pocket and density-of-states increase is not direct observation that those states survive pressure release, nor proof that they cause the retained onset. The proposed metastability barrier and roles of strain, defects and oxygen require further tests. No universal transfer of this protocol to another material is established here.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "deng-author-v1"
+          ],
+          "sourceRelationship": "context-for-editorial-analysis"
+        },
+        {
+          "id": "cross-topic-use",
+          "title": "Use the result without combining incompatible evidence",
+          "markdown": "Read E10 for metastability and kinetic assumptions, D3 for cuprate context, and A1/A2 for transport and magnetic criteria. N1 distinguishes a high but finite onset from a room-temperature claim. An assessment should keep preparation history, measurement pressure, criterion, specimen, thermal cycle and source version together. The original reading note is retained as provenance; this synthesis replaces its overgeneralized bulk, storage and mechanism claims.",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "deng-author-v1"
+          ],
+          "sourceRelationship": "context-for-editorial-analysis"
+        }
+      ],
+      "sources": [
+        {
+          "id": "deng-author-v1",
+          "title": "Ambient-pressure 151-K superconductivity in HgBa2Ca2Cu3O8+δ via pressure quench",
+          "authors": "Liangzi Deng and colleagues",
+          "url": "https://arxiv.org/abs/2603.12437v1",
+          "publicationStatus": "preprint",
+          "date": "2026-03-12",
+          "dateLabel": "Author manuscript submitted",
+          "version": "arXiv:2603.12437v1, including supporting figures; later posting associated with the journal article",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected pages 4–9 and Figures 2, 3, S2, S4, S5 and S6; methods geometry expression visually checked. Full final/supplement equivalence and raw-data reproduction unverified.",
+          "doi": "10.48550/arXiv.2603.12437",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "licenseLabel": "CC BY 4.0 (author version)"
+        },
+        {
+          "id": "deng-journal",
+          "title": "Ambient-pressure 151-K superconductivity in HgBa2Ca2Cu3O8+δ via pressure quench",
+          "authors": "Liangzi Deng and colleagues",
+          "url": "https://doi.org/10.1073/pnas.2536178123",
+          "publicationStatus": "journal-article",
+          "date": "2026-03-09",
+          "dateLabel": "Published online",
+          "version": "PNAS 123, e2536178123; issue dated 17 March 2026",
+          "checkedAt": "2026-10-19",
+          "scope": "Publication date, DOI and version-of-record license checked in Crossref metadata. Final text was not newly rechecked for this note; detailed evidence comes from the explicitly versioned author manuscript.",
+          "doi": "10.1073/pnas.2536178123",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "licenseLabel": "CC BY 4.0 (journal metadata)"
+        }
+      ],
+      "provenance": [
+        {
+          "path": "papers/library/Deng_Ambient-151K-Hg1223-PNAS2026_READING_NOTES.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "9a089d5a903ff7cc105bfea60009a0c0efbfd1a67558b7da00e31848a6d47f3b",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity",
+          "coverage": "Whole source-note disposition; the primary scientific review remains limited to the stated scope."
+        }
+      ],
+      "corrections": [
+        {
+          "issue": "Transition criterion",
+          "inherited": "151 K and transition widths may be read as zero-resistance results.",
+          "resolution": "Retain derivative-defined onset and the separate onset-to-50%-resistance width convention."
+        },
+        {
+          "issue": "Specimen identity",
+          "inherited": "78% magnetism and three-day stability placed alongside the highest onset without specimen separation.",
+          "resolution": "Keep S4 onset, retrieved S2 magnetization and S3 cold storage separate; do not transfer their acceptance conditions."
+        },
+        {
+          "issue": "Unreproduced anomaly",
+          "inherited": "172 K included beside accepted transition values.",
+          "resolution": "Retain it as an unassigned S5 anomaly, without a material transition-temperature record."
+        },
+        {
+          "issue": "Structure and mechanism",
+          "inherited": "No new phase and defect stabilization stated as settled; calculated pockets treated as pairing channels.",
+          "resolution": "Restrict diffraction conclusions to measured average structure and state theoretical/metastability interpretations as hypotheses."
+        },
+        {
+          "issue": "Transferability",
+          "inherited": "Pressure quenching described as directly applicable to La3Ni2O7.",
+          "resolution": "No universal success or retained superconducting phase in another material follows from this Hg1223 study."
+        }
+      ],
+      "rights": "Original editorial synthesis adapted from Liangzi Deng and colleagues' CC BY 4.0 author manuscript, linked below. Wording, organization and local arithmetic have changed; no source figures are reproduced. Third-party material retains any separately stated rights."
+    },
+    {
+      "id": "cuprate-interface-layer-order",
+      "title": "Cuprate interfaces: layer order and localization",
+      "summary": "Compare an interface study with a layer-selective localization experiment, while keeping measurement criteria and source access separate.",
+      "kind": "research-note-and-cross-topic-analysis",
+      "modifiedAt": "2026-10-19T00:30:35.081659+00:00",
+      "aliases": [
+        "Gozar",
+        "Logvenov",
+        "Bozovic",
+        "Božović",
+        "cuprate interface",
+        "single CuO2 plane",
+        "layer selective Zn",
+        "铜氧化物界面"
+      ],
+      "evidenceTypes": [
+        "experiment"
+      ],
+      "relatedCodes": [
+        "D3",
+        "D11",
+        "A1",
+        "A2",
+        "E10"
+      ],
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Two of ten studies in the inherited series are covered here at different depths: selected Gozar author text/figures and the Logvenov original abstract. This is a partial source-note merge, not completion of the whole series.",
+        "limitations": [
+          "Author self-review, not independent scientific acceptance.",
+          "Logvenov full text and calibration remain unavailable in this review; the abstract does not justify a new quantitative material record.",
+          "Six other inherited studies still require individual primary-source review; studies 3 and 5 have separate notes. Full source-note merging is not claimed."
+        ]
+      },
+      "sections": [
+        {
+          "id": "layer-order",
+          "title": "Read layer order and criterion together",
+          "markdown": "Gozar’s author version defines I as La2CuO4, M as La1.55Sr0.45CuO4, and S as oxygen-doped La2CuO4+δ. The first letter denotes the layer nearest the substrate. Its typical resistive midpoints are approximately 15 K for I–M and 30 K for M–I; ozone-treated M–S structures reach about 50 K. These are distinct preparations.\n\nThickness and screening analyses constrain a roughly one-to-two-unit-cell interfacial region within their models. Microscopy bounds cation intermixing around one unit cell; it does not prove atomically perfect chemistry. The authors retain several possible enhancement mechanisms.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "gozar-author-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "single-plane",
+          "title": "What the single-plane abstract supports",
+          "markdown": "Logvenov and colleagues describe molecular-beam-grown metal/insulator bilayers, with each block three unit cells thick. Layer-selective Zn substitution acts as a suppressing marker; their abstract attributes the interface superconductivity to one CuO2 plane.\n\nThis is a localization inference in a heterostructure, not an isolated free-standing plane. The full methods, Zn profile and calibration have not been reviewed here. No new composition or transition-temperature record is assigned from the abstract. The publisher’s deposited editorial summary and the original abstract are also kept distinct.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "logvenov-2009"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "compare-evidence",
+          "title": "Compare evidence without combining experiments",
+          "markdown": "An editorial comparison should retain the sample stack, treatment, observable and criterion for each result. A thickness-dependent transition, a screening model and a layer-selective perturbation answer related but different questions. A model-dependent length estimate should not be silently converted to a direct spatial image. Nor does localization alone determine the highest achievable transition temperature or select a unique pairing mechanism.\n\nPressure-quenched Hg1223 is a separate preparation problem. The [Hg1223 research note](/scwiki/library/deng-hg1223-pressure-quench) preserves its specimen histories; those results should not be entered as cuprate-interface measurements.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "gozar-author-v1",
+            "logvenov-2009"
+          ],
+          "sourceRelationship": "context-for-editorial-analysis"
+        },
+        {
+          "id": "series-coverage",
+          "title": "What remains in the inherited series",
+          "markdown": "This note covers studies 2 and 9. Studies 3 and 5 have separate [magnetic-excitation](/scwiki/library/dean-lsco-magnetic-excitations) and [THz conductivity](/scwiki/library/bilbro-thz-fluctuation-window) notes. Superfluid-density scaling, ultrafast crystallography, proximity effects, antiferromagnetism, the superconductor–insulator transition and the plasmon study remain separate review tasks.\n\nThe repaired parsed-file directory contains curated source notes, not original-paper transcriptions. A bibliography is not a checked primary passage.",
+          "evidenceType": "experiment",
+          "sourceIds": [],
+          "sourceRelationship": "context-for-editorial-analysis"
+        }
+      ],
+      "sources": [
+        {
+          "id": "gozar-author-v1",
+          "title": "High-temperature interface superconductivity between metallic and insulating cuprates",
+          "authors": "A. Gozar and colleagues",
+          "url": "https://arxiv.org/abs/0810.1890v1",
+          "publicationStatus": "preprint",
+          "date": "2008-10-10",
+          "dateLabel": "Author version submitted",
+          "version": "arXiv:0810.1890v1; author version of the Nature 455, 782–785 (2008) article",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected pages 2–5 and captions 8–10; Figures 1–3 inspected. Final/supplement equivalence and raw-data reconstruction remain open.",
+          "doi": "10.1038/nature07293",
+          "licenseUrl": null,
+          "licenseLabel": null
+        },
+        {
+          "id": "logvenov-2009",
+          "title": "High-Temperature Superconductivity in a Single Copper-Oxygen Plane",
+          "authors": "G. Logvenov, A. Gozar and I. Bozovic",
+          "url": "https://pubmed.ncbi.nlm.nih.gov/19900926/",
+          "publicationStatus": "journal-article",
+          "date": "2009-10-30",
+          "dateLabel": "Published in issue",
+          "version": "Science 326, 699–702; original abstract indexed by PubMed",
+          "checkedAt": "2026-10-19",
+          "scope": "Original abstract only. Crossref supplies a separate publisher editorial summary; neither is a full-methods review.",
+          "doi": "10.1126/science.1178863",
+          "licenseUrl": null,
+          "licenseLabel": null
+        }
+      ],
+      "provenance": [
+        {
+          "path": "papers/CROSS_D3_D11_BozovicInterface.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "8f299055adac85ea95c5dca9a35c6939305162fa1c0f36e4a8f6d58211a7be83",
+          "disposition": "partial-merge",
+          "coverage": "Interface localization and separation from pressure-quench results only. Other cited studies and cross-topic claims remain pending.",
+          "repository": "JackZH26/jzis-superconductivity"
+        },
+        {
+          "path": "papers/library/Bozovic_Cuprate-Interface-Series_READING_NOTES.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "6c0b3484dbfe9831b95e8f1ad578c2889e9c88b5e25c6954bb09160df741f0ee",
+          "disposition": "partial-merge",
+          "coverage": "Study sections 2 (Logvenov abstract) and 9 (Gozar selected author passages) only. Studies 3 and 5 have separate notes; the other six study sections remain pending.",
+          "repository": "JackZH26/jzis-superconductivity"
+        }
+      ],
+      "corrections": [
+        {
+          "issue": "Source coverage",
+          "inherited": "One series note combines ten studies and web-derived interpretation.",
+          "resolution": "Only sections 2 and 9 are represented here; section 5 has a separate note. Six studies and other CROSS claims remain pending."
+        },
+        {
+          "issue": "Evidence depth",
+          "inherited": "Abstract and full-text claims can appear equally verified.",
+          "resolution": "Separate selected author passages from abstract-only localization evidence; retain the unresolved methods review."
+        },
+        {
+          "issue": "Transfer of conclusions",
+          "inherited": "Interface localization treated as a general mechanism verdict.",
+          "resolution": "Keep localization, transition criteria and mechanistic interpretation separate."
+        }
+      ],
+      "rights": "Original concise editorial synthesis with linked sources. No paper text, figures or old parsed images are reproduced; no open redistribution license is asserted for the source articles."
+    },
+    {
+      "id": "bilbro-thz-fluctuation-window",
+      "title": "LSCO fluctuations: what THz conductivity resolves",
+      "summary": "Read a finite-frequency fluctuation signal with its measurement window, rate normalization and unresolved alternatives.",
+      "kind": "research-note-and-cross-topic-analysis",
+      "modifiedAt": "2026-10-19T00:30:35.081659+00:00",
+      "aliases": [
+        "Bilbro",
+        "Bozovic",
+        "Armitage",
+        "THz conductivity",
+        "terahertz",
+        "LSCO fluctuations",
+        "太赫兹超导涨落"
+      ],
+      "evidenceTypes": [
+        "experiment"
+      ],
+      "relatedCodes": [
+        "A8",
+        "D3",
+        "H1",
+        "H2",
+        "D11"
+      ],
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Selected author-version text and figures, with methods and supplementary characterization; no raw-data reproduction or independent review.",
+        "limitations": [
+          "The final journal version has not been compared with this archived author version.",
+          "This note covers study 5 only. Together with the interface and magnetic-excitation notes, four of ten inherited studies have limited coverage; six remain pending.",
+          "A scoped author review does not establish full scientific acceptance."
+        ]
+      },
+      "sections": [
+        {
+          "id": "conductivity-window",
+          "title": "A conductivity window, not a universal pairing cutoff",
+          "markdown": "Bilbro and colleagues studied eight LSCO films, $x=0.09$–$0.25$. Their THz conductivity criterion places the fluctuation onset 5–16 K above $T_c$. They determine onset from the curvature of $\\omega\\sigma_2$ at 0.8 THz. This is a probe-dependent transport result, not exclusion of all higher-temperature pairing. Figure 3 assigns $T_c=23.5$ K to $x=0.25$.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "bilbro-author-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "rate-normalization",
+          "title": "Keep the rate convention and scale uncertainty",
+          "markdown": "The angular-rate form is $\\Omega=\\alpha k_BT/\\hbar$; the plotted cyclic frequency is $\\Omega/(2\\pi)=\\alpha k_BT/h$. Methods set $\\alpha=0.4$ to the mean after a loss-peak normalization gives a roughly 40% spread. It is not a precision universal constant. The authors cannot distinguish normal-state masking from intrinsically linear-in-temperature fluctuations.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "bilbro-author-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "comparison-checklist",
+          "title": "Use the measured observable in comparisons",
+          "markdown": "An editorial comparison should record the sample, probe frequency, onset criterion, background treatment and rate definition before comparing a transport result with a magnetic signal. A common temperature dependence alone does not identify a common mechanism.\n\nKeep these film measurements separate from [interface localization](/scwiki/library/cuprate-interface-layer-order). This note is not a new transition-temperature record in the material-condition catalogue.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "bilbro-author-v1"
+          ],
+          "sourceRelationship": "context-for-editorial-analysis"
+        },
+        {
+          "id": "series-coverage",
+          "title": "Coverage and source version",
+          "markdown": "This note covers study 5 of the inherited ten-study series. Studies 2 and 9 have [separate interface coverage](/scwiki/library/cuprate-interface-layer-order); study 3 has a [magnetic-excitation note](/scwiki/library/dean-lsco-magnetic-excitations), and the other six remain pending. The provenance records partial coverage of both source notes.\n\nUse the archive submission date for this source version. Its printed typesetting date is not the journal publication date. The arXiv distribution license is not a general permission to reproduce the paper.",
+          "evidenceType": "experiment",
+          "sourceIds": [],
+          "sourceRelationship": "context-for-editorial-analysis"
+        }
+      ],
+      "sources": [
+        {
+          "id": "bilbro-author-v1",
+          "title": "Temporal correlations of superconductivity above the transition temperature in La2−xSrxCuO4 probed by terahertz spectroscopy",
+          "authors": "L. S. Bilbro, R. Valdés Aguilar, G. Logvenov, O. Pelleg, I. Bozovic and N. P. Armitage",
+          "url": "https://arxiv.org/abs/1110.2097v1",
+          "publicationStatus": "journal-article",
+          "date": "2011-10-10",
+          "dateLabel": "Author version deposited",
+          "version": "arXiv:1110.2097v1, archived author version of Nature Physics 7, 298–302 (2011); not the version of record",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected text pp1–6,8–9; pixels4,6,9 checked. Final-version comparison and raw data remain unreviewed.",
+          "doi": "10.1038/nphys1912",
+          "licenseUrl": "https://arxiv.org/licenses/nonexclusive-distrib/1.0/license.html",
+          "licenseLabel": "arXiv distribution grant; not a public reuse license"
+        }
+      ],
+      "provenance": [
+        {
+          "path": "papers/CROSS_D3_D11_BozovicInterface.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "8f299055adac85ea95c5dca9a35c6939305162fa1c0f36e4a8f6d58211a7be83",
+          "disposition": "partial-merge",
+          "coverage": "Section4.3: Bilbro temporal correlations only. Interface studies have a separate note; other CROSS comparisons remain pending.",
+          "repository": "JackZH26/jzis-superconductivity"
+        },
+        {
+          "path": "papers/library/Bozovic_Cuprate-Interface-Series_READING_NOTES.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "6c0b3484dbfe9831b95e8f1ad578c2889e9c88b5e25c6954bb09160df741f0ee",
+          "disposition": "partial-merge",
+          "coverage": "Study section 5: Bilbro THz conductivity and its stated limits only. Six series studies and other CROSS claims remain pending.",
+          "repository": "JackZH26/jzis-superconductivity"
+        }
+      ],
+      "corrections": [
+        {
+          "issue": "Sample temperature",
+          "inherited": "The inherited note assigns33.5 K to x=0.25.",
+          "resolution": "Figure 3 instead labels23.5 K; retain specimen identity."
+        },
+        {
+          "issue": "Rate scale",
+          "inherited": "The coefficient 0.4 appears without normalization uncertainty.",
+          "resolution": "Retain the stated scale-setting procedure and spread."
+        },
+        {
+          "issue": "Unsupported acquisition limit",
+          "inherited": "The inherited note specifies0.3 K and a helium-3 system.",
+          "resolution": "Not verified in the selected source; do not transfer this acquisition claim."
+        }
+      ],
+      "rights": "Original concise synthesis and editorial analysis. No source figures or substantial paper text reproduced; arXiv redistribution rights are not assumed to grant public reuse."
+    },
+    {
+      "id": "dean-lsco-magnetic-excitations",
+      "title": "LSCO magnetic excitations: persistence within a measured window",
+      "summary": "Follow the momentum range, linewidth and intensity corrections before drawing a conclusion about superconducting pairing.",
+      "kind": "research-note-and-cross-topic-analysis",
+      "modifiedAt": "2026-10-19T00:30:35.081659+00:00",
+      "aliases": [
+        "Dean",
+        "Bozovic",
+        "paramagnon",
+        "magnetic excitations",
+        "RIXS",
+        "LSCO magnetism",
+        "磁激发"
+      ],
+      "evidenceTypes": [
+        "experiment"
+      ],
+      "relatedCodes": [
+        "B3",
+        "D3",
+        "A5",
+        "D11"
+      ],
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Selected journal text, Figure 3 and supplementary fitting, normalization and spectral-weight sections. The sample-thickness discrepancy remains unresolved.",
+        "limitations": [
+          "Author self-review; no independent scientific acceptance or raw-data refitting.",
+          "The journal main text and supplementary Table I disagree on two sample thicknesses. No silent reconciliation is applied.",
+          "Study 3 adds limited coverage to studies 2, 5 and 9; six inherited series studies remain pending."
+        ]
+      },
+      "sections": [
+        {
+          "id": "momentum-window",
+          "title": "Persistence has a momentum window",
+          "markdown": "Dean and colleagues find broadened magnetic excitations in LSCO up to $x=0.40$. Their reported fitted window is $\\mathbf Q=(0.18\\text{–}0.40,0)$ in reciprocal lattice units. It complements neutron measurements near $(0.5,0.5)$. Similar dispersion and comparable integrated intensity in this window do not establish conservation across the whole Brillouin zone.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "dean-journal"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "normalization",
+          "title": "Widths and intensities need their corrections",
+          "markdown": "The resolution is 130 meV **HWHM**, not FWHM. Fits include a thermal factor and resolution convolution. Unresolved phonon/multispin scattering contributes an estimated 15% overestimate to width and intensity. Supplementary intensity corrections include a changed incident flux and a 0.78 factor for the nominally thicker films; instrumental instability enters the uncertainty.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "dean-journal",
+            "dean-supplement"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "thickness-discrepancy",
+          "title": "An unresolved sample-thickness discrepancy",
+          "markdown": "The main-text grouping assigns approximately 53 nm to $x=0.16$ and 99 nm to $x=0.26$. Supplementary Table I instead lists $97\\pm3$ nm and $52\\pm3$ nm, respectively. The normalization discussion follows the former grouping. These records are not reconciled here; the corrected intensities have not been independently reproduced.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "dean-journal",
+            "dean-supplement"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "model-extrapolation",
+          "title": "What the spectral-fraction estimate assumes",
+          "markdown": "The quoted 27% spectral fraction comes from an undoped spin-wave calculation. Extending its persistence with doping assumes comparable scaling along an unmeasured diagonal direction.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "dean-supplement"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "interpretation",
+          "title": "Use spectral evidence to constrain a pairing model",
+          "markdown": "Editorially, persistence of an excitation is one constraint on a pairing theory. It cannot by itself select a unique interaction or explain the transition temperature. Compare the relevant momentum, energy and sample conditions, rather than treating an integrated signal as a complete pairing kernel.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "dean-supplement"
+          ],
+          "sourceRelationship": "context-for-editorial-analysis"
+        },
+        {
+          "id": "series-coverage",
+          "title": "Coverage within the inherited research series",
+          "markdown": "This note covers study 3. [Interface localization](/scwiki/library/cuprate-interface-layer-order) covers studies 2 and 9; [THz conductivity](/scwiki/library/bilbro-thz-fluctuation-window) covers study 5. Six studies and additional cross-topic comparisons remain pending.\n\nEach source keeps its own uncertainty and access limits. The source-note merge remains partial; a linked paper does not mean every claim has been independently reviewed.",
+          "evidenceType": "experiment",
+          "sourceIds": [],
+          "sourceRelationship": "context-for-editorial-analysis"
+        }
+      ],
+      "sources": [
+        {
+          "id": "dean-journal",
+          "title": "Persistence of magnetic excitations in La2−xSrxCuO4 from the undoped insulator to the heavily overdoped non-superconducting metal",
+          "authors": "M. P. M. Dean and colleagues",
+          "url": "https://markdean.info/assets/pdf/dean2013persistence.pdf",
+          "publicationStatus": "journal-article",
+          "date": "2013-08-04",
+          "dateLabel": "Published online",
+          "version": "Nature Materials 12, 1019–1023 (2013), journal-formatted PDF hosted by the author",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected pages 1–4; Figure 3 inspected. Raw data not refitted.",
+          "doi": "10.1038/nmat3723",
+          "licenseUrl": null,
+          "licenseLabel": null
+        },
+        {
+          "id": "dean-supplement",
+          "title": "Supplementary Information to Persistence of magnetic excitations in LSCO",
+          "authors": "M. P. M. Dean and colleagues",
+          "url": "https://markdean.info/assets/pdf/dean2013persistence_supp.pdf",
+          "publicationStatus": "journal-article",
+          "date": "2013-08-04",
+          "dateLabel": "Associated article published online",
+          "version": "Journal Supplementary Information, author-hosted 14-page PDF",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected pages 6 and 9–12; pixels 6, 10 and 12 inspected. Thickness discrepancy unresolved.",
+          "doi": "10.1038/nmat3723",
+          "licenseUrl": null,
+          "licenseLabel": null
+        }
+      ],
+      "provenance": [
+        {
+          "path": "papers/CROSS_D3_D11_BozovicInterface.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "8f299055adac85ea95c5dca9a35c6939305162fa1c0f36e4a8f6d58211a7be83",
+          "disposition": "partial-merge",
+          "coverage": "Dean magnetic-excitation comparison only. Other interface and THz evidence has separate notes; remaining CROSS claims require review.",
+          "repository": "JackZH26/jzis-superconductivity"
+        },
+        {
+          "path": "papers/library/Bozovic_Cuprate-Interface-Series_READING_NOTES.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "6c0b3484dbfe9831b95e8f1ad578c2889e9c88b5e25c6954bb09160df741f0ee",
+          "disposition": "partial-merge",
+          "coverage": "Study section 3: Dean magnetic excitations only. Other study coverage is documented separately; six series studies remain pending.",
+          "repository": "JackZH26/jzis-superconductivity"
+        }
+      ],
+      "corrections": [
+        {
+          "issue": "Coverage of the measurement",
+          "inherited": "Persistence can be read as conservation of the full magnetic spectrum.",
+          "resolution": "Retain the measured momentum window and the assumptions behind extrapolation."
+        },
+        {
+          "issue": "Confidence in intensity comparison",
+          "inherited": "A brief summary omits calibration and sample-record limitations.",
+          "resolution": "Keep normalization uncertainty and the unresolved primary-source discrepancy visible."
+        }
+      ],
+      "rights": "Original concise synthesis and editorial analysis. The PDFs retain a publisher copyright notice; no open reuse license is asserted and no paper figures are reproduced."
+    }
+  ]
+}

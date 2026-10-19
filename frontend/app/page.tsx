@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import Link from "@/components/AppLink";
-import { SearchBar } from "@/components/SearchBar";
+import { HomeSearchInput } from "@/components/HomeSearchInput";
+import HomeSearchResults from "@/components/HomeSearchResults";
 import { LegacyHomeAnchor } from "@/components/LegacyHomeAnchor";
 import { getLibrarySnapshot } from "@/lib/library-snapshot";
 import { absoluteUrl } from "@/lib/seo";
@@ -8,7 +9,7 @@ import { absoluteUrl } from "@/lib/seo";
 export const revalidate = 300;
 export const metadata: Metadata = {
   title: { absolute: "SCLib by JZIS | Superconductivity Research Library" },
-  description: "Search superconductivity literature, explore source-linked materials data, and review reported Tc trends and research leads.",
+  description: "Search original literature and SCWiki, explore source-linked materials data, and review reported Tc trends and research leads.",
   alternates: { canonical: absoluteUrl("/") },
   openGraph: { url: absoluteUrl("/") },
 };
@@ -33,8 +34,8 @@ export default async function Landing() {
       <section aria-labelledby="library-heading" className="library-hero grid items-center gap-8 pb-10 pt-3 sm:pb-14 sm:pt-5 lg:grid-cols-[minmax(0,1.5fr)_minmax(0,1fr)] lg:gap-10">
         <div className="min-w-0">
           <h1 id="library-heading" className="library-headline font-semibold">The superconductivity research library</h1>
-          <p className="mt-5 max-w-xl text-base leading-relaxed text-sage-muted sm:text-lg">Search superconductivity literature, explore source-linked materials data, and review reported Tc trends and research leads.</p>
-          <div id="search" className="mt-7 scroll-mt-24"><SearchBar placeholder="Paper, material, or research question" /></div>
+          <p className="mt-5 max-w-xl text-base leading-relaxed text-sage-muted sm:text-lg">Search original literature and SCWiki, explore source-linked materials data, and review reported Tc trends and research leads.</p>
+          <div id="search" className="mt-7 scroll-mt-24"><HomeSearchInput /></div>
           <Link href="/materials" className="site-text-link mt-4 inline-flex items-center gap-2 text-sm font-semibold">Browse materials <span aria-hidden="true">→</span></Link>
         </div>
         <figure className="min-w-0">
@@ -49,6 +50,8 @@ export default async function Landing() {
           <figcaption className="mt-2 text-xs leading-relaxed text-sage-muted">Conceptual material study. AI-generated illustration.</figcaption>
         </figure>
       </section>
+
+      <HomeSearchResults />
 
       <section aria-labelledby="coverage-heading" className="coverage-panel rounded-xl border border-sage-border bg-white p-5 sm:p-7">
         <h2 id="coverage-heading" className="text-base font-semibold">Library coverage</h2>

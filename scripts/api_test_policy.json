@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "core": [
+    "tests/test_health.py",
+    "tests/test_auth.py",
+    "tests/test_auth_security_unit.py",
+    "tests/test_browser_session_auth.py",
+    "tests/test_unified_auth.py",
+    "tests/test_api_contract.py",
+    "tests/test_privacy_controls.py",
+    "tests/test_research_access.py",
+    "tests/test_scientific_query_http.py"
+  ],
+  "mappings": {
+    "api/services/scientific_query.py": [
+      "tests/test_home_concept_search.py",
+      "tests/test_scientific_query.py",
+      "tests/test_scientific_query_http.py",
+      "tests/test_scientific_query_results.py",
+      "tests/test_scientific_search_routing.py",
+      "tests/test_retrieval_groups.py",
+      "tests/test_rag_search_lineage.py",
+      "tests/test_answer_evidence.py",
+      "tests/test_answer_evidence_schema.py",
+      "tests/test_index_search.py",
+      "tests/test_scientific_mixed_ask.py",
+      "tests/test_scientific_mixed_contract.py",
+      "tests/test_scientific_lookup_preparation.py",
+      "tests/test_scientific_lookup_contract.py"
+    ]
+  },
+  "core_only_prefixes": [
+    "frontend/content/scwiki/",
+    "frontend/app/scwiki/",
+    "frontend/components/scwiki/",
+    "frontend/lib/scwiki/",
+    "docs/"
+  ],
+  "core_only_files": [
+    "README.md",
+    "CHANGELOG.md",
+    "LICENSE"
+  ],
+  "critical_prefixes": [
+    ".github/",
+    "scripts/",
+    "api/core/",
+    "api/db/",
+    "api/models/",
+    "api/alembic/",
+    "api/migrations/",
+    "api/auth/",
+    "api/middleware/"
+  ],
+  "critical_files": [
+    "api/pyproject.toml",
+    "api/uv.lock",
+    "api/Dockerfile",
+    "api/main.py",
+    "api/config.py",
+    "api/database.py",
+    "api/dependencies.py",
+    "api/tests/conftest.py",
+    "frontend/package.json",
+    "frontend/pnpm-lock.yaml",
+    "frontend/middleware.ts"
+  ]
+}

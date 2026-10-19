@@ -75,6 +75,8 @@ module.exports = {
   reactStrictMode: true,
   output: "standalone",
   outputFileTracingRoot: __dirname,
+  outputFileTracingIncludes: { "/*": ["./content/scwiki/catalogue.json", "./content/scwiki/search-index.json"] },
+  experimental: { cpus: 2 },
   basePath,
   // Middleware gives private legacy routes temporary, no-store redirects.
   skipTrailingSlashRedirect: true,

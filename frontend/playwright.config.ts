@@ -2,7 +2,8 @@ import { defineConfig } from "@playwright/test";
 import path from "node:path";
 
 const port = 3102;
-const baseURL = `http://127.0.0.1:${port}/`;
+// NextURL canonicalizes loopback IPs to localhost. Keep one strict browser origin.
+const baseURL = `http://localhost:${port}/`;
 
 export default defineConfig({
   testDir: "./tests/e2e",

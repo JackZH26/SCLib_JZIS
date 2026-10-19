@@ -1,0 +1,43 @@
+## Scope
+
+The label s± describes relative sign reversal between superconducting gaps on relevant Fermi-surface sheets. In common tetragonal iron-based models it belongs to the fully symmetric $A_{1g}$ representation, even when different pockets carry opposite signs. A nodeless excitation gap therefore does not establish sign-preserving pairing. Identify the actual bands and crystal symmetry: the original hole–electron-pocket picture is a model for particular systems, not an inventory that every iron-based compound must share. [R1](#ref-source-7c2b55d128348e6c) [R2](#ref-source-f80a18149666bd31) [R10](#ref-source-b934eb95c4cbf8c6)
+
+## Mathematical assumptions
+
+A two-pocket illustration takes $\Delta_h=+\Delta_1$ and $\Delta_e=-\Delta_2$, with positive magnitudes. Repulsive interband pair transfer can favor this relative phase in a linearized pairing equation. Its eigenfunction depends on the interaction matrix, orbital weights and Fermi surface; the sign pattern alone does not uniquely identify the microscopic mediator. The [multiband pairing](/scwiki/multiband-pairing) article gives an independently checked common-cutoff model and its limits. [R1](#ref-source-7c2b55d128348e6c) [R2](#ref-source-f80a18149666bd31)
+
+For real singlet gaps, a simplified spin pair-creation coherence factor is $C=\tfrac12[1-(\xi_k\xi_{k+q}+\Delta_k\Delta_{k+q})/(E_kE_{k+q})]$, with $E_k=\sqrt{\xi_k^2+\Delta_k^2}$. At two Fermi-surface points it is zero for equal signs and one for opposite signs. An independent 450-case check verifies the bounds and these limits, while reversing a gap sign leaves the quasiparticle energy unchanged. This is one factor in a response function, not a complete neutron intensity or a guarantee of a resonance. [R7](#ref-source-5717dacf7df85626)
+
+An illustrative circular-sheet gap $\Delta(\theta)=\Delta_0[1+r\cos(4\theta)]$ retains fourfold rotations and reflections. It is fully open for $|r|<1$, touches zero at four angles for $|r|=1$, and has eight simple zeros for $|r|>1$. The zeros in this example are accidental and can disappear without changing representation. The check covers 2,520 symmetry cases and seven anisotropy controls; it is not a fitted KFe2As2 gap or a proof that all observed nodes are accidental. [R2](#ref-source-f80a18149666bd31) [R6](#ref-source-6570d4401413e026)
+
+Kuroki and colleagues published an erratum correcting an orbital-to-band transformation error in the original gap plot. The corrected diagonal band gap is fully open for the displayed parameter set, while strong anisotropy and parameter-dependent nodal or d-wave competition remain. The correction does not make every $A_{1g}$ solution nodeless. Its one-page text has been checked, but its original figure and the full five-orbital calculation have not been independently reproduced here. [R2](#ref-source-f80a18149666bd31) [R6](#ref-source-6570d4401413e026)
+
+## Experimental criteria
+
+Christianson and colleagues studied polycrystalline K-doped Ba0.6K0.4Fe2As2, correcting the pinned draft's Co-doped attribution. Their MERLIN neutron measurements used several incident energies and a vanadium intensity standard. The 7 K and 50 K comparison shows a superconductivity-related feature near 14 meV and a momentum-transfer magnitude near 1.15 inverse angstroms. These are measurement temperatures and excitation scales, not separate superconducting transitions. The paper reports a 38 K susceptibility transition, whose exact operational threshold is not assigned here. [R3](#ref-source-716c338ddfa726d3)
+
+Figure 4 integrates momenta from 1.0 to 1.3 inverse angstroms and energies from 12.5 to 17.5 meV. The resonance contribution fades near the transition while the plotted background remains finite; the entire intensity does not fall to zero. The authors allow a possible small phonon contribution. Their phase-sensitive interpretation combines a coherence-factor model with separate gap information, rather than directly measuring an isolated gap sign. Sample-matched continuum thresholds and normal-state backgrounds matter when testing that inference. [R3](#ref-source-716c338ddfa726d3) [R7](#ref-source-5717dacf7df85626)
+
+Maier and Scalapino's two-orbital RPA–BCS calculation illustrates why orbital matrix elements and the momentum being probed matter. The model qualitatively captures Fermi-surface shapes but acknowledges imperfect velocities. Different singlet gaps produce different responses, and triplet spin components require different coherence factors. A missing or enhanced peak cannot be interpreted from gap signs alone without the accessible scattering channels, interaction model and broadening. This selected check does not reproduce a material's complete susceptibility. [R7](#ref-source-5717dacf7df85626)
+
+Hanaguri and colleagues inferred sign reversal from field-dependent STM interference in Fe(Se,Te), not pure FeSe. A subsequent preprint comment by Mazin and Singh argued for Bragg peaks and a possible surface reconstruction instead. Their proposed surface magnetic order was a hypothesis, not an independently observed feature of those samples. The existence of a Fourier peak does not by itself settle whether it is a lattice, interference or mixed contribution. [R4](#ref-source-3ee65ce8fc5080da) [R8](#ref-source-7b146cbf6ec35c32)
+
+The authors' preprint reply separates broad conductance-ratio features near the gap scale from sharp Bragg-like components. Its Figure 1 compares 0 T and 10 T linecuts against topographic peaks; a sharp field-enhanced component persists above the gap range, while the broad component has a different energy dependence. This is an explicit experimental response to the critique. Both documents remain labelled as preprints here, and their exchange does not substitute for a full raw-map or scattering-matrix reanalysis. [R9](#ref-source-b6cd1a68d7c03084)
+
+## Corrected nodal example
+
+Reid and colleagues' 2012 thermal-conductivity study concerns KFe2As2, not P-substituted Ba122. Its residual heat-transport evidence and cross-sample comparison support nodes, with the authors arguing for d-wave pairing. The selected accepted-manuscript check preserves the separate directional samples and low-temperature extrapolation. A citation making that argument cannot be repurposed as evidence for accidental nodes in another material. [R5](#ref-source-8a117f38b78526ff)
+
+Later work makes the distinction between nodal evidence and symmetry assignment especially clear. Wu and colleagues' 2024 laser-ARPES study of KFe2As2 maps gap nodes and argues for nodal s± pairing, including hole pockets around the zone corners. That publisher-abstract check identifies a competing interpretation, not a completed resolution of the disagreement. Gap magnitude and node location constrain a model; neither alone directly measures the relative phase or establishes a universal pairing glue. [R5](#ref-source-8a117f38b78526ff) [R10](#ref-source-b934eb95c4cbf8c6)
+
+## Limits and disputes
+
+FeSe, electron-only interfaces, strongly hole-doped endpoints and nickelate proposals must retain their own electronic structure and evidence. Disorder sensitivity can also involve carrier, structural and magnetic changes, so suppressing a transition is not a unique gap-sign test. Complete scientific acceptance remains open, including original STM methods, supplementary controls, raw spectra and final-version comparisons. The neutron, QPI and thermal observations constrain different claims; none should be silently promoted to an unconditional family-wide phase verdict. [R1](#ref-source-7c2b55d128348e6c) [R3](#ref-source-716c338ddfa726d3) [R4](#ref-source-3ee65ce8fc5080da) [R5](#ref-source-8a117f38b78526ff) [R10](#ref-source-b934eb95c4cbf8c6)
+
+## Discovery implications
+
+State which sheets should change sign and what result would reject that assignment. Use measured electronic structure, distinguish magnitude from phase, and compare independent probes on matched compositions and conditions. For a proposed phase-sensitive junction, explain which bands the interface couples to. For neutron and QPI interpretations, preserve the normal-state background, scattering selection and competing models. A useful evidence record makes those assumptions searchable together with the claim. [R3](#ref-source-716c338ddfa726d3) [R4](#ref-source-3ee65ce8fc5080da) [R7](#ref-source-5717dacf7df85626) [R9](#ref-source-b6cd1a68d7c03084)
+
+## Related topics
+
+Continue with [multiband pairing](/scwiki/multiband-pairing), [gap nodes](/scwiki/superconducting-node-structure), [iron-based superconductors](/scwiki/iron-based-superconductors), [quasiparticle interference](/scwiki/quasiparticle-interference), and [nickelate materials](/scwiki/nickelates).

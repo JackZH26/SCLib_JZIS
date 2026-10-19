@@ -1,0 +1,359 @@
+{
+  "id": "scwiki-n9",
+  "topicId": "scwiki-topic-n9",
+  "code": "N9",
+  "slug": "open-questions/n9",
+  "publicationKind": "open-question",
+  "title": "Does topological superconductivity imply a higher Tc?",
+  "summary": "Separate superconducting temperature, surface and vortex topology, excitation gaps and experimental operating scales.",
+  "aliases": [
+    "topological superconductivity and high Tc",
+    "topological gap versus Tc",
+    "拓扑超导与高Tc",
+    "拓扑超导高温关系",
+    "Majorana operating temperature"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "F5",
+    "N4",
+    "N1",
+    "N10"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T21:20:02.138031+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected surface and vortex theories, iron-chalcogenide spectra and thin-film results, with independent prescribed-chain topology and thermal-resolution examples.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Full supplementary and raw-data analyses and complete author-to-final comparisons remain open.",
+      "Lin final methods and figures remain unchecked beyond the selected HTML results.",
+      "Prescribed model gaps and thermal widths are not material Tc predictions or qubit operating temperatures.",
+      "Spectroscopic signatures do not by themselves establish non-Abelian braiding."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "02_BATCH_2_IN_PLAN.md",
+    "sha256": "502293e5ed2fe8463b61a6c5b78a2c33bc33f3265bd36fe534fa2c469e42ff48",
+    "sourceId": "file-49326006ac2c2636"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 145,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    },
+    {
+      "startLine": 146,
+      "endLine": 146,
+      "targetSections": [
+        "scope",
+        "experimental-criteria",
+        "what-iron-chalcogenide-experiments-establish",
+        "mathematical-assumptions",
+        "why-a-larger-tc-is-not-enough",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "decision": "new-research-for-approved-question",
+      "note": "Approved N9 question defines scope, not a causal relationship between topology and high Tc."
+    },
+    {
+      "startLine": 147,
+      "endLine": 177,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "Q=\\operatorname{sgn}[(-\\mu-2t)(-\\mu+2t)]",
+      "check": "27 independent BdG diagonalization, winding and analytic gap cases; two gap-closing controls. Uniform positive energy rescaling preserves topology but not the gap magnitude."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\mathrm{FWHM}=4\\operatorname{arcosh}(\\sqrt2)k_BT",
+      "check": "Four temperature cases verify the exact half-maximum of the Fermi derivative; no instrument, poisoning or device-fidelity model."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-ade538b429fdd847",
+      "doi": "10.1070/1063-7869/44/10S/S29",
+      "title": "Unpaired Majorana fermions in quantum wires",
+      "year": 2001,
+      "url": "https://doi.org/10.1070/1063-7869/44/10S/S29",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-chain-and-operator-conventions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0010440v2",
+        "note": "Author v2 30 October 2000; selected pp4–7, p5 visually checked, equations4–14. Journal2001. Finite noninteracting model checks reproduced; full final-version comparison open."
+      }
+    },
+    {
+      "id": "source-7dc64372df6ba886",
+      "doi": "10.1103/PhysRevLett.100.096407",
+      "title": "Superconducting proximity effect and Majorana fermions at the surface of a topological insulator",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevLett.100.096407",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-published-version-model",
+        "evidenceUrl": "https://arxiv.org/pdf/0707.1692v3",
+        "note": "Author v3 revised 28 April 2008, marked published version. Selected pp. 1–2, equations 1–6, surface spectrum and time-reversal distinction read. Full junction calculations not reproduced."
+      }
+    },
+    {
+      "id": "source-e584f37aa67e112b",
+      "doi": "10.1103/PhysRevLett.107.097001",
+      "title": "Majorana modes at the ends of superconductor vortices in doped topological insulators",
+      "year": 2011,
+      "url": "https://doi.org/10.1103/PhysRevLett.107.097001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-vortex-line-criterion",
+        "evidenceUrl": "https://arxiv.org/pdf/1012.0330v3",
+        "note": "Author v3 revised 24 August 2011. Selected pp. 1–3, p. 3 Figure 1 visually checked. Weak-pairing/inversion/time-reversal assumptions, vortex orientation and minigap distinguished from bulk superconductivity. Full supplementary derivation and final comparison remain open."
+      }
+    },
+    {
+      "id": "source-e2865b9f2461bc7f",
+      "doi": "10.1126/science.aan4596",
+      "title": "Observation of topological superconductivity on the surface of an iron-based superconductor",
+      "year": 2018,
+      "url": "https://doi.org/10.1126/science.aan4596",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-photoemission-results",
+        "evidenceUrl": "https://arxiv.org/pdf/1706.05163v2",
+        "note": "Author v2 revised 12 March 2018; selected pp. 1–4 and p. 9 Figure 4 visually checked. Journal issue 13 April 2018 verified in publisher-deposited metadata. Surface gap, spin texture and bulk transition distinguished; complete final/supplement comparison remains open."
+      }
+    },
+    {
+      "id": "source-a972be8eb742181f",
+      "doi": "10.1126/science.aao1797",
+      "title": "Evidence for Majorana bound states in an iron-based superconductor",
+      "year": 2018,
+      "url": "https://doi.org/10.1126/science.aao1797",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-vortex-spectra-and-temperature-results",
+        "evidenceUrl": "https://arxiv.org/pdf/1706.06074v3",
+        "note": "Author v3 revised 19 March 2018; selected pp. 2–4 and p. 9 Figure 3 checked visually. Journal issue 19 October 2018 verified in publisher-deposited metadata. Zero-bias peaks lose visibility well below bulk Tc; proposed braiding diagram is not an experiment. Full final/supplement comparison and raw spectra remain open."
+      }
+    },
+    {
+      "id": "source-c54d271015976534",
+      "doi": "10.1038/s41467-025-67957-1",
+      "title": "A topological superconductor tuned by electronic correlations",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41467-025-67957-1",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-html-results-and-metadata",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-025-67957-1",
+        "note": "Published online 26 December 2025; journal volume 17, article 1188 is labelled 2026. Selected final HTML introduction, surface-gap and composition results read, including 13 K onset versus 7.9 K zero resistance. Final PDF retrieval failed; complete methods, figures, supplement and data not checked."
+      }
+    },
+    {
+      "id": "source-dca781066e96eecc",
+      "doi": "10.1103/PhysRevResearch.2.013377",
+      "title": "Physical mechanisms for zero-bias conductance peaks in Majorana nanowires",
+      "year": 2020,
+      "url": "https://doi.org/10.1103/PhysRevResearch.2.013377",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prresearch/abstract/10.1103/PhysRevResearch.2.013377",
+        "note": "Published30March2020. Original abstract read: confinement/disorder alternatives and short-wire nonlocal-correlation caveats. Does not diagnose later devices; full transport simulation not reproduced."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-n9-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Topological superconductivity and a high transition temperature answer different questions. Topology classifies a specified superconducting quasiparticle state under stated symmetries and dimensionality; Tc concerns the establishment of superconducting order under specified conditions. A topological label alone supplies neither a pairing interaction nor a temperature scale. Conversely, a large gap or high Tc does not determine a topological invariant. An explicit fixed-pairing example below separates those statements without claiming a microscopic theory of any material.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ade538b429fdd847",
+        "source-7dc64372df6ba886"
+      ],
+      "conditions": "Distinguish bulk/surface/vortex topology, gap scale, resistive criterion, sample conditions, spectral resolution and publication version.",
+      "verificationScope": "Selected primary evidence and independent prescribed-chain/thermal examples; no experimental braiding, material Tc calculation or universal causal relation."
+    },
+    {
+      "id": "scwiki-n9-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Distinguish a three-dimensional bulk superconducting phase, superconductivity induced on a topological surface, and a topological vortex line with bound states at its ends. These can coexist without having the same classification. In the Fu–Kane construction, ordinary s-wave pairing induced on a single helical surface produces a state with vortex Majorana modes. Its relation to a spinless p-wave model does not mean that the uniform surface spontaneously breaks time reversal.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-7dc64372df6ba886",
+        "source-e584f37aa67e112b"
+      ],
+      "conditions": "Distinguish bulk/surface/vortex topology, gap scale, resistive criterion, sample conditions, spectral resolution and publication version.",
+      "verificationScope": "Selected primary evidence and independent prescribed-chain/thermal examples; no experimental braiding, material Tc calculation or universal causal relation."
+    },
+    {
+      "id": "scwiki-n9-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Keep several measured scales separate: resistive onset and zero resistance; bulk and surface gaps; the lowest unwanted vortex excitation; spectral linewidth; and the temperature at which a particular signal remains detectable. Use matched compositions, thicknesses, fields and measurement protocols. A gap observed by photoemission and a peak observed by tunnelling are complementary evidence, not interchangeable thermometers or measurements of non-Abelian statistics.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e2865b9f2461bc7f",
+        "source-a972be8eb742181f"
+      ],
+      "conditions": "Distinguish bulk/surface/vortex topology, gap scale, resistive criterion, sample conditions, spectral resolution and publication version.",
+      "verificationScope": "Selected primary evidence and independent prescribed-chain/thermal examples; no experimental braiding, material Tc calculation or universal causal relation."
+    },
+    {
+      "id": "scwiki-n9-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "A zero-bias peak requires tests against alternative bound states and disorder. Such alternatives are explicitly demonstrated in theoretical nanowire studies, although their detailed conclusions cannot be transferred unchanged to an iron-based vortex. Establish the relevant band structure, pairing, spatial localization and controlled parameter dependence for the actual platform. A high material Tc does not remove these identification requirements.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-dca781066e96eecc"
+      ],
+      "conditions": "Distinguish bulk/surface/vortex topology, gap scale, resistive criterion, sample conditions, spectral resolution and publication version.",
+      "verificationScope": "Selected primary evidence and independent prescribed-chain/thermal examples; no experimental braiding, material Tc calculation or universal causal relation."
+    },
+    {
+      "id": "scwiki-n9-claim-what-iron-chalcogenide-experiments-establish-1",
+      "sectionId": "what-iron-chalcogenide-experiments-establish",
+      "statement": "Zhang and colleagues examined FeTe0.55Se0.45 with a reported bulk Tc of 14.5 K. Their checked author version resolves a spin-helical surface band and an approximately isotropic surface gap near 1.8 meV. High-resolution photoemission and spin-resolved measurements have different stated energy resolutions, about 1.4 and 5.5 meV respectively. These observations support their proposed superconducting topological surface. They do not measure a braid operation, and the same article distinguishes the surface interpretation from its bulk superconducting state.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e2865b9f2461bc7f"
+      ],
+      "conditions": "Distinguish bulk/surface/vortex topology, gap scale, resistive criterion, sample conditions, spectral resolution and publication version.",
+      "verificationScope": "Selected primary evidence and independent prescribed-chain/thermal examples; no experimental braiding, material Tc calculation or universal causal relation."
+    },
+    {
+      "id": "scwiki-n9-claim-what-iron-chalcogenide-experiments-establish-2",
+      "sectionId": "what-iron-chalcogenide-experiments-establish",
+      "statement": "Wang and colleagues measured vortex spectra in that composition at 0.55 K. In the checked author version, selected non-split peaks have a width around 0.3 meV, close to their combined thermal and instrument broadening estimate. Their temperature study finds that peak amplitudes fall strongly around 3 K and a selected peak is invisible at 4.2 K, despite the reported 14.5 K bulk Tc. The authors interpret the extra suppression in terms of quasiparticle poisoning. This separates a proposed mode's visibility from the superconducting transition; it is not a universal device operating limit. Their braiding illustration is a future proposal.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a972be8eb742181f"
+      ],
+      "conditions": "Distinguish bulk/surface/vortex topology, gap scale, resistive criterion, sample conditions, spectral resolution and publication version.",
+      "verificationScope": "Selected primary evidence and independent prescribed-chain/thermal examples; no experimental braiding, material Tc calculation or universal causal relation."
+    },
+    {
+      "id": "scwiki-n9-claim-what-iron-chalcogenide-experiments-establish-3",
+      "sectionId": "what-iron-chalcogenide-experiments-establish",
+      "statement": "Lin and colleagues studied 10-unit-cell FeTexSe1−x films on SrTiO3. The final selected results report a superconducting surface state over part of a Te-rich composition range and its disappearance near the FeTe limit, alongside suppressed superconductivity. For x = 0.93, the approximately 13 K resistive onset and 7.9 K zero-resistance temperature are distinct. Their photoemission and many-body calculations connect orbital correlations with the changing bands and superconducting dome. This is evidence of a material-specific interplay, not proof that a topological transition universally raises Tc. The article appeared online in December 2025 and carries a 2026 volume designation.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c54d271015976534"
+      ],
+      "conditions": "Distinguish bulk/surface/vortex topology, gap scale, resistive criterion, sample conditions, spectral resolution and publication version.",
+      "verificationScope": "Selected primary evidence and independent prescribed-chain/thermal examples; no experimental braiding, material Tc calculation or universal causal relation."
+    },
+    {
+      "id": "scwiki-n9-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The nontrivial regime has Q = −1. Independent matrix diagonalization, phase winding and analytic gap minimization agree in 27 parameter cases. Multiplying t, μ and Δ by the same positive factor leaves eigenvectors and Q unchanged while scaling the excitation gap. Two additional cases verify gap closure at μ = ±2t, where the invariant is not assigned. Thus even this explicit topology does not fix an absolute gap scale. The calculation prescribes pairing; it does not solve its temperature dependence or predict Tc.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ade538b429fdd847"
+      ],
+      "conditions": "Distinguish bulk/surface/vortex topology, gap scale, resistive criterion, sample conditions, spectral resolution and publication version.",
+      "verificationScope": "Selected primary evidence and independent prescribed-chain/thermal examples; no experimental braiding, material Tc calculation or universal causal relation."
+    },
+    {
+      "id": "scwiki-n9-claim-mathematical-assumptions-8",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Four independent temperature cases verify the half-maximum relation. At 1 K this kernel alone has a width near 0.304 meV. Actual tunnelling spectra also involve intrinsic states, coupling, instrument response and potentially nonequilibrium effects. This example is not a fit to a measured peak and does not calculate poisoning or qubit fidelity.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a972be8eb742181f"
+      ],
+      "conditions": "Distinguish bulk/surface/vortex topology, gap scale, resistive criterion, sample conditions, spectral resolution and publication version.",
+      "verificationScope": "Selected primary evidence and independent prescribed-chain/thermal examples; no experimental braiding, material Tc calculation or universal causal relation."
+    },
+    {
+      "id": "scwiki-n9-claim-why-a-larger-tc-is-not-enough-1",
+      "sectionId": "why-a-larger-tc-is-not-enough",
+      "statement": "Hosur and colleagues show that vortex-end modes can depend on a topological transition of the vortex line while bulk superconductivity persists. Their selected weak-pairing treatment assumes inversion- and time-reversal-symmetric normal bands; chemical potential and vortex orientation matter. The vortex minigap, parametrically Δ/(kFξ) in the stated limit, can be much smaller than the bulk gap. It cannot be replaced blindly by kBTc or extrapolated into a different strong-pairing regime. A normal-state surface band alone is therefore insufficient to determine every superconducting vortex's topology.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e584f37aa67e112b"
+      ],
+      "conditions": "Distinguish bulk/surface/vortex topology, gap scale, resistive criterion, sample conditions, spectral resolution and publication version.",
+      "verificationScope": "Selected primary evidence and independent prescribed-chain/thermal examples; no experimental braiding, material Tc calculation or universal causal relation."
+    },
+    {
+      "id": "scwiki-n9-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The evidence reviewed here does not establish a universal causal relation between topology and high Tc, or demonstrate a functioning high-temperature topological qubit. Selected author manuscripts are distinguished from fully compared final papers; raw spectra and complete supplements remain open. The Lin study's selected final HTML is checked, but its complete methods and figures were not obtained in this review. Proposed Majorana interpretations retain their measurement and competing-explanation limits.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e584f37aa67e112b",
+        "source-a972be8eb742181f",
+        "source-c54d271015976534",
+        "source-dca781066e96eecc"
+      ],
+      "conditions": "Distinguish bulk/surface/vortex topology, gap scale, resistive criterion, sample conditions, spectral resolution and publication version.",
+      "verificationScope": "Selected primary evidence and independent prescribed-chain/thermal examples; no experimental braiding, material Tc calculation or universal causal relation."
+    },
+    {
+      "id": "scwiki-n9-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "A useful search should optimize several properties separately: a reproducible superconducting state, the desired topological phase, an isolating excitation gap, material uniformity and accessible control. Compare changes in topology with independently measured onset, zero resistance and surface gap rather than selecting the largest reported temperature. Study whether improved pairing strength preserves the required band and vortex conditions. Ultimately, controlled parity and exchange experiments must test device-level claims; neither a band calculation nor a larger Tc substitutes for them. These are proposed research priorities, not an accepted route to a guaranteed temperature increase.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-7dc64372df6ba886",
+        "source-e584f37aa67e112b",
+        "source-c54d271015976534"
+      ],
+      "conditions": "Distinguish bulk/surface/vortex topology, gap scale, resistive criterion, sample conditions, spectral resolution and publication version.",
+      "verificationScope": "Selected primary evidence and independent prescribed-chain/thermal examples; no experimental braiding, material Tc calculation or universal causal relation."
+    }
+  ],
+  "scopeItems": [
+    {
+      "id": "N9",
+      "sectionIds": [
+        "scope",
+        "experimental-criteria",
+        "what-iron-chalcogenide-experiments-establish",
+        "mathematical-assumptions",
+        "why-a-larger-tc-is-not-enough",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Selected surface and vortex theories, iron-chalcogenide spectra and thin-film results, with independent prescribed-chain topology and thermal-resolution examples.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "Full supplementary and raw-data analyses and complete author-to-final comparisons remain open.",
+        "Lin final methods and figures remain unchecked beyond the selected HTML results.",
+        "Prescribed model gaps and thermal widths are not material Tc predictions or qubit operating temperatures.",
+        "Spectroscopic signatures do not by themselves establish non-Abelian braiding."
+      ]
+    }
+  ]
+}

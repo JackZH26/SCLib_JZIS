@@ -1,0 +1,364 @@
+{
+  "id": "scwiki-f2",
+  "topicId": "scwiki-topic-f2",
+  "code": "F2",
+  "slug": "berry-curvature",
+  "title": "Berry curvature: phases, Hall response and topology",
+  "summary": "Track geometric phase and Hall conventions while separating local curvature, occupied-band topology and evidence for superconducting chirality.",
+  "aliases": [
+    "Berry curvature",
+    "Berry phase",
+    "anomalous velocity",
+    "intrinsic Hall",
+    "anomalous Hall effect",
+    "geometric phase"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "F1",
+    "F7",
+    "C7",
+    "B11"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T13:57:11.668235+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Berry original scan, Haldane and Sundaram author equations, Mielke experimental controls, and bounded loop/flux/Hall checks.",
+    "limitations": [
+      "Complete scientific acceptance, full final-version and raw-data reviews remain open.",
+      "Onoda and Wilczek–Zee are original-abstract checks; full disorder and non-Abelian derivations are not reproduced.",
+      "Xiao and Nagaosa remain background reviews, not completed primary evidence audits.",
+      "No material-specific curvature map, BdG invariant or transition temperature is inferred."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "F_quantum_geometry/F2_Berry_curvature.md",
+    "sha256": "915ee4d9982c91521a7311816fe21df8603d9908dc7f29389b71933d6740f450",
+    "sourceId": "file-3c95c46b89f0de54"
+  },
+  "references": [
+    {
+      "id": "source-f93105756c21da04",
+      "doi": "10.1098/rspa.1984.0023",
+      "title": "Quantal phase factors accompanying adiabatic changes",
+      "year": 1984,
+      "url": "https://doi.org/10.1098/rspa.1984.0023",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-original-scan-equations",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://michaelberryphysics.wordpress.com/wp-content/uploads/2013/07/berry120.pdf",
+        "note": "Original scan pp.46–47 visually read: adiabatic phase, Eq.4–10 and energy-denominator identity. Text extraction empty; no full-paper audit claimed."
+      }
+    },
+    {
+      "id": "source-fcaa37740551d83d",
+      "doi": "10.1103/RevModPhys.82.1959",
+      "title": "Berry phase effects on electronic properties",
+      "year": 2010,
+      "url": "https://doi.org/10.1103/RevModPhys.82.1959",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "review-bibliographic-background",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/abs/0907.2021",
+        "note": "Author version 0907.2021v1 identified and downloaded; abstract/background identity checked. Not substituted for original Berry or Sundaram derivations; full review not read."
+      }
+    },
+    {
+      "id": "source-381ad96944c0fa47",
+      "doi": "10.1103/PhysRevLett.93.206602",
+      "title": "Berry Curvature on the Fermi Surface: Anomalous Hall Effect as a Topological Fermi-Liquid Property",
+      "year": 2004,
+      "url": "https://doi.org/10.1103/PhysRevLett.93.206602",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-hall-and-fermi-surface-equations",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0408417v5",
+        "note": "Author v5, 11 November 2004, selected pp.1–3 read; p.1 visually checked. Opposite connection sign and nonquantized contribution/integer ambiguity retained. Apparent repeated -k in Eq.6 visually confirmed in author copy; journal comparison open."
+      }
+    },
+    {
+      "id": "source-7faba5d556864a32",
+      "doi": "10.1103/RevModPhys.82.1539",
+      "title": "Anomalous Hall effect",
+      "year": 2010,
+      "url": "https://doi.org/10.1103/RevModPhys.82.1539",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-review-abstract-background",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.82.1539",
+        "note": "Publisher abstract/citation checked, published 13 May 2010. Background review, not a primary experimental audit."
+      }
+    },
+    {
+      "id": "source-484da7abcc165cd3",
+      "doi": "10.1038/s41586-021-04327-z",
+      "title": "Time-reversal symmetry-breaking charge order in a kagome superconductor",
+      "year": 2022,
+      "url": "https://doi.org/10.1038/s41586-021-04327-z",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-charge-order-controls",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2106.13443v2",
+        "note": "Existing December2021 v2 selected pp.2–3 rechecked, prior C7 methods and Fig.1 p.2 visual reused. KV3Sb5 around80K is charge order; zero-field-only and nuclear-gradient caveat retained. Full final/data review open."
+      }
+    },
+    {
+      "id": "source-113ed6da444bd207",
+      "doi": "10.1103/PhysRevB.59.14915",
+      "title": "Wave-packet dynamics in slowly perturbed crystals: Gradient corrections and Berry-phase effects",
+      "year": 1999,
+      "url": "https://doi.org/10.1103/PhysRevB.59.14915",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-semiclassical-equations",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/9908003v1",
+        "note": "Selected section IIIA–B Eq.3.4–3.9 and symmetry discussion read. Publisher 15June1999; arXiv v1 31July1999. PDF compilation displays 2024, not publication date. Units restored explicitly; full final comparison open."
+      }
+    },
+    {
+      "id": "source-eb48700c5a38e363",
+      "doi": "10.1103/PhysRevB.77.165103",
+      "title": "Quantum transport theory of anomalous electric, thermoelectric, and thermal Hall effects in ferromagnets",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevB.77.165103",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.77.165103",
+        "note": "Published 2April2008. Original abstract states zero-temperature dilute-impurity T-matrix theory with skew/intrinsic regimes. Full disorder calculation not reviewed or reproduced."
+      }
+    },
+    {
+      "id": "source-0eb769764cf8ed2a",
+      "doi": "10.1103/PhysRevLett.52.2111",
+      "title": "Appearance of Gauge Structure in Simple Dynamical Systems",
+      "year": 1984,
+      "url": "https://doi.org/10.1103/PhysRevLett.52.2111",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.52.2111",
+        "note": "Published 11June1984. Original abstract confirms non-Abelian adiabatic extension; complete derivation not reviewed."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-f2-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Berry curvature describes local geometric twisting of a quantum-state family in parameter space. In a crystal, momentum-space curvature can contribute to electronic transport, but curvature, anomalous Hall conductivity and superconducting chirality are different objects. Specify whether the states belong to a normal-state Hamiltonian, a Bogoliubov–de Gennes Hamiltonian or a selected degenerate subspace before drawing a topological conclusion. Berry's original construction separates geometric and dynamical phases during adiabatic evolution.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f93105756c21da04",
+        "source-381ad96944c0fa47"
+      ],
+      "conditions": "Explicit curvature sign, electron charge, coordinates, dimensional units, isolated-band/subspace conditions and normal-state versus superconducting evidence.",
+      "verificationScope": "Selected primary equations and experimental passages; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f2-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The inherited chapter includes the Xiao–Chang–Niu and Nagaosa reviews as broader reading. Here the defining phase equations are checked against Berry's original paper, semiclassical motion against Sundaram–Niu, and the metallic Hall interpretation against Haldane. Review citations are not substitutes for a completed audit of every underlying experiment.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f93105756c21da04",
+        "source-fcaa37740551d83d",
+        "source-381ad96944c0fa47",
+        "source-7faba5d556864a32",
+        "source-113ed6da444bd207"
+      ],
+      "conditions": "Explicit curvature sign, electron charge, coordinates, dimensional units, isolated-band/subspace conditions and normal-state versus superconducting evidence.",
+      "verificationScope": "Selected primary equations and experimental passages; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f2-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For an isolated normalized Bloch state, use $A_i=i\\langle u|\\partial_i u\\rangle$ and $\\Omega_{ij}=\\partial_iA_j-\\partial_jA_i=-2\\mathrm{Im}\\,Q_{ij}$. Under $u\\rightarrow e^{i\\phi}u$, the connection changes as $A_i\\rightarrow A_i-\\partial_i\\phi$, while curvature is unchanged. The closed-loop phase $\\gamma=\\oint A_i dk_i$ is defined modulo $2\\pi$. In a smooth patch, Stokes' theorem relates it to the curvature flux. Nontrivial bundles can require multiple patches and transition functions; a globally smooth eigenvector should not be assumed.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f93105756c21da04",
+        "source-381ad96944c0fa47"
+      ],
+      "conditions": "Explicit curvature sign, electron charge, coordinates, dimensional units, isolated-band/subspace conditions and normal-state versus superconducting evidence.",
+      "verificationScope": "Selected primary equations and experimental passages; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f2-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a nondegenerate eigenstate of $H$, differentiating the eigenvalue equation gives $\\langle m|\\partial_i n\\rangle=\\langle m|\\partial_iH|n\\rangle/(E_n-E_m)$ for $m\\ne n$. Consequently $\\Omega_{n,ij}=-2\\mathrm{Im}\\sum_{m\\ne n}\\langle n|\\partial_iH|m\\rangle\\langle m|\\partial_jH|n\\rangle/(E_n-E_m)^2$. Small denominators require resolving the neighboring bands and the validity of the isolated-band approximation. Exactly degenerate states require a subspace treatment, not arbitrary assignments to individual eigenvectors. Wilczek–Zee supplies the historical non-Abelian extension; its full derivation is not audited here.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f93105756c21da04",
+        "source-0eb769764cf8ed2a"
+      ],
+      "conditions": "Explicit curvature sign, electron charge, coordinates, dimensional units, isolated-band/subspace conditions and normal-state versus superconducting evidence.",
+      "verificationScope": "Selected primary equations and experimental passages; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f2-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "With electron charge $-e$, $e>0$, and zero magnetic field, the weak-field semiclassical equations are $\\hbar\\dot{\\mathbf k}=-e\\mathbf E$ and $\\dot{\\mathbf r}=\\hbar^{-1}\\nabla_{\\mathbf k}\\epsilon-\\dot{\\mathbf k}\\times\\boldsymbol\\Omega$. For the clean intrinsic response, $\\sigma_{xy}^{\\rm int}=-(e^2/\\hbar)\\sum_n\\int d^dk\\,f_n\\Omega_{n,xy}/(2\\pi)^d$, with $j_x=\\sigma_{xy}E_y$. The two-dimensional quantity is a sheet conductance; in three dimensions it has conductivity units. Haldane's checked manuscript uses the opposite connection sign, so its curvature and displayed Hall sign must be translated together.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-381ad96944c0fa47",
+        "source-113ed6da444bd207"
+      ],
+      "conditions": "Explicit curvature sign, electron charge, coordinates, dimensional units, isolated-band/subspace conditions and normal-state versus superconducting evidence.",
+      "verificationScope": "Selected primary equations and experimental passages; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f2-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a gapped two-dimensional occupied subspace, $C=(2\\pi)^{-1}\\int_{\\rm BZ}\\mathrm{Tr}\\,\\Omega_{xy}\\,d^2k$ is an integer under the stated orientation. The corresponding clean filled-band result in this convention is $\\sigma_{xy}=-Ce^2/h$. A metal can still contain an isolated band with an integer band Chern number; its partially occupied curvature integral is generally not that integer. Haldane expresses the nonquantized metallic contribution through Fermi-surface Berry phases, retaining a quantized ambiguity and Brillouin-zone boundary terms. It is not a license to discard all filled-band contributions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-381ad96944c0fa47"
+      ],
+      "conditions": "Explicit curvature sign, electron charge, coordinates, dimensional units, isolated-band/subspace conditions and normal-state versus superconducting evidence.",
+      "verificationScope": "Selected primary equations and experimental passages; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f2-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "As a bounded check, the spinor $u=(\\cos(\\theta/2),e^{i\\varphi}\\sin(\\theta/2))$ taken around increasing $\\varphi$ at fixed $\\theta$ gives $\\gamma=-\\pi(1-\\cos\\theta)$ modulo $2\\pi$. We compare cyclic overlap products with an independently integrated curvature flux, reverse the loop orientation and apply phase changes at every point. The energy-denominator formula and Hall-current sign are checked separately. These calculations validate conventions in a model, not a material's measured topology.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f93105756c21da04",
+        "source-113ed6da444bd207"
+      ],
+      "conditions": "Explicit curvature sign, electron charge, coordinates, dimensional units, isolated-band/subspace conditions and normal-state versus superconducting evidence.",
+      "verificationScope": "Selected primary equations and experimental passages; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f2-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "An anomalous Hall measurement is not a unique image of a curvature hotspot. Onoda and colleagues' original impurity-transport study distinguishes skew-scattering and intrinsic regimes within its dilute-impurity approximation; that is not a universal material-independent scaling law. Separate magnetic state, occupation, disorder and the conductivity-to-resistivity conversion before fitting a mechanism. A finite normal-state Hall signal does not determine the topology of a superconducting gap.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-381ad96944c0fa47",
+        "source-eb48700c5a38e363"
+      ],
+      "conditions": "Explicit curvature sign, electron charge, coordinates, dimensional units, isolated-band/subspace conditions and normal-state versus superconducting evidence.",
+      "verificationScope": "Selected primary equations and experimental passages; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f2-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Mielke and colleagues studied KV₃Sb₅ using muon spin relaxation. The checked author manuscript finds enhanced relaxation around the approximately 80 K charge-order scale, while the selected zero-field relaxation stays approximately constant through the separate superconducting transition. It explicitly notes that zero-field results alone cannot establish the time-reversal-breaking interpretation because charge order can modify nuclear electric-field gradients. Longitudinal-field and higher-field controls form part of the argument. This is evidence about the charge-ordered material, not a direct reconstruction of Berry curvature or a demonstration of chiral superconductivity. The 80 K record is excluded from superconducting-temperature search.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-484da7abcc165cd3"
+      ],
+      "conditions": "Explicit curvature sign, electron charge, coordinates, dimensional units, isolated-band/subspace conditions and normal-state versus superconducting evidence.",
+      "verificationScope": "Selected primary equations and experimental passages; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f2-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Time reversal relates the curvature of symmetry-partner states with opposite sign at opposite momenta; inversion relates the corresponding curvature with the same sign. For spinful systems with both symmetries, treat the Kramers subspace appropriately. Cancellation of charge Hall response does not imply that all spin, valley or non-Abelian structure is trivial. Likewise, broken time reversal alone does not guarantee a nonzero measured Hall component: other symmetries or cancellations can forbid it.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-381ad96944c0fa47",
+        "source-113ed6da444bd207",
+        "source-0eb769764cf8ed2a"
+      ],
+      "conditions": "Explicit curvature sign, electron charge, coordinates, dimensional units, isolated-band/subspace conditions and normal-state versus superconducting evidence.",
+      "verificationScope": "Selected primary equations and experimental passages; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f2-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "This review visually checks Berry's original pages 46–47 and Haldane author v5 page 1, and reads selected Haldane, Sundaram–Niu and Mielke passages. The Haldane author copy prints an apparent repeated-momentum typo in its time-reversal equation; the transformation stated here follows the consistent symmetry argument rather than that literal expression. Full journal comparisons, non-Abelian derivations, disorder calculations and raw-data review remain open. Complete scientific acceptance has not been reached.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f93105756c21da04",
+        "source-381ad96944c0fa47",
+        "source-484da7abcc165cd3",
+        "source-113ed6da444bd207",
+        "source-eb48700c5a38e363",
+        "source-0eb769764cf8ed2a"
+      ],
+      "conditions": "Explicit curvature sign, electron charge, coordinates, dimensional units, isolated-band/subspace conditions and normal-state versus superconducting evidence.",
+      "verificationScope": "Selected primary equations and experimental passages; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f2-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Use curvature maps together with band gaps, occupation and symmetry, and test response predictions against independent measurements. For superconducting topology, calculate the appropriate gapped BdG subspace and compare relevant boundary or thermal probes. Keep a charge-order signal, normal-state anomalous Hall effect and a new symmetry change below the superconducting transition as separate claims. A promising normal-state band structure is an input to this analysis, not its conclusion.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-381ad96944c0fa47",
+        "source-484da7abcc165cd3"
+      ],
+      "conditions": "Explicit curvature sign, electron charge, coordinates, dimensional units, isolated-band/subspace conditions and normal-state versus superconducting evidence.",
+      "verificationScope": "Selected primary equations and experimental passages; complete scientific acceptance open."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\gamma=-\\pi(1-\\cos\\theta)",
+      "check": "Four cyclic-overlap/curvature-flux comparisons at two loop resolutions; gauge and orientation tests."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\sigma_{xy}=-Ce^2/h",
+      "check": "Three independent anomalous-velocity/charge-current sign and sheet-unit checks; eight energy-denominator checks. No material fit."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-f2-material-1",
+      "formula": "KV3Sb5",
+      "sample": "Mielke aligned crystal mosaic, charge-order-associated muon response",
+      "recordType": "experiment",
+      "reportedTemperatureK": 80,
+      "tcK": null,
+      "temperatureKind": "unassigned",
+      "temperatureNote": "Approximate charge-order scale, not superconducting Tc; zero-field-only ambiguity and field controls retained.",
+      "criterion": "charge-order-associated-relaxation",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Muon spin relaxation with longitudinal- and higher-field controls",
+      "sourceId": "source-484da7abcc165cd3",
+      "aliases": [
+        "KV3Sb5",
+        "kagome",
+        "Mielke KV3Sb5"
+      ]
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 67,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source retained; add original semiclassical source, translate signs and distinguish metallic occupation from isolated-band topology."
+    }
+  ]
+}

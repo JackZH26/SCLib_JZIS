@@ -1,0 +1,463 @@
+{
+  "id": "scwiki-a4",
+  "topicId": "scwiki-topic-a4",
+  "code": "A4",
+  "slug": "isotope-effect",
+  "title": "Isotope effect: mass response and pairing constraints",
+  "summary": "Separate partial and total isotope coefficients, preserve experimental criteria, and test the assumptions behind the one-half benchmark.",
+  "aliases": [
+    "isotope exponent",
+    "partial isotope coefficient",
+    "boron isotope",
+    "isotope substitution",
+    "phonon mass"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "B1",
+    "B12",
+    "A3",
+    "A2",
+    "A1"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-19",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Edited pinned A4 chapter; selected Budko and Hinks author-manuscript passages, historical metadata, and independent harmonic/finite-difference/uncertainty checks.",
+    "limitations": [
+      "This is scoped scientific review, not complete experimental replication or unique identification of a pairing mechanism.",
+      "Publisher versions were not compared with author manuscripts; original mercury papers and Frohlich derivation remain metadata-only.",
+      "Raw curves, isotope enrichment and reported uncertainties were not independently refit; the illustrative oscillator is not an MgB2 model.",
+      "Pressure and equilibrium labels not established by selected evidence remain unknown."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "A_phenomenology/A4_isotope_effect.md",
+    "sha256": "498265957acec0fba6e83a25fc11c64cc01450149355dc87550e8794df8e6573",
+    "sourceId": "file-6fe492ebf6aa0895"
+  },
+  "references": [
+    {
+      "id": "source-22ad55507a1e49c5",
+      "doi": "10.1103/PhysRevLett.86.1877",
+      "title": "Boron Isotope Effect in Superconducting MgB2",
+      "year": 2001,
+      "url": "https://doi.org/10.1103/PhysRevLett.86.1877",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0101463v2",
+        "note": "Selected pp. 1–2: sample preparation, 25 G magnetization and 2% onset criterion, 40.2/39.2 K transitions, heat-capacity corroboration and partial boron coefficient. Raw curves and experimental uncertainty not independently refit. arXiv v2 dated 3 February 2001; later typeset date is not a new publication. Publisher identity and 26 February 2001 publication date checked; final journal text not compared."
+      }
+    },
+    {
+      "id": "source-60ffd9b4ef2c9ccd",
+      "doi": "10.1038/35078037",
+      "title": "The complex nature of superconductivity in MgB2 as revealed by the reduced total isotope effect",
+      "year": 2001,
+      "url": "https://doi.org/10.1038/35078037",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0104242v1",
+        "note": "Selected author manuscript pp. 1–5: component definitions, 1 G magnetization protocol, onset/10% criteria, partial and total coefficients, impurity caveat and conditional mass scaling. arXiv has a different manuscript title and links this journal DOI. Publisher text unavailable; table, raw-data fits and detailed interaction-parameter inference are not independently verified."
+      }
+    },
+    {
+      "id": "source-eff5a2a1c455e7f6",
+      "doi": "10.1103/PhysRev.78.477",
+      "title": "Isotope Effect in the Superconductivity of Mercury",
+      "year": 1950,
+      "url": "https://doi.org/10.1103/PhysRev.78.477",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-metadata-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.78.477",
+        "note": "Title, author and publication date checked. Original full text unavailable at attempted endpoint; no mercury isotope exponent or dataset certified."
+      }
+    },
+    {
+      "id": "source-e8a489943f13c9f8",
+      "doi": "10.1103/PhysRev.78.487",
+      "title": "Superconductivity of Isotopes of Mercury",
+      "year": 1950,
+      "url": "https://doi.org/10.1103/PhysRev.78.487",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-metadata-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.78.487",
+        "note": "Title, authors and publication date checked. Original full text unavailable at attempted endpoint; no mercury isotope exponent or dataset certified."
+      }
+    },
+    {
+      "id": "source-51114e33276df5b9",
+      "doi": "10.1103/PhysRev.79.845",
+      "title": "Theory of the Superconducting State. I. The Ground State at the Absolute Zero of Temperature",
+      "year": 1950,
+      "url": "https://doi.org/10.1103/PhysRev.79.845",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-metadata-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.79.845",
+        "note": "Historical reference identity only; original derivation not checked and not treated as a modern quantitative model."
+      }
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 5,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Scope retained."
+    },
+    {
+      "startLine": 6,
+      "endLine": 15,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Mass derivative, finite difference and fixed-parameter benchmark; new explicit analytic checks."
+    },
+    {
+      "startLine": 16,
+      "endLine": 25,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Historical papers kept at metadata-only scope; original BCS anchor linked through the reviewed B1 entry."
+    },
+    {
+      "startLine": 26,
+      "endLine": 31,
+      "targetSections": [
+        "experimental-criteria",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Primary MgB2 checks distinguish partial and total coefficients; material-family generalizations not promoted into measurements."
+    },
+    {
+      "startLine": 32,
+      "endLine": 39,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Reporting controls retained as editorial guidance."
+    },
+    {
+      "startLine": 40,
+      "endLine": 47,
+      "targetSections": [
+        "scope",
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Source identities and scoped manuscript review; BCS accessible via related entry."
+    },
+    {
+      "startLine": 48,
+      "endLine": 50,
+      "targetSections": [
+        "discovery-implications"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Causal conclusion qualified by controls and model discrimination."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-a4-correction-1",
+      "description": "Separated a partial boron isotope coefficient from the total coefficient; a partial value below one half is not by itself a violation of the harmonic benchmark.",
+      "sourceId": "source-60ffd9b4ef2c9ccd",
+      "scope": "Interpretation and normalization; no alteration of published measurements."
+    },
+    {
+      "id": "scwiki-a4-correction-2",
+      "description": "Qualified causal claims: an isotope response requires sample controls before attributing it exclusively to mass or identifying a pairing mechanism.",
+      "sourceId": "source-22ad55507a1e49c5",
+      "scope": "Editorial inference boundary; no claim of new experimental evidence."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\alpha_i=-\\partial\\ln T_c/\\partial\\ln M_i",
+      "check": "Harmonic mass scaling and two-mass partial derivatives checked independently by numerical differentiation."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\widehat\\alpha=-N/D",
+      "check": "Log-coordinate analytic gradient checked by central differences, including cancellation of a common temperature calibration offset; covariance retained."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-a4-material-1",
+      "formula": "MgB2",
+      "sample": "boron-10 sample, solid piece from reacted pellet",
+      "recordType": "experiment",
+      "tcK": 40.2,
+      "reportedTemperatureK": 40.2,
+      "temperatureKind": "transition",
+      "temperatureNote": "Magnetic onset in 25 G; not zero resistance or a zero-field thermodynamic Tc",
+      "criterion": "diamagnetic",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "SQUID magnetization, warming after zero-field cooling; 2% of low-temperature diamagnetic signal",
+      "sourceId": "source-22ad55507a1e49c5"
+    },
+    {
+      "id": "scwiki-a4-material-2",
+      "formula": "MgB2",
+      "sample": "boron-11 sample, solid piece from reacted pellet",
+      "recordType": "experiment",
+      "tcK": 39.2,
+      "reportedTemperatureK": 39.2,
+      "temperatureKind": "transition",
+      "temperatureNote": "Magnetic onset in 25 G; not zero resistance or a zero-field thermodynamic Tc",
+      "criterion": "diamagnetic",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "SQUID magnetization, warming after zero-field cooling; 2% of low-temperature diamagnetic signal",
+      "sourceId": "source-22ad55507a1e49c5"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-a4-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Isotope substitution changes nuclear mass while keeping the element the same. The resulting response of a transition temperature can constrain lattice involvement, provided the compared samples have controlled chemistry and structure. It does not, by itself, identify the complete pairing interaction. This entry distinguishes a mass derivative, a finite comparison between samples and a microscopic explanation.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Editorial reporting and inference guidance; controlled sample comparison required. No additional dataset certified.",
+      "verificationScope": "Adapted pinned A4 reporting guidance; cited sources motivate, but do not validate, every recommendation."
+    },
+    {
+      "id": "scwiki-a4-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The classic mercury reports by Maxwell and Reynolds and colleagues, and Fröhlich's early theory paper, are historical starting points. Their bibliographic identities are checked here; their original experimental curves and derivations are not. No mercury exponent is extracted from those metadata records.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-eff5a2a1c455e7f6",
+        "source-e8a489943f13c9f8",
+        "source-51114e33276df5b9"
+      ],
+      "conditions": "Editorial reporting and inference guidance; controlled sample comparison required. No additional dataset certified.",
+      "verificationScope": "Historical bibliographic identity only; no scientific claim inferred from metadata."
+    },
+    {
+      "id": "scwiki-a4-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For element $i$, with other masses and specified sample conditions held fixed, define",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Fixed specified non-mass parameters; finite differences need a resolved mass interval. Oscillator assumes fixed K and Tc proportional to frequency; uncertainty propagation is first-order and retains covariance.",
+      "verificationScope": "Explicit local derivation and finite-difference checks, with selected Hinks manuscript definitions/conditional scaling. Not a material-specific theory fit.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Primary manuscript supplies the isotope coefficient definition; the finite-interval slope and fixed-condition chain-rule interpretation are local deductions."
+    },
+    {
+      "id": "scwiki-a4-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\alpha_i=-\\frac{\\partial\\ln T_c}{\\partial\\ln M_i},\\qquad \\widehat\\alpha_i=-\\frac{\\ln(T_{c,2}/T_{c,1})}{\\ln(M_{i,2}/M_{i,1})}.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Fixed specified non-mass parameters; finite differences need a resolved mass interval. Oscillator assumes fixed K and Tc proportional to frequency; uncertainty propagation is first-order and retains covariance.",
+      "verificationScope": "Explicit local derivation and finite-difference checks, with selected Hinks manuscript definitions/conditional scaling. Not a material-specific theory fit."
+    },
+    {
+      "id": "scwiki-a4-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The finite estimate averages a slope over the chosen interval; it equals the local derivative only for an appropriate limiting interval or a power law. Use the mean mass implied by measured isotope abundances, not automatically an integer isotope label. A partial coefficient is not the total $\\alpha_{\\rm tot}=\\sum_i\\alpha_i$. This sum describes a common logarithmic scaling of all component masses under the same constraints.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Fixed specified non-mass parameters; finite differences need a resolved mass interval. Oscillator assumes fixed K and Tc proportional to frequency; uncertainty propagation is first-order and retains covariance.",
+      "verificationScope": "Explicit local derivation and finite-difference checks, with selected Hinks manuscript definitions/conditional scaling. Not a material-specific theory fit."
+    },
+    {
+      "id": "scwiki-a4-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a harmonic mode with fixed force constant, $\\omega\\propto M^{-1/2}$. If the transition scale is proportional to that frequency and all dimensionless interaction parameters remain mass independent, differentiation gives $\\alpha=1/2$. The fixed-parameter condition is essential. A measured deviation challenges that restricted model, not every possible electron–phonon theory.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Fixed specified non-mass parameters; finite differences need a resolved mass interval. Oscillator assumes fixed K and Tc proportional to frequency; uncertainty propagation is first-order and retains covariance.",
+      "verificationScope": "Explicit local derivation and finite-difference checks, with selected Hinks manuscript definitions/conditional scaling. Not a material-specific theory fit."
+    },
+    {
+      "id": "scwiki-a4-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An illustrative two-mass optical oscillator makes the distinction concrete. If $\\omega^2=K(1/M_1+1/M_2)$ and $T_c\\propto\\omega$, direct differentiation gives",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Fixed specified non-mass parameters; finite differences need a resolved mass interval. Oscillator assumes fixed K and Tc proportional to frequency; uncertainty propagation is first-order and retains covariance.",
+      "verificationScope": "Explicit local derivation and finite-difference checks, with selected Hinks manuscript definitions/conditional scaling. Not a material-specific theory fit."
+    },
+    {
+      "id": "scwiki-a4-claim-mathematical-assumptions-6",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\alpha_1=\\frac{M_2}{2(M_1+M_2)},\\qquad \\alpha_2=\\frac{M_1}{2(M_1+M_2)},\\qquad \\alpha_1+\\alpha_2=\\frac12.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Fixed specified non-mass parameters; finite differences need a resolved mass interval. Oscillator assumes fixed K and Tc proportional to frequency; uncertainty propagation is first-order and retains covariance.",
+      "verificationScope": "Explicit local derivation and finite-difference checks, with selected Hinks manuscript definitions/conditional scaling. Not a material-specific theory fit."
+    },
+    {
+      "id": "scwiki-a4-claim-mathematical-assumptions-7",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Each partial coefficient can be below one half even in this harmonic construction. These equations are a local illustrative derivation, checked against numerical mass derivatives; they are not a fit to MgB2 or a microscopic pairing calculation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Fixed specified non-mass parameters; finite differences need a resolved mass interval. Oscillator assumes fixed K and Tc proportional to frequency; uncertainty propagation is first-order and retains covariance.",
+      "verificationScope": "Explicit local derivation and finite-difference checks, with selected Hinks manuscript definitions/conditional scaling. Not a material-specific theory fit."
+    },
+    {
+      "id": "scwiki-a4-claim-mathematical-assumptions-8",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For uncertainty propagation let $N=\\ln(T_{c,2}/T_{c,1})$ and $D=\\ln(M_{i,2}/M_{i,1})$. First-order propagation for $\\widehat\\alpha=-N/D$ gives",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Fixed specified non-mass parameters; finite differences need a resolved mass interval. Oscillator assumes fixed K and Tc proportional to frequency; uncertainty propagation is first-order and retains covariance.",
+      "verificationScope": "Explicit local derivation and finite-difference checks, with selected Hinks manuscript definitions/conditional scaling. Not a material-specific theory fit."
+    },
+    {
+      "id": "scwiki-a4-claim-mathematical-assumptions-9",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\sigma_\\alpha^2\\simeq\\frac{\\operatorname{Var}(N)}{D^2}+\\frac{N^2\\operatorname{Var}(D)}{D^4}-\\frac{2N\\operatorname{Cov}(N,D)}{D^3}.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Fixed specified non-mass parameters; finite differences need a resolved mass interval. Oscillator assumes fixed K and Tc proportional to frequency; uncertainty propagation is first-order and retains covariance.",
+      "verificationScope": "Explicit local derivation and finite-difference checks, with selected Hinks manuscript definitions/conditional scaling. Not a material-specific theory fit.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local first-order covariance propagation for -N/D, checked using its gradient. The linked isotope paper supplies definitions and context, not this uncertainty formula or experimental precision."
+    },
+    {
+      "id": "scwiki-a4-claim-mathematical-assumptions-10",
+      "sectionId": "mathematical-assumptions",
+      "statement": "This linear approximation requires small uncertainties relative to the resolved mass interval. Shared calibration errors can be correlated; treating all temperatures as independent can misstate the uncertainty. The analytic gradient was checked against finite differences. Those arithmetic checks do not establish experimental precision.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Fixed specified non-mass parameters; finite differences need a resolved mass interval. Oscillator assumes fixed K and Tc proportional to frequency; uncertainty propagation is first-order and retains covariance.",
+      "verificationScope": "Explicit local derivation and finite-difference checks, with selected Hinks manuscript definitions/conditional scaling. Not a material-specific theory fit."
+    },
+    {
+      "id": "scwiki-a4-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Bud'ko and colleagues report MgB2 isotope samples with magnetic onsets at 40.2 K for boron-10 and 39.2 K for boron-11. They use 25 G, warming after zero-field cooling, and a 2% onset of the low-temperature diamagnetic signal. Heat capacity also shows the shift. Their reported boron coefficient is $0.26\\pm0.03$, a partial coefficient. Using nominal masses 10 and 11 gives about 0.264 from the stated temperatures; this only checks arithmetic, not enrichment or their error estimate.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-22ad55507a1e49c5"
+      ],
+      "conditions": "Named isotope samples and study-specific magnetic criterion/field; partial coefficients distinct from total. Raw curves/enrichment/error bars not refit.",
+      "verificationScope": "Selected author manuscript passages only; reported numbers retained with their original criterion."
+    },
+    {
+      "id": "scwiki-a4-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "A separate study by Hinks, Claus and Jorgensen measures both components. Its author manuscript reports partial coefficients of $0.30(1)$ for boron and $0.02(1)$ for magnesium, with total $0.32(1)$. Its magnetic protocol uses 1 G and compares extrapolated onset with a 10% criterion. These values belong to that study and must not be assembled from unrelated samples or criteria. The authors explicitly discuss possible impurity effects in their magnesium comparison.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Named isotope samples and study-specific magnetic criterion/field; partial coefficients distinct from total. Raw curves/enrichment/error bars not refit.",
+      "verificationScope": "Selected author manuscript passages only; reported numbers retained with their original criterion."
+    },
+    {
+      "id": "scwiki-a4-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "For a new comparison, report enrichment, composition, structure, defects, preparation history and the exact temperature criterion. Characterize spectral frequency shifts where feasible. Back-exchange can test reversibility, but annealing itself may change the specimen. Repeat controls and uncertainty estimates are needed before assigning a shift exclusively to mass. These are editorial reporting recommendations, not claims that every cited study performed every control.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Editorial reporting and inference guidance; controlled sample comparison required. No additional dataset certified.",
+      "verificationScope": "Adapted pinned A4 reporting guidance; cited sources motivate, but do not validate, every recommendation."
+    },
+    {
+      "id": "scwiki-a4-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A small response for one element does not exclude its contribution to a coupled vibrational system. Conversely, a nonzero response does not reconstruct the full electron–phonon spectral function or uniquely determine a mediator. Mass-dependent interactions, anharmonicity and structural changes require explicit models; the sign or size alone cannot settle them. The cited Hinks manuscript discusses alternatives to its own interaction-parameter interpretation.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Editorial reporting and inference guidance; controlled sample comparison required. No additional dataset certified.",
+      "verificationScope": "Adapted pinned A4 reporting guidance; cited sources motivate, but do not validate, every recommendation."
+    },
+    {
+      "id": "scwiki-a4-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Do not merge resistive onset, zero resistance, magnetic screening and a calorimetric transition into one unqualified temperature. The material records below preserve the magnetic criterion actually checked. Pressure and equilibrium classifications not established in the selected passages remain unknown. Comparing isotope coefficients from different studies also requires their sample preparation and systematic uncertainties.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Editorial reporting and inference guidance; controlled sample comparison required. No additional dataset certified.",
+      "verificationScope": "Adapted pinned A4 reporting guidance; cited sources motivate, but do not validate, every recommendation."
+    },
+    {
+      "id": "scwiki-a4-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Ask which controlled observation would separate a direct mass dependence from a changed sample. Joint measurements of structure, composition, vibrational spectra and independent superconducting probes can narrow the interpretation. Preserve null results and disagreements rather than treating the isotope exponent as a pass/fail label.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Editorial reporting and inference guidance; controlled sample comparison required. No additional dataset certified.",
+      "verificationScope": "Adapted pinned A4 reporting guidance; cited sources motivate, but do not validate, every recommendation."
+    },
+    {
+      "id": "scwiki-a4-claim-discovery-implications-2",
+      "sectionId": "discovery-implications",
+      "statement": "A quantitative theory should predict the response of the same observable under the same substitution and constraints. Agreement with one coefficient is a consistency check; a credible explanation must also confront the remaining measurements. These are model-discrimination criteria, not a new material discovery.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-60ffd9b4ef2c9ccd"
+      ],
+      "conditions": "Editorial reporting and inference guidance; controlled sample comparison required. No additional dataset certified.",
+      "verificationScope": "Adapted pinned A4 reporting guidance; cited sources motivate, but do not validate, every recommendation."
+    }
+  ]
+}

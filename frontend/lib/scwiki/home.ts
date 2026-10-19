@@ -1,0 +1,37 @@
+export const topicGroups = [
+  {id:"foundations", title:"Foundations", description:"Start with the phenomena that define a superconductor.", topics:[
+    {code:"OVERVIEW", label:"Superconductivity overview"}, {code:"A1", label:"Zero resistance"}, {code:"A2", label:"Meissner effect"}, {code:"A6", label:"Critical fields"}, {code:"A3", label:"Specific heat"}, {code:"A4", label:"Isotope effect"}, {code:"A5", label:"Superconducting gap"}, {code:"A7", label:"Critical current"}, {code:"A9", label:"Andreev reflection"}, {code:"A10", label:"Quasiparticle interference"}, {code:"D11", label:"Two-dimensional superconductivity"},
+  ]},
+  {id:"materials", title:"Materials", description:"Explore the families, structures and conditions.", topics:[
+    {code:"D1", label:"Elemental superconductors"}, {code:"D2", label:"A15 compounds"}, {code:"D3", label:"Cuprates"}, {code:"D4", label:"Iron-based superconductors"}, {code:"D5", label:"Nickelates"}, {code:"D6", label:"Hydride superconductors"}, {code:"D7", label:"MgB2 / two-gap benchmark"}, {code:"D8", label:"Heavy-fermion superconductors"}, {code:"D9", label:"Fulleride superconductors"}, {code:"D10", label:"Organic superconductors"}, {code:"D12", label:"Topological candidates"}, {code:"D13", label:"2D semiconductors / TMDs"}, {code:"D14", label:"Kagome superconductors"}, {code:"D15", label:"Magnetic substitution"},
+  ]},
+  {id:"pairing", title:"Pairing & mechanisms", description:"Connect observations to models of the paired state.", topics:[
+    {code:"B1", label:"BCS theory"}, {code:"B2", label:"Eliashberg theory"}, {code:"B3", label:"Spin-fluctuation pairing"}, {code:"B4", label:"Ferromagnetic fluctuations"}, {code:"B5", label:"Nematic fluctuations"}, {code:"B6", label:"Charge fluctuations / CDW"}, {code:"B7", label:"Exciton-mediated pairing"}, {code:"B8", label:"Plasmons / dynamical screening"}, {code:"B9", label:"RVB / doped Mott insulators"}, {code:"B10", label:"Hund coupling / multiorbital metals"}, {code:"B11", label:"Topological superconductivity"}, {code:"B12", label:"Multiband pairing"}, {code:"B13", label:"Flat-band pairing"}, {code:"B14", label:"Mottness / charge transfer"}, {code:"C1", label:"s-wave / A1g"}, {code:"C2", label:"s± pairing"}, {code:"C3", label:"d-wave / B1g"}, {code:"C4", label:"dxy / B2g pairing"}, {code:"C5", label:"p-wave / spin and chirality"}, {code:"C6", label:"f-wave / nodal candidates"}, {code:"C7", label:"Chiral pairing / topology"}, {code:"C8", label:"Pair-density waves / FFLO"}, {code:"C9", label:"Singlet / triplet pairing"}, {code:"C10", label:"Nodes / gap minima"}, {code:"G7", label:"Spin liquids & RVB"},
+  ]},
+  {id:"frontiers", title:"Properties & frontiers", description:"Follow the links between superconductivity and its wider physics.", topics:[
+    {code:"F1", label:"Quantum metric"}, {code:"F2", label:"Berry curvature"}, {code:"F3", label:"Chern number"}, {code:"F4", label:"Time-reversal-invariant topology"}, {code:"F5", label:"Majorana zero modes"}, {code:"F6", label:"Flat-band superconductivity"}, {code:"F7", label:"Geometric superfluid weight"}, {code:"F8", label:"BKT transition"}, {code:"F9", label:"Vortices and flux quantization"}, {code:"F10", label:"Wilson loops"}, {code:"G1", label:"Antiferromagnetism and coexistence"}, {code:"G2", label:"Ferromagnetic superconductors"}, {code:"G3", label:"Field-induced superconductivity"}, {code:"G4", label:"Reentrant superconductivity"}, {code:"G5", label:"Exchange compensation"}, {code:"G6", label:"Pauli limit"}, {code:"G8", label:"Spin–orbit coupling"}, {code:"G9", label:"Altermagnetism"}, {code:"E1", label:"Pressure tuning"}, {code:"E2", label:"Chemical doping"}, {code:"E3", label:"Electrostatic gating"}, {code:"E4", label:"Strain engineering"}, {code:"E5", label:"Magnetic field"}, {code:"E6", label:"Light-driven states"}, {code:"E7", label:"Disorder and impurities"}, {code:"E8", label:"Dimensionality and phase slips"}, {code:"E9", label:"Twist angle"}, {code:"E10", label:"Pressure quenching"}, {code:"H1", label:"Strange metals"}, {code:"H2", label:"Planckian dissipation"}, {code:"H3", label:"Pseudogap"}, {code:"H4", label:"Charge-density waves"}, {code:"H5", label:"Spin-density waves"}, {code:"H6", label:"Nematic order"}, {code:"H7", label:"Nonlinear Hall effect"}, {code:"H8", label:"Parallel conduction channels"}, {code:"H9", label:"Hall sign reversal"}, {code:"H10", label:"Quantum spin liquids"}, {code:"A8", label:"Linear-T resistivity"},
+  ]},
+  {id:"handbooks", title:"Reference handbooks", description:"Compare methods, assumptions and the evidence behind an interpretation.", topics:[
+    {code:"I", label:"Experimental methods"},
+    {code:"J", label:"Theoretical tools"},
+    {code:"K", label:"Superconducting applications"},
+    {code:"L", label:"History of superconductivity"},
+    {code:"M", label:"Research methodology"},
+  ]},
+  {id:"open-questions", title:"Open research questions", description:"Examine what is established, what remains uncertain and which evidence would resolve it.", topics:[
+    {code:"N1", label:"Room-temperature superconductivity?"},
+    {code:"N2", label:"A unified pairing mechanism?"},
+    {code:"N3", label:"Predicting correlated-material Tc?"},
+    {code:"N4", label:"Establishing Majorana zero modes?"},
+    {code:"N5", label:"What causes strange metals?"},
+    {code:"N6", label:"Is UTe2 spin triplet?"},
+    {code:"N7", label:"Nickelate s or d pairing?"},
+    {code:"N8", label:"Validating claims like LK-99?"},
+    {code:"N9", label:"Does topology imply higher Tc?"},
+    {code:"N10", label:"What limits flat-band Tc?"},
+  ]},
+] as const;
+
+export function formatResearchDate(value:string) {
+  return new Intl.DateTimeFormat("en-GB",{day:"numeric",month:"short",year:"numeric",timeZone:"UTC"}).format(new Date(value+"T00:00:00Z"));
+}

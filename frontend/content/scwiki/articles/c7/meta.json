@@ -1,0 +1,486 @@
+{
+  "id": "scwiki-c7",
+  "topicId": "scwiki-topic-c7",
+  "code": "C7",
+  "slug": "chiral-pairing",
+  "title": "Chiral pairing: time reversal, topology and boundary evidence",
+  "summary": "Separate orbital handedness, broken time reversal, band topology and the signals used to test them.",
+  "aliases": [
+    "chiral pairing",
+    "chirality",
+    "Chern number",
+    "time reversal",
+    "TRSB",
+    "edge current",
+    "kagome",
+    "roton PDW",
+    "s+is"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "C5",
+    "C6",
+    "C3",
+    "B11",
+    "B6"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T09:56:38.868362+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected topology, boundary-current and optical manuscripts; kagome muon/STM passages; inherited UPt3 and Sr2RuO4 scoped evidence; independent lattice and angular checks.",
+    "limitations": [
+      "Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
+      "Fixed-gap lattice topology and sharp-edge continuum currents are not realistic material calculations.",
+      "Charge-order, superconducting and surface temperature scales are not interchangeable.",
+      "No current crystal candidate is declared conclusively chiral by these local checks."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "C_pairing_symmetry/C7_chiral_pairing.md",
+    "sha256": "83702d492b9ec3f0db41d54a045ebecc8ce06f0cd72755d36a041efcf3746344",
+    "sourceId": "file-19025829180d940a"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 15,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; symmetry, topology and probe boundaries expanded with primary checks."
+    },
+    {
+      "startLine": 16,
+      "endLine": 28,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; symmetry, topology and probe boundaries expanded with primary checks."
+    },
+    {
+      "startLine": 29,
+      "endLine": 38,
+      "targetSections": [
+        "mathematical-assumptions",
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; symmetry, topology and probe boundaries expanded with primary checks."
+    },
+    {
+      "startLine": 39,
+      "endLine": 46,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; symmetry, topology and probe boundaries expanded with primary checks."
+    },
+    {
+      "startLine": 47,
+      "endLine": 58,
+      "targetSections": [
+        "experimental-criteria",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; symmetry, topology and probe boundaries expanded with primary checks."
+    },
+    {
+      "startLine": 59,
+      "endLine": 78,
+      "targetSections": [
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; symmetry, topology and probe boundaries expanded with primary checks."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-a33c639b7db4f05a",
+      "doi": "10.1103/PhysRevB.61.10267",
+      "title": "Paired states of fermions in two dimensions with breaking of parity and time-reversal symmetries, and the fractional quantum Hall effect",
+      "year": 2000,
+      "url": "https://doi.org/10.1103/PhysRevB.61.10267",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/9906453v3",
+        "note": "Selected pp. 4–7: continuum assumptions, weak/strong topology and charge Hall distinction. Version 3 January 2000; final-version comparison open. Local lattice example is independent."
+      }
+    },
+    {
+      "id": "source-69d33a869fbbb0c6",
+      "doi": "10.1088/0034-4885/79/5/054502",
+      "title": "Chiral superconductors",
+      "year": 2016,
+      "url": "https://doi.org/10.1088/0034-4885/79/5/054502",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1512.01151v2",
+        "note": "Kallin and Berlinsky, version 2 April 2016. Selected pp. 5–7 and 15–17: multiband formalism, half-quantum vortices and optical response. Historical candidate assignments are not current confirmations."
+      }
+    },
+    {
+      "id": "source-25d6a80b561d5ad2",
+      "doi": "10.1103/PhysRevB.90.224519",
+      "title": "Vanishing edge currents in non-p-wave topological chiral superconductors",
+      "year": 2014,
+      "url": "https://doi.org/10.1103/PhysRevB.90.224519",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1410.0377v2",
+        "note": "Selected pp. 2–3; p. 3 visually checked. Version 2 marked published version by authors. Independent angular quadrature checks Eqs. 6–11; full lattice/self-consistent calculations not reproduced."
+      }
+    },
+    {
+      "id": "source-d3edee404071ac81",
+      "doi": "10.1126/science.1248552",
+      "title": "Observation of broken time-reversal symmetry in the heavy-fermion superconductor UPt3",
+      "year": 2014,
+      "url": "https://doi.org/10.1126/science.1248552",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1410.1482v1",
+        "note": "Selected pp.1–6, Fig.2 on p.11 visually checked, and sample/apparatus passages on p.13. Published July2014; author upload October2014. Heating and training limits retained; full final-version and raw-data comparison open."
+      }
+    },
+    {
+      "id": "source-c7f8b99a795aba41",
+      "doi": "10.1038/s41586-019-1596-2",
+      "title": "Constraints on the superconducting order parameter in Sr2RuO4 from oxygen-17 nuclear magnetic resonance",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41586-019-1596-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1904.00047v1",
+        "note": "Pustogow et al. v1 selected pp.4–7; p.7 RF-energy and heating passage visually checked. Zero-strain0.7107T versus strained1.9980T conditions distinguished. Published identity checked; full final-version equivalence and subsequent literature survey not completed."
+      }
+    },
+    {
+      "id": "source-484da7abcc165cd3",
+      "doi": "10.1038/s41586-021-04327-z",
+      "title": "Time-reversal symmetry-breaking charge order in a kagome superconductor",
+      "year": 2022,
+      "url": "https://doi.org/10.1038/s41586-021-04327-z",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2106.13443v2",
+        "note": "Selected pp. 2–3 and 6 plus experimental-methods passages; Fig. 1 on p. 2 visually checked. December 2021 author version 2, published February 2022. Nuclear/electronic and charge/superconducting distinctions retained; full final-version/data review open."
+      }
+    },
+    {
+      "id": "source-057c43c86174f961",
+      "doi": "10.1038/s41586-021-03983-5",
+      "title": "Roton pair density wave in a strong-coupling kagome superconductor",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41586-021-03983-5",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2103.09188v2",
+        "note": "Selected pp. 3–7 and methods pp. 17–18; Fig. 3 on p. 14 visually checked. Author version 2 September 2021 has a different title and mistyped journal volume 559; publisher confirms Nature 599. Final-version/raw-data comparison open."
+      }
+    },
+    {
+      "id": "source-3c7aa9b4c8da3abf",
+      "doi": "10.1103/PhysRevB.81.134522",
+      "title": "Three-band superconductivity and the order parameter that breaks time-reversal symmetry",
+      "year": 2010,
+      "url": "https://doi.org/10.1103/PhysRevB.81.134522",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.81.134522",
+        "note": "Published 23 April 2010. Abstract supports frustrated three-band TRSB possibility; full phase diagram not reviewed. Local fixed-phase example is illustrative only."
+      }
+    },
+    {
+      "id": "source-c4434644191d0174",
+      "doi": "10.1103/sgcz-9rc7",
+      "title": "Muon Knight Shift as a Precise Probe of the Superconducting Symmetry of Sr2RuO4",
+      "year": 2026,
+      "url": "https://doi.org/10.1103/sgcz-9rc7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2512.14107v1",
+        "note": "Selected pp.1–5 and Fig.3 visually checked. Published9February2026; manuscript16December2025. Same-crystal field-cooled subtraction and0.5K lower magnetization limit retained. Supplement, final-version comparison and raw-data reproduction open."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-c7-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Chiral pairing describes a superconducting order with a handed orbital structure, such as a complex combination of two directional basis functions. Three questions must remain separate: whether time reversal is broken, whether the pairing is chiral, and whether a specified gapped Hamiltonian has a nonzero topological invariant. A Kerr signal, a complex coefficient or a named lattice does not answer all three. Kallin and Berlinsky's 2016 review is a historical guide; its candidate-material assignments are not current confirmations.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-69d33a869fbbb0c6"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Broken time reversal need not mean orbital chirality. For example, frustrated interband pair scattering can favor complex relative phases among otherwise s-wave gaps. Stanev and Tešanović studied this possibility in a three-band model. An illustrative vector of gaps on three inequivalent labelled bands, $(1,e^{2\\pi i/3},e^{-2\\pi i/3})$, cannot be made equal to its conjugate by one common phase, although each component has no angular winding. This statement assumes only a common U(1) freedom; it is not a stability calculation or a material assignment.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-3c7aa9b4c8da3abf"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Read and Green distinguish weak- and strong-pairing phases of a two-dimensional spinless complex p-wave model. Their continuum chemical potential is measured relative to the band bottom: its zero marks a gap-closing transition in that model. The broken symmetry alone does not distinguish the two phases. This continuum criterion must not be copied unchanged into a lattice or multiband calculation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a33c639b7db4f05a"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For an independent lattice illustration, set hopping and pairing scales to one and use $H(\\mathbf{k})=\\mathbf{h}(\\mathbf{k})\\cdot\\boldsymbol{\\tau}$, with $\\mathbf{h}=(\\sin k_x,\\chi\\sin k_y,-2\\cos k_x-2\\cos k_y-\\mu)$ and $\\chi=\\pm1$. In this Nambu convention the off-diagonal gap is $\\sin k_x-i\\chi\\sin k_y$. Define the occupied-band Berry connection as $\\mathbf{A}=i\\langle u_-|\\nabla_{\\mathbf{k}}u_-\\rangle$. With the orientation $(k_x,k_y)$, the lower-band Chern number for $\\chi=1$ is $0,-1,+1,0$ in the intervals separated by $\\mu=-4,0,4$. Reversing $\\chi$ reverses its sign.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a33c639b7db4f05a",
+        "source-69d33a869fbbb0c6"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Sixteen calculations compare two mesh sizes, four chemical potentials and both handedness choices. Berry-link phases from explicit occupied eigenvectors agree with independently summed spherical solid angles. Four analytic gap-closing checks identify the excluded critical points; no gapped-band invariant is assigned there. The same complex gap can thus accompany a zero or nonzero Chern number. The calculation fixes the gap by hand and omits self-consistency, realistic bands and disorder.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a33c639b7db4f05a"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A boundary calculation illustrates a different distinction. In Huang, Taylor and Kallin's ideal sharp-edge continuum treatment, occupied bound states and continuum states both contribute to the integrated current. For axial harmonic index $m=1$, their respective values are $1/2$ and $-1/4$ in units $\\hbar k_F^2/(4\\pi m^*)$ per spin component. For integer $m>1$, each integrated contribution vanishes in this limit despite the chiral edge branches. Independent angular quadrature reproduces the analytic sums for six values of $m$.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-25d6a80b561d5ad2"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "That cancellation is not a universal absence of current in higher-order chiral pairing. The same paper shows that making the density vary slowly over distances much longer than the coherence length restores a current; lattice effects also matter. A sharp specular boundary, a smooth trap and a disordered multiband surface are different problems. The calculation above does not predict a magnetic-field amplitude for a real sample.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-25d6a80b561d5ad2"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Kerr rotation probes an optical response. In the clean Galilean-invariant limit, a spatially uniform electric field couples to center-of-mass motion and the charge Hall response vanishes even for complex pairing. At the single-particle level, the clean one-band current-vertex structure also gives a cancellation; multiband and impurity processes require separate treatment. Optical frequency, refractive response and geometry matter. Neither a null Kerr measurement nor one nonzero angle can be converted directly into a Chern number.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a33c639b7db4f05a",
+        "source-69d33a869fbbb0c6"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "For UPt3, retain Schemm and colleagues' distinction between the Kerr onset near 0.46 K and the upper susceptibility onset near 0.55 K, including optical heating and field-training controls. For Sr2RuO4, Pustogow and colleagues' oxygen NMR response constrains a simple fixed-d-vector interpretation. The later 2026 muon Knight-shift study also has field-dependent extraction and low-temperature magnetization limits. These are complementary constraints, not a license to restore a historically favored chiral p-wave label as settled fact.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d3edee404071ac81",
+        "source-c7f8b99a795aba41",
+        "source-c4434644191d0174"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Mielke and colleagues studied KV3Sb5, not the whole AV3Sb5 family interchangeably. Their selected manuscript shows an increased muon relaxation below the charge-order scale near 80 K that remains approximately constant across the superconducting transition near 1.1 K. They explicitly discuss electric-field-gradient contributions and use high-field measurements to support an electronic interpretation. The methods report residual-field compensation better than 30 mG; a 50 G longitudinal field decouples the relaxation. These are charge-order constraints, not a new superconducting chirality onset at 80 K.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-484da7abcc165cd3"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Chen and colleagues studied CsV3Sb5 with tunneling and Josephson spectroscopy. Their selected manuscript distinguishes bulk signatures near 2.8 K from a surface transition near 2.3 K, and uses a calibrated 300 mK electron temperature. Spatial gap and conductance modulations motivate their roton-PDW interpretation. The authors explicitly state that roton excitations were not directly observed. A proposed complex vortex–antivortex pattern is therefore an interpretation to test, not a measured uniform chiral d-wave order parameter.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-057c43c86174f961"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Local magnitude alone does not resolve handedness: $|\\Delta|^2=|\\Delta^*|^2$. Four complex spatial examples verify this identity without making a tunneling-response model. A Josephson signal can support superconducting coherence, while determining orbital phase structure requires suitable reference geometry and controls. Fourier peaks, gap-depth maps and zero-bias peaks must retain their individual evidential roles.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-057c43c86174f961"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Do not require every time-reversal-breaking state to belong to a two-dimensional crystal representation. Complex combinations of distinct representations or interband phases can behave differently. Likewise, half-quantum vortices can occur in equal-spin-pairing states without establishing orbital chirality. A strain response or vortex signature must be interpreted in the actual symmetry and spin-orbit setting.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-69d33a869fbbb0c6",
+        "source-3c7aa9b4c8da3abf"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "The local topology check is a fully gapped two-dimensional model. Nodal three-dimensional superconductors may instead require momentum-resolved invariants; a single integer cannot simply be carried over. Edge spectra, thermal transport, optical response and screened equilibrium charge currents require distinct calculations. Complete scientific acceptance, final-version comparisons, raw-data review and material-specific modelling remain open.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a33c639b7db4f05a",
+        "source-69d33a869fbbb0c6",
+        "source-25d6a80b561d5ad2"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c7-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "First identify the transition and its probe. Then specify the order-parameter basis, domain controls, bulk gap and Hamiltonian used for any topology claim. Compare positive and null evidence under compatible conditions, retaining charge-order and superconducting temperature scales separately. A useful discovery target is a state that satisfies these linked tests, not a material selected merely for a complex gap notation or a kagome lattice.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a33c639b7db4f05a",
+        "source-d3edee404071ac81",
+        "source-484da7abcc165cd3",
+        "source-057c43c86174f961"
+      ],
+      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-c7-correction-1",
+      "description": "Restored both review authors, Kallin and Berlinsky, and used C. Mielke III attribution from the original record.",
+      "sourceId": "source-69d33a869fbbb0c6",
+      "scope": "Bibliographic identity; historical assignments remain bounded."
+    },
+    {
+      "id": "scwiki-c7-correction-2",
+      "description": "Separated sharp-boundary current cancellation from soft-boundary behavior and from the bulk Chern invariant.",
+      "sourceId": "source-25d6a80b561d5ad2",
+      "scope": "Selected equations and independent angular quadrature."
+    },
+    {
+      "id": "scwiki-c7-correction-3",
+      "description": "Kagome charge-order response, surface superconductivity and proposed roton-PDW interpretation retain distinct evidential roles.",
+      "sourceId": "source-057c43c86174f961",
+      "scope": "Selected methods/results; no universal chirality verdict."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "H(\\mathbf{k})=\\mathbf{h}(\\mathbf{k})\\cdot\\boldsymbol{\\tau}",
+      "check": "Sixteen occupied-eigenvector Berry-link and spherical-area comparisons, plus four analytic gap-closing checks; conventions explicit."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\hbar k_F^2/(4\\pi m^*)",
+      "check": "Six sharp-edge angular integrals versus analytic bound-state and continuum sums."
+    },
+    {
+      "targetSectionId": "limits-and-disputes",
+      "tex": "|\\Delta|^2=|\\Delta^*|^2",
+      "check": "Four complex spatial examples; three separate global-phase tests, without a microscopic stability claim."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-c7-material-1",
+      "formula": "KV3Sb5",
+      "sample": "Mielke et al. aligned crystal mosaic, muon charge-order response",
+      "recordType": "experiment",
+      "tcK": null,
+      "reportedTemperatureK": 80,
+      "temperatureKind": "unassigned",
+      "temperatureNote": "Approximate charge-order scale; not superconducting Tc. Selected relaxation stays approximately constant across the separate low-temperature transition.",
+      "criterion": "charge-order-associated-relaxation",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Zero-field muon relaxation with residual-field compensation and longitudinal/high-field controls",
+      "sourceId": "source-484da7abcc165cd3"
+    },
+    {
+      "id": "scwiki-c7-material-2",
+      "formula": "CsV3Sb5",
+      "sample": "Chen et al. tunneling study on prepared surfaces",
+      "recordType": "experiment",
+      "tcK": null,
+      "reportedTemperatureK": 0.3,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Calibrated electron temperature for spectroscopy, not a transition temperature. Surface and bulk transitions reported separately.",
+      "criterion": "spectroscopy-temperature",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "STM/STS and Nb-tip Josephson spectroscopy; surface preparation and drift correction specified",
+      "sourceId": "source-057c43c86174f961"
+    }
+  ]
+}

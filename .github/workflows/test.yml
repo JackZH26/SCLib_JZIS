@@ -13,10 +13,7 @@ jobs:
   api-tests:
     name: API (pytest)
     runs-on: ubuntu-latest
-    # Native regression exceeded 44 minutes after only four of eight batches.
-    # These are bounded allowances, not measured Linux durations. Individual
-    # disposable service capabilities still expire after one hour unchanged.
-    timeout-minutes: 180
+    timeout-minutes: 35
     defaults:
       run:
         working-directory: api
@@ -77,17 +74,6 @@ jobs:
         run: |
           docker pull postgres:16-alpine
           docker pull redis:7-alpine
-      - name: Run all API modules in separate owned-service batches
-        timeout-minutes: 150
-        working-directory: .
-        run: api/.venv/bin/python -m scripts.tests.run_api_regression --backend docker --batches 8 --output "$RUNNER_TEMP/api-regression"
-      - name: Upload actual API module-batch evidence
-        if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
-        with:
-          name: api-regression-attempt-${{ github.run_attempt }}
-          path: ${{ runner.temp }}/api-regression/
-          if-no-files-found: error
       - name: Verify actual capacity boundaries in separate owned services
         run: .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite api -- -q tests_capacity
       - name: Upload test runtime inventory
@@ -205,6 +191,13 @@ jobs:
         with:
           # Frozen native captures verify their source bytes at the recorded ancestor.
           fetch-depth: 0
+      - name: Check out fixed SCWiki source evidence
+        uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+        with:
+          repository: JackZH26/jzis-superconductivity
+          ref: 0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf
+          path: .scwiki-sources
+          persist-credentials: false
       - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
         with:
           version: 9.12.0
@@ -216,6 +209,8 @@ jobs:
       - name: Install dependencies
         run: pnpm install --frozen-lockfile
       - name: Run frontend regression tests
+        env:
+          SCWIKI_SOURCE_ROOT: ${{ github.workspace }}/.scwiki-sources
         run: pnpm test
       - name: Type-check and build
         run: pnpm build
@@ -350,3 +345,9 @@ jobs:
           name: private-ingress-rehearsal-attempt-${{ github.run_attempt }}
           path: ${{ runner.temp }}/sclib-private-ingress.json
           if-no-files-found: error
+
+  api-regression:
+    name: API selected regression
+    uses: ./.github/workflows/api-regression.yml
+    with:
+      base: ${{ github.event.pull_request.base.sha || github.event.before }}

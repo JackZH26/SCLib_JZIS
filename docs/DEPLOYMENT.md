@@ -180,6 +180,19 @@ through the GitHub API and rejects a run from another workflow, branch, event,
 or failed conclusion. Manual deployment therefore cannot bypass tests, scans,
 signatures, or immutable digests.
 
+The deployment also runs `scripts/verify_scwiki_release.py` before persisting
+the new release image pins. It compares the public Wiki against that checkout:
+every article revision, the full research-note payload, representative core,
+handbook and open-question articles, Markdown, topic links and the old search
+redirect. Requests are read-only, paced and size-bounded; redirects and paginated
+URLs cannot escape the configured origin. A noindex exception is available only
+for loopback previews and is never passed by production deployment. JSON reports
+are retained under `/var/log/sclib/scwiki-release-*.json`. A failure stops the
+workflow before pin persistence; it does not automatically roll back already
+replaced application containers. Use the prepared rollback procedure and record
+the actual recovery checks. This HTTP verification does not replace authenticated
+browser acceptance, science review, or a database restore rehearsal.
+
 Before the first automated deployment, complete all three workload-identity
 credentials, backup configuration and restore drill, and the monitoring sample
 required by [`OBSERVABILITY_SLO.md`](OBSERVABILITY_SLO.md). The deployment gate
@@ -264,3 +277,8 @@ docker compose --profile observability \
 Postgres data lives in the `postgres_data` named volume and survives
 image replacement. Alembic migrations are forward-only — if a migration
 needs reverting, write a new migration.
+
+
+### SCWiki source checks in clean CI
+
+The frontend content contracts read the frozen `JackZH26/jzis-superconductivity` source revision `0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf` and compare its actual bytes to each published provenance hash. CI checks out that public revision into `.scwiki-sources` and sets `SCWIKI_SOURCE_ROOT` to its absolute path. For local tests, set the same variable to a checkout of that revision, or retain the existing sibling `sources/` directory. Missing sources and hash mismatches fail the tests. Article content and browser rendering checks run separately for each article, preserving the normal per-test time limits as the catalogue grows.

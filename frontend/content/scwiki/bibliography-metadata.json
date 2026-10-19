@@ -1,0 +1,538 @@
+{
+  "10.1007/BF01303701": {
+    "doi": "10.1007/bf01303701",
+    "title": "Possible highT c superconductivity in the Ba?La?Cu?O system",
+    "year": 1986,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1007/BF01303701",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1007/BF01504252": {
+    "doi": "10.1007/bf01504252",
+    "title": "Ein neuer Effekt bei Eintritt der Supraleitf�higkeit",
+    "year": 1933,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1007/BF01504252",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1007/JHEP08(2016)106": {
+    "doi": "10.1007/jhep08(2016)106",
+    "title": "A bound on chaos",
+    "year": 2016,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1007/JHEP08(2016)106",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1021/ja800073m": {
+    "doi": "10.1021/ja800073m",
+    "title": "Iron-Based Layered Superconductor La[O\n                    1-\n                    \n                      x\n                    \n                    F\n                    \n                      x\n                    \n                    ]FeAs (\n                    x\n                    = 0.05−0.12) with\n                    T\n                    c\n                    = 26 K",
+    "year": 2008,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1021/ja800073m",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/35065039": {
+    "doi": "10.1038/35065039",
+    "title": "Superconductivity at 39 K in magnesium diboride",
+    "year": 2001,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/35065039",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/363056a0": {
+    "doi": "10.1038/363056a0",
+    "title": "Superconductivity above 130 K in the Hg–Ba–Ca–Cu–O system",
+    "year": 1993,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/363056a0",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/nature00992": {
+    "doi": "10.1038/nature00992",
+    "title": "Open channel structure of MscL and the gating mechanism of mechanosensitive channels",
+    "year": 2002,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/nature00992",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {
+      "has-review": [
+        {
+          "id-type": "doi",
+          "id": "10.3410/f.1005877.116663",
+          "asserted-by": "object"
+        }
+      ]
+    },
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/nature07293": {
+    "doi": "10.1038/nature07293",
+    "title": "High-temperature interface superconductivity between metallic and insulating copper oxides",
+    "year": 2008,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/nature07293",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/nature07625": {
+    "doi": "10.1038/nature07625",
+    "title": "Unconventional superconductivity in Ba0.6K0.4Fe2As2 from inelastic neutron scattering",
+    "year": 2008,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/nature07625",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/nature13894": {
+    "doi": "10.1038/nature13894",
+    "title": "Interfacial mode coupling as the origin of the enhancement of Tc in FeSe films on SrTiO3",
+    "year": 2014,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/nature13894",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/nature14165": {
+    "doi": "10.1038/nature14165",
+    "title": "From quantum matter to high-temperature superconductivity in copper oxides",
+    "year": 2015,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/nature14165",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/nature16522": {
+    "doi": "10.1038/nature16522",
+    "title": "Possible light-induced superconductivity in K3C60 at high temperature",
+    "year": 2016,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/nature16522",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/nature19061": {
+    "doi": "10.1038/nature19061",
+    "title": "Dependence of the critical temperature in overdoped copper oxides on superfluid density",
+    "year": 2016,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/nature19061",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/ncomms9944": {
+    "doi": "10.1038/ncomms9944",
+    "title": "Superfluidity in topologically nontrivial flat bands",
+    "year": 2015,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/ncomms9944",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/nmat2491": {
+    "doi": "10.1038/nmat2491",
+    "title": "Electronic and magnetic phase diagram of β-Fe1.01Se with superconductivity at 36.7 K under pressure",
+    "year": 2009,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/nmat2491",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/nmat3648": {
+    "doi": "10.1038/nmat3648",
+    "title": "Phase diagram and electronic indication of high-temperature superconductivity at 65 K in single-layer FeSe films",
+    "year": 2013,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/nmat3648",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/s41467-023-37491-z": {
+    "doi": "10.1038/s41467-023-37491-z",
+    "title": "Chasing the spin gap through the phase diagram of a frustrated Mott insulator",
+    "year": 2023,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/s41467-023-37491-z",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/s41567-018-0334-2": {
+    "doi": "10.1038/s41567-018-0334-2",
+    "title": "Universal T-linear resistivity and Planckian dissipation in overdoped cuprates",
+    "year": 2018,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/s41567-018-0334-2",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/s41567-020-01148-1": {
+    "doi": "10.1038/s41567-020-01148-1",
+    "title": "Evidence for metastable photo-induced superconductivity in K3C60",
+    "year": 2021,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/s41567-020-01148-1",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/s41567-026-03266-8": {
+    "doi": "10.1038/s41567-026-03266-8",
+    "title": "Planckian scattering and parallel conduction channels in an iron chalcogenide superconductor",
+    "year": 2026,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/s41567-026-03266-8",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {
+      "has-preprint": [
+        {
+          "id-type": "doi",
+          "id": "10.21203/rs.3.rs-6649895/v1",
+          "asserted-by": "object"
+        }
+      ]
+    },
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/s41586-019-1496-5": {
+    "doi": "10.1038/s41586-019-1496-5",
+    "title": "Superconductivity in an infinite-layer nickelate",
+    "year": 2019,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/s41586-019-1496-5",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/s41586-023-06408-7": {
+    "doi": "10.1038/s41586-023-06408-7",
+    "title": "Signatures of superconductivity near 80 K in a nickelate under high pressure",
+    "year": 2023,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/s41586-023-06408-7",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/s41586-024-08494-7": {
+    "doi": "10.1038/s41586-024-08494-7",
+    "title": "Superfluid stiffness of magic-angle twisted bilayer graphene",
+    "year": 2025,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/s41586-024-08494-7",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1038/s41586-026-10446-2": {
+    "doi": "10.1038/s41586-026-10446-2",
+    "title": "Structural modifications in strain-engineered bilayer nickelate thin films",
+    "year": 2026,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1038/s41586-026-10446-2",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1063/1.4881611": {
+    "doi": "10.1063/1.4881611",
+    "title": "Piezoelectric-based apparatus for strain tuning",
+    "year": 2014,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1063/1.4881611",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1073/pnas.0807325105": {
+    "doi": "10.1073/pnas.0807325105",
+    "title": "Superconductivity in the PbO-type structure α-FeSe",
+    "year": 2008,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1073/pnas.0807325105",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1098/rspa.1935.0048": {
+    "doi": "10.1098/rspa.1935.0048",
+    "title": "The electromagnetic equations of the supraconductor",
+    "year": 1935,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1098/rspa.1935.0048",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRev.108.1175": {
+    "doi": "10.1103/physrev.108.1175",
+    "title": "Theory of Superconductivity",
+    "year": 1957,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRev.108.1175",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevB.50.4260": {
+    "doi": "10.1103/physrevb.50.4260",
+    "title": "Superconductivity up to 164 K in\n                    \n                      \n                        \n                          \n                            HgBa\n                          \n                          \n                            2\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            Ca\n                          \n                          \n                            m\n                            −\n                            1\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            Cu\n                          \n                          \n                            m\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            O\n                          \n                          \n                            2\n                            m\n                            +\n                            2\n                            +\n                            δ\n                          \n                        \n                      \n                    \n                    (\n                    m\n                    =1, 2, and 3) under quasihydrostatic pressures",
+    "year": 1994,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevB.50.4260",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevB.95.024515": {
+    "doi": "10.1103/physrevb.95.024515",
+    "title": "Band geometry, Berry curvature, and superfluid weight",
+    "year": 2017,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevB.95.024515",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevLett.101.057003": {
+    "doi": "10.1103/physrevlett.101.057003",
+    "title": "Unconventional Superconductivity with a Sign Reversal in the Order Parameter of\n                    \n                      \n                        LaFeAsO\n                        \n                          1\n                          −\n                          x\n                        \n                      \n                      \n                        F\n                        x\n                      \n                    ",
+    "year": 2008,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevLett.101.057003",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevLett.101.087004": {
+    "doi": "10.1103/physrevlett.101.087004",
+    "title": "Unconventional Pairing Originating from the Disconnected Fermi Surfaces of SuperconductingLaFeAsO1−xFx",
+    "year": 2008,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevLett.101.087004",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevLett.101.107006": {
+    "doi": "10.1103/physrevlett.101.107006",
+    "title": "Superconductivity at 38 K in the Iron Arsenide(Ba1−xKx)Fe2As2",
+    "year": 2008,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevLett.101.107006",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevLett.109.087001": {
+    "doi": "10.1103/physrevlett.109.087001",
+    "title": "Universal Heat Conduction in the Iron Arsenide SuperconductorKFe2As2: Evidence of ad-Wave State",
+    "year": 2012,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevLett.109.087001",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevLett.117.045303": {
+    "doi": "10.1103/physrevlett.117.045303",
+    "title": "Geometric Origin of Superfluidity in the Lieb-Lattice Flat Band",
+    "year": 2016,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevLett.117.045303",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevLett.3.552": {
+    "doi": "10.1103/physrevlett.3.552",
+    "title": "Bardeen-Cooper-Schrieffer Theory of Superconductivity in the Case of Overlapping Bands",
+    "year": 1959,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevLett.3.552",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevLett.39.1201": {
+    "doi": "10.1103/physrevlett.39.1201",
+    "title": "Universal Jump in the Superfluid Density of Two-Dimensional Superfluids",
+    "year": 1977,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevLett.39.1201",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevLett.40.783": {
+    "doi": "10.1103/physrevlett.40.783",
+    "title": "Dissipation in Two-Dimensional Superfluids",
+    "year": 1978,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevLett.40.783",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevLett.58.908": {
+    "doi": "10.1103/physrevlett.58.908",
+    "title": "Superconductivity at 93 K in a new mixed-phase Y-Ba-Cu-O compound system at ambient pressure",
+    "year": 1987,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevLett.58.908",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevLett.70.3999": {
+    "doi": "10.1103/physrevlett.70.3999",
+    "title": "Precision measurements of the temperature dependence of λ in\n                    \n                      \n                        \n                          \n                            YBa\n                          \n                          \n                            2\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            Cu\n                          \n                          \n                            3\n                          \n                        \n                      \n                    \n                    \n                      \n                        \n                          \n                            O\n                          \n                          \n                            6.95\n                          \n                        \n                      \n                    \n                    : Strong evidence for nodes in the gap function",
+    "year": 1993,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevLett.70.3999",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevLett.73.593": {
+    "doi": "10.1103/physrevlett.73.593",
+    "title": "Pairing Symmetry and Flux Quantization in a Tricrystal Superconducting Ring of\n                    \n                      Y\n                      \n                        \n                          \n                            Ba\n                          \n                          \n                            2\n                          \n                        \n                      \n                      \n                        \n                          \n                            Cu\n                          \n                          \n                            3\n                          \n                        \n                      \n                      \n                        \n                          \n                            O\n                          \n                          \n                            7\n                            −\n                            δ\n                          \n                        \n                      \n                    ",
+    "year": 1994,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevLett.73.593",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevLett.91.107001": {
+    "doi": "10.1103/physrevlett.91.107001",
+    "title": "Spin Liquid State in an Organic Mott Insulator with a Triangular Lattice",
+    "year": 2003,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevLett.91.107001",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/PhysRevLett.95.177001": {
+    "doi": "10.1103/physrevlett.95.177001",
+    "title": "Mott Transition from a Spin Liquid to a Fermi Liquid in the Spin-Frustrated Organic Conductor\n                    \n                      κ\n                      −\n                      (\n                      ET\n                      \n                        )\n                        2\n                      \n                      \n                        Cu\n                        2\n                      \n                      (\n                      CN\n                      \n                        )\n                        3\n                      \n                    ",
+    "year": 2005,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/PhysRevLett.95.177001",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1103/RevModPhys.94.041002": {
+    "doi": "10.1103/revmodphys.94.041002",
+    "title": "Colloquium\n                    : Planckian dissipation in metals",
+    "year": 2022,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1103/RevModPhys.94.041002",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1126/science.1146006": {
+    "doi": "10.1126/science.1146006",
+    "title": "Superconducting Interfaces Between Insulating Oxides",
+    "year": 2007,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1126/science.1146006",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1126/science.1178863": {
+    "doi": "10.1126/science.1178863",
+    "title": "High-Temperature Superconductivity in a Single Copper-Oxygen Plane",
+    "year": 2009,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1126/science.1178863",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1126/science.1187399": {
+    "doi": "10.1126/science.1187399",
+    "title": "Unconventional\n            s\n            -Wave Superconductivity in Fe(Se,Te)",
+    "year": 2010,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1126/science.1187399",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1126/science.1227612": {
+    "doi": "10.1126/science.1227612",
+    "title": "Similarity of Scattering Rates in Metals Showing\n                    T\n                    -Linear Resistivity",
+    "year": 2013,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1126/science.1227612",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1126/science.1248292": {
+    "doi": "10.1126/science.1248292",
+    "title": "Strong Increase of\n            T\n            c\n            of Sr\n            2\n            RuO\n            4\n            Under Both Tensile and Compressive Strain",
+    "year": 2014,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1126/science.1248292",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1126/science.235.4793.1196": {
+    "doi": "10.1126/science.235.4793.1196",
+    "title": "The Resonating Valence Bond State in La\n                    2\n                    CuO\n                    4\n                    and Superconductivity",
+    "year": 1987,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1126/science.235.4793.1196",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1126/science.aaf9398": {
+    "doi": "10.1126/science.aaf9398",
+    "title": "Strong peak in\n                    T\n                    c\n                    of Sr\n                    2\n                    RuO\n                    4\n                    under uniaxial pressure",
+    "year": 2017,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1126/science.aaf9398",
+    "metadataCheck": "crossref-metadata-only",
+    "relations": {},
+    "checkedAt": "2026-10-17"
+  },
+  "10.1007/BF00116988": {
+    "doi": "10.1007/bf00116988",
+    "title": "Resistive transition in superconducting films",
+    "year": 1979,
+    "type": "journal-article",
+    "url": "https://doi.org/10.1007/BF00116988",
+    "metadataCheck": "publisher-metadata-and-abstract",
+    "relations": {},
+    "checkedAt": "2026-10-18"
+  }
+}

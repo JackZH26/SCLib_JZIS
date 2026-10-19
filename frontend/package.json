@@ -5,7 +5,7 @@
   "packageManager": "pnpm@9.12.0",
   "scripts": {
     "dev": "next dev",
-    "build": "next build",
+    "build": "node scripts/scwiki-build.mjs && next build",
     "start": "next start",
     "lint": "next lint",
     "test": "pnpm test:source && pnpm test:unit",
@@ -14,19 +14,22 @@
     "test:e2e": "playwright test",
     "test:browser-auth": "node --test tests/browser-session-auth.test.mjs",
     "test:public-urls": "node --test tests/public-auth-links.test.mjs",
-    "test:security-headers": "node --test tests/security-headers.test.mjs"
+    "test:security-headers": "node --test tests/security-headers.test.mjs",
+    "test:scwiki-content": "node scripts/scwiki-build.mjs --check"
   },
   "dependencies": {
     "clsx": "2.1.1",
-    "katex": "^0.16.45",
-    "next": "15.5.24",
+    "katex": "0.18.2",
+    "next": "15.5.27",
     "plotly.js": "2.35.2",
     "react": "19.2.7",
     "react-dom": "19.2.7",
     "react-markdown": "9.0.1",
     "react-plotly.js": "2.6.0",
+    "rehype-katex": "7.0.1",
     "rehype-sanitize": "6.0.0",
-    "remark-gfm": "4.0.0"
+    "remark-gfm": "4.0.0",
+    "remark-math": "6.0.0"
   },
   "devDependencies": {
     "@playwright/test": "1.61.1",
@@ -43,11 +46,11 @@
     "postcss": "8.5.23",
     "tailwindcss": "3.4.3",
     "typescript": "5.4.3",
-    "vitest": "4.1.10"
+    "vitest": "4.1.11"
   },
   "pnpm": {
     "overrides": {
-      "fast-uri": "3.1.7",
+      "fast-uri": "3.1.8",
       "postcss": "8.5.23",
       "sharp": "0.35.5",
       "nanoid@<3.3.18": "3.3.18",
@@ -55,7 +58,10 @@
       "baseline-browser-mapping@<2.11.0": "2.11.0",
       "maplibre-gl": "6.4.1",
       "probe-image-size@<7.4.0": "7.4.0",
-      "source-map-js@<1.2.2": "1.2.2"
+      "source-map-js@<1.2.2": "1.2.2",
+      "katex": "0.18.2",
+      "postcss-selector-parser@<7.1.6": "7.1.6",
+      "undici@>=7.0.0 <7.29.1": "7.29.1"
     }
   }
 }

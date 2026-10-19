@@ -1,0 +1,374 @@
+{
+  "id": "scwiki-f5",
+  "topicId": "scwiki-topic-f5",
+  "code": "F5",
+  "slug": "majorana-zero-modes",
+  "title": "Majorana zero modes: models, parity readout and evidence",
+  "summary": "Distinguish Majorana algebra, finite-chain modes, experimental parity readout and topological protection, with explicit source and retraction boundaries.",
+  "aliases": [
+    "Majorana zero modes",
+    "MZM",
+    "Kitaev chain",
+    "poor mans Majoranas",
+    "Majorana parity readout",
+    "nonlocal fermion parity"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experimental"
+  ],
+  "relatedCodes": [
+    "B11",
+    "F4",
+    "F3",
+    "C7",
+    "A9",
+    "N4"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T20:39:53.167036+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected original chain/readout passages and institutional retraction text, independent Fock/BdG spectra and two-site parity checks. Selected July 2026 coherent-parity preprint results and explicit protection limits.",
+    "limitations": [
+      "Complete scientific acceptance and full final-version comparisons remain open.",
+      "No full device datasets, supplementary readout analysis or platform-by-platform fusion/braiding audit.",
+      "Law and Pan references are original-abstract scope here; no transport simulation reproduced.",
+      "Finite-chain calculations are ideal noninteracting examples, not experimental validation."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "F_quantum_geometry/F5_Majorana_zero_modes.md",
+    "sha256": "f30059a6106c621ea39fa1fc177f6ba9d24ada7d601f9c21b036219dd17e5f65",
+    "sourceId": "file-8189b0eea5ca9c28"
+  },
+  "references": [
+    {
+      "id": "source-ade538b429fdd847",
+      "doi": "10.1070/1063-7869/44/10S/S29",
+      "title": "Unpaired Majorana fermions in quantum wires",
+      "year": 2001,
+      "url": "https://doi.org/10.1070/1063-7869/44/10S/S29",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-chain-and-operator-conventions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0010440v2",
+        "note": "Author v2 30 October 2000; selected pp4–7, p5 visually checked, equations4–14. Journal2001. Finite noninteracting model checks reproduced; full final-version comparison open."
+      }
+    },
+    {
+      "id": "source-a33c639b7db4f05a",
+      "doi": "10.1103/PhysRevB.61.10267",
+      "title": "Paired states of fermions in two dimensions with breaking of parity and time-reversal symmetries and the fractional quantum Hall effect",
+      "year": 2000,
+      "url": "https://doi.org/10.1103/PhysRevB.61.10267",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-weak-pairing-context",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/9906453v3",
+        "note": "Reuse selected original-author readings from C7/F3: intro p4 and weak/strong pairing pp5–7; v3 24January2000. No new full vortex/braiding derivation."
+      }
+    },
+    {
+      "id": "source-1b46269f3dd05cd6",
+      "doi": "10.1103/PhysRevLett.103.237001",
+      "title": "Majorana Fermion Induced Resonant Andreev Reflection",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevLett.103.237001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.103.237001",
+        "note": "Published2December2009. Original abstract: grounded-superconductor resonant Andreev setup and conductance result. Full transport derivation not reviewed."
+      }
+    },
+    {
+      "id": "source-dca781066e96eecc",
+      "doi": "10.1103/PhysRevResearch.2.013377",
+      "title": "Physical mechanisms for zero-bias conductance peaks in Majorana nanowires",
+      "year": 2020,
+      "url": "https://doi.org/10.1103/PhysRevResearch.2.013377",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prresearch/abstract/10.1103/PhysRevResearch.2.013377",
+        "note": "Published30March2020. Original abstract read: confinement/disorder alternatives and short-wire nonlocal-correlation caveats. Does not diagnose later devices; full transport simulation not reproduced."
+      }
+    },
+    {
+      "id": "source-e3824a8727c3ec54",
+      "doi": "10.1038/s41586-024-08445-2",
+      "title": "Interferometric single-shot parity measurement in InAs–Al hybrid devices",
+      "year": 2025,
+      "url": "https://doi.org/10.1038/s41586-024-08445-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-hosted-published-text",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://manfragroup.org/wp-content/uploads/2025/11/2025.02.19_s41586-024-08445-2.pdf",
+        "note": "Published19February2025. Selected first page651 and p654: readout result, optimized assignment error and explicit alternative Andreev-state caveat; both-end and coupling constraints retained. Full datasets/supplement not audited."
+      }
+    },
+    {
+      "id": "source-a3c2dc153700478a",
+      "doi": "10.1038/s41586-025-09927-7",
+      "title": "Single-shot parity readout of a minimal Kitaev chain",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-025-09927-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-accepted-author-model-and-readout",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2507.01606v2",
+        "note": "Published online11February2026 per publisher-deposited Crossref metadata, print12February2026. Author v2 uploaded6October2026; selected abstract/pp2–4 and ED6caption; p4 visually checked after PDF extraction warnings. Two-site equation check reproduced; full final-version comparison and datasets open."
+      }
+    },
+    {
+      "id": "source-6a7f18eec743e89d",
+      "doi": "10.1038/nature26142",
+      "title": "RETRACTED ARTICLE: Quantized Majorana conductance",
+      "year": 2018,
+      "url": "https://doi.org/10.1038/nature26142",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "official-retraction-identity-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://crossmark.crossref.org/dialog/?doi=10.1038%2Fnature26142",
+        "note": "Original identity and8March2021retraction checked; never used as positive experimental evidence."
+      },
+      "retraction": {
+        "noticeDoi": "10.1038/s41586-021-03373-x",
+        "retractedAt": "2021-03-08",
+        "evidenceUrl": "https://crossmark.crossref.org/dialog/?doi=10.1038%2Fnature26142"
+      }
+    },
+    {
+      "id": "source-f127bb2d99183698",
+      "doi": "10.1038/s41586-021-03373-x",
+      "title": "Retraction Note: Quantized Majorana conductance",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41586-021-03373-x",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-institution-retraction-text",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://repository.tudelft.nl/record/uuid:1ee24710-a251-43c5-875e-5a7702c258d9",
+        "note": "Institution-hosted notice text read: charge-jump corrections,axislabel and conductance recalibration; original claim withdrawn. Publisher full notice endpoint redirected to authentication."
+      }
+    },
+    {
+      "id": "source-818818441532a8ec",
+      "doi": "10.48550/arXiv.2607.09511",
+      "title": "Majorana parity qubit in coupled minimal Kitaev chains",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arXiv.2607.09511",
+      "publicationStatus": "preprint",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-preprint-results-and-conclusion",
+        "evidenceUrl": "https://arxiv.org/pdf/2607.09511v1",
+        "note": "v1 submitted 10 July 2026. Selected pp. 1–6 and p. 9; p. 5 Figure 2 and fitted trace visually checked. No journal acceptance verified; full methods, raw data and independent device replication remain open."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-f5-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A Majorana operator is self-adjoint. A Majorana zero mode additionally represents a zero-energy degree of freedom of a specified Hamiltonian, localized at an end, boundary or defect in an appropriate setting. Decomposing an ordinary fermion into two self-adjoint operators is always possible; that algebra alone establishes neither spatial separation nor topological protection. Here the ideal chain, experimental readout and claims about fault-tolerant computation are treated separately.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ade538b429fdd847"
+      ],
+      "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
+      "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Chiral two-dimensional pairing and one-dimensional superconducting chains provide distinct theoretical settings. Read and Green connect the weak-pairing spinless chiral state to non-Abelian quasiholes; its weak-pairing terminology is not a synonym for weak interaction strength. A proposed Hamiltonian or boundary solution does not establish the pairing state or topology of a measured solid.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a33c639b7db4f05a"
+      ],
+      "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
+      "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Fix the normalization $\\{\\gamma_i,\\gamma_j\\}=2\\delta_{ij}$ and $\\gamma_i^\\dagger=\\gamma_i$. Then $c=(\\gamma_1+i\\gamma_2)/2$, $n=c^\\dagger c=(1+i\\gamma_1\\gamma_2)/2$ and the occupation parity is $P=(-1)^n=1-2n=-i\\gamma_1\\gamma_2$. Papers may normalize the operators or label parity signs differently. Mixing a factor $1/\\sqrt2$ from another convention into these equations would spoil the fermionic anticommutator.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ade538b429fdd847",
+        "source-a3c2dc153700478a"
+      ],
+      "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
+      "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a uniform spinless chain, use hopping $t$, chemical potential $\\mu$, real pairing $\\Delta$, lattice spacing one and open ends. The bulk excitation spectrum satisfies $E(k)^2=(2t\\cos k+\\mu)^2+4\\Delta^2\\sin^2k$. The gapped topological domain is $|\\mu|<2|t|$ with $\\Delta\\ne0$; $|\\mu|=2|t|$ closes the gap. At $\\mu=0$ and $t=\\Delta>0$, the ideal finite chain has exactly unpaired endpoint operators. More general finite chains can have overlap splitting: exponential localization does not imply exactly zero energy at every length.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ade538b429fdd847"
+      ],
+      "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
+      "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Our bounded calculation checks the Majorana algebra, compares eight small-chain many-body spectra with independently constructed BdG spectra, verifies exact endpoint commutators at the special point, and follows decreasing overlap splitting for one sequence of increasing chain lengths. These are model checks. They do not fit a device, establish a universal prefactor or exclude oscillatory splitting at other parameters.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ade538b429fdd847"
+      ],
+      "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
+      "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The minimal two-site model makes a useful distinction explicit. With $\\delta=(\\mu_L+\\mu_R)/2$ and $\\epsilon=(\\mu_L-\\mu_R)/2$, its even and odd energies are $E_e^\\pm=-\\delta\\pm\\sqrt{\\delta^2+\\Delta^2}$ and $E_o^\\pm=-\\delta\\pm\\sqrt{\\epsilon^2+t^2}$. At $t=\\Delta$ and zero onsite energies the ground states coincide. Detuning one site leaves this ideal degeneracy intact, whereas common detuning gives a quadratic splitting and changing $t-\\Delta$ gives a linear one. Direct four-state diagonalization checks these relations; they explain why a two-site sweet spot is not equivalent to generic long-chain protection.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a3c2dc153700478a"
+      ],
+      "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
+      "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "In the ideal grounded-superconductor tunneling setup analyzed by Law, Lee and Ng, a Majorana resonance can produce conductance $2e^2/h$. Interpreting a measured peak requires the actual coupling, resolution, temperature and competing states. Pan and Das Sarma model trivial low-energy peaks from mechanisms including confinement and disorder, and discuss limitations of end-to-end correlations in short wires. Their theoretical alternatives are reasons to test a signal, not a diagnosis of every later experiment.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-1b46269f3dd05cd6",
+        "source-dca781066e96eecc"
+      ],
+      "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
+      "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Aghaee and colleagues, published on 19 February 2025, report interferometric single-shot fermion-parity readout. Their selected results include millisecond-scale parity dwell times and approximately 1% assignment error at an optimized measurement time. The paper explicitly states that the measurements do not uniquely distinguish topological Majorana modes from suitably tuned low-energy Andreev states. It also constrains the alternatives through support at both wire ends and weak coupling to other low-energy states. Preserve both the achieved readout and that unresolved interpretation.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-e3824a8727c3ec54"
+      ],
+      "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
+      "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Van Loo and colleagues, published online on 11 February 2026, read out the parity of a minimal InSb–Al quantum-dot chain through quantum capacitance. The selected author text reports lifetimes exceeding a millisecond and contrasts the readout with a local charge sensor unable to distinguish parity at the sweet spot. The authors explicitly describe limited protection in this two-site device. The accepted-author version was uploaded on 6 October 2026; that upload is not the experiment's publication date.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-a3c2dc153700478a"
+      ],
+      "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
+      "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Spectroscopy, parity lifetime, readout fidelity, robustness, fusion and exchange probe different properties. Report the measured observable and the alternatives addressed by that particular protocol. A parity readout result alone does not demonstrate a non-Abelian exchange operation or a fault-tolerant processor. There is no platform-independent checklist in which every local zero-bias feature automatically advances toward a universal confirmation threshold.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-dca781066e96eecc",
+        "source-e3824a8727c3ec54",
+        "source-a3c2dc153700478a"
+      ],
+      "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
+      "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The 2018 article “Quantized Majorana conductance” was retracted on 8 March 2021. The authors' notice describes undisclosed charge-jump corrections, a mislabeled axis and recalibration shifting plateau values above the claimed quantized conductance. The withdrawn positive claim is retained only as a historical record with its retraction notice. It cannot validate a device, and its retraction does not itself settle every other Majorana proposal.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6a7f18eec743e89d",
+        "source-f127bb2d99183698"
+      ],
+      "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
+      "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "This review checks selected original chain and readout passages, two-site energy equations, the author-institution retraction text and bounded calculations. The transport alternatives remain at original-abstract scope here; full device datasets, supplementary analyses, final-version comparisons and platform-by-platform fusion or braiding audits remain open. Complete scientific acceptance has not been reached. Neither commercial terminology nor a manuscript upload date closes those gaps.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ade538b429fdd847",
+        "source-dca781066e96eecc",
+        "source-e3824a8727c3ec54",
+        "source-a3c2dc153700478a",
+        "source-f127bb2d99183698"
+      ],
+      "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
+      "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Keep the operator convention, physical geometry, bulk-gap assumptions and measurement protocol attached to each claim. Search for a reproducible combination of localization, controlled perturbations and protocol-specific evidence, while reporting failed or ambiguous tests. Separate a useful quantum-device component from a verified topological phase and from a demonstrated computational operation. This article does not make a worldwide priority claim or certify a material family from a single resonance.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ade538b429fdd847",
+        "source-dca781066e96eecc",
+        "source-e3824a8727c3ec54",
+        "source-a3c2dc153700478a"
+      ],
+      "conditions": "Explicit Majorana normalization, model length and perturbations; device-specific parity readout, publication date and retraction status.",
+      "verificationScope": "Selected primary passages and bounded Fock/BdG calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f5-claim-july2026-parity-control",
+      "sectionId": "experimental-criteria",
+      "statement": "A 10 July 2026 preprint by Zatelli and colleagues reports coherent parity oscillations in coupled minimal Kitaev chains. The authors distinguish partial protection at the sweet spot from the unprotected degeneracy-lifting operations used for rotation. No journal acceptance was verified here; this is not a demonstrated braid or a certified gate fidelity.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-818818441532a8ec"
+      ],
+      "conditions": "July 2026 preprint; partial sweet-spot protection and coherent rotation do not establish protected gates or braiding.",
+      "verificationScope": "v1 submitted 10 July 2026. Selected pp. 1–6 and p. 9; p. 5 Figure 2 and fitted trace visually checked. No journal acceptance verified; full methods, raw data and independent device replication remain open."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "n=(1+i\\gamma_1\\gamma_2)/2,\\quad P=-i\\gamma_1\\gamma_2",
+      "check": "Majorana normalization and parity algebra; 8 independent Fock/BdG spectra, exact endpoint commutators and 5 two-site parity checks. No experimental topology inferred."
+    }
+  ],
+  "materialCases": [],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 304,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; avoid blanket global confirmation claim or universal evidence ladder; add2026primary readout,operator conventions and two-site protection boundaries. Full platform survey open."
+    }
+  ]
+}

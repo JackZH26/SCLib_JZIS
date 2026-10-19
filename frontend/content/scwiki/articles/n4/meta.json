@@ -1,0 +1,429 @@
+{
+  "id": "scwiki-n4",
+  "topicId": "scwiki-topic-n4",
+  "code": "N4",
+  "slug": "open-questions/n4",
+  "publicationKind": "open-question",
+  "title": "What would establish Majorana zero modes experimentally?",
+  "summary": "Distinguish spectral clues, parity readout, coherent control and non-Abelian operations, with dated device results and explicit evidence limits.",
+  "aliases": [
+    "Majorana experimental identification",
+    "non-Abelian braiding evidence",
+    "Majorana fusion evidence",
+    "Majorana零模实验证认",
+    "马约拉纳零模证据",
+    "非阿贝尔编织"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "F5",
+    "D12",
+    "B11",
+    "I"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T20:39:53.164344+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected original braid algebra, inherited parity/spectral reviews, three-site author results, finite-chain theoretical caution and July 2026 coherent-parity preprint; independent four-Majorana calculations.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "The June 2026 critique and reply were checked for identity and date only; final full texts were not read and their arguments are not adjudicated.",
+      "Full final-version comparisons, supplements, raw data and device replication remain open.",
+      "The July 2026 coherent-control work is a preprint; ideal algebra is not a device or braiding demonstration."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "02_BATCH_2_IN_PLAN.md",
+    "sha256": "502293e5ed2fe8463b61a6c5b78a2c33bc33f3265bd36fe534fa2c469e42ff48",
+    "sourceId": "file-49326006ac2c2636"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 140,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    },
+    {
+      "startLine": 141,
+      "endLine": 141,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "what-recent-devices-establish",
+        "a-dated-coherent-control-advance",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "decision": "new-research-for-approved-question",
+      "note": "Planning identifies N4; it supplies no experimental identification evidence."
+    },
+    {
+      "startLine": 142,
+      "endLine": 177,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "U_i=(1+\\gamma_{i+1}\\gamma_i)/\\sqrt2",
+      "check": "Independent four-Majorana occupation-basis matrices verify Clifford algebra, exchanges, fixed parity and braid relations; phases and readout-basis limits retained."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-ade538b429fdd847",
+      "doi": "10.1070/1063-7869/44/10S/S29",
+      "title": "Unpaired Majorana fermions in quantum wires",
+      "year": 2001,
+      "url": "https://doi.org/10.1070/1063-7869/44/10S/S29",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-chain-and-operator-conventions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0010440v2",
+        "note": "Author v2 30 October 2000; selected pp4–7, p5 visually checked, equations4–14. Journal2001. Finite noninteracting model checks reproduced; full final-version comparison open."
+      }
+    },
+    {
+      "id": "source-8ffaca56901553f5",
+      "doi": "10.1103/PhysRevLett.86.268",
+      "title": "Non-Abelian Statistics of Half-Quantum Vortices in p-Wave Superconductors",
+      "year": 2001,
+      "url": "https://doi.org/10.1103/PhysRevLett.86.268",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-braid-algebra",
+        "evidenceUrl": "https://www.thp.uni-koeln.de/~dbagrets/EPM/Notes/PhysRevLett.86.268.pdf",
+        "note": "Published 8 January 2001. Selected final pp. 1–4, equations 6–9 and parity discussion; p. 3 visually inspected. Original independent four-Majorana algebra checks; no device simulation."
+      }
+    },
+    {
+      "id": "source-dca781066e96eecc",
+      "doi": "10.1103/PhysRevResearch.2.013377",
+      "title": "Physical mechanisms for zero-bias conductance peaks in Majorana nanowires",
+      "year": 2020,
+      "url": "https://doi.org/10.1103/PhysRevResearch.2.013377",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prresearch/abstract/10.1103/PhysRevResearch.2.013377",
+        "note": "Published30March2020. Original abstract read: confinement/disorder alternatives and short-wire nonlocal-correlation caveats. Does not diagnose later devices; full transport simulation not reproduced."
+      }
+    },
+    {
+      "id": "source-e3824a8727c3ec54",
+      "doi": "10.1038/s41586-024-08445-2",
+      "title": "Interferometric single-shot parity measurement in InAs–Al hybrid devices",
+      "year": 2025,
+      "url": "https://doi.org/10.1038/s41586-024-08445-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-hosted-published-text",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://manfragroup.org/wp-content/uploads/2025/11/2025.02.19_s41586-024-08445-2.pdf",
+        "note": "Published19February2025. Selected first page651 and p654: readout result, optimized assignment error and explicit alternative Andreev-state caveat; both-end and coupling constraints retained. Full datasets/supplement not audited."
+      }
+    },
+    {
+      "id": "source-a3c2dc153700478a",
+      "doi": "10.1038/s41586-025-09927-7",
+      "title": "Single-shot parity readout of a minimal Kitaev chain",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-025-09927-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-accepted-author-model-and-readout",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2507.01606v2",
+        "note": "Published online11February2026 per publisher-deposited Crossref metadata, print12February2026. Author v2 uploaded6October2026; selected abstract/pp2–4 and ED6caption; p4 visually checked after PDF extraction warnings. Two-site equation check reproduced; full final-version comparison and datasets open."
+      }
+    },
+    {
+      "id": "source-8adab3c663ccc329",
+      "doi": "10.1038/s41586-025-08892-5",
+      "title": "Observation of edge and bulk states in a three-site Kitaev chain",
+      "year": 2025,
+      "url": "https://doi.org/10.1038/s41586-025-08892-5",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-main-results-and-model",
+        "evidenceUrl": "https://arxiv.org/html/2410.00658v2",
+        "note": "Author v2 dated 13 March 2025, identified as post-peer-review; journal Nature 641, 890–895. Selected main results and captions 1–4 checked. Final-version comparison, full supplements and experimental reproduction remain open."
+      }
+    },
+    {
+      "id": "source-7b9053083c48946f",
+      "doi": "10.1103/bg4z-vx9m",
+      "title": "Properties and prevalence of false poor man’s Majoranas in two- and three-site artificial Kitaev chains",
+      "year": 2025,
+      "url": "https://doi.org/10.1103/bg4z-vx9m",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-introduction-and-model",
+        "evidenceUrl": "https://research-repository.st-andrews.ac.uk/bitstream/handle/10023/33240/Luethi-et-al-2025-Properties-and-prevalence-PhysRevB-112-205426-CCBY.pdf?isAllowed=y&sequence=1",
+        "note": "Final pp. 1–2 via repository PDF text, including DOI and publication date 25 November 2025. Uniform-chain extrapolation is a theoretical diagnostic. Numerical scans and full analysis not independently reproduced."
+      }
+    },
+    {
+      "id": "source-818818441532a8ec",
+      "doi": "10.48550/arXiv.2607.09511",
+      "title": "Majorana parity qubit in coupled minimal Kitaev chains",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arXiv.2607.09511",
+      "publicationStatus": "preprint",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-preprint-results-and-conclusion",
+        "evidenceUrl": "https://arxiv.org/pdf/2607.09511v1",
+        "note": "v1 submitted 10 July 2026. Selected pp. 1–6 and p. 9; p. 5 Figure 2 and fitted trace visually checked. No journal acceptance verified; full methods, raw data and independent device replication remain open."
+      }
+    },
+    {
+      "id": "source-9188260c182b771d",
+      "doi": "10.1038/s41586-026-10567-8",
+      "title": "On the robustness of topological gap detection via transport",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10567-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "publication-identity-only",
+        "evidenceUrl": "https://research-portal.st-andrews.ac.uk/en/publications/on-the-robustness-of-topological-gap-detection-via-transport/",
+        "note": "Published online 24 June 2026. Publisher-indexed and institutional metadata checked. Final full text unavailable in this review; no adjudication of its analysis."
+      }
+    },
+    {
+      "id": "source-4316d225730f11b8",
+      "doi": "10.1038/s41586-026-10568-7",
+      "title": "Reply to: On the robustness of topological gap detection via transport",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10568-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "publication-identity-only",
+        "evidenceUrl": "https://www.nature.com/subjects/nanoscale-devices/nature",
+        "note": "Publisher-deposited Crossref metadata and Nature listing checked; online 24 June 2026. Final full reply not read; no substantive summary or adjudication."
+      }
+    },
+    {
+      "id": "source-f127bb2d99183698",
+      "doi": "10.1038/s41586-021-03373-x",
+      "title": "Retraction Note: Quantized Majorana conductance",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41586-021-03373-x",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-institution-retraction-text",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://repository.tudelft.nl/record/uuid:1ee24710-a251-43c5-875e-5a7702c258d9",
+        "note": "Institution-hosted notice text read: charge-jump corrections,axislabel and conductance recalibration; original claim withdrawn. Publisher full notice endpoint redirected to authentication."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-n4-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A convincing Majorana claim needs an explicit target. A zero-energy spectral feature, a measurable fermion parity, coherent control of a small device and a protected non-Abelian operation are different achievements. This selected review connects model expectations to measurements without treating one observable as proof of every later step. It is not an exhaustive census of all platforms or a claim that no future experiment could resolve the question.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ade538b429fdd847",
+        "source-8ffaca56901553f5",
+        "source-dca781066e96eecc"
+      ],
+      "conditions": "Distinguish spectra, parity stability, readout, coherence, non-Abelian operations and scalable protection. Preserve device, source version and access limits.",
+      "verificationScope": "Selected original text/figures and inherited scoped reviews. June 2026 debate identities only; no adjudication. No raw-data or device replication."
+    },
+    {
+      "id": "scwiki-n4-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "In superconductors, the relevant objects are emergent quasiparticle modes, not demonstrations of an elementary Majorana particle. A self-adjoint operator can be constructed algebraically from any fermionic operator; experimentally establishing spatially separated, sufficiently isolated zero modes requires more than that change of basis. The ideal chain's boundary states and its bulk phase provide a theoretical benchmark with specified assumptions.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ade538b429fdd847"
+      ],
+      "conditions": "Distinguish spectra, parity stability, readout, coherence, non-Abelian operations and scalable protection. Preserve device, source version and access limits.",
+      "verificationScope": "Selected original text/figures and inherited scoped reviews. June 2026 debate identities only; no adjudication. No raw-data or device replication."
+    },
+    {
+      "id": "scwiki-n4-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Reversing orientation reverses the exchange. Ivanov derives a projective braid representation for separated half-quantum vortices in a specified chiral p-wave setting, with adiabatic motion relative to excited core states. Overall phases are disregarded. Fixing total parity leaves $2^{n-1}$ states for $2n$ Majoranas; adjacent exchanges can remain noncommuting within that space. This result does not itself identify a material or verify an experimental control sequence.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8ffaca56901553f5"
+      ],
+      "conditions": "Distinguish spectra, parity stability, readout, coherence, non-Abelian operations and scalable protection. Preserve device, source version and access limits.",
+      "verificationScope": "Selected original text/figures and inherited scoped reviews. June 2026 debate identities only; no adjudication. No raw-data or device replication."
+    },
+    {
+      "id": "scwiki-n4-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Spectroscopy must be assessed against alternatives. Pan and Das Sarma's model study compares topological, inhomogeneity-induced and disorder-induced zero-bias structures. It motivates testing dependence on barriers, fields and gates rather than classifying a device from a single favorable trace. The selected evidence does not supply a universal numerical classifier that uniquely identifies topology from conductance alone.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-dca781066e96eecc"
+      ],
+      "conditions": "Distinguish spectra, parity stability, readout, coherence, non-Abelian operations and scalable protection. Preserve device, source version and access limits.",
+      "verificationScope": "Selected original text/figures and inherited scoped reviews. June 2026 debate identities only; no adjudication. No raw-data or device replication."
+    },
+    {
+      "id": "scwiki-n4-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "A practical review should retain the entire inference chain: calibrated observables, a device model, controls against competing states, and sensitivity to analysis choices. Bulk and end measurements, controlled perturbations, parity readout and operation tests supply complementary evidence. This is an editorial validation framework, not a theorem that a particular checklist is sufficient. Models and measurements must refer to the same device regime.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ade538b429fdd847",
+        "source-dca781066e96eecc"
+      ],
+      "conditions": "Distinguish spectra, parity stability, readout, coherence, non-Abelian operations and scalable protection. Preserve device, source version and access limits.",
+      "verificationScope": "Selected original text/figures and inherited scoped reviews. June 2026 debate identities only; no adjudication. No raw-data or device replication."
+    },
+    {
+      "id": "scwiki-n4-claim-what-recent-devices-establish-1",
+      "sectionId": "what-recent-devices-establish",
+      "statement": "Aghaee and colleagues' 2025 InAs–Al experiment demonstrates interferometric single-shot parity measurement. The authors explicitly retain a finely tuned low-energy Andreev-state alternative, alongside constraints imposed by coupling to both ends. Optimized readout assignment error does not equal the error of a quantum gate. The result establishes a readout capability within the paper's stated limits.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e3824a8727c3ec54"
+      ],
+      "conditions": "Distinguish spectra, parity stability, readout, coherence, non-Abelian operations and scalable protection. Preserve device, source version and access limits.",
+      "verificationScope": "Selected original text/figures and inherited scoped reviews. June 2026 debate identities only; no adjudication. No raw-data or device replication."
+    },
+    {
+      "id": "scwiki-n4-claim-what-recent-devices-establish-2",
+      "sectionId": "what-recent-devices-establish",
+      "statement": "Van Loo and colleagues' paper, published online on 11 February 2026, measures parity through quantum capacitance in a minimal InSb–Al chain and reports lifetimes exceeding a millisecond. The selected author version describes limited protection in a two-site device. That lifetime characterizes parity stability; it is not automatically a coherence time or a demonstrated braiding operation.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a3c2dc153700478a"
+      ],
+      "conditions": "Distinguish spectra, parity stability, readout, coherence, non-Abelian operations and scalable protection. Preserve device, source version and access limits.",
+      "verificationScope": "Selected original text/figures and inherited scoped reviews. June 2026 debate identities only; no adjudication. No raw-data or device replication."
+    },
+    {
+      "id": "scwiki-n4-claim-what-recent-devices-establish-3",
+      "sectionId": "what-recent-devices-establish",
+      "statement": "Ten Haaf and colleagues probe all three sites of an InSbAs quantum-dot chain. Their selected post-review manuscript connects outer-site zero-bias peaks with a middle-site excitation gap, controlled by superconducting phase. Detuning responses differ between gapped and gap-closed settings, supporting the finite-chain model. The measured couplings are not independently tunable in every sweep. Three sites allow a useful end–middle comparison, but do not establish asymptotic protection of a long chain.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8adab3c663ccc329"
+      ],
+      "conditions": "Distinguish spectra, parity stability, readout, coherence, non-Abelian operations and scalable protection. Preserve device, source version and access limits.",
+      "verificationScope": "Selected original text/figures and inherited scoped reviews. June 2026 debate identities only; no adjudication. No raw-data or device replication."
+    },
+    {
+      "id": "scwiki-n4-claim-what-recent-devices-establish-4",
+      "sectionId": "what-recent-devices-establish",
+      "statement": "Luethi and colleagues supply a complementary theoretical caution. In their microscopic dot–superconductor model, some short-chain states resembling poor man's Majoranas evolve into trivial states under uniform extension. Robustness to chemical-potential perturbations or a large excitation gap alone does not remove this ambiguity. Uniform extension is a theoretical diagnostic; real devices may have nonuniform parameters. This does not independently reclassify the experimental device above.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7b9053083c48946f"
+      ],
+      "conditions": "Distinguish spectra, parity stability, readout, coherence, non-Abelian operations and scalable protection. Preserve device, source version and access limits.",
+      "verificationScope": "Selected original text/figures and inherited scoped reviews. June 2026 debate identities only; no adjudication. No raw-data or device replication."
+    },
+    {
+      "id": "scwiki-n4-claim-a-dated-coherent-control-advance-1",
+      "sectionId": "a-dated-coherent-control-advance",
+      "statement": "The **10 July 2026 preprint** by Zatelli and colleagues reports coherent parity oscillations in coupled minimal Kitaev chains. Comparing even and odd manifolds helps test residual splitting that could cancel in only one manifold. A selected trace has frequency $106.7\\pm0.4$ MHz and exponential Rabi decay $26\\pm2$ ns. The authors interpret the sweet-spot behavior as partial protection; no journal acceptance was verified for this review.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-818818441532a8ec"
+      ],
+      "conditions": "Distinguish spectra, parity stability, readout, coherence, non-Abelian operations and scalable protection. Preserve device, source version and access limits.",
+      "verificationScope": "Selected original text/figures and inherited scoped reviews. June 2026 debate identities only; no adjudication. No raw-data or device replication."
+    },
+    {
+      "id": "scwiki-n4-claim-a-dated-coherent-control-advance-2",
+      "sectionId": "a-dated-coherent-control-advance",
+      "statement": "The preprint explicitly separates these operations from topologically protected gates: lifting the degeneracy to perform the rotation is not protected independently of chain length. Reported population leakage is not a measured gate fidelity. Longer-chain protection scaling, fusion tests and braiding are further objectives. Coherent rotation is meaningful progress, while a claim about exchange statistics requires evidence about the implemented operation.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-818818441532a8ec"
+      ],
+      "conditions": "Distinguish spectra, parity stability, readout, coherence, non-Abelian operations and scalable protection. Preserve device, source version and access limits.",
+      "verificationScope": "Selected original text/figures and inherited scoped reviews. June 2026 debate identities only; no adjudication. No raw-data or device replication."
+    },
+    {
+      "id": "scwiki-n4-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Nature published a transport-gap critique and an associated reply online on 24 June 2026. Their identities and dates were checked, but the final full texts were not accessible in this review. Both are linked without deciding which analysis is correct. Their existence must not be presented as a retraction of the 2025 parity paper.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-9188260c182b771d",
+        "source-4316d225730f11b8"
+      ],
+      "conditions": "Distinguish spectra, parity stability, readout, coherence, non-Abelian operations and scalable protection. Preserve device, source version and access limits.",
+      "verificationScope": "Selected original text/figures and inherited scoped reviews. June 2026 debate identities only; no adjudication. No raw-data or device replication."
+    },
+    {
+      "id": "scwiki-n4-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Retraction status requires a separate, specific record. The 2018 quantized-conductance article discussed in the Majorana overview has a 2021 retraction notice; that is a different publication from the 2025 readout experiment. Keep notices attached to the exact article. Full supplements, raw-data checks, broad platform comparisons and independent experimental replication remain outside this selected review.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-f127bb2d99183698",
+        "source-e3824a8727c3ec54"
+      ],
+      "conditions": "Distinguish spectra, parity stability, readout, coherence, non-Abelian operations and scalable protection. Preserve device, source version and access limits.",
+      "verificationScope": "Selected original text/figures and inherited scoped reviews. June 2026 debate identities only; no adjudication. No raw-data or device replication."
+    },
+    {
+      "id": "scwiki-n4-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "For candidate selection, retain promising signals together with their alternatives and operating conditions. For quantum operations, ask which preparation, control and measurement distinguish the proposed transformation from ordinary dynamics, readout bias or an incoherent mixture. Increasing device length or showing a favorable oscillation is useful only with an explicit error and protection analysis. These are proposed review priorities; neither this article nor its ideal algebra constitutes certification of a topological qubit.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ade538b429fdd847",
+        "source-dca781066e96eecc"
+      ],
+      "conditions": "Editorial proposed validation priorities inferred from theoretical model and alternative-state studies.",
+      "verificationScope": "Not experimental certification or a universal sufficient checklist."
+    }
+  ],
+  "scopeItems": [
+    {
+      "id": "N4",
+      "sectionIds": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "what-recent-devices-establish",
+        "a-dated-coherent-control-advance",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Selected original braid algebra, inherited parity/spectral reviews, three-site author results, finite-chain theoretical caution and July 2026 coherent-parity preprint; independent four-Majorana calculations.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "The June 2026 critique and reply were checked for identity and date only; final full texts were not read and their arguments are not adjudicated.",
+        "Full final-version comparisons, supplements, raw data and device replication remain open.",
+        "The July 2026 coherent-control work is a preprint; ideal algebra is not a device or braiding demonstration."
+      ]
+    }
+  ]
+}

@@ -1,0 +1,471 @@
+{
+  "id": "scwiki-a10",
+  "topicId": "scwiki-topic-a10",
+  "code": "A10",
+  "slug": "quasiparticle-interference",
+  "title": "Quasiparticle interference: momentum structure and phase limits",
+  "summary": "Read Fourier-transform tunneling maps with their scattering, sampling and phase assumptions. Distinguish measured modulation from inferred bands, gap sign and competing order.",
+  "aliases": [
+    "QPI",
+    "BQPI",
+    "FT-STM",
+    "quasiparticle scattering",
+    "octet model",
+    "phase resolved tunneling"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "A5",
+    "A9",
+    "D3",
+    "D4",
+    "B12",
+    "C2"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T22:51:56.579986+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Hoffman, Wang–Lee and Sprau author-manuscript passages; bibliographic identity corrections; independent finite-model and Fourier calculations.",
+    "limitations": [
+      "Scoped passage checks are not complete scientific acceptance or experimental replication.",
+      "McElroy and the vortex-core paper remain bibliographic pointers; earlier manuscript checks do not certify final-version equivalence.",
+      "FeSe sign inference retains defect, phase origin, band and model assumptions; no universal pairing state assigned.",
+      "Measurement temperatures are not transition temperatures; no Tc values are extracted here.",
+      "The displayed spin-resolved, finite-lattice response specializes the source framework; its local synthetic checks do not reproduce the complete published calculation."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "A_phenomenology/A10_quasiparticle_interference.md",
+    "sha256": "f82bb31e8b35f847536cf493b8d0267c022f124c0f86e664d386e583d72e590e",
+    "sourceId": "file-d9367783139c3905"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 11,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Probe and matrix-element limits preserved; Fourier conventions made explicit."
+    },
+    {
+      "startLine": 12,
+      "endLine": 17,
+      "targetSections": [
+        "experimental-criteria",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Cuprate examples retained with corrected Hoffman attribution and octet boundary."
+    },
+    {
+      "startLine": 18,
+      "endLine": 21,
+      "targetSections": [
+        "experimental-criteria",
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Phase-sensitive FeSe protocol tied to selected manuscript passages."
+    },
+    {
+      "startLine": 22,
+      "endLine": 27,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "QPI/static-order distinction qualified; neither dispersion nor its absence is unique."
+    },
+    {
+      "startLine": 28,
+      "endLine": 36,
+      "targetSections": [
+        "experimental-criteria",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Reporting and sampling criteria retained."
+    },
+    {
+      "startLine": 37,
+      "endLine": 46,
+      "targetSections": [
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Source identities traced; McElroy corrected and original vortex source retained."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-e8e6ef56da103435",
+      "doi": "10.1126/science.1072640",
+      "title": "Imaging Quasiparticle Interference in Bi2Sr2CaCu2O8+delta",
+      "year": 2002,
+      "url": "https://doi.org/10.1126/science.1072640",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0209276v1",
+        "note": "Selected pp. 2–6: elastic scattering, 4.2 K conductance maps and dispersing peaks. Raw maps and final-version differences not reanalyzed."
+      }
+    },
+    {
+      "id": "source-6e0b3a25ead07f3c",
+      "doi": "10.1103/PhysRevB.67.020511",
+      "title": "Quasiparticle scattering interference in high-temperature superconductors",
+      "year": 2003,
+      "url": "https://doi.org/10.1103/PhysRevB.67.020511",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0205118v3",
+        "note": "Author v3 dated 20 August 2002, associated journal 2003. Selected pp. 1-2; p. 1 Eq. (1) pixels rechecked for both Nambu diagonal blocks, p. 2 previously viewed for off-shell/coherence-factor limits. Site spin-resolved block and discrete normalization are explicit local conventions. Full published calculation and final-version comparison remain open."
+      }
+    },
+    {
+      "id": "source-230ea3ac9496dc90",
+      "doi": "10.1038/nature01496",
+      "title": "Relating atomic-scale electronic phenomena to wave-like quasiparticle states in superconducting Bi2Sr2CaCu2O8+delta",
+      "year": 2003,
+      "url": "https://doi.org/10.1038/nature01496",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-metadata-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/nature01496",
+        "note": "Publisher title/authors/pages and Crossref identity checked; full text/data not audited. Replaces inherited unrelated biology DOI nature02269."
+      }
+    },
+    {
+      "id": "source-2f227038c5cf73a9",
+      "doi": "10.1126/science.aal1575",
+      "title": "Discovery of orbital-selective Cooper pairing in FeSe",
+      "year": 2017,
+      "url": "https://doi.org/10.1126/science.aal1575",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1611.02134v2",
+        "note": "Selected manuscript p. 7 and pp. 10–11 plus supplementary section VII (PDF pp. 36–37): 280 mK, defect-centered phase, interband region and controls. Full FeSe model/data and final-version comparison not reproduced."
+      }
+    },
+    {
+      "id": "source-353efd52d3443260",
+      "doi": "10.1126/science.1066974",
+      "title": "A Four Unit Cell Periodic Pattern of Quasi-Particle States Surrounding Vortex Cores in Bi2Sr2CaCu2O8+delta",
+      "year": 2002,
+      "url": "https://doi.org/10.1126/science.1066974",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "crossref-metadata-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://api.crossref.org/works/10.1126/science.1066974",
+        "note": "Distinct vortex-core paper retained to document inherited attribution mismatch; no detailed vortex experiment audited here."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-a10-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Quasiparticle interference (QPI) uses spatial variations in scanning tunneling conductance to constrain electronic states and scattering. Elastic scattering can connect states of equal energy with momentum transfer $\\mathbf q=\\mathbf k'-\\mathbf k$. A Fourier peak is a feature of a measured response, not a direct photograph of a Fermi surface or a uniquely identified order parameter. Keep the tunneling matrix element, defect channel and preprocessing attached to every interpretation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+    },
+    {
+      "id": "scwiki-a10-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "In a weak-tunneling description with a sufficiently smooth tip spectrum and matrix element, low-temperature differential conductance can approximate a sample's local density of states. Thermal and instrumental convolution, spatially varying set points and orbital sensitivity can change that relation. A conductance map and an ideal local-density-of-states calculation should not be treated as interchangeable without testing these assumptions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+    },
+    {
+      "id": "scwiki-a10-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "With the convention $\\tilde g(\\mathbf q,E)=\\sum_{\\mathbf r}e^{-i\\mathbf q\\cdot\\mathbf r}g(\\mathbf r,E)$, a translated pattern obeys",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local discrete-Fourier definition and translation/conjugation identities; exact algebra and sampled periodic examples. Wang–Lee supplies scattering context, not a separate experiment supporting the chosen convention."
+    },
+    {
+      "id": "scwiki-a10-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$g'(\\mathbf r,E)=g(\\mathbf r-\\mathbf r_0,E),\\qquad\\tilde g'=e^{-i\\mathbf q\\cdot\\mathbf r_0}\\tilde g.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local discrete-Fourier definition and translation/conjugation identities; exact algebra and sampled periodic examples. Wang–Lee supplies scattering context, not a separate experiment supporting the chosen convention."
+    },
+    {
+      "id": "scwiki-a10-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Its Fourier magnitude is unchanged, while its real and imaginary parts generally change. A real map satisfies $\\tilde g(-\\mathbf q)=\\tilde g(\\mathbf q)^*$. Independent discrete-transform checks verify both identities, an exactly sampled cosine and sampling aliases. Finite cropping can also change amplitudes; the exact translation identity assumes the whole pattern or periodic data, not two differently cropped fields.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local discrete-Fourier definition and translation/conjugation identities; exact algebra and sampled periodic examples. Wang–Lee supplies scattering context, not a separate experiment supporting the chosen convention."
+    },
+    {
+      "id": "scwiki-a10-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a periodic lattice with $N$ sites and one static, local defect at the origin, define an ideal electron-block response",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Wang–Lee author v3 p. 1 Eq. (1) supplies the scattering-response framework with both Nambu diagonal blocks. This entry locally specializes to one spin-resolved electron block, N-site normalization and a static local defect; T follows from T=V+Vg0T when the inverse exists. Six finite-model resolvent comparisons check these conventions, not material data."
+    },
+    {
+      "id": "scwiki-a10-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\Lambda(\\mathbf q,E)=\\frac{1}{N}\\sum_{\\mathbf k}[G_0(\\mathbf k,E)\\,T(E)\\,G_0(\\mathbf k-\\mathbf q,E)]_{11}.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Wang–Lee author v3 p. 1 Eq. (1) supplies the scattering-response framework with both Nambu diagonal blocks. This entry locally specializes to one spin-resolved electron block, N-site normalization and a static local defect; T follows from T=V+Vg0T when the inverse exists. Six finite-model resolvent comparisons check these conventions, not material data."
+    },
+    {
+      "id": "scwiki-a10-claim-mathematical-assumptions-6",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Here $G_0$ is a retarded Nambu Green function and $T=[1-Vg_0]^{-1}V$, with $g_0=N^{-1}\\sum_{\\mathbf k}G_0$. The Fourier transform of the spin-resolved electron density-of-states change is",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Wang–Lee author v3 p. 1 Eq. (1) supplies the scattering-response framework with both Nambu diagonal blocks. This entry locally specializes to one spin-resolved electron block, N-site normalization and a static local defect; T follows from T=V+Vg0T when the inverse exists. Six finite-model resolvent comparisons check these conventions, not material data."
+    },
+    {
+      "id": "scwiki-a10-claim-mathematical-assumptions-7",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\delta\\tilde\\rho(\\mathbf q,E)=-\\frac{\\Lambda(\\mathbf q,E)-\\Lambda(-\\mathbf q,E)^*}{2\\pi i}.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Wang–Lee author v3 p. 1 Eq. (1) supplies the scattering-response framework with both Nambu diagonal blocks. This entry locally specializes to one spin-resolved electron block, N-site normalization and a static local defect; T follows from T=V+Vg0T when the inverse exists. Six finite-model resolvent comparisons check these conventions, not material data."
+    },
+    {
+      "id": "scwiki-a10-claim-mathematical-assumptions-8",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Taking just $-\\operatorname{Im}\\Lambda(\\mathbf q)/\\pi$ is insufficient for a general complex Fourier map. It becomes valid with the additional even-in-momentum response condition. Six independent checks compare full real-space resolvent inversion with the scattering expression on a ten-site, fixed-gap model; displaced defects expose the lost phase. This is a normalization and response check, not a cuprate or FeSe simulation. The selected Wang–Lee manuscript supplies the broader scattering framework and explicitly discusses off-shell and matrix-element limits. Its Eq. (1) includes both Nambu diagonal blocks; the expression here uses an explicitly spin-resolved electron block and a discrete lattice normalization. These local conventions and their checks are not a verbatim reproduction of the full source formula.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source v3 pp. 1-2 supports the scattering framework and off-shell/matrix-element caution. The complex-Fourier conjugation argument and six fixed-gap finite-model checks are local; source Eq. (1) and this spin-resolved form are explicitly distinguished."
+    },
+    {
+      "id": "scwiki-a10-claim-mathematical-assumptions-9",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A joint-density-of-states construction counts candidate equal-energy connections but omits scattering amplitudes and coherence factors. In an ideal equal-magnitude, real-gap Fermi-surface limit, scalar and magnetic Born amplitudes contain $uu'-vv'$ and $uu'+vv'$. Setting $u=u'=1/\\sqrt2$ and $v=\\operatorname{sgn}(\\Delta)/\\sqrt2$ interchanges their zero/nonzero weights when the relative gap sign changes. This conditional example explains sensitivity to the impurity channel; it does not identify a real defect from one bright peak.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source v3 p. 2 gives scalar/magnetic coherence-factor dependence. The equal-magnitude, real-gap, xi=0 weights are a local ideal-limit evaluation, not identification of an experimental defect."
+    },
+    {
+      "id": "scwiki-a10-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Hoffman and colleagues' dispersing-QPI manuscript reports Bi2212 conductance imaging at 4.2 K. Selected pages describe two peak families with opposite energy trends and doping-dependent dispersion, interpreted against photoemission information. Its Science DOI ends in **1072640**. The inherited DOI ending in **1066974** instead identifies their distinct vortex-core modulation paper; these are not interchangeable evidence.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e8e6ef56da103435",
+        "source-353efd52d3443260"
+      ],
+      "conditions": "Bi2212 conductance imaging at 4.2 K; selected earlier manuscript only, raw data not reanalyzed.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+    },
+    {
+      "id": "scwiki-a10-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Sprau and colleagues' FeSe manuscript reports imaging at 280 mK. The relative-sign analysis uses the real parts at opposite energies, isolates an interband momentum region and places the Fourier origin at a defect. Selected supplementary passages vary the integration area and repeat the analysis on additional impurities. The reported sign inference is conditional on their scattering model and band assignment; it is not an inference from the absolute Fourier intensity alone.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-2f227038c5cf73a9"
+      ],
+      "conditions": "FeSe conductance imaging at 280 mK; selected manuscript model-dependent relative-sign inference, not a universal iron-based result.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+    },
+    {
+      "id": "scwiki-a10-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Report field of view, pixel spacing, spatial drift correction, bias grid, temperature, excitation amplitude, tip condition, set-point protocol and defect selection. Preserve both raw and processed maps. State whether a displayed quantity is a complex transform, its real part, magnitude, power or a ratio: these operations retain different information. Explain normalization, windowing, background removal, symmetrization and peak uncertainties.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Editorial inference/reporting boundaries; no unique pairing mechanism or static order assigned.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+    },
+    {
+      "id": "scwiki-a10-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "For $N_x$ equally spaced pixels of spacing $a_x$, the periodic-transform length is $L_x=N_xa_x$ and angular-wavevector bin spacing is $2\\pi/L_x$; the Nyquist bound is $\\pi/a_x$. Using cycles per length removes the $2\\pi$ factors. Zero padding interpolates the transform but does not create a larger measured field. A window trades spectral leakage against peak width, so bin spacing alone is not an experimental uncertainty or guaranteed resolving power.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Conditional retarded Green-function/DFT and ideal coherence-factor models; finite synthetic calculations are not fits to cuprates or FeSe.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+    },
+    {
+      "id": "scwiki-a10-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Energy dispersion supports a scattering interpretation only together with band, defect and temperature/field controls. Weak dispersion over a limited window does not by itself prove charge order; Bragg, structural, moire and electronic features can overlap. Conversely, an order and QPI may coexist. The cuprate octet geometry must not be imposed on arbitrary multiband spectra.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Editorial inference/reporting boundaries; no unique pairing mechanism or static order assigned.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+    },
+    {
+      "id": "scwiki-a10-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "The McElroy reference in the pinned chapter used an unrelated biology DOI, **nature02269**. The correct QPI paper is **nature01496**; its publisher identity is checked here, while its detailed data remain outside this entry's review. The original source is preserved and the replacement recorded.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-230ea3ac9496dc90"
+      ],
+      "conditions": "Editorial inference/reporting boundaries; no unique pairing mechanism or static order assigned.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+    },
+    {
+      "id": "scwiki-a10-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Use QPI to compare explicit candidate electronic and scattering models against multiple observables. A useful claim states which alternatives the data discriminate, which are still compatible, and how uncertainty in defect identity or preprocessing changes the result. Combine gap-magnitude constraints with independent bulk and phase-sensitive evidence before assigning a pairing state or mechanism.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-6e0b3a25ead07f3c"
+      ],
+      "conditions": "Editorial inference/reporting boundaries; no unique pairing mechanism or static order assigned.",
+      "verificationScope": "Selected source locations are stated in references; independent Fourier/resolvent checks apply only to the explicit ideal models."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-a10-correction-1",
+      "description": "Replaced unrelated nature02269 with McElroy QPI DOI nature01496; retained the pinned source unchanged.",
+      "sourceId": "source-230ea3ac9496dc90",
+      "scope": "Source identity correction, not a correction to either paper."
+    },
+    {
+      "id": "scwiki-a10-correction-2",
+      "description": "Distinguished dispersing-QPI science.1072640 from vortex-core modulation science.1066974; both identities remain traceable.",
+      "sourceId": "source-e8e6ef56da103435",
+      "scope": "Correct attribution to the experiment described."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\delta\\tilde\\rho(q)=-[\\Lambda(q)-\\Lambda(-q)^*]/(2\\pi i)",
+      "check": "Six full finite BdG resolvent versus T-matrix comparisons, including displaced-defect counterexamples to naive imaginary-part Fourier formula."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\tilde g\\prime=e^{-iqr_0}\\tilde g",
+      "check": "Discrete phase translation, magnitude invariance, Hermitian symmetry, sampled cosine and alias checks; ideal coherence-factor sign/channel weights."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-a10-material-1",
+      "formula": "Bi2Sr2CaCu2O8+delta",
+      "sample": "Hoffman Bi2212 crystals; selected imaging passages",
+      "recordType": "experiment",
+      "tcK": null,
+      "reportedTemperatureK": 4.2,
+      "temperatureKind": "spectroscopic-gap",
+      "temperatureNote": "Measurement temperature, not a transition Tc",
+      "criterion": "qpi-conductance-map",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Differential tunneling conductance maps; 4.2 K, cryogenic cleavage and Fourier peak tracking",
+      "sourceId": "source-e8e6ef56da103435",
+      "aliases": [
+        "cuprate",
+        "cuprates"
+      ]
+    },
+    {
+      "id": "scwiki-a10-material-2",
+      "formula": "FeSe",
+      "sample": "Sprau bulk FeSe; selected manuscript and defect analysis",
+      "recordType": "experiment",
+      "tcK": null,
+      "reportedTemperatureK": 0.28,
+      "temperatureKind": "spectroscopic-gap",
+      "temperatureNote": "Measurement temperature, not a transition Tc",
+      "criterion": "qpi-conductance-map",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "280 mK conductance maps; defect-centered Fourier phase and selected interband integration region",
+      "sourceId": "source-2f227038c5cf73a9",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
+    }
+  ]
+}

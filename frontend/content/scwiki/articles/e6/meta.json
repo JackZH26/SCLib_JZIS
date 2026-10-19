@@ -1,0 +1,633 @@
+{
+  "id": "scwiki-e6",
+  "topicId": "scwiki-topic-e6",
+  "code": "E6",
+  "slug": "light-driven-superconductivity",
+  "title": "Light-driven states: transient evidence and equilibrium limits",
+  "summary": "Compare optical, electrical and magnetic evidence under explicit drive conditions, with depth reconstruction, granularity and detection limits.",
+  "aliases": [
+    "light induced superconductivity",
+    "photoinduced superconductivity",
+    "photodoping",
+    "pump probe",
+    "Floquet",
+    "transient superconductivity",
+    "optical saturation"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory"
+  ],
+  "relatedCodes": [
+    "D9",
+    "E3",
+    "E5",
+    "C8",
+    "A6"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-19",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected original optical/transport/magnetic passages; Fausti, Budden, Dodge and Kennes figure/equation visual checks; bounded Drude, saturation-depth and oscillator calculations. Publisher notice identifying the 24 February 2016 Mitrano caption correction checked separately on 19 October 2026.",
+    "limitations": [
+      "Complete scientific acceptance, remaining final-version comparisons, full supplements and raw-data reproduction remain open.",
+      "Fava author-hosted journal-formatted copy retains a placeholder date; publisher dates checked separately. Hu downloaded author-version history not fully compared.",
+      "The Buzzi2023 response remains explicitly a preprint; local algebra does not settle the optical-reconstruction dispute.",
+      "A model-induced attraction, driven base temperature or sensitivity-limited null signal is not a measured equilibrium superconducting transition."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "E_tuning_parameters/E6_light_irradiation.md",
+    "sha256": "3da3dff0df0053d72c0d3d8c59f5b2c25badd5cb36c55fb55d3e02748472f709",
+    "sourceId": "file-18a4f5ddfdf37c12"
+  },
+  "references": [
+    {
+      "id": "source-c60f0131e7d25c60",
+      "doi": "10.1126/science.1197294",
+      "title": "Light-Induced Superconductivity in a Stripe-Ordered Cuprate",
+      "year": 2011,
+      "url": "https://doi.org/10.1126/science.1197294",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-optical-protocol-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://qcmd.mpsd.mpg.de/wp-content/uploads/2023/01/2011_mpsd-cm_fausti-science-331.pdf",
+        "note": "Published 14 January 2011. Selected journal pp.189–191 read; PDF p.3 Figures2–3 visually checked. Caption16micrometres versus main15micrometres retained by protocol. Probe depth is10micrometres, not text-extraction mm. Measured100ps window is not a measured nanosecond lifetime. Full supplement and rawdata not reviewed."
+      }
+    },
+    {
+      "id": "source-e8775e639989b8d6",
+      "doi": "10.1038/nmat3963",
+      "title": "Optically enhanced coherent transport in YBa2Cu3O6.5 by ultrafast redistribution of interlayer coupling",
+      "year": 2014,
+      "url": "https://doi.org/10.1038/nmat3963",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-optical-and-effective-medium-passages",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1308.3204",
+        "note": "Selected author manuscript pp.1–7 read:50K equilibrium reference, pump parameters, transformed fraction, screened/unscreened frequencies and broadband/narrowband comparison. Downloaded current author version; complete version history, final comparison, supplement and inversion reproduction not checked."
+      }
+    },
+    {
+      "id": "source-b47831832e13ca4e",
+      "doi": "10.1038/nature13875",
+      "title": "Nonlinear lattice dynamics as a basis for enhanced superconductivity in YBa2Cu3O6.5",
+      "year": 2014,
+      "url": "https://doi.org/10.1038/nature13875",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-introduction-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1405.2266v1",
+        "note": "Author v1 initial pp.1–2 selected introduction: diffraction and density-functional structural interpretation. Early title differs from published title. Detailed refinement, supplementary methods and final-version comparison not reviewed."
+      }
+    },
+    {
+      "id": "source-6ee3670220e24ff1",
+      "doi": "10.1038/nature16522",
+      "title": "Possible light-induced superconductivity in K3C60 at high temperature",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nature16522",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-optical-interpretation",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://qcmd.mpsd.mpg.de/wp-content/uploads/2023/01/mitrano-nature16522-2016.pdf",
+        "note": "Online8February2016,issue25February. Selected final p.461 main text, equilibrium20K reference and model-dependent optical-gap interpretation read. Full methods, extended data and rawdata not reanalyzed; no direct DC/Meissner result inferred. Publisher correction notice dated 24 February 2016 identifies a restored final sentence in the advance-online PDF Figure 4 caption; no full old/corrected PDF comparison was performed."
+      },
+      "updates": [
+        {
+          "kind": "correction",
+          "date": "2016-02-24",
+          "description": "The publisher restored a truncated final sentence in the Figure 4 caption of the advance-online PDF.",
+          "evidenceUrl": "https://www.nature.com/articles/nature16522#change-history",
+          "checkedAt": "2026-10-19",
+          "scope": "Publisher change-history notice and publisher-deposited Crossref assertion agree. Old and corrected PDFs were not compared in full."
+        }
+      ]
+    },
+    {
+      "id": "source-07be806c0002c690",
+      "doi": "10.1038/s41567-020-01148-1",
+      "title": "Evidence for metastable photo-induced superconductivity in K3C60",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41567-020-01148-1",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-transport-calibration-and-figure",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pure.mpg.de/rest/items/item_3196913_5/component/file_3319164/content",
+        "note": "M. Budden et al.; online4February2021,issueMay. Selected p.611 and p.615 Fig4/caption and transport discussion read, p.615 visually checked. Static four-terminal contact calibration is distinct from transient two-terminal transport.200ps/75ps pumps and100K base retained; complete supplement/rawdata not reviewed."
+      }
+    },
+    {
+      "id": "source-30e68110da17974c",
+      "doi": "10.1038/nphys4024",
+      "title": "Transient superconductivity from electronic squeezing of optically pumped phonons",
+      "year": 2017,
+      "url": "https://doi.org/10.1038/nphys4024",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-oscillator-equations",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1609.03802v1",
+        "note": "Author v1 dated13September2016; journal online30January2017. Selected pp.2–4 Hamiltonian, occupation-dependent oscillator and approximate effective model read; p.3 Eq2 visually checked. hbar restored explicitly. Full time-dependent numerics, supplement and final comparison remain open."
+      }
+    },
+    {
+      "id": "source-a85b56be7c62bf11",
+      "doi": "10.1103/PhysRevLett.130.146002",
+      "title": "Optical Saturation Produces Spurious Evidence for Photoinduced Superconductivity in K3C60",
+      "year": 2023,
+      "url": "https://doi.org/10.1103/PhysRevLett.130.146002",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-depth-profile-equations",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.sfu.ca/lux/publication/dodge-2023/dodge-2023.pdf",
+        "note": "Published3April2023. Author-hosted file has final PRL layout: selected pp.1–2 and Eq3–4 read; p.2 visually checked. Saturation integral independently evaluated. Full Maxwell inversion, remaining figures and rawdata reanalysis not reproduced."
+      }
+    },
+    {
+      "id": "source-56a2c1fa63bafe80",
+      "doi": "10.48550/arXiv.2303.10169",
+      "title": "Comment on arXiv:2210.01114: Optical Saturation Produces Spurious Evidence for Photoinduced Superconductivity in K3C60",
+      "year": 2023,
+      "url": "https://doi.org/10.48550/arXiv.2303.10169",
+      "publicationStatus": "preprint",
+      "verification": {
+        "scope": "selected-preprint-response",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2303.10169v1",
+        "note": "Preprint submitted17March2023. Selected pp.1–2 response read: authors dispute the depth-profile critique and emphasize retained inductive behavior. Figure reconstruction and experimental rawdata not independently reproduced; no journal publication established here."
+      }
+    },
+    {
+      "id": "source-65e69ec93039deb9",
+      "doi": "10.1038/s41586-024-07635-2",
+      "title": "Magnetic field expulsion in optically driven YBa2Cu3O6.48",
+      "year": 2024,
+      "url": "https://doi.org/10.1038/s41586-024-07635-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-journal-formatted-author-copy",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://qcmd.mpsd.mpg.de/wp-content/uploads/2024/07/fava-nat-s41586-024-07635-2.pdf",
+        "note": "Publisher dates:online10July2024,issue1August. Author-hosted journal-formatted copy still has placeholder publication date; selected pp.1,4 magnetic-methods/results read. GaP,100/300K,~1ps and quasi-static caveat retained. Complete final-version comparison, calibration, full supplement and simulations remain open."
+      }
+    },
+    {
+      "id": "source-930b28b64275da42",
+      "doi": "10.1063/4.0000295",
+      "title": "Probing optically driven K3C60 thin films with an ultrafast voltmeter",
+      "year": 2025,
+      "url": "https://doi.org/10.1063/4.0000295",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-voltage-protocol-and-temperature-response",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://qcmd.mpsd.mpg.de/wp-content/uploads/2025/03/Adelina-structural-dynamics-2025.pdf",
+        "note": "Published26March2025. Selected journal pp.1–3 and original abstract/figure captions read. QuasiDC bias,300fs/7micrometre pump,sign reversal80K and100K linear positive response retained. Full granular model, circuit calibration and supplement not reproduced."
+      }
+    },
+    {
+      "id": "source-e7138d083320dfd7",
+      "doi": "10.1103/21g5-x5bj",
+      "title": "Upper limit on magnetic field expulsion in optically driven K3C60",
+      "year": 2025,
+      "url": "https://doi.org/10.1103/21g5-x5bj",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-abstract-protocol-and-null-result",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://qcmd.mpsd.mpg.de/wp-content/uploads/2025/12/deVecchi-2025-PRR.pdf",
+        "note": "Published9December2025. Original abstract and selected final pp.3–4 protocol/null result read:~1ps8micrometre pump,0.5mT applied field,~50nT sensitivity through1ns. Model-bound chiV>-0.1 does not decide Meissner presence/absence. Full appendices, calibration and simulations not reviewed."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-e6-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Light can change carrier populations, excite lattice motion and alter collective electronic response. Persistent photodoping, a transient pump–probe state and a periodically driven model are different protocols. Specify wavelength, polarization, pulse duration, fluence, repetition rate, base temperature and probe delay. A temperature at which a driven response is observed is not automatically an equilibrium superconducting transition temperature.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c60f0131e7d25c60",
+        "source-e8775e639989b8d6",
+        "source-6ee3670220e24ff1",
+        "source-30e68110da17974c"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The evidence now extends beyond optical conductivity. Electrical measurements in K3C60, transient magnetic measurements in YBa2Cu3O6.48 and a later sensitivity-limited magnetic experiment on K3C60 ask different questions. Preserve the specimen, geometry and measured observable rather than combining them into one universal light-induced transition.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-07be806c0002c690",
+        "source-65e69ec93039deb9",
+        "source-930b28b64275da42",
+        "source-e7138d083320dfd7"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "With the $e^{-i\\omega t}$ convention, a normal Drude response is $\\sigma(\\omega)=D/(\\Gamma-i\\omega)$, where $D$ is the Drude weight and $\\Gamma>0$ the relaxation rate. Thus $\\sigma_2=D\\omega/(\\Gamma^2+\\omega^2)\\approx D/\\omega$ when the measured frequencies greatly exceed $\\Gamma$, although the DC conductivity $D/\\Gamma$ remains finite. A finite-band inductive trend alone cannot distinguish this limit from a condensate. This elementary counterexample is not a fit to, or refutation of, any particular experiment.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6ee3670220e24ff1",
+        "source-a85b56be7c62bf11"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Depth reconstruction also matters. For Dodge's illustrative saturating profile, $\\Delta\\sigma(z)=\\Delta\\sigma_{\\rm sat}f e^{-z/\\Lambda}/(1+f e^{-z/\\Lambda})$, with $f=F/F_{\\rm sat}$, integration gives sheet photoconductance $\\Delta G=\\Delta\\sigma_{\\rm sat}\\Lambda\\ln(1+f)$. The effective thickness grows with fluence even while the surface response saturates. Assuming a fixed exponential profile can therefore bias the inferred surface conductivity. This integral checks the stated profile, not a full electromagnetic inversion; the experimental interpretation is disputed below.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a85b56be7c62bf11",
+        "source-56a2c1fa63bafe80"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Kennes's minimal quadratic electron–phonon model gives oscillator frequency $\\omega(n)=\\omega_0\\sqrt{1+2gn}$ for site occupation $n=0,1,2$, requiring $g>-1/4$. At fixed phonon occupation $n_B$, its induced interaction is $\\Delta U=(n_B+1/2)\\hbar\\omega_0[\\sqrt{1+4g}+1-2\\sqrt{1+2g}]$. Concavity makes this nonpositive for either sign of stable $g$, with leading term $-(n_B+1/2)\\hbar\\omega_0g^2$. The author manuscript sets Planck's constant to one; it is restored here. This is a model mechanism, not a measured coupling or proof of a stable superconducting phase.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-30e68110da17974c"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Fausti studied stripe-ordered La1.675Eu0.2Sr0.125CuO4 at a 10 K base temperature. The reported signal is a transient c-axis plasma edge and optical response interpreted as restored interlayer coherence. Figures 2–3 specify a 16 micrometre pump, approximately 1 mJ/cm² fluence and a 5 ps delay for the transient spectrum. The pump excites roughly 200 nm in depth, while the THz probe samples about 10 micrometres; the transformed-layer reconstruction is essential. A near-infrared plateau observed to 100 ps does not directly measure a many-nanosecond lifetime.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c60f0131e7d25c60"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Hu's YBa2Cu3O6.5 specimen has an equilibrium transition near 50 K. Its approximately 300 fs, 15 micrometre pump modifies both inter- and intra-bilayer optical response. The effective-medium analysis separates transformed and untransformed regions; screened plasma-edge positions are not the same as fitted unscreened plasma frequencies. Broadband data at 60 K and narrower-band measurements at 100 and 300 K have different information content. Mankowsky's associated structural study combines diffraction with calculations to connect driven distortions with electronic changes; structural response does not uniquely identify pairing.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e8775e639989b8d6",
+        "source-b47831832e13ca4e"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Mitrano's K3C60 report compares a transient optical response above the roughly 20 K equilibrium transition with the low-temperature spectrum. Its title deliberately says “Possible”. The reported optical-gap fit and enhanced carrier mobility are not a direct DC resistance or magnetic measurement. Temperature, pump–probe delay and model-dependent gap extraction must remain attached to that evidence.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-6ee3670220e24ff1"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Budden extended the response using longer pulses. Figure 4 compares optical extrapolation with electrical measurements at a 100 K base temperature and about 25 mJ/cm² fluence. The optical and transport pump durations are 200 ps and 75 ps, respectively. The electrical experiment is transient two-terminal transport with contact contributions calibrated from static four-terminal measurements; it is not a direct transient four-terminal measurement. Resistance compatible with zero within that calibration and recovery over tens of nanoseconds strengthen the authors' metastable interpretation without establishing a pump-free equilibrium transition at 100 K.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-07be806c0002c690"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "Adelinia's 2025 thin-film study uses a quasi-DC bias, 300 fs pulses at 7 micrometres and photoconductive switches to resolve voltage dynamics. Granular-film and powder results are not interchangeable. The above-transition voltage response changes sign at 80 K; at 100 K it is positive and linear across the measured current range. Fitted superfluid fractions and weak-link phase-slip dynamics depend on the granular two-fluid model. A 100 K measurement in this paper must not become a 100 K superconducting-transition record.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-930b28b64275da42"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-experimental-criteria-6",
+      "sectionId": "experimental-criteria",
+      "statement": "Fava's 2024 YBa2Cu3O6.48 experiment detects a transient magnetic-field enhancement near the excited region's edge using Faraday rotation in a nearby GaP detector. Signals at 100 and 300 K last about 1 ps. The inferred diamagnetic susceptibility of order −0.3 depends on geometry and the magnetic-response model; the paper itself cautions that a quasi-static estimate is not fully justified for this dynamics. This provides a complementary magnetic observable, while remaining distinct from a persistent equilibrium Meissner state.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-65e69ec93039deb9"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-experimental-criteria-7",
+      "sectionId": "experimental-criteria",
+      "statement": "De Vecchi's December 2025 K3C60 study reports no statistically significant photo-induced field signal above roughly 50 nT out to 1 ns in its protocol. Its model-based bound is $\\chi_v>-0.1$. The authors explicitly conclude that their resolution does not decide whether Meissner diamagnetism is present or absent. Granularity and a small expected response matter: this null result neither establishes superconductivity nor universally rules it out.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e7138d083320dfd7"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Dodge and colleagues argue that saturation-dependent excitation depth can create misleading superconducting-like reconstructed spectra. Buzzi and colleagues' March 2023 preprint response disputes that interpretation, arguing that the inductive signature survives their alternative reconstructions. The local profile and Drude checks above do not resolve this dispute. Compare raw reflected fields, depth assumptions, spectral bandwidth and independent transport or magnetic evidence rather than treating a fitted gap as a unique diagnosis.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a85b56be7c62bf11",
+        "source-56a2c1fa63bafe80"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Long-lived after a short pulse does not mean thermodynamic equilibrium. Quantify absorbed energy, depth gradients, carrier and lattice temperatures, relaxation and repetition-rate heating. Selective excitation of a phonon does not establish that equilibrium pairing is phonon-mediated. The present review covers selected original passages and figures; full supplements, remaining version comparisons, experimental raw-data reproduction and complete scientific acceptance remain open.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-b47831832e13ca4e",
+        "source-07be806c0002c690",
+        "source-30e68110da17974c",
+        "source-930b28b64275da42"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e6-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Use synchronized optical, electrical and magnetic probes with explicit controls and uncertainty. Report signal duration separately from formation time and instrumental resolution. Keep equilibrium transition records separate from driven base temperatures and model estimates in databases and search filters. Theory should predict observables under the actual drive protocol, including relaxation, rather than equating an attractive model interaction with an experimentally established superconducting phase.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-07be806c0002c690",
+        "source-30e68110da17974c",
+        "source-65e69ec93039deb9",
+        "source-e7138d083320dfd7"
+      ],
+      "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-e6-correction-1",
+      "description": "Budden first author is M. Budden, not inherited D. Budden. Transient two-terminal transport with static four-terminal contact calibration must not be described as transient four-terminal transport.",
+      "sourceId": "source-07be806c0002c690",
+      "scope": "Final journal title page and p.615 Fig4/caption visually checked.",
+      "originalSourceLines": [],
+      "targetSectionId": "experimental-criteria"
+    },
+    {
+      "id": "scwiki-e6-correction-mitrano-caption-notice",
+      "description": "Identified the previously unspecified Mitrano update as the publisher’s 24 February 2016 correction of a truncated Figure 4 caption sentence in the advance-online PDF.",
+      "sourceId": "source-6ee3670220e24ff1",
+      "scope": "Correction-notice identity only; earlier manuscript limits, full version comparison and raw-data limitations remain."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\sigma(\\omega)=D/(\\Gamma-i\\omega)",
+      "check": "Nine finite-rate Drude cases mimic inductive response over a restricted band while DC conductivity remains finite; no experimental refit."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta G=\\Delta\\sigma_{\\rm sat}\\Lambda\\ln(1+f)",
+      "check": "Five40,000-point depth quadratures match analytic saturation integrals; not full Fresnel inversion."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta U\\propto\\sqrt{1+4g}+1-2\\sqrt{1+2g}",
+      "check": "Fifteen stable oscillator cases compared with discrete occupation energies; two small-g checks recover attractive -g²."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-e6-material-1",
+      "formula": "La1.675Eu0.2Sr0.125CuO4",
+      "sample": "Fausti stripe-ordered specimen,5ps spectrum",
+      "recordType": "experiment",
+      "reportedTemperatureK": 10,
+      "tcK": null,
+      "temperatureKind": "transient-response",
+      "temperatureNote": "Base temperature for driven optical response, not an equilibrium transition.",
+      "criterion": "transient-optical-coherence",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "transient",
+      "probe": "THz c-axis reflectance",
+      "sourceId": "source-c60f0131e7d25c60",
+      "aliases": [
+        "LESCO",
+        "cuprate",
+        "cuprates"
+      ]
+    },
+    {
+      "id": "scwiki-e6-material-2",
+      "formula": "YBa2Cu3O6.5",
+      "sample": "Hu equilibrium reference",
+      "recordType": "experiment",
+      "reportedTemperatureK": 50,
+      "tcK": 50,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate equilibriumTc; precise operational transition criterion not independently checked.",
+      "criterion": "transition-unspecified",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Equilibrium reference in optical study",
+      "sourceId": "source-e8775e639989b8d6",
+      "aliases": [
+        "YBCO",
+        "cuprate",
+        "cuprates"
+      ]
+    },
+    {
+      "id": "scwiki-e6-material-3",
+      "formula": "YBa2Cu3O6.5",
+      "sample": "Hu narrowband driven measurement",
+      "recordType": "experiment",
+      "reportedTemperatureK": 300,
+      "tcK": null,
+      "temperatureKind": "transient-response",
+      "temperatureNote": "Room-temperature driven response is not a300K equilibriumTc.",
+      "criterion": "transient-interlayer-optical-response",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "transient",
+      "probe": "Narrowband THz optics",
+      "sourceId": "source-e8775e639989b8d6",
+      "aliases": [
+        "YBCO",
+        "cuprate",
+        "cuprates"
+      ]
+    },
+    {
+      "id": "scwiki-e6-material-4",
+      "formula": "K3C60",
+      "sample": "Mitrano equilibrium reference",
+      "recordType": "experiment",
+      "reportedTemperatureK": 20,
+      "tcK": 20,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate equilibrium transition; not the optical-gap energy or a driven measurement temperature.",
+      "criterion": "transition-unspecified",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Equilibrium optical comparison",
+      "sourceId": "source-6ee3670220e24ff1",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-e6-material-5",
+      "formula": "K3C60",
+      "sample": "Budden extended-pulse experiment",
+      "recordType": "experiment",
+      "reportedTemperatureK": 100,
+      "tcK": null,
+      "temperatureKind": "transient-response",
+      "temperatureNote": "Driven base temperature; contact-calibrated resistance compatible with zero does not establish equilibriumTc100K.",
+      "criterion": "calibrated-transient-two-terminal-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "transient",
+      "probe": "Electrical transport and optical comparison",
+      "sourceId": "source-07be806c0002c690",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-e6-material-6",
+      "formula": "K3C60",
+      "sample": "Adelinia25K granular-film voltage response",
+      "recordType": "experiment",
+      "reportedTemperatureK": 25,
+      "tcK": null,
+      "temperatureKind": "transient-response",
+      "temperatureNote": "Model-dependent granular interpretation; base temperature notTc.",
+      "criterion": "time-resolved-voltage-response",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "transient",
+      "probe": "Photoconductive-switch voltmeter",
+      "sourceId": "source-930b28b64275da42",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-e6-material-7",
+      "formula": "K3C60",
+      "sample": "Adelinia100K linear positive voltage response",
+      "recordType": "experiment",
+      "reportedTemperatureK": 100,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Above80K sign reversal;100Kpositive response linear over measured currents, not a transition.",
+      "criterion": "linear-positive-photovoltage",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "transient",
+      "probe": "Photoconductive-switch voltmeter",
+      "sourceId": "source-930b28b64275da42",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-e6-material-8",
+      "formula": "YBa2Cu3O6.48",
+      "sample": "Fava magnetic-response measurement",
+      "recordType": "experiment",
+      "reportedTemperatureK": 100,
+      "tcK": null,
+      "temperatureKind": "transient-response",
+      "temperatureNote": "Approximately1ps response with geometry-dependent susceptibility estimate; not equilibriumTc.",
+      "criterion": "transient-magnetic-field-expulsion",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "transient",
+      "probe": "Faraday rotation in nearby GaP",
+      "sourceId": "source-65e69ec93039deb9",
+      "aliases": [
+        "YBCO",
+        "cuprate",
+        "cuprates"
+      ]
+    },
+    {
+      "id": "scwiki-e6-material-9",
+      "formula": "YBa2Cu3O6.48",
+      "sample": "Fava room-temperature magnetic response",
+      "recordType": "experiment",
+      "reportedTemperatureK": 300,
+      "tcK": null,
+      "temperatureKind": "transient-response",
+      "temperatureNote": "Driven300K base temperature with approximately1ps signal, not a persistent equilibrium Meissner transition.",
+      "criterion": "transient-magnetic-field-expulsion",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "transient",
+      "probe": "Faraday rotation in nearby GaP",
+      "sourceId": "source-65e69ec93039deb9",
+      "aliases": [
+        "YBCO",
+        "cuprate",
+        "cuprates"
+      ]
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 59,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned bytes preserved; expanded original anchors with optical reconstruction dispute,2024magnetic evidence and2025granular voltage/null magnetic result. All driven base temperatures separated from equilibriumTc."
+    }
+  ]
+}

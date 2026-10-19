@@ -1,0 +1,403 @@
+{
+  "id": "scwiki-g1",
+  "topicId": "scwiki-topic-g1",
+  "code": "G1",
+  "slug": "antiferromagnetism-and-superconductivity",
+  "title": "Antiferromagnetism and superconductivity: competition and microscopic coexistence",
+  "summary": "Separate phase-diagram proximity from microscopic coexistence using local probes, volume fractions, specimen identity and explicitly bounded models.",
+  "aliases": [
+    "antiferromagnetism and superconductivity",
+    "AFM SC coexistence",
+    "competitive coexistence",
+    "magnetic volume fraction",
+    "Landau coupled orders"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experimental"
+  ],
+  "relatedCodes": [
+    "B3",
+    "D4",
+    "D8",
+    "G7"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T16:13:01.106500+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Pratt, Marsik, Mito and Park experimental passages, available original figures, and independent coupled-order Landau checks.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "The retrieved Mito manuscript omits its actual figures; captions and methods are available.",
+      "Complete final-version comparisons, raw-data audits and absolute volume calibration remain open.",
+      "The homogeneous model does not determine a microscopic pairing mechanism or domain structure."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "G_magnetism_interplay/G1_SC_AFM_coexistence.md",
+    "sha256": "bb6bc2c142cd92e366d6ad8f959f8fc84f869b859186c3d2f2ae84942e08a27e",
+    "sourceId": "file-5a70af33ced56dfc"
+  },
+  "references": [
+    {
+      "id": "source-8e3f1211aced222f",
+      "doi": "10.1103/PhysRevB.82.014521",
+      "title": "Competing order and nature of the pairing state in the iron pnictides",
+      "year": 2010,
+      "url": "https://doi.org/10.1103/PhysRevB.82.014521",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-landau-analysis",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1005.2437v3",
+        "note": "Published 16 July 2010; author v3 submitted 20 July 2010. Selected pages 1–4 read, page 3 visually checked. Quartic competition, coexistence, temperature slopes and assumptions behind pairing inference were inspected. The Wiki uses explicitly defined coefficients and independently derived stationary equations. The full microscopic calculation and final-version comparison remain open."
+      }
+    },
+    {
+      "id": "source-01629af670cc7358",
+      "doi": "10.1103/PhysRevLett.103.087001",
+      "title": "Coexistence of Competing Antiferromagnetic and Superconducting Phases in the Underdoped Ba(Fe0.953Co0.047)2As2 Compound Using X-ray and Neutron Scattering Techniques",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevLett.103.087001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-final-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0903.2833v1",
+        "note": "Published 19 August 2009; author v1 submitted 16 March 2009. Selected author pages 1–5 read. Final publisher abstract gives Tc 17 K and low-energy redistribution; author v1 gives 15 K and a 4 meV gap. Methods describe diffraction crystals grown under the same conditions as bulk-measurement specimens. Full final methods and figures have not been retrieved, so exact specimen identity and the reason for the changed Tc are unresolved."
+      }
+    },
+    {
+      "id": "source-67747eb35170b73b",
+      "doi": "10.1103/PhysRevLett.105.057001",
+      "title": "Coexistence and Competition of Magnetism and Superconductivity on the Nanometer Scale in Underdoped BaFe1.89Co0.11As2",
+      "year": 2010,
+      "url": "https://doi.org/10.1103/PhysRevLett.105.057001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-local-probe-and-optical-evidence",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1004.4860v1",
+        "note": "Published 27 July 2010; author v1 submitted 27 April 2010. Selected pages 1–3 read; page 2 Figures 1–2 visually checked. The 21.7 K value is the susceptibility midpoint. Muon volume fractions, field-pinning protocol, and same-batch rather than identical-specimen IR measurements were checked. Internal PDF date 22 October 2021 is typesetting, not publication. Full final comparison and raw-data fitting remain open."
+      }
+    },
+    {
+      "id": "source-60c724cb09ba070e",
+      "doi": "10.1103/PhysRevLett.90.077004",
+      "title": "Coexistence of Antiferromagnetism and Superconductivity near the Quantum Criticality of the Heavy-Fermion Compound CeRhIn5",
+      "year": 2003,
+      "url": "https://doi.org/10.1103/PhysRevLett.90.077004",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-nqr-methods-and-final-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0211576v1",
+        "note": "Published 21 February 2003; author v1 submitted 26 November 2002. Selected pages 1 and 3–6 read; method page 4 and caption page 10 visually checked. The retrieved ten-page PDF contains captions but not the three actual figures. NQR splitting, in-situ susceptibility, grain size and pressure spread were checked as text, not visually verified spectra. Internal 2018 typesetting date is not publication. Full final comparison remains open."
+      }
+    },
+    {
+      "id": "source-f01303c26634a91f",
+      "doi": "10.1038/nature04571",
+      "title": "Hidden magnetism and quantum criticality in the heavy fermion superconductor CeRhIn5",
+      "year": 2006,
+      "url": "https://doi.org/10.1038/nature04571",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-calorimetry-and-methods",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0603090v2",
+        "note": "Published 2 March 2006; author v2 submitted 7 March 2006. Selected pages 1–3 and supplementary methods page 15 read; page 12 Figures 1–2 visually checked. Relative ac calorimetry, finite-temperature inference and pressure calibration were distinguished from direct magnetic imaging. Full final comparison, magnetic-structure determination and raw-data reconstruction remain open."
+      }
+    },
+    {
+      "id": "source-9dda11fbf0c41f73",
+      "doi": "10.1103/PhysRevLett.58.2802",
+      "title": "Antiferromagnetism in La2CuO4-y",
+      "year": 1987,
+      "url": "https://doi.org/10.1103/PhysRevLett.58.2802",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.58.2802",
+        "note": "Published 29 June 1987. Original abstract read for neutron evidence of antiferromagnetism in the stated undoped sample. Its sample-specific magnetic transition is not assigned as a superconducting Tc or a universal cuprate phase boundary. Full diffraction analysis was not reviewed."
+      }
+    },
+    {
+      "id": "source-820cf342501963df",
+      "doi": "10.1103/PhysRevLett.101.257003",
+      "title": "Neutron-Diffraction Measurements of Magnetic Order and a Structural Transition in the Parent BaFe2As2 Compound of FeAs-Based High-Temperature Superconductors",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevLett.101.257003",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.257003",
+        "note": "Published 17 December 2008. Original abstract read for the parent compound magnetic order and coupled structural transition. This is a magnetic-structure source, distinct from the K-doped superconductivity discovery. Full refinement and sample comparison remain open."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-g1-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Antiferromagnetism and superconductivity can be adjacent in a phase diagram, compete within a sample, or coexist microscopically. These statements require different evidence. A nearby superconducting dome does not locate both orders in the same volume. A magnetic anomaly below a superconducting transition shows an interaction only after alternative structural, volume-fraction and instrumental explanations are considered. Static magnetic order is also distinct from the dynamic spin fluctuations proposed to mediate pairing.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8e3f1211aced222f",
+        "source-01629af670cc7358",
+        "source-67747eb35170b73b"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g1-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Microscopic coexistence means that superconducting and magnetic order occupy overlapping regions on the length and time scales resolved by the probes. Combine local magnetic information with evidence for bulk superconductivity, report detection limits, and identify whether measurements used the same specimen, a crystal mosaic or different crystals from one batch. A resistance drop and a magnetic transition alone cannot exclude minority phases or pressure and composition gradients.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-67747eb35170b73b",
+        "source-60c724cb09ba070e"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g1-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A homogeneous Landau example uses $x=M^2\\geq0$, $y=|\\Delta|^2\\geq0$ and $F=a_mx+b_mx^2+a_sy+b_sy^2+gxy$, with $b_m,b_s\\gt0$. Here $g\\gt0$ penalizes simultaneous amplitudes; it does not automatically exclude them. An interior minimum requires $D=4b_mb_s-g^2\\gt0$ and positive solutions $x=(-2b_sa_m+ga_s)/D$, $y=(-2b_ma_s+ga_m)/D$. These coefficient definitions differ from papers that put factors of two or four in the free energy.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8e3f1211aced222f"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g1-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For dimensionless $a_m=a_s=-2$ and $b_m=b_s=1$, competitive coupling $g=1$ gives $x=y=2/3$ and $F=-4/3$, below either pure-order energy $-1$. At $g=3$, the interior stationary point is a saddle and the two pure minima tie. At $g=2$, a continuum $x+y=1$ is degenerate and higher-order terms can select the state. Strong negative coupling $g\\lt-2\\sqrt{b_mb_s}$ makes this quartic theory unbounded in the physical quadrant. Twelve constrained examples were checked against an independent dense grid; they are not material fits.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8e3f1211aced222f"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g1-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Inside a coexistence branch, $M^2=-a_m/(2b_m)-g|\\Delta|^2/(2b_m)$. Thus positive coupling suppresses the moment relative to its continuation without superconductivity. It need not make the moment decrease as temperature falls: the bare magnetic growth can dominate. Two independent linear-temperature examples verify both cooling slopes with the same positive coupling. A decrease below $T_c$ is useful evidence, but its absence does not establish that the orders cooperate.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8e3f1211aced222f"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g1-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For fixed scattering geometry, an illustrative magnetic intensity scales as $I\\propto f_mM^2$, where $f_m$ is magnetic volume fraction. A uniform moment reduced to $0.8$ of its reference and an unchanged moment in $0.64$ of the volume both give the same normalized intensity $0.64$. This simple nonuniqueness is why local-field distributions and amplitudes add information to diffraction. Real refinements also need magnetic structure factors, domains and instrumental corrections.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-01629af670cc7358",
+        "source-67747eb35170b73b"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g1-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Vaknin and colleagues' neutron result establishes magnetic order in undoped La2CuO4-y; it does not establish static antiferromagnetism inside an optimally doped superconducting sample. Huang and colleagues' BaFe2As2 diffraction study anchors the parent magnetic and structural transition. Neither parent result supplies a universal superconducting coexistence interval. Preserve family, stoichiometry and sample conditions instead of transferring a magnetic transition temperature into a superconducting $T_c$ table.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-9dda11fbf0c41f73",
+        "source-820cf342501963df"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g1-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Pratt and colleagues' final abstract reports structural and antiferromagnetic transitions near 60 K and 47 K in Ba(Fe0.953Co0.047)2As2, with superconductivity below 17 K, reduced static magnetic order and redistributed low-energy excitations. The sole author manuscript instead gives 15 K and a 4 meV gap. Its methods describe diffraction crystals grown under conditions matching the bulk-measurement specimens. Use the final abstract's 17 K as a reported transition, retain the version difference, and do not claim that every measurement used the identical crystal. The complete final methods remain unchecked.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-01629af670cc7358"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g1-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Marsik and colleagues provide complementary local-probe evidence in BaFe1.89Co0.11As2. Their 21.7 K value is the midpoint of the zero-field-cooled susceptibility transition. Transverse-field muon measurements imply a magnetic volume exceeding 90 percent, with essentially unchanged signal fractions but reduced relaxation below $T_c$. A field-pinning experiment supports bulk superconductivity; infrared spectra from crystals in the same growth batch support condensate formation. The authors infer coexistence on nanometer scales, not atomic uniformity at every site. Their composition corresponds to $x=0.055$ in Ba(Fe1-xCox)2As2, not $x=0.11$.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-67747eb35170b73b"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g1-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Mito and colleagues report CeRhIn5 at 1.75 GPa: NQR splitting appears below $T_N=2.5$ K, while in-situ coil susceptibility has a superconducting onset near 2.0 K. The comparable diamagnetic response at higher pressures supports bulk superconductivity. Their crushed grains and estimated pressure spread of approximately 0.05 GPa are part of the evidence conditions. The retrieved author PDF includes captions but omits the actual spectra and susceptibility figures, so this review verifies the reported interpretation and methods without claiming visual confirmation of those plots.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-60c724cb09ba070e"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g1-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "Park and colleagues use pressure- and field-dependent specific heat in CeRhIn5 to infer a magnetic transition line inside the superconducting state. Their low-temperature phase diagram is an extrapolation from finite temperatures. The supplementary method measures relative ac heat capacity and calibrates pressure with a tin transition; these details matter when interpreting anomalies. Calorimetry supports thermodynamic boundaries but does not alone determine a magnetic ordering wavevector or the spatial arrangement of coexisting orders.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-f01303c26634a91f"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g1-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The Landau model organizes homogeneous amplitudes near transitions. It omits magnetic texture, superconducting phase coherence, disorder and gradients; a strong-coupling first-order boundary does not calculate the resulting domain structure. Fernandes and Schmalian's pairing inference additionally assumes itinerant electrons contributing to both orders and a system near particle-hole symmetry. Coexistence by itself is not a universal proof of sign-changing pairing or of a unique magnetic pairing interaction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8e3f1211aced222f"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g1-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. Selected original abstracts, author methods and available figures have been checked, alongside bounded numerical examples. Missing Mito figures, complete final-version comparisons, absolute volume calibration and experimental raw-data audits remain unresolved. Cross-probe agreement is evidence whose spatial, temporal and sample limits should remain visible, not a reason to remove those limits.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-01629af670cc7358",
+        "source-67747eb35170b73b",
+        "source-60c724cb09ba070e",
+        "source-f01303c26634a91f"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g1-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Record magnetic wavevector or local-field evidence, superconducting criterion, probe timescale, volume fractions, batch identity, pressure distribution and composition convention together. Compare the magnetic response above and below $T_c$ against its normal-state continuation. Separate a proposed fluctuation mechanism from evidence for static coexistence, and prefer quantitative competing explanations over a single label such as magnetic superconductor.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8e3f1211aced222f",
+        "source-67747eb35170b73b",
+        "source-60c724cb09ba070e"
+      ],
+      "conditions": "Explicit specimen or batch identity, probe and volume sensitivity, sample-specific pressure and temperature criteria; homogeneous Landau assumptions for illustrations.",
+      "verificationScope": "Selected primary sources and independent bounded examples; complete scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-g1-correction-1",
+      "sourceId": "source-01629af670cc7358",
+      "description": "The author methods describe matching growth conditions, not an explicit identical specimen for every probe. The final 17 K and author 15 K transition values are kept distinct.",
+      "scope": "Selected author methods and final publisher abstract only; full final methods remain open."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "D=4b_mb_s-g^2",
+      "check": "12 constrained minima compared with a dense grid; positive-amplitude and Hessian conditions, marginal and unstable quartic limits checked."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "I\\propto f_mM^2",
+      "check": "Independent synthetic amplitude/volume ambiguity and two cooling slopes show limits of intensity-only and slope-only inference."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-g1-material-1",
+      "formula": "Ba(Fe0.953Co0.047)2As2",
+      "sample": "Pratt final publisher abstract",
+      "recordType": "experiment",
+      "reportedTemperatureK": 17,
+      "tcK": 17,
+      "temperatureKind": "transition",
+      "temperatureNote": "Final abstract value; author manuscript gives 15 K. Complete final criterion and specimen comparison remain open.",
+      "criterion": "reported-superconducting-transition",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Published report of superconducting transition",
+      "sourceId": "source-01629af670cc7358",
+      "aliases": []
+    },
+    {
+      "id": "scwiki-g1-material-2",
+      "formula": "BaFe1.89Co0.11As2",
+      "sample": "Marsik susceptibility crystal",
+      "recordType": "experiment",
+      "reportedTemperatureK": 21.7,
+      "tcK": 21.7,
+      "temperatureKind": "transition",
+      "temperatureNote": "50-percent zero-field-cooled susceptibility criterion; 32 K magnetic transition is not Tc.",
+      "criterion": "susceptibility-midpoint",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Magnetic susceptibility, 10 Oe parallel to c",
+      "sourceId": "source-67747eb35170b73b",
+      "aliases": []
+    },
+    {
+      "id": "scwiki-g1-material-3",
+      "formula": "CeRhIn5",
+      "sample": "Mito crushed-grain pressure sample",
+      "recordType": "experiment",
+      "reportedTemperatureK": 2,
+      "tcK": 2,
+      "temperatureKind": "transition",
+      "temperatureNote": "Superconducting onset; 2.5 K is the separate Neel temperature. Estimated pressure spread approximately 0.05 GPa.",
+      "criterion": "ac-susceptibility-onset",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 1.75,
+        "max": 1.75
+      },
+      "equilibrium": "unknown",
+      "probe": "In-situ NQR-coil ac susceptibility",
+      "sourceId": "source-60c724cb09ba070e",
+      "aliases": []
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 117,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved. Added specimen and version distinctions, local-probe volume evidence, transition criteria and explicit stable Landau examples."
+    }
+  ]
+}

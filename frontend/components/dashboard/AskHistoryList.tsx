@@ -62,7 +62,7 @@ export function AskHistoryList({
     return (
       <div className="rounded-lg border border-dashed border-sage-border bg-white p-8 text-center text-sm text-sage-muted">
         No questions in the last 90 days. Ask something on{" "}
-        <Link href="/search" className="text-accent-deep hover:underline">
+        <Link href="/" className="text-accent-deep hover:underline">
           Search
         </Link>{" "}
         and it will show up here.

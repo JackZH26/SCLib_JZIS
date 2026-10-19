@@ -4,7 +4,7 @@ import test from "node:test";
 
 test("search separates scientific excerpt checks from mechanical citation validation", async () => {
   const api = await readFile("lib/api.ts", "utf8");
-  const search = await readFile("app/search/page.tsx", "utf8");
+  const search = await readFile("components/HomeSearchResults.tsx", "utf8");
 
   assert.match(api, /citation_valid:\s*boolean/);
   assert.match(api, /citation_warnings:\s*string\[\]/);

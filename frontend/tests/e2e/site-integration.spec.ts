@@ -3,7 +3,7 @@ import { expect, test } from "./public-site-fixture";
 for (const [path, heading] of [
   ["", "The superconductivity research library"], ["about", "About JZ Institute of Science"],
   ["about/join", "Join & contribute"], ["research", "Superconductivity research"],
-  ["docs", "Resources & documentation"], ["docs/data", "Data & methodology"],
+  ["scwiki", "SCWiki"], ["scwiki/using-sclib", "Using SCLib"], ["docs/data", "Data & methodology"],
 ]) {
   test(`unified page ${path || "home"} is accessible and free of retired product content`, async ({ page }) => {
     await page.goto(path || "/");
@@ -20,8 +20,8 @@ test("root navigation links reach resources and the institution", async ({ page 
   await expect(page.getByRole("searchbox")).toBeVisible();
   await page.getByRole("button", { name: "Open navigation" }).click();
   const menu = page.getByRole("navigation", { name: "Mobile navigation" });
-  await menu.getByRole("link", { name: "Resources", exact: true }).click();
-  await expect(page).toHaveURL(/\/docs$/);
+  await menu.getByRole("link", { name: "SCWiki", exact: true }).click();
+  await expect(page).toHaveURL(/\/scwiki$/);
   await expect(page.getByRole("button", { name: "Open navigation" })).toHaveAttribute("aria-expanded", "false");
   await page.goto("/#about");
   await expect(page).toHaveURL(/\/about$/);
@@ -37,7 +37,7 @@ test("legacy routes preserve query parameters, encoded IDs and private response 
   ] as const) {
     const response = await request.get(path, { maxRedirects: 0 });
     expect(response.status()).toBe(status);
-    expect(new URL(response.headers().location, "http://127.0.0.1:3102").pathname + new URL(response.headers().location, "http://127.0.0.1:3102").search).toBe(expectedPath);
+    expect(new URL(response.headers().location, "http://localhost:3102").pathname + new URL(response.headers().location, "http://localhost:3102").search).toBe(expectedPath);
     if (status === 307) {
       expect(response.headers()["cache-control"]).toContain("no-store");
       expect(response.headers()["referrer-policy"]).toBe("no-referrer");
@@ -82,7 +82,7 @@ test("redesigned search has a visible label and retains the query contract", asy
     expect(route.request().method()).toBe("POST");
     queries.push(route.request().postDataJSON().query);
     await route.fulfill({ status: 200, contentType: "application/json",
-      headers: { "access-control-allow-origin": "http://127.0.0.1:3102", "access-control-allow-credentials": "true" },
+      headers: { "access-control-allow-origin": "http://localhost:3102", "access-control-allow-credentials": "true" },
       body: JSON.stringify({ results: [], query_time_ms: 0 }) });
   });
   await page.goto("/");
@@ -92,11 +92,43 @@ test("redesigned search has a visible label and retains the query contract", asy
   await expect(input).toHaveAttribute("name", "q");
   await input.fill("FeSe + FeTe");
   await page.getByRole("button", { name: "Search", exact: true }).click();
-  await expect(page).toHaveURL(/\/search\?q=FeSe%20%2B%20FeTe$/);
-  await expect(page.getByRole("heading", { name: "Search", exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/\?q=FeSe%20%2B%20FeTe$/);
+  await expect(page.getByRole("heading", { name: "Results for “FeSe + FeTe”", exact: true })).toBeVisible();
   await expect(page.getByRole("searchbox")).toHaveValue("FeSe + FeTe");
   await expect.poll(() => queries).toEqual(["FeSe + FeTe"]);
 });
+
+for (const width of [1440, 390]) {
+  test(`Home combines literature and Wiki independently at ${width}px`, async ({ page }) => {
+    await page.setViewportSize({ width, height: 900 });
+    // Deliberately fail only the synthetic literature service; Wiki uses the real local index.
+    await page.route("https://api.jzis.org/sclib/v1/search", route => route.fulfill({
+      status:503, contentType:"application/json",
+      headers:{"access-control-allow-origin":"http://localhost:3102","access-control-allow-credentials":"true"},
+      body:JSON.stringify({detail:"Synthetic literature outage"}),
+    }));
+    await page.goto("/scwiki");
+    if (width === 390) await page.getByRole("button",{name:"Open navigation"}).click();
+    const nav=page.getByRole("navigation",{name:width===390?"Mobile navigation":"Primary",exact:true});
+    await expect(nav.getByRole("link",{name:"Search",exact:true})).toHaveCount(0);
+    await nav.getByRole("link",{name:"Home",exact:true}).click();
+    await expect(page).toHaveURL(/\/$/);
+    await page.getByRole("button",{name:"Reject all",exact:true}).click();
+    await page.getByRole("searchbox").fill("Meissner");
+    await page.getByRole("button",{name:"Search",exact:true}).click();
+    const literature=page.getByRole("region",{name:"Literature",exact:true});
+    const wiki=page.getByRole("region",{name:"SCWiki",exact:true});
+    await expect(wiki.getByRole("link",{name:"The Meissner effect and magnetic evidence",exact:true})).toBeVisible();
+    const left=(await literature.boundingBox())!,right=(await wiki.boundingBox())!;
+    if(width===1440) { expect(right.x).toBeGreaterThan(left.x+left.width); expect(Math.abs(left.y-right.y)).toBeLessThan(2); }
+    else { expect(right.y).toBeGreaterThan(left.y+left.height); expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width); }
+    await wiki.scrollIntoViewIfNeeded();
+    await page.screenshot({path:`test-results/home-unified-${width}.png`,fullPage:true});
+    await page.goto("/search?q=Meissner&tag=a&tag=b");
+    await expect(page).toHaveURL(/\/\?q=Meissner&tag=a&tag=b$/);
+    await expect(page.getByRole("searchbox")).toHaveValue("Meissner");
+  });
+}
 
 test("keyboard navigation skips the shell and restores focus after menu escape", async ({ page }) => {
   await page.goto("/");
@@ -109,7 +141,7 @@ test("keyboard navigation skips the shell and restores focus after menu escape",
   expect(headingBox.y).toBeGreaterThanOrEqual(headerBox.y + headerBox.height);
   const toggle = page.getByRole("button", { name: "Open navigation" });
   await toggle.click();
-  await page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link", { name: "Resources", exact: true }).focus();
+  await page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link", { name: "SCWiki", exact: true }).focus();
   await page.keyboard.press("Escape");
   await expect(toggle).toBeFocused();
   await expect(toggle).toHaveAttribute("aria-expanded", "false");

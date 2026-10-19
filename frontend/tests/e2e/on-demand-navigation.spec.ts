@@ -9,14 +9,14 @@ test("visible and hovered navigation links do not fetch destinations before a cl
   await page.goto("/");
   await page.getByRole("button", { name: "Reject all", exact: true }).click();
   const resources = page.getByRole("navigation", { name: "Primary", exact: true })
-    .getByRole("link", { name: "Resources", exact: true });
+    .getByRole("link", { name: "SCWiki", exact: true });
   await resources.hover();
   // Allow Next's viewport/hover prefetch scheduler to run in the production build.
   await page.waitForTimeout(1200);
   expect(speculative).toEqual([]);
   await resources.click();
-  await expect(page).toHaveURL(/\/docs$/);
-  await expect(page.getByRole("heading", { name: "Resources & documentation", exact: true })).toBeVisible();
+  await expect(page).toHaveURL(/\/scwiki$/);
+  await expect(page.getByRole("heading", { name: "SCWiki", exact: true })).toBeVisible();
 });
 
 test("scrolling search citations makes no paper requests until a result is opened", async ({ page }) => {
@@ -27,7 +27,7 @@ test("scrolling search citations makes no paper requests until a result is opene
   });
   await page.route("https://api.jzis.org/sclib/v1/search", async route => {
     await route.fulfill({ status: 200, contentType: "application/json",
-      headers: { "access-control-allow-origin": "http://127.0.0.1:3102", "access-control-allow-credentials": "true" },
+      headers: { "access-control-allow-origin": "http://localhost:3102", "access-control-allow-credentials": "true" },
       body: JSON.stringify({ total: 20, query_time_ms: 1, guest_remaining: 3, remaining: 3,
         results: Array.from({ length: 20 }, (_, i) => ({ paper_id: `synthetic:prefetch/${i}`,
           arxiv_id: null, title: `Synthetic navigation result ${i}`, authors: [], year: null,

@@ -1,0 +1,598 @@
+{
+  "schemaVersion": 1,
+  "sourceCommit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+  "approvalEvidence": "User approved frozen scope-v1 on2026-10-18:5 handbooks with61stable sections plus10 independent questions;all71items reviewed individually.",
+  "pages": [
+    {
+      "id": "scwiki-i",
+      "topicId": "scwiki-topic-i",
+      "code": "I",
+      "slug": "experimental-methods",
+      "kind": "handbook",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "I1",
+          "target": "experimental-methods#i1",
+          "sectionId": "i1",
+          "sourceLine": 32
+        },
+        {
+          "id": "I2",
+          "target": "experimental-methods#i2",
+          "sectionId": "i2",
+          "sourceLine": 33
+        },
+        {
+          "id": "I3",
+          "target": "experimental-methods#i3",
+          "sectionId": "i3",
+          "sourceLine": 34
+        },
+        {
+          "id": "I4",
+          "target": "experimental-methods#i4",
+          "sectionId": "i4",
+          "sourceLine": 35
+        },
+        {
+          "id": "I5",
+          "target": "experimental-methods#i5",
+          "sectionId": "i5",
+          "sourceLine": 36
+        },
+        {
+          "id": "I6",
+          "target": "experimental-methods#i6",
+          "sectionId": "i6",
+          "sourceLine": 37
+        },
+        {
+          "id": "I7",
+          "target": "experimental-methods#i7",
+          "sectionId": "i7",
+          "sourceLine": 38
+        },
+        {
+          "id": "I8",
+          "target": "experimental-methods#i8",
+          "sectionId": "i8",
+          "sourceLine": 39
+        },
+        {
+          "id": "I9",
+          "target": "experimental-methods#i9",
+          "sectionId": "i9",
+          "sourceLine": 40
+        },
+        {
+          "id": "I10",
+          "target": "experimental-methods#i10",
+          "sectionId": "i10",
+          "sourceLine": 41
+        },
+        {
+          "id": "I11",
+          "target": "experimental-methods#i11",
+          "sectionId": "i11",
+          "sourceLine": 42
+        },
+        {
+          "id": "I12",
+          "target": "experimental-methods#i12",
+          "sectionId": "i12",
+          "sourceLine": 43
+        },
+        {
+          "id": "I13",
+          "target": "experimental-methods#i13",
+          "sectionId": "i13",
+          "sourceLine": 44
+        },
+        {
+          "id": "I14",
+          "target": "experimental-methods#i14",
+          "sectionId": "i14",
+          "sourceLine": 45
+        },
+        {
+          "id": "I15",
+          "target": "experimental-methods#i15",
+          "sectionId": "i15",
+          "sourceLine": 46
+        }
+      ]
+    },
+    {
+      "id": "scwiki-j",
+      "topicId": "scwiki-topic-j",
+      "code": "J",
+      "slug": "theoretical-tools",
+      "kind": "handbook",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "J1",
+          "target": "theoretical-tools#j1",
+          "sectionId": "j1",
+          "sourceLine": 56
+        },
+        {
+          "id": "J2",
+          "target": "theoretical-tools#j2",
+          "sectionId": "j2",
+          "sourceLine": 57
+        },
+        {
+          "id": "J3",
+          "target": "theoretical-tools#j3",
+          "sectionId": "j3",
+          "sourceLine": 58
+        },
+        {
+          "id": "J4",
+          "target": "theoretical-tools#j4",
+          "sectionId": "j4",
+          "sourceLine": 59
+        },
+        {
+          "id": "J5",
+          "target": "theoretical-tools#j5",
+          "sectionId": "j5",
+          "sourceLine": 60
+        },
+        {
+          "id": "J6",
+          "target": "theoretical-tools#j6",
+          "sectionId": "j6",
+          "sourceLine": 61
+        },
+        {
+          "id": "J7",
+          "target": "theoretical-tools#j7",
+          "sectionId": "j7",
+          "sourceLine": 62
+        },
+        {
+          "id": "J8",
+          "target": "theoretical-tools#j8",
+          "sectionId": "j8",
+          "sourceLine": 63
+        },
+        {
+          "id": "J9",
+          "target": "theoretical-tools#j9",
+          "sectionId": "j9",
+          "sourceLine": 64
+        },
+        {
+          "id": "J10",
+          "target": "theoretical-tools#j10",
+          "sectionId": "j10",
+          "sourceLine": 65
+        },
+        {
+          "id": "J11",
+          "target": "theoretical-tools#j11",
+          "sectionId": "j11",
+          "sourceLine": 66
+        },
+        {
+          "id": "J12",
+          "target": "theoretical-tools#j12",
+          "sectionId": "j12",
+          "sourceLine": 67
+        }
+      ]
+    },
+    {
+      "id": "scwiki-k",
+      "topicId": "scwiki-topic-k",
+      "code": "K",
+      "slug": "applications",
+      "kind": "handbook",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "K1",
+          "target": "applications#k1",
+          "sectionId": "k1",
+          "sourceLine": 77
+        },
+        {
+          "id": "K2",
+          "target": "applications#k2",
+          "sectionId": "k2",
+          "sourceLine": 78
+        },
+        {
+          "id": "K3",
+          "target": "applications#k3",
+          "sectionId": "k3",
+          "sourceLine": 79
+        },
+        {
+          "id": "K4",
+          "target": "applications#k4",
+          "sectionId": "k4",
+          "sourceLine": 80
+        },
+        {
+          "id": "K5",
+          "target": "applications#k5",
+          "sectionId": "k5",
+          "sourceLine": 81
+        },
+        {
+          "id": "K6",
+          "target": "applications#k6",
+          "sectionId": "k6",
+          "sourceLine": 82
+        },
+        {
+          "id": "K7",
+          "target": "applications#k7",
+          "sectionId": "k7",
+          "sourceLine": 83
+        },
+        {
+          "id": "K8",
+          "target": "applications#k8",
+          "sectionId": "k8",
+          "sourceLine": 84
+        },
+        {
+          "id": "K9",
+          "target": "applications#k9",
+          "sectionId": "k9",
+          "sourceLine": 85
+        },
+        {
+          "id": "K10",
+          "target": "applications#k10",
+          "sectionId": "k10",
+          "sourceLine": 86
+        }
+      ]
+    },
+    {
+      "id": "scwiki-l",
+      "topicId": "scwiki-topic-l",
+      "code": "L",
+      "slug": "history",
+      "kind": "handbook",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "L1",
+          "target": "history#l1",
+          "sectionId": "l1",
+          "sourceLine": 96
+        },
+        {
+          "id": "L2",
+          "target": "history#l2",
+          "sectionId": "l2",
+          "sourceLine": 97
+        },
+        {
+          "id": "L3",
+          "target": "history#l3",
+          "sectionId": "l3",
+          "sourceLine": 98
+        },
+        {
+          "id": "L4",
+          "target": "history#l4",
+          "sectionId": "l4",
+          "sourceLine": 99
+        },
+        {
+          "id": "L5",
+          "target": "history#l5",
+          "sectionId": "l5",
+          "sourceLine": 100
+        },
+        {
+          "id": "L6",
+          "target": "history#l6",
+          "sectionId": "l6",
+          "sourceLine": 101
+        },
+        {
+          "id": "L7",
+          "target": "history#l7",
+          "sectionId": "l7",
+          "sourceLine": 102
+        },
+        {
+          "id": "L8",
+          "target": "history#l8",
+          "sectionId": "l8",
+          "sourceLine": 103
+        },
+        {
+          "id": "L9",
+          "target": "history#l9",
+          "sectionId": "l9",
+          "sourceLine": 104
+        },
+        {
+          "id": "L10",
+          "target": "history#l10",
+          "sectionId": "l10",
+          "sourceLine": 105
+        },
+        {
+          "id": "L11",
+          "target": "history#l11",
+          "sectionId": "l11",
+          "sourceLine": 106
+        },
+        {
+          "id": "L12",
+          "target": "history#l12",
+          "sectionId": "l12",
+          "sourceLine": 107
+        },
+        {
+          "id": "L13",
+          "target": "history#l13",
+          "sectionId": "l13",
+          "sourceLine": 108
+        },
+        {
+          "id": "L14",
+          "target": "history#l14",
+          "sectionId": "l14",
+          "sourceLine": 109
+        },
+        {
+          "id": "L15",
+          "target": "history#l15",
+          "sectionId": "l15",
+          "sourceLine": 110
+        },
+        {
+          "id": "L16",
+          "target": "history#l16",
+          "sectionId": "l16",
+          "sourceLine": 111
+        },
+        {
+          "id": "L17",
+          "target": "history#l17",
+          "sectionId": "l17",
+          "sourceLine": 112
+        },
+        {
+          "id": "L18",
+          "target": "history#l18",
+          "sectionId": "l18",
+          "sourceLine": 113
+        }
+      ]
+    },
+    {
+      "id": "scwiki-m",
+      "topicId": "scwiki-topic-m",
+      "code": "M",
+      "slug": "research-methodology",
+      "kind": "handbook",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "M1",
+          "target": "research-methodology#m1",
+          "sectionId": "m1",
+          "sourceLine": 123
+        },
+        {
+          "id": "M2",
+          "target": "research-methodology#m2",
+          "sectionId": "m2",
+          "sourceLine": 124
+        },
+        {
+          "id": "M3",
+          "target": "research-methodology#m3",
+          "sectionId": "m3",
+          "sourceLine": 125
+        },
+        {
+          "id": "M4",
+          "target": "research-methodology#m4",
+          "sectionId": "m4",
+          "sourceLine": 126
+        },
+        {
+          "id": "M5",
+          "target": "research-methodology#m5",
+          "sectionId": "m5",
+          "sourceLine": 127
+        },
+        {
+          "id": "M6",
+          "target": "research-methodology#m6",
+          "sectionId": "m6",
+          "sourceLine": 128
+        }
+      ]
+    },
+    {
+      "id": "scwiki-n1",
+      "topicId": "scwiki-topic-n1",
+      "code": "N1",
+      "slug": "open-questions/n1",
+      "kind": "open-question",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "N1",
+          "target": "open-questions/n1",
+          "sectionId": null,
+          "sourceLine": 138
+        }
+      ]
+    },
+    {
+      "id": "scwiki-n2",
+      "topicId": "scwiki-topic-n2",
+      "code": "N2",
+      "slug": "open-questions/n2",
+      "kind": "open-question",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "N2",
+          "target": "open-questions/n2",
+          "sectionId": null,
+          "sourceLine": 139
+        }
+      ]
+    },
+    {
+      "id": "scwiki-n3",
+      "topicId": "scwiki-topic-n3",
+      "code": "N3",
+      "slug": "open-questions/n3",
+      "kind": "open-question",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "N3",
+          "target": "open-questions/n3",
+          "sectionId": null,
+          "sourceLine": 140
+        }
+      ]
+    },
+    {
+      "id": "scwiki-n4",
+      "topicId": "scwiki-topic-n4",
+      "code": "N4",
+      "slug": "open-questions/n4",
+      "kind": "open-question",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "N4",
+          "target": "open-questions/n4",
+          "sectionId": null,
+          "sourceLine": 141
+        }
+      ]
+    },
+    {
+      "id": "scwiki-n5",
+      "topicId": "scwiki-topic-n5",
+      "code": "N5",
+      "slug": "open-questions/n5",
+      "kind": "open-question",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "N5",
+          "target": "open-questions/n5",
+          "sectionId": null,
+          "sourceLine": 142
+        }
+      ]
+    },
+    {
+      "id": "scwiki-n6",
+      "topicId": "scwiki-topic-n6",
+      "code": "N6",
+      "slug": "open-questions/n6",
+      "kind": "open-question",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "N6",
+          "target": "open-questions/n6",
+          "sectionId": null,
+          "sourceLine": 143
+        }
+      ]
+    },
+    {
+      "id": "scwiki-n7",
+      "topicId": "scwiki-topic-n7",
+      "code": "N7",
+      "slug": "open-questions/n7",
+      "kind": "open-question",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "N7",
+          "target": "open-questions/n7",
+          "sectionId": null,
+          "sourceLine": 144
+        }
+      ]
+    },
+    {
+      "id": "scwiki-n8",
+      "topicId": "scwiki-topic-n8",
+      "code": "N8",
+      "slug": "open-questions/n8",
+      "kind": "open-question",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "N8",
+          "target": "open-questions/n8",
+          "sectionId": null,
+          "sourceLine": 145
+        }
+      ]
+    },
+    {
+      "id": "scwiki-n9",
+      "topicId": "scwiki-topic-n9",
+      "code": "N9",
+      "slug": "open-questions/n9",
+      "kind": "open-question",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "N9",
+          "target": "open-questions/n9",
+          "sectionId": null,
+          "sourceLine": 146
+        }
+      ]
+    },
+    {
+      "id": "scwiki-n10",
+      "topicId": "scwiki-topic-n10",
+      "code": "N10",
+      "slug": "open-questions/n10",
+      "kind": "open-question",
+      "publicBody": true,
+      "sourceId": "file-49326006ac2c2636",
+      "items": [
+        {
+          "id": "N10",
+          "target": "open-questions/n10",
+          "sectionId": null,
+          "sourceLine": 147
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,674 @@
+{
+  "id": "scwiki-d4",
+  "topicId": "scwiki-topic-d4",
+  "code": "D4",
+  "slug": "iron-based-superconductors",
+  "title": "Iron-based superconductors: families and evidence",
+  "summary": "A multiorbital materials guide that separates parent compounds, doped superconductors, interface spectra and candidate gap structures.",
+  "aliases": [
+    "iron pnictide",
+    "iron chalcogenide",
+    "FeSe",
+    "Ba122",
+    "LaFeAsO",
+    "Hund metal",
+    "铁基超导体",
+    "铁基超导",
+    "iron based superconductors"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory"
+  ],
+  "relatedCodes": [
+    "B12",
+    "C2",
+    "D11",
+    "D15",
+    "H6"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T18:37:54.087066+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Rotter revised authorv2 transition/figures compared with v1; Hsu selected final methods/figures; Medvedev,McQueen andBendele selected author results/figures; inherited C2/B12 scopes; exact composition and overlap checks.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Kamihara original abstract only; full operational criterion unassigned.",
+      "Author manuscripts are versioned; final publication/supplement/raw comparisons remain open.",
+      "Rotter37.2K reportedzero also appears asT10 inFigure4; preserve the threshold caveat.",
+      "Nominal chemistry and bulk fraction bounds do not establish crystal siteoccupancy or atomicscale coexistence."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D4_iron_based.md",
+    "sha256": "55f48dddf6d9d0890bd6a4b5de30276884799eedfa9af42578bb4b03f42edbc7",
+    "sourceId": "file-6361f0961191b453"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 20,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 21,
+      "endLine": 34,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 35,
+      "endLine": 50,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 51,
+      "endLine": 78,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 79,
+      "endLine": 98,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 99,
+      "endLine": 151,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 152,
+      "endLine": 197,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 198,
+      "endLine": 238,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 239,
+      "endLine": 252,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 253,
+      "endLine": 272,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 273,
+      "endLine": 300,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    },
+    {
+      "startLine": 301,
+      "endLine": 314,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 315,
+      "endLine": 345,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    },
+    {
+      "startLine": 346,
+      "endLine": 373,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 374,
+      "endLine": 378,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-d4-correction-version-criteria",
+      "description": "Replace rounded38K with revised-author38.1Kmidpoint and37.2Kreportedzero/10%threshold caveat. FeSe36.7K remains8.9GPaonset. Preserve nominal/actualcomposition distinction andlaterpressure-magnetism evidence.",
+      "sourceId": "source-1a3690e5f1d38f3e",
+      "scope": "Source-specific author/final scopes; no universal phase diagram or completed scientific acceptance."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\delta=x/(1-x)",
+      "check": "11Co notation cases,5Se normalization cases andtwo bulkvolume-overlap counterexamples; exact atom-count/set algebra,not material or muon-model fit."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-62a72493865c59d7",
+      "doi": "10.1021/ja800073m",
+      "title": "Iron-Based Layered Superconductor La[O1−xFx]FeAs (x = 0.05–0.12) with Tc = 26 K",
+      "year": 2008,
+      "url": "https://doi.org/10.1021/ja800073m",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-and-date",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://pubs.acs.org/doi/10.1021/ja800073m",
+        "note": "Publisher original abstract indexed: online23February2008,issue19March; F substitution and approximate26K. Full methods require access; institutional copy timedout25s. No exact operational criterion assigned."
+      }
+    },
+    {
+      "id": "source-1a3690e5f1d38f3e",
+      "doi": "10.1103/PhysRevLett.101.107006",
+      "title": "Superconductivity at 38 K in the Iron Arsenide(Ba1−xKx)Fe2As2",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevLett.101.107006",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-revised-author-transition-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/0805.4630v2",
+        "note": "v1 submitted29May2008;v2 revised17July2008; journal5September2008. Selected v2pp2–3/p3Figures3–5 visually checked against v1 text. 38.1K resistive midpoint,37.2K reportedzero,~39K firstdeviation; magnetic data0.5/1mT rather than v1 10mT. Figure4 labelsT10=37.2K,also calledzero in prose: retain threshold caveat. Publisher finalPDF401; no final/raw comparison."
+      }
+    },
+    {
+      "id": "source-205024adeb431322",
+      "doi": "10.1073/pnas.0807325105",
+      "title": "Superconductivity in the PbO-type structure α-FeSe",
+      "year": 2008,
+      "url": "https://doi.org/10.1073/pnas.0807325105",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-transport-heat-and-methods-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.phys.sinica.edu.tw/files/news_141_1223286553.pdf",
+        "note": "Final PNASEarlyEdition3pages,selectedpp1–3 andp2Figures2–4 visually checked. NominalFeSe0.88 sample,8Kzero/magnetic onset,30Gmagnetism,50%Rnfieldcriterion up9T,fittedHc2~16.3T. Nominal starting ratios are not measured siteoccupancy. Full raw fit/phase refinement not reproduced; later stoichiometry paper separately cited."
+      }
+    },
+    {
+      "id": "source-a631bcd83d23567b",
+      "doi": "10.1038/nmat2491",
+      "title": "Electronic and magnetic phase diagram of β-Fe1.01Se with superconductivity at 36.7 K under pressure",
+      "year": 2009,
+      "url": "https://doi.org/10.1038/nmat2491",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-pressure-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/0903.2143v1",
+        "note": "Authorv1 submitted12March2009,relatednmat2491. Selectedpp3–6results,pp12–13methods,p15Figure2 visually:36.7Konset at8.9GPa,broad transitions,offsetzero lines; resistanceDACvanderPauw/ruby. Silicone oil is specified for Mossbauer,not automatically resistance medium. No full final comparison/raw curves; magnetic nondetection remains source-specific."
+      }
+    },
+    {
+      "id": "source-716c338ddfa726d3",
+      "doi": "10.1038/nature07625",
+      "title": "Unconventional superconductivity in Ba0.6K0.4Fe2As2 from inelastic neutron scattering",
+      "year": 2008,
+      "url": "https://doi.org/10.1038/nature07625",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-neutron-methods-and-figures-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://epubs.stfc.ac.uk/manifestation/3900/nature07625.pdf",
+        "note": "Final printed pp. 930–931 selected methods/results; p. 931 Figures 2–4 visually checked. Polycrystalline K-doped sample, MERLIN energies, vanadium normalization, 7 K/50 K and integration windows distinguished. Resonance excess fades near the transition; finite background remains. Full synthesis supplement, raw detector counts and a unique phase assignment are not independently verified."
+      }
+    },
+    {
+      "id": "source-7c2b55d128348e6c",
+      "doi": "10.1103/PhysRevLett.101.057003",
+      "title": "Unconventional Superconductivity with a Sign Reversal in the Order Parameter of LaFeAsO1−xFx",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevLett.101.057003",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-passages-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.057003",
+        "note": "Mazin et al. abstract and published note 8 checked. The note qualifies the initial identification of the magnetic instability; full electronic-structure calculation not reproduced."
+      }
+    },
+    {
+      "id": "source-7bc9538ec7783cf2",
+      "doi": "10.1103/PhysRevB.79.014522",
+      "title": "Extreme sensitivity of superconductivity to stoichiometry in Fe1+δSe",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevB.79.014522",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-composition-sensitivity-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/0811.1613v1",
+        "note": "Journal29January2009; authorv1 selectedpp3–5 andp18Figure2 visually. Neutron refinednearFe1.01±0.02Se; preparation/oxygen andanneal temperatures influence transitions. Nominal Fe1.03Se has noSCdown0.6K,notTc=0.6K. No site-specific defect determination or full final/raw refinement."
+      }
+    },
+    {
+      "id": "source-c817382f57bbb81d",
+      "doi": "10.1103/PhysRevLett.104.087003",
+      "title": "Pressure Induced Static Magnetic Order in Superconducting FeSe1−x",
+      "year": 2010,
+      "url": "https://doi.org/10.1103/PhysRevLett.104.087003",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-muon-methods-and-phase-diagram-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/0908.2734v2",
+        "note": "Authorv2 revised2December2009,journal25February2010. Selectedpp1–3 andp3Figure3 visually: nominalFeSe0.94/.98,Daphne7373,piston-cylinder,lowTpressurePb/In,AC96Hz/~.1mT,cell-background-subtractedZFmuSR;staticorder near.8GPa. Spatial coexistence inference model-dependent,not settled solely byvolume fractions; no full final/raw fits."
+      }
+    },
+    {
+      "id": "source-f9fe6e9bc3792dcc",
+      "doi": "10.1038/nature13894",
+      "title": "Interfacial mode coupling as the origin of the enhancement of Tc in FeSe films on SrTiO3",
+      "year": 2014,
+      "url": "https://doi.org/10.1038/nature13894",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-results-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1312.2633v6",
+        "note": "Nature publication 13 November 2014; identified author v6 revised 11 May 2015. Selected pp. 3–6, Figure 2 p. 14 visually checked and Figure 4 continuation p. 17 visually checked. Gap closing 58±7 K is a mean-field fit, not zero resistance; predicted enhancement assumes a magnetic baseline. Full supplementary growth/ARPES methods, final-version comparison and raw fitting remain open."
+      }
+    },
+    {
+      "id": "source-ac66116dfd6e4887",
+      "doi": "10.1103/PhysRevLett.127.016803",
+      "title": "Interfacial Electron-Phonon Coupling Constants Extracted from Intrinsic Replica Bands in Monolayer FeSe/SrTiO3",
+      "year": 2021,
+      "url": "https://doi.org/10.1103/PhysRevLett.127.016803",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figures-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/2102.03397v1",
+        "note": "Author v1 submitted 5 February 2021; published 30 June 2021 per indexed final journal first page, not issue date 2 July. Selected pp. 2–4 methods/results; p. 3 Figures 2–3 visually checked. 15 K, photon energies 21–75 eV; photon-energy invariance, replica spacing and a forward-scattering fit. Final PDF download failed; supplements and full raw spectra/refits remain open."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "LaFeAsO1-xFx",
+      "sample": "F-doped 1111 material",
+      "recordType": "experiment",
+      "tcK": 26,
+      "temperatureNote": "approximate reported transition",
+      "criterion": "unknown",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "discovery report",
+      "id": "scwiki-d4-material-1",
+      "sourceId": "source-62a72493865c59d7",
+      "reportedTemperatureK": 26,
+      "temperatureKind": "transition",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
+    },
+    {
+      "formula": "Ba0.6K0.4Fe2As2",
+      "sample": "Rotter2008 revised authorv2 K-substituted122 polycrystal",
+      "recordType": "experiment",
+      "tcK": 38.1,
+      "temperatureNote": "38.1K midpoint in authorv2;90–10%width1.5K,firstdeviation~39K. Complete final comparison open.",
+      "criterion": "resistive-midpoint",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Four-probe resistance",
+      "id": "scwiki-d4-material-2",
+      "sourceId": "source-1a3690e5f1d38f3e",
+      "reportedTemperatureK": 38.1,
+      "temperatureKind": "transition",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
+    },
+    {
+      "formula": "Fe1.01Se",
+      "sample": "pressurized beta-Fe1.01Se",
+      "recordType": "experiment",
+      "tcK": 36.7,
+      "temperatureNote": "36.7K onset at8.9GPa in selected authorv1; broad transition,not assigned zeroresistance.",
+      "criterion": "resistive-onset",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 8.9,
+        "max": 8.9
+      },
+      "equilibrium": "unknown",
+      "probe": "DAC van der Pauw resistance; ruby pressure at low androomtemperature",
+      "id": "scwiki-d4-material-3",
+      "sourceId": "source-a631bcd83d23567b",
+      "reportedTemperatureK": 36.7,
+      "temperatureKind": "transition",
+      "aliases": [
+        "FeSe",
+        "iron selenide",
+        "iron-based",
+        "iron based superconductors"
+      ]
+    },
+    {
+      "formula": "Ba0.6K0.4Fe2As2",
+      "sample": "Rotter2008 revised authorv2 K-substituted122 polycrystal",
+      "recordType": "experiment",
+      "tcK": 37.2,
+      "temperatureNote": "Authorv2 prose calls37.2K zero;Figure4also labelsT10=37.2K. Instrumental threshold caveat retained.",
+      "criterion": "reported-zero-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Four-probe resistance",
+      "id": "scwiki-d4-material-4",
+      "sourceId": "source-1a3690e5f1d38f3e",
+      "reportedTemperatureK": 37.2,
+      "temperatureKind": "transition",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
+    },
+    {
+      "id": "scwiki-d4-material-5",
+      "formula": "FeSe0.88",
+      "sample": "Hsu2008 nominal starting composition; superconducting phase occupancy not inferred",
+      "recordType": "experiment",
+      "reportedTemperatureK": 8,
+      "tcK": 8,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximatezeroresistance; nominalformula notactualSevacancy measurement.",
+      "criterion": "zero-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Four-probe resistance, silverpastecontacts",
+      "sourceId": "source-205024adeb431322",
+      "aliases": [
+        "FeSe",
+        "iron selenide",
+        "Hsu FeSe",
+        "iron-based"
+      ]
+    },
+    {
+      "id": "scwiki-d4-material-6",
+      "formula": "Fe1.03Se",
+      "sample": "McQueen nominal Fe1.03Se: no superconductivity down to0.6K",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.6,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Lower temperature bound of nondetection,notTc.",
+      "criterion": "superconductivity-nondetection-bound",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Low-temperature sample characterization; see selected source scope",
+      "sourceId": "source-7bc9538ec7783cf2",
+      "aliases": [
+        "FeSe",
+        "iron selenide",
+        "McQueen Fe1.03Se",
+        "iron-based"
+      ]
+    },
+    {
+      "id": "scwiki-d4-material-7",
+      "formula": "FeSe/SrTiO3",
+      "sample": "Lee one-unit-cell film, author v6 Figure 2 mean-field fit",
+      "recordType": "experiment",
+      "tcK": null,
+      "reportedTemperatureK": 58,
+      "temperatureKind": "spectroscopic-gap",
+      "temperatureNote": "58±7 K ARPES gap-closing fit, not a zero-resistance transition.",
+      "criterion": "ARPES-mean-field-gap-closure",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Temperature-dependent ARPES",
+      "sourceId": "source-f9fe6e9bc3792dcc",
+      "aliases": [
+        "FeSe STO",
+        "single-layer FeSe"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d4-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Iron-based superconductors contain Fe–pnictogen or Fe–chalcogen layers in several structural families. Multiple Fe orbitals contribute to their low-energy electronic structure, and parent magnetic or structural transitions must be distinguished from superconductivity in a substituted sample. Kamihara and colleagues' fluorine-doped LaOFeAs discovery established a high-temperature 1111 platform. Its original abstract reports a transition near 26 K; the exact operational criterion remains unassigned in this review.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-62a72493865c59d7"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "A 122 arsenide, a binary 11 chalcogenide and a single-layer interface are different experimental systems. Rotter and colleagues studied K-substituted BaFe2As2, while Hsu and colleagues reported superconductivity in PbO-type FeSe. Neither result establishes that every related composition has the same gap, transition temperature or magnetic ground state. Starting mixture, refined phase composition and nominal formula should remain separately identifiable.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-1a3690e5f1d38f3e",
+        "source-205024adeb431322"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The coefficient $y$ in $\\mathrm{BaFe}_{2-y}\\mathrm{Co}_y\\mathrm{As}_2$ and the site fraction $x$ in $\\mathrm{Ba}(\\mathrm{Fe}_{1-x}\\mathrm{Co}_x)_2\\mathrm{As}_2$ obey $y=2x$. Eleven exact atom-count checks verify this normalization. Likewise, nominal $\\mathrm{FeSe}_{1-x}$ becomes $\\mathrm{Fe}_{1+\\delta}\\mathrm{Se}$ with $\\delta=x/(1-x)$ when normalized to one Se. Five checks preserve the elemental ratio. These conversions do not measure crystal occupancy, mobile-carrier density or the location of a defect.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7bc9538ec7783cf2"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Bulk fractions also have a precise but limited meaning. For superconducting and magnetic fractions $f_S$ and $f_M$ of the same volume, their overlap lies between $\\max(0,f_S+f_M-1)$ and $\\min(f_S,f_M)$. Two explicit arrangements with 95% and 90% fractions give 85% or 90% overlap. This set-theory bound neither establishes atomic-scale coexistence nor removes probe calibration and sample-matching requirements. A microscopic interpretation must use additional spatial, temporal and model evidence.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-c817382f57bbb81d"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A multiband gap $\\Delta_i(\\mathbf{k})$ is defined on specified bands. Relative sign reversal can arise in a candidate s± pairing solution, but it does not follow simply from the presence of iron. Orbital weights, shallow bands and the accessible scattering channels affect the inference. The [multiband](/scwiki/multiband-pairing) and [s±](/scwiki/s-plus-minus) articles state their model assumptions and preserve alternative interpretations.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-716c338ddfa726d3",
+        "source-7c2b55d128348e6c"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "The revised Rotter author manuscript gives a resistive midpoint of 38.1 K for Ba0.6K0.4Fe2As2, a first deviation near 39 K and a reported zero-resistance point of 37.2 K. Figure 4 also labels 37.2 K as its 10% threshold, so the term zero retains an unresolved instrumental-threshold caveat. Its 90–10% width is 1.5 K. Quoting only the rounded 38 K headline loses distinctions that matter in a searchable record.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-1a3690e5f1d38f3e"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "The same revision measures magnetic cycles at 0.5 and 1 mT, replacing the earlier manuscript's 10 mT example. Diamagnetism begins near 38.3 K; shielding and field-cooled responses differ and depend on density and demagnetization assumptions. The powder contains a minor FeAs impurity. Selected revised-manuscript figures have been checked, but the final published methods and raw data have not been completely compared here.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-1a3690e5f1d38f3e"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Hsu's final FeSe report identifies zero resistance near 8 K in a sample labelled by nominal FeSe0.88 composition. Magnetic susceptibility at 30 G and a broad heat-capacity anomaly provide complementary evidence. Its field-dependent transition uses 50% of normal resistance, with applied fields through 9 T; the roughly 16.3 T upper-critical-field value is a fit extrapolation. Nominal selenium deficiency and a fitted critical field must not be promoted to directly measured phase occupancy or field limits.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-205024adeb431322"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "McQueen and colleagues subsequently found nearly stoichiometric superconducting FeSe and strong preparation sensitivity. Their selected neutron-refinement analysis gives Fe1.01±0.02Se, with limited ability to distinguish tiny deviations. Nominal composition, oxygen contamination and annealing temperature vary across the comparison. A sample labelled Fe1.03Se showed no superconductivity down to 0.6 K; that lower measurement bound is not a superconducting transition. The proposed defect-site explanation remains a hypothesis.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-7bc9538ec7783cf2"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-pressure-and-magnetism-1",
+      "sectionId": "pressure-and-magnetism",
+      "statement": "Medvedev's author manuscript associates a resistive onset of 36.7 K with 8.9 GPa in Fe1.01Se. Broadened transitions and curve offsets require careful interpretation; at 15 GPa the authors report residual resistance associated with a second phase. Their resistance method uses a diamond-anvil cell, platinum contacts, a van der Pauw arrangement and ruby pressure measurements at low and room temperature. The silicone-oil medium specified for the Mössbauer experiment must not automatically be assigned to the separate resistance experiment.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a631bcd83d23567b"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-pressure-and-magnetism-2",
+      "sectionId": "pressure-and-magnetism",
+      "statement": "The earlier Mössbauer nondetection of static order is not a universal FeSe phase diagram. Bendele and colleagues later reported pressure-induced static magnetism using zero-field muon-spin rotation and AC susceptibility in nominal FeSe0.94 and FeSe0.98 samples. Their selected revised manuscript specifies Daphne 7373, pressure-cell background treatment and low-temperature pressure calibration. Its Figure 3 supports a pressure-dependent coexistence interpretation near and above 0.8 GPa, with model-dependent spatial conclusions. Different probes, samples and pressure environments must remain explicit.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a631bcd83d23567b",
+        "source-c817382f57bbb81d"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-evidence-for-gap-structure-1",
+      "sectionId": "evidence-for-gap-structure",
+      "statement": "Christianson's neutron experiment concerns K-doped Ba0.6K0.4Fe2As2. Its superconductivity-related resonance and the relevant coherence-factor model constrain candidate signs, without directly determining every iron-based gap. Background, momentum, orbital matrix elements and independently measured gap scales remain necessary parts of that interpretation. A resonance measurement cannot be substituted for a family-wide phase verdict.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-716c338ddfa726d3",
+        "source-7c2b55d128348e6c"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-evidence-for-gap-structure-2",
+      "sectionId": "evidence-for-gap-structure",
+      "statement": "At a FeSe/SrTiO3 interface, Lee's replica bands and mean-field gap-closing scale retain their spectroscopic labels. Faeth's later photon-energy comparison supports an intrinsic electron–phonon interpretation within its stated analysis, but does not determine all contributions to pairing enhancement. A gap-closing temperature is not interchangeable with zero resistance or a magnetic transition. These interface results remain linked to the detailed [multiband](/scwiki/multiband-pairing) discussion rather than silently entering a bulk Tc comparison.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-f9fe6e9bc3792dcc",
+        "source-ac66116dfd6e4887"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Several orbitals, correlations, nematicity and magnetic proximity help organize the evidence without selecting one universal pairing mechanism. A mass renormalization is not automatically a larger pairing eigenvalue. Complete scientific acceptance remains open, including final-version comparisons, full supplementary methods and raw-data analysis. Differences between a source's claim and this article's review scope are preserved in the references.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-716c338ddfa726d3",
+        "source-7c2b55d128348e6c",
+        "source-7bc9538ec7783cf2",
+        "source-c817382f57bbb81d"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d4-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Test a specific model with controlled composition, structure, pressure or disorder changes, and identify the confounding changes. Preserve actual measurement criteria and sample provenance when comparing results. For a proposed coexistence regime, report what each probe resolves and how sample fractions were calibrated. For a candidate pairing mediator, explain which alternative survives the same observation.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-1a3690e5f1d38f3e",
+        "source-a631bcd83d23567b",
+        "source-c817382f57bbb81d"
+      ],
+      "conditions": "Source version, composition, probe, criterion, pressure environment and sample preparation are material-specific; gaps, phase, carriers and nominal chemistry are distinct.",
+      "verificationScope": "Named selected primary passages/figures, original abstracts and exact notation/volume bounds; complete scientific acceptance remains open."
+    }
+  ]
+}

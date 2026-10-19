@@ -1,0 +1,510 @@
+{
+  "id": "scwiki-c8",
+  "topicId": "scwiki-topic-c8",
+  "code": "C8",
+  "slug": "pair-density-wave",
+  "title": "Pair-density waves: finite momentum, harmonics and experimental evidence",
+  "summary": "Distinguish pair-field modulation, charge order, FFLO mechanisms and the probes used to test them.",
+  "aliases": [
+    "PDW",
+    "pair density wave",
+    "FFLO",
+    "Fulde Ferrell",
+    "Larkin Ovchinnikov",
+    "phase diffusion",
+    "vortex halo",
+    "charge 4e",
+    "CPDM",
+    "orbital FFLO"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "B6",
+    "C3",
+    "C7",
+    "B11"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T12:19:32.204540+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected published Hamidian and Edkins methods/results; Berg stacking theory; inherited kagome passages; bounded historical and 2026 abstract checks; independent Fourier and overlap examples.",
+    "limitations": [
+      "Full scientific acceptance, complete source-version comparisons and raw-data reproduction remain open.",
+      "Original Larkin–Ovchinnikov full text was unavailable; bibliographic identity only is checked.",
+      "Recent orbital-FFLO and CPDM reports have limited passage/abstract coverage, not full experimental review.",
+      "Imposed scalar models do not establish a stable material phase or reproduce instrument response."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "C_pairing_symmetry/C8_PDW.md",
+    "sha256": "8fa1922ee16b00f0aa5c314028d5ced0709c5d98f6b8868b100a04ad51689119",
+    "sourceId": "file-de794072c9a145a8"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 15,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; experimental misattribution corrected and algebra/probe distinctions expanded."
+    },
+    {
+      "startLine": 16,
+      "endLine": 31,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; experimental misattribution corrected and algebra/probe distinctions expanded."
+    },
+    {
+      "startLine": 32,
+      "endLine": 38,
+      "targetSections": [
+        "mathematical-assumptions",
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; experimental misattribution corrected and algebra/probe distinctions expanded."
+    },
+    {
+      "startLine": 39,
+      "endLine": 46,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; experimental misattribution corrected and algebra/probe distinctions expanded."
+    },
+    {
+      "startLine": 47,
+      "endLine": 67,
+      "targetSections": [
+        "experimental-criteria",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; experimental misattribution corrected and algebra/probe distinctions expanded."
+    },
+    {
+      "startLine": 68,
+      "endLine": 87,
+      "targetSections": [
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; experimental misattribution corrected and algebra/probe distinctions expanded."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-824e7016c4d4c3a8",
+      "doi": "10.1103/PhysRev.135.A550",
+      "title": "Superconductivity in a Strong Spin-Exchange Field",
+      "year": 1964,
+      "url": "https://doi.org/10.1103/PhysRev.135.A550",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.135.A550",
+        "note": "Published 3 August 1964. Clean exchange-field and compensated-current abstract checked; original derivation not fully reviewed."
+      }
+    },
+    {
+      "id": "source-21442c6eb33d9b94",
+      "doi": null,
+      "title": "Nonuniform state of superconductors",
+      "year": 1958,
+      "url": "https://www.jetp.ras.ru/cgi-bin/dn/e_007_06_0996.pdf",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "institutional-bibliographic-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.itp.ac.ru/ru/persons/ovchinnikov-yurii-nikolaevich/",
+        "note": "Larkin and Ovchinnikov: institutional record lists Russian JETP 47, 1136–1146 (1964), English Sov. Phys. JETP 20, 762–769 (1965). Original PDF retrieval returned 404; no full-text check claimed."
+      }
+    },
+    {
+      "id": "source-b33aab72ae697f3a",
+      "doi": "10.1038/375561a0",
+      "title": "Evidence for stripe correlations of spins and holes in copper oxide superconductors",
+      "year": 1995,
+      "url": "https://doi.org/10.1038/375561a0",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/375561a0",
+        "note": "Publisher abstract and identity checked: 15 June 1995, Nd-substituted compound x=0.12, neutron diffraction. Full paper and data not reviewed."
+      }
+    },
+    {
+      "id": "source-7148789acde770d4",
+      "doi": "10.1103/PhysRevLett.99.127003",
+      "title": "Dynamical Layer Decoupling in a Stripe-Ordered High-Tc Superconductor",
+      "year": 2007,
+      "url": "https://doi.org/10.1103/PhysRevLett.99.127003",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://eunahkim.ccmr.cornell.edu/sites/kim/files/publications/Phys.%20Rev.%20Lett%202007%20Berg.pdf",
+        "note": "Published text pp.1–4 read for stacking, lowest-order cancellation, residual coupling and defects. Figures and complete microscopic derivation not reproduced. Local scalar overlaps are independent illustrations."
+      }
+    },
+    {
+      "id": "source-66a2b2a9519f6f44",
+      "doi": "10.1038/nature17411",
+      "title": "Detection of a Cooper-pair density wave in Bi2Sr2CaCu2O8+x",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nature17411",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-and-author-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://eunahkim.lassp.cornell.edu/sites/kim/files/publications/nature17411.pdf",
+        "note": "Published 13 April 2016; selected final pp.1–4 and methods p.6 checked, p.6 visually. Author v3 pp.4–7/19–21 and Fig.4 p.18 also checked. Phase-diffusion equations agree at selected scope; complete version/data review open."
+      }
+    },
+    {
+      "id": "source-d306adac5d567426",
+      "doi": "10.1126/science.aat1773",
+      "title": "Magnetic field-induced pair density wave state in the cuprate vortex halo",
+      "year": 2019,
+      "url": "https://doi.org/10.1126/science.aat1773",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://davis-group-quantum-matter-research.ie/publicationPDF/Science_364_976.pdf",
+        "note": "Published 7 June 2019; selected main-text pp.1–4, result passage p.5, Figs.1/4 pp.2/4 visually checked. Supplement and raw fits remain open. Distinct from Hamidian 2016 SJTM."
+      }
+    },
+    {
+      "id": "source-057c43c86174f961",
+      "doi": "10.1038/s41586-021-03983-5",
+      "title": "Roton pair density wave in a strong-coupling kagome superconductor",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41586-021-03983-5",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2103.09188v2",
+        "note": "Selected pp. 3–7 and methods pp. 17–18; Fig. 3 on p. 14 visually checked. Author version 2 September 2021 has a different title and mistyped journal volume 559; publisher confirms Nature 599. Final-version/raw-data comparison open."
+      }
+    },
+    {
+      "id": "source-cb08c313e0597487",
+      "doi": "10.1038/nphys1389",
+      "title": "Charge-4e superconductivity from pair-density-wave order in certain high-temperature superconductors",
+      "year": 2009,
+      "url": "https://doi.org/10.1038/nphys1389",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-abstract-and-publication-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/abs/0904.1230v3",
+        "note": "Author v3 dated 7 June 2009 is marked corrected; abstract and journal identity checked. Thermal-melting and fractional-flux proposal only; full phase diagram not reviewed."
+      }
+    },
+    {
+      "id": "source-ad66f48ab9369ce9",
+      "doi": "10.1038/s41467-026-72134-z",
+      "title": "Spectroscopic evidence for a first-order transition to a possible orbital Fulde-Ferrell-Larkin-Ovchinnikov state",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41467-026-72134-z",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-publisher-web-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-026-72134-z",
+        "note": "Published 12 May 2026. Indexed publisher abstract/introduction and selected model passage read; model omits vortices. Full methods, supplementary material and data not reviewed."
+      }
+    },
+    {
+      "id": "source-61d655195d7db259",
+      "doi": "10.1038/s41586-026-10325-w",
+      "title": "Moiré engineering of Cooper-pair density modulation states",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10325-w",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "institutional-abstract-and-publication-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pure.psu.edu/en/publications/moir%C3%A9-engineering-of-cooper-pair-density-modulation-states/",
+        "note": "Penn State author-affiliation record and complete abstract checked; issue 9 April 2026. CPDM terminology relative to moiré lattice retained. Full experimental/model review open."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-c8-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A pair-density wave (PDW) concerns finite-wavevector components of a superconducting pair field. A charge-density wave (CDW), a modulated tunneling spectrum and a modulated pair field are different observables. Specify the underlying lattice or superlattice, the electromagnetic gauge convention and whether a uniform condensate coexists. A single plane-wave phase has constant magnitude; periodic magnitude alone also need not establish a new spontaneous broken translation symmetry.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-824e7016c4d4c3a8",
+        "source-61d655195d7db259"
+      ],
+      "conditions": "Finite wavevector is stated relative to a lattice and gauge. Conventional exchange-field FFLO and orbital proposals have different drivers.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The conventional Fulde–Ferrell–Larkin–Ovchinnikov (FFLO) problem uses spin imbalance to motivate finite-momentum pairing. Fulde and Ferrell's clean exchange-field model includes a compensating normal contribution to the current: a phase gradient must not be equated with an uncompensated equilibrium current. The Larkin–Ovchinnikov paper appeared in Russian in 1964 and English translation in 1965; its institutional publication record is checked here, but the original full text remains an access gap. Modern orbital-FFLO proposals require separate assumptions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-824e7016c4d4c3a8",
+        "source-21442c6eb33d9b94",
+        "source-ad66f48ab9369ce9"
+      ],
+      "conditions": "Finite wavevector is stated relative to a lattice and gauge. Conventional exchange-field FFLO and orbital proposals have different drivers.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a scalar illustration in a fixed gauge, write $\\Delta(x)=d_0+d_+e^{iQx}+d_-e^{-iQx}$. The Fourier coefficients of $|\\Delta|^2$ are $C_0=|d_0|^2+|d_+|^2+|d_-|^2$, $C_Q=d_+d_0^*+d_0d_-^*$ and $C_{2Q}=d_+d_-^*$, with negative-wavevector coefficients given by conjugation. Four independent discrete Fourier examples reproduce these identities. They are algebraic intensity identities, not a derivation of electronic charge density or a tunneling response.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7148789acde770d4",
+        "source-d306adac5d567426"
+      ],
+      "conditions": "Fixed scalar amplitudes and imposed wavevectors; complete periods for zero-overlap result. No self-consistent stability or material response fit. Envelope ratio requires a constant uniform background.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For $d_0=d_-=0$, the Fulde–Ferrell-type plane wave has constant $|\\Delta|$. Equal real $d_+=d_-=d/2$ instead give the Larkin–Ovchinnikov-type standing wave $d\\cos Qx$: the pair field has period $2\\pi/Q$, while its squared magnitude has period $\\pi/Q$. Adding a real uniform component produces a Q harmonic through interference. A missing Q intensity harmonic therefore does not rule out a pure standing-wave pair field, and a detected 2Q charge harmonic does not uniquely identify one. These imposed examples do not compare free energies.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-824e7016c4d4c3a8",
+        "source-7148789acde770d4",
+        "source-d306adac5d567426"
+      ],
+      "conditions": "Fixed scalar amplitudes and imposed wavevectors; complete periods for zero-overlap result. No self-consistent stability or material response fit. Envelope ratio requires a constant uniform background.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Under an electron gauge phase $\\alpha$, both pair components acquire $e^{2i\\alpha}$. The product $d_+d_-^*$ is neutral, whereas $d_+d_-$ transforms with $e^{4i\\alpha}$ and has zero net wavevector. Three numerical phase checks confirm the distinction. A composite with charge 4e is not by itself evidence for a thermodynamically coherent charge-4e phase. Berg, Fradkin and Kivelson's 2009 melting theory proposes such a phase and fractional flux as a test; that proposal is distinct from the 2007 layer-decoupling paper.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-cb08c313e0597487"
+      ],
+      "conditions": "Fixed scalar amplitudes and imposed wavevectors; complete periods for zero-overlap result. No self-consistent stability or material response fit. Envelope ratio requires a constant uniform background.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Berg and colleagues' 2007 stripe model suppresses leading interplane Josephson coupling through a particular antiphase pattern and stacking. An independent overlap calculation gives $\\langle\\cos Qx\\cos Qy\\rangle=0$ over complete periods for perpendicular stripes, but parallel stripes give $1/2$. Adding a common uniform amplitude $u$ gives $u^2$; a cropped window need not cancel. The quartic overlap remains $\\langle\\cos^2Qx\\cos^2Qy\\rangle=1/4$. This illustrates why cancellation of the lowest coupling does not mean all coupling vanishes. The paper retains higher-order/further-neighbor terms and discusses defects that spoil exact cancellation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7148789acde770d4"
+      ],
+      "conditions": "Fixed scalar amplitudes and imposed wavevectors; complete periods for zero-overlap result. No self-consistent stability or material response fit. Envelope ratio requires a constant uniform background.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An illustrative vortex-halo envelope $A(r)=e^{-r/\\xi}$ produces a Q amplitude proportional to $A\\Delta_0^*$ and a 2Q amplitude proportional to $A^2$. If $\\Delta_0$ is approximately constant, the latter decays twice as fast. Four independent logarithmic-slope checks verify this and show failure of that ratio when the uniform component recovers from zero. The relation is conditional, especially near the core; it is not a universal PDW diagnostic.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d306adac5d567426"
+      ],
+      "conditions": "Fixed scalar amplitudes and imposed wavevectors; complete periods for zero-overlap result. No self-consistent stability or material response fit. Envelope ratio requires a constant uniform background.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Tranquada and colleagues' 1995 neutron study concerns static spin/charge stripes in Nd-substituted La–Sr–Cu–O at $x=0.12$. That diffraction evidence does not directly measure a superconducting pair field. Layer decoupling and charge harmonics are useful cross-checks only when competing charge, magnetic and structural explanations are addressed.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-b33aab72ae697f3a",
+        "source-7148789acde770d4"
+      ],
+      "conditions": "Keep each study and probe separate: 2016 pair tunneling below 50 mK; 2019 single-electron 0/8.25T comparison at 2 K. Spectroscopy and phase interpretation are not interchangeable.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Hamidian and colleagues' 2016 experiment used a superconducting Bi2212 nanoflake tip for scanned Josephson tunneling microscopy below 50 mK. It reported modulations near $Q_P=(0.25\\pm0.02)\\,2\\pi/a_0$, superposed on a stronger uniform component. It is not the later field-induced vortex-halo spectroscopy experiment. Their phase-diffusion model uses $I(V)=I_J^2 ZV/[2(V^2+V_c^2)]$, with $V_c=2eZk_BT^*/\\hbar$. The measured peak $I_c=\\hbar I_J^2/(8ek_BT^*)$ differs from the underlying Josephson critical current $I_J$; three independent numerical peak searches verify this relation. The effective noise temperature $T^*$ must not simply be replaced by refrigerator temperature.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-66a2b2a9519f6f44"
+      ],
+      "conditions": "Keep each study and probe separate: 2016 pair tunneling below 50 mK; 2019 single-electron 0/8.25T comparison at 2 K. Spectroscopy and phase interpretation are not interchangeable.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Edkins and colleagues' 2019 study used single-electron STM, explicitly without scanned Josephson tunneling microscopy. At 2 K it compared 0 and 8.25 T in the same Bi2212 field of view using the same tip. Approximately eight-cell and four-cell electronic modulations support a PDW interpretation within the authors' model. The fitted Fourier widths are not exactly in a two-to-one ratio. Sublattice form factors belong to the measured electronic response and must not be copied directly onto the pair field. The core region is excluded from the simple envelope argument. Raw-data fitting and the complete supplement are not reproduced here.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d306adac5d567426"
+      ],
+      "conditions": "Keep each study and probe separate: 2016 pair tunneling below 50 mK; 2019 single-electron 0/8.25T comparison at 2 K. Spectroscopy and phase interpretation are not interchangeable.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Chen and colleagues' 2021 CsV3Sb5 work reports spatial gap/conductance modulations and Josephson spectroscopy on prepared surfaces. Bulk and surface temperature scales differ, and the author manuscript explicitly says roton excitations were not directly observed. Its proposed complex PDW interpretation is not a direct phase measurement or a universal statement about kagome superconductors. The selected manuscript and methods check is inherited from the chiral-pairing entry.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-057c43c86174f961"
+      ],
+      "conditions": "Keep each study and probe separate: 2016 pair tunneling below 50 mK; 2019 single-electron 0/8.25T comparison at 2 K. Spectroscopy and phase interpretation are not interchangeable.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "In May 2026, Cao and colleagues reported a hysteretic tunneling-gap transition in multilayer NbSe2 under an in-plane field, consistent with a possible orbital FFLO state. Their reported angle, disorder and thickness dependences matter; the selected theoretical discussion neglects vortices in its energy comparison. This is evidence for a transition with a proposed interpretation, not a direct image of finite pair momentum. Only the publisher abstract, introduction and selected model passage have been checked here.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ad66f48ab9369ce9"
+      ],
+      "conditions": "Keep each study and probe separate: 2016 pair tunneling below 50 mK; 2019 single-electron 0/8.25T comparison at 2 K. Spectroscopy and phase interpretation are not interchangeable.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Keep four distinctions explicit: pair tunneling versus single-electron tunneling; induced modulation versus a primary instability; field-induced versus spontaneous behavior; and a surface observation versus a bulk thermodynamic phase. A particular gap map cannot alone determine the pair phase. A nonzero composite amplitude, a half-vortex proposal or an unusual transport curve likewise needs a separate coherence and alternative-explanation analysis.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-66a2b2a9519f6f44",
+        "source-d306adac5d567426",
+        "source-cb08c313e0597487"
+      ],
+      "conditions": "Surface and bulk, induced and primary, charge and pair observables are distinct. No material-wide proof inferred from a modulation.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "The 2026 report by Wang and colleagues deliberately calls its moiré result Cooper-pair density modulation (CPDM): the authors describe periodic order-parameter variation without additional translation-symmetry breaking. That distinction prevents treating every periodic pairing texture as a spontaneous PDW. This entry has checked the institutional abstract and publication identity, not the complete measurement or microscopic model.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-61d655195d7db259"
+      ],
+      "conditions": "Surface and bulk, induced and primary, charge and pair observables are distinct. No material-wide proof inferred from a modulation.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c8-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Store the probe, temperature, magnetic-field magnitude and orientation, surface preparation, Fourier convention, uniform component and normalization with every candidate. Compare observations with an explicit response model before assigning an order parameter. Our local algebra, peak and overlap checks test stated examples; they do not reproduce the experiments, establish a material ground state, or close full scientific acceptance.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7148789acde770d4",
+        "source-66a2b2a9519f6f44",
+        "source-d306adac5d567426",
+        "source-ad66f48ab9369ce9"
+      ],
+      "conditions": "Retain actual methods and evidence scope with each candidate; local model checks do not constitute full scientific acceptance.",
+      "verificationScope": "Named primary passages and independent examples only; full scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-c8-correction-1",
+      "description": "Corrected inherited attribution: Hamidian 2016 is Josephson imaging; field-induced vortex-halo single-electron spectroscopy is Edkins 2019.",
+      "sourceId": "source-d306adac5d567426",
+      "scope": "Distinct probe, field, temperature and harmonic evidence."
+    },
+    {
+      "id": "scwiki-c8-correction-2",
+      "description": "Separated the 2007 stripe-layer proposal from the 2009 thermal-melting charge-4e proposal.",
+      "sourceId": "source-cb08c313e0597487",
+      "scope": "Theory identity and bounded review."
+    },
+    {
+      "id": "scwiki-c8-correction-3",
+      "description": "Conventional Zeeman-driven FFLO is not the only modern use of FFLO terminology; orbital proposals and moiré-induced CPDM require separate assumptions.",
+      "sourceId": "source-ad66f48ab9369ce9",
+      "scope": "2026 selected publisher/institutional passages only."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "C_Q=d_+d_0^*+d_0d_-^*",
+      "check": "Four independent discrete Fourier cases including single-plane-wave, standing-wave, coexistence and complex phases."
+    },
+    {
+      "targetSectionId": "experimental-criteria",
+      "tex": "I_c=\\hbar I_J^2/(8ek_BT^*)",
+      "check": "Three independent numerical peak searches using specified effective noise temperatures."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\langle\\cos Qx\\cos Qy\\rangle=0",
+      "check": "Five overlap examples including uniform admixture, quartic coupling and finite window; four conditional envelope-decay checks and three gauge checks."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-c8-material-1",
+      "formula": "Bi2Sr2CaCu2O8+x",
+      "sample": "Hamidian et al. Bi2212 sample, p approximately 17%, superconducting nanoflake tip",
+      "recordType": "experiment",
+      "tcK": null,
+      "reportedTemperatureK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Below 0.05 K operating condition, not an exact temperature or a superconducting transition. Effective noise temperature is separate.",
+      "criterion": "pair-tunneling-operating-temperature",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Scanned Josephson tunneling microscopy in the phase-diffusion regime; field condition not assigned at this scoped review",
+      "sourceId": "source-66a2b2a9519f6f44",
+      "aliases": [
+        "cuprate",
+        "cuprates"
+      ]
+    },
+    {
+      "id": "scwiki-c8-material-2",
+      "formula": "Bi2Sr2CaCu2O8+x",
+      "sample": "Edkins et al. slightly underdoped sample, p approximately 17%, same-tip same-view comparison",
+      "recordType": "experiment",
+      "tcK": null,
+      "reportedTemperatureK": 2,
+      "temperatureKind": "measurement",
+      "temperatureNote": "STM operating temperature; separate from the sample superconducting transition.",
+      "criterion": "single-electron-spectroscopy-temperature",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Single-electron STM; field-induced difference between 8.25 T and 0 T, 58 nm by 58 nm view",
+      "sourceId": "source-d306adac5d567426",
+      "aliases": [
+        "cuprate",
+        "cuprates"
+      ]
+    }
+  ]
+}

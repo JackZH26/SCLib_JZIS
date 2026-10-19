@@ -5,8 +5,8 @@ export const metadata: Metadata = {
   title: "Search papers and ask SCLib",
   description:
     "Search superconductivity literature and ask grounded questions with citations to source papers.",
-  alternates: { canonical: absoluteUrl("/search") },
-  openGraph: { url: absoluteUrl("/search") },
+  alternates: { canonical: absoluteUrl("/") },
+  openGraph: { url: absoluteUrl("/") },
 };
 
 export default function SearchLayout({

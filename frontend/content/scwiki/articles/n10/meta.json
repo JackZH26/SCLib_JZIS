@@ -1,0 +1,396 @@
+{
+  "id": "scwiki-n10",
+  "topicId": "scwiki-topic-n10",
+  "code": "N10",
+  "slug": "open-questions/n10",
+  "publicationKind": "open-question",
+  "title": "What limits Tc in flat-band superconductors?",
+  "summary": "Separate pairing from phase coherence, optical upper bounds from geometric lower bounds, and controlled models from experimental transition temperatures.",
+  "aliases": [
+    "flat-band Tc bound",
+    "flat band temperature limit",
+    "平带超导温度上限",
+    "平坦带超导 Tc 上限"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "B13",
+    "F6",
+    "F7",
+    "F8",
+    "F1"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T19:03:26.919607+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Hazra final selected bounds and anisotropy; Verma author-v2 projected optical bounds; inherited F6/F7 named geometric-response and experimental checks; independent parabolic, coordinate and Hubbard-dimer calculations.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "The planning document defines the question, not scientific evidence for its answer.",
+      "Full projection-error control, final-author comparisons and interacting numerical benchmarks remain incomplete.",
+      "Model bounds and pair-sector spectra do not provide experimental Tc records."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "02_BATCH_2_IN_PLAN.md",
+    "sha256": "502293e5ed2fe8463b61a6c5b78a2c33bc33f3265bd36fe534fa2c469e42ff48",
+    "sourceId": "file-49326006ac2c2636"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 146,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other approved extension topics retain their own treatment and review."
+    },
+    {
+      "startLine": 147,
+      "endLine": 147,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "limits-and-disputes"
+      ],
+      "decision": "new-research-for-approved-question",
+      "note": "This planning row identifies N10; it supplies no scientific evidence. The answer is newly authored from named primary research."
+    },
+    {
+      "startLine": 148,
+      "endLine": 177,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Historical workflow suggestions are not scientific validation or new authorization."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "k_BT_c\\leq E_F/8",
+      "check": "12 two-spin density ratios and16coordinate-Jacobian checks; sixteen independently assembled6x6Hubbarddimer spectra for pair-mobility illustration,notmaterialprediction."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-a57ef549f45fe74c",
+      "doi": "10.1103/PhysRevX.9.031049",
+      "title": "Bounds on the Superconducting Transition Temperature: Applications to Twisted Bilayer Graphene and Cold Atoms",
+      "year": 2019,
+      "url": "https://doi.org/10.1103/PhysRevX.9.031049",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-bounds-and-anisotropy",
+        "evidenceUrl": "https://journals.aps.org/prx/pdf/10.1103/PhysRevX.9.031049",
+        "note": "Final published 17 September 2019. Selected pp. 2–6 and 10–11; p. 3 equations and conditions visually checked. Peierls coupling, BKT thermodynamic limit, parabolic density convention, monotonicity assumption and input-dependent multiband estimates retained. Appendices A–G and original QMC data not fully reproduced."
+      }
+    },
+    {
+      "id": "source-0f28a13259b6faed",
+      "doi": "10.1073/pnas.2106744118",
+      "title": "Optical spectral weight, phase stiffness, and Tc bounds for trivial and topological flat band superconductors",
+      "year": 2021,
+      "url": "https://doi.org/10.1073/pnas.2106744118",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-projection-and-bounds",
+        "evidenceUrl": "https://arxiv.org/pdf/2103.08540v2",
+        "note": "Author v2 revised 23 August 2021, associated with PNAS 118 e2106744118. Selected pp. 1–5; p. 3 Eqs. (5)–(9) visually checked. Bandwidth/interactions/gap hierarchy, projected pair subspace, optical upper/lower distinction and Wannier assumptions retained. Complete appendices and final-version comparison remain open."
+      }
+    },
+    {
+      "id": "source-fdf091e09e7f4a6f",
+      "doi": "10.1038/ncomms9944",
+      "title": "Superfluidity in topologically nontrivial flat bands",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/ncomms9944",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-units-and-flat-band-assumptions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/ncomms9944",
+        "note": "Published 20 November 2015. Selected pages 3–6 were read. Page 3 was visually checked for the free-energy definition and frozen-field derivative in Eq. (1), interpreted with the 2022 response correction. The earlier page 5 review of uniform pairing and scale hierarchy is retained. The full supplementary derivation has not been reviewed."
+      }
+    },
+    {
+      "id": "source-72f7ddb9f13bbd81",
+      "doi": "10.1103/PhysRevB.106.014518",
+      "title": "Revisiting flat band superconductivity: Dependence on minimal quantum metric and band touchings",
+      "year": 2022,
+      "url": "https://doi.org/10.1103/PhysRevB.106.014518",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-relaxation-correction",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://aaltodoc.aalto.fi/server/api/core/bitstreams/e05db312-49b0-4769-b112-681407acd4b0/content",
+        "note": "Published 26 July 2022. Selected final-reprint pages 1–5 were read; Eqs. (13)–(17) on page 4 were visually checked. The review covers order-parameter relaxation, time reversal, Hessian conditions and representation dependence. The earlier selected page 6 reading of minimal integrated trace is retained. The full proof and multiband response have not been reproduced."
+      }
+    },
+    {
+      "id": "source-be7282623ca96056",
+      "doi": "10.1038/s41586-024-08494-7",
+      "title": "Superfluid stiffness of magic-angle twisted bilayer graphene",
+      "year": 2025,
+      "url": "https://doi.org/10.1038/s41586-024-08494-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-circuit-and-temperature-definitions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2406.13740v2",
+        "note": "Tanaka and colleagues, published 5 February 2025. Selected author-version pages 5–7 and earlier circuit passages were reviewed: 20 mK base and approximately 40 mK device temperatures, the half-resistance criterion near 1 K, assumed active-region aspect ratio and parallel edge model. The full final-version and raw-data comparisons remain open."
+      }
+    },
+    {
+      "id": "source-8f81510a80c35e3a",
+      "doi": "10.1103/PhysRevLett.39.1201",
+      "title": "Universal Jump in the Superfluid Density of Two-Dimensional Superfluids",
+      "year": 1977,
+      "url": "https://doi.org/10.1103/PhysRevLett.39.1201",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-original-publisher-text",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.39.1201",
+        "note": "Published 7 November 1977. Selected original publisher text on pages 1202–1203 was reread: bare and renormalized stiffness, recursion relations and the universal jump in Eq. (10). No inspectable screenshot was returned, so no visual equation check is claimed. The full derivation has not been reproduced."
+      }
+    },
+    {
+      "id": "source-b43340ce5c356e49",
+      "doi": "10.1103/PhysRevLett.117.045303",
+      "title": "Geometric Origin of Superfluidity in the Lieb-Lattice Flat Band",
+      "year": 2016,
+      "url": "https://doi.org/10.1103/PhysRevLett.117.045303",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-lieb-model",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1603.03237v2",
+        "note": "Author version 2, dated 8 May 2016; journal publication 22 July 2016. Selected pages 1–2 cover the Chern-trivial Lieb model, isolated-band limit and orbital pairing conditions. Page 2 was visually checked after a PDF extraction warning. The final-version comparison and full model response remain open."
+      }
+    },
+    {
+      "id": "source-fa7a165c8c344a63",
+      "doi": "10.1103/PhysRevB.95.024515",
+      "title": "Band geometry, Berry curvature, and superfluid weight",
+      "year": 2017,
+      "url": "https://doi.org/10.1103/PhysRevB.95.024515",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-projector-and-metric-conventions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1610.01803v2",
+        "note": "Author version 2, dated 11 January 2017; journal publication 27 January 2017. Selected pages 1–2 and 4–6 were read, and Eqs. (21)–(24) on page 5 were visually checked. The metric normalization is twice the Wiki convention. The final-version comparison and full response derivation remain open."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-n10-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "There is no single numerical temperature ceiling supplied by the phrase “flat band.” A meaningful limit specifies the Hamiltonian, density, dimensionality, interaction and current response. A bound is also different from a predicted transition: satisfying an upper bound does not establish that superconductivity occurs. This question concerns constraints on phase coherence and their relation to pair formation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a57ef549f45fe74c",
+        "source-0f28a13259b6faed"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "A narrow dispersion can enhance pairing while suppressing ordinary band transport. In a multiorbital system, however, the wavefunctions and interband matrix elements can support a geometric contribution to superfluid weight. Flattening the eigenvalues alone does not determine that contribution. The relevant question is whether a particular interacting system can develop a robust total phase stiffness, with the required electromagnetic and thermodynamic limits.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Define the two-dimensional phase stiffness $D_s$ by $F=(D_s/2)\\int d^2r\\,|\\nabla\\theta|^2$. Hazra and colleagues bound it by the optical spectral weight, $D_s(T)\\leq\\widetilde D(T)$. With a BKT transition, $k_BT_c\\leq\\pi\\widetilde D(T_c)/2$. Replacing the right-hand side by its zero-temperature value requires an additional monotonic-stiffness assumption. Their derivation couples the vector potential to the kinetic Hamiltonian; its interaction assumptions must accompany applications.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a57ef549f45fe74c"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For the specified two-spin parabolic band, $E_F=\\pi\\hbar^2n/m$ and $\\widetilde D=\\hbar^2n/(4m)$ give $k_BT_c\\leq E_F/8$. This is a strictly two-dimensional BKT result, not a generic multiband or three-dimensional formula. In an anisotropic sheet the corresponding bound uses $\\sqrt{\\widetilde D_x\\widetilde D_y}$. Independent density-convention and coordinate-Jacobian checks reproduce these relations; they do not determine a material's input stiffness.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a57ef549f45fe74c"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The BKT jump concerns the renormalized total response at the transition. It does not isolate a geometric share or convert a pairing gap directly into phase stiffness. A mean-field amplitude can remain nonzero after phase coherence has been lost. The [BKT article](/scwiki/bkt-transition) discusses current-window, finite-size and resistance-fit ambiguities that also matter when testing a proposed bound experimentally.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8f81510a80c35e3a"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-isolated-band-constraints-1",
+      "sectionId": "isolated-band-constraints",
+      "statement": "Verma and colleagues examine on-site attraction in a controlled hierarchy $w\\ll|U|\\ll E_0$, with bandwidth $w$ and isolation gap $E_0$. Projecting to localized Wannier states produces pair hopping and an interaction-dependent current operator. For their trivial-band construction, $\\widetilde D_{\\rm low}\\leq\\widetilde n|U|\\Omega/2$, where $\\widetilde n=\\min(n,2-n)$ and $\\Omega$ is the Wannier spread in the stated normalization. The Lieb-lattice symmetry sharpens the coefficient; it is not a universal constant for every lattice.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0f28a13259b6faed"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-isolated-band-constraints-2",
+      "sectionId": "isolated-band-constraints",
+      "statement": "Their zero-temperature lower bound concerns optical spectral weight and requires the stated long-range-order and correlation assumptions. It is not a general lower bound on finite-temperature superconductivity. Topological bands require care with the Wannier basis: relaxing the Kramers-pair constraint permits localized functions and a generalized overlap bound. Extrapolating the linear interaction trend beyond the isolated-band hierarchy is unjustified; interband physics becomes important.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0f28a13259b6faed"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-pair-formation-is-not-pair-mobility-1",
+      "sectionId": "pair-formation-is-not-pair-mobility",
+      "statement": "A simple independent check makes the distinction concrete. An attractive Hubbard dimer was assembled directly in its six-dimensional two-electron Fock space. Sixteen spectra agree with the analytic ground-state energy $E_0=(-|U|-\\sqrt{|U|^2+16t^2})/2$. At zero hopping the local pairs have no intersite splitting. In the strong-attraction limit, the low pair-sector splitting approaches $4t^2/|U|$, corresponding to pair hopping $2t^2/|U|$. Stronger local binding can therefore accompany slower pair motion. The dimer has no thermodynamic transition and supplies no predicted Tc.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a57ef549f45fe74c",
+        "source-0f28a13259b6faed"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-pair-formation-is-not-pair-mobility-2",
+      "sectionId": "pair-formation-is-not-pair-mobility",
+      "statement": "Flat-band geometry can change this mobility argument because overlapping Wannier orbitals generate interaction-mediated pair motion. That is a model-specific route, not permission to discard self-consistency. Peotta and Törmä's geometric response assumes a defined isolated-band and pairing regime. The Chern-trivial Lieb example also demonstrates why nonzero Chern number is not necessary for every geometric contribution. Its existence does not establish superconductivity in an arbitrary flat-band material.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-b43340ce5c356e49"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Measure a total sheet response with units, frequency, device geometry and fitting uncertainties. Tanaka and colleagues infer stiffness from microwave kinetic inductance using a circuit that includes a parallel edge contribution. Their active-region aspect ratio is an assumption in converting the measured inductance to sheet response. A comparison with a conventional estimate may support a geometric interpretation, but it does not directly measure an independently separable geometric component.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "The selected Tanaka author manuscript distinguishes refrigerator base temperature, wired-device temperature and a half-normal-resistance transition. These are separate observables. A finite-frequency stiffness should be connected to the low-frequency, long-wavelength response before applying an equilibrium BKT criterion. Experimental comparison also needs a stated pairing scale, a temperature-dependent stiffness and evidence that sample inhomogeneity or finite size does not dominate the inferred transition.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-be7282623ca96056",
+        "source-8f81510a80c35e3a"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Multiband bounds depend on the actual band structure and occupation assumptions; an approximate estimate is not a universal material ceiling. Hazra's three-dimensional discussion does not establish a general linear stiffness bound there. A successful two-dimensional derivation cannot simply be carried into three dimensions with the same prefactor.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a57ef549f45fe74c"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "A calculated mean-field stiffness may itself be overstated when internal pairing fields are held fixed during a phase twist. Huhtinen and colleagues show a relaxation correction under their time-reversal and equilibrium assumptions. In the isolated uniform-pairing setting, the relevant integrated metric is minimized over orbital positions. A frozen-field geometric answer can therefore differ qualitatively from the relaxed response. This correction must be considered before interpreting a mean-field value as a usable bound on an experimental transition.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-72f7ddb9f13bbd81"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. The selected original passages, figures and independent algebra are documented, while full projection-error control, interacting response calculations, final-author comparisons and raw experimental data have not all been reviewed. No model temperature in this page is entered as an experimental material transition. The open problem is to obtain useful, controlled limits for realistic multiband and correlated systems, rather than to maximize one isolated formula.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a57ef549f45fe74c",
+        "source-0f28a13259b6faed",
+        "source-72f7ddb9f13bbd81",
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-n10-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Specify the density, isolation gap, interaction scale, orbital structure and measurement convention before comparing designs. Check whether a change enhances pairing, pair mobility or both, and whether it changes the assumptions behind the calculation. Report the full relaxed response and its uncertainty alongside any decomposition. A useful prediction should identify the observation that would falsify it; a large density of states or geometric metric alone does not meet that standard.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-72f7ddb9f13bbd81",
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "Retain dimensionality, density convention, response units, band-isolation hierarchy and stated approximation. Bounds and synthetic models are not measured material transitions.",
+      "verificationScope": "Named selected primary passages/figures or explicitly independent model arithmetic; full scientific acceptance remains open."
+    }
+  ],
+  "scopeItems": [
+    {
+      "id": "N10",
+      "sectionIds": [
+        "scope",
+        "mathematical-assumptions",
+        "isolated-band-constraints",
+        "pair-formation-is-not-pair-mobility",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Hazra final selected bounds and anisotropy; Verma author-v2 projected optical bounds; inherited F6/F7 named geometric-response and experimental checks; independent parabolic, coordinate and Hubbard-dimer calculations.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "The planning document defines the question, not scientific evidence for its answer.",
+        "Full projection-error control, final-author comparisons and interacting numerical benchmarks remain incomplete.",
+        "Model bounds and pair-sector spectra do not provide experimental Tc records."
+      ]
+    }
+  ]
+}

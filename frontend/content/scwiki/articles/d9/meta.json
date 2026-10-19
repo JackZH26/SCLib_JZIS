@@ -1,0 +1,613 @@
+{
+  "id": "scwiki-d9",
+  "topicId": "scwiki-topic-d9",
+  "code": "D9",
+  "slug": "fulleride-superconductors",
+  "title": "Fulleride superconductors: Jahn–Teller coupling, Mott physics and driven states",
+  "summary": "Compare alkali-doped C60 compounds through pressure, molecular interactions and sample-specific transition criteria, with explicit boundaries for driven and retracted claims.",
+  "aliases": [
+    "fullerides",
+    "fullerenes",
+    "C60",
+    "K3C60",
+    "Rb3C60",
+    "Cs3C60",
+    "Jahn–Teller",
+    "inverted Hund exchange",
+    "current-driven intercalation"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "B1",
+    "B2",
+    "A1",
+    "B14",
+    "C1"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-19",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected fcc Cs3C60 pressure/magnetometry, fulleride model equations, 2026 intercalation transport criteria, prior scoped driven-state readings and complete indexed retraction notice. Publisher notice identifying the 24 February 2016 Mitrano caption correction checked separately on 19 October 2026.",
+    "limitations": [
+      "Full scientific acceptance, complete final-version comparisons and raw-data reproduction remain open.",
+      "1991 discoveries remain abstract-level; 2008 A15 methods have not been reviewed.",
+      "The 2026 supplement and transient-state final-version details remain outside this check.",
+      "No computed DMFT phase diagram, microscopic-mechanism uniqueness or device qualification is claimed."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D9_fullerenes.md",
+    "sha256": "7fb6155c2847a4c14bfe3ba43e213f2ae8f83dfbe12019478fe94ca8d29cf392",
+    "sourceId": "file-2d8c8617328230a6"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 71,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; original retraction companion and2026 transport criteria added."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-51b1a52d16139e58",
+      "doi": "10.1038/350600a0",
+      "title": "Superconductivity at 18 K in potassium-doped C60",
+      "year": 1991,
+      "url": "https://doi.org/10.1038/350600a0",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "original-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://research.rug.nl/en/publications/superconductivity-at-18-k-in-potassium-doped-c60/",
+        "note": "Original abstract distinguishes film resistive onset16K/essentially zero5K from bulk magnetic/microwave18K. Full PDF returned403; full experimental methods not reviewed."
+      }
+    },
+    {
+      "id": "source-0fb5ae1290bd2998",
+      "doi": "10.1103/PhysRevLett.66.2830",
+      "title": "Superconductivity at 28 K in RbxC60",
+      "year": 1991,
+      "url": "https://doi.org/10.1103/PhysRevLett.66.2830",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.66.2830",
+        "note": "Published27May1991. Original abstract checked for bulk Meissner/microwave maximum28K. Full methods not reviewed; title stoichiometry remains RbxC60."
+      }
+    },
+    {
+      "id": "source-634d02f3c2bfde0d",
+      "doi": "10.1038/nmat2179",
+      "title": "Bulk superconductivity at 38 K in a molecular system",
+      "year": 2008,
+      "url": "https://doi.org/10.1038/nmat2179",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-metadata-and-later-primary-comparison",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/nmat2179",
+        "note": "Online20April2008. Metadata checked and A15 maximum38K cross-checked against Ganin2010 original comparison. Direct PDF response was not a PDF; full original methods not reviewed."
+      }
+    },
+    {
+      "id": "source-5e6d3e7ed715ad6a",
+      "doi": "10.1038/nature09120",
+      "title": "Polymorphism control of superconductivity and magnetism in Cs3C60 close to the Mott transition",
+      "year": 2010,
+      "url": "https://doi.org/10.1038/nature09120",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-pressure-magnetism-methods",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://cienciaescolar.wordpress.com/wp-content/uploads/2010/07/nature09120.pdf",
+        "note": "Original Nature466,221–225, issue8July2010, hosted as an unchanged paper PDF. Selected pp221–222, Fig3 caption p224 and online magnetic Methods read; p222 visually inspected. Multiphase sample, pressure calibration and shielding criteria retained. Complete supplement and raw data not reanalyzed."
+      }
+    },
+    {
+      "id": "source-e2b9d469a7c556df",
+      "doi": "10.1103/RevModPhys.81.943",
+      "title": "Colloquium: Modeling the unconventional superconducting properties of expanded A3C60 fullerides",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/RevModPhys.81.943",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-model-equations-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0809.0910v1",
+        "note": "Authorv1 submitted4September2008; journal19June2009. Selected p5 Eq1–3, p8 model discussion and p9 heuristic Cooper amplitude read; p5 visually inspected. Independent n=3 multiplets and illustrative amplitude/unit checks, not a DMFT reproduction. Final-version comparison and complete review remain open."
+      }
+    },
+    {
+      "id": "source-6ee3670220e24ff1",
+      "doi": "10.1038/nature16522",
+      "title": "Possible light-induced superconductivity in K3C60 at high temperature",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/nature16522",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "earlier-author-manuscript-scoped-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1505.04529v1",
+        "note": "Reused B7/A1 scoped primary reading, with the same version and methods limitations. Inherited A1 selected pp.1–2,4–6 check: finite-window transient optical response and high-mobility alternative. The publisher’s 24 February 2016 caption-correction notice is identified; no full final-version equivalence is established."
+      },
+      "updates": [
+        {
+          "kind": "correction",
+          "date": "2016-02-24",
+          "description": "The publisher restored a truncated final sentence in the Figure 4 caption of the advance-online PDF.",
+          "evidenceUrl": "https://www.nature.com/articles/nature16522#change-history",
+          "checkedAt": "2026-10-19",
+          "scope": "Publisher change-history notice and publisher-deposited Crossref assertion agree. Old and corrected PDFs were not compared in full."
+        }
+      ]
+    },
+    {
+      "id": "source-07be806c0002c690",
+      "doi": "10.1038/s41567-020-01148-1",
+      "title": "Evidence for metastable photo-induced superconductivity in K3C60",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41567-020-01148-1",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "earlier-author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2002.12835v1",
+        "note": "Reused B7/A1 scoped primary reading, with the same version and methods limitations. Budden selected PDF pp.8–10,29–33; p.9 Fig4 visually inspected. Two-terminal transient probe, static four-terminal contact calibration and100K base temperature distinguished. Publisher PDF endpoints unavailable; raw data and complete final-version comparison pending."
+      }
+    },
+    {
+      "id": "source-64cd48d99353501a",
+      "doi": "10.1021/acsnano.6c02466",
+      "title": "On-Chip Tuning of Superconductivity in Fullerides via Current-Driven Rb+ Intercalation",
+      "year": 2026,
+      "url": "https://doi.org/10.1021/acsnano.6c02466",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-transport-and-composition-methods",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://research-explorer.ista.ac.at/download/22145/22150/2026_ACSNano_Shchukin.pdf",
+        "note": "Publishedonline9June2026, not repository upload29June; issue23June. Selected pp17360–17363 and electrical transport/EPC passages pp17367–17368 read. Fig2f p17362 visually inspected for separate onset and derivative-threshold temperatures. Supplement and original datasets not reanalyzed."
+      }
+    },
+    {
+      "id": "source-091fb85b144daad9",
+      "doi": "10.1038/35046008",
+      "title": "RETRACTED ARTICLE: Superconductivity at 52 K in hole-doped C60",
+      "year": 2000,
+      "url": "https://doi.org/10.1038/35046008",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "retracted-article-identity-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/35046008",
+        "note": "Original30November2000 identity and retraction link checked; withdrawn52K claim is not an experimental benchmark."
+      },
+      "retraction": {
+        "noticeDoi": "10.1038/nature01466",
+        "retractedAt": "2003-03-06",
+        "evidenceUrl": "https://doi.org/10.1038/nature01466"
+      }
+    },
+    {
+      "id": "source-8822fee6435cf8cc",
+      "doi": "10.1038/nature01466",
+      "title": "Retraction Note to: Superconductivity at 52 K in hole-doped C60",
+      "year": 2003,
+      "url": "https://doi.org/10.1038/nature01466",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-indexed-complete-notice-text",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/nature01466",
+        "note": "Published6March2003. Complete indexed notice text read and original DOI link verified; concerns concern device-measurement data after independent investigation. Direct publisher HTML identity redirect unavailable."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d9-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Alkali-doped fullerides join molecular vibrations, narrow electronic bands and strong local interactions in one material family. In ideal A₃C₆₀, three donated electrons half-fill the three molecular t₁ᵤ orbitals, whose spin capacity is six. Potassium, rubidium and cesium compounds must be identified by stoichiometry, crystal structure and preparation. Pressure-induced equilibrium superconductivity and light-driven responses are separate evidence classes.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e2b9d469a7c556df",
+        "source-07be806c0002c690"
+      ],
+      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
+      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d9-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The 1991 potassium discovery already illustrates why one temperature is insufficient: the abstract reports a thin-film resistive onset near 16 K and essentially vanishing resistance by 5 K, while bulk magnetic and microwave measurements indicate an 18 K transition. The subsequent rubidium report gives a maximum of 28 K from bulk magnetic and microwave evidence. These abstract-level checks establish historical observations; they do not constitute a complete reassessment of the original specimens.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-51b1a52d16139e58",
+        "source-0fb5ae1290bd2998"
+      ],
+      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
+      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d9-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "One influential model represents each molecule by three effective p-like orbitals with local terms $H_U=U(n-3)^2/2$ and $H_J=J[2\\mathbf S^2+\\mathbf L^2/2]+5J(n-3)^2/6$. Angular momenta are dimensionless. In this convention ordinary Hund exchange has $J=-J_H<0$; integrating out Jahn–Teller vibrations can instead give $J=-J_H+J_{JT}>0$. This static reduction requires the coherent electronic scale $ZW$ to lie below the relevant phonon energy. It should not be applied across the whole bandwidth range without checking retardation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e2b9d469a7c556df"
+      ],
+      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
+      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d9-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "At exactly three electrons, the model multiplets $^4S$, $^2D$ and $^2P$ have energies $15J/2$, $9J/2$ and $5J/2$, with respective degeneracies 4, 10 and 6. They account for $\\binom{6}{3}=20$ local states. Positive effective $J$ favors the low-spin $^2P$ multiplet; negative $J$ favors $^4S$. This is an algebraic check of the effective local Hamiltonian, not a measured molecular spectrum or proof of superconducting order.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e2b9d469a7c556df"
+      ],
+      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
+      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d9-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The heuristic Cooper-channel amplitude $A^*\\simeq ZU-10J/3$ illustrates how correlations can reduce repulsion relative to an inverted exchange. For illustrative fixed ratios $U/W=0.5$ and $J/W=0.05$, its sign changes at $Z=1/3$. Simultaneously the coherent bandwidth is $ZW$: decreasing $Z$ does not supply an unlimited transition-temperature gain. The published argument explicitly allows deviations near the Mott boundary; its underlying DMFT model uses an infinite-coordination Bethe lattice. No self-consistent DMFT calculation or measured transition follows from this toy sweep.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e2b9d469a7c556df"
+      ],
+      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
+      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d9-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "For fcc Cs₃C₆₀, Ganin and colleagues report a pressure-dependent magnetic onset: 25.6 K at 1.3 kbar has only about 0.1% shielding, whereas 29.7 K at 2.2 kbar has about 12%. The maximum is approximately 35 K near 7 kbar, equivalent to 0.7 GPa. Measurements use 20 Oe, zero-field-cooled/field-cooled protocols and a tin pressure reference. A15 Cs₃C₆₀ reaches a separately reported maximum near 38 K; its value must not be assigned to the fcc sample.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-634d02f3c2bfde0d",
+        "source-5e6d3e7ed715ad6a"
+      ],
+      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
+      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d9-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "The fcc study also separates magnetic ordering near 2.2 K from the A15 ordering scale near 46 K. Neither is a superconducting transition. Multiphase powders and small shielding fractions require particular care when locating the first superconducting signal. The magnetometry pressure range ends near 10.6 kbar; the separate diffraction measurements extend to much higher pressures. Combining those ranges would falsely imply that superconductivity was measured throughout the structural experiment.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-5e6d3e7ed715ad6a"
+      ],
+      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
+      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d9-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Published online on 9 June 2026, Shchukin and colleagues tune Rb uptake in nanostructured C₆₀ films. Figure 2f labels Rb₂.₇₁C₆₀ with $T_{\\mathrm{onset}}=22.4$ K and $T_{\\mathrm{zero}}=7.0$ K, and Rb₂.₉₈C₆₀ with 26.4 K and 14.5 K. The former criterion is a local resistivity maximum; the latter uses $d\\rho/dT<5\\times10^{-4}$ mΩ cm K⁻¹ in the plotted low-temperature window. It is a stated operational criterion, not an instrument-independent definition of exact zero resistance.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-64cd48d99353501a"
+      ],
+      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
+      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d9-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "That experiment uses Raman analysis with relative scattering cross sections to estimate composition, and van der Pauw transport. The 10 μA intercalation current differs from the 1 μA resistance-probe current. Stoichiometry, grain connectivity, thickness and transition criterion must accompany any comparison with bulk rubidium fullerides. The supplement and underlying transport datasets have not been independently reanalyzed here.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-64cd48d99353501a"
+      ],
+      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
+      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d9-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Mitrano's optical study and Budden's longer-lived driven response concern pumped K₃C₆₀. A finite-frequency inductive response and suppressed transient resistance constrain the nonequilibrium state, but do not by themselves establish an equilibrium thermodynamic transition. Budden's 100 K operating condition is therefore recorded as a transient-response temperature with no equilibrium Tc. Its pulsed two-terminal readout and static four-terminal contact calibration are distinct measurement steps. Pulse conditions, delay, lifetime and alternative conductivity models remain essential.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-6ee3670220e24ff1",
+        "source-07be806c0002c690"
+      ],
+      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
+      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d9-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "The historical hole-doped C₆₀ claim at 52 K was retracted on 6 March 2003. The original paper and its notice are retained together for traceability; the withdrawn value is excluded from experimental transition records. The notice identifies concerns about device-measurement data following an independent investigation. A citation in an older, otherwise valid paper does not restore the withdrawn claim.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-091fb85b144daad9",
+        "source-8822fee6435cf8cc"
+      ],
+      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
+      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d9-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Fullerides motivate simultaneous control of bandwidth, local vibronic interactions, molecular valence and disorder. A superconducting dome near a Mott state is compatible with cooperation between phonons and correlations; it does not uniquely determine the pairing kernel. Neither a fully open gap nor proximity to a magnetic insulator proves that one interaction acts alone. Report model assumptions beside the experimental evidence used to constrain them.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-5e6d3e7ed715ad6a",
+        "source-e2b9d469a7c556df"
+      ],
+      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
+      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d9-claim-discovery-implications-2",
+      "sectionId": "discovery-implications",
+      "statement": "Current-driven intercalation offers a method for tuning samples rather than a new bulk temperature record. Reproducible optimization needs composition maps, measurement-current controls and comparable transition definitions. Keep pressure polymorphs and optically driven states separate when selecting targets: their conditions cannot be collapsed into a single family-wide Tc ranking.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-64cd48d99353501a",
+        "source-5e6d3e7ed715ad6a",
+        "source-07be806c0002c690"
+      ],
+      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
+      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-d9-correction-1",
+      "description": "Attached the original2003 retraction notice to the withdrawn52K claim; it supplies no accepted experimental transition record.",
+      "sourceId": "source-8822fee6435cf8cc",
+      "scope": "Public article and exported metadata; pinned source unchanged."
+    },
+    {
+      "id": "scwiki-d9-correction-mitrano-caption-notice",
+      "description": "Identified the previously unspecified Mitrano update as the publisher’s 24 February 2016 correction of a truncated Figure 4 caption sentence in the advance-online PDF.",
+      "sourceId": "source-6ee3670220e24ff1",
+      "scope": "Correction-notice identity only; earlier manuscript limits, full version comparison and raw-data limitations remain."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "H_J=J[2S(S+1)+L(L+1)/2]+5J(n-3)^2/6",
+      "check": "n=3 multiplet energies and20-state dimension; positive/negative J ordering checked."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "A^*\\simeq ZU-10J/3",
+      "check": "Five illustrative Z values at fixed U/W=.5,J/W=.05; no self-consistent Tc calculation."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-d9-material-1",
+      "formula": "K-doped C60",
+      "sample": "Hebard bulk specimen",
+      "recordType": "experiment",
+      "reportedTemperatureK": 18,
+      "tcK": 18,
+      "temperatureKind": "transition",
+      "temperatureNote": "Original abstract only; film 16 K onset / 5 K essentially zero are different measurements.",
+      "criterion": "magnetic-and-microwave-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Meissner and microwave response",
+      "sourceId": "source-51b1a52d16139e58",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-d9-material-2",
+      "formula": "RbxC60",
+      "sample": "Rosseinsky bulk discovery material",
+      "recordType": "experiment",
+      "reportedTemperatureK": 28,
+      "tcK": 28,
+      "temperatureKind": "transition",
+      "temperatureNote": "Reported maximum; full original methods not reviewed.",
+      "criterion": "magnetic-and-microwave-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Meissner and microwave response",
+      "sourceId": "source-0fb5ae1290bd2998",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-d9-material-3",
+      "formula": "Cs3C60",
+      "sample": "fcc polymorph, trace shielding",
+      "recordType": "experiment",
+      "reportedTemperatureK": 25.6,
+      "tcK": 25.6,
+      "temperatureKind": "transition",
+      "temperatureNote": "About 0.1% shielding; do not infer bulk fraction from this onset.",
+      "criterion": "magnetization-onset-trace-shielding",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 0.13,
+        "max": 0.13
+      },
+      "equilibrium": "equilibrium",
+      "probe": "20 Oe ZFC/FC magnetometry",
+      "sourceId": "source-5e6d3e7ed715ad6a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-d9-material-4",
+      "formula": "Cs3C60",
+      "sample": "fcc polymorph, about 12% shielding",
+      "recordType": "experiment",
+      "reportedTemperatureK": 29.7,
+      "tcK": 29.7,
+      "temperatureKind": "transition",
+      "temperatureNote": "Pressure-specific magnetic onset in a multiphase powder.",
+      "criterion": "magnetization-onset",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 0.22,
+        "max": 0.22
+      },
+      "equilibrium": "equilibrium",
+      "probe": "20 Oe ZFC/FC magnetometry",
+      "sourceId": "source-5e6d3e7ed715ad6a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-d9-material-5",
+      "formula": "Cs3C60",
+      "sample": "fcc polymorph dome maximum",
+      "recordType": "experiment",
+      "reportedTemperatureK": 35,
+      "tcK": 35,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate maximum at approximately 7 kbar; not A15 maximum 38 K.",
+      "criterion": "magnetization-onset",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 0.7,
+        "max": 0.7
+      },
+      "equilibrium": "equilibrium",
+      "probe": "20 Oe ZFC/FC magnetometry",
+      "sourceId": "source-5e6d3e7ed715ad6a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-d9-material-6",
+      "formula": "Cs3C60",
+      "sample": "fcc ambient-pressure magnetic ordering",
+      "recordType": "experiment",
+      "reportedTemperatureK": 2.2,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Magnetic ordering, not a superconducting Tc.",
+      "criterion": "magnetic-ordering-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Muon spin rotation and magnetism",
+      "sourceId": "source-5e6d3e7ed715ad6a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-d9-material-7",
+      "formula": "Rb2.98C60",
+      "sample": "Shchukin nanostructured film, Fig2f onset",
+      "recordType": "experiment",
+      "reportedTemperatureK": 26.4,
+      "tcK": 26.4,
+      "temperatureKind": "transition",
+      "temperatureNote": "Same film as 14.5 K derivative-threshold record; two criteria, not two independent specimens.",
+      "criterion": "local-resistivity-maximum",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Van der Pauw transport, 1 μA",
+      "sourceId": "source-64cd48d99353501a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-d9-material-8",
+      "formula": "Rb2.98C60",
+      "sample": "Shchukin nanostructured film, Fig2f low-temperature threshold",
+      "recordType": "experiment",
+      "reportedTemperatureK": 14.5,
+      "tcK": 14.5,
+      "temperatureKind": "transition",
+      "temperatureNote": "Tzero defined by dρ/dT<5e-4 mΩcm/K in plotted window; not instrument-independent exact zero.",
+      "criterion": "resistivity-derivative-threshold",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Van der Pauw transport, 1 μA",
+      "sourceId": "source-64cd48d99353501a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-d9-material-9",
+      "formula": "Rb2.71C60",
+      "sample": "Shchukin nanostructured film, Fig2f low-temperature threshold",
+      "recordType": "experiment",
+      "reportedTemperatureK": 7,
+      "tcK": 7,
+      "temperatureKind": "transition",
+      "temperatureNote": "Same operational derivative threshold as 14.5 K optimally intercalated film.",
+      "criterion": "resistivity-derivative-threshold",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Van der Pauw transport, 1 μA",
+      "sourceId": "source-64cd48d99353501a",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-d9-material-10",
+      "formula": "K3C60",
+      "sample": "Budden optically driven specimen",
+      "recordType": "experiment",
+      "reportedTemperatureK": 100,
+      "tcK": null,
+      "temperatureKind": "transient-response",
+      "temperatureNote": "Operating temperature of driven response, not equilibrium thermodynamic Tc.",
+      "criterion": "driven-resistance-suppression",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "transient",
+      "probe": "Pulsed two-terminal readout with separate static four-terminal calibration",
+      "sourceId": "source-07be806c0002c690",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    }
+  ]
+}

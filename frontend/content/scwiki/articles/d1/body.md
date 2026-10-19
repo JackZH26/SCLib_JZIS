@@ -1,0 +1,41 @@
+## Scope
+
+An elemental superconductor contains one chemical element, but that label does not specify its crystal structure, bands, coupling strength or pressure history. Elemental systems provide useful benchmarks for electron–phonon theory; they do not all reduce to one weak-coupling model. Niobium's approximately 9.2 K transition is a useful conventional scale, not a ceiling on elemental superconductivity or a certified value for every sample. [R5](#ref-source-aa8182fe7a3d8d0c) [R15](#ref-source-835031575efae07a)
+
+The mercury discovery is associated with Onnes's 1911 report. His later Nobel lecture describes the abrupt resistance decrease near 4.2 K, explicitly qualified by measurement accuracy, and a current threshold above which voltage reappeared. The lecture scan includes subsequent notes and a 1914 addendum; those later observations should not be dated to 1911. It is a firsthand account, not a substitute for a modern magnetic-volume or heat-capacity measurement. [R1](#ref-source-d36e5a81b57e823f)
+
+## Mathematical assumptions
+
+The isotope coefficient is $\alpha=-d\ln T_c/d\ln M$. If harmonic frequencies scale as $M^{-1/2}$ while the dimensionless pairing parameters remain fixed, the corresponding transition scale has $\alpha=1/2$. This is a conditional model statement, not a value certified here for the original mercury datasets. Maxwell and Reynolds are retained as the historical experimental sources; their full datasets still require direct review. An isotope substitution may also change structure or anharmonic motion, so a measured coefficient must retain its sample and phase conditions. [R2](#ref-source-eff5a2a1c455e7f6) [R3](#ref-source-e8a489943f13c9f8) [R6](#ref-source-0620df96ebbf2a66)
+
+The weak-coupling isotropic BCS benchmark is $2\Delta(0)/(k_BT_c)\simeq3.53$. Lead is a strong-coupling benchmark, so that number is not a compulsory fit to its tunneling spectrum. Retardation makes the gap energy dependent; a full gap alone does not establish its sign structure or the microscopic pairing interaction. [R16](#ref-source-d56b04dc0b32c796) [R17](#ref-source-ba10e800a1246bf6)
+
+For an illustrative McMillan-type estimate, write $T_c=(\omega_{\log}/1.2)\exp[-A/D]$, with $A=1.04(1+\lambda)$ and $D=\lambda-\mu^*(1+0.62\lambda)>0$, taking $\omega_{\log}$ in kelvin. If $\mu^*=\mu/[1+\mu\ln(E_{\mathrm{el}}/\omega_{\log})]$, with the two cutoff scales in the same units, fixed $\lambda,\mu,E_{\mathrm{el}}$ give $\alpha=\tfrac12[1-A(1+0.62\lambda)(\mu^*)^2/D^2]$. Three finite-difference mass substitutions independently confirm this derivative and its difference from the fixed-$\mu^*$ limit. These examples are not mercury fits. The estimate omits the full Allen–Dynes shape factors and is not a universal upper bound. [R5](#ref-source-aa8182fe7a3d8d0c) [R6](#ref-source-0620df96ebbf2a66) [R16](#ref-source-d56b04dc0b32c796)
+
+In the Sc paper's Table I, six printed estimates are consistent with the input rounding intervals. Sc-IV printed inputs yield 21.37/18.72 K, versus listed 21.5/18.8 K; exact reproduction needs unrounded inputs. Sc-V at 260 GPa gives 30.07/26.38 K for $\mu^*=0.10/0.13$. These are calculations, not the measured 37.6 K onset at a different pressure. The reported extrapolated $B_{c2}(0)=21.3$ T implies $\xi=\sqrt{\Phi_0/(2\pi B_{c2})}=39.31$ angstrom; this checks units, not the extrapolation model. [R10](#ref-source-dc73a11d591aebd0)
+
+## Experimental criteria
+
+Tunneling is valuable when the measured superconducting conductance is normalized by an appropriate normal reference. Rowell's 1970 account states the crucial conditions: the current must be tunneling current and the barrier must remain effectively unchanged through the transition. Unnormalized structure can instead reflect the barrier or its excitations. The 1965 McMillan–Rowell paper establishes the historical lead inversion reference, but its original quantitative inversion has not been independently rerun here. A phonon density of states alone is not the coupling-weighted spectrum $\alpha^2F$. [R4](#ref-source-b66885f8fdc58181) [R7](#ref-source-27b24b231ced1ec3) [R16](#ref-source-d56b04dc0b32c796)
+
+Lithium illustrates why conditions cannot be dropped from a material label. Shimizu and colleagues reported compressed Li reaching about 20 K at 48 GPa in 2002; Tuoriniemi and colleagues reported an ambient-pressure transition around 0.4 mK in 2007, with a Meissner-state figure. The latter is 0.0004 K, not 0.4 K. These source checks cover abstracts and selected captions; they do not establish an entire phase diagram or independently validate the underlying data. [R8](#ref-source-cc7115129638a171) [R9](#ref-source-61e8b60fcacfb53b)
+
+Wang and colleagues reported Sc onset at 37.6 K and 243 GPa, distinct from the plotted 37.3 K at 244 GPa. Four-probe warming measurements used diamond Raman pressure calibration; onset means departure from the normal-state line. Field/current suppression supports the transport assignment, but no Meissner measurement was supplied. Phase boundaries were inferred from transition trends and compared with earlier diffraction. Applied fields reached 9 T; 21.3 T is an extrapolation. [R10](#ref-source-dc73a11d591aebd0)
+
+Sakata and colleagues reported Ca-VII near 29 K at 216 GPa. Their selected methods describe room-temperature diffraction and transport; a room-temperature structure measurement does not automatically determine the low-temperature phase. An Andersson comment is part of the source trail, but its contents have not yet been obtained in this review. The reported result remains attributed to its authors, with that reconciliation open. [R11](#ref-source-bc42a3144ddb335e) [R12](#ref-source-c563fd6be7dd9167)
+
+Iron is another warning against classification by ambient behavior. Shimizu and colleagues reported a resistance drop and Meissner signal below 2 K under 15–30 GPa in the non-magnetic state. This abstract-level evidence does not identify the pairing interaction or justify transferring a simple weak-coupling description from an unrelated element. Magnetic history, structure and purity need their own assessment. [R13](#ref-source-7301d50108f9de56)
+
+## Limits and disputes
+
+A finite resistive transition, instrument-limited zero resistance, field suppression, magnetic shielding and a bulk thermodynamic anomaly answer different questions. Compare them on the same sample or explain why samples differ. Report the thermometer, onset/midpoint/zero criterion, pressure calibration, pressure medium, compression path and structural measurement temperature. Missing information stays unknown rather than being inferred from the chemical formula. [R1](#ref-source-d36e5a81b57e823f) [R8](#ref-source-cc7115129638a171) [R10](#ref-source-dc73a11d591aebd0) [R11](#ref-source-bc42a3144ddb335e)
+
+The September 2026 Sc theory paper connects compression, increasing overlap of 3d orbitals and band broadening to stronger electron–phonon coupling. Its phrase “electronic mechanism” does not mean a demonstrated nonphonon pairing glue. This page has checked the publisher abstract only: no new experimental transition, full calculation or universal elemental record is inferred from that description. Historical “highest” claims must be dated to the publication and its comparison set. [R14](#ref-source-29962a8944db57fa)
+
+## Discovery implications
+
+Treat an element as a collection of phase-specific test cases. Useful screening combines a dynamically and thermodynamically plausible structure, electron–phonon matrix elements, electronic energy scales and a stated Coulomb treatment, then asks which experimental observable could falsify the prediction. Agreement with one transition temperature does not validate the whole spectral function, numerical convergence or phase assignment. Keep calculated values separate from experimental transition records and preserve negative or incomplete evidence. [R5](#ref-source-aa8182fe7a3d8d0c) [R6](#ref-source-0620df96ebbf2a66) [R16](#ref-source-d56b04dc0b32c796)
+
+## Related topics
+
+Continue with [isotope effects](/scwiki/isotope-effect), [BCS theory](/scwiki/bcs-weak-coupling), [Eliashberg theory](/scwiki/eliashberg-strong-coupling), [superconducting gaps](/scwiki/superconducting-gap) and [critical fields](/scwiki/critical-fields).

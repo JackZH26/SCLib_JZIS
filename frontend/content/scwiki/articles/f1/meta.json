@@ -1,0 +1,326 @@
+{
+  "id": "scwiki-f1",
+  "topicId": "scwiki-topic-f1",
+  "code": "F1",
+  "slug": "quantum-metric",
+  "title": "Quantum metric: state distance, conventions and response limits",
+  "summary": "Define Bloch-state geometry with explicit normalization, distinguish metric from topology, and keep geometric response models separate from measured total stiffness.",
+  "aliases": [
+    "quantum metric",
+    "Fubini Study",
+    "Fubini-Study",
+    "quantum geometric tensor",
+    "fidelity",
+    "minimal quantum metric"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "F7",
+    "B13",
+    "E9",
+    "E8"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T13:49:34.227083+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Liang author equations,Peotta published assumptions,Huhtinen published response correction,Tanaka author methods and independent bounded state-geometry models.",
+    "limitations": [
+      "Complete scientific acceptance, full supplementary and raw-data reviews remain open.",
+      "Provost original is publisher-abstract scope; Liang and Tanaka final-version comparisons incomplete.",
+      "No material quantum metric, geometric stiffness fraction or transition temperature reconstructed.",
+      "Huhtinen full minimal-metric proof,band-touching response and complete self-consistent calculation not reproduced."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "F_quantum_geometry/F1_quantum_metric.md",
+    "sha256": "f4f76f73cf21723199f60f45a93acb2d4ace612337ebbf851629966f88dad668",
+    "sourceId": "file-4e31089d4d599b5b"
+  },
+  "references": [
+    {
+      "id": "source-fbbc7a50ad47a3f8",
+      "doi": "10.1007/BF02193559",
+      "title": "Riemannian structure on manifolds of quantum states",
+      "year": 1980,
+      "url": "https://doi.org/10.1007/BF02193559",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-and-bibliography",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.springer.com/article/10.1007/BF02193559",
+        "note": "Original publisher abstract and September1980 citation checked; full original not retrieved. General state-manifold background only."
+      }
+    },
+    {
+      "id": "source-fdf091e09e7f4a6f",
+      "doi": "10.1038/ncomms9944",
+      "title": "Superfluidity in topologically nontrivial flat bands",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/ncomms9944",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-flat-band-assumptions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/ncomms9944",
+        "note": "Published20November2015. Existing local final PDF selectedpp4–6, especially uniform pairing and bandwidth/interaction/bandgap hierarchy onp5; prior B13p5visual reused. Full supplementary derivation not reproduced."
+      }
+    },
+    {
+      "id": "source-fa7a165c8c344a63",
+      "doi": "10.1103/PhysRevB.95.024515",
+      "title": "Band geometry, Berry curvature, and superfluid weight",
+      "year": 2017,
+      "url": "https://doi.org/10.1103/PhysRevB.95.024515",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-projector-and-metric-conventions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1610.01803v2",
+        "note": "Authorv2 11January2017,selectedpp1–2,4–6; p5Eq21–24 visuallychecked. Published27January2017. R=2Tr(P dP dP) and gLiang=2gWiki. Final-version comparison and full response derivation remain open."
+      }
+    },
+    {
+      "id": "source-be7282623ca96056",
+      "doi": "10.1038/s41586-024-08494-7",
+      "title": "Superfluid stiffness of magic-angle twisted bilayer graphene",
+      "year": 2025,
+      "url": "https://doi.org/10.1038/s41586-024-08494-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-circuit-and-temperature-definitions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2406.13740v2",
+        "note": "Tanaka et al, published5February2025. Authorv2selectedpp5–7 and prior B13/E9 Supplement3p31 circuitreview.20mKbase/40mKdevice,half-resistance near1K,active aspect ratio and parallel edge model; fullfinal/rawdata comparison open."
+      }
+    },
+    {
+      "id": "source-72f7ddb9f13bbd81",
+      "doi": "10.1103/PhysRevB.106.014518",
+      "title": "Revisiting flat band superconductivity: Dependence on minimal quantum metric and band touchings",
+      "year": 2022,
+      "url": "https://doi.org/10.1103/PhysRevB.106.014518",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-response-correction",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://aaltodoc.aalto.fi/server/api/core/bitstreams/e05db312-49b0-4769-b112-681407acd4b0/content",
+        "note": "Published26July2022. Final reprint introduction and selectedpp1–5 derivative/orbital-position discussion plusp6minimal-integrated-trace statement read as extractedtext. Full minimal-metric proof,band-touching calculation and complete response model not reproduced."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-f1-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "The quantum metric measures how a normalized quantum state changes with parameters after removing its unobservable overall phase. For Bloch bands, those parameters can be crystal momentum. It describes wavefunctions rather than only energy dispersion. A flat band can therefore have nonzero metric, while a large metric alone neither supplies an attractive interaction nor establishes superconductivity. Provost and Vallée developed a general state-manifold construction; later multiband superconductivity work connected band geometry to current response under specified assumptions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fbbc7a50ad47a3f8",
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "Fixed orbital representation, selected smooth subspace, explicit metric/curvature normalization and units; models separate from material measurements.",
+      "verificationScope": "Selected primary passages and bounded model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f1-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "This page uses a single isolated band or a specified smooth band subspace. It does not identify a single-particle Bloch metric with every many-body fidelity susceptibility. Keep the Hilbert space, parameter coordinates, orbital basis and selected subspace explicit. A geometric quantity can vary continuously without becoming a quantized topological invariant.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fbbc7a50ad47a3f8",
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "Fixed orbital representation, selected smooth subspace, explicit metric/curvature normalization and units; models separate from material measurements.",
+      "verificationScope": "Selected primary passages and bounded model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f1-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a normalized state $|u\\rangle$, let $P=|u\\rangle\\langle u|$ and $Q_{ij}=\\langle\\partial_i u|(1-P)|\\partial_j u\\rangle$. We define $g_{ij}=\\mathrm{Re}\\,Q_{ij}$ and $\\Omega_{ij}=-2\\mathrm{Im}\\,Q_{ij}$, consistent with $A_i=i\\langle u|\\partial_i u\\rangle$. Thus $Q_{ij}=g_{ij}-i\\Omega_{ij}/2$. The nearby-state fidelity obeys $1-|\\langle u(\\mathbf k)|u(\\mathbf k+d\\mathbf k)\\rangle|^2=g_{ij}dk_i dk_j+O(|d\\mathbf k|^3)$. With physical wavevectors, the metric components have units of length squared; dimensionless lattice coordinates change those units.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fbbc7a50ad47a3f8",
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "Fixed orbital representation, selected smooth subspace, explicit metric/curvature normalization and units; models separate from material measurements.",
+      "verificationScope": "Selected primary passages and bounded model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f1-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a rank-one projector, $Q_{ij}=\\mathrm{Tr}[P(\\partial_iP)(\\partial_jP)]$ and $g_{ij}=\\tfrac12\\mathrm{Tr}[(\\partial_iP)(\\partial_jP)]$. The projector is unchanged by $|u\\rangle\\rightarrow e^{i\\phi(\\mathbf k)}|u\\rangle$, so this construction removes phase-gauge artifacts. For an isolated group of touching bands, use the smooth subspace projector and state the trace convention. A chosen individual eigenvector can become singular or ambiguous at a degeneracy. Phase-gauge invariance within a fixed orbital representation is not permission to ignore a momentum-dependent change of the underlying basis.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fa7a165c8c344a63",
+        "source-72f7ddb9f13bbd81"
+      ],
+      "conditions": "Fixed orbital representation, selected smooth subspace, explicit metric/curvature normalization and units; models separate from material measurements.",
+      "verificationScope": "Selected primary passages and bounded model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f1-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Positivity of the two-coordinate matrix $Q$ gives $\\det g\\geq\\Omega_{xy}^2/4$ and $g_{xx}+g_{yy}\\geq|\\Omega_{xy}|$. The trace statement refers to the selected common coordinate convention. For the spinor $u=(\\cos(\\theta/2),e^{i\\varphi}\\sin(\\theta/2))$, our convention gives $g_{\\theta\\theta}=1/4$, $g_{\\varphi\\varphi}=\\sin^2\\theta/4$ and $\\Omega_{\\theta\\varphi}=-\\sin\\theta/2$. This two-level example saturates the determinant inequality; a three-level family can satisfy it strictly. These are model checks, not measurements of a material.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "Fixed orbital representation, selected smooth subspace, explicit metric/curvature normalization and units; models separate from material measurements.",
+      "verificationScope": "Selected primary passages and bounded model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f1-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Normalization must be translated before comparing formulas. Liang's checked manuscript defines $\\mathcal R_{ij}=2\\mathrm{Tr}[P(\\partial_iP)(\\partial_jP)]$ and calls its real part the metric. Consequently $g^{\\rm Liang}=2g$ in this page's convention, and that paper writes the fidelity distance with an extra factor of one half. Its curvature sign must likewise be translated consistently. This is a convention difference, not a contradiction or a factor-of-two enhancement of a physical stiffness.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "Fixed orbital representation, selected smooth subspace, explicit metric/curvature normalization and units; models separate from material measurements.",
+      "verificationScope": "Selected primary passages and bounded model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f1-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "As a counterexample to equating metric with topology, take $u=(\\cos(k_x/2),\\sin(k_x/2))$, independent of $k_y$. The projector is periodic on a $2\\pi$ torus, $g_{xx}=1/4$, and the Berry curvature vanishes. The Hamiltonian $H=E_0(2P-I)$ has flat eigenvalues $\\pm E_0$ for positive constant $E_0$. It has nonzero metric and zero Chern number without introducing pairing. Our finite-difference checks compare projector derivatives, phase-transformed states and symmetric fidelity curvature; they do not calculate a superconducting response.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "Fixed orbital representation, selected smooth subspace, explicit metric/curvature normalization and units; models separate from material measurements.",
+      "verificationScope": "Selected primary passages and bounded model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f1-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "An experimental response may constrain band geometry through a model and matrix elements; it need not uniquely reconstruct every metric component. For superconductivity, distinguish the measured total stiffness from a decomposition into conventional and geometric terms. Report carrier filling, band window, temperature, units and the response-to-metric conversion. A successful fit does not by itself identify a unique microscopic pairing mechanism.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-fa7a165c8c344a63",
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Fixed orbital representation, selected smooth subspace, explicit metric/curvature normalization and units; models separate from material measurements.",
+      "verificationScope": "Selected primary passages and bounded model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f1-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Tanaka and colleagues' 2025 MATBG study combines microwave kinetic inductance and transport. The checked author version includes a parallel edge-proximity circuit and an assumed active-region aspect ratio. It distinguishes a 20 mK refrigerator base from an approximately 40 mK wired-device temperature, and a half-normal-resistance transition near 1 K across much of the gate range. These are different quantities. Its comparison supports a connection to quantum geometry without directly isolating a model-independent geometric fraction. This page stores the 40 mK value only as a measurement condition.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Fixed orbital representation, selected smooth subspace, explicit metric/curvature normalization and units; models separate from material measurements.",
+      "verificationScope": "Selected primary passages and bounded model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f1-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Peotta–Törmä's flat-band result assumes an interaction window between the bandwidth and separating band gaps, together with an appropriate uniform-pairing construction. Liang extends the response analysis, but the isolated-band expression retains time-reversal, orbital-uniform pairing and band-separation assumptions. Huhtinen and colleagues subsequently identify missing order-parameter-response terms in earlier formulas and connect isolated-flat-band stiffness to a minimal quantum metric. Therefore an arbitrary raw metric integral should not be presented as an automatically complete quantitative stiffness prediction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63",
+        "source-72f7ddb9f13bbd81"
+      ],
+      "conditions": "Fixed orbital representation, selected smooth subspace, explicit metric/curvature normalization and units; models separate from material measurements.",
+      "verificationScope": "Selected primary passages and bounded model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f1-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "The review covers selected Peotta published passages, Liang author-version equations and Tanaka author methods; it does not complete their raw-data, full supplementary or final-version audits. Provost's original is checked at publisher-abstract scope. Huhtinen's published introduction and selected response derivation, pages 1–4, were checked; its full minimal-metric proof and band-touching analysis were not reproduced. The inherited F1 bibliography misattributes the MATBG paper to Randeria; the published authors are Tanaka and colleagues. Complete scientific acceptance remains open.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fbbc7a50ad47a3f8",
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63",
+        "source-be7282623ca96056",
+        "source-72f7ddb9f13bbd81"
+      ],
+      "conditions": "Fixed orbital representation, selected smooth subspace, explicit metric/curvature normalization and units; models separate from material measurements.",
+      "verificationScope": "Selected primary passages and bounded model checks; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f1-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Calculate geometry with a reproducible orbital convention and subspace, check mesh convergence and preserve normalization factors. Test pairing and total phase stiffness separately. A topological lower bound can be useful under its assumptions, but zero Chern number does not exclude useful geometry, and nonzero metric does not guarantee superconductivity. Geometry is one constraint in a material-specific calculation, alongside interactions, filling, disorder and phase coherence.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63",
+        "source-72f7ddb9f13bbd81"
+      ],
+      "conditions": "Fixed orbital representation, selected smooth subspace, explicit metric/curvature normalization and units; models separate from material measurements.",
+      "verificationScope": "Selected primary passages and bounded model checks; complete scientific acceptance open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-f1-correction-1",
+      "description": "The inherited F1 bibliography attributes the2025 MATBG paper to Randeria; publisher identifies Tanaka and colleagues. Fixed source bytes retained.",
+      "sourceId": "source-be7282623ca96056",
+      "scope": "Published author identity; final paper not fully reviewed.",
+      "targetSectionId": "limits-and-disputes"
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "Q_{ij}=\\mathrm{Tr}[P(\\partial_iP)(\\partial_jP)]",
+      "check": "12 bounded spinor checks compare finite differences, projectors, U(1) phase changes and symmetric fidelity curvature."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\det g\\geq\\Omega_{xy}^2/4",
+      "check": "12 two-level saturating and3 three-level strict examples;4 flat real-projector examples have nonzero metric and zero curvature. No material response calculated."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-f1-material-1",
+      "formula": "C",
+      "sample": "Tanaka wired MATBG device",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.04,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Approximately40mK effective device temperature, distinct from20mKbase andnear1Khalf-resistance scale; no Tc assigned here.",
+      "criterion": "effective-device-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Microwave kinetic inductance and transport",
+      "sourceId": "source-be7282623ca96056",
+      "aliases": [
+        "MATBG",
+        "Tanaka device",
+        "twisted bilayer graphene"
+      ]
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 73,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; corrected author attribution, translated metric normalization and added subsequent response-correction limits."
+    }
+  ]
+}

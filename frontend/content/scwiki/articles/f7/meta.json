@@ -1,0 +1,360 @@
+{
+  "id": "scwiki-f7",
+  "topicId": "scwiki-topic-f7",
+  "code": "F7",
+  "slug": "geometric-superfluid-weight",
+  "title": "Geometric superfluid weight",
+  "summary": "Relate interband response to quantum geometry while preserving units, internal-field relaxation and the limits of extracting a geometric fraction from experiment.",
+  "aliases": [
+    "geometric superfluid weight",
+    "geometric stiffness",
+    "superfluid density",
+    "sheet kinetic inductance",
+    "mass-normalized superfluid weight",
+    "MATBG"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experimental"
+  ],
+  "relatedCodes": [
+    "F1",
+    "F6",
+    "B13",
+    "A2",
+    "E8"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T14:39:32.034909+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Peotta, Liang, Huhtinen, Julku and Tanaka passages, explicit SI conventions and 15 flat-band current identities. The limit-order paper was checked at original-abstract scope; selected original BKT passages were read.",
+    "limitations": [
+      "Complete scientific acceptance and full author-to-journal version comparisons remain open.",
+      "The full current-correlation and BKT derivations and a self-consistent multiband response have not been reproduced.",
+      "The raw microwave data have not been audited, and no model-independent geometric fraction has been extracted.",
+      "Band identities and SI conversions are illustrative checks, not material evidence."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "F_quantum_geometry/F7_geometric_superfluid_weight.md",
+    "sha256": "508862da8c0ae9e72348b5b16a254bf1bf1e5838ad56e0d7a56be01b84044576",
+    "sourceId": "file-14b5cbb4ac362085"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 67,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "The existing pilot was expanded in place while preserving the pinned source. Added the 2022 internal-field correction, explicit units and bounded checks. Selected source scopes were updated from actual readings; complete scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-f7-correction-1",
+      "description": "The pinned 2025 stiffness reference names Randeria; its DOI identifies Tanaka and colleagues. The public article corrects the attribution and retains the limited manuscript-review scope.",
+      "sourceId": "source-be7282623ca96056",
+      "scope": "Bibliographic attribution, not a scientific correction to the paper."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "K_\\square=\\frac{4e^2\\rho_s}{\\hbar^2}=\\frac1{L_\\square}",
+      "check": "Fifteen flat-band current and metric checks with smooth phase changes; three SI inductance conversions and the factor of four for Q = 2q. No self-consistent current response or material transition temperature is claimed."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-fdf091e09e7f4a6f",
+      "doi": "10.1038/ncomms9944",
+      "title": "Superfluidity in topologically nontrivial flat bands",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/ncomms9944",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-units-and-flat-band-assumptions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/ncomms9944",
+        "note": "Published 20 November 2015. Selected pages 3–6 were read. Page 3 was visually checked for the free-energy definition and frozen-field derivative in Eq. (1), interpreted with the 2022 response correction. The earlier page 5 review of uniform pairing and scale hierarchy is retained. The full supplementary derivation has not been reviewed."
+      }
+    },
+    {
+      "id": "source-b43340ce5c356e49",
+      "doi": "10.1103/PhysRevLett.117.045303",
+      "title": "Geometric Origin of Superfluidity in the Lieb-Lattice Flat Band",
+      "year": 2016,
+      "url": "https://doi.org/10.1103/PhysRevLett.117.045303",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-lieb-model",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1603.03237v2",
+        "note": "Author version 2, dated 8 May 2016; journal publication 22 July 2016. Selected pages 1–2 cover the Chern-trivial Lieb model, isolated-band limit and orbital pairing conditions. Page 2 was visually checked after a PDF extraction warning. The final-version comparison and full model response remain open."
+      }
+    },
+    {
+      "id": "source-fa7a165c8c344a63",
+      "doi": "10.1103/PhysRevB.95.024515",
+      "title": "Band geometry, Berry curvature, and superfluid weight",
+      "year": 2017,
+      "url": "https://doi.org/10.1103/PhysRevB.95.024515",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-projector-and-metric-conventions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1610.01803v2",
+        "note": "Author version 2, dated 11 January 2017; journal publication 27 January 2017. Selected pages 1–2 and 4–6 were read, and Eqs. (21)–(24) on page 5 were visually checked. The metric normalization is twice the Wiki convention. The final-version comparison and full response derivation remain open."
+      }
+    },
+    {
+      "id": "source-be7282623ca96056",
+      "doi": "10.1038/s41586-024-08494-7",
+      "title": "Superfluid stiffness of magic-angle twisted bilayer graphene",
+      "year": 2025,
+      "url": "https://doi.org/10.1038/s41586-024-08494-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-circuit-and-temperature-definitions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2406.13740v2",
+        "note": "Tanaka and colleagues, published 5 February 2025. Selected author-version pages 5–7 and earlier circuit passages were reviewed: 20 mK base and approximately 40 mK device temperatures, the half-resistance criterion near 1 K, assumed active-region aspect ratio and parallel edge model. The full final-version and raw-data comparisons remain open."
+      }
+    },
+    {
+      "id": "source-72f7ddb9f13bbd81",
+      "doi": "10.1103/PhysRevB.106.014518",
+      "title": "Revisiting flat band superconductivity: Dependence on minimal quantum metric and band touchings",
+      "year": 2022,
+      "url": "https://doi.org/10.1103/PhysRevB.106.014518",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-relaxation-correction",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://aaltodoc.aalto.fi/server/api/core/bitstreams/e05db312-49b0-4769-b112-681407acd4b0/content",
+        "note": "Published 26 July 2022. Selected final-reprint pages 1–5 were read; Eqs. (13)–(17) on page 4 were visually checked. The review covers order-parameter relaxation, time reversal, Hessian conditions and representation dependence. The earlier selected page 6 reading of minimal integrated trace is retained. The full proof and multiband response have not been reproduced."
+      }
+    },
+    {
+      "id": "source-dd8fd5ac429b785f",
+      "doi": "10.1103/PhysRevB.47.7995",
+      "title": "Insulator, metal, or superconductor: The criteria",
+      "year": 1993,
+      "url": "https://doi.org/10.1103/PhysRevB.47.7995",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.47.7995",
+        "note": "Published 1 April 1993. The original abstract discusses wavevector and frequency limits and criteria for lattice states. The full correlation-function analysis has not been read."
+      }
+    },
+    {
+      "id": "source-8f81510a80c35e3a",
+      "doi": "10.1103/PhysRevLett.39.1201",
+      "title": "Universal Jump in the Superfluid Density of Two-Dimensional Superfluids",
+      "year": 1977,
+      "url": "https://doi.org/10.1103/PhysRevLett.39.1201",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-original-publisher-text",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.39.1201",
+        "note": "Published 7 November 1977. Selected original publisher text on pages 1202–1203 was reread: bare and renormalized stiffness, recursion relations and the universal jump in Eq. (10). No inspectable screenshot was returned, so no visual equation check is claimed. The full derivation has not been reproduced."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-f7-material-1",
+      "formula": "C",
+      "sample": "Tanaka wired MATBG device",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.04,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Approximately40mK effective device temperature, distinct from20mKbase andnear1Khalf-resistance scale; no Tc assigned here.",
+      "criterion": "effective-device-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Microwave kinetic inductance and transport",
+      "sourceId": "source-be7282623ca96056",
+      "aliases": [
+        "MATBG",
+        "Tanaka device",
+        "twisted bilayer graphene"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-f7-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Superfluid weight is a current or phase-twist response defined with a particular thermodynamic and electromagnetic convention. In a multiband superconductor, its conventional part is associated with intraband dispersion, while geometric terms involve the wavefunctions and interband matrix elements. These are parts of a specified response calculation, not two experimentally separated streams of Cooper pairs.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f7-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "A response kernel also depends on how frequency and wavevector approach zero. Scalapino, White and Zhang discuss distinct limiting procedures for diagnosing insulating, metallic and superconducting lattice states. A clean metal's ideal transport response should not be identified with the equilibrium Meissner response merely because both are called a stiffness. This entry checks that paper's original abstract; its full correlation-function derivation remains open.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-dd8fd5ac429b785f"
+      ],
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f7-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For an isotropic superconducting sheet, define the phase-energy density by $f=\\rho_s|\\nabla\\theta-(2e/\\hbar)\\mathbf A|^2/2$, with $\\rho_s$ in joules. The sheet electromagnetic kernel is $K_\\square=4e^2\\rho_s/\\hbar^2=1/L_\\square$, where $L_\\square$ is sheet kinetic inductance. Peotta and Törmä instead define a mass-normalized weight through $f=D_s p_s^2/8$, with $p_s=\\hbar\\nabla\\theta$ in zero field. Thus their convention gives $\\rho_s=\\hbar^2D_s/4$ and $K_\\square=e^2D_s$. These quantities have different units even when each is called superfluid weight.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f7-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A pair phase written as $\\theta=2\\mathbf q\\cdot\\mathbf r$ introduces another factor: the curvature with respect to $\\mathbf q$ is four times the curvature with respect to $\\nabla\\theta$. For a hypothetical $L_\\square=10$ nH, the sheet convention above gives $\\rho_s/k_B\\approx0.7845$ K. Three illustrative inductances were checked with SI charge, Planck and Boltzmann constants. These are conversion examples, not measured superconducting transition temperatures.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f7-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In a fixed orbital basis, differentiating $H|m\\rangle=\\varepsilon_m|m\\rangle$ gives $\\langle n|\\partial_iH|m\\rangle=\\delta_{nm}\\partial_i\\varepsilon_m+(\\varepsilon_m-\\varepsilon_n)\\langle n|\\partial_i m\\rangle$. Flat eigenvalues set the diagonal velocity to zero without forcing the interband matrix elements to vanish. Fifteen checks in an illustrative two-band model reproduce this identity and $g_{kk}=1/4$ for a rotating eigenvector; multiplying either eigenvector by a smooth phase leaves the metric unchanged. This checks a band identity, not superconductivity or a self-consistent current response.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fa7a165c8c344a63",
+        "source-72f7ddb9f13bbd81"
+      ],
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f7-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The familiar isolated-band expression $D_{s,ij}^{\\rm geom}\\propto\\sum_{\\mathbf k}(|\\Delta|^2/E_{\\mathbf k})\\tanh[E_{\\mathbf k}/(2k_BT)]g_{ij}(\\mathbf k)$ displays a geometric structure, not a convention-free numerical formula. It requires stated pairing, band-isolation and symmetry assumptions, a wavevector integration measure and charge factors. The metric used in the checked Liang manuscript is twice the Wiki convention $g_{ij}=\\operatorname{Re}\\langle\\partial_i u|(1-|u\\rangle\\langle u|)|\\partial_j u\\rangle$. Translate that normalization before comparing prefactors.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63"
+      ],
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f7-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The internal pairing fields must also respond to the twist. Under the time-reversal and equilibrium-minimum assumptions studied by Huhtinen and colleagues, the total free-energy curvature contains a negative-semidefinite relaxation correction to the frozen-field result. In their isolated flat-band uniform-pairing setting, the relevant integrated metric has minimal trace with respect to orbital positions. Equal pairing at zero twist does not justify freezing all relative phases at nonzero twist. A nonzero unrelaxed result can even become zero after relaxation. The scalar illustration in the flat-band article shows this possibility without claiming to reproduce the complete lattice response.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-72f7ddb9f13bbd81"
+      ],
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f7-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Measure and report the total response with its units, dimensionality, frequency, geometry and fitting model. Tanaka and colleagues obtain stiffness through microwave kinetic inductance with a parallel electrode-proximitized edge in the circuit model. Their conversion uses an assumed active-region aspect ratio equal to the device aspect ratio; their reported $D_s=l/(wL_{\\rm total})$ corresponds to inverse sheet inductance. A comparison with a conventional estimate can support a geometric interpretation without constituting a model-independent measurement of its fraction.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f7-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "The selected author manuscript distinguishes a 20 mK refrigerator base from an approximately 40 mK wired-device temperature. Its roughly 1 K resistive scale uses half the normal-state resistance. Neither the measurement temperature nor that resistive criterion should automatically be labelled a BKT transition. Full published-version and raw-data comparisons remain open.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f7-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "For an effective isotropic two-dimensional BKT description, the jump involves the renormalized total sheet phase stiffness: $k_BT_{\\rm BKT}=\\pi\\rho_s(T_{\\rm BKT}^-)/2$. It does not determine a separate geometric component. Substituting a zero-temperature stiffness gives only an upper estimate if the stiffness at the transition does not exceed that zero-temperature value. With the hypothetical 10 nH example this estimate is about 1.232 K; it is neither a measured transition nor evidence that the BKT assumptions hold in a particular device.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-be7282623ca96056",
+        "source-8f81510a80c35e3a"
+      ],
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f7-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A nonzero Chern number can provide a geometric lower bound in specified models, but it is not necessary for every geometric contribution. The Chern-trivial Lieb-lattice example has a finite flat-band response under its interaction assumptions. A bound on an integrated metric is not automatically a numerical bound on a dimensionful measured stiffness: filling, interaction, normalization and the complete response matter.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-b43340ce5c356e49",
+        "source-72f7ddb9f13bbd81"
+      ],
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f7-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Selected original passages and equations, the band-current identity and unit conversions have been checked. Complete scientific acceptance has not been reached. Full current-correlation and BKT derivations, self-consistent multiband response, remote-band convergence and experimental data audits remain open. Disorder, finite frequency, sample inhomogeneity and phase fluctuations can affect the comparison between a theoretical weight and a measured response.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fa7a165c8c344a63",
+        "source-be7282623ca96056",
+        "source-72f7ddb9f13bbd81",
+        "source-dd8fd5ac429b785f",
+        "source-8f81510a80c35e3a"
+      ],
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f7-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Report conventional, geometric and total response using a common convention, including internal-field relaxation. Check a band model's current operator and geometry before applying a flat-band formula, and retain the uncertainty of the experimental baseline. Geometry can constrain transport by pairs; it does not automatically supply the attraction, determine gap symmetry or ensure macroscopic phase coherence.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fdf091e09e7f4a6f",
+        "source-fa7a165c8c344a63",
+        "source-72f7ddb9f13bbd81"
+      ],
+      "conditions": "Explicit sheet-energy, mass-normalized and inverse-inductance conventions; fixed orbital basis and relaxed pairing fields; renormalized total BKT stiffness and a device-specific circuit model.",
+      "verificationScope": "Selected original passages, band identities and unit conversions; complete scientific acceptance remains open."
+    }
+  ]
+}

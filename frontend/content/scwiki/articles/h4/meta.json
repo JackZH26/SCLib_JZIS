@@ -1,0 +1,458 @@
+{
+  "id": "scwiki-h4",
+  "topicId": "scwiki-topic-h4",
+  "code": "H4",
+  "slug": "charge-density-waves",
+  "title": "Charge-density waves: observations, competition and reconstruction",
+  "summary": "Read charge-order evidence with its material, wave vector, dimensionality and resolution limits; distinguish competition from a pairing mechanism.",
+  "aliases": [
+    "charge density wave",
+    "charge-density waves",
+    "CDW",
+    "电荷密度波"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "H3",
+    "B6",
+    "C8"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T16:48:09.729599+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Gerber author methods and diffraction figures; Chang final methods, table and figures; primary kagome abstracts and Li publisher passages; inherited scoped B6/C8 evidence; independent correlation and Gaussian-width checks.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Complete source-version, raw-data, supplementary calibration and competing-structure reviews remain open.",
+      "Selected abstracts do not establish a unique CDW mechanism, PDW or superconducting chirality.",
+      "Line-shape examples are models, not reanalyses of experimental profiles."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "H_anomalous_normal_state/H4_CDW.md",
+    "sha256": "cb5476fe2c7c2dea8b709ea989ffbb124b785c4437edb20dafaac852188af6b4",
+    "sourceId": "file-89e072ebf9e09927"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 123,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained. Corrected reference attribution, separated resolution treatments and probe limits. Original audit labels do not prove full acceptance."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-h4-correction-1",
+      "description": "The conjoined-CDW paper with DOI 10.1038/s41467-022-33995-2 is by Li and colleagues. Stahl's temperature-dependent stacking paper is DOI 10.1103/PhysRevB.105.195136.",
+      "sourceId": "source-80eda571fc6d710c",
+      "scope": "Correct inherited author-to-DOI attribution; preserve distinct structures and study conditions."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "S(q)=(1-r^2)/(1+r^2-2r\\cos q)",
+      "check": "30 lattice Fourier sums and 9 Gaussian variance corrections independently checked; B6 static free-energy illustration retained with explicit quartic convention. No diffraction fit reproduced."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-b33aab72ae697f3a",
+      "doi": "10.1038/375561a0",
+      "title": "Evidence for stripe correlations of spins and holes in copper oxide superconductors",
+      "year": 1995,
+      "url": "https://doi.org/10.1038/375561a0",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/375561a0",
+        "note": "Publisher abstract and identity checked: 15 June 1995, Nd-substituted compound x=0.12, neutron diffraction. Full paper and data not reviewed."
+      }
+    },
+    {
+      "id": "source-9ae65971bc3eb5b8",
+      "doi": "10.1126/science.1223532",
+      "title": "Long-Range Incommensurate Charge Fluctuations in (Y,Nd)Ba2Cu3O6+x",
+      "year": 2012,
+      "url": "https://doi.org/10.1126/science.1223532",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1207.0915v1",
+        "note": "Ghiringhelli et al. selected PDF pp.4–6,20–21: resonance/polarization,130meV resolution, author20meV bound and competition. Bound is not a resolved mode. Final-version and raw-data review open."
+      }
+    },
+    {
+      "id": "source-c4a9d4e1b52d95bb",
+      "doi": "10.1038/nphys2456",
+      "title": "Direct observation of competition between superconductivity and charge density wave order in YBa2Cu3O6.67",
+      "year": 2012,
+      "url": "https://doi.org/10.1038/nphys2456",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1206.4333v2",
+        "note": "Chang et al. selected pp.1–2: detwinned ortho-VIII crystal,100keV,up to17T,67K versus135K; zero-field CDW and field enhancement below Tc. Transition criterion/raw data not fully audited; no sample Tc record created."
+      }
+    },
+    {
+      "id": "source-d9477b85392d03f9",
+      "doi": "10.1126/science.aac6257",
+      "title": "Three-dimensional charge density wave order in YBa2Cu3O6.67 at high magnetic fields",
+      "year": 2015,
+      "url": "https://doi.org/10.1126/science.aac6257",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1506.07910v1",
+        "note": "Author v1 selected pp. 4, 10, 13 read; Figures 2 and 3 on pp. 9–10 visually checked. Gaussian correlation lengths are uncorrected lower bounds. Final-version comparison and raw-data reproduction remain open."
+      }
+    },
+    {
+      "id": "source-b89f6bcf54acb4d8",
+      "doi": "10.1038/ncomms11494",
+      "title": "Magnetic field controlled charge density wave coupling in underdoped YBa2Cu3O6+x",
+      "year": 2016,
+      "url": "https://doi.org/10.1038/ncomms11494",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-methods-table-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.nature.com/articles/ncomms11494.pdf",
+        "note": "Published 5 May 2016. Selected pp. 3, 5–6 read; Figures 4–5 on p. 5 and Table 1/methods on p. 6 visually checked. Resolution-corrected Gaussian widths, 16.9 T limit and absolute temperature uncertainty distinguished. Complete raw-profile and stacking-model reproduction remain open."
+      }
+    },
+    {
+      "id": "source-7746049011a0e640",
+      "doi": "10.1103/PhysRevX.11.031026",
+      "title": "Three-Dimensional Charge Density Wave and Surface-Dependent Vortex-Core States in a Kagome Superconductor CsV3Sb5",
+      "year": 2021,
+      "url": "https://doi.org/10.1103/PhysRevX.11.031026",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prx/abstract/10.1103/PhysRevX.11.031026",
+        "note": "Published 2 August 2021. Surface step phase shift and suggested three-dimensional order checked at abstract scope; vortex-state identity and full STM data not independently established."
+      }
+    },
+    {
+      "id": "source-d773a884dacbd7c9",
+      "doi": "10.1103/PhysRevB.105.195136",
+      "title": "Temperature-driven reorganization of electronic order in CsV3Sb5",
+      "year": 2022,
+      "url": "https://doi.org/10.1103/PhysRevB.105.195136",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-and-identity-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.105.195136",
+        "note": "Stahl et al., published 24 May 2022. Abstract reports temperature-dependent stacking and a null diffraction response up to 10 T. Full refinements not reviewed; distinguish this DOI from Li et al. conjoined-CDW work."
+      }
+    },
+    {
+      "id": "source-80eda571fc6d710c",
+      "doi": "10.1038/s41467-022-33995-2",
+      "title": "Discovery of conjoined charge density waves in the kagome superconductor CsV3Sb5",
+      "year": 2022,
+      "url": "https://doi.org/10.1038/s41467-022-33995-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-publisher-web-passages-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-022-33995-2",
+        "note": "Li et al., published 26 October 2022. Abstract, selected results and Figures 1–4 captions read as text; images and raw profiles not independently reviewed. Corrects the inherited attribution to Stahl. Measurements at 10 K and charge-order onsets are not superconducting Tc."
+      }
+    },
+    {
+      "id": "source-484da7abcc165cd3",
+      "doi": "10.1038/s41586-021-04327-z",
+      "title": "Time-reversal symmetry-breaking charge order in a kagome superconductor",
+      "year": 2022,
+      "url": "https://doi.org/10.1038/s41586-021-04327-z",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "accepted-manuscript-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.dora.lib4ri.ch/psi/islandora/object/psi:40892/datastream/PDF2/Mielke_III-2022-Time-reversal_symmetry-breaking_charge_order_in-(accepted_version).pdf",
+        "note": "Accepted manuscript opening abstract read: KV3Sb5 muon field-width enhancement below charge ordering. Full background calibration, magnetic interpretation and superconducting gap fits remain open."
+      }
+    },
+    {
+      "id": "source-057c43c86174f961",
+      "doi": "10.1038/s41586-021-03983-5",
+      "title": "Roton pair density wave in a strong-coupling kagome superconductor",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41586-021-03983-5",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2103.09188v2",
+        "note": "Selected pp. 3–7 and methods pp. 17–18; Fig. 3 on p. 14 visually checked. Author version 2 September 2021 has a different title and mistyped journal volume 559; publisher confirms Nature 599. Final-version/raw-data comparison open."
+      }
+    },
+    {
+      "id": "source-74169f2f9bc31219",
+      "doi": "10.1103/PhysRevLett.75.4650",
+      "title": "Singular Quasiparticle Scattering in the Proximity of Charge Instabilities",
+      "year": 1995,
+      "url": "https://doi.org/10.1103/PhysRevLett.75.4650",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.75.4650",
+        "note": "Castellani–Di Castro–Grilli abstract: infinite-U Hubbard–Holstein model and long-range Coulomb change from zero to finite wave vector. Full calculation not read or reproduced."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "id": "scwiki-h4-material-1",
+      "formula": "YBa2Cu3O6.67",
+      "sample": "Gerber high-field YBCO6.67 diffraction series",
+      "reportedTemperatureK": 10,
+      "temperatureNote": "Diffraction at 10 K; not superconducting Tc.",
+      "criterion": "diffraction-measurement",
+      "probe": "Pulsed-field X-ray diffraction",
+      "sourceId": "source-d9477b85392d03f9",
+      "aliases": [
+        "YBCO"
+      ]
+    },
+    {
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "id": "scwiki-h4-material-2",
+      "formula": "CsV3Sb5",
+      "sample": "Li resonant scattering specimen at ambient pressure",
+      "reportedTemperatureK": 10,
+      "temperatureNote": "Resonant scattering at 10 K; not superconducting Tc.",
+      "criterion": "REXS-measurement",
+      "probe": "Sb L1-edge resonant elastic X-ray scattering",
+      "sourceId": "source-80eda571fc6d710c",
+      "aliases": [
+        "CsV3Sb5"
+      ]
+    },
+    {
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 1,
+        "max": 1
+      },
+      "equilibrium": "unknown",
+      "id": "scwiki-h4-material-3",
+      "formula": "CsV3Sb5",
+      "sample": "Li high-pressure diffraction at 1 GPa",
+      "reportedTemperatureK": 61,
+      "temperatureNote": "Diffraction comparison temperature; separates charge-order peaks and is not superconducting Tc.",
+      "criterion": "diffraction-measurement",
+      "probe": "High-pressure X-ray diffraction",
+      "sourceId": "source-80eda571fc6d710c",
+      "aliases": [
+        "CsV3Sb5"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-h4-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A charge-density wave (CDW) modulates the electronic density at a finite wave vector, often together with atomic displacements. Cuprates and kagome compounds exhibit several distinct charge-order patterns. Their coexistence or competition with superconductivity depends on composition, temperature, field, pressure and the probe's spatial and temporal resolution. Neither a density modulation nor a nearby superconducting dome identifies the pairing interaction.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-9ae65971bc3eb5b8",
+        "source-c4a9d4e1b52d95bb",
+        "source-80eda571fc6d710c",
+        "source-74169f2f9bc31219"
+      ],
+      "conditions": "Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.",
+      "verificationScope": "Selected primary evidence and independent correlation models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h4-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "This page addresses observations and their interpretation. Pair-density waves instead modulate the superconducting pair field; spin-density waves modulate magnetization. Charge order, structural chirality, broken time-reversal symmetry and superconducting chirality are different claims. The retained source chapter's citation of Stahl for the conjoined-CDW paper is corrected: that paper is by Li and colleagues; Stahl's temperature-dependent stacking study has a different DOI.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-d773a884dacbd7c9",
+        "source-80eda571fc6d710c",
+        "source-484da7abcc165cd3",
+        "source-057c43c86174f961"
+      ],
+      "conditions": "Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.",
+      "verificationScope": "Selected primary evidence and independent correlation models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h4-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A single-component modulation can be written as $\\rho(\\mathbf r)=\\rho_0+\\operatorname{Re}[\\rho_{\\mathbf Q}e^{i\\mathbf Q\\cdot\\mathbf r}]$. Peak position identifies periodicity, while width constrains correlations under a stated line-shape model. For the illustrative lattice correlation $C(n)=r^{|n|}$, with $r=e^{-1/\\xi}$ and $\\xi$ in lattice spacings, the Fourier sum is $S(q)=(1-r^2)/(1+r^2-2r\\cos q)$. Here $q$ is dimensionless radians per spacing, measured from the ordering wave vector. Finite $\\xi$ produces a finite-width peak; observing that peak does not establish infinite-range order. This is an independent correlation model, not a fit to the cited specimens.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d9477b85392d03f9",
+        "source-b89f6bcf54acb4d8"
+      ],
+      "conditions": "Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.",
+      "verificationScope": "Selected primary evidence and independent correlation models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h4-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Correlation lengths also depend on resolution and conventions. If both intrinsic and instrumental profiles are Gaussian, $\\sigma_{\\rm obs}^2=\\sigma_{\\rm int}^2+\\sigma_R^2$. The convention $\\xi=1/\\sigma_{\\rm int}$ then requires momentum widths in inverse-length units. Reciprocal-lattice widths need the appropriate lattice conversion. Uncorrected $1/\\sigma_{\\rm obs}$ is a lower bound within this model. Gaussian standard deviations, Lorentzian half-widths and full widths are not interchangeable; a resolution-limited peak yields a bound rather than a precisely measured divergence.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d9477b85392d03f9",
+        "source-b89f6bcf54acb4d8"
+      ],
+      "conditions": "Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.",
+      "verificationScope": "Selected primary evidence and independent correlation models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h4-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A phenomenological free energy $F=a_s|\\Delta|^2+b_s|\\Delta|^4+a_c|\\rho_{\\mathbf Q}|^2+b_c|\\rho_{\\mathbf Q}|^4+g|\\Delta|^2|\\rho_{\\mathbf Q}|^2$ illustrates static competition when $g>0$. With positive quartic coefficients, a stable interior coexistence minimum additionally requires $4b_sb_c-g^2>0$ and positive equilibrium squared amplitudes. Competition alone neither guarantees coexistence nor determines the frequency-dependent pairing kernel. Charge fluctuations could contribute to an effective interaction in a specified microscopic model without making every observed CDW a pairing mechanism.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-c4a9d4e1b52d95bb",
+        "source-74169f2f9bc31219"
+      ],
+      "conditions": "Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.",
+      "verificationScope": "Selected primary evidence and independent correlation models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h4-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Tranquada's historical neutron result concerns Nd-substituted La1.6−xNd0.4SrxCuO4 at $x=0.12$. Its static stripe evidence and suppressed superconductivity should not be assigned indiscriminately to every one-eighth-doped cuprate. Ghiringhelli's resonant X-ray study adds an element-sensitive charge response in underdoped YBCO. The selected author text uses 130 meV instrumental resolution and argues for a much smaller energy bound; that bound is not a separately resolved sharp collective mode.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-b33aab72ae697f3a",
+        "source-9ae65971bc3eb5b8"
+      ],
+      "conditions": "Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.",
+      "verificationScope": "Selected primary evidence and independent correlation models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h4-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Chang's 2012 experiment on detwinned ortho-VIII YBa2Cu3O6.67 finds charge-order intensity suppressed on entering the superconducting regime and enhanced by magnetic field below it. Those controlled changes support competition in this specimen. They do not isolate every field-induced change in vortices or electronic structure, and do not identify a unique microscopic interaction.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c4a9d4e1b52d95bb"
+      ],
+      "conditions": "Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.",
+      "verificationScope": "Selected primary evidence and independent correlation models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h4-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Gerber's high-field diffraction shows additional interlayer-correlated order developing above about 15 T at 10 K. The author Figure 3 separates peaks near integer and half-integer out-of-plane coordinates and extracts Gaussian widths. Its reported lengths are explicitly uncorrected for resolution. Chang's 2016 study instead reports resolution-corrected widths: for YBCO6.67, the c-axis scale reaches about four lattice periods within the measured field range. Finite three-dimensional correlations must remain distinct from unlimited long-range coherence. These analyses cannot be combined by silently treating corrected and uncorrected widths as equivalent.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d9477b85392d03f9",
+        "source-b89f6bcf54acb4d8"
+      ],
+      "conditions": "Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.",
+      "verificationScope": "Selected primary evidence and independent correlation models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h4-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Kagome studies probe different structures and surfaces. Liang's STM step-edge phase shift suggests $2\\times2\\times2$ order. Stahl's bulk diffraction reports a low-temperature $2\\times2\\times2$ structure changing to $2\\times2\\times4$ near 60 K on warming; its null response to fields up to 10 T does not rule out broken time-reversal symmetry. Li's separate CsV3Sb5 study resolves conjoined $2\\times2\\times1$ and $2\\times2\\times2$ charge-order responses, with distinct resonant behavior and a roughly 4 K onset separation at 1 GPa. That separation concerns charge order, not two superconducting transitions.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-7746049011a0e640",
+        "source-d773a884dacbd7c9",
+        "source-80eda571fc6d710c"
+      ],
+      "conditions": "Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.",
+      "verificationScope": "Selected primary evidence and independent correlation models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h4-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A scattering superlattice peak needs electronic, structural and instrumental interpretation; it is not by itself proof of an exclusively electronic instability. STM conductance modulations must be compared across bias, surface termination and bulk probes. Li's surface modulation and bulk-null comparison illustrates why a surface pattern cannot automatically be promoted to a universal bulk phase. The present review does not independently reproduce those sensitivity limits or resolve every reported stacking structure.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-7746049011a0e640",
+        "source-80eda571fc6d710c"
+      ],
+      "conditions": "Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.",
+      "verificationScope": "Selected primary evidence and independent correlation models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h4-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Mielke's accepted-manuscript abstract reports enhanced internal-field widths in KV3Sb5 below charge ordering, interpreted as time-reversal symmetry breaking. This is a normal-state charge-order claim, not a direct determination of chiral superconducting pairing. Chen's spatially modulated tunnelling signatures motivate a kagome PDW interpretation, but interpretation of the pair field requires additional evidence beyond ordinary charge contrast. Material identity, probe coupling and the superconducting transition must remain explicit.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-484da7abcc165cd3",
+        "source-057c43c86174f961"
+      ],
+      "conditions": "Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.",
+      "verificationScope": "Selected primary evidence and independent correlation models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h4-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. Selected methods and figures, historical abstracts and independent line-shape checks do not replace full source-version comparisons, raw diffraction reproduction, all supplementary calibrations or competing-structure assessment. A Hall anomaly, a Fermi-surface pocket or a charge onset below a pseudogap scale cannot alone specify which charge structure causes reconstruction or whether it mediates pairing.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-c4a9d4e1b52d95bb",
+        "source-d9477b85392d03f9",
+        "source-b89f6bcf54acb4d8"
+      ],
+      "conditions": "Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.",
+      "verificationScope": "Selected primary evidence and independent correlation models; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h4-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Preserve the measured wave vector and reciprocal units, sample composition, oxygen order, field direction, pressure medium, line shape and resolution treatment. Compare competing-order amplitudes on characterized specimens and distinguish a static order parameter from dynamic spectral weight. Useful predictions should connect a particular charge structure to a testable electronic reconstruction and superconducting response, including results that could falsify the proposed connection.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-9ae65971bc3eb5b8",
+        "source-c4a9d4e1b52d95bb",
+        "source-b89f6bcf54acb4d8",
+        "source-74169f2f9bc31219"
+      ],
+      "conditions": "Retain specimen, wave vector units, field, pressure, probe, source version and resolution correction. Charge-order and measurement temperatures are not superconducting Tc.",
+      "verificationScope": "Selected primary evidence and independent correlation models; full scientific acceptance remains open."
+    }
+  ]
+}

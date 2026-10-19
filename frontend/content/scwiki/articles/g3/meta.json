@@ -1,0 +1,405 @@
+{
+  "id": "scwiki-g3",
+  "topicId": "scwiki-topic-g3",
+  "code": "G3",
+  "slug": "field-induced-superconductivity",
+  "title": "Field-induced superconductivity: reentrance, compensation and evidence",
+  "summary": "Distinguish field-created superconductivity from high-field survival, with matched measurement criteria, orbital limits and recent nickelate evidence.",
+  "aliases": [
+    "field induced superconductivity",
+    "field enhanced superconductivity",
+    "field reentrant superconductivity",
+    "magnetic field compensation",
+    "Jaccarino Peter"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experimental"
+  ],
+  "relatedCodes": [
+    "E5",
+    "G2",
+    "D5",
+    "C9"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T16:13:01.108215+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected primary abstracts, revised Yang author text and figures, Varbaro final Figure3, read-only dataset checks and independent threshold examples.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Historical full methods, final-version comparisons and magnetic calibration remain incomplete.",
+      "Gourgout author abstract/body field mismatch remains unresolved.",
+      "Original dataset units, noise floor and full correspondence with revised Yang figures remain unverified.",
+      "Illustrative threshold intervals do not establish thermodynamic stability or a material mechanism."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "G_magnetism_interplay/G3_field_induced_SC.md",
+    "sha256": "34795f3d189ddea787baac639efc6e8ee4b8817664735bb6316eca8b4ecbb0bf",
+    "sourceId": "file-ec580a6ba9d80790"
+  },
+  "references": [
+    {
+      "id": "source-849f7f4f675464de",
+      "doi": "10.1103/PhysRevLett.9.290",
+      "title": "Ultra-High-Field Superconductivity",
+      "year": 1962,
+      "url": "https://doi.org/10.1103/PhysRevLett.9.290",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-identity-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.9.290",
+        "note": "Published1October1962. Original identity verified; full text unavailable. Independent field-budget illustration is not a reproduction of the original derivation."
+      }
+    },
+    {
+      "id": "source-d564bee026e788c7",
+      "doi": "10.1103/PhysRevLett.53.497",
+      "title": "Observation of Magnetic-Field-Induced Superconductivity",
+      "year": 1984,
+      "url": "https://doi.org/10.1103/PhysRevLett.53.497",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "original-publisher-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.53.497",
+        "note": "Published30July1984. Original abstract confirms Eu-Sn molybdenum chalcogenide family and compensation interpretation. Exact composition, curves and full methods not checked."
+      }
+    },
+    {
+      "id": "source-e917adb251d93c59",
+      "doi": "10.1126/science.1115498",
+      "title": "Magnetic Field-Induced Superconductivity in the Ferromagnet URhGe",
+      "year": 2005,
+      "url": "https://doi.org/10.1126/science.1115498",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/16123293/",
+        "note": "Levy et al. original abstract as indexed by PubMed: field along b, spin reorientation12T, second superconducting pocket. Full text and phase boundaries not audited; associated commentary1117436 is not the original research."
+      }
+    },
+    {
+      "id": "source-c690ee5b95521000",
+      "doi": "10.1103/PhysRevLett.117.046401",
+      "title": "Collapse of Ferromagnetism and Fermi Surface Instability near Reentrant Superconductivity of URhGe",
+      "year": 2016,
+      "url": "https://doi.org/10.1103/PhysRevLett.117.046401",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "final-abstract-and-selected-author-text",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1607.06399v1",
+        "note": "Published22July2016. Authorv1 submitted21July2016 selectedpp1–4 read. Abstract12.75T conflicts internally with body11.75T; final abstract also12.75T. Exact calibration remains unresolved. No full final comparison or original figure audit."
+      }
+    },
+    {
+      "id": "source-3504ee9027165d0a",
+      "doi": "10.1038/s41586-026-10547-y",
+      "title": "Field re-entrant superconductivity in Eu-doped infinite-layer nickelates",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10547-y",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2508.14666v3",
+        "note": "Published23April2026; read authorv3 dated25April2026, selectedpp2–8, captionsp12, methodsp13–14; Fig2p19/Fig3p20 visually checked. Full final equivalence, calibration and all raw data remain open."
+      }
+    },
+    {
+      "id": "source-b57e3b2b5a90705f",
+      "doi": "10.1038/s41467-026-74065-1",
+      "title": "Paramagnetically driven superconducting re-entrance in Eu-doped infinite layer nickelates",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41467-026-74065-1",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-text-and-figure",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-026-74065-1.pdf",
+        "note": "Published19June2026, distinct from27May acceptance. Final9-page PDF selectedpp1–4 read; p4Fig3 visually checked. Two substrates and different field-facility specimens distinguished. Full supplementary data and model fitting unchecked."
+      }
+    },
+    {
+      "id": "source-3481aee691b9bf14",
+      "doi": "10.6084/m9.figshare.31861684.v1",
+      "title": "Dataset for Nature Paper: Field re-entrant superconductivity in Eu-doped infinite-layer nickelates",
+      "year": 2026,
+      "url": "https://doi.org/10.6084/m9.figshare.31861684.v1",
+      "publicationStatus": "dataset",
+      "verification": {
+        "scope": "selected-original-data-read-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://api.figshare.com/v2/articles/31861684",
+        "note": "Datasetv1 published26March2026. Fig2.xlsx sheetc A1:F2001 read without modification; headers and numeric values checked. Units absent in sheet, final-v3 correspondence and instrument noise floor unverified. Not a complete raw-data reproduction."
+      }
+    },
+    {
+      "id": "source-15aec45a868e9fb9",
+      "doi": "10.1038/35098048",
+      "title": "Coexistence of superconductivity and ferromagnetism in URhGe",
+      "year": 2001,
+      "url": "https://doi.org/10.1038/35098048",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "indexed-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/11595943/",
+        "note": "Published 11 October 2001. Original abstract indexed by PubMed checked: ambient-pressure thermodynamic signature with explicitly qualified triplet interpretation. Original curves and full methods remain unchecked."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-g3-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A large upper critical field means superconductivity survives a strong field; it does not establish that the field creates superconductivity. At fixed temperature, a field-induced state appears from a zero-field normal state. Field reentrance means a low-field superconducting regime is lost and subsequently recovered. Field enhancement means a specified observable improves over an interval. These distinctions require the same specimen, temperature, orientation and operational criterion throughout the comparison.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d564bee026e788c7",
+        "source-e917adb251d93c59"
+      ],
+      "conditions": "Same specimen, measurement temperature, field orientation and resistive or bulk criterion; synthetic thresholds explicitly independent of any material fit.",
+      "verificationScope": "Selected original sources and bounded independent calculations; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g3-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "A resistive decrease can indicate reduced dissipation without demonstrating a new bulk phase. Zero resistance establishes a conducting path; diamagnetic screening or a thermodynamic anomaly provides complementary information. Record whether an intermediate state is demonstrably normal or simply dissipative. A field sweep and a temperature sweep trace different paths through a phase diagram, and must not be joined as though every point belongs to one isotherm.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-3504ee9027165d0a",
+        "source-b57e3b2b5a90705f"
+      ],
+      "conditions": "Same specimen, measurement temperature, field orientation and resistive or bulk criterion; synthetic thresholds explicitly independent of any material fit.",
+      "verificationScope": "Selected original sources and bounded independent calculations; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g3-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Jaccarino–Peter compensation concerns an exchange contribution opposing the applied field in the electron spin sector. An illustrative effective Zeeman field is $b_{\\rm eff}=B-B_J(B,T)$, with every term expressed in tesla and positive $B_J$ defined to oppose positive applied $B$. The exchange term does not automatically cancel orbital coupling to the physical field. The original 1962 paper's identity is verified here; the following threshold example is independently calculated, rather than presented as its complete theory.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-849f7f4f675464de",
+        "source-b57e3b2b5a90705f"
+      ],
+      "conditions": "Same specimen, measurement temperature, field orientation and resistive or bulk criterion; synthetic thresholds explicitly independent of any material fit.",
+      "verificationScope": "Selected original sources and bounded independent calculations; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g3-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "At a fixed temperature, impose the artificial conditions $|b_{\\rm eff}|\\lt B_P$ and $0\\le B\\lt B_{\\rm orb}$. With a constant saturated exchange field $J$, the permitted interval is the intersection of $(J-B_P,J+B_P)$ with the nonnegative orbital window. Its width is $\\max[0,\\min(B_{\\rm orb},J+B_P)-\\max(0,J-B_P)]$. For $J=8$ T and $B_P=2$ T, an orbital ceiling of 7 T leaves only $6\\lt B\\lt7$ T; a ceiling of 5 T leaves no interval. A universal width of $2B_P$ therefore fails even in this simplified model.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-849f7f4f675464de"
+      ],
+      "conditions": "Same specimen, measurement temperature, field orientation and resistive or bulk criterion; synthetic thresholds explicitly independent of any material fit.",
+      "verificationScope": "Selected original sources and bounded independent calculations; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g3-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A constant saturated exchange field is unsuitable near zero field if the moments are unpolarized there. For an explicitly synthetic alternative, take $B_J=J\\tanh(B/B_s)$. With $J=10$ T, $B_s=B_P=1$ T and $B_{\\rm orb}=15$ T, the threshold model has a low-field interval ending near 0.112 T and a second interval approximately between 9 and 11 T. Reducing the orbital ceiling to 7 T removes the second interval. Reversing the exchange sign removes the compensation pocket. Root finding on monotonic segments agrees with 120,006 independent grid checks across six parameter sets. This is neither a material fit nor a self-consistent gap or free-energy calculation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-849f7f4f675464de",
+        "source-b57e3b2b5a90705f"
+      ],
+      "conditions": "Same specimen, measurement temperature, field orientation and resistive or bulk criterion; synthetic thresholds explicitly independent of any material fit.",
+      "verificationScope": "Selected original sources and bounded independent calculations; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g3-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Meul and colleagues reported magnetic-field-induced superconductivity in Eu-Sn molybdenum chalcogenides in 1984. Their original abstract interprets the phase-diagram shape through compensation. The detailed composition, measurement protocol and complete curves have not been checked in this review, so an exact stoichiometry or numerical field window is not assigned from that abstract alone.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-d564bee026e788c7"
+      ],
+      "conditions": "Same specimen, measurement temperature, field orientation and resistive or bulk criterion; synthetic thresholds explicitly independent of any material fit.",
+      "verificationScope": "Selected original sources and bounded independent calculations; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g3-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "URhGe supplies a distinct magnetic setting. Its ambient-pressure discovery includes thermodynamic superconducting evidence; Levy and colleagues subsequently identify a second field pocket near the roughly 12 T spin reorientation for a field along the b axis. Gourgout and colleagues connect this region to transport and thermoelectric anomalies, a first-order magnetic transition and Fermi-surface changes. These observations constrain the mechanism without establishing a simple continuous quantum critical point or a unique pairing interaction. The original discovery abstracts and selected later author text support this limited comparison.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-15aec45a868e9fb9",
+        "source-e917adb251d93c59",
+        "source-c690ee5b95521000"
+      ],
+      "conditions": "Same specimen, measurement temperature, field orientation and resistive or bulk criterion; synthetic thresholds explicitly independent of any material fit.",
+      "verificationScope": "Selected original sources and bounded independent calculations; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g3-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Yang and colleagues' Sm0.95−xCa0.05EuxNiO2 study reports reentrance in Eu-rich films. For the 54-unit-cell x=0.34 specimen, resistance returns to zero above approximately 6.23 T at 2 K; mutual inductance on that specimen shows screening at 9 and 12 T, absent at 3 T. For x=0.32, the 13.04 T recovery is measured at 3 K, while persistence above 32 T refers to 1.7 K. Neither measurement temperature is a transition temperature for database filtering.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-3504ee9027165d0a"
+      ],
+      "conditions": "Same specimen, measurement temperature, field orientation and resistive or bulk criterion; synthetic thresholds explicitly independent of any material fit.",
+      "verificationScope": "Selected original sources and bounded independent calculations; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g3-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Varbaro and colleagues investigate a separate Nd0.7Eu0.3NiO2 system. Their final Figure 3 combines two specimens using 20-percent and 50-percent normal-resistivity criteria; open and filled markers distinguish measurement facilities and specimens. These boundaries are not zero-resistance contours. The low-temperature Hall analysis uses a non-superconducting film on NdGaO3, whereas the superconducting transport uses LSAT-grown films. Their proposed competing Eu and Nd paramagnetic contributions should not be silently substituted for the magnetic interpretation of the Sm/Ca/Eu material.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-b57e3b2b5a90705f"
+      ],
+      "conditions": "Same specimen, measurement temperature, field orientation and resistive or bulk criterion; synthetic thresholds explicitly independent of any material fit.",
+      "verificationScope": "Selected original sources and bounded independent calculations; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g3-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The Sm/Ca/Eu author's revised manuscript does not establish the long-range magnetic structure. Its angular reentrance extends nearly in-plane for some dopings, and the compared angular maps use different temperatures. The 50-percent resistance contours and phenomenological compensation fits do not prove triplet pairing. These qualifications replace stronger statements in the fixed planning source.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-3504ee9027165d0a"
+      ],
+      "conditions": "Same specimen, measurement temperature, field orientation and resistive or bulk criterion; synthetic thresholds explicitly independent of any material fit.",
+      "verificationScope": "Selected original sources and bounded independent calculations; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g3-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "The public Sm/Ca/Eu dataset predates the checked manuscript revision. A read-only check of its Fig2 workbook preserves small negative baseline readings instead of clipping them to zero. Missing unit labels and an unverified noise floor prevent assigning an independently validated zero-resistance threshold from the spreadsheet alone. Complete correspondence between dataset and revised figures remains open. Separately, the URhGe author manuscript gives 12.75 T in its abstract but 11.75 T in its body; the published abstract gives 12.75 T. The discrepancy remains unresolved here.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-3481aee691b9bf14",
+        "source-c690ee5b95521000"
+      ],
+      "conditions": "Same specimen, measurement temperature, field orientation and resistive or bulk criterion; synthetic thresholds explicitly independent of any material fit.",
+      "verificationScope": "Selected original sources and bounded independent calculations; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g3-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. Full historical methods, selected final-version comparisons, absolute screening calibration, supplementary-data checks and independent material-specific model fits remain outstanding. Distinguish evidence supporting a superconducting state from evidence selecting its mechanism, and a measured high-field survival point from a measured upper critical field.",
+      "evidenceType": "experimental",
+      "sourceIds": [
+        "source-d564bee026e788c7",
+        "source-e917adb251d93c59",
+        "source-3504ee9027165d0a",
+        "source-b57e3b2b5a90705f"
+      ],
+      "conditions": "Same specimen, measurement temperature, field orientation and resistive or bulk criterion; synthetic thresholds explicitly independent of any material fit.",
+      "verificationScope": "Selected original sources and bounded independent calculations; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-g3-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Compare full field paths with matched criteria, preserve field direction and specimen identity, and test temperature control and sweep dependence. Evaluate compensation against magnetic response and orbital limitations; evaluate magnetic reorientation against relevant magnetic and electronic probes. Retain disagreements rather than averaging incompatible definitions. A useful candidate explains several measurements under their actual conditions, not merely a high-field resistance drop.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d564bee026e788c7",
+        "source-c690ee5b95521000",
+        "source-b57e3b2b5a90705f"
+      ],
+      "conditions": "Same specimen, measurement temperature, field orientation and resistive or bulk criterion; synthetic thresholds explicitly independent of any material fit.",
+      "verificationScope": "Selected original sources and bounded independent calculations; complete scientific acceptance remains open."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "b_{\\rm eff}=B-B_J(B,T)",
+      "check": "6 constant-exchange intersections and6smooth field-dependent cases;120006independent grid evaluations. Physical orbital field remains uncancelled."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "B_J=J\\tanh(B/B_s)",
+      "check": "Derivative-based monotonic root intervals checked against direct inequalities; orbital and sign reversal controls remove the second pocket. Synthetic, not a WHH or material fit."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-g3-material-1",
+      "formula": "Sm0.61Ca0.05Eu0.34NiO2",
+      "sample": "Yang SCE0.34 field sweep",
+      "recordType": "experiment",
+      "reportedTemperatureK": 2,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Fixed field-sweep temperature; reported zero resistance above6.23T for54unitcell sample. Not Tc.",
+      "criterion": "field-reentrant-zero-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Magnetotransport",
+      "sourceId": "source-3504ee9027165d0a",
+      "aliases": [
+        "nickelate"
+      ]
+    },
+    {
+      "id": "scwiki-g3-material-2",
+      "formula": "Sm0.63Ca0.05Eu0.32NiO2",
+      "sample": "Yang SCE0.32 field sweep",
+      "recordType": "experiment",
+      "reportedTemperatureK": 3,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Fixed field-sweep temperature; recovery13.04T. Not the1.7K persistence condition or Tc.",
+      "criterion": "field-reentrant-zero-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Magnetotransport",
+      "sourceId": "source-3504ee9027165d0a",
+      "aliases": [
+        "nickelate"
+      ]
+    },
+    {
+      "id": "scwiki-g3-material-3",
+      "formula": "Sm0.63Ca0.05Eu0.32NiO2",
+      "sample": "Yang SCE0.32 field sweep",
+      "recordType": "experiment",
+      "reportedTemperatureK": 1.7,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Fixed field-sweep temperature; persistence above32T is a lower bound on field survival, not a measured upper critical field or Tc.",
+      "criterion": "field-reentrant-zero-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Magnetotransport",
+      "sourceId": "source-3504ee9027165d0a",
+      "aliases": [
+        "nickelate"
+      ]
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 105,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Preserved pinned source. Corrected conflated temperatures, overly broad angular/magnetic statements and universal field-window implication; exact historical composition not repeated without fulltext."
+    }
+  ]
+}

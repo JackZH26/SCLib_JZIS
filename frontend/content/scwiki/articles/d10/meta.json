@@ -1,0 +1,635 @@
+{
+  "id": "scwiki-d10",
+  "topicId": "scwiki-topic-d10",
+  "code": "D10",
+  "slug": "organic-charge-transfer-superconductors",
+  "title": "Organic superconductors: charge-transfer salts, Mott physics and pairing probes",
+  "summary": "Compare molecular salts through pressure, cooling history, nodal transport and spin response, while separating superconducting transitions from Mott endpoints and probe conditions.",
+  "aliases": [
+    "organic superconductors",
+    "charge-transfer salts",
+    "Bechgaard salts",
+    "BEDT-TTF",
+    "ET",
+    "TMTSF",
+    "kappa-Br",
+    "kappa-Cl",
+    "kappa-NCS"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "B9",
+    "B14",
+    "C3",
+    "C5",
+    "D9"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T12:19:32.205840+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Lefebvre phase/probe, Izawa angular-transport, Kagawa Mott-scaling and Shinagawa spin-response passages, plus scoped discovery metadata and prior B9 checks.",
+    "limitations": [
+      "Complete scientific acceptance, final-version comparisons and raw-data reproduction remain open.",
+      "Jerome1980 original text is inaccessible here; Kini1990 is title/metadata-only; Lee2001/2002 is abstract-only.",
+      "Kagawa full methods/supplement and Papanikolaou theoretical proof remain outside this check.",
+      "Synthetic algebra does not establish a unique gap symmetry, universality class or common mechanism across molecular families."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D10_organic.md",
+    "sha256": "753835b01f35ccd0de3ab00bf3f267a7bfe7f67991eadb0deb94f1031121045a",
+    "sourceId": "file-0985c13bcbe137f7"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 68,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter unchanged; DOI identity, publication dates, phase and probe conditions corrected."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-2c57ae9e6e679429",
+      "doi": "10.1051/jphyslet:0198000410409500",
+      "title": "Superconductivity in a synthetic organic conductor (TMTSF)2PF6",
+      "year": 1980,
+      "url": "https://doi.org/10.1051/jphyslet:0198000410409500",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "bibliographic-identity-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://doi.org/10.1051/jphyslet:0198000410409500",
+        "note": "Crossref original identity checked. Original PDF403 and HAL anti-bot page; experimental methods and discovery temperature not independently reviewed here."
+      }
+    },
+    {
+      "id": "source-c3edeba243e544d9",
+      "doi": "10.1021/ic00339a004",
+      "title": "A new ambient-pressure organic superconductor, κ-(ET)2Cu[N(CN)2]Br, with the highest transition temperature yet observed (inductive onset Tc = 11.6 K, resistive onset = 12.5 K)",
+      "year": 1990,
+      "url": "https://doi.org/10.1021/ic00339a004",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-title-and-issue-metadata",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pubs.acs.org/doi/abs/10.1021/ic00339a004",
+        "note": "Original1July1990, Inorganic Chemistry29,2555–2557; online1May2002 is digitization. Title preserves distinct inductive and resistive criteria. Full methods unavailable. Incorrect pinned ic00331a012 separately verified through Crossref as an unrelated metal-complex structural analysis."
+      }
+    },
+    {
+      "id": "source-2cc5358d54a65217",
+      "doi": "10.1103/PhysRevLett.85.5420",
+      "title": "Mott transition, antiferromagnetism, and unconventional superconductivity in layered organic superconductors",
+      "year": 2000,
+      "url": "https://doi.org/10.1103/PhysRevLett.85.5420",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-phase-diagram-and-probe-conditions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0004455v1",
+        "note": "Authorv1 submitted26April2000; journal18December2000. Selected pp1–2 read for helium sweeps, simultaneous NMR versus susceptibility conditions and inhomogeneous coexistence. Final-version comparison and raw phase-fraction analysis pending."
+      }
+    },
+    {
+      "id": "source-09e9a4299e3fd1d3",
+      "doi": "10.1038/nature03806",
+      "title": "Unconventional critical behaviour in a quasi-two-dimensional organic conductor",
+      "year": 2005,
+      "url": "https://doi.org/10.1038/nature03806",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-transport-and-scaling-passages",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0603064v1",
+        "note": "Journal28July2005; author upload3March2006. Selected pp1–3 and5 read: four-probe helium-pressure conductance,39.7K24.8MPa Mott endpoint, exponents, excluded closest region and order-parameter/scaling assumptions. Full methods, supplement and raw fits not reviewed."
+      }
+    },
+    {
+      "id": "source-9fb11dd7e1fcdc76",
+      "doi": "10.1103/PhysRevLett.88.027002",
+      "title": "Superconducting Gap Structure of κ-(BEDT-TTF)2Cu(NCS)2 Probed by Thermal Conductivity Tensor",
+      "year": 2002,
+      "url": "https://doi.org/10.1103/PhysRevLett.88.027002",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-angular-transport-and-figure-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0107537v2",
+        "note": "Authorv2 submitted9November2001; online26December2001,2002issue. pp1–4 read; p3Figs3–4 visually checked.10.4K resistive transition, heat-current b, fieldalignment<0.01degree,2T low-temperature fourfold signal retained. No original-fit replication or final-version comparison."
+      }
+    },
+    {
+      "id": "source-e055004651dafe18",
+      "doi": "10.1103/PhysRevLett.88.017004",
+      "title": "Triplet Superconductivity in an Organic Superconductor Probed by NMR Knight Shift",
+      "year": 2002,
+      "url": "https://doi.org/10.1103/PhysRevLett.88.017004",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.88.017004",
+        "note": "Published19December2001,2002issue. PF6 at7kbar with fieldalong a: unchanged shift and triplet interpretation. Full methods not reviewed; earlier cond-mat/0001332 author list differs and equivalence was not established."
+      }
+    },
+    {
+      "id": "source-9d15cd9236072f5c",
+      "doi": "10.1103/PhysRevLett.91.107001",
+      "title": "Spin Liquid State in an Organic Mott Insulator with a Triangular Lattice",
+      "year": 2003,
+      "url": "https://doi.org/10.1103/PhysRevLett.91.107001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.91.107001",
+        "note": "Reused B9 scoped review with unchanged access/version limits. Abstract: NMR absence of order down to32mK and susceptibility exchange scale about250K. Neither is Tc; full methods not reviewed."
+      }
+    },
+    {
+      "id": "source-0443485ac20d3a8c",
+      "doi": "10.1103/PhysRevLett.95.177001",
+      "title": "Mott Transition from a Spin Liquid to a Fermi Liquid in the Spin-Frustrated Organic Conductor kappa-(ET)2Cu2(CN)3",
+      "year": 2005,
+      "url": "https://doi.org/10.1103/PhysRevLett.95.177001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/doi/10.1103/PhysRevLett.95.177001",
+        "note": "Reused B9 scoped review with unchanged access/version limits. Pressure NMR/resistivity phase diagram and neighboring superconductivity; no causal RVB mechanism established. Full data not reviewed."
+      }
+    },
+    {
+      "id": "source-39706a37d6f5ce86",
+      "doi": "10.1146/annurev-conmatphys-062910-140521",
+      "title": "Mott Physics in Organic Conductors with Triangular Lattices",
+      "year": 2011,
+      "url": "https://doi.org/10.1146/annurev-conmatphys-062910-140521",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-review-abstract-and-metadata",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.annualreviews.org/content/journals/10.1146/annurev-conmatphys-062910-140521",
+        "note": "Advance12January2011,volume2,167–188,March2011. Abstract overview of triangular organic Mott systems checked; full review and material-specific hopping parameters not reviewed."
+      }
+    },
+    {
+      "id": "source-c08f058f3170fafa",
+      "doi": "10.1103/PhysRevLett.98.147002",
+      "title": "Superconducting State of the Organic Conductor (TMTSF)2ClO4",
+      "year": 2007,
+      "url": "https://doi.org/10.1103/PhysRevLett.98.147002",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-NMR-methods-and-field-interpretation",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0701566v2",
+        "note": "Authorv2 submitted3April2007; journal6April2007. pp1–4 read; p2Fig1 and Eq1 visually checked. Cooling7mK/min through24K,1.4K onset, small-tip pulses and simultaneous heating checks, anisotropic normal shift,100mK relaxation crossover around15kOe retained. High-field pairing unresolved; printed2018 generation date is not publication. No raw refit or complete final-version comparison."
+      }
+    },
+    {
+      "id": "source-5e0dcd80e8b64a1b",
+      "doi": "10.1038/s41467-023-37491-z",
+      "title": "Chasing the spin gap through the phase diagram of a frustrated Mott insulator",
+      "year": 2023,
+      "url": "https://doi.org/10.1038/s41467-023-37491-z",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "published-primary-passages-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-023-37491-z.pdf",
+        "note": "Reused B9 scoped review with unchanged access/version limits. Published pp.1–5 selected results,discussion,methods and data analysis; Fig4/discussion visually checked. Substrate strain and inferred hydrostatic-equivalent pressure, VBS interpretation with gapped chiral QSL not excluded, mounting microcracks retained. Raw-data audit pending."
+      }
+    },
+    {
+      "id": "source-8e919dde44063203",
+      "doi": "10.1103/PhysRevLett.100.026408",
+      "title": "Universality of Liquid-Gas Mott Transitions at Finite Temperatures",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevLett.100.026408",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-theory-abstract-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.100.026408",
+        "note": "Published18January2008. Abstract distinguishes Ising thermodynamic order from conductivity coupling, disorder and dimensional crossover. Full theoretical proof not reviewed; not a unique resolution for all organic systems."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d10-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Organic charge-transfer salts provide distinct low-dimensional settings for superconductivity. The Bechgaard salts (TMTSF)₂X have strongly anisotropic electronic motion; the κ-(BEDT-TTF)₂X family has conducting molecular layers and is widely studied near a pressure-controlled Mott transition. The anion, molecular packing, sample history and field direction are part of the material identity. A pairing assignment for one salt or field regime is not a classification of the entire family.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-2cc5358d54a65217",
+        "source-39706a37d6f5ce86",
+        "source-c08f058f3170fafa"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    },
+    {
+      "id": "scwiki-d10-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The 1980 Jérome report identifies superconductivity in (TMTSF)₂PF₆. Its bibliographic identity is checked here, while the original experimental text remains an access gap. For κ-Br, the 1990 Kini paper explicitly distinguishes an inductive onset of 11.6 K from a resistive onset of 12.5 K in its title. Those criteria should survive quotation and database export. Its original publication is July 1990; the publisher's 2002 online date does not move the discovery into a later decade.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-2c57ae9e6e679429",
+        "source-c3edeba243e544d9"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    },
+    {
+      "id": "scwiki-d10-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Izawa's rotating-field thermal-conductivity analysis separates $\\kappa(\\theta)=C_0+C_2\\cos(2\\theta)+C_4\\cos(4\\theta)$, where the angle is between the heat current and the in-plane field. The large twofold term has a substantial phonon-scattering contribution, whereas the low-temperature fourfold term is interpreted through nodal quasiparticles. An independent synthetic harmonic-recovery check confirms the decomposition algebra, not the original fit or the inferred gap symmetry. A 45° rotation reverses the sign of the fourfold basis function, so node labels require a stated crystallographic convention.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9fb11dd7e1fcdc76"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    },
+    {
+      "id": "scwiki-d10-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The normal-state anisotropic shift used by Shinagawa is $K=K_{\\mathrm{iso}}+K_{\\mathrm{ax}}(3\\cos^2\\theta-1)$, with $K_{\\mathrm{iso}}=3.9\\times10^{-4}$ and $K_{\\mathrm{ax}}=10.5\\times10^{-4}$. Substitution gives 2,490 ppm at 0° and −660 ppm at 90°. These are signed model contributions, not directly the observed superconducting change. Reducing the spin contribution can move resonance shifts in opposite directions for two orientations. Hyperfine calibration, chemical shifts, screening fields and pulse heating must therefore accompany a spin-pairing inference.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-c08f058f3170fafa"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    },
+    {
+      "id": "scwiki-d10-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Kagawa's transport analysis found approximate exponents $(\\delta,\\beta,\\gamma)=(2,1,1)$, satisfying $\\delta=1+\\gamma/\\beta$. Checking that identity does not independently validate a universality class. The analysis maps conductance onto an order parameter and treats pressure/temperature mixing within stated approximations; it excludes the closest region to the endpoint because of calibration and sample limitations. A later theoretical treatment shows how conductivity can couple to singular quantities other than the thermodynamic order parameter. Transport exponents and thermodynamic exponents must not be equated automatically.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-09e9a4299e3fd1d3",
+        "source-8e919dde44063203"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    },
+    {
+      "id": "scwiki-d10-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Lefebvre's κ-Cl phase diagram combines proton NMR with AC susceptibility under helium-gas pressure. NMR uses a 0.5 T field perpendicular to the layers; susceptibility uses an approximately 0.05 Oe oscillating field parallel to them, without a static field. Slow pressure and temperature sweeps, restricted to helium's fluid region, resolve hysteresis and changing phase fractions. The reported meeting region near 282 bar and 13.1 K is not evidence that antiferromagnetism and superconductivity occupy every microscopic volume together: the paper explicitly discusses inhomogeneous coexistence.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-2cc5358d54a65217"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    },
+    {
+      "id": "scwiki-d10-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "In the separate κ-Cl conductance experiment, a critical endpoint occurs near 39.7 ± 0.1 K and 24.8 ± 0.1 MPa. Here the paper's symbol Tc denotes the Mott endpoint, not a superconducting transition. Four-probe measurements, helium pressure sweeps near 3 MPa per hour and a current-independence check over two orders of magnitude underpin this assignment. The endpoint pressure is 0.0248 GPa; confusing MPa with GPa would introduce a factor of one thousand.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-09e9a4299e3fd1d3"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    },
+    {
+      "id": "scwiki-d10-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Izawa studies κ-(BEDT-TTF)₂Cu(NCS)₂ with a reported resistive transition near 10.4 K. Heat flows along the b axis, with in-plane field alignment better than 0.01°. At 2 T the fourfold component becomes visible around 0.52 and 0.43 K, at approximately 0.2% of the normal-state total conductivity. These low temperatures are probe conditions, not additional transition temperatures. Extracting such a small electronic modulation requires separating phonons, vortex scattering and the field/temperature regime; the sign cannot be interpreted without that model.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9fb11dd7e1fcdc76"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    },
+    {
+      "id": "scwiki-d10-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "For (TMTSF)₂ClO₄, Shinagawa's samples were cooled at 7 mK per minute through anion ordering near 24 K and showed resistive/rf onset near 1.4 K. NMR pulses with tip angles below 3° were checked for heating using simultaneous resistance measurements. Low-field shifts support reduced spin susceptibility, while relaxation near 100 mK changes sharply around 15 kOe. That crossover field is neither a superconducting temperature nor, by itself, a unique identification of an FFLO or triplet state.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c08f058f3170fafa"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    },
+    {
+      "id": "scwiki-d10-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The earlier Lee result concerns a different salt, (TMTSF)₂PF₆, at 7 kbar with field along the conducting a axis; its abstract reports little Knight-shift change and argues for triplet pairing. The later ClO₄ study finds a low-field singlet-compatible response and leaves its high-field state unresolved. These are condition-specific observations. High upper critical fields, unchanged shifts in one regime or proximity to spin-density-wave order cannot alone establish family-wide p-wave superconductivity.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e055004651dafe18",
+        "source-c08f058f3170fafa"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    },
+    {
+      "id": "scwiki-d10-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "For κ-(BEDT-TTF)₂Cu₂(CN)₃, absence of magnetic ordering down to 32 mK motivated a spin-liquid interpretation, while pressure studies found a neighboring superconducting region. Subsequent spin-gap work supports a valence-bond interpretation but does not uniquely exclude a gapped chiral spin liquid. Mounting strain and microcracks complicate comparison with a nominally hydrostatic experiment. Neither an exchange scale nor a spin-gap anomaly should become a superconducting Tc record.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9d15cd9236072f5c",
+        "source-0443485ac20d3a8c",
+        "source-5e0dcd80e8b64a1b"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    },
+    {
+      "id": "scwiki-d10-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "The original κ-Br reference in the pinned draft had an unrelated DOI. The correct identifier is 10.1021/ic00339a004; 10.1021/ic00331a012 identifies a metal-complex structural-analysis paper. This public article corrects the citation while preserving the fixed source file. Discovery-era methods, complete supplements, final-version comparisons and original-data refits remain outside parts of this scoped review.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c3edeba243e544d9"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    },
+    {
+      "id": "scwiki-d10-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Compare pressure, chemical substitution and strain through measured phase diagrams rather than treating them as interchangeable tuning knobs. Report the exact salt, cooling protocol, pressure medium, field orientation and transition criterion before comparing performance. A useful next measurement should distinguish competing explanations—for example by combining bulk thermodynamics, low-heating spin probes and controlled-disorder studies on the same specimen. A nearby Mott state constrains a mechanism without identifying it uniquely.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2cc5358d54a65217",
+        "source-09e9a4299e3fd1d3",
+        "source-c08f058f3170fafa"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    },
+    {
+      "id": "scwiki-d10-claim-discovery-implications-2",
+      "sectionId": "discovery-implications",
+      "statement": "Molecular superconductors also provide a warning against copying symmetry names between coordinate systems. The κ-NCS thermal-conductivity paper discusses nodal directions relative to b and c as well as a rotated convention. Preserve those directions and the observable itself when comparing with theories. Fullerides belong to a separate molecular family with different orbital degeneracy and vibronic physics; the shared word “organic” does not make their pairing evidence interchangeable.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9fb11dd7e1fcdc76",
+        "source-39706a37d6f5ce86"
+      ],
+      "conditions": "Salt, packing, pressure, cooling history, field direction, probe and transition criterion are distinct. Mott endpoints, anion ordering and probe temperatures are not superconducting Tc.",
+      "verificationScope": "Selected original passages and bounded observable algebra; abstract-only and access limits remain explicit. Full scientific acceptance is open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-d10-kini-doi",
+      "description": "Corrected unrelated pinned ic00331a012 to original organic-superconductor discovery ic00339a004.",
+      "sourceId": "source-c3edeba243e544d9",
+      "scope": "Public article and machine exports; pinned source preserved."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\kappa=C_0+C_2\\cos2\\theta+C_4\\cos4\\theta",
+      "check": "Four synthetic harmonic recovery cases and720-point45degree basis-sign rotation."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "K=K_{iso}+K_{ax}(3\\cos^2\\theta-1)",
+      "check": "Three normal-shift substitutions, not superconducting shift measurements."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\delta=1+\\gamma/\\beta",
+      "check": "Identity substitution only, not universality validation."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-d10-material-1",
+      "formula": "κ-(ET)2Cu[N(CN)2]Br",
+      "sample": "Kini κ-Br original title",
+      "recordType": "experiment",
+      "reportedTemperatureK": 11.6,
+      "tcK": 11.6,
+      "temperatureKind": "transition",
+      "temperatureNote": "Different criterion from12.5K resistive onset; full methods not reviewed.",
+      "criterion": "inductive-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Inductive response; original title only",
+      "sourceId": "source-c3edeba243e544d9",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
+    },
+    {
+      "id": "scwiki-d10-material-2",
+      "formula": "κ-(ET)2Cu[N(CN)2]Br",
+      "sample": "Kini κ-Br original title",
+      "recordType": "experiment",
+      "reportedTemperatureK": 12.5,
+      "tcK": 12.5,
+      "temperatureKind": "transition",
+      "temperatureNote": "Same discovery report as11.6K inductive onset; not a later2002 discovery.",
+      "criterion": "resistive-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Electrical resistance; original title only",
+      "sourceId": "source-c3edeba243e544d9",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
+    },
+    {
+      "id": "scwiki-d10-material-3",
+      "formula": "κ-(BEDT-TTF)2Cu[N(CN)2]Cl",
+      "sample": "Kagawa Mott endpoint",
+      "recordType": "experiment",
+      "reportedTemperatureK": 39.7,
+      "tcK": null,
+      "temperatureKind": "normal-state",
+      "temperatureNote": "39.7±0.1K and24.8±0.1MPa; not a superconducting transition.",
+      "criterion": "mott-critical-endpoint",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 0.0248,
+        "max": 0.0248
+      },
+      "equilibrium": "equilibrium",
+      "probe": "Four-probe DC conductance under helium pressure",
+      "sourceId": "source-09e9a4299e3fd1d3",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
+    },
+    {
+      "id": "scwiki-d10-material-4",
+      "formula": "κ-(BEDT-TTF)2Cu[N(CN)2]Cl",
+      "sample": "Lefebvre phase-meeting region",
+      "recordType": "experiment",
+      "reportedTemperatureK": 13.1,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Meeting of phase boundaries; inhomogeneous coexistence, not a homogeneous SC/AF proof.",
+      "criterion": "phase-diagram-meeting-region",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 0.0282,
+        "max": 0.0282
+      },
+      "equilibrium": "equilibrium",
+      "probe": "NMR0.5T perpendicular; AC0.05Oe parallel without static field",
+      "sourceId": "source-2cc5358d54a65217",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
+    },
+    {
+      "id": "scwiki-d10-material-5",
+      "formula": "κ-(BEDT-TTF)2Cu(NCS)2",
+      "sample": "Izawa thermal-transport crystal",
+      "recordType": "experiment",
+      "reportedTemperatureK": 10.4,
+      "tcK": 10.4,
+      "temperatureKind": "transition",
+      "temperatureNote": "Characterization transition distinct from low-temperature angular probe conditions.",
+      "criterion": "resistive-transition",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Electrical resistance characterization",
+      "sourceId": "source-9fb11dd7e1fcdc76",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
+    },
+    {
+      "id": "scwiki-d10-material-6",
+      "formula": "κ-(BEDT-TTF)2Cu(NCS)2",
+      "sample": "Izawa2T angular thermal transport",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.43,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Probe temperature with about0.2%fourfold modulation, not Tc.",
+      "criterion": "angular-thermal-conductivity-probe",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Heat current b, in-plane2T field, alignment better than0.01degree",
+      "sourceId": "source-9fb11dd7e1fcdc76",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
+    },
+    {
+      "id": "scwiki-d10-material-7",
+      "formula": "(TMTSF)2ClO4",
+      "sample": "Shinagawa slowly cooled specimens",
+      "recordType": "experiment",
+      "reportedTemperatureK": 1.4,
+      "tcK": 1.4,
+      "temperatureKind": "transition",
+      "temperatureNote": "Samples cooled7mK/min through24K anion ordering.",
+      "criterion": "resistive-and-rf-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Electrical resistance and reflected RF power",
+      "sourceId": "source-c08f058f3170fafa",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
+    },
+    {
+      "id": "scwiki-d10-material-8",
+      "formula": "(TMTSF)2ClO4",
+      "sample": "Shinagawa cooling protocol",
+      "recordType": "experiment",
+      "reportedTemperatureK": 24,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Anion ordering temperature, not superconducting Tc.",
+      "criterion": "anion-ordering-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Cooling protocol7mK/min",
+      "sourceId": "source-c08f058f3170fafa",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
+    },
+    {
+      "id": "scwiki-d10-material-9",
+      "formula": "(TMTSF)2ClO4",
+      "sample": "Shinagawa NMR relaxation crossover",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.1,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Temperature of field-swept spin probe; high-field state unresolved.",
+      "criterion": "spin-relaxation-probe",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Low-tip-angle NMR at100mK, crossover near15kOe",
+      "sourceId": "source-c08f058f3170fafa",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
+    },
+    {
+      "id": "scwiki-d10-material-10",
+      "formula": "κ-(BEDT-TTF)2Cu2(CN)3",
+      "sample": "Shimizu spin-liquid candidate",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.032,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "No magnetic order down to32mK is not a superconducting transition.",
+      "criterion": "lowest-magnetic-probe-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "NMR, reused scoped original abstract",
+      "sourceId": "source-9d15cd9236072f5c",
+      "aliases": [
+        "organic",
+        "organic superconductors"
+      ]
+    }
+  ]
+}

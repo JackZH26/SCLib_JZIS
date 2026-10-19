@@ -13,6 +13,7 @@ function childEnvironment(parent) {
   }
   return { ...env, CI: "1", NODE_ENV: "production", NEXT_TELEMETRY_DISABLED: "1",
     NEXT_PUBLIC_BASE_PATH: "",
+    NEXT_PUBLIC_WEB_VITALS_SAMPLE_RATE: "0",
     // Preserve public href/CSP semantics; the browser fixture refuses egress.
     NEXT_PUBLIC_API_BASE: "https://api.jzis.org/sclib/v1",
     API_BASE_SERVER: "http://127.0.0.1:1/inert/v1" };
@@ -23,7 +24,7 @@ function createWorkspace(source) {
   const workspaceRoot = path.join(original, "tmp");
   mkdirSync(workspaceRoot, { recursive: true, mode: 0o700 });
   const isolated = mkdtempSync(path.join(workspaceRoot, "sclib-public-browser-workspace-"));
-  for (const entry of ["app", "components", "lib", "public", "types", "package.json", "tsconfig.json",
+  for (const entry of ["app", "components", "lib", "content", "scripts", "public", "types", "package.json", "tsconfig.json",
     "next-env.d.ts", "middleware.ts", "next.config.js", "postcss.config.js", "tailwind.config.ts"]) {
     cpSync(path.join(original, entry), path.join(isolated, entry), { recursive: true });
   }
@@ -54,7 +55,8 @@ function main() {
   for (const signal of ["SIGINT", "SIGTERM"]) {
     process.on(signal, () => { stopping = true; child?.kill(signal); });
   }
-  run(["build"], () => run(["start", "--hostname", "127.0.0.1", "--port", "3102"]));
+  child = spawn(process.execPath, [path.join(isolated, "scripts/scwiki-build.mjs")], options);
+  child.on("exit", code => { if (code === 0) run(["build"], () => run(["start", "--hostname", "127.0.0.1", "--port", "3102"])); else process.exitCode = code ?? 1; });
 }
 
 module.exports = { childEnvironment, createWorkspace };

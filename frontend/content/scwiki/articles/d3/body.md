@@ -1,0 +1,43 @@
+## Scope
+
+Cuprates contain electronically important CuO2 planes, but layer count, oxygen coordination, charge reservoirs, disorder and doping differ across families. Many parent compounds are correlated antiferromagnetic insulators. Superconductivity, pseudogap behavior and competing orders do not define one universal phase diagram or establish a unique pairing interaction. A schematic dome organizes observations; its coordinates require a material-specific calibration. [R6](#ref-source-6c1991333d4a6fed)
+
+The discovery sequence also needs that specificity. Bednorz and Müller's 1986 original abstract describes three-phase Ba–La–Cu–O polycrystals with a current-dependent resistivity decrease in the 30 K range, interpreted as possible percolative superconductivity. It is not a complete bulk magnetic characterization of a modern, homogeneous composition. [R1](#ref-source-ad4ee05105f93caf)
+
+Wu and colleagues' 1987 discovery studied mixed-phase material with nominal composition Y1.2Ba0.8CuO4−y. It established a reproducible transition above liquid-nitrogen temperature using transport and magnetic measurements, while detailed phase identification remained open. The later Grant study of the principal YBa2Cu3Ox superconducting phase is a separate publication. Do not replace the original sample composition with a retrospectively assigned pure Y123 crystal. [R2](#ref-source-9350a30b2eabe27e) [R9](#ref-source-82098193516b8d9a)
+
+## Mathematical assumptions
+
+Oxygen content is not automatically the hole density in a CuO2 plane. As an explicitly formal ionic exercise for YBa2Cu3O7−δ, assign Y charge +3, Ba +2, O −2, two plane Cu sites charge $2+p$, and one chain site charge $v_c$. Neutrality gives $2(2+p)+v_c=7-2\delta$, or $p=(3-2\delta-v_c)/2$. Ten checked allocations show that the same oxygen count admits different plane/chain charge partitions. This exercise illustrates missing information; it does not measure actual orbital occupation or include ligand-hole covalency. [R8](#ref-source-e24ef58054ac9b71)
+
+Liang, Bonn and Hardy's author manuscript explicitly distinguishes chain oxygen ordering from total oxygen content. Its empirical dome, $T_c/T_{c,\max}=1-82.6(p-0.16)^2$, has two inverse branches away from its peak. Five independent algebra controls confirm that a single transition temperature cannot choose underdoping versus overdoping. The authors also discuss deviations near one-eighth doping, so treating this relation as a universal carrier-density measurement is unjustified. [R8](#ref-source-e24ef58054ac9b71)
+
+The familiar square-lattice expression $\Delta(\mathbf{k})\propto\cos k_x-\cos k_y$ illustrates a d-wave sign structure. Its symmetry does not supply a gap magnitude, a material's exact Fermi surface or a pairing mediator. Orthorhombicity, disorder and the measurement geometry must remain part of a material-specific interpretation. See the dedicated [d-wave pairing](/scwiki/d-wave) and [gap-node](/scwiki/superconducting-node-structure) pages for the model boundaries. [R5](#ref-source-2e4d7fdb6c1797b7) [R6](#ref-source-6c1991333d4a6fed)
+
+## Experimental criteria
+
+Wu's selected final text distinguishes a resistive deviation at 93 K, a sharp drop beginning at 92 K, zero resistance at 80 K and a diamagnetic onset at 91 K. The diamagnetic signal at 4.2 K was compared with a similarly sized lead sample; that relative signal is not an independently corrected superconducting volume fraction. Its 80–180 T upper-critical-field estimate is an extrapolation, whereas the reported field measurements reached 5.7 T. Preserve these criteria and scales separately. [R2](#ref-source-9350a30b2eabe27e)
+
+A later doping-calibration experiment used a different operational criterion: Liang and colleagues chose the midpoint of the field-cooled magnetic transition with 1 Oe along the c axis. Their lattice parameter was measured by room-temperature diffraction. Temperature, field direction, oxygen ordering and the selected calibration therefore belong with the inferred doping, rather than being discarded after assigning a number to a phase diagram. Only the named author-version passages and figure have been checked here. [R8](#ref-source-e24ef58054ac9b71)
+
+Phase-sensitive and magnitude-sensitive probes answer different questions. Tsuei and colleagues' original abstract reports scanning-SQUID measurements of tricrystal rings at 4.2 K, providing a phase-sensitive constraint. Hardy and colleagues' penetration-depth abstract describes a low-temperature linear term in YBa2Cu3O6.95, constraining low-energy excitations. Neither abstract alone verifies all junction assumptions, sample comparisons or raw traces; combine complementary evidence without turning a nodal observation into an unconditional mechanism verdict. [R5](#ref-source-2e4d7fdb6c1797b7) [R10](#ref-source-b7bc48c845a47b53)
+
+## Pressure and recovered samples
+
+Schilling's historical Hg-based report concerns superconductivity above 130 K at ambient pressure. Gao's original abstract reports resistive measurements under quasihydrostatic pressure up to 45 GPa and a maximum of 164 K for the three-layer member. The often-quoted 31 GPa point and its onset-versus-zero criterion have not been re-extracted from the full original in this review. The comparison record therefore leaves the exact pressure unknown; a study's maximum applied pressure is not the pressure of every reported transition. [R3](#ref-source-d95477ebe515f481) [R4](#ref-source-6d09a24a26a15997)
+
+The 2026 pressure-quench report now has a selected primary-text and author-figure check inherited from the [pressure-quench](/scwiki/pressure-quenching) page. Sample S4, released from 18.9 GPa at 4.2 K, showed an ambient-pressure resistive onset of 151 K on warming and 150 K on cooling. This is a reported onset in a recovered metastable sample, not a zero-resistance criterion or an equilibrium ambient-pressure phase. [R7](#ref-source-14d1e9e0097f7ffb)
+
+The magnetic onset near 140 K came from retrieved sample S2, not the S4 transport sample. The estimated shielding at 70 K, the separate cold-storage protocol, and an unreproduced broad 172 K anomaly are distinct observations. The latter has no accepted transition-temperature value in this catalogue. Complete final supplementary comparison, raw-data reanalysis and independent replication remain open. [R7](#ref-source-14d1e9e0097f7ffb)
+
+## Limits and disputes
+
+A charge-density modulation does not alone establish a pair-density wave; a linear resistivity does not alone determine a scattering time. Pseudogap, magnetic and charge correlations constrain theories without selecting one unique glue. Oxygen rearrangement and pressure history can alter more than carrier concentration, so a changed transition temperature does not by itself identify the causal variable. Complete scientific acceptance remains open for this article and the associated materials. [R6](#ref-source-6c1991333d4a6fed) [R7](#ref-source-14d1e9e0097f7ffb) [R8](#ref-source-e24ef58054ac9b71)
+
+## Discovery implications
+
+Compare matched compositions, preparation histories and criteria. Record what each probe measures, what a model infers and what alternative explanation survives. A mechanism proposal should connect an interaction to a symmetry prediction and a falsifiable material trend. For recovered samples, add decompression temperature, storage and subsequent measurement history before comparing them with equilibrium materials. The site preserves those conditions in searchable records and section exports. [R6](#ref-source-6c1991333d4a6fed) [R7](#ref-source-14d1e9e0097f7ffb)
+
+## Related topics
+
+Continue with [magnetic evidence](/scwiki/meissner-effect), [hydrostatic pressure](/scwiki/pressure-tuning), [phase-sensitive tests](/scwiki/vortex-topological-charge), [spin-liquid and RVB proposals](/scwiki/spin-liquids-and-superconductivity), and [Planckian transport](/scwiki/planckian-dissipation).

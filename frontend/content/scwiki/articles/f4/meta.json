@@ -1,0 +1,285 @@
+{
+  "id": "scwiki-f4",
+  "topicId": "scwiki-topic-f4",
+  "code": "F4",
+  "slug": "time-reversal-invariant-topological-superconductivity",
+  "title": "Time-reversal-invariant topological superconductivity: class DIII",
+  "summary": "Distinguish binary and integer invariants, test antiunitary symmetries, and state the limits of odd-parity and boundary-state arguments.",
+  "aliases": [
+    "class DIII",
+    "time-reversal-invariant topological superconductivity",
+    "Z2 topological superconductor",
+    "helical Majorana",
+    "Majorana Kramers pair",
+    "odd-parity criterion"
+  ],
+  "evidenceTypes": [
+    "theory"
+  ],
+  "relatedCodes": [
+    "F3",
+    "F2",
+    "B11",
+    "C7"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T14:13:13.923641+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Original author classification table, selected helical and parity-criterion passages, limited interaction-source readings and explicit antiunitary/edge-mass checks.",
+    "limitations": [
+      "Complete scientific acceptance and full final-version comparisons remain open.",
+      "No complete classification proof, interacting surface construction or material-specific topology is reproduced.",
+      "Fidkowski2013 is original-abstract scope; Metlitski2014 is a labelled preprint with selected introduction read.",
+      "Helium-3 surface experiments and solid-candidate evidence are not independently audited here."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "F_quantum_geometry/F4_Z2_topological_SC.md",
+    "sha256": "61ba3599e78984c23c528ec4581cc9d89535113a4c59fef0c7f72e3e9e9d11f6",
+    "sourceId": "file-4fe5c03b05187918"
+  },
+  "references": [
+    {
+      "id": "source-37986d2488e4cace",
+      "doi": "10.1103/PhysRevB.78.195125",
+      "title": "Classification of topological insulators and superconductors in three spatial dimensions",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevB.78.195125",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-classification-table",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0803.2786v3",
+        "note": "Author v3 15 June 2009; selected pp.1–3, Table I p.2 visually checked. Single-particle/mean-field scope and BW winding1 passage read. Full journal comparison and classification proof remain open."
+      }
+    },
+    {
+      "id": "source-5eb9e7b0c0c3b0cf",
+      "doi": "10.1103/PhysRevLett.102.187001",
+      "title": "Time-Reversal-Invariant Topological Superconductors and Superfluids in Two and Three Dimensions",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevLett.102.187001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-helical-and-defect-construction",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0803.3614v1",
+        "note": "Only author v1,25 March2008, titled Topological Superconductivity and Superfluidity. Published4May2009 under final title. Selected pp.1–3 helical blocks, edge mass and vortex/antivortex defect read; full final comparison open."
+      }
+    },
+    {
+      "id": "source-4e92d11d59fb3441",
+      "doi": "10.1103/PhysRevLett.105.097001",
+      "title": "Odd-Parity Topological Superconductors: Theory and Application to CuxBi2Se3",
+      "year": 2010,
+      "url": "https://doi.org/10.1103/PhysRevLett.105.097001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-parity-criterion",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0912.3294v1",
+        "note": "Only author v1,17December2009. Selected pp.1–2 and prior B11p1visual: n mod2,centrosymmetry,fullgap,TRI,oddparity and weak-pairing/TRIM assumptions. Full final and material evidence review open."
+      }
+    },
+    {
+      "id": "source-acd86eaeefff7bad",
+      "doi": "10.1103/PhysRevX.3.041016",
+      "title": "Non-Abelian Topological Order on the Surface of a 3D Topological Superconductor from an Exactly Solved Model",
+      "year": 2013,
+      "url": "https://doi.org/10.1103/PhysRevX.3.041016",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prx/abstract/10.1103/PhysRevX.3.041016",
+        "note": "Published21November2013. Original abstract supports symmetric gapped topologically ordered surface discussion; full exactly solved construction not reviewed."
+      }
+    },
+    {
+      "id": "source-1555be5a67a1d730",
+      "doi": "10.48550/arXiv.1406.3032",
+      "title": "Interaction effects on 3D topological superconductors: surface topological order from vortex condensation, the 16 fold way and fermionic Kramers doublets",
+      "year": 2014,
+      "url": "https://doi.org/10.48550/arXiv.1406.3032",
+      "publicationStatus": "preprint",
+      "verification": {
+        "scope": "selected-preprint-interaction-scope",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1406.3032v1",
+        "note": "Only v1,11June2014; selected abstract/introduction pp.1–3 read. Many-body T squared fermion parity, Z16 reduction and even-index focus retained. No journal reference listed by arXiv; full construction not reproduced."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-f4-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Class DIII describes a gapped Bogoliubov–de Gennes (BdG) Hamiltonian with time-reversal and particle–hole symmetries whose single-particle antiunitary operators square to $-1$ and $+1$, respectively. It is a symmetry class, not a pairing mechanism or a certificate that a particular material is topological. Dimension, the bulk gap and the allowed perturbations must be specified before assigning an invariant.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-37986d2488e4cace"
+      ],
+      "conditions": "Dimension, single-particle versus many-body symmetry, full gap, selected basis and allowed perturbations; model and material evidence kept separate.",
+      "verificationScope": "Selected primary passages and bounded matrix calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f4-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "For the stable, noninteracting strong classification, DIII has $\\mathbb Z_2$ sectors in one and two spatial dimensions and an integer $\\mathbb Z$ classification in three. By comparison, class D has $\\mathbb Z_2$, $\\mathbb Z$ and a trivial strong classification in dimensions one, two and three. Extra crystalline or translation symmetries can introduce further distinctions; the simple table does not enumerate those. In particular, “2D DIII is trivial” and “3D DIII has only a binary invariant” are incorrect statements of this free-fermion classification.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-37986d2488e4cace"
+      ],
+      "conditions": "Dimension, single-particle versus many-body symmetry, full gap, selected basis and allowed perturbations; model and material evidence kept separate.",
+      "verificationScope": "Selected primary passages and bounded matrix calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f4-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Write $T=U_TK$ and $C=U_CK$, where $K$ is complex conjugation. The requirements are $U_TH(\\mathbf k)^*U_T^\\dagger=H(-\\mathbf k)$, $U_CH(\\mathbf k)^*U_C^\\dagger=-H(-\\mathbf k)$, $U_TU_T^*=-I$ and $U_CU_C^*=I$. A suitably phased product of the two antiunitary operations gives a unitary chiral symmetry that anticommutes with $H$. Merely checking the ordinary matrix squares $U_T^2$ and $U_C^2$ would miss the conjugation in the antiunitary operation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-37986d2488e4cace"
+      ],
+      "conditions": "Dimension, single-particle versus many-body symmetry, full gap, selected basis and allowed perturbations; model and material evidence kept separate.",
+      "verificationScope": "Selected primary passages and bounded matrix calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f4-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An explicit illustrative lattice model in the basis $(c_\\uparrow,c_\\downarrow,c_\\uparrow^\\dagger,c_\\downarrow^\\dagger)$ is $H=\\xi\\tau_z\\otimes I+\\sin k_x\\,\\tau_x\\otimes\\sigma_z+\\sin k_y\\,\\tau_y\\otimes I$, with $\\xi=m+\\cos k_x+\\cos k_y$. Here $U_T=I\\otimes i\\sigma_y$, $U_C=\\tau_x\\otimes I$, and a Hermitian chiral operator is $\\tau_x\\otimes\\sigma_y$. Its squared spectrum is $E^2=\\xi^2+\\sin^2k_x+\\sin^2k_y$. Sixteen selected parameter/momentum points pass Hermiticity, both antiunitary relations, chiral anticommutation and this spectral identity. These checks establish the stated model relations, not a general classification proof or a material realization.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-37986d2488e4cace",
+        "source-5eb9e7b0c0c3b0cf"
+      ],
+      "conditions": "Dimension, single-particle versus many-body symmetry, full gap, selected basis and allowed perturbations; model and material evidence kept separate.",
+      "verificationScope": "Selected primary passages and bounded matrix calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f4-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The boundary distinction can be seen in a Majorana edge basis. For one helical pair, take $h(k)=vk\\sigma_z$, $T=i\\sigma_yK$ and $C=K$. A constant mass $m_e\\sigma_y$ anticommutes with the velocity and preserves particle–hole symmetry but is time-reversal odd. For two copies, $h=vk\\sigma_z\\otimes I$ admits the time-reversal-even mass $m_e\\sigma_x\\otimes\\rho_y$, where $\\rho$ acts on the copies; its spectrum obeys $E^2=v^2k^2+m_e^2$. This bounded calculation illustrates an even–odd distinction. It does not cover arbitrary interactions or a self-consistent microscopic edge.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-5eb9e7b0c0c3b0cf"
+      ],
+      "conditions": "Dimension, single-particle versus many-body symmetry, full gap, selected basis and allowed perturbations; model and material evidence kept separate.",
+      "verificationScope": "Selected primary passages and bounded matrix calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f4-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In three dimensions the free-fermion invariant is an integer winding number. The odd-parity criterion of Fu and Berg instead determines its parity, $\\nu=n\\bmod2$. Their sufficient criterion assumes a fully gapped, time-reversal-invariant, centrosymmetric odd-parity superconductor. The simple Fermi-surface reduction is made in a weak-pairing setting with normal bands at time-reversal-invariant momenta separated from the Fermi energy. An odd enclosed count establishes odd parity under those assumptions; an even count does not establish that the integer is zero.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-37986d2488e4cace",
+        "source-4e92d11d59fb3441"
+      ],
+      "conditions": "Dimension, single-particle versus many-body symmetry, full gap, selected basis and allowed perturbations; model and material evidence kept separate.",
+      "verificationScope": "Selected primary passages and bounded matrix calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f4-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "The Balian–Werthamer description of superfluid helium-3 B is a three-dimensional DIII prototype with unit winding in the convention of the checked classification paper. It is an atomic superfluid, not a solid superconducting device. A surface-state model and a particular experimental signal are different levels of evidence; this article does not independently review helium-3 surface spectroscopy or assign a pressure-independent transition temperature.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-37986d2488e4cace",
+        "source-5eb9e7b0c0c3b0cf"
+      ],
+      "conditions": "Dimension, single-particle versus many-body symmetry, full gap, selected basis and allowed perturbations; model and material evidence kept separate.",
+      "verificationScope": "Selected primary passages and bounded matrix calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f4-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Fu and Berg's application to copper-intercalated Bi₂Se₃ is a two-orbital pairing model and a proposed route to test odd parity. It does not by itself settle a specimen's pairing symmetry, gap or topology. For any solid candidate, establish time-reversal behavior and the bulk quasiparticle gap, evaluate a justified invariant or sufficient criterion, and compare the predicted boundary response with measurements that address competing explanations. A zero-bias feature alone does not complete this sequence.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-4e92d11d59fb3441"
+      ],
+      "conditions": "Dimension, single-particle versus many-body symmetry, full gap, selected basis and allowed perturbations; model and material evidence kept separate.",
+      "verificationScope": "Selected primary passages and bounded matrix calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f4-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Qi and colleagues' paired Majorana defect construction concerns a time-reversal-invariant defect: in their equal-spin example, a vortex in one component coincides with an antivortex in the other. Do not transfer that conclusion automatically to an ordinary magnetic vortex, which breaks time reversal. The paper's boundary construction and protected Kramers structure also should not be read as experimental evidence of braiding or of a completed topological qubit.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-5eb9e7b0c0c3b0cf"
+      ],
+      "conditions": "Dimension, single-particle versus many-body symmetry, full gap, selected basis and allowed perturbations; model and material evidence kept separate.",
+      "verificationScope": "Selected primary passages and bounded matrix calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f4-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The free-fermion table and an interacting many-body classification are distinct. Fidkowski, Chen and Vishwanath discuss symmetric gapped surfaces with topological order. The later Metlitski and colleagues preprint explicitly analyzes the interaction reduction to $\\mathbb Z_{16}$, focusing on even-index surfaces. That is not a replacement of the three-dimensional free-fermion integer by a universal $\\mathbb Z_2$ label. In the many-body discussion time reversal squares to fermion parity; the single-particle $T^2=-1$ statement must be interpreted at the appropriate level.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-acd86eaeefff7bad",
+        "source-1555be5a67a1d730"
+      ],
+      "conditions": "Dimension, single-particle versus many-body symmetry, full gap, selected basis and allowed perturbations; model and material evidence kept separate.",
+      "verificationScope": "Selected primary passages and bounded matrix calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f4-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "We visually checked the DIII classification row, read selected original author passages on helical boundaries and odd-parity conditions, and performed explicit small-matrix checks. Full journal-version comparisons, the interacting surface construction and material-specific evidence audits remain open. Complete scientific acceptance has not been reached. The 2014 interaction source is labelled as a preprint; its presence in the bibliography is not a claim that its full proof has been reproduced.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-37986d2488e4cace",
+        "source-5eb9e7b0c0c3b0cf",
+        "source-4e92d11d59fb3441",
+        "source-1555be5a67a1d730"
+      ],
+      "conditions": "Dimension, single-particle versus many-body symmetry, full gap, selected basis and allowed perturbations; model and material evidence kept separate.",
+      "verificationScope": "Selected primary passages and bounded matrix calculations; complete scientific acceptance open."
+    },
+    {
+      "id": "scwiki-f4-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Use DIII as a conditional classification after identifying the physical symmetries and a gapped BdG description. State whether a result is a full integer, its parity or a boundary-model prediction. Report what changes when time reversal is broken, when the gap closes, or when additional symmetries or strong interactions are included. This keeps a useful theoretical criterion separate from an experimentally established material property.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-37986d2488e4cace",
+        "source-4e92d11d59fb3441",
+        "source-1555be5a67a1d730"
+      ],
+      "conditions": "Dimension, single-particle versus many-body symmetry, full gap, selected basis and allowed perturbations; model and material evidence kept separate.",
+      "verificationScope": "Selected primary passages and bounded matrix calculations; complete scientific acceptance open."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "U_TU_T^*=-I,\\quad U_CU_C^*=I",
+      "check": "16 explicit four-component bulk Hermiticity,TRS,PHS,chiral and spectrum checks; one- and two-pair boundary masses. No classification proof or material assignment."
+    }
+  ],
+  "materialCases": [],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 225,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source retained; preserve corrected DIII dimensional classification and distinguish free-fermion integer,odd-parity indicator and interacting scope; no unsupported candidate confirmation."
+    }
+  ]
+}

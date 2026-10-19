@@ -15,6 +15,38 @@ from services.scientific_query import (
 )
 
 
+@pytest.mark.parametrize("query", [
+    "Meissner", " Meissner effect ", "MEISSNER-EFFECT", "迈斯纳", "迈斯纳效应",
+    "zero resistance", "zero-resistance", "零电阻", "magnetic susceptibility", "磁化率",
+    "specific heat", "比热", "magnetic shielding", "磁屏蔽",
+    "What is the Meissner effect?", "Explain the Meissner effect", "什么是迈斯纳效应？",
+    "解释Meissner", "Explain 迈斯纳效应",
+])
+def test_standalone_measurement_topics_are_not_selection_predicates(query):
+    result = interpret_scientific_query(query)
+    assert result.status == "resolved"
+    assert result.intent in {"general", "mechanism"}
+    assert result.raw_query == result.normalized_query == query
+    assert result.constraints == result.requested_fields == result.evidence_constraints == []
+    assert not result.unresolved_clauses
+    if query in {"解释Meissner", "Explain 迈斯纳效应"}:
+        assert result.language == "mixed"
+
+
+@pytest.mark.parametrize("query", [
+    "MgB2 Meissner", "MgB2 Tc onset", "Meissner Tc above 20 K", "Meissner at 1 GPa",
+    "Meissner before 2020", "not Meissner", "Meissner or shielding", "Meissner onset",
+    "Meissner effect in thin films", "Meissner effect 42", "Meissner effect != onset",
+    "LaH10 零电阻 Tc", "迈斯纳效应 高压", "比热 20 K",
+])
+def test_qualified_topic_queries_keep_unsupported_conditions(query):
+    result = interpret_scientific_query(query)
+    assert result.status == "clarification_required"
+    assert result.raw_query == query
+    assert result.unresolved_clauses
+
+
+
 @pytest.mark.parametrize("raw,expected", [
     ("MgB₂", "MgB2"), ("MgB2", "MgB2"), ("LaH_{10}", "LaH10"),
     ("LaH10", "LaH10"), ("LaH_10", "LaH10"), ("$LaH_{10}$", "LaH10"),

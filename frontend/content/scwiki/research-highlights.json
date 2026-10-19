@@ -1,0 +1,57 @@
+{
+  "checkedAt": "2026-10-18",
+  "selectionBasis": "Editorial selection across graphene, nickelates and cuprates, ordered by publication date. Not a popularity ranking or exhaustive literature feed.",
+  "items": [
+    {
+      "id": "graphene-phase-sensitive-2026",
+      "title": "Probing broken time-reversal symmetry in graphene",
+      "paperTitle": "Phase-sensitive signatures of time-reversal-symmetry-breaking superconductivity in magic-angle twisted trilayer graphene",
+      "journal": "Nature Communications",
+      "publishedAt": "2026-10-07",
+      "publicationStatus": "peer-reviewed-accepted-early-version",
+      "publicationLabel": "Peer-reviewed · early version",
+      "doi": "10.1038/s41467-026-78374-3",
+      "url": "https://www.nature.com/articles/s41467-026-78374-3",
+      "summary": "Josephson interferometry in magic-angle twisted trilayer graphene reveals asymmetric interference and field-sweep hysteresis below about 0.8 K, beneath the superconducting onset near 2 K.",
+      "limitation": "The authors interpret these signatures as consistent with broken time-reversal symmetry; they do not uniquely establish a chiral pairing state.",
+      "topicSlug": "two-dimensional-interfaces",
+      "topicLabel": "Two-dimensional superconductivity",
+      "verificationScope": "Publisher abstract and publication-status notice; no full-text or independent replication review.",
+      "checkedAt": "2026-10-18"
+    },
+    {
+      "id": "nickelate-interlayer-2026",
+      "title": "Interlayer coherence in superconducting nickelates",
+      "paperTitle": "Interlayer hybridization promotes superconductivity in bilayer nickelates",
+      "journal": "Nature Materials",
+      "publishedAt": "2026-09-23",
+      "publicationStatus": "journal-article",
+      "publicationLabel": "Peer-reviewed article",
+      "doi": "10.1038/s41563-026-02750-z",
+      "url": "https://www.nature.com/articles/s41563-026-02750-z",
+      "summary": "X-ray spectroscopy of protected (La,Pr)3Ni2O7 films links superconductivity to coherent interlayer orbital hybridization, with oxygen content and epitaxial strain tuning the electronic states.",
+      "limitation": "This film-specific evidence supports a multiorbital interpretation but does not by itself settle the pairing mechanism across nickelate families.",
+      "topicSlug": "nickelates",
+      "topicLabel": "Nickelate superconductors",
+      "verificationScope": "Publisher abstract and bibliographic record; subscription full text and raw data not reviewed.",
+      "checkedAt": "2026-10-18"
+    },
+    {
+      "id": "single-plane-cuprate-2026",
+      "title": "Superconductivity in a single copper–oxygen plane",
+      "paperTitle": "Superconducting 2D cuprate with a single CuO2 plane",
+      "journal": "Nature",
+      "publishedAt": "2026-08-12",
+      "publicationStatus": "journal-article",
+      "publicationLabel": "Peer-reviewed article",
+      "doi": "10.1038/s41586-026-10857-1",
+      "url": "https://www.nature.com/articles/s41586-026-10857-1",
+      "summary": "Monolayer Bi-2201 retains superconductivity with one CuO2 plane, while controlled oxygenation reveals an intermediate anomalous metal and unusual scaling near the superconductor–insulator transition.",
+      "limitation": "The reported phase behavior concerns this material and tuning protocol; its zero-temperature interpretation is inferred from finite-temperature measurements.",
+      "topicSlug": "cuprates",
+      "topicLabel": "Cuprate superconductors",
+      "verificationScope": "Publisher abstract and bibliographic record; subscription full text and raw data not reviewed.",
+      "checkedAt": "2026-10-18"
+    }
+  ]
+}

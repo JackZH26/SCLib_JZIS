@@ -1,0 +1,464 @@
+{
+  "id": "scwiki-d2",
+  "topicId": "scwiki-topic-d2",
+  "code": "D2",
+  "slug": "a15-compounds",
+  "title": "A15 compounds: structure, strain and useful critical fields",
+  "summary": "Understand Nb3Sn, V3Si and Nb3Ge through sample conditions, structural transitions and the distinction between critical fields and current-carrying performance.",
+  "aliases": [
+    "A15",
+    "beta tungsten",
+    "Nb3Sn",
+    "V3Si",
+    "Nb3Ge",
+    "Kramer plot",
+    "martensitic transformation",
+    "Cu-Sn cavity"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "D1",
+    "B2",
+    "C1",
+    "A6",
+    "A7"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T12:19:32.207475+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Godeke author reviews and v2 experiment, published V3Si NMR methods/results and limited historical/2026 abstract checks. Independent digamma roots, Kramer/grain examples and printed-current rounding check.",
+    "limitations": [
+      "Full scientific acceptance and original raw-data/spectral-fit reviews remain open.",
+      "Historic Nb3Sn/Nb–Ge reports and Testardi papers checked at abstract level; original measurement criteria not inferred.",
+      "2026 dissertation is an abstract-only preprint, not peer-reviewed performance acceptance.",
+      "Finite models do not reproduce conductor networks, EFG tensors, phonon calculations or device performance."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D2_A15_compounds.md",
+    "sha256": "036ee5b467a7597ae98470c891d08ceccf473a97c19d2f6a40f3fe88348b8886",
+    "sourceId": "file-1729169cb28fa596"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 58,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source retained; primary sample conditions and model limitations expanded, cross-reference and title corrected."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-830f887afcf548c4",
+      "doi": "10.1103/PhysRev.95.1435",
+      "title": "Superconductivity of Nb3Sn",
+      "year": 1954,
+      "url": "https://doi.org/10.1103/PhysRev.95.1435",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.95.1435",
+        "note": "Published 15 September 1954. Historical reported scale only; original full methods not reviewed."
+      }
+    },
+    {
+      "id": "source-82a0df3d764cd0bc",
+      "doi": "10.1063/1.1654966",
+      "title": "Superconductivity in Nb–Ge films above 22 K",
+      "year": 1973,
+      "url": "https://doi.org/10.1063/1.1654966",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://aipp.silverchair-cdn.com/article-minimal/44036",
+        "note": "Published 15 October 1973. Publisher abstract also verified through Crossref; reports 22.3 K films from high-pressure dc sputtering. Measurement criterion and full methods not independently read."
+      }
+    },
+    {
+      "id": "source-33f4444a5825b443",
+      "doi": "10.1103/PhysRevB.5.4342",
+      "title": "Structural Instability, Anharmonicity, and High-Temperature Superconductivity in A-15-Structure Compounds",
+      "year": 1972,
+      "url": "https://doi.org/10.1103/PhysRevB.5.4342",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.5.4342",
+        "note": "Published 1 June 1972. Sound-velocity/strain interpretation and model conjectures; not universal monotonic optimization."
+      }
+    },
+    {
+      "id": "source-509b869080567558",
+      "doi": "10.1103/RevModPhys.47.637",
+      "title": "Structural instability and superconductivity in A-15 compounds",
+      "year": 1975,
+      "url": "https://doi.org/10.1103/RevModPhys.47.637",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-indexed-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://doi.org/10.1103/RevModPhys.47.637",
+        "note": "Published 1 July 1975. Indexed publisher abstract only; full review not read."
+      }
+    },
+    {
+      "id": "source-29d0a9915f8b6c0e",
+      "doi": "10.1088/0953-2048/19/8/R02",
+      "title": "A review of the properties of Nb3Sn and their variation with A15 composition, morphology and strain state",
+      "year": 2006,
+      "url": "https://doi.org/10.1088/0953-2048/19/8/R02",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-review-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0606303v1",
+        "note": "Author v1, 13 June 2006. Selected introductory/structure pp.1–3 and coupling/composition discussion around Fig.6 pp.4–5. Underlying cited datasets not independently reproduced."
+      }
+    },
+    {
+      "id": "source-c4b57e9e8e5aa3d7",
+      "doi": "10.1088/0953-2048/19/10/R02",
+      "title": "A general scaling relation for the critical current density in Nb3Sn",
+      "year": 2006,
+      "url": "https://doi.org/10.1088/0953-2048/19/10/R02",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-review-equation-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0608404v1",
+        "note": "Author v1, 18 August 2006. Selected pp.4–6 and conclusion p.31; p.5 visually checked. Field shape, grain-spacing correction and Kramer limitations; full strain model not reviewed."
+      }
+    },
+    {
+      "id": "source-d27a049f764be753",
+      "doi": "10.1063/1.1890447",
+      "title": "The upper critical field of filamentary Nb3Sn conductors",
+      "year": 2005,
+      "url": "https://doi.org/10.1063/1.1890447",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-v2-methods-equation-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0410463v2",
+        "note": "Author v2, 28 February 2005, replaces Eqs.7–9 in v1. Selected pp.2–6 and10–11; pp.6/11 visually checked. Table I, criteria/noise, interlaboratory offset, Eqs.2/4–6. Printed-current estimate has disclosed rounding discrepancy; no raw-data fit reproduced."
+      }
+    },
+    {
+      "id": "source-9fe69d0a6cecbb0c",
+      "doi": "10.1016/j.physc.2022.1354137",
+      "title": "Martensitic transformation in V3Si single crystal: 51V NMR evidence for coexistence of cubic and tetragonal phases",
+      "year": 2022,
+      "url": "https://doi.org/10.1016/j.physc.2022.1354137",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-methods-results-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://public.magnet.fsu.edu/AToth/NSF%20publication%20access/2022/09%20Newly%20Entered%20Pubs%20September%202022/2022%20cited/2022_Martensitic%20transformation.pdf",
+        "note": "Published online 8 September 2022; issue 15 November. Selected pp.1–4, p.4 visually checked. Field 6.67 T, Tc 12.8 K, Tm 21.1 K distinct from zero-field Tc 17 K. Full EFG appendix/spectral fitting not replicated."
+      }
+    },
+    {
+      "id": "source-0620df96ebbf2a66",
+      "doi": "10.1103/PhysRevB.12.905",
+      "title": "Transition temperature of strong-coupled superconductors reanalyzed",
+      "year": 1975,
+      "url": "https://doi.org/10.1103/PhysRevB.12.905",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.12.905",
+        "note": "Publisher abstract: modified prefactor, spectral moment/shape corrections and large-coupling limits within Eliashberg theory. Full derivation and Pb-Bi data not reanalyzed."
+      }
+    },
+    {
+      "id": "source-3633507cd1108d10",
+      "doi": null,
+      "title": "Nb3Sn Thin Films Using a Cu-Sn Route for Dark Matter Detection",
+      "year": 2026,
+      "url": "https://arxiv.org/abs/2605.03171v1",
+      "publicationStatus": "preprint",
+      "verification": {
+        "scope": "preprint-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/abs/2605.03171v1",
+        "note": "Doctoral dissertation preprint, submitted 4 May 2026; not a peer-reviewed journal article. Abstract only: selected cavity at 50 mK and 9 T, quality factor declines in field. Full 211-page dissertation not read."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d2-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A15 is a crystal-structure family, usually written $A_3B$, with cubic space group $Pm\\bar{3}n$ before any distortion. Three orthogonal chains of A atoms help organize its electronic structure. They do not guarantee a high transition temperature: composition, site ordering, phonons and strain all matter. The brittle Nb–Sn A15 phase illustrates why a favorable electronic structure must also survive fabrication and mechanical loading.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-29d0a9915f8b6c0e"
+      ],
+      "conditions": "Named sample, field, criterion and source-review scope; numerical examples are imposed models, not reproduced experiments.",
+      "verificationScope": "Selected original passages and bounded numerical checks only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d2-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Nb3Sn, V3Si and Nb3Ge are distinct examples, not one table of universal constants. Matthias and colleagues reported Nb3Sn near 18 K in 1954. Gavaler's 1973 abstract reports sputtered Nb–Ge films remaining superconducting up to 22.3 K. That historical film result is neither an equilibrium bulk value nor a strict A15 temperature ceiling. “High pressure” in the deposition description refers to sputtering conditions, not a high-pressure superconductivity measurement.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-830f887afcf548c4",
+        "source-82a0df3d764cd0bc"
+      ],
+      "conditions": "Named sample, field, criterion and source-review scope; numerical examples are imposed models, not reproduced experiments.",
+      "verificationScope": "Selected original passages and bounded numerical checks only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d2-claim-scope-3",
+      "sectionId": "scope",
+      "statement": "Near-stoichiometric Nb3Sn is a conventional strong-coupling benchmark, but even its coupling classification depends on composition and how the gap and transition are sampled. Godeke's review discusses interface-gap and inhomogeneity effects that can bias a gap-to-temperature ratio. A full gap is not proof that all samples have the same coupling, and a large upper critical field alone is not evidence for triplet pairing.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-29d0a9915f8b6c0e",
+        "source-0620df96ebbf2a66"
+      ],
+      "conditions": "Named sample, field, criterion and source-review scope; numerical examples are imposed models, not reproduced experiments.",
+      "verificationScope": "Selected original passages and bounded numerical checks only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d2-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For an orbital dirty-limit description, write $B_{c2}=\\mu_0H_{c2}$ and $\\ln(T/T_c)=\\psi(1/2)-\\psi[1/2+\\hbar D B_{c2}(T)/(2\\Phi_0k_BT)]$, where $D$ is an effective diffusion parameter and $\\psi$ the digamma function. The Maki–de Gennes form omits Pauli, spin–orbit, strong-coupling and Fermi-surface anisotropy corrections. A useful fit to an inhomogeneous wire does not measure a unique microscopic $D$. Independent numerical roots recover the model ratio $B_{c2}(0)/(T_c|dB_{c2}/dT|_{T_c})=\\pi^2e^{-\\gamma}/8\\simeq0.693$; this is not a universal material relation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d27a049f764be753"
+      ],
+      "conditions": "Named sample, field, criterion and source-review scope; numerical examples are imposed models, not reproduced experiments.",
+      "verificationScope": "Selected original passages and bounded numerical checks only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d2-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For current perpendicular to field, the pinning-force magnitude is $F_p=J_cB$. A common fixed-temperature field shape is $f(h)=h^{1/2}(1-h)^2$, with $h=B/B_{c2}$. It peaks at $h=0.2$ and produces a linear Kramer plot of $J_c^{1/2}B^{1/4}$ only under the model's assumptions. A triangular vortex lattice has $a_\\Delta=(4/3)^{1/4}\\sqrt{\\Phi_0/B}$; the flux-shear expression includes $(1-a_\\Delta/d)^{-2}$ for mean grain size $d$. At 12 T and $d=100$ nm, this factor is about 1.36, so neglecting it requires a stated tolerance. Neither the pinning peak nor a fitted Kramer intercept independently identifies the thermodynamic upper critical field.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-c4b57e9e8e5aa3d7"
+      ],
+      "conditions": "Named sample, field, criterion and source-review scope; numerical examples are imposed models, not reproduced experiments.",
+      "verificationScope": "Selected original passages and bounded numerical checks only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d2-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A two-component illustrative sum of currents, with imposed critical fields of 20 and 28 T, gives Kramer intercepts of 25.06 and 26.35 T over different finite field windows. This is a numerical counterexample to treating every extrapolated intercept as the largest component field; it is not a fitted wire network. Separately, Godeke's hypothetical uniform-wire comparison holds the prefactor fixed in $J_c=C B_{c2}^{2}h^{1/2}(1-h)^2/B$. Its printed 24.9-to-26.9 T inputs give 2888.01 A/mm² from 2250 A/mm² at 12 T and 4.2 K, versus the paper's 2883 A/mm². The latter lies within input-field rounding bounds. Neither improved value was measured.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-c4b57e9e8e5aa3d7",
+        "source-d27a049f764be753"
+      ],
+      "conditions": "Named sample, field, criterion and source-review scope; numerical examples are imposed models, not reproduced experiments.",
+      "verificationScope": "Selected original passages and bounded numerical checks only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d2-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Godeke and colleagues measured small-current resistive transitions of filamentary Nb3Sn, using approximately 0.2–0.6 A/mm² and fields up to 30 T. Their 10%, 50% and 90% normal-resistance criteria probe different parts of a broadened transition. At high field, the 99% criterion was extrapolated from the less noisy 10–90% region under a width assumption. The study also retained an unresolved interlaboratory offset of about 4%, treated as approximately ±2% uncertainty. Its highest-quality fractions are not every part of the conductor.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d27a049f764be753"
+      ],
+      "conditions": "Named sample, field, criterion and source-review scope; numerical examples are imposed models, not reproduced experiments.",
+      "verificationScope": "Selected original passages and bounded numerical checks only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d2-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "The B34 wire reacted for 64 hours at 675 °C provides a concrete comparison: transport at a 10 µV/m criterion gave non-Cu $J_c=2250$ A/mm² at 12 T and 4.2 K. The Kramer field was 24.9 T, while the 99% resistive field was 26.9 T at the same temperature. Keep the non-Cu area normalization, voltage criterion and heat treatment attached to those numbers. They are not interchangeable measures of performance.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d27a049f764be753"
+      ],
+      "conditions": "Named sample, field, criterion and source-review scope; numerical examples are imposed models, not reproduced experiments.",
+      "verificationScope": "Selected original passages and bounded numerical checks only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d2-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Gapud and colleagues studied a floating-zone V3Si single crystal, MP3, with residual-resistivity ratio 47. Their 51V NMR experiment used 6.67 T, where the reported superconducting transition was 12.8 K and the structural transition 21.1 K. Cubic and tetragonal spectra coexisted around the structural transition. The authors found no conclusive cubic-phase spectrum below the zero-field transition scale of 17 K; that is distinct from the 12.8 K transition in the actual NMR field. These observations do not establish that a martensitic transition is necessary for every A15 superconductor.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9fe69d0a6cecbb0c"
+      ],
+      "conditions": "Named sample, field, criterion and source-review scope; numerical examples are imposed models, not reproduced experiments.",
+      "verificationScope": "Selected original passages and bounded numerical checks only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d2-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Elastic softening, anharmonicity and superconductivity can be correlated without a universal rule that moving closer to structural instability always improves $T_c$. Testardi's papers motivate this coupled problem; they do not remove the need for sample-specific structural and thermodynamic evidence. Changes in composition or disorder can alter several electronic and phonon parameters together. Increasing a density-of-states peak or an estimated coupling constant alone is not a validated optimization strategy.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-33f4444a5825b443",
+        "source-509b869080567558",
+        "source-0620df96ebbf2a66"
+      ],
+      "conditions": "Named sample, field, criterion and source-review scope; numerical examples are imposed models, not reproduced experiments.",
+      "verificationScope": "Selected original passages and bounded numerical checks only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d2-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "The V3Si NMR assignments depend on orientation, spectral resolution and a model of local electric-field gradients. Absence of a resolved line is not a proof of literally zero phase fraction, and zero-field and finite-field transition temperatures must not be conflated. Similarly, a Nb3Sn resistive onset, a pinning-derived extrapolation and a magnetic transition need their own criteria and uncertainty. Record strain state and mounting as well as nominal composition.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-d27a049f764be753",
+        "source-9fe69d0a6cecbb0c"
+      ],
+      "conditions": "Named sample, field, criterion and source-review scope; numerical examples are imposed models, not reproduced experiments.",
+      "verificationScope": "Selected original passages and bounded numerical checks only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d2-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "A May 2026 doctoral-dissertation preprint explores Cu–Sn routes to Nb3Sn films for microwave dark-matter cavities. Its abstract describes a chosen cavity tested at 50 mK and 9 T, but reports a quality-factor decline in field. Neither the operating temperature nor the maximum applied field is a measured transition temperature or a demonstrated upper critical field. This is an abstract-level research pointer, not a peer-reviewed performance certification.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-3633507cd1108d10"
+      ],
+      "conditions": "Named sample, field, criterion and source-review scope; numerical examples are imposed models, not reproduced experiments.",
+      "verificationScope": "Selected original passages and bounded numerical checks only; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d2-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Optimize a complete, conditional objective: transition temperature, useful field range, current density, mechanical tolerance and manufacturability. Preserve measured and predicted quantities separately. Compare transition criteria, composition gradients, annealing, strain, grain structure and area normalization before ranking conductors. For a proposed material, check phase stability and the coupling-weighted phonon spectrum; for a working wire or cavity, test the actual operating condition and retain negative results.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-29d0a9915f8b6c0e",
+        "source-c4b57e9e8e5aa3d7",
+        "source-0620df96ebbf2a66",
+        "source-3633507cd1108d10"
+      ],
+      "conditions": "Named sample, field, criterion and source-review scope; numerical examples are imposed models, not reproduced experiments.",
+      "verificationScope": "Selected original passages and bounded numerical checks only; full scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-d2-correction-1",
+      "description": "Corrected high-field cross-reference to A6 and Testardi1972 title; distinguished sputtering pressure, field-dependent transition criteria and hypothetical performance.",
+      "sourceId": "source-33f4444a5825b443",
+      "scope": "Edited public content; pinned source bytes preserved."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\ln t=\\psi(1/2)-\\psi(1/2+u/t)",
+      "check": "Five independent log-gamma derivatives, six roots and low/high-temperature limits."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "f(h)=h^{1/2}(1-h)^2",
+      "check": "Peak, uniform Kramer intercept, eight finite-grain corrections and three toy-mixture intercepts."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "J_c=C B_{c2}^2h^{1/2}(1-h)^2/B",
+      "check": "Printed fields give2888.01 rather than quoted2883 A/mm2; latter lies within field-rounding interval."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-d2-material-1",
+      "formula": "Nb3Ge",
+      "sample": "Gavaler1973 sputtered Nb–Ge films",
+      "recordType": "experiment",
+      "reportedTemperatureK": 22.3,
+      "tcK": 22.3,
+      "temperatureKind": "transition",
+      "temperatureNote": "Not an equilibrium bulk constant; high-pressure sputtering does not imply high measurement pressure.",
+      "criterion": "reported-transition-unspecified",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Publisher abstract; full criterion not reviewed",
+      "sourceId": "source-82a0df3d764cd0bc",
+      "aliases": [
+        "A15"
+      ]
+    },
+    {
+      "id": "scwiki-d2-material-2",
+      "formula": "Nb3Sn",
+      "sample": "B34 ternary PIT, 64 h at 675 °C",
+      "recordType": "experiment",
+      "reportedTemperatureK": 4.2,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Operating temperature of current/field comparison, not Tc.",
+      "criterion": "transport-10-microvolt-per-metre",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "2250 A/mm2 non-Cu at 12 T; Kramer 24.9 T versus 99% resistive 26.9 T",
+      "sourceId": "source-d27a049f764be753",
+      "aliases": [
+        "A15"
+      ]
+    },
+    {
+      "id": "scwiki-d2-material-3",
+      "formula": "V3Si",
+      "sample": "MP3 floating-zone single crystal, RRR47, field 6.67 T",
+      "recordType": "experiment",
+      "reportedTemperatureK": 12.8,
+      "tcK": 12.8,
+      "temperatureKind": "transition",
+      "temperatureNote": "Retain 6.67 T condition; structural transition 21.1 K is not Tc.",
+      "criterion": "reported-transport-transition-in-field",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Transport context for 51V NMR; Tm 21.1 K, zero-field Tc 17 K",
+      "sourceId": "source-9fe69d0a6cecbb0c",
+      "aliases": [
+        "A15"
+      ]
+    },
+    {
+      "id": "scwiki-d2-material-4",
+      "formula": "Nb3Sn",
+      "sample": "Cu–Sn route selected cavity; dissertation abstract",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.05,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Preprint operating condition; not Tc or a certified high-field Q target.",
+      "criterion": "cavity-operating-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "50 mK and 9 T reported in abstract; Q declines in field",
+      "sourceId": "source-3633507cd1108d10",
+      "aliases": [
+        "A15"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,409 @@
+{
+  "id": "scwiki-n6",
+  "topicId": "scwiki-topic-n6",
+  "code": "N6",
+  "slug": "open-questions/n6",
+  "publicationKind": "open-question",
+  "title": "Is UTe2 a spin-triplet superconductor?",
+  "summary": "Assess Josephson, spin-response, thermal-transport and symmetry evidence without conflating parity, gap structure and topology.",
+  "aliases": [
+    "UTe2 triplet evidence",
+    "uranium ditelluride pairing symmetry",
+    "two-site Knight shift",
+    "UTe2三重态",
+    "UTe₂自旋三重态",
+    "碲化铀配对"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "C5",
+    "C9",
+    "D8",
+    "F4",
+    "N4"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T20:57:59.193520+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Josephson, NMR remeasurement and two-site analysis, final thermal-transport and ultrasound results; inherited discovery/Kerr/high-field evidence and independent response examples.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Full supplements, original measurement reanalysis and complete author-to-final comparisons remain open where stated.",
+      "Independent examples use restricted single-band models and do not calculate the UTe2 response.",
+      "No joint fit resolves the full order parameter, every superconducting phase or topological classification."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "02_BATCH_2_IN_PLAN.md",
+    "sha256": "502293e5ed2fe8463b61a6c5b78a2c33bc33f3265bd36fe534fa2c469e42ff48",
+    "sourceId": "file-49326006ac2c2636"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 142,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    },
+    {
+      "startLine": 143,
+      "endLine": 143,
+      "targetSections": [
+        "scope",
+        "experimental-criteria",
+        "what-knight-shifts-establish",
+        "mathematical-assumptions",
+        "gap-structure-and-other-symmetries",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "decision": "new-research-for-approved-question",
+      "note": "Approved N6 question supplies scope, not a settled UTe2 order parameter."
+    },
+    {
+      "startLine": 144,
+      "endLine": 177,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope topics remain separately tracked."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\chi_{ii}/\\chi_N=1-\\langle d_i^2/|\\mathbf d|^2\\rangle_{\\rm FS}",
+      "check": "Twelve direct BdG energy-curvature checks at two field steps, four spherical averages and fermion-exchange checks under stated restricted assumptions."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "K_j=A_j\\chi+K_j^{\\rm orb}+K^{\\rm dia}",
+      "check": "Four original two-site examples test common-shift recovery and error amplification; not an experimental refit."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-f2133d67ac862ff4",
+      "doi": "10.1103/PhysRevB.100.054501",
+      "title": "Symmetry of superconducting pairing in non-pseudospin electron bands",
+      "year": 2019,
+      "url": "https://doi.org/10.1103/PhysRevB.100.054501",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1907.08080v1",
+        "note": "Author v1, 18 July 2019; pp.1–2 and selected pp.4–6 equations 7–20 read. Static intraband parity and non-pseudospin rotation distinction; complete exceptional nodal tables not audited."
+      }
+    },
+    {
+      "id": "source-ca6322be2694e430",
+      "doi": "10.1126/science.aav8645",
+      "title": "Nearly ferromagnetic spin-triplet superconductivity",
+      "year": 2019,
+      "url": "https://doi.org/10.1126/science.aav8645",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-passages-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://vector.umd.edu/images/publications/Science365_6842019.pdf",
+        "note": "Ran et al. published paper pp.1–2; p.2 visually checked: maximum measured20T versus extrapolated b-axis40T. Historical spin/pairing interpretations are not adopted as settled consensus. Supplement and raw data not fully audited."
+      }
+    },
+    {
+      "id": "source-e879550ecef8c596",
+      "doi": "10.1073/pnas.2419734122",
+      "title": "Observation of odd-parity superconductivity in UTe2",
+      "year": 2025,
+      "url": "https://doi.org/10.1073/pnas.2419734122",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-junction-results-and-assumptions",
+        "evidenceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12002285/",
+        "note": "Online 25 March 2025, issue 1 April. Final HTML introduction, selection rules, results through Table 2 and captions checked. Complete supplement, surface calibration and raw-data refitting remain open. Earlier arxiv version is not substituted for the final."
+      }
+    },
+    {
+      "id": "source-b4ce2816b340bde0",
+      "doi": "10.1103/PhysRevB.111.174526",
+      "title": "b-axis and c-axis Knight shift measurements in the superconducting state on ultraclean UTe2 with Tc=2.1 K",
+      "year": 2025,
+      "url": "https://doi.org/10.1103/PhysRevB.111.174526",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-methods-and-response-extraction",
+        "evidenceUrl": "https://arxiv.org/html/2505.19615v1",
+        "note": "Published 23 May 2025; author v1 dated 26 May. Selected methods, two-site extraction, limitations and appendix formula checked; p. 3 Figures 1 and 2 visually inspected. Final-version comparison and raw refit remain open."
+      }
+    },
+    {
+      "id": "source-87044bef0f921b4c",
+      "doi": "10.7566/JPSJ.93.123701",
+      "title": "Clear Reduction in Spin Susceptibility and Superconducting Spin Rotation for H parallel a in the Early-Stage Sample of Spin-Triplet Superconductor UTe2",
+      "year": 2024,
+      "url": "https://doi.org/10.7566/JPSJ.93.123701",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-author-tilt-method-and-interpretation",
+        "evidenceUrl": "https://arxiv.org/html/2411.02698v1",
+        "note": "Author v1 dated 5 November 2024, journal identity linked by arxiv. Selected tilt method, sample signal loss, diamagnetic estimate and field extrapolation read. Complete final comparison and raw spectral fit remain open."
+      }
+    },
+    {
+      "id": "source-4d23ccd63057d066",
+      "doi": "10.1038/s41467-026-75566-9",
+      "title": "Pseudo point nodal superconducting gap in spin-triplet UTe2",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41467-026-75566-9",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-thermal-transport-and-figures",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-026-75566-9.pdf",
+        "note": "Published 16 July 2026. Final PDF pp. 1–6 checked; p. 3 Figure 2 and p. 5 Figure 4 visually inspected. Polynomial extrapolation, semiclassical assumptions and subthreshold mismatch retained; full supplement and source data not audited."
+      }
+    },
+    {
+      "id": "source-dd4e897d833ce69c",
+      "doi": "10.1103/PhysRevX.13.041019",
+      "title": "Fate of Time-Reversal Symmetry Breaking in UTe2",
+      "year": 2023,
+      "url": "https://doi.org/10.1103/PhysRevX.13.041019",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2305.00589v1",
+        "note": "Reused scoped primary reading from C6 in this project. Selected pp.2–3 and methods pp.5–6; Fig.1 p.3 visually checked. Kerr sample set distinguished from susceptibility set. Final publisher abstract checked; full version comparison open."
+      }
+    },
+    {
+      "id": "source-496eda2b229c9047",
+      "doi": "10.1038/s41567-024-02493-1",
+      "title": "Single-component superconductivity in UTe2 at ambient pressure",
+      "year": 2024,
+      "url": "https://doi.org/10.1038/s41567-024-02493-1",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-ultrasound-results-and-symmetry",
+        "evidenceUrl": "https://tsapps.nist.gov/publication/get_pdf.cfm?pub_id=957690",
+        "note": "Final PDF pp. 1–4 checked; p. 3 Figures 1 and 2 visually inspected. Online 9 May 2024, July issue; do not substitute the NIST page date for online publication. Shear null result alone also permits even-parity states. Full supplement and raw-data audit open."
+      }
+    },
+    {
+      "id": "source-0c4d7cebb12a0d5b",
+      "doi": "10.1126/science.adn7673",
+      "title": "High-field superconducting halo in UTe2",
+      "year": 2025,
+      "url": "https://doi.org/10.1126/science.adn7673",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-pulsed-field-methods-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.vector.umd.edu/images/publications/Science389_5122025.pdf",
+        "note": "Published 31 July 2025. Selected pp.512–513 methods and boundary interpretation read; p.512 visually checked. Pulsed-field maximum around 73 T is distinct from extrapolation. Supplement and dataset not reanalyzed; no full order-parameter reconstruction."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-n6-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "UTe2 has substantial evidence supporting odd-parity, triplet-related superconductivity, but its complete order parameter is not fixed by a single experiment. The question must specify the sample, pressure, field magnitude and direction, and superconducting phase. Spin structure, inversion parity, the number of order-parameter components, time-reversal symmetry and topology are distinct properties. This page compares selected evidence rather than declaring all of them settled together.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ca6322be2694e430",
+        "source-e879550ecef8c596",
+        "source-dd4e897d833ce69c"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    },
+    {
+      "id": "scwiki-n6-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "In a suitable intraband description of a centrosymmetric, time-reversal-invariant normal state, an even-frequency odd-parity gap has a symmetric band-doublet pairing component. With strong spin–orbit coupling, that label is not automatically a pair of freely rotating bare electron spins. The doublet's actual crystal transformation rules matter; exceptional bands need not transform as ordinary spin-1/2 pseudospins. Multiorbital and frequency-exchange assumptions must remain explicit.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-f2133d67ac862ff4"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    },
+    {
+      "id": "scwiki-n6-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "The discovery study reported a large, anisotropic upper critical field and triplet-related interpretations. Its b-axis estimate near 40 T extrapolated beyond measurements reaching 20 T. Large critical fields motivate a triplet hypothesis, but the comparison must include orbital limiting, strong coupling, multiband structure and spin–orbit response. UTe2's paramagnetic ambient-pressure normal state also distinguishes it from uranium superconductors with established ferromagnetic order.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ca6322be2694e430"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    },
+    {
+      "id": "scwiki-n6-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Li and colleagues' 2025 In/UTe2 junction study probes orbital symmetry through orientation-dependent Josephson coupling. Coupling appeared on the (001) and (0−11) faces, whereas two junctions on a (1−10) surface had no resolved supercurrent at a stated sensitivity of roughly 1 microampere. The authors identify this pattern with B1u among their considered representations. Their argument requires sufficiently smooth interfaces and first-order coupling; interface barriers, geometry and surface reconstruction remain part of the inference. A null signal is resolution bounded, not an exact measurement of zero.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e879550ecef8c596"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    },
+    {
+      "id": "scwiki-n6-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Junction temperatures also need careful attribution. In that study, sample E's junction zero-resistance temperature is about 1.2 K, while the UTe2 electrode onset is about 2.0 K. These are different criteria, not two interchangeable bulk transition temperatures. This question page does not create a new material record from either value.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e879550ecef8c596"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    },
+    {
+      "id": "scwiki-n6-claim-what-knight-shifts-establish-1",
+      "sectionId": "what-knight-shifts-establish",
+      "statement": "Kitagawa and colleagues re-examined an early sample using a small field tilt to infer the difficult a-axis response. They found a reduction and attributed the earlier nearly unchanged signal to a remaining nonsuperconducting fraction. The method uses an angular projection and a diamagnetic estimate; the proposed recovery near a 1.5 T a-axis component is an extrapolation interpreted as spin rotation. It should not be presented as a directly mapped universal rotation boundary.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-87044bef0f921b4c"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    },
+    {
+      "id": "scwiki-n6-claim-what-knight-shifts-establish-2",
+      "sectionId": "what-knight-shifts-establish",
+      "statement": "Matsumura and colleagues measured two Te sites at approximately 0.8 T along b and 0.75 T along c, down to about 70 mK. Subtracting their shifts removes an assumed common diamagnetic contribution. The c-axis peaks overlap, and its quantitative subtraction is particularly sensitive to fitting and nearly equal hyperfine slopes. Together with earlier a-axis measurements, the work constrains a three-component d-vector description. The authors nevertheless allow higher-order momentum terms and do not uniquely distinguish a full gap from every point-node model.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-b4ce2816b340bde0"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    },
+    {
+      "id": "scwiki-n6-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In a specified spin-1/2 basis, a pure triplet example has $\\Delta=(\\mathbf d\\cdot\\boldsymbol\\sigma)i\\sigma_y$. Real odd $\\mathbf d(\\mathbf k)$ gives a symmetric spin matrix and satisfies $\\Delta(\\mathbf k)=-\\Delta^{\\mathsf T}(-\\mathbf k)$. This algebra must not replace the actual symmetry matrices of a spin–orbit-coupled material.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f2133d67ac862ff4"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    },
+    {
+      "id": "scwiki-n6-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For the two-site extraction, write $K_j=A_j\\chi+K_j^{\\rm orb}+K^{\\rm dia}$. Subtraction cancels only the common term. Solving for the diamagnetic contribution introduces a denominator $\\Gamma-1$, where $\\Gamma$ relates hyperfine slopes. The selected experiment reports ratios near 1.32 and 0.91 for different directions. Four independent synthetic examples recover the imposed common shift and verify amplification of measurement errors as the slopes approach equality; they are not a refit of the spectra.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-b4ce2816b340bde0"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    },
+    {
+      "id": "scwiki-n6-claim-gap-structure-and-other-symmetries-1",
+      "sectionId": "gap-structure-and-other-symmetries",
+      "statement": "Hosoi and colleagues' July 2026 thermal-transport study adds a bulk directional constraint. Its b-axis heat-current measurements reached roughly 50 mK in two clean crystals. Small residual transport and a low-field kink support a deep but finite gap minimum in the authors' interpretation. However, the zero-temperature term is extrapolated, and the zero-field temperature dependence alone explicitly leaves a restricted true-node scenario open. The finite-field model uses a semiclassical Doppler picture and does not capture all subthreshold conduction. Gap anisotropy is not a direct spin measurement.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-4d23ccd63057d066"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    },
+    {
+      "id": "scwiki-n6-claim-gap-structure-and-other-symmetries-2",
+      "sectionId": "gap-structure-and-other-symmetries",
+      "statement": "Theuss and colleagues measured compression and shear moduli in single- and double-transition samples. Their absence of resolved shear discontinuities constrains a multicomponent interpretation within the elastic-coupling analysis. The paper explicitly states that this result also permits single-component even-parity states. Its additional B2u proposal is therefore distinct from the component-count constraint. Ambient-pressure findings cannot automatically settle the pressure-induced phases.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-496eda2b229c9047"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    },
+    {
+      "id": "scwiki-n6-claim-gap-structure-and-other-symmetries-3",
+      "sectionId": "gap-structure-and-other-symmetries",
+      "statement": "The reviewed Kerr study found no spontaneous signal in its tested single-transition samples. This constrains time-reversal breaking under those conditions; it does not exclude every possible triplet state. Conversely, the high-field halo experiment maps transport boundaries in a very different field regime, with a multicomponent triplet interpretation remaining a model conclusion. Neither observation alone determines the low-field bulk invariant or establishes usable Majorana modes.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-dd4e897d833ce69c",
+        "source-0c4d7cebb12a0d5b"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    },
+    {
+      "id": "scwiki-n6-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The evidence supports taking triplet-related states seriously while retaining competing representations and measurement-specific assumptions. A gap minimum, an absent shear jump, a Knight-shift change and a Josephson selection rule do not answer identical questions. Agreement should be assessed on compatible samples and phases, including surface-versus-bulk sensitivity. No independent global fit of these experiments has been performed here, and full scientific acceptance remains open.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e879550ecef8c596",
+        "source-b4ce2816b340bde0",
+        "source-4d23ccd63057d066",
+        "source-496eda2b229c9047"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    },
+    {
+      "id": "scwiki-n6-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Useful next tests would compare orientation-resolved junctions with bulk spin response and thermodynamic probes on well-characterized crystals, carrying uncertainties and sample fractions through the analysis. Candidate models should predict several observables under the same conditions and identify where their predictions differ. Keep claimed topology separate until the relevant gap, symmetry and electronic structure are established. This is a proposed validation program, not a certification of one microscopic pairing mechanism.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-f2133d67ac862ff4",
+        "source-e879550ecef8c596",
+        "source-b4ce2816b340bde0"
+      ],
+      "conditions": "Preserve sample, phase, field orientation, surface/bulk sensitivity, parity/band-basis assumptions and response extraction limits.",
+      "verificationScope": "Selected original text and figures with inherited bounded checks; no full global fit or independent experimental reproduction."
+    }
+  ],
+  "scopeItems": [
+    {
+      "id": "N6",
+      "sectionIds": [
+        "scope",
+        "experimental-criteria",
+        "what-knight-shifts-establish",
+        "mathematical-assumptions",
+        "gap-structure-and-other-symmetries",
+        "limits-and-disputes",
+        "discovery-implications"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Selected Josephson, NMR remeasurement and two-site analysis, final thermal-transport and ultrasound results; inherited discovery/Kerr/high-field evidence and independent response examples.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "Full supplements, original measurement reanalysis and complete author-to-final comparisons remain open where stated.",
+        "Independent examples use restricted single-band models and do not calculate the UTe2 response.",
+        "No joint fit resolves the full order parameter, every superconducting phase or topological classification."
+      ]
+    }
+  ]
+}

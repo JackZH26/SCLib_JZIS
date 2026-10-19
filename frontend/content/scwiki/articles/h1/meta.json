@@ -1,0 +1,385 @@
+{
+  "id": "scwiki-h1",
+  "topicId": "scwiki-topic-h1",
+  "code": "H1",
+  "slug": "strange-metals",
+  "title": "Strange metals and linear-temperature resistivity",
+  "summary": "Evaluate normal-state transport without conflating a fitted exponent, a relaxation time, quantum criticality and the superconducting mechanism.",
+  "aliases": [
+    "strange metal",
+    "strange metals",
+    "linear temperature resistivity",
+    "marginal Fermi liquid",
+    "奇异金属"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experimental"
+  ],
+  "relatedCodes": [
+    "A8",
+    "H2",
+    "B3"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T16:26:45.370525+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected final Nd-LSCO methods and Figure 2, Romero author methods and Figure 3 with final abstract, inherited graphene evidence, primary abstracts and independent synthetic fit checks.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Full raw-data fits, wider competing literature and final-version comparisons remain incomplete.",
+      "Cooper evidence is abstract-level here; Varma erratum identity is recorded without claiming its contents were checked.",
+      "Synthetic exponents and fitting windows do not establish a microscopic mechanism or quantum critical point."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "H_anomalous_normal_state/H1_strange_metal_linear_T.md",
+    "sha256": "d5c5f605dcb2d5fe7ea2eb72ba5530c10f3938d54760cba6d33d9656651bfc39",
+    "sourceId": "file-4a97f55e37a842bb"
+  },
+  "references": [
+    {
+      "id": "source-a5d6480d08ee8555",
+      "doi": "10.1103/PhysRevB.41.846",
+      "title": "Normal-state transport properties of Bi2+xSr2-yCuO6+delta crystals",
+      "year": 1990,
+      "url": "https://doi.org/10.1103/PhysRevB.41.846",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.41.846",
+        "note": "Publisher abstract only: anisotropic normal-state transport in Bi-based crystals. Full measurement protocol and numerical curves not checked."
+      }
+    },
+    {
+      "id": "source-1610fd228e679225",
+      "doi": "10.1126/science.1165015",
+      "title": "Anomalous Criticality in the Electrical Resistivity of La2-xSrxCuO4",
+      "year": 2009,
+      "url": "https://doi.org/10.1126/science.1165015",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-and-publication-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/19074310/",
+        "note": "Primary abstract reproduced by PubMed checked. Online 11 December 2008; issue 30 January 2009. Publisher full text was unavailable; numerical curves and measurement protocols remain unaudited here."
+      }
+    },
+    {
+      "id": "source-c1ae7869b672a8e8",
+      "doi": "10.1038/s41567-018-0334-2",
+      "title": "Universal T-linear resistivity and Planckian dissipation in overdoped cuprates",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41567-018-0334-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "earlier-author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1805.02512v1",
+        "note": "Selected v1 pp. 4, 7–8 and Figs. 1–2 captions: Drude assumptions, film method and magnetoresistance correction. Published volume year 2019; final-version comparison and complete data fitting remain open."
+      }
+    },
+    {
+      "id": "source-374c8bc13ced83e8",
+      "doi": "10.1038/s41586-021-03697-8",
+      "title": "Linear-in temperature resistivity from an isotropic Planckian scattering rate",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41586-021-03697-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-methods-results-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://warwick.ac.uk/fac/sci/physics/research/condensedmatt/supermag/pubs2021/Grissonnanche_Nature.595.667.2021.pdf",
+        "note": "Final results and selected methods read; printed page 669, Figure 2 visually checked. Compared selected author v2 passages. Temperature stability, absolute error, angular superconducting regions and fitted bandwidth distinguished. Complete fitting and raw-data reproduction remain open."
+      }
+    },
+    {
+      "id": "source-8135909144b6b16b",
+      "doi": "10.1103/PhysRevLett.124.076801",
+      "title": "Strange Metal in Magic-Angle Graphene with near Planckian Dissipation",
+      "year": 2020,
+      "url": "https://doi.org/10.1103/PhysRevLett.124.076801",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-fulltext-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://physics.aps.org/featured-article-pdf/10.1103/PhysRevLett.124.076801",
+        "note": "Selected published pp. 1–4, Fig. 1 and Eq. (1). Four-probe device, filling dependence and low-temperature SdH parameter assumptions checked; supplementary fits not reproduced."
+      }
+    },
+    {
+      "id": "source-05b2d5ff6757b5eb",
+      "doi": "10.1038/s41567-026-03266-8",
+      "title": "Planckian scattering and parallel conduction channels in an iron chalcogenide superconductor",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41567-026-03266-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-figure-and-final-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/2505.00623v1",
+        "note": "Author v1, 1 May 2025: selected methods and results, pages 1–4, read; page 4 Figure 3 visually checked. Final publisher abstract and publication date, 23 April 2026, checked. Final full text requires access; the attempted PDF returned HTML. Complete version comparison and spectral-weight calibration remain open."
+      }
+    },
+    {
+      "id": "source-5880a61b06ec84e6",
+      "doi": "10.1103/PhysRevLett.63.1996",
+      "title": "Phenomenology of the normal state of Cu-O high-temperature superconductors",
+      "year": 1989,
+      "url": "https://doi.org/10.1103/PhysRevLett.63.1996",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.63.1996",
+        "note": "Published 30 October 1989. Marginal-Fermi-liquid hypothesis checked at abstract level. The linked 1990 erratum is recorded separately; complete corrected derivation remains open."
+      }
+    },
+    {
+      "id": "source-2cdc898b9c5e504c",
+      "doi": "10.1103/PhysRevLett.64.497",
+      "title": "Erratum: Phenomenology of the normal state of Cu-O high-temperature superconductors",
+      "year": 1990,
+      "url": "https://doi.org/10.1103/PhysRevLett.64.497",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-erratum-identity-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.64.497",
+        "note": "Published 22 January 1990. Publisher linkage and identity verified. PDF endpoint returned 403; correction contents have not been independently read, so no corrected formula is attributed to it."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-h1-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A strange metal is identified through unusual normal-state behavior, often including resistivity approximately proportional to temperature after superconductivity is suppressed. It is an observational category, not a uniquely established microscopic phase or order parameter. The early Bi-based transport work and later overdoped-cuprate experiments concern particular specimens and temperature ranges. Their results do not provide a universal slope for all superconductors. Ordinary high-temperature electron–phonon transport can also be linear, so a room-temperature straight line alone is insufficient.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-a5d6480d08ee8555",
+        "source-1610fd228e679225",
+        "source-374c8bc13ced83e8"
+      ],
+      "conditions": "Fit window, residual subtraction, lifetime convention, angular superconducting exclusions and source version remain explicit.",
+      "verificationScope": "Selected primary texts and figures plus independent synthetic identifiability checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h1-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "This article focuses on how observations constrain explanations. Linear resistivity, a transport relaxation rate near a thermal quantum scale, proximity to a quantum critical point and a high superconducting transition temperature are separate propositions. Each requires additional evidence. Even the identity of a relevant lifetime matters: a single-particle linewidth and a current-relaxation rate need not weight scattering processes in the same way.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-c1ae7869b672a8e8",
+        "source-374c8bc13ced83e8",
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Fit window, residual subtraction, lifetime convention, angular superconducting exclusions and source version remain explicit.",
+      "verificationScope": "Selected primary texts and figures plus independent synthetic identifiability checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h1-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a fitted normal-state curve, write $\\rho(T)=\\rho_0+AT+BT^2$. This is an empirical decomposition over a stated interval; its terms do not automatically identify independent microscopic mechanisms. Define a local exponent relative to a trial residual $\\rho_r$ by $n_{\\mathrm{eff}}=d\\ln(\\rho-\\rho_r)/d\\ln T$, wherever the logarithm is defined. Derivatives amplify noise and depend on the residual subtraction. An exponent should therefore accompany its temperature window, uncertainty and treatment of the superconducting region.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-1610fd228e679225",
+        "source-c1ae7869b672a8e8"
+      ],
+      "conditions": "Fit window, residual subtraction, lifetime convention, angular superconducting exclusions and source version remain explicit.",
+      "verificationScope": "Selected primary texts and figures plus independent synthetic identifiability checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h1-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An independent illustration uses exactly quadratic data, $\\rho=\\rho_0+BT^2$. If the trial residual differs by $\\epsilon=\\rho_r-\\rho_0$, then $n_{\\mathrm{eff}}=2BT^2/(BT^2-\\epsilon)$. One hundred and eight finite-difference checks verify this relation. With the correct residual, a positive mixture of linear and quadratic terms gives $n_{\\mathrm{eff}}=(A+2BT)/(A+BT)$, continuously between one and two; nine parameter cases confirm that limit. No abrupt phase boundary is required by this smooth crossover. These are synthetic checks, not fits to a paper's measurements.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-1610fd228e679225"
+      ],
+      "conditions": "Fit window, residual subtraction, lifetime convention, angular superconducting exclusions and source version remain explicit.",
+      "verificationScope": "Selected primary texts and figures plus independent synthetic identifiability checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h1-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Two additional synthetic fits use $\\rho=10+0.1T^2$ in arbitrary consistent units. A best straight line over $9\\leq T\\leq11$ has maximum deviation below 0.4% of the mean resistivity; extending the interval to $1\\leq T\\leq20$ raises it above 20%. Thus apparent linearity over a narrow interval can hide curvature. These percentages depend on the chosen example and are not universal acceptance thresholds. Real analysis needs residual plots, independent temperature calibration and a measurement-specific noise model.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-1610fd228e679225"
+      ],
+      "conditions": "Fit window, residual subtraction, lifetime convention, angular superconducting exclusions and source version remain explicit.",
+      "verificationScope": "Selected primary texts and figures plus independent synthetic identifiability checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h1-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For parallel conducting channels, conductivities add: $\\sigma_{\\mathrm{dc}}=\\sigma_0+S/\\Gamma$ in a specified Drude convention. If $S$ and $\\sigma_0$ are constant and $\\Gamma\\propto T$, the resulting resistivity is $\\rho=1/(a+b/T)$, which is generally nonlinear. Adding channel resistivities would describe a different circuit. Temperature-dependent spectral weight and finite frequency coverage must also be tested before assigning a lifetime from the total d.c. curve.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Fit window, residual subtraction, lifetime convention, angular superconducting exclusions and source version remain explicit.",
+      "verificationScope": "Selected primary texts and figures plus independent synthetic identifiability checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h1-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Grissonnanche and colleagues measured angle-dependent magnetoresistance in Nd-LSCO at hole concentration $p=0.24\\pm0.005$. The sample's zero-resistance transition is 11 K; the transport measurements use 45 T at 6, 12, 20 and 25 K. At the two lower temperatures, some field orientations still enter a superconducting region. A high field alone therefore does not certify that every angular data point is normal-state transport.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-374c8bc13ced83e8"
+      ],
+      "conditions": "Fit window, residual subtraction, lifetime convention, angular superconducting exclusions and source version remain explicit.",
+      "verificationScope": "Selected primary texts and figures plus independent synthetic identifiability checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h1-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Their fit separates a temperature-independent anisotropic contribution from an isotropic temperature-dependent rate, giving $\\alpha=1.2\\pm0.4$ in $\\hbar/\\tau_{\\mathrm{inel}}=\\alpha k_BT$. Total scattering is not isotropic. The analysis uses a bandwidth scale $160\\pm30$ meV constrained by specific heat and omits a low-temperature correction that could change it by about 20% at 6 K. Temperature stability of ±1 mK differs from absolute uncertainty of approximately ±1 K at 6 and 12 K. These qualifications belong with the extracted coefficient.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-374c8bc13ced83e8"
+      ],
+      "conditions": "Fit window, residual subtraction, lifetime convention, angular superconducting exclusions and source version remain explicit.",
+      "verificationScope": "Selected primary texts and figures plus independent synthetic identifiability checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h1-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Romero and colleagues resolve a narrower Drude channel and a broad background in two FeTe1−xSex films. The final abstract associates most condensate spectral weight with the narrower channel. In the checked author version, the scattering-rate fits use 20–40 K, and linewidths below the approximately 0.2 THz measurement limit cannot be resolved directly. Its frequency variable uses cycles per second, so $h$ appears in $\\Gamma=\\Gamma_0+\\alpha k_BT/h$; an angular-frequency rate instead uses $\\hbar$. A fitted spectral decomposition is stronger evidence than assigning a lifetime from total resistance alone, but it does not uniquely determine the pairing interaction.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Fit window, residual subtraction, lifetime convention, angular superconducting exclusions and source version remain explicit.",
+      "verificationScope": "Selected primary texts and figures plus independent synthetic identifiability checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h1-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Cooper and colleagues report that a low-temperature linear contribution extends over a range of LSCO dopings and tracks superconductivity. The checked abstract supports that association, not a reanalysis of its numerical curves. Magic-angle graphene measurements provide another material setting with nearly linear transport; a similar temperature exponent across systems does not prove identical scattering or pairing mechanisms. Material geometry, filling and fit assumptions must accompany cross-system comparisons.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-1610fd228e679225",
+        "source-8135909144b6b16b"
+      ],
+      "conditions": "Fit window, residual subtraction, lifetime convention, angular superconducting exclusions and source version remain explicit.",
+      "verificationScope": "Selected primary texts and figures plus independent synthetic identifiability checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h1-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The marginal-Fermi-liquid proposal organizes anomalies using an assumed charge- and spin-response spectrum. Its phenomenological success would not identify a unique microscopic origin. The original article has an erratum; this review records the correction's identity but has not independently read its contents, and therefore does not reproduce a supposedly corrected derivation. Quantum critical, incoherent-metal and phonon-based explanations require separate discriminating evidence rather than a choice made from one resistivity exponent.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-5880a61b06ec84e6",
+        "source-2cdc898b9c5e504c",
+        "source-374c8bc13ced83e8"
+      ],
+      "conditions": "Fit window, residual subtraction, lifetime convention, angular superconducting exclusions and source version remain explicit.",
+      "verificationScope": "Selected primary texts and figures plus independent synthetic identifiability checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h1-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. Selected final passages and figures have been checked, but full version comparisons and raw-data fits remain incomplete. A slope correlation with superconductivity does not establish causation, and a channel contributing to the condensate does not identify the interaction binding its electrons. Retain alternative explanations and distinguish an experimental observable from quantities inferred through a model.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-1610fd228e679225",
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Fit window, residual subtraction, lifetime convention, angular superconducting exclusions and source version remain explicit.",
+      "verificationScope": "Selected primary texts and figures plus independent synthetic identifiability checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-h1-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Compare transport, spectroscopy and superconducting response on well-characterized samples, with field, geometry and temperature windows recorded. Use independent changes in disorder, pressure or filling to test whether a proposed scattering process also controls pairing. A useful discovery claim predicts an observable change and survives alternative fits; simply finding another straight resistivity curve adds a candidate observation, not a complete microscopic explanation.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-c1ae7869b672a8e8",
+        "source-8135909144b6b16b",
+        "source-05b2d5ff6757b5eb"
+      ],
+      "conditions": "Fit window, residual subtraction, lifetime convention, angular superconducting exclusions and source version remain explicit.",
+      "verificationScope": "Selected primary texts and figures plus independent synthetic identifiability checks; full scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-h1-correction-1",
+      "description": "Preserve angular superconducting exclusions in high-field ADMR, separate isotropic inelastic scattering from total scattering, and distinguish author-version linewidth fits from final publication evidence.",
+      "sourceId": "source-374c8bc13ced83e8",
+      "scope": "Experiment and model interpretation."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "n_{\\mathrm{eff}}=2BT^2/(BT^2-\\epsilon)",
+      "check": "108 residual-subtraction finite-difference checks passed; two quadratic fitting windows and nine mixed-exponent cases also checked. Synthetic data only."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-h1-material-1",
+      "formula": "La1.35Nd0.4Sr0.25CuO4",
+      "sample": "Grissonnanche Nd-LSCO, hole concentration p=0.24 ± 0.005; nominal Sr x=0.25",
+      "recordType": "experiment",
+      "reportedTemperatureK": 11,
+      "tcK": 11,
+      "temperatureKind": "transition",
+      "temperatureNote": "Zero-resistance transition reported in methods; not the 6 K high-field measurement temperature. Formula follows nominal Sr x=0.25; measured hole concentration p=0.24 ± 0.005 is distinct.",
+      "criterion": "zero-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Electrical resistivity",
+      "sourceId": "source-374c8bc13ced83e8",
+      "aliases": [
+        "Nd-LSCO"
+      ]
+    },
+    {
+      "id": "scwiki-h1-material-2",
+      "formula": "La1.35Nd0.4Sr0.25CuO4",
+      "sample": "Grissonnanche Nd-LSCO, 45 T angular magnetoresistance at p=0.24",
+      "recordType": "experiment",
+      "reportedTemperatureK": 6,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "6 K measurement; superconducting angular sectors excluded. Absolute temperature uncertainty about ±1 K, distinct from ±1 mK stability.",
+      "criterion": "ADMR-measurement",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Angle-dependent c-axis magnetoresistance",
+      "sourceId": "source-374c8bc13ced83e8",
+      "aliases": [
+        "Nd-LSCO"
+      ]
+    }
+  ],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 137,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source retained; normal-state criteria, version limits and independently checked fitting ambiguity added."
+    }
+  ]
+}

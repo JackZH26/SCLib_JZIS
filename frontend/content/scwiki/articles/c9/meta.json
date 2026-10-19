@@ -1,0 +1,531 @@
+{
+  "id": "scwiki-c9",
+  "topicId": "scwiki-topic-c9",
+  "code": "C9",
+  "slug": "singlet-and-triplet-pairing",
+  "title": "Singlet and triplet pairing: spin, parity and spin–orbit coupling",
+  "summary": "Classify pairing with orbital and frequency exchange, and distinguish measured correlations from a proposed order parameter.",
+  "aliases": [
+    "singlet triplet",
+    "spin singlet",
+    "spin triplet",
+    "odd frequency",
+    "SPOT",
+    "pseudospin",
+    "ASOC",
+    "noncentrosymmetric",
+    "shadowed triplet"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "C1",
+    "C3",
+    "C5",
+    "C6",
+    "C7",
+    "B4"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T10:20:14.606912+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Frigeri and Samokhin model passages, complete Frigeri erratum text, selected Dutta exchange classification, inherited NMR/uranium evidence and explicit abstract-only proximity/shadowed-triplet sources. Independent exchange, Green-function and gap examples.",
+    "limitations": [
+      "Full scientific acceptance and complete version comparisons remain open.",
+      "Finite imposed models do not calculate stable phases, material mixing fractions or transition temperatures.",
+      "Proximity and shadowed-triplet papers have abstract-level review only; most uranium discovery evidence is abstract-level.",
+      "Susceptibility datasets, full supplements and higher-spin nodal classifications have not been reproduced."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "C_pairing_symmetry/C9_singlet_vs_triplet.md",
+    "sha256": "bdeb21d3f5b339cb657753fc5a64c6662c8d935451392be0f84c21119d637e36",
+    "sourceId": "file-a38acf79368ed5b7"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 15,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; frequency/orbital conditions, non-pseudospin bands and Frigeri erratum added."
+    },
+    {
+      "startLine": 16,
+      "endLine": 29,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; frequency/orbital conditions, non-pseudospin bands and Frigeri erratum added."
+    },
+    {
+      "startLine": 30,
+      "endLine": 43,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; frequency/orbital conditions, non-pseudospin bands and Frigeri erratum added."
+    },
+    {
+      "startLine": 44,
+      "endLine": 51,
+      "targetSections": [
+        "experimental-criteria",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; frequency/orbital conditions, non-pseudospin bands and Frigeri erratum added."
+    },
+    {
+      "startLine": 52,
+      "endLine": 59,
+      "targetSections": [
+        "mathematical-assumptions",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; frequency/orbital conditions, non-pseudospin bands and Frigeri erratum added."
+    },
+    {
+      "startLine": 60,
+      "endLine": 85,
+      "targetSections": [
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned text preserved; frequency/orbital conditions, non-pseudospin bands and Frigeri erratum added."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-8d1b859d5ffcad9f",
+      "doi": "10.1103/RevModPhys.63.239",
+      "title": "Phenomenological theory of unconventional superconductivity",
+      "year": 1991,
+      "url": "https://doi.org/10.1103/RevModPhys.63.239",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.63.239",
+        "note": "Identity and abstract scope checked. Full review not obtained; explicit angular illustrations are independently evaluated, not attributed as a reproduction of this review."
+      }
+    },
+    {
+      "id": "source-b4553aaaeacb3c3d",
+      "doi": "10.1103/RevModPhys.47.331",
+      "title": "A theoretical description of the new phases of liquid 3He",
+      "year": 1975,
+      "url": "https://doi.org/10.1103/RevModPhys.47.331",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-with-erratum-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/abstract/10.1103/RevModPhys.47.331",
+        "note": "ABM/BW framework abstract checked with1976 erratum; full derivations not reviewed. Explicit local matrices are independent illustrations."
+      }
+    },
+    {
+      "id": "source-24556d6dba4d8cc1",
+      "doi": "10.1103/RevModPhys.48.357",
+      "title": "Erratum: A theoretical description of the new phases of liquid 3He",
+      "year": 1976,
+      "url": "https://doi.org/10.1103/RevModPhys.48.357",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-erratum-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/rmp/pdf/10.1103/RevModPhys.48.357",
+        "note": "Complete brief text checked: withdraws claimed factor-of-two disagreement with Brinkman–Smith near Tc on p.401. Direct download403; no visual scan claimed."
+      }
+    },
+    {
+      "id": "source-0342c1624c6eb6d0",
+      "doi": "10.1103/PhysRevResearch.3.033255",
+      "title": "Superconductivity in spin-3/2 systems: symmetry classification, odd-frequency pairs, and Bogoliubov Fermi surfaces",
+      "year": 2021,
+      "url": "https://doi.org/10.1103/PhysRevResearch.3.033255",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2106.11983v2",
+        "note": "Author v2, 18 September 2021, marked published version; pp.1–2 read, p.2 visually checked. Selected exchange classification only; full higher-spin derivation and Bogoliubov-Fermi-surface claims not reviewed."
+      }
+    },
+    {
+      "id": "source-f2133d67ac862ff4",
+      "doi": "10.1103/PhysRevB.100.054501",
+      "title": "Symmetry of superconducting pairing in non-pseudospin electron bands",
+      "year": 2019,
+      "url": "https://doi.org/10.1103/PhysRevB.100.054501",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1907.08080v1",
+        "note": "Author v1, 18 July 2019; pp.1–2 and selected pp.4–6 equations 7–20 read. Static intraband parity and non-pseudospin rotation distinction; complete exceptional nodal tables not audited."
+      }
+    },
+    {
+      "id": "source-6c944305286c9cad",
+      "doi": "10.1103/PhysRevLett.92.097001",
+      "title": "Superconductivity without Inversion Symmetry: MnSi versus CePt3Si",
+      "year": 2004,
+      "url": "https://doi.org/10.1103/PhysRevLett.92.097001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-and-erratum-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0311354v3",
+        "note": "Author v3, 28 July 2004: selected pp.1–4 and appended erratum p.5 read, pp.2/5 visually checked. Mixing terms of order alpha/EF neglected; field calculation excludes orbital depairing and considers continuous onset. Complete data/version reproduction open."
+      }
+    },
+    {
+      "id": "source-46e49166d702226d",
+      "doi": "10.1103/PhysRevLett.93.099903",
+      "title": "Erratum: Superconductivity without Inversion Symmetry: MnSi versus CePt3Si",
+      "year": 2004,
+      "url": "https://doi.org/10.1103/PhysRevLett.93.099903",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "published-erratum-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.93.099903",
+        "note": "Published 27 August 2004. Complete one-page publisher text checked; matching author appendix p.5 visually checked. Adds linear MnSi SOC term and divides Fig.2 alphaR by sqrt(3/2)."
+      }
+    },
+    {
+      "id": "source-778c4d1f166c8630",
+      "doi": "10.1103/PhysRevLett.98.037003",
+      "title": "Theory of the Proximity Effect in Junctions with Unconventional Superconductors",
+      "year": 2007,
+      "url": "https://doi.org/10.1103/PhysRevLett.98.037003",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.98.037003",
+        "note": "Published 16 January 2007. Diffusive normal-metal proximity correlations and frequency/spin/parity mapping checked in abstract; full derivation not reviewed."
+      }
+    },
+    {
+      "id": "source-c7f8b99a795aba41",
+      "doi": "10.1038/s41586-019-1596-2",
+      "title": "Constraints on the superconducting order parameter in Sr2RuO4 from oxygen-17 nuclear magnetic resonance",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41586-019-1596-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-manuscript-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1904.00047v1",
+        "note": "Pustogow et al. v1 selected pp.4–7; p.7 RF-energy and heating passage visually checked. Zero-strain0.7107T versus strained1.9980T conditions distinguished. Published identity checked; full final-version equivalence and subsequent literature survey not completed."
+      }
+    },
+    {
+      "id": "source-c4434644191d0174",
+      "doi": "10.1103/sgcz-9rc7",
+      "title": "Muon Knight Shift as a Precise Probe of the Superconducting Symmetry of Sr2RuO4",
+      "year": 2026,
+      "url": "https://doi.org/10.1103/sgcz-9rc7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2512.14107v1",
+        "note": "Selected pp.1–5 and Fig.3 visually checked. Published9February2026; manuscript16December2025. Same-crystal field-cooled subtraction and0.5K lower magnetization limit retained. Supplement, final-version comparison and raw-data reproduction open."
+      }
+    },
+    {
+      "id": "source-db2917242488a101",
+      "doi": "10.1038/35020500",
+      "title": "Superconductivity on the border of itinerant-electron ferromagnetism in UGe2",
+      "year": 2000,
+      "url": "https://doi.org/10.1038/35020500",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/35020500",
+        "note": "Saxena et al. publisher indexed abstract and Crossref identity checked. Restricted-pressure superconductivity; original curves and microscopic coexistence not audited. Replaces inherited DOI35050500 whose actual target remained unresolved."
+      }
+    },
+    {
+      "id": "source-15aec45a868e9fb9",
+      "doi": "10.1038/35098048",
+      "title": "Coexistence of superconductivity and ferromagnetism in URhGe",
+      "year": 2001,
+      "url": "https://doi.org/10.1038/35098048",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/35098048",
+        "note": "Aoki et al. publisher indexed abstract: ambient-pressure thermodynamic evidence, with qualified triplet interpretation. Corrects inherited35065045, which identifies unrelated semiconductor melting research. Full data not reanalyzed."
+      }
+    },
+    {
+      "id": "source-a4695ba5bfa789f3",
+      "doi": "10.1103/PhysRevLett.99.067006",
+      "title": "Superconductivity on the Border of Weak Itinerant Ferromagnetism in UCoGe",
+      "year": 2007,
+      "url": "https://doi.org/10.1103/PhysRevLett.99.067006",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.99.067006",
+        "note": "Huy et al. original abstract: ambient-pressure bulk signatures. Curie3K and best-sample resistive0.8K are distinct; no sample Tc extracted here. Full curves not reviewed."
+      }
+    },
+    {
+      "id": "source-ca6322be2694e430",
+      "doi": "10.1126/science.aav8645",
+      "title": "Nearly ferromagnetic spin-triplet superconductivity",
+      "year": 2019,
+      "url": "https://doi.org/10.1126/science.aav8645",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-passages-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://vector.umd.edu/images/publications/Science365_6842019.pdf",
+        "note": "Ran et al. published paper pp.1–2; p.2 visually checked: maximum measured20T versus extrapolated b-axis40T. Historical spin/pairing interpretations are not adopted as settled consensus. Supplement and raw data not fully audited."
+      }
+    },
+    {
+      "id": "source-2928c6abb9344456",
+      "doi": "10.1103/PhysRevB.104.104512",
+      "title": "Higher angular momentum pairings in interorbital shadowed-triplet superconductors: Application to Sr2RuO4",
+      "year": 2021,
+      "url": "https://doi.org/10.1103/PhysRevB.104.104512",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-abstract-and-publication-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/abs/2107.00047v2",
+        "note": "Author v2 dated 30 September 2021. Abstract and journal identity checked; model even-parity interorbital triplet and intraband pseudospin-singlet distinction, not a material assignment. Full calculation not reviewed."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-c9-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Spin singlet and spin triplet describe antisymmetric and symmetric two-electron spin states. They do not, by themselves, identify a crystal representation, a pairing mechanism, chirality or topology. The familiar even-parity singlet / odd-parity triplet rule assumes even-frequency pairing and a symmetric orbital or band exchange sector. State these assumptions before applying it to a material.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-0342c1624c6eb6d0"
+      ],
+      "conditions": "Distinguish physical spin, band doublet and crystal representation; static intraband parity is conditional on the named basis.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c9-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Spin–orbit coupling (SOC) makes physical spin different from a band label. In a time-reversal-invariant centrosymmetric normal state, inversion combined with time reversal produces a degenerate pair at each momentum. Such a doublet need not transform under crystal rotations as an ordinary spin-1/2 pseudospin: Samokhin identifies exceptional twofold bands where the usual axial-vector transformation of the triplet component fails. His classification retains even/odd intraband components in its static convention; the exception concerns crystal transformation rules, not the Pauli principle.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f2133d67ac862ff4"
+      ],
+      "conditions": "Distinguish physical spin, band doublet and crystal representation; static intraband parity is conditional on the named basis.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c9-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a homogeneous pair correlation with combined spin and orbital indices $a,b$, fermion exchange requires $F_{ab}(\\mathbf k,i\\omega_n)=-F_{ba}(-\\mathbf k,-i\\omega_n)$. If spin, momentum, orbital and frequency exchange can each be diagonalized, their signs obey $s_Ss_Ps_Os_\\omega=-1$. Here frequency exchange is not the physical time-reversal operation. For $s_O=s_\\omega=+1$, spin singlet implies even momentum parity and triplet implies odd momentum parity. Reversing either the orbital or frequency sign reverses that implication. An independent matrix check tests all 16 sign combinations, accepting eight and rejecting eight. These are allowed symmetry sectors, not evidence that all are stable phases.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0342c1624c6eb6d0"
+      ],
+      "conditions": "Exchange-product rule for resolved sectors. Imposed Nambu/helicity gap examples, no self-consistency, material stability or transition prediction. Frigeri approximation and erratum both retained.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c9-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In a chosen spin-1/2 basis, write the static gap matrix $\\Delta=(\\psi+\\mathbf d\\cdot\\boldsymbol\\sigma)i\\sigma_y$. The scalar is the spin-antisymmetric component; the vector multiplies symmetric spin matrices. An analogous decomposition in a band doublet must retain that basis's actual symmetry matrices. In higher-angular-momentum low-energy bands, coupled angular-momentum sectors replace a simple singlet/triplet classification; microscopic fermion antisymmetry still applies. Leggett's helium framework and crystal symmetry classifications are useful references, with their respective physical settings kept separate. The 1976 Leggett correction withdraws a historical factor-of-two discrepancy claim.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-b4553aaaeacb3c3d",
+        "source-24556d6dba4d8cc1",
+        "source-0342c1624c6eb6d0",
+        "source-f2133d67ac862ff4"
+      ],
+      "conditions": "Exchange-product rule for resolved sectors. Imposed Nambu/helicity gap examples, no self-consistency, material stability or transition prediction. Frigeri approximation and erratum both retained.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c9-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For the illustrative noncentrosymmetric Hamiltonian $h=\\xi I+\\alpha\\mathbf g\\cdot\\boldsymbol\\sigma$, take real odd $\\mathbf g(-\\mathbf k)=-\\mathbf g(\\mathbf k)$ and an imposed even singlet gap $\\psi i\\sigma_y$. The anomalous Green function can contain a triplet component even though the imposed triplet gap is zero. Twelve independent matrix inversions reproduce the helicity-projector expression, in the specified Nambu convention, $F=-\\sum_{\\lambda=\\pm}\\psi P_\\lambda i\\sigma_y/[\\omega_n^2+(\\xi+\\lambda\\alpha|\\mathbf g|)^2+|\\psi|^2]$, where $P_\\lambda=(I+\\lambda\\hat{\\mathbf g}\\cdot\\boldsymbol\\sigma)/2$. Different denominators generate a triplet correlation; they coincide at the particle-hole-symmetric test point. This distinguishes a pair correlation from a self-consistent triplet order parameter. The calculation is an imposed mean-field example, not a prediction of a material's mixing ratio.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6c944305286c9cad"
+      ],
+      "conditions": "Exchange-product rule for resolved sectors. Imposed Nambu/helicity gap examples, no self-consistency, material stability or transition prediction. Frigeri approximation and erratum both retained.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c9-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "With an imposed aligned component $\\mathbf d=d\\hat{\\mathbf g}$, the two gap magnitudes are $|\\psi+d|$ and $|\\psi-d|$ in this simple model. Five direct gap-matrix checks recover the squared magnitudes, including complex relative phase. A zero in one branch requires the appropriate cancellation, not merely the absence of inversion symmetry. The interaction, band structure and gap equation must determine the actual amplitudes. At points where $\\mathbf g=0$, its unit vector and this helicity construction require separate treatment.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6c944305286c9cad",
+        "source-46e49166d702226d"
+      ],
+      "conditions": "Exchange-product rule for resolved sectors. Imposed Nambu/helicity gap examples, no self-consistency, material stability or transition prediction. Frigeri approximation and erratum both retained.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c9-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Frigeri and colleagues' weak-coupling calculation neglects small singlet–triplet coupling terms associated with particle-hole asymmetry and analyzes the channels separately. Its leading triplet suppression contains $|\\mathbf d|^2-|\\hat{\\mathbf g}\\cdot\\mathbf d|^2$: alignment avoids this particular suppression. The erratum adds an omitted linear term to the MnSi SOC vector, $\\mathbf g=\\alpha_1\\mathbf k+\\alpha_2[k_x(k_y^2-k_z^2),k_y(k_z^2-k_x^2),k_z(k_x^2-k_y^2)]$. Thus a conclusion about suppression of a p-wave component depends on the relative coefficients; alignment alone does not choose the stable state. Three independent angular examples check that dependence without calculating a transition temperature. The erratum also rescales the original Fig. 2 SOC parameter by dividing it by $\\sqrt{3/2}$.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-6c944305286c9cad",
+        "source-46e49166d702226d"
+      ],
+      "conditions": "Exchange-product rule for resolved sectors. Imposed Nambu/helicity gap examples, no self-consistency, material stability or transition prediction. Frigeri approximation and erratum both retained.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c9-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "A Knight shift includes spin and orbital contributions and depends on field direction, SOC, hyperfine coupling and the superconducting measurement conditions. Pustogow and colleagues' 2019 Sr2RuO4 study used reduced radio-frequency excitation to address heating and reported a spin-susceptibility reduction. The selected author-version passages checked here do not establish every possible representation. The 2026 muon result adds a low-field constraint, with a finite temperature floor and extrapolation assumptions; it also does not constitute a complete order-parameter identification. Compare the actual susceptibility tensor and conditions with competing states.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c7f8b99a795aba41",
+        "source-c4434644191d0174"
+      ],
+      "conditions": "Each probe and source has independent review scope; no single observable establishes a complete representation.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c9-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "An upper critical field above a simple weak-coupling Pauli estimate is not a stand-alone triplet test. Orbital depairing, SOC, strong coupling, multiband effects and field direction must be addressed. In particular, Frigeri's field calculation neglects orbital depairing and considers a continuous instability: its formally large paramagnetic limit is not an unlimited physical upper critical field. In UTe2, the discovery paper's measured field range and higher extrapolated scale must remain distinct.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-6c944305286c9cad",
+        "source-ca6322be2694e430"
+      ],
+      "conditions": "Each probe and source has independent review scope; no single observable establishes a complete representation.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c9-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "UGe2, URhGe and UCoGe motivate triplet and equal-spin pairing through superconductivity associated with ferromagnetism, but discovery evidence does not determine a complete odd-parity representation. Check microscopic coexistence and sample volume rather than infer them solely from two transition anomalies. UTe2 must not be placed in the same category of established long-range ferromagnetic superconductors; its historical interpretation is not a substitute for a current material-specific review. The uranium discovery abstracts and selected UTe2 text have different review depths here.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-db2917242488a101",
+        "source-15aec45a868e9fb9",
+        "source-a4695ba5bfa789f3",
+        "source-ca6322be2694e430"
+      ],
+      "conditions": "Each probe and source has independent review scope; no single observable establishes a complete representation.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c9-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Phase-sensitive junctions, impurity response and spin-sensitive probes can provide complementary constraints, but interfaces can select or generate correlations absent from the bulk gap. Tanaka and Golubov's proximity theory explicitly permits odd-frequency, even-parity triplet correlations in a diffusive normal metal. That is not by itself an intrinsic odd-frequency bulk superconducting phase. The publisher abstract has been checked; the full junction derivation remains open.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-778c4d1f166c8630"
+      ],
+      "conditions": "Each probe and source has independent review scope; no single observable establishes a complete representation.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c9-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Do not infer a singlet–triplet mixing fraction from crystal inversion breaking. Symmetry permits compatible components; microscopic interactions decide their magnitude. Conversely, an orbital-antisymmetric spin-triplet sector can have even momentum parity at even frequency. Physical-spin pairing and the intraband pseudospin gap can therefore carry different descriptions after projection. Clepkens and colleagues' interorbital “shadowed-triplet” construction illustrates this distinction as a model proposed for Sr2RuO4, not an experimentally established assignment. Only its author abstract and publication identity are checked here.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-0342c1624c6eb6d0",
+        "source-6c944305286c9cad",
+        "source-2928c6abb9344456"
+      ],
+      "conditions": "Allowed correlations, model gap and measured order parameter are distinct; abstract-level sources do not receive full-text acceptance.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c9-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Neither an unchanged Knight shift nor a measured decrease alone fixes all SOC-coupled possibilities. A ferromagnetic background, a large critical field, nodes or broken time reversal similarly fails to identify a unique representation. Keep spin structure, momentum parity, orbital exchange, frequency dependence, crystal representation and topology as separate questions. The finite tests on this page validate specified algebra; they do not establish energetic stability or reproduce susceptibility data.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d1b859d5ffcad9f",
+        "source-0342c1624c6eb6d0",
+        "source-f2133d67ac862ff4",
+        "source-c7f8b99a795aba41"
+      ],
+      "conditions": "Allowed correlations, model gap and measured order parameter are distinct; abstract-level sources do not receive full-text acceptance.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-c9-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "For each candidate, record inversion and magnetic symmetries, the electronic basis, orbital or band indices, frequency convention, field direction, temperature, heating controls, measured observables and alternative explanations. Report a proposed gap only at the level supported by mutually consistent probes and a stated response model. Retain both Frigeri papers when using the corrected SOC argument. Full scientific acceptance, complete version comparisons and experimental reproduction remain open.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f2133d67ac862ff4",
+        "source-6c944305286c9cad",
+        "source-46e49166d702226d",
+        "source-c7f8b99a795aba41"
+      ],
+      "conditions": "Full scientific acceptance open; preserve source/version and competing explanations.",
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-c9-correction-1",
+      "description": "Qualified the singlet/even and triplet/odd shortcut with frequency and orbital-exchange assumptions; not all degenerate bands have ordinary pseudospin rotation rules.",
+      "sourceId": "source-f2133d67ac862ff4",
+      "scope": "Exchange classification and specified static intraband conventions."
+    },
+    {
+      "id": "scwiki-c9-correction-2",
+      "description": "Attached the Frigeri erratum and its linear MnSi SOC term; separated allowed mixing, neglected gap-channel coupling and induced pair correlations.",
+      "sourceId": "source-46e49166d702226d",
+      "scope": "Selected original model and complete brief erratum text."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "s_Ss_Ps_Os_\\omega=-1",
+      "check": "Sixteen explicit spin/orbital matrix exchange sectors, eight permitted and eight rejected."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "F=-\\sum_{\\lambda=\\pm}\\psi P_\\lambda i\\sigma_y/[\\omega_n^2+(\\xi+\\lambda\\alpha|\\mathbf g|)^2+|\\psi|^2]",
+      "check": "Twelve independent 4x4 Nambu inversions vs helicity projectors, inverse identity and fermion exchange checks; imposed singlet gap."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "|\\psi\\pm d|^2",
+      "check": "Five direct gap-matrix eigenvalue examples and three corrected MnSi angular-alignment examples; no stability or Tc prediction."
+    }
+  ],
+  "materialCases": []
+}

@@ -1,0 +1,558 @@
+{
+  "id": "scwiki-d11",
+  "topicId": "scwiki-topic-d11",
+  "code": "D11",
+  "slug": "two-dimensional-interfaces",
+  "title": "Two-dimensional and interface superconductivity",
+  "summary": "Separate pairing, phase coherence and interface tuning. A gap-closing scale, resistance onset and BKT transition are not interchangeable temperatures.",
+  "aliases": [
+    "2D superconductivity",
+    "FeSe STO",
+    "LaAlO3 SrTiO3",
+    "BKT",
+    "interface superconductivity",
+    "二维超导",
+    "界面超导",
+    "FeSe/SrTiO3",
+    "LAO STO"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory"
+  ],
+  "relatedCodes": [
+    "A1",
+    "B12",
+    "F7",
+    "F8",
+    "E3",
+    "D13",
+    "B13"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T18:53:56.725149+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Reyren selected final transport/BKT and figures;Gozar selected author layer-order/screening/methods;He selected author ARPES andFigure3;Logvenov originalabstract;inherited F8/B12/E3 named source scopes;independent sheet-response convention checks.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Logvenov full methods and calibration notread;no new quantitative record extracted.",
+      "He/Gozar author versions have not been fully compared with final articles or all supplements.",
+      "Inductance conversion is an ideal model illustration,not a measured response of the cited oxide interface.",
+      "Inherited BKT counterexamples test nonuniqueness,not any experimental dataset."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D11_2D_interface.md",
+    "sha256": "aa717014b06818c913acc7f367d459f29b34aacf39c9fb7b8572c4d473ffd7e5",
+    "sourceId": "file-7bfa0596230e96df"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 9,
+      "targetSections": [
+        "material-cases"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 10,
+      "endLine": 15,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 16,
+      "endLine": 58,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 59,
+      "endLine": 72,
+      "targetSections": [
+        "material-cases"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 73,
+      "endLine": 128,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 129,
+      "endLine": 140,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 141,
+      "endLine": 157,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 158,
+      "endLine": 170,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    },
+    {
+      "startLine": 171,
+      "endLine": 187,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 188,
+      "endLine": 195,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-d11-correction-temperature-criteria",
+      "description": "Separate8/15uc noise-floorzero,188mK IValpha3,190mKresistancefit,and65±5KARPESgapclosing;no common undifferentiated Tc.",
+      "sourceId": "source-ea5d0c80335c450d",
+      "scope": "Selected finaltransport/Figure4 andHeauthorFigure3."
+    },
+    {
+      "id": "scwiki-d11-correction-width-and-localization",
+      "description": "LAOoverlayerthickness,conditional~10nmSCbound,andZn-markerlocalization are different measurements/inferences;abstractonly scope retained.",
+      "sourceId": "source-7fcd7faadf66481b",
+      "scope": "Selected originalevidence,notfullscientificacceptance."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "L_k=\\Phi_0^2/(8\\pi k_BT_{\\mathrm{BKT}})",
+      "check": "Nine SI conversions agree between electron/pair density conventions and flux-quantum form; hypothetical188mKvalue notexperimental. F8independent fit/IV counterexamples retained."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-ea5d0c80335c450d",
+      "doi": "10.1126/science.1146006",
+      "title": "Superconducting Interfaces Between Insulating Oxides",
+      "year": 2007,
+      "url": "https://doi.org/10.1126/science.1146006",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-transport-BKT-and-methods",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://d-nb.info/1270414658/34",
+        "note": "Selected final pp1196–1199; p1198 Figures3–4 visually checked. 8/15uc LAO approximately200/100mK resistance transitions at100nA; BKT188mK I–V versus190mK resistance fit. Hc2 uses50%R(1K); inferred~10nm thickness conditional on oxygen-defect carrier profile, not imaging. Full SI/raw/replication review open."
+      }
+    },
+    {
+      "id": "source-684b96e9dbb65a64",
+      "doi": "10.1038/nature07293",
+      "title": "High-temperature interface superconductivity between metallic and insulating copper oxides",
+      "year": 2008,
+      "url": "https://doi.org/10.1038/nature07293",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-layer-order-screening-and-methods",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/0810.1890v1",
+        "note": "Authorv1 submitted10October2008. Selectedpp2–5,captions9–10,supplement15–17; p12Figure2,p13Figure3 visually checked. Thickness-series Tc midpoint; screening33.2K(S)/51.6K(M–S),10kHzmutualinductance. Finite cation-interdiffusion bound and model-based thickness retained. Complete final/supplement/raw review open."
+      }
+    },
+    {
+      "id": "source-7fcd7faadf66481b",
+      "doi": "10.1126/science.1178863",
+      "title": "High-Temperature Superconductivity in a Single Copper-Oxygen Plane",
+      "year": 2009,
+      "url": "https://doi.org/10.1126/science.1178863",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "original-abstract-only",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/19900926/",
+        "note": "Original abstract: atomic-layer MBE bilayers and layer-selective Zn suppression localize response to a single CuO2 plane. Publisher PDF403; full methods/calibration notread. PubMed formula transcription is not used for quantitative composition or a new temperature record."
+      }
+    },
+    {
+      "id": "source-a95bcf0cb2681557",
+      "doi": "10.1038/nmat3648",
+      "title": "Phase diagram and electronic indication of high-temperature superconductivity at 65 K in single-layer FeSe films",
+      "year": 2013,
+      "url": "https://doi.org/10.1038/nmat3648",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-ARPES-annealing-and-figure",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1207.6823v1",
+        "note": "Authorv1 submitted30July2012; related journal2013. Selectedpp3–8,p13caption,p14Figure3 visually checked. Symmetrized EDC gaps and BCS-form fits; annealing sequence10~40K/10meV versus15~65K/19meV. Two-degenerate-sheet carrier-count assumption, nonrigid changes; single-layer transport/magnetism described as underway. Full final/SI/temperaturecalibration review open."
+      }
+    },
+    {
+      "id": "source-f9fe6e9bc3792dcc",
+      "doi": "10.1038/nature13894",
+      "title": "Interfacial mode coupling as the origin of the enhancement of Tc in FeSe films on SrTiO3",
+      "year": 2014,
+      "url": "https://doi.org/10.1038/nature13894",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-results-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/1312.2633v6",
+        "note": "Nature publication 13 November 2014; identified author v6 revised 11 May 2015. Selected pp. 3–6, Figure 2 p. 14 visually checked and Figure 4 continuation p. 17 visually checked. Gap closing 58±7 K is a mean-field fit, not zero resistance; predicted enhancement assumes a magnetic baseline. Full supplementary growth/ARPES methods, final-version comparison and raw fitting remain open."
+      }
+    },
+    {
+      "id": "source-8f81510a80c35e3a",
+      "doi": "10.1103/PhysRevLett.39.1201",
+      "title": "Universal Jump in the Superfluid Density of Two-Dimensional Superfluids",
+      "year": 1977,
+      "url": "https://doi.org/10.1103/PhysRevLett.39.1201",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-original-publisher-text",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.39.1201",
+        "note": "Published 7 November 1977. Selected original publisher text on pages 1202–1203 was reread: bare and renormalized stiffness, recursion relations and the universal jump in Eq. (10). No inspectable screenshot was returned, so no visual equation check is claimed. The full derivation has not been reproduced."
+      }
+    },
+    {
+      "id": "source-408113812912d816",
+      "doi": "10.1088/0022-3719/6/7/010",
+      "title": "Ordering, metastability and phase transitions in two-dimensional systems",
+      "year": 1973,
+      "url": "https://doi.org/10.1088/0022-3719/6/7/010",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-original-superfluid-and-screening-sections",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.physics.uci.edu/~taborek/publications/other/jcv6i7p1181.pdf",
+        "note": "Original journal scan, selected section 5, pages 1197–1198: vortex energy, renormalization and magnetic screening. Page 1198 was visually checked. The full original derivation has not been reviewed."
+      }
+    },
+    {
+      "id": "source-1ebdfccc067bc6a7",
+      "doi": "10.1103/PhysRevB.80.214506",
+      "title": "Broadening of the Berezinskii-Kosterlitz-Thouless superconducting transition by inhomogeneity and finite-size effects",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevB.80.214506",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-response-and-fitting-limits",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0909.0479v2",
+        "note": "Journal publication 7 December 2009; arXiv version 2 submitted 11 January 2010. Selected pages 3–5 and 7–9 were read: response conventions, dilute RG equations, restricted BKT regime and current-window limitations. Page 7, Eq. (26), was visually checked. The PDF internal typesetting date says 30 October 2018; it is not the publication date. Full final-version comparison and numerical material fits remain open."
+      }
+    },
+    {
+      "id": "source-e9e3a49b753191bc",
+      "doi": "10.1038/nature07576",
+      "title": "Electric field control of the LaAlO3/SrTiO3 interface ground state",
+      "year": 2008,
+      "url": "https://doi.org/10.1038/nature07576",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-capacitance-history-and-BKT",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0807.0585v1",
+        "note": "Author v1 submitted 3 July 2008; journal issue 4 December 2008. Selected pp. 3–8 and notes pp. 10–11 read; Fig. 3 p. 6 visually checked. Nonlinear capacitance integration, conditioning, BKT fit and normal-state temperatures retained. Final-version comparison and raw-data fits remain open."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "LaAlO3/SrTiO3",
+      "sample": "Reyren2007 eight-unit-cell LaAlO3 overlayer onTiO2-terminatedSTO",
+      "recordType": "experiment",
+      "tcK": 0.2,
+      "temperatureNote": "Approximate200mK noise-floor zero at100nA,not a BKT-fit temperature or directly measured superconducting thickness.",
+      "criterion": "zero-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Four-probe resistance,100nA",
+      "id": "scwiki-d11-material-1",
+      "sourceId": "source-ea5d0c80335c450d",
+      "reportedTemperatureK": 0.2,
+      "temperatureKind": "transition"
+    },
+    {
+      "formula": "FeSe/SrTiO3",
+      "sample": "Heauthorv1 annealing sequence15 single-layer FeSe/STO",
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureNote": "65±5K symmetrized-EDC gap closing withBCS-form fit,not transportzero;selected2012authorversion.",
+      "criterion": "spectroscopic-gap",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "ARPES",
+      "id": "scwiki-d11-material-2",
+      "sourceId": "source-a95bcf0cb2681557",
+      "reportedTemperatureK": 65,
+      "temperatureKind": "spectroscopic-gap",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
+    },
+    {
+      "formula": "LaAlO3/SrTiO3",
+      "sample": "Reyren2007 fifteen-unit-cell LaAlO3 overlayer",
+      "recordType": "experiment",
+      "tcK": 0.1,
+      "temperatureNote": "Approximate100mKnoise-floorzero at100nA;separate specimen.",
+      "criterion": "zero-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Four-probe resistance,100nA",
+      "id": "scwiki-d11-material-3",
+      "sourceId": "source-ea5d0c80335c450d",
+      "reportedTemperatureK": 0.1,
+      "temperatureKind": "transition"
+    },
+    {
+      "formula": "LaAlO3/SrTiO3",
+      "sample": "Reyren2007 eight-unit-cell LaAlO3 overlayer onTiO2-terminatedSTO",
+      "recordType": "experiment",
+      "tcK": 0.188,
+      "temperatureNote": "0.188K bkt-iv-alpha-three;finite-sizeohmicregime and analysis assumptions retained.",
+      "criterion": "bkt-iv-alpha-three",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Current–voltage exponent",
+      "id": "scwiki-d11-material-4",
+      "sourceId": "source-ea5d0c80335c450d",
+      "reportedTemperatureK": 0.188,
+      "temperatureKind": "transition"
+    },
+    {
+      "formula": "LaAlO3/SrTiO3",
+      "sample": "Reyren2007 eight-unit-cell LaAlO3 overlayer onTiO2-terminatedSTO",
+      "recordType": "experiment",
+      "tcK": 0.19,
+      "temperatureNote": "0.19K bkt-resistance-fit;finite-sizeohmicregime and analysis assumptions retained.",
+      "criterion": "bkt-resistance-fit",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Resistance-tail fit",
+      "id": "scwiki-d11-material-5",
+      "sourceId": "source-ea5d0c80335c450d",
+      "reportedTemperatureK": 0.19,
+      "temperatureKind": "transition"
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d11-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Two-dimensional geometry and interface location describe different properties. Weak out-of-plane dispersion does not alone establish a two-dimensional phase transition. An interface can support a superconducting region between constituents that are not superconducting separately. Charge redistribution, oxygen defects, strain, orbital structure and disorder can change together, so an enhanced transition does not identify one universal interface mechanism.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ea5d0c80335c450d",
+        "source-684b96e9dbb65a64"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Pair formation and macroscopic phase coherence need not coincide. Every temperature below retains its probe and criterion: a spectral gap, resistance onset, noise-floor zero, magnetic screening or BKT analysis. An ultrathin film may also have finite lateral size, nonuniform current paths and coupling to its substrate. These conditions matter when comparing it with an ideal phase model.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-a95bcf0cb2681557",
+        "source-8f81510a80c35e3a",
+        "source-1ebdfccc067bc6a7"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In the convention $F=(J_s/2)\\int d^2r\\,|\\nabla\\theta|^2$, the ideal BKT jump is $k_BT_{\\mathrm{BKT}}=\\pi J_s(T_{\\mathrm{BKT}}^-)/2$. Here $J_s$ is the long-wavelength, renormalized total phase stiffness, with units of energy. It is not the bare pairing amplitude or a separately measured geometric contribution. Magnetic screening, finite size and interlayer coupling limit the length scales over which the logarithmic-vortex description applies. BCS-like amplitude formation and BKT phase ordering are not mutually exclusive microscopic pairing mechanisms.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8f81510a80c35e3a",
+        "source-408113812912d816"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a homogeneous local sheet response, $J_s=\\hbar^2/(4e^2L_k)$ relates the same stiffness to sheet kinetic inductance. Combining it with the jump gives $L_k=\\Phi_0^2/(8\\pi k_BT_{\\mathrm{BKT}})$, where $\\Phi_0=h/(2e)$. Independent electron-density and pair-density conventions give the same conversion. At a hypothetical 0.188 K jump it predicts approximately 65.5 nH per square; this is a model conversion, not an inductance measured in Reyren's device. Finite-frequency response must not be silently identified with the asymptotic equilibrium stiffness.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8f81510a80c35e3a",
+        "source-1ebdfccc067bc6a7"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "A convincing BKT comparison combines current–voltage behavior, an appropriate resistance-fluctuation regime and stiffness where available. An apparent cubic law over a chosen current interval is insufficient: the synthetic response $V=I+I^3$ has nearly cubic high-current behavior while retaining finite low-current resistance. Likewise, an activated resistor can mimic a linearized BKT plot in a narrow window. These checked counterexamples test logical uniqueness, not the validity of any cited experiment. Heating, current window, finite size and inhomogeneity need independent controls.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-1ebdfccc067bc6a7"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Reyren's 2007 LaAlO3/SrTiO3 measurements distinguish eight-unit-cell and fifteen-unit-cell LaAlO3 overlayers, with resistance reaching the noise floor below approximately 200 and 100 mK respectively at 100 nA. Those overlayer thicknesses are not measured superconducting-sheet widths. The field-dependent transition uses 50% of the 1 K resistance; extrapolated zero-temperature fields of 65 and 30 mT are therefore criterion-dependent estimates.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ea5d0c80335c450d"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "For the eight-unit-cell sample, the current–voltage exponent reaches three near 188 mK and the resistance-tail analysis yields about 190 mK. Figure 4 also shows an ohmic low-current regime attributed to finite size. Agreement between these analyses is informative without eliminating their assumptions. The paper's roughly 10 nm thickness bound relies on an oxygen-defect/carrier-profile scenario and bulk carrier requirements, rather than direct spatial imaging or a unique explanation of carrier origin.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ea5d0c80335c450d"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-oxide-interface-controls-1",
+      "sectionId": "oxide-interface-controls",
+      "statement": "The Reyren specimens use TiO2-terminated SrTiO3, pulsed-laser growth and oxygen treatment during cooling. A two-unit-cell reference remains insulating within the reported measurement window. These controls constrain oxygen-vacancy interpretations but do not prove that defects are absent. Later electrostatic gating requires nonlinear capacitance integration and attention to conditioning history; a dome does not establish carrier density as the only variable or identify a unique quantum critical pairing interaction.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-ea5d0c80335c450d",
+        "source-e9e3a49b753191bc"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-oxide-interface-controls-2",
+      "sectionId": "oxide-interface-controls",
+      "statement": "In Gozar's author manuscript, I denotes insulating La2CuO4, M denotes metallic La1.55Sr0.45CuO4 and S denotes oxygenated superconducting La2CuO4+δ. Reversing I–M to M–I changes the characteristic transition from roughly 15 to 30 K; oxygenating M–I produces M–S near 50 K. The thickness-series figure uses a resistance midpoint. Its separate screening figure reports 33.2 K for S and 51.6 K for M–S, measured with 10 kHz mutual inductance. Screening and transport criteria must remain distinct.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-684b96e9dbb65a64"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-oxide-interface-controls-3",
+      "sectionId": "oxide-interface-controls",
+      "statement": "The layer-thickness and screening-current analyses constrain an interfacial region approximately one to two unit cells thick, subject to their structural and electrodynamic models. Microscopy bounds cation interdiffusion at roughly one unit cell; it does not establish perfectly abrupt chemistry. Logvenov's original abstract describes layer-selective Zn markers that suppress superconductivity and locate the response within a single CuO2 plane. That selected abstract supports the localization statement, while its full methods and calibration remain unchecked here.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-684b96e9dbb65a64",
+        "source-7fcd7faadf66481b"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-fese-spectra-and-annealing-1",
+      "sectionId": "fese-spectra-and-annealing",
+      "statement": "He and colleagues' 2012 author version, associated with the 2013 journal article, follows annealing-dependent electronic phases in single-layer FeSe/SrTiO3. Figure 3 extracts gaps from symmetrized energy-distribution curves and compares them with BCS-form temperature fits. Sequence 10 has an approximately 10 meV gap closing around 40 K; sequence 15 reaches roughly 19 meV and 65 ± 5 K. The latter is an ARPES gap scale, not a measured zero-resistance temperature.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a95bcf0cb2681557"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-fese-spectra-and-annealing-2",
+      "sectionId": "fese-spectra-and-annealing",
+      "statement": "The inferred electron count assumes two degenerate electron sheets, and the observed band evolution is not a simple rigid shift. Annealing may alter selenium or oxygen content and atomic configuration; later annealing also degrades sample quality. The selected author text describes direct single-layer transport and magnetic measurements as still underway. A BCS-shaped fit is compatible with a superconducting interpretation but does not independently demonstrate global phase coherence.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a95bcf0cb2681557"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-fese-spectra-and-annealing-3",
+      "sectionId": "fese-spectra-and-annealing",
+      "statement": "Lee's later replica-band study supports coupling between FeSe electrons and a substrate-related phonon, while its estimated pairing enhancement depends on the assumed background interaction. Its 58 ± 7 K fitted gap closing belongs to that specimen and analysis, not to He's annealing sequence. Replica bands alone do not partition every contribution to the pairing kernel. See [multiband pairing](/scwiki/multiband-pairing) for the source-specific model limitations.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-f9fe6e9bc3792dcc"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A superconducting single layer establishes sufficiency under its preparation and measurement conditions, not that interlayer coupling is universally irrelevant. Interface records should not be merged with bulk, transient or high-pressure records. Complete scientific acceptance remains open: selected original passages and figures, inherited named checks and model arithmetic are documented, while full supplements, final-author comparisons, raw-data reanalysis and independent replication are incomplete.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-ea5d0c80335c450d",
+        "source-684b96e9dbb65a64",
+        "source-7fcd7faadf66481b",
+        "source-a95bcf0cb2681557"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d11-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Separate thickness, termination, oxygen history, strain and electrostatics in a controlled comparison. Report the current and frequency window, temperature criterion, sample variation and structural uncertainty. A useful mechanism should predict which intervention changes a gap and which changes phase stiffness, with observations that can distinguish competing explanations. Keep those outcomes separate in prose, search filters and exported evidence.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-a95bcf0cb2681557",
+        "source-f9fe6e9bc3792dcc",
+        "source-1ebdfccc067bc6a7",
+        "source-e9e3a49b753191bc"
+      ],
+      "conditions": "Keep sample/layer thickness, preparation, probe, current/frequency window and temperature criterion separate; selected author versions are not certified final equivalents.",
+      "verificationScope": "Reference-specific selected primary text/figures, original abstract or explicitly synthetic model checks; complete scientific acceptance remains open."
+    }
+  ]
+}

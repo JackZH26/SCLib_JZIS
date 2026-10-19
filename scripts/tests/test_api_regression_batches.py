@@ -277,26 +277,28 @@ def test_cli_does_not_accept_test_filters_or_service_urls(capsys):
 def test_ci_keeps_capacity_separate_and_requires_batch_evidence():
     workflow = (coordinator.ROOT / ".github/workflows/test.yml").read_text()
     api = workflow.split("\n  api-tests:", 1)[1].split("\n  migration-tests:", 1)[0]
-    assert (
-        "python -m scripts.tests.run_api_regression --backend docker --batches 8" in api
-    )
-    assert api.index("run_api_regression") < api.index(
-        "--suite api -- -q tests_capacity"
-    )
-    assert "api-regression-attempt-${{ github.run_attempt }}" in api
-    artifact = api.split("- name: Upload actual API module-batch evidence", 1)[1].split(
-        "- name:", 1
-    )[0]
-    assert "if-no-files-found: error" in artifact
-    assert "continue-on-error" not in api and "DATABASE_URL:" not in api
+    parallel = (coordinator.ROOT / ".github/workflows/api-regression.yml").read_text()
+    assert "run_api_regression" not in api
+    assert "--suite api -- -q tests_capacity" in api
+    assert "uses: ./.github/workflows/api-regression.yml" in workflow
+    assert "max-parallel: 4" in parallel
+    assert "fail-fast: false" in parallel
+    assert "shard: [0, 1, 2, 3]" in parallel
+    assert parallel.count("scripts.api_test_scope batch") == 2
+    assert "api-batch-${{ matrix.shard }}-0-attempt-${{ github.run_attempt }}" in parallel
+    assert "api-batch-${{ matrix.shard }}-1-attempt-${{ github.run_attempt }}" in parallel
+    assert "scripts.api_test_scope aggregate" in parallel
+    assert "test \"$MODULE_RESULT\" = success" in parallel
+    assert "if-no-files-found: error" in parallel
+    assert "continue-on-error" not in api + parallel
+    assert "DATABASE_URL:" not in api + parallel
+    assert "services:" not in parallel
 
 
 def test_ci_job_budget_includes_regression_and_remaining_verification():
     workflow = (coordinator.ROOT / ".github/workflows/test.yml").read_text()
     api = workflow.split("\n  api-tests:", 1)[1].split("\n  migration-tests:", 1)[0]
-    assert "timeout-minutes: 180" in api.split("defaults:", 1)[0]
-    regression = api.split(
-        "- name: Run all API modules in separate owned-service batches", 1
-    )[1].split("- name:", 1)[0]
-    assert "timeout-minutes: 150" in regression
-    assert "--batches 8" in regression
+    parallel = (coordinator.ROOT / ".github/workflows/api-regression.yml").read_text()
+    assert "timeout-minutes: 35" in api.split("defaults:", 1)[0]
+    assert "timeout-minutes: 65" in parallel
+    assert parallel.count("timeout-minutes: 28") == 2

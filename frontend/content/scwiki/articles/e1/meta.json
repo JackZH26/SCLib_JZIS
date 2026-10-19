@@ -1,0 +1,464 @@
+{
+  "id": "scwiki-e1",
+  "topicId": "scwiki-topic-e1",
+  "code": "E1",
+  "slug": "pressure-tuning",
+  "title": "Pressure tuning: stress, phase stability and transition criteria",
+  "summary": "Read pressure-dependent superconductivity through the actual stress state, temperature calibration, structural phase and measurement criterion.",
+  "aliases": [
+    "hydrostatic pressure",
+    "quasihydrostatic",
+    "pressure tuning",
+    "diamond anvil cell",
+    "DAC",
+    "pressure medium",
+    "deviatoric stress",
+    "manometer"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "E4",
+    "D10",
+    "D6",
+    "D4",
+    "A1"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T12:19:32.213972+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected pressure-medium calibration and FeSe author passages, original Gao abstract, prior nickelate/hydride checks and the introductory pressure-quench protocol.",
+    "limitations": [
+      "Complete scientific acceptance, final-version comparisons and raw-data reproduction remain open.",
+      "Gao1994 full methods remain inaccessible; no exact onset/zero criterion is assigned from the abstract.",
+      "Deng2026 detailed criterion and recovered-state data were not checked after access became unavailable.",
+      "Tensor and derivative calculations are illustrative identities, not sample-stress reconstruction or material predictions."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "E_tuning_parameters/E1_hydrostatic_pressure.md",
+    "sha256": "7e3bee876841b6c7d2d11307300d31835641b8458d7c0c9f3e874860a35c9852",
+    "sourceId": "file-453b585adde4a102"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 67,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved; probe-specific pressure conditions and limited original evidence are explicit. Unreviewed membrane preprint is not promoted into the public comparison."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-c1c9ef4bc5cf71dd",
+      "doi": "10.1063/1.4937478",
+      "title": "Solidification and loss of hydrostaticity in liquid media used for pressure measurements",
+      "year": 2015,
+      "url": "https://doi.org/10.1063/1.4937478",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-calibration-and-freezing-methods",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1512.00087v1",
+        "note": "Author v1 submitted 30 November 2015; journal online 16 December 2015. Selected pp. 1–7 read, Fig. 1 on p. 6 visually checked. Manganin/Pb calibration, warming protocol, interpolation and unresolved oil freezing retained. Full results/final-version comparison and raw-data refits remain open."
+      }
+    },
+    {
+      "id": "source-a631bcd83d23567b",
+      "doi": "10.1038/nmat2491",
+      "title": "Electronic and magnetic phase diagram of β-Fe1.01Se with superconductivity at 36.7 K under pressure",
+      "year": 2009,
+      "url": "https://doi.org/10.1038/nmat2491",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-transport-structure-and-methods",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0903.2143v1",
+        "note": "Author v1 submitted 12 March 2009; journal 14 June 2009. Selected pp. 1–5, Methods pp. 12–13 and Fig. 2 p. 15 read; figure visually checked. Resistive maximum, broadening, nonzero resistance at 15 GPa, separate Mössbauer medium and transport ruby conditions retained. Final-version comparison and raw data not reviewed."
+      }
+    },
+    {
+      "id": "source-6d09a24a26a15997",
+      "doi": "10.1103/PhysRevB.50.4260",
+      "title": "Superconductivity up to 164 K in HgBa2Cam−1CumO2m+2+δ (m = 1, 2, and 3) under quasihydrostatic pressures",
+      "year": 1994,
+      "url": "https://doi.org/10.1103/PhysRevB.50.4260",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.50.4260",
+        "note": "Published 1 August 1994. Original abstract checked: resistive quasihydrostatic measurements up to 45 GPa and 164 K maximum for m = 3. Full PDF requires authorization; exact onset/zero criterion and point pressure not independently read."
+      }
+    },
+    {
+      "id": "source-df0c15d62982f853",
+      "doi": "10.1038/s41586-023-06408-7",
+      "title": "Signatures of superconductivity near 80 K in a nickelate under high pressure",
+      "year": 2023,
+      "url": "https://doi.org/10.1038/s41586-023-06408-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-primary-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://iopex6.iphy.ac.cn/PDFlist/2023/Nature621%282023%29493-EX6.pdf",
+        "note": "Reused D5 scoped primary reading with unchanged limitations. Selected published p496 Fig3/caption and text, plus Methods PDFp7. Resistance onset, residual resistance, separate magnetic measurement, KBr and room-temperature ruby calibration retained. Raw-data/replication review remains open."
+      }
+    },
+    {
+      "id": "source-8b901b9c6008c434",
+      "doi": "10.1038/nature14964",
+      "title": "Conventional superconductivity at 203 kelvin at high pressures in the sulfur hydride system",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/nature14964",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-and-published-caption-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1506.08190v1",
+        "note": "Reused D6 scoped primary reading with unchanged limitations. Published 17 August 2015. Author v1 of 26 June 2015: selected pp. 3/5 and Fig. 4 pp. 11–12, visually checked; publisher abstract and extended captions also checked. Magnetization raw data and background subtraction not independently reproduced."
+      }
+    },
+    {
+      "id": "source-1e6e868a12cdd34f",
+      "doi": "10.1038/s41586-019-1201-8",
+      "title": "Superconductivity at 250 K in lanthanum hydride under high pressures",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41586-019-1201-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-methods-figures-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://public.magnet.fsu.edu/AToth/NSF%20publication%20access/2019/05%20Newly%20Entered%20Pubs%20May%202019/2019%20cited/2019_Superconductivity%20at%20250%20K%20in%20lanthanum%20hydride%20under%20high%20pressures.pdf",
+        "note": "Reused D6 scoped primary reading with unchanged limitations. Published online 22 May 2019. Selected printed pp. 528–529, Fig. 4p.531, Methods and deuteride assignment; PDF p. 2 visually checked. Final 249/180 K comparison replaces early 250/168 K; rounded ratio 0.468 differs from stated 0.46. Measured 9 T versus extrapolated 95–136 T; no SQUID measurement."
+      }
+    },
+    {
+      "id": "source-14d1e9e0097f7ffb",
+      "doi": "10.1073/pnas.2536178123",
+      "title": "Ambient-pressure 151-K superconductivity in HgBa2Ca2Cu3O8+δ via pressure quench",
+      "year": 2026,
+      "url": "https://doi.org/10.1073/pnas.2536178123",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "published-abstract-and-introductory-protocol-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12993975/",
+        "note": "Published online 9 March 2026; issue 17 March. Abstract and introduction through three-stage pressure-quench protocol read. Subsequent access returned a browser challenge; detailed transition criterion, figures and recovery data were not checked. No accepted transition-temperature record is added from this limited reading."
+      }
+    },
+    {
+      "id": "source-ba10e800a1246bf6",
+      "doi": "10.1103/PhysRev.108.1175",
+      "title": "Theory of Superconductivity",
+      "year": 1957,
+      "url": "https://doi.org/10.1103/PhysRev.108.1175",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/pdf/10.1103/PhysRev.108.1175",
+        "note": "Reused B1 scoped primary reading with unchanged limitations. Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-e1-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Pressure changes interatomic distances, electronic bandwidths, lattice vibrations and phase stability. It can also change the material itself through structural conversion or chemical reaction. A diamond anvil cell identifies an apparatus; it does not establish a purely hydrostatic stress state at the sample. Pressure medium, temperature, loading history and sample geometry belong to every quantitative comparison.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c1c9ef4bc5cf71dd",
+        "source-a631bcd83d23567b",
+        "source-8b901b9c6008c434"
+      ],
+      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
+      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e1-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "This article concerns measurements while pressure is applied. A state retained after rapid pressure release has a different thermodynamic and kinetic history. Deng's 2026 pressure-quench paper explicitly separates creating a phase under load, releasing pressure and characterizing the recovered state. Its reported 151 K scale must not be pooled with an in-situ pressure curve. Here only its abstract and introductory protocol are checked; the detailed transition criterion and recovery evidence require a separate review.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-14d1e9e0097f7ffb"
+      ],
+      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
+      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e1-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "With tensile stress positive, define $P=-\\mathrm{tr}(\\sigma)/3$ and $s_{ij}=\\sigma_{ij}+P\\delta_{ij}$. Then $\\sigma_{ij}=-P\\delta_{ij}+s_{ij}$ with $\\mathrm{tr}(s)=0$. Hydrostatic stress has $s=0$; equal mean pressure does not imply equal deviatoric stress. For a symmetric stress tensor, $\\sqrt{3s_{ij}s_{ij}/2}$ is a rotationally invariant scalar measure of deviatoric magnitude. It summarizes stress anisotropy, but does not identify its orientation or predict superconductivity. These definitions and rotation identities were checked on illustrative tensors.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-c1c9ef4bc5cf71dd"
+      ],
+      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
+      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e1-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A measured pressure dependence is a path through several changing variables. Within a differentiable single phase, $dT_c/dP=\\sum_a(\\partial T_c/\\partial x_a)(dx_a/dP)$ is a chain rule, not evidence that any one variable causes pairing. Phase conversion, hysteresis or a changed resistance criterion can invalidate a single smooth derivative across the whole dataset. Even an ideal dome has different local slopes on opposite sides of its maximum.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-a631bcd83d23567b",
+        "source-df0c15d62982f853"
+      ],
+      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
+      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e1-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "In the simplified weak-coupling expression $T_c=A\\omega\\exp(-1/\\lambda)$, holding A fixed gives $d\\ln T_c/dP=d\\ln\\omega/dP+\\lambda^{-2}d\\lambda/dP$. A rising frequency can therefore compete with decreasing coupling. This illustration neglects the Coulomb term, strong-coupling corrections, multiple bands and structural changes; it is not a quantitative model for the hydrides or FeSe. Numerical differentiation checks the stated algebra only.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-8b901b9c6008c434"
+      ],
+      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
+      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e1-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Torikachvili and colleagues used sample-resistance anomalies, cross-checked against manganin, to locate freezing-related changes in pressure media. Their room-temperature manganin calibration and low-temperature Pb manometer are distinct measurements. Between 300 and 90 K, pressure was estimated by interpolation; below 90 K it was assumed constant. Data used for the anomaly analysis came from slow warming near 0.35 K per minute. These details prevent the loading pressure from silently becoming the pressure at every temperature. The silicone-oil freezing points were not unambiguously determined.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c1c9ef4bc5cf71dd"
+      ],
+      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
+      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e1-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Medvedev's Fe1.01Se study reports an approximately 36.7 K resistive transition at 8.9 GPa and a decrease at higher pressures. At 15 GPa the roughly 25 K transition did not reach zero resistance, in a mixed-phase regime. The selected transport Methods describe DC van der Pauw measurements, ruby checks at both room and low temperature and a reported spatial pressure spread no greater than 0.05 GPa. Silicone oil is specified in the separate Mössbauer paragraph; this review does not assign that medium to transport without evidence.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a631bcd83d23567b"
+      ],
+      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
+      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e1-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Gao's original abstract reports resistive measurements of mercury cuprates under quasihydrostatic pressures and a maximum of 164 K for the three-layer member. It does not, at this checked scope, establish a zero-resistance or thermodynamic criterion. The full 1994 methods remain inaccessible here, so no more precise criterion is manufactured for the material record. A family trend in that report is not a universal positive pressure coefficient for superconductors.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-6d09a24a26a15997"
+      ],
+      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
+      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e1-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "The bilayer nickelate report combines resistance signatures with a separate magnetic experiment. Its checked methods use KBr and room-temperature ruby calibration; residual resistance and sample-specific onset criteria remain explicit. In sulfur and lanthanum hydrides, pressure also helps produce or stabilize the hydrogen-rich phases being measured. Pairing a transport curve with a proposed structure requires attention to synthesis history, phase fractions and the conditions of each probe.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-df0c15d62982f853",
+        "source-8b901b9c6008c434",
+        "source-1e6e868a12cdd34f"
+      ],
+      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
+      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e1-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "A small spread in pressure inferred from calibrant readings does not reconstruct the full sample stress tensor. Conversely, a frozen medium need not produce the same shear stress in every geometry. Hydrostaticity is an experimental condition to assess, not a binary quality label inferred solely from the material name. The freezing study's calibration assumptions and unresolved oil anomalies should remain attached to any reuse of its data.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c1c9ef4bc5cf71dd"
+      ],
+      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
+      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e1-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Onset, midpoint, zero resistance and magnetic or thermodynamic signatures answer different questions. The high-pressure FeSe curves broaden and coexist with a structurally transformed fraction; a surviving conducting path is not a direct bulk-volume measurement. Likewise, a structural measurement at room temperature cannot by itself establish the complete structure at a low-temperature transition. This entry retains the historical report's conditions without generalizing its magnetic conclusions to every later FeSe experiment.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-a631bcd83d23567b",
+        "source-df0c15d62982f853"
+      ],
+      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
+      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e1-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Design a pressure series around explicit alternatives: distinguish an electronic crossover from a structural transformation, a pressure gradient from intrinsic broadening, and a reversible response from kinetic trapping. Combine loading and unloading curves with pressure calibration near the measurement temperature, and compare transport with structural or magnetic probes wherever feasible. Differences between probes are evidence to explain, not numbers to average away.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-c1c9ef4bc5cf71dd",
+        "source-a631bcd83d23567b",
+        "source-df0c15d62982f853"
+      ],
+      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
+      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-e1-claim-discovery-implications-2",
+      "sectionId": "discovery-implications",
+      "statement": "For transferable discovery records, preserve composition, pressure interval, medium, calibrant, temperature, protocol and transition criterion. Quote a slope only over its stated phase and pressure interval. Keep ambient recovered states, in-situ high-pressure phases and theoretical estimates separately searchable. Pressure can expose useful physics without guaranteeing a recoverable ambient material or a technologically useful conductor.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8b901b9c6008c434",
+        "source-1e6e868a12cdd34f",
+        "source-14d1e9e0097f7ffb"
+      ],
+      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
+      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+    }
+  ],
+  "corrections": [],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "P=-\\mathrm{tr}(\\sigma)/3,\\quad s=\\sigma+PI",
+      "check": "Four stress tensors under three rotations: trace-free decomposition and invariant deviatoric magnitude."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "d\\ln T_c/dP=d\\ln\\omega/dP+\\lambda^{-2}d\\lambda/dP",
+      "check": "Three finite-difference tests of a weak-coupling illustrative expression; no material fit."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-e1-material-1",
+      "formula": "Fe1.01Se",
+      "sample": "Medvedev low-pressure transport",
+      "recordType": "experiment",
+      "reportedTemperatureK": 18.6,
+      "tcK": 18.6,
+      "temperatureKind": "transition",
+      "temperatureNote": "Onset at 0.8 GPa, followed by a sharp drop to zero; zero criterion is not assigned the onset value.",
+      "criterion": "resistive-onset",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 0.8,
+        "max": 0.8
+      },
+      "equilibrium": "equilibrium",
+      "probe": "DC van der Pauw resistance; low- and room-temperature ruby",
+      "sourceId": "source-a631bcd83d23567b",
+      "aliases": [
+        "FeSe",
+        "iron selenide",
+        "iron-based",
+        "iron based superconductors"
+      ]
+    },
+    {
+      "id": "scwiki-e1-material-2",
+      "formula": "Fe1.01Se",
+      "sample": "Medvedev dome maximum",
+      "recordType": "experiment",
+      "reportedTemperatureK": 36.7,
+      "tcK": 36.7,
+      "temperatureKind": "transition",
+      "temperatureNote": "Reported high-pressure maximum; no thermodynamic or exact zero-resistance temperature inferred.",
+      "criterion": "resistive-onset",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 8.9,
+        "max": 8.9
+      },
+      "equilibrium": "equilibrium",
+      "probe": "DC van der Pauw resistance; low- and room-temperature ruby",
+      "sourceId": "source-a631bcd83d23567b",
+      "aliases": [
+        "FeSe",
+        "iron selenide",
+        "iron-based",
+        "iron based superconductors"
+      ]
+    },
+    {
+      "id": "scwiki-e1-material-3",
+      "formula": "Fe1.01Se",
+      "sample": "Medvedev mixed-phase high-pressure specimen",
+      "recordType": "experiment",
+      "reportedTemperatureK": 25,
+      "tcK": 25,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate transition; resistance did not reach zero at this pressure.",
+      "criterion": "resistive-onset",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 15,
+        "max": 15
+      },
+      "equilibrium": "equilibrium",
+      "probe": "DC van der Pauw resistance",
+      "sourceId": "source-a631bcd83d23567b",
+      "aliases": [
+        "FeSe",
+        "iron selenide",
+        "iron-based",
+        "iron based superconductors"
+      ]
+    },
+    {
+      "id": "scwiki-e1-material-4",
+      "formula": "HgBa2Ca2Cu3O8+δ",
+      "sample": "Gao optimally doped m = 3 material",
+      "recordType": "experiment",
+      "reportedTemperatureK": 164,
+      "tcK": 164,
+      "temperatureKind": "transition",
+      "temperatureNote": "Exact point pressure and onset/zero criterion remain unknown at this review scope; 45 GPa is the study range, not the assigned pressure.",
+      "criterion": "resistive-transition-unspecified",
+      "pressureRegime": "high",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Resistance under quasihydrostatic pressure; original abstract",
+      "sourceId": "source-6d09a24a26a15997",
+      "aliases": [
+        "cuprate",
+        "cuprates"
+      ]
+    },
+    {
+      "id": "scwiki-e1-material-5",
+      "formula": "1:1 isopentane/n-pentane",
+      "sample": "Torikachvili pressure-medium anomaly",
+      "recordType": "experiment",
+      "reportedTemperatureK": 96.9,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Freezing-related anomaly, not superconducting Tc; pressure near 0.28 GPa estimated by interpolation.",
+      "criterion": "pressure-medium-freezing-proxy",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 0.28,
+        "max": 0.28
+      },
+      "equilibrium": "equilibrium",
+      "probe": "Sample derivative anomaly cross-checked against manganin",
+      "sourceId": "source-c1c9ef4bc5cf71dd"
+    }
+  ]
+}

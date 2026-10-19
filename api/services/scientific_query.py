@@ -215,9 +215,31 @@ def match_source_formulas(text: str, wanted) -> set[str]:
     return found
 
 
+# Exact topic requests have no sample, numerical bound or selection predicate.
+# These same words remain unresolved criteria in qualified scientific queries.
+_CRITERION_TOPIC = re.compile(
+    r"(?:(?:what\s+is|explain|tell\s+me\s+about)\s+(?:the\s+)?|什么是|解释|介绍)?"
+    r"(?:Meissner(?:[- ]effect)?|迈斯纳(?:效应)?|zero[- ]resistance|零电阻|"
+    r"(?:magnetic\s+)?susceptibility|磁化率|specific\s+heat|比热|"
+    r"(?:magnetic\s+)?shielding|磁屏蔽)[.?!。？！]?",
+    re.IGNORECASE,
+)
+
+
 def interpret_scientific_query(raw_query: str) -> ScientificQueryInterpretation:
     if type(raw_query) is not str or not raw_query.strip() or len(raw_query) > 2000:
         raise ValueError("Scientific query requires 1..2000 nonblank characters")
+    if _CRITERION_TOPIC.fullmatch(raw_query.strip()):
+        # Recognize the whole topic, including its hyphen; do not split a
+        # measurement noun into a predicate and an artificial residual clause.
+        chinese = bool(re.search(r"[\u3400-\u9fff]", raw_query))
+        english = bool(re.search(r"[A-Za-z]{2,}", raw_query))
+        return ScientificQueryInterpretation(
+            raw_query=raw_query, normalized_query=raw_query,
+            language="mixed" if chinese and english else "zh" if chinese else "en",
+            intent="mechanism" if _MECHANISM.search(raw_query) else "general",
+            status="resolved",
+        )
     covered = [False] * len(raw_query)
     constraints, evidence, unresolved, formulas = [], [], [], []
     requested = set()

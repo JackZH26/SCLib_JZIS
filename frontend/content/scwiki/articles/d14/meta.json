@@ -1,0 +1,540 @@
+{
+  "id": "scwiki-d14",
+  "topicId": "scwiki-topic-d14",
+  "code": "D14",
+  "slug": "kagome-superconductors",
+  "title": "Kagome superconductors",
+  "summary": "Connect kagome band geometry with material-specific superconducting evidence, separating charge order, Hall response, pressure conditions and pairing candidates.",
+  "aliases": [
+    "kagome superconductivity",
+    "kagome superconductors",
+    "kagome 超导",
+    "笼目超导"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "B13",
+    "H4",
+    "C7",
+    "C8",
+    "E1"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T17:57:16.510685+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Guo,OrtizCs and LiuCr author passages/figures, plus Liu final pressure criteria/methods/Figure3; Cheng author HTML methods/results; inherited CDW/TRSB/PDW audits; original abstracts with explicit limits; independent kagome band algebra.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Abstract-only references do not establish full methods, orbital assignment or unique pairing mechanisms.",
+      "Final-version comparisons, supplements, pressure/current controls and raw-data acceptance remain open.",
+      "Nearest-neighbor spectra do not reproduce a material, superconducting gap equation or invariant."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D14_kagome.md",
+    "sha256": "c100136570cc9f04734a03d9927f17258ffd122af7b503e1b7c6bec46dbf5df4",
+    "sourceId": "file-2c2008f2375478c5"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 148,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Preserve model/family/CDW/Hall/TRSB/PDW/pressure/Cr/Fe/Sc comparison topics. Correct source attribution, pressure criterion, symmetry inference and categorical diagnostic claims. Quantitative claims lacking checked methods excluded."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-d14-correction-1",
+      "description": "Conjoined CDW paper s41467-022-33995-2 is by Li et al., not Stahl et al. FeGe PRL129166401 is first-authored by Jia-Xin Yin, with Teng a coauthor.",
+      "sourceId": "source-80eda571fc6d710c",
+      "scope": "Correct pinned attribution; retain distinct CDW and FeGe evidence."
+    },
+    {
+      "id": "scwiki-d14-correction-2",
+      "description": "CsCr3Sb5 6.4K is a resistive onset at4.2GPa, distinct from critical-field midpoint. Frieze charge-stripe symmetry and charge-order TRSB do not establish chiral superconductivity.",
+      "sourceId": "source-d0ee5c328ca326ee",
+      "scope": "Separate pressure, criterion and order-parameter evidence."
+    },
+    {
+      "id": "scwiki-d14-correction-3",
+      "description": "Flat bands/VHS and four proposed diagnostics are not universal sufficient or necessary definitions of topological superconductivity. FeGe and ScV6Sn6 comparison studies are not superconductivity reports.",
+      "sourceId": "source-e9b1bdb7cb3c0ee4",
+      "scope": "Remove categorical mechanism and material inferences."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "E_\\pm=t[-1\\pm\\sqrt{4S-3}]",
+      "check": "1311 independent numerical spectra, Gamma/K/M degeneracies,2 saddle Hessians and3 same-sublattice hopping perturbations. No material fit or pairing/topology calculation."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-1cd7f905ef6df6e1",
+      "doi": "10.1103/PhysRevB.80.113102",
+      "title": "Topological insulator on the kagome lattice",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevB.80.113102",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-model-and-spectrum",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/0905.3385v2",
+        "note": "Author v2 and journal publication 25 September 2009. Selected pp1–2 read; p2 Hamiltonian/spectrum visually checked. Source uses nearest-neighbor vectors; article uses triangular Bravais vectors twice as long. Full SOC invariant calculation not reproduced."
+      }
+    },
+    {
+      "id": "source-96cec6968d3c379a",
+      "doi": "10.1103/PhysRevMaterials.3.094407",
+      "title": "New kagome prototype materials: discovery of KV3Sb5, RbV3Sb5 and CsV3Sb5",
+      "year": 2019,
+      "url": "https://doi.org/10.1103/PhysRevMaterials.3.094407",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prmaterials/abstract/10.1103/PhysRevMaterials.3.094407",
+        "note": "Published 16 September 2019. Original abstract establishes the layered family and anomalies; not a demonstration that all members are superconducting. Full methods and stoichiometry audit open."
+      }
+    },
+    {
+      "id": "source-d49026ec4f5a10a4",
+      "doi": "10.1103/PhysRevLett.125.247002",
+      "title": "CsV3Sb5: A Z2 Topological Kagome Metal with a Superconducting Ground State",
+      "year": 2020,
+      "url": "https://doi.org/10.1103/PhysRevLett.125.247002",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-bulk-transition-and-ARPES-conditions",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/2011.06745v1",
+        "note": "Author v1 13 November 2020. Selected p2 methods/results and p3 Figure2 read; p3 visually checked. Magnetization, transport and heat capacity support about2.5K onset. 8mA probe current suppresses transport onset; limited base temperature prevents detailed gap analysis. Normal-state ARPES50–120K; predicted surface band above EF is not an occupied-band observation. Final/supplement/raw-data acceptance open."
+      }
+    },
+    {
+      "id": "source-1dbc07dbbbe19132",
+      "doi": "10.1103/PhysRevMaterials.5.034801",
+      "title": "Superconductivity in the Z2 kagome metal KV3Sb5",
+      "year": 2021,
+      "url": "https://doi.org/10.1103/PhysRevMaterials.5.034801",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-original-abstract-only",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/abs/2012.09097",
+        "note": "Original abstract checked for bulk superconducting membership, using magnetization, transport and heat capacity. Exact numerical criteria and full methods not audited here."
+      }
+    },
+    {
+      "id": "source-4027fb28ea284a9f",
+      "doi": "10.1088/0256-307X/38/3/037403",
+      "title": "Superconductivity and Normal-State Properties of Kagome Metal RbV3Sb5 Single Crystals",
+      "year": 2021,
+      "url": "https://doi.org/10.1088/0256-307X/38/3/037403",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-only",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://cpl.iphy.ac.cn/article/doi/10.1088/0256-307X/38/3/037403",
+        "note": "Qiangwei Yin et al.; original publisher abstract checked for superconducting membership, higher-temperature anomalies and multiband Hall interpretation. No numerical transition criterion or full methods audit claimed."
+      }
+    },
+    {
+      "id": "source-7746049011a0e640",
+      "doi": "10.1103/PhysRevX.11.031026",
+      "title": "Three-Dimensional Charge Density Wave and Surface-Dependent Vortex-Core States in a Kagome Superconductor CsV3Sb5",
+      "year": 2021,
+      "url": "https://doi.org/10.1103/PhysRevX.11.031026",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prx/abstract/10.1103/PhysRevX.11.031026",
+        "note": "Published 2 August 2021. Surface step phase shift and suggested three-dimensional order checked at abstract scope; vortex-state identity and full STM data not independently established."
+      }
+    },
+    {
+      "id": "source-80eda571fc6d710c",
+      "doi": "10.1038/s41467-022-33995-2",
+      "title": "Discovery of conjoined charge density waves in the kagome superconductor CsV3Sb5",
+      "year": 2022,
+      "url": "https://doi.org/10.1038/s41467-022-33995-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-publisher-web-passages-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-022-33995-2",
+        "note": "Li et al., published 26 October 2022. Abstract, selected results and Figures 1–4 captions read as text; images and raw profiles not independently reviewed. Corrects the inherited attribution to Stahl. Measurements at 10 K and charge-order onsets are not superconducting Tc."
+      }
+    },
+    {
+      "id": "source-dbcbd572b05dcaa4",
+      "doi": "10.1038/s41567-021-01451-5",
+      "title": "Twofold van Hove singularity and origin of charge order in topological kagome superconductor CsV3Sb5",
+      "year": 2022,
+      "url": "https://doi.org/10.1038/s41567-021-01451-5",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-v2-original-abstract-only",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/abs/2105.01689v2",
+        "note": "Version2 dated6November2021. ARPES plus DFT, pure/mixed sublattice van Hove features. This scope does not reproduce orbital assignments, all spectra, pairing theory or final-version comparison."
+      }
+    },
+    {
+      "id": "source-646e363b41fcabb3",
+      "doi": "10.1126/sciadv.abb6003",
+      "title": "Giant, unconventional anomalous Hall effect in the metallic frustrated magnet candidate, KV3Sb5",
+      "year": 2020,
+      "url": "https://doi.org/10.1126/sciadv.abb6003",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-institution-abstract-only",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://digitalcommons.usf.edu/phy_facpub/92/",
+        "note": "Yang et al.;31July2020. Institutional original abstract checked: anomalous Hall response without reported long-range magnetic order. No full ordinary-Hall subtraction or microscopic mechanism audit. Publisher retrieval failed; PMC/PubMed returned challenge pages, which were not treated as evidence."
+      }
+    },
+    {
+      "id": "source-59d803435c0df1ef",
+      "doi": "10.1103/PhysRevB.104.L041103",
+      "title": "Concurrence of anomalous Hall effect and charge density wave in a superconducting topological kagome metal",
+      "year": 2021,
+      "url": "https://doi.org/10.1103/PhysRevB.104.L041103",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-only",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.104.L041103",
+        "note": "Yu et al.;8July2021. AHE follows higher-temperature CDW and disappears with CDW suppression under pressure. Skew scattering and Berry-curvature interpretation is the authors explanation, not a measured superconducting order parameter. Full background subtraction and methods open."
+      }
+    },
+    {
+      "id": "source-484da7abcc165cd3",
+      "doi": "10.1038/s41586-021-04327-z",
+      "title": "Time-reversal symmetry-breaking charge order in a kagome superconductor",
+      "year": 2022,
+      "url": "https://doi.org/10.1038/s41586-021-04327-z",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2106.13443v2",
+        "note": "Selected pp. 2–3 and 6 plus experimental-methods passages; Fig. 1 on p. 2 visually checked. December 2021 author version 2, published February 2022. Nuclear/electronic and charge/superconducting distinctions retained; full final-version/data review open."
+      }
+    },
+    {
+      "id": "source-057c43c86174f961",
+      "doi": "10.1038/s41586-021-03983-5",
+      "title": "Roton pair density wave in a strong-coupling kagome superconductor",
+      "year": 2021,
+      "url": "https://doi.org/10.1038/s41586-021-03983-5",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-manuscript-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2103.09188v2",
+        "note": "Selected pp. 3–7 and methods pp. 17–18; Fig. 3 on p. 14 visually checked. Author version 2 September 2021 has a different title and mistyped journal volume 559; publisher confirms Nature 599. Final-version/raw-data comparison open."
+      }
+    },
+    {
+      "id": "source-4fb5d6fb51bdb253",
+      "doi": "10.1103/PhysRevLett.126.247001",
+      "title": "Double Superconducting Dome and Triple Enhancement of Tc in the Kagome Superconductor CsV3Sb5 under High Pressure",
+      "year": 2021,
+      "url": "https://doi.org/10.1103/PhysRevLett.126.247001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-only",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.126.247001",
+        "note": "Chen et al.;17June2021. Original abstract describes nonmonotonic superconductivity and charge order under pressure. Full pressure calibration, resistive criteria and mechanism assignment not checked here."
+      }
+    },
+    {
+      "id": "source-d0ee5c328ca326ee",
+      "doi": "10.1038/s41586-024-07761-x",
+      "title": "Superconductivity under pressure in a chromium-based kagome metal",
+      "year": 2024,
+      "url": "https://doi.org/10.1038/s41586-024-07761-x",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-and-final-pressure-criteria",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/2309.13514v2",
+        "note": "Author v2 dated16March2024 has a different title; publisher title/date28August2024 checked independently. Selected pp6–7 results/Figure3 and p17 methods read; p7 visually checked. 6.4K is onset at4.2GPa; Hc2 criterion50%normal resistance; fitted14.34T not directly observed zero-temperature field. Cubic-anvil glycerol with room-temperature load calibration differs from lower-pressure piston-cell Daphne/Pb calibration. Final institutional PDF selected p4 results/Figure3 and pp7–8 pressure methods also checked; p4 visually inspected. Field direction explicitly uncertain, so no anisotropic Hc2 claim. Full extended-data/raw AC calibration and complete version comparison open."
+      }
+    },
+    {
+      "id": "source-c415e45e91e02c10",
+      "doi": "10.1038/s41567-026-03232-4",
+      "title": "Frieze charge stripes in a correlated kagome superconductor",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41567-026-03232-4",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-HTML-results-and-STM-methods",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/html/2510.06168v1",
+        "note": "Published2April2026;authorv1 7October2025. Selected Results, growth/STM methods and symmetry description read in author HTML. Cleaved Sb surface,4.5K base,50/45K modulation scales, mirror-glide symmetry precludes global handedness. No high-pressure superconducting order-parameter measurement in this STM study. Figure images, full simulation and final comparison open."
+      }
+    },
+    {
+      "id": "source-e9b1bdb7cb3c0ee4",
+      "doi": "10.1103/PhysRevLett.129.166401",
+      "title": "Discovery of Charge Order and Corresponding Edge State in Kagome Magnet FeGe",
+      "year": 2022,
+      "url": "https://doi.org/10.1103/PhysRevLett.129.166401",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-and-attribution",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.129.166401",
+        "note": "Published10October2022;first author Jia-Xin Yin, with Xiaokun Teng a coauthor. Original abstract:2x2 charge order, antiferromagnetic stacking and charge-order-gap edge state. It does not establish a superconducting transition or Majorana state. Full methods open."
+      }
+    },
+    {
+      "id": "source-ed0ebd2f956f2b5f",
+      "doi": "10.1103/PhysRevLett.129.216402",
+      "title": "Charge Density Wave in Kagome Lattice Intermetallic ScV6Sn6",
+      "year": 2022,
+      "url": "https://doi.org/10.1103/PhysRevLett.129.216402",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-only",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.129.216402",
+        "note": "Published18November2022. Arachchige et al.;92K first-order transition, x-ray/neutron lattice modulation. Charge-order comparison material, not superconductivity evidence. Full diffraction/supplement audit open."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-d14-material-1",
+      "recordType": "experiment",
+      "formula": "CsV3Sb5",
+      "sample": "Ortiz2020 crystals; bulk evidence from magnetic/transport/calorimetric anomalies; current-sensitive resistive onset",
+      "tcK": 2.5,
+      "reportedTemperatureK": 2.5,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate superconducting onset; probe current affects resistive curve. Not a universal value.",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "criterion": "onset",
+      "probe": "Transport, magnetization and heat capacity",
+      "sourceId": "source-d49026ec4f5a10a4",
+      "aliases": [
+        "cesium vanadium antimonide"
+      ]
+    },
+    {
+      "id": "scwiki-d14-material-2",
+      "recordType": "experiment",
+      "formula": "CsCr3Sb5",
+      "sample": "Liu2024 cubic-anvil pressure experiment at4.2GPa",
+      "tcK": 6.4,
+      "reportedTemperatureK": 6.4,
+      "temperatureKind": "transition",
+      "temperatureNote": "Resistive onset; differs from50%normal-resistance critical-field criterion.",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 4.2,
+        "max": 4.2
+      },
+      "equilibrium": "unknown",
+      "criterion": "onset",
+      "probe": "High-pressure resistivity",
+      "sourceId": "source-d0ee5c328ca326ee",
+      "aliases": [
+        "cesium chromium antimonide"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d14-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Kagome geometry offers a useful starting point for studying flat bands, Dirac crossings, charge order and superconductivity. It does not guarantee that a flat band lies at the Fermi energy, that magnetic frustration produces a spin liquid, or that a material has a high transition temperature. This article separates superconducting AV3Sb5 compounds, pressure-induced superconductivity in CsCr3Sb5 and charge-ordered comparison materials. Normal-state topology and superconducting topology remain separate questions.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-1cd7f905ef6df6e1",
+        "source-96cec6968d3c379a",
+        "source-d49026ec4f5a10a4",
+        "source-d0ee5c328ca326ee",
+        "source-e9b1bdb7cb3c0ee4",
+        "source-ed0ebd2f956f2b5f"
+      ],
+      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
+      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d14-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Take one spinless orbital on each of three sites $0,\\mathbf a_1/2,\\mathbf a_2/2$, with triangular Bravais vectors and $q_i=\\mathbf k\\cdot\\mathbf a_i$. For positive nearest-neighbor hopping $t$, a Bloch Hamiltonian is $H=-2t\\begin{pmatrix}0&c_1&c_2\\\\c_1&0&c_3\\\\c_2&c_3&0\\end{pmatrix}$, where $c_1=\\cos(q_1/2)$, $c_2=\\cos(q_2/2)$ and $c_3=\\cos[(q_2-q_1)/2]$. Its bands are $E_f=2t$ and $E_\\pm=t[-1\\pm\\sqrt{4S-3}]$, with $S=c_1^2+c_2^2+c_3^2$. The vectors in Guo and Franz's convention are nearest-neighbor vectors, half the Bravais vectors used here.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-1cd7f905ef6df6e1"
+      ],
+      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
+      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d14-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The model has a flat-band contact at Gamma, a Dirac crossing at K and dispersive-band saddles at M. Independent diagonalization checks 1,311 momentum/hopping combinations; numerical Hessians have opposite-sign curvatures at the two M-point saddles. Adding equal same-sublattice hopping shifts all bands by $\\delta(\\mathbf q)=-2u[\\cos q_1+\\cos q_2+\\cos(q_2-q_1)]$. The formerly flat branch then spans $9|u|$ between Gamma and K while the kagome geometry remains. These checks illustrate model sensitivity; they do not calculate a pairing interaction, a material transition temperature or a superconducting invariant.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-1cd7f905ef6df6e1"
+      ],
+      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
+      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d14-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Real compounds add orbital character, spin–orbit coupling, interlayer hopping and reconstruction. Kang's ARPES/DFT work distinguishes van Hove features with predominantly pure or mixed sublattice content near the Fermi energy of CsV3Sb5. Such information constrains low-energy models; a large density of states alone does not select a pairing symmetry. The presently checked author abstract is not a reproduction of the full spectral assignment or pairing calculation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-dbcbd572b05dcaa4"
+      ],
+      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
+      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d14-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Ortiz's original family study identified K, Rb and Cs vanadium antimonides as layered kagome metals. The later CsV3Sb5 superconductivity paper combines magnetization, resistivity and heat capacity around a 2.5 K onset. Its transport onset is suppressed at an 8 mA probe current and returns toward the nominal value at lower current, illustrating why excitation belongs in the sample record. The heat-capacity temperature floor limits conclusions about the low-temperature gap. Subsequent K and Rb member reports should retain their own samples and criteria rather than being collapsed into a universal family transition range.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-96cec6968d3c379a",
+        "source-d49026ec4f5a10a4",
+        "source-1dbc07dbbbe19132",
+        "source-4027fb28ea284a9f"
+      ],
+      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
+      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d14-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "The same CsV3Sb5 work discusses a much higher-temperature anomaly and a normal-state topological band background. ARPES taken well above the superconducting transition and calculated surface states above the Fermi energy do not directly measure a superconducting gap invariant. Liang's three-dimensional CDW study and Li's conjoined-CDW study further emphasize stacking, temperature and surface dependence. Different modulation descriptions cannot be merged into one structure common to every sample or termination.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d49026ec4f5a10a4",
+        "source-7746049011a0e640",
+        "source-80eda571fc6d710c"
+      ],
+      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
+      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d14-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Yang reports anomalous Hall response in KV3Sb5; Yu connects anomalous Hall response in CsV3Sb5 to its higher-temperature charge-order regime. Neither result is a phase-sensitive measurement of superconducting chirality. Ordinary multiband transport, scattering and Berry-curvature contributions require separate analysis. Likewise, the checked Mielke muon study concerns time-reversal symmetry breaking associated with charge order. A signal emerging near that ordering scale cannot simply be reassigned to a superconducting $d+id$ state.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-646e363b41fcabb3",
+        "source-59d803435c0df1ef",
+        "source-484da7abcc165cd3"
+      ],
+      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
+      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d14-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Chen's spatially resolved tunneling work proposes a roton pair-density-wave interpretation in CsV3Sb5. Pair-related modulations are significant evidence to investigate, but charge-order changes in local density of states, tunneling matrix elements and Josephson coupling remain relevant controls. Pressure studies also show nonmonotonic superconducting and charge-order scales. Two domes do not by themselves establish two pairing mechanisms: structure, bands, scattering and calibration can evolve together.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-057c43c86174f961",
+        "source-4fb5d6fb51bdb253"
+      ],
+      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
+      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d14-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "For CsCr3Sb5, Liu's author manuscript and selected final-paper results report a maximum resistive onset of 6.4 K at 4.2 GPa, with zero resistance and AC susceptibility supporting bulk superconductivity over a pressure interval. Its critical-field curves instead use half the normal resistance. The fitted zero-temperature field is therefore not an independently observed field boundary. The final text explicitly leaves the field direction uncertain, preventing an anisotropy claim. The cubic-anvil measurement uses glycerol and room-temperature load calibration; the lower-pressure piston-cell setup uses a different medium and calibration. These are high-pressure records, not ambient-pressure entries or universal chromium-family numbers.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-d0ee5c328ca326ee"
+      ],
+      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
+      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d14-claim-experimental-criteria-6",
+      "sectionId": "experimental-criteria",
+      "statement": "Cheng's April 2026 paper adds a distinct charge-order result in CsCr3Sb5. The selected author text describes cleaved-surface STM with a 4.5 K base temperature and two higher-temperature modulation scales. Its stripe pattern breaks mirror symmetries while retaining a mirror-glide operation; opposite local textures do not define global handedness. Those surface images are not a high-pressure superconducting order-parameter measurement and cannot establish chiral superconductivity.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-c415e45e91e02c10"
+      ],
+      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
+      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d14-claim-experimental-criteria-7",
+      "sectionId": "experimental-criteria",
+      "statement": "FeGe and ScV6Sn6 serve as comparisons. Yin's FeGe study reports charge order, magnetic stacking and an edge state within a charge-order energy gap; Arachchige's ScV6Sn6 work reports a lattice-modulated charge-order transition. Neither cited result establishes superconductivity. Absence of such evidence in these papers should not be rewritten as a timeless claim that either material can never superconduct under any preparation or pressure.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-e9b1bdb7cb3c0ee4",
+        "source-ed0ebd2f956f2b5f"
+      ],
+      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
+      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d14-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Allowed pairing representations are candidates until tested against the actual superconducting state. Charge-order time-reversal breaking, a normal-state anomalous Hall signal, structural handedness, tunneling modulation and a zero-bias feature each address different questions. Phase-sensitive experiments, temperature-resolved symmetry probes, bulk gap constraints and boundary-state tests can provide complementary discrimination; they are not a universal checklist that defines every possible topological superconductor. Complete scientific acceptance remains open: several references retain abstract-only review, and final-version comparisons, supplements and raw-data analyses are unfinished.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-d49026ec4f5a10a4",
+        "source-80eda571fc6d710c",
+        "source-59d803435c0df1ef",
+        "source-484da7abcc165cd3",
+        "source-057c43c86174f961",
+        "source-c415e45e91e02c10"
+      ],
+      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
+      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d14-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Record composition, pressure path, excitation, surface termination and the onset, midpoint, measured-zero and thermodynamic criteria separately. Compare measured band positions with a specified model before invoking flat-band enhancement. Test whether changing charge order also changes disorder, structure or carrier balance. The useful next experiment resolves competing interpretations on a characterized sample, rather than promoting a geometric label or an isolated transition number into a mechanism.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-1cd7f905ef6df6e1",
+        "source-d49026ec4f5a10a4",
+        "source-dbcbd572b05dcaa4",
+        "source-4fb5d6fb51bdb253",
+        "source-d0ee5c328ca326ee"
+      ],
+      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
+      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+    }
+  ]
+}

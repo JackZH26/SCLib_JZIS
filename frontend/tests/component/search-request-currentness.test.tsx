@@ -1,7 +1,10 @@
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { beforeEach, describe, expect, it, vi } from "vitest";
 
-import SearchPage from "@/app/search/page";
+import HomeSearchResults from "@/components/HomeSearchResults";
+import { HomeSearchInput } from "@/components/HomeSearchInput";
+function SearchPage(){ return <><HomeSearchInput /><HomeSearchResults /></>; }
+vi.mock("@/components/WikiSearchResults", () => ({ WikiSearchResults: () => null }));
 import { ApiError, ask, search, type AskResponse, type SearchResponse } from "@/lib/api";
 import { generation, scientificLookup, scientificQuery, scientificResult } from "../fixtures/scientific-query";
 import { mixedResponse } from "../fixtures/scientific-mixed";
@@ -109,7 +112,8 @@ describe("query-bound asynchronous Search and Ask responses", () => {
     view.rerender(<SearchPage />);
     await act(async () => { oldSearch.reject(new ApiError(422, {}, "OLD_ERROR")); oldAsk.resolve(answer("OLD_ANSWER")); });
     expect(screen.queryByText(/Searching…|Preparing answer…|OLD_ERROR|OLD_ANSWER/)).not.toBeInTheDocument();
-    expect(screen.getByText("Enter a query above to start searching.")).toBeVisible();
+    expect(screen.getByLabelText("Query")).toHaveValue("");
+    expect(screen.queryByRole("region", { name: "Search results" })).toBeNull();
     expect(search).toHaveBeenCalledTimes(1);
     expect(ask).toHaveBeenCalledTimes(1);
   });

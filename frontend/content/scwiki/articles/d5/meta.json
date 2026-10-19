@@ -1,0 +1,615 @@
+{
+  "id": "scwiki-d5",
+  "topicId": "scwiki-topic-d5",
+  "code": "D5",
+  "slug": "nickelates",
+  "title": "Nickelate superconductors: structure before comparison",
+  "summary": "Keep infinite-layer films and bilayer Ruddlesden-Popper nickelates distinct, with pressure, reduction, oxygen and strain attached to every claim.",
+  "aliases": [
+    "Nd0.8Sr0.2NiO2",
+    "La3Ni2O7",
+    "infinite-layer nickelate",
+    "bilayer nickelate",
+    "Ruddlesden Popper",
+    "镍酸盐超导体",
+    "镍基超导",
+    "nickelate membranes",
+    "La2PrNi2O7"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory"
+  ],
+  "relatedCodes": [
+    "D3",
+    "D11",
+    "E4",
+    "G3",
+    "D15",
+    "B12"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T18:46:06.036512+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Li2019 andHsu2026 selectedfinaltransport/methods/figures; SunfinalFigure3; Xiangv2oxygenrecycling; Leev1membranecriteria/pressure; inheritedE4/G3 scopes; Niepublisherabstract; exact formalcharge andHallcounterexamples.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Nie finalmethods and rawdata notaccessed; onsetrange remains unassigned.",
+      "Lee membrane result is a preprint; no laterjournalversion verified.",
+      "Xiang authorv2 notfully comparedwithfinal; annealing-gasdose isnot measuredoxygen content.",
+      "Empirical mass and critical-field fits are not direct thermodynamic or high-field measurements."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D5_nickelates.md",
+    "sha256": "a2bc8ef8c14ecfec03acea7314410027b7bc91c3d3131af4dc3e933625f81a92",
+    "sourceId": "file-af5a03263ac8551f"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 9,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 10,
+      "endLine": 15,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 16,
+      "endLine": 28,
+      "targetSections": [
+        "material-cases"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 29,
+      "endLine": 44,
+      "targetSections": [
+        "material-cases"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 45,
+      "endLine": 65,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 66,
+      "endLine": 77,
+      "targetSections": [
+        "material-cases"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 78,
+      "endLine": 91,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 92,
+      "endLine": 104,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 105,
+      "endLine": 117,
+      "targetSections": [
+        "sources"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 118,
+      "endLine": 123,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-d5-correction-hsu-family",
+      "description": "Hsu2026 La2PrNi2O7 is bilayerRuddlesdenPopper,notinfinite-layer as the pinned draft labels it.",
+      "sourceId": "source-1b4b1103f747fe70",
+      "scope": "Finalselectedresults/methods."
+    },
+    {
+      "id": "scwiki-d5-correction-bhatt-strain",
+      "description": "Use finalmeasuredstrain−1.6%,notdraft−1.8%; retain nominal/measured distinction andgrowthcovariates.",
+      "sourceId": "source-4b5b65a5047eb1a9",
+      "scope": "Inherited E4 selectedfinalFigures1/3."
+    },
+    {
+      "id": "scwiki-d5-correction-operational-temperatures",
+      "description": "Li14.9Kmaximumcurvature/13.6Kmidpoint/9.1Knoise-floorzero distinct;Lee74.2K99.5%criterion at91.5GPa ispreprintonset,notzero.",
+      "sourceId": "source-35fd62b7cb3c490c",
+      "scope": "Selectedfinal andversionedpreprintfigures."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "v_{\\mathrm{Ni}}=1+x+2\\delta",
+      "check": "66exact charge-neutrality cases,3twocarrierHallcounterexamples;formalbookkeeping andmodelnonuniqueness,notmaterialfit."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-35fd62b7cb3c490c",
+      "doi": "10.1038/s41586-019-1496-5",
+      "title": "Superconductivity in an infinite-layer nickelate",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41586-019-1496-5",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-transport-magnetic-and-methods-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://web.stanford.edu/group/cui_group/papers/Danfeng_Cui_Hwang_NATURE_2019.pdf",
+        "note": "Final published pp624–626, online Methods PDFp5; p626 Figures3–4 visually checked. Specific sample onset14.9K maximum-curvature,midpoint13.6K,noise-floorzero9.1K; six-point contacts,two-coil response,9–11nm precursor. No extracted penetration depth or complete raw/replication audit."
+      }
+    },
+    {
+      "id": "source-df0c15d62982f853",
+      "doi": "10.1038/s41586-023-06408-7",
+      "title": "Signatures of superconductivity near 80 K in a nickelate under high pressure",
+      "year": 2023,
+      "url": "https://doi.org/10.1038/s41586-023-06408-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-primary-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://iopex6.iphy.ac.cn/PDFlist/2023/Nature621%282023%29493-EX6.pdf",
+        "note": "Selected published p496 Fig3/caption and text, plus Methods PDFp7. Resistance onset, residual resistance, separate magnetic measurement, KBr and room-temperature ruby calibration retained. Raw-data/replication review remains open. On2026-10-19 finalp496Figure3 visually rechecked: run1 10microA versus run2 300microA, magnetic393Hz/50mA; upper-critical-field186T is a fit, not applied field."
+      }
+    },
+    {
+      "id": "source-4b5b65a5047eb1a9",
+      "doi": "10.1038/s41586-026-10446-2",
+      "title": "Structural modifications in strain-engineered bilayer nickelate thin films",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10446-2",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-journal-figures-and-methods",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.nature.com/articles/s41586-026-10446-2.pdf",
+        "note": "Online1April2026,issue7May. Selected final pp2,4,8 and Figs1/3 visually checked. Final measured labels differ from inherited draft. Growth-method/oxygen covariates and c-axis contrast retained. Complete supplement and raw-data analysis remain open."
+      }
+    },
+    {
+      "id": "source-2337a5bf19bca4c4",
+      "doi": "10.1038/s41586-026-10352-7",
+      "title": "Superconductivity and electronic structures of nickelate thin film superstructures",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10352-7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-and-date-only",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.nature.com/articles/s41586-026-10352-7",
+        "note": "Published8April2026,issue16April. Publisher PDF request returned subscription HTML, preserved as HTML; abstract accessible. 1212/2323 onset46–50K,1313 nondetection without extracted lower bound; no final methods, exact onset convention or raw-data review."
+      }
+    },
+    {
+      "id": "source-3f4ceab12660ad62",
+      "doi": "10.1103/h9ls-y4s7",
+      "title": "Stabilizing and tuning superconductivity in La3Ni2O7−δ films: Oxygen recycling protocol reveals hole-doping analogue",
+      "year": 2026,
+      "url": "https://doi.org/10.1103/h9ls-y4s7",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-oxygen-recycling-and-figures",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/2508.11581v2",
+        "note": "Authorv2 revised16January2026, journal26March2026. Selectedpp1–5 andp6methodcontinuation,Figures2–3 onpp3–4 visually checked. Oxygen concentration not precisely measured; cumulative mixed-gas volume is not delta. S1049-4 Figure2a zero5.5K; threshold-based Hc2 fits not applied field. Complete final/supplement/raw comparison open."
+      }
+    },
+    {
+      "id": "source-1b4b1103f747fe70",
+      "doi": "10.1038/s41467-026-70250-4",
+      "title": "Fermi-liquid transport beyond the upper critical field in superconducting La2PrNi2O7 thin films",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41467-026-70250-4",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-transport-and-methods",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.nature.com/articles/s41467-026-70250-4.pdf",
+        "note": "Published10March2026, version-of-record24April2026 per publisher. Finalselectedpp2–6; p2Figure1 visually checked. BilayerRP La2PrNi2O7,not infinite-layer. Tc41K at0.9 fittednormalresistivity; field-induced and extrapolated zero-field normalstate distinguished. Methods5nmfilms,SLAO,STOcap,coldstorage,10microA. Empirical mass estimate notdirect calorimetry; supplement/raw review open."
+      }
+    },
+    {
+      "id": "source-3504ee9027165d0a",
+      "doi": "10.1038/s41586-026-10547-y",
+      "title": "Field re-entrant superconductivity in Eu-doped infinite-layer nickelates",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10547-y",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2508.14666v3",
+        "note": "Published23April2026; read authorv3 dated25April2026, selectedpp2–8, captionsp12, methodsp13–14; Fig2p19/Fig3p20 visually checked. Full final equivalence, calibration and all raw data remain open."
+      }
+    },
+    {
+      "id": "source-0886448b2b71c919",
+      "doi": "10.48550/arXiv.2604.09525",
+      "title": "High-temperature superconductivity in Nd0.85Sr0.15NiO2 membranes under pressure",
+      "year": 2026,
+      "url": "https://doi.org/10.48550/arXiv.2604.09525",
+      "publicationStatus": "preprint",
+      "verification": {
+        "scope": "selected-preprint-results-pressure-and-onset-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/2604.09525v1",
+        "note": "v1 submitted10April2026; no journal reference on arXiv at check. Selectedpp3–9,p15criterion,p17pressure; p4Figure1,p5Figure2,p15ExtendedData1 visually checked. 74.2K at91.5GPa uses99.5%extrapolatednormalstate,intersection69.1K notzero. RoomTpressurecalibration,nonhydrostaticcaveat,limited13Tfieldrange and six-samplefit. No raw reanalysis or final peer-reviewed version."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "Nd0.8Sr0.2NiO2",
+      "sample": "topotactically reduced epitaxial infinite-layer film",
+      "recordType": "experiment",
+      "tcK": 14.9,
+      "temperatureNote": "Li2019 representative sample14.9K maximum-curvature onset;13.6Kmidpoint and9.1Knoise-floorzero are separate criteria.",
+      "criterion": "resistive-onset-maximum-curvature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Six-point resistance; capped reduced epitaxialfilm",
+      "id": "scwiki-d5-material-1",
+      "sourceId": "source-35fd62b7cb3c490c",
+      "reportedTemperatureK": 14.9,
+      "temperatureKind": "transition",
+      "aliases": [
+        "nickelate",
+        "nickelates"
+      ]
+    },
+    {
+      "formula": "La3Ni2O7",
+      "sample": "Sun2023 run1 bilayer single crystal; no pressure-transmitting medium",
+      "recordType": "experiment",
+      "tcK": 80,
+      "temperatureNote": "Resistance onset at 18.5 GPa; nonzero residual resistance. Separate magnetic response must not be merged into this specimen/pressure record.",
+      "criterion": "resistance-onset",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 18.5,
+        "max": 18.5
+      },
+      "equilibrium": "equilibrium",
+      "probe": "Four-probe resistance; 10 μA; room-temperature ruby pressure calibration",
+      "id": "scwiki-d5-material-2",
+      "sourceId": "source-df0c15d62982f853",
+      "reportedTemperatureK": 80,
+      "temperatureKind": "transition",
+      "aliases": [
+        "nickelate",
+        "nickelates"
+      ]
+    },
+    {
+      "formula": "Nd0.8Sr0.2NiO2",
+      "sample": "topotactically reduced epitaxial infinite-layer film",
+      "recordType": "experiment",
+      "tcK": 13.6,
+      "temperatureNote": "Li2019 representative sample 13.6K resistive-midpoint;zero means noise floor.",
+      "criterion": "resistive-midpoint",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Six-point resistance; capped reduced epitaxialfilm",
+      "id": "scwiki-d5-material-3",
+      "sourceId": "source-35fd62b7cb3c490c",
+      "reportedTemperatureK": 13.6,
+      "temperatureKind": "transition",
+      "aliases": [
+        "nickelate",
+        "nickelates"
+      ]
+    },
+    {
+      "formula": "Nd0.8Sr0.2NiO2",
+      "sample": "topotactically reduced epitaxial infinite-layer film",
+      "recordType": "experiment",
+      "tcK": 9.1,
+      "temperatureNote": "Li2019 representative sample 9.1K zero-resistance;zero means noise floor.",
+      "criterion": "zero-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Six-point resistance; capped reduced epitaxialfilm",
+      "id": "scwiki-d5-material-4",
+      "sourceId": "source-35fd62b7cb3c490c",
+      "reportedTemperatureK": 9.1,
+      "temperatureKind": "transition",
+      "aliases": [
+        "nickelate",
+        "nickelates"
+      ]
+    },
+    {
+      "id": "scwiki-d5-material-5",
+      "formula": "La2PrNi2O7",
+      "sample": "Hsu2026 bilayerRP film onSLAO,about5nm,STOcap",
+      "recordType": "experiment",
+      "reportedTemperatureK": 41,
+      "tcK": 41,
+      "temperatureKind": "transition",
+      "temperatureNote": "90% of fittednormalstate,notzero;bilayerRP notinfinite-layer.",
+      "criterion": "resistive-90-percent-normal-fit",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Resistance; source-specific criterion and methods",
+      "sourceId": "source-1b4b1103f747fe70",
+      "aliases": [
+        "nickelate",
+        "nickelates",
+        "LPNO",
+        "bilayer nickelate"
+      ]
+    },
+    {
+      "id": "scwiki-d5-material-6",
+      "formula": "La3Ni2O7−δ",
+      "sample": "Xiangauthorv2 Figure2a S1049-4 onSLAO",
+      "recordType": "experiment",
+      "reportedTemperatureK": 5.5,
+      "tcK": 5.5,
+      "temperatureKind": "transition",
+      "temperatureNote": "Selectedauthorfigure zero5.5K;oxygen delta notprecisely measured.",
+      "criterion": "zero-resistance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Resistance; source-specific criterion and methods",
+      "sourceId": "source-3f4ceab12660ad62",
+      "aliases": [
+        "nickelate",
+        "nickelates",
+        "oxygen recycling",
+        "S1049-4"
+      ]
+    },
+    {
+      "id": "scwiki-d5-material-7",
+      "formula": "Nd0.85Sr0.15NiO2",
+      "sample": "Lee2026v1 freestanding membrane, Figure1f/ExtendedData1",
+      "recordType": "experiment",
+      "reportedTemperatureK": 74.2,
+      "tcK": 74.2,
+      "temperatureKind": "transition",
+      "temperatureNote": "Preprint;99.5%normalstateonset,notzero;roomTpressure andnonhydrostatic caveats.",
+      "criterion": "resistive-99.5-percent-normal-fit",
+      "pressureRegime": "high",
+      "pressureGPa": {
+        "min": 91.5,
+        "max": 91.5
+      },
+      "equilibrium": "unknown",
+      "probe": "Resistance; source-specific criterion and methods",
+      "sourceId": "source-0886448b2b71c919",
+      "aliases": [
+        "nickelate",
+        "nickelates",
+        "nickelate membrane",
+        "Lee membrane"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d5-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Nickelate superconductors include infinite-layer reduced films, bilayer Ruddlesden–Popper crystals and engineered layer sequences. The number of NiO2 layers, oxygen coordination and sample preparation distinguish these systems. An ambient-pressure epitaxial film and a compressed bulk crystal should retain separate records even when both contain lanthanum and nickel. Structural resemblance to cuprates motivates comparisons without establishing a shared pairing mechanism.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-35fd62b7cb3c490c",
+        "source-df0c15d62982f853"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The 2026 La2PrNi2O7 high-field transport study concerns a bilayer Ruddlesden–Popper film. The inherited draft incorrectly placed it in the infinite-layer family. Its field-induced normal state is also distinct from the Eu-substituted infinite-layer material exhibiting re-entrant resistance suppression. Family, composition and probe must accompany these interpretations.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-1b4b1103f747fe70",
+        "source-3504ee9027165d0a"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Formal charge neutrality gives nickel valence $v_{\\mathrm{Ni}}=1+x+2\\delta$ for an idealized $R_{1-x}\\mathrm{Sr}_x\\mathrm{NiO}_{2+\\delta}$ with trivalent $R$, divalent Sr and divalent oxygen. For $R_3\\mathrm{Ni}_2\\mathrm{O}_{7-\\delta}$, it gives $v_{\\mathrm{Ni}}=2.5-\\delta$. Sixty-six exact bookkeeping checks preserve neutrality. These averages do not measure orbital occupancy, vacancy location, ligand holes or mobile carriers. In particular, an annealing-gas dose does not specify oxygen stoichiometry.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-35fd62b7cb3c490c",
+        "source-3f4ceab12660ad62"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Even the elementary two-carrier low-field Drude expression $R_H=(p\\mu_h^2-n\\mu_e^2)/[e(p\\mu_h+n\\mu_e)^2]$, with $e>0$, prevents a unique carrier count from Hall sign alone. Three explicit counterexamples give negative Hall coefficients with different electron–hole population orderings. This model illustrates nonuniqueness; it is not a fit to nickelate data. Both Li and Hsu discuss multiband limitations, so a negative Hall coefficient must not be silently converted to a single-band electron density.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-35fd62b7cb3c490c",
+        "source-1b4b1103f747fe70"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "For the representative Nd0.8Sr0.2NiO2 film in Li's 2019 discovery, the published text identifies a 14.9 K onset by maximum curvature, a 13.6 K midpoint and 9.1 K resistance indistinguishable from the noise floor. The final methods describe six-point electrical measurements, 9–11 nm precursor films and topotactic reduction. Two-coil mutual inductance supports a diamagnetic response, but the authors explicitly decline to extract a penetration depth because of finite-size, disorder and other uncertainties. These three temperatures describe different criteria on the selected sample.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-35fd62b7cb3c490c"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Sun's 2023 bilayer-crystal report gives an 80 K resistance onset at 18.5 GPa in run 1 without pressure medium. Run 2 uses KBr and reaches a 78 K onset at 18.9 GPa. Figure 3 distinguishes the 10 μA run-1 excitation from 300 μA in run 2. Its magnetic response near 77 K is measured separately at 25.2 GPa. Residual resistance and specimen differences prevent combining these observations into one zero-resistance or bulk-fraction record.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-df0c15d62982f853"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-oxygen-strain-and-transport-1",
+      "sectionId": "oxygen-strain-and-transport",
+      "statement": "Bhatt's final strain study distinguishes nominal substrate mismatch from measured strain: the strongly compressed film is labelled approximately −1.6% measured strain, rather than the inherited draft's −1.8%. Growth method, oxygen treatment and substrate vary across comparisons. In-plane compression accompanied by out-of-plane expansion is not equivalent to hydrostatic compression. The [strain](/scwiki/strain) article retains the source-specific structural comparison and its confounding variables.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-4b5b65a5047eb1a9"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-oxygen-strain-and-transport-2",
+      "sectionId": "oxygen-strain-and-transport",
+      "statement": "Xiang's revised author manuscript demonstrates an oxygen-removal and ozone-annealing sequence that can recover degraded bilayer films. Repeating ozone treatment alone can instead damage the superconducting response. Its proposed phase diagram uses cumulative annealing-gas volume; oxygen concentration is not precisely measured, and unknown phases complicate interpretation. Figure 2 identifies a zero-resistance point near 5.5 K for sample S1049-4, far below its onset region. The recovery experiment constrains preparation sensitivity without establishing a calibrated carrier-density axis or a universal recycling recipe.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-3f4ceab12660ad62"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-oxygen-strain-and-transport-3",
+      "sectionId": "oxygen-strain-and-transport",
+      "statement": "Hsu's final La2PrNi2O7 study defines 41 K using 90% of a fitted normal-state resistivity. Pulsed-field measurements access a low-temperature normal state with approximately quadratic resistivity; an extrapolated zero-field normal-state curve is not directly observed below the transition. The film is about 5 nm thick, grown on SrLaAlO4 with a SrTiO3 cap and kept cold between measurements. The reported effective mass uses an empirical Kadowaki–Woods relation, not direct calorimetry. These results describe a strained bilayer specimen, not every nickelate.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-1b4b1103f747fe70"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-recent-structures-and-membranes-1",
+      "sectionId": "recent-structures-and-membranes",
+      "statement": "Nie's publisher abstract, published in April 2026, reports ambient-pressure onset temperatures spanning 46–50 K in engineered 1212 and 2323 layer sequences, alongside a nonsuperconducting 1313 comparison. The exact operational criterion and lower nondetection bound have not been extracted here, so this range is not assigned to a precise searchable Tc record. Associated orbital and Fermi-surface observations constrain structure–electronic-state relationships; they do not independently prove a unique pairing interaction.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-2337a5bf19bca4c4"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-recent-structures-and-membranes-2",
+      "sectionId": "recent-structures-and-membranes",
+      "statement": "Lee's April 2026 membrane preprint reports 74.2 K at 91.5 GPa using 99.5% of an extrapolated normal-state resistance. Extended Data Figure 1 gives 69.1 K with an intersection construction and 75.4 K with a second-derivative construction for the illustrated transition. These differences are criterion dependence, not separate superconducting phases. Zero resistance is defined by the noise floor and occurs lower. The preprint remains explicitly labelled and is not an ambient-pressure result.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-0886448b2b71c919"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-recent-structures-and-membranes-3",
+      "sectionId": "recent-structures-and-membranes",
+      "statement": "The same preprint measures six membranes and fits an onset increase near 0.65 K/GPa over its sampled range. It uses room-temperature ruby calibration below 50 GPa and diamond Raman calibration above that, with the latter measured adjacent to the specimen. Silicone-oil solidification and nonhydrostatic stress complicate broadening. Its 13 T field measurements and fitted coherence lengths should not be mistaken for direct measurements of a much larger zero-temperature critical field. Extrapolating the pressure trend beyond the measured range is not a demonstrated materials prediction.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-0886448b2b71c919"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Eu-substituted infinite-layer films show field-dependent resistance recovery in a specific sample and temperature window. Magnetic compensation and triplet pairing remain interpretations rather than conclusions forced by re-entrance alone. The [re-entrant superconductivity](/scwiki/field-induced-superconductivity) and [magnetic substitution](/scwiki/magnetic-substitution-and-superconductivity) articles preserve field orientation, measurement temperature and alternative mechanisms. None of these observations establishes a universal nickelate gap symmetry.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-3504ee9027165d0a"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. Selected primary passages, figures and model checks have been reviewed, while full supplements, final-author version comparisons, independent reproduction and raw-data analysis remain incomplete. Onset, midpoint, noise-floor zero, spectroscopic gaps and normal-state measurement temperatures retain distinct meanings. Pressure and strain comparisons require matching phase and preparation rather than ordering headline temperatures.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-35fd62b7cb3c490c",
+        "source-df0c15d62982f853",
+        "source-4b5b65a5047eb1a9",
+        "source-0886448b2b71c919"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    },
+    {
+      "id": "scwiki-d5-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "A useful comparison records layer sequence, oxygen history, nominal and measured composition, substrate, thickness, pressure calibration, probe and temperature criterion. Controlled oxygen cycles and structural contrasts are informative only with their phase and interface changes documented. A promising design hypothesis should specify which variable changes, which confounders remain and what observation would distinguish competing mechanisms.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-4b5b65a5047eb1a9",
+        "source-2337a5bf19bca4c4",
+        "source-3f4ceab12660ad62"
+      ],
+      "conditions": "Structural family, sample, oxygen/strain history, operational temperature criterion and publication version remain explicit.",
+      "verificationScope": "Named selected final/author passages and figures, original abstract or exact charge/Drude model counterexamples; no complete scientific acceptance."
+    }
+  ]
+}

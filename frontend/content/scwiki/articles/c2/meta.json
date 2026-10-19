@@ -1,0 +1,526 @@
+{
+  "id": "scwiki-c2",
+  "topicId": "scwiki-topic-c2",
+  "code": "C2",
+  "slug": "s-plus-minus",
+  "title": "s± pairing: a sign change between Fermi surfaces",
+  "summary": "An A1g state can change sign between bands. Compare theoretical proposals, indirect phase-sensitive evidence and material-specific nodal constraints.",
+  "aliases": [
+    "s±",
+    "s plus minus",
+    "sign-changing s wave",
+    "A1g",
+    "KFe2As2",
+    "BaFe2As2",
+    "s± pairing",
+    "符号反转配对",
+    "正负s波"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "B12",
+    "D4",
+    "D5",
+    "C10",
+    "A10"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T18:22:47.535826+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Christianson selected final neutron methods/Figures 2–4; Maier author v1 selected response equations; Hanaguri original abstract plus separately identified critique/reply preprints and figures; inherited Reid/C2 erratum scopes; 450 coherence and 2,520 symmetry checks.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Original Hanaguri full methods, raw QPI maps, complete neutron synthesis supplement and all spectral fits remain unreviewed.",
+      "Wu2024 is a publisher-abstract check only; no final symmetry verdict for KFe2As2 is claimed.",
+      "Toy coherence and angular-gap checks do not reproduce RPA, multiorbital QPI, disorder or a material gap fit."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "C_pairing_symmetry/C2_s_plus_minus.md",
+    "sha256": "34a7c0f17bfeecb4dd5ad370790526b40418d5691f5d5a3d9d1a27f327940d96",
+    "sourceId": "file-a5f1cff63042e1ce"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 9,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 10,
+      "endLine": 15,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 16,
+      "endLine": 30,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 31,
+      "endLine": 46,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes",
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 47,
+      "endLine": 56,
+      "targetSections": [
+        "limits-and-disputes",
+        "corrected-nodal-example"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 57,
+      "endLine": 69,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 70,
+      "endLine": 79,
+      "targetSections": [
+        "sources",
+        "corrected-nodal-example",
+        "experimental-criteria"
+      ],
+      "decision": "condensed-and-structured",
+      "note": "Edited English adaptation, with source-specific conditions retained. This map identifies editorial scope, not an independent verification of every original claim."
+    },
+    {
+      "startLine": 80,
+      "endLine": 84,
+      "targetSections": [],
+      "decision": "not-published-as-scientific-evidence",
+      "note": "Historical audit scores and repeated summaries are not scientific verification. Selected cautions are rewritten in the limits section."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-c2-correction-1",
+      "description": "DOI 10.1103/PhysRevLett.109.087001 concerns KFe2As2, not BaFe2(As1-xPx)2. Reid et al.'s abstract favors d-wave and cannot be used here as evidence for accidental nodes in P-substituted Ba122. The correction register also covers the locally available C10 article.",
+      "sourceId": "source-8a117f38b78526ff",
+      "scope": "DOI identity and selected accepted manuscript from C10; complete final methods and figures not audited.",
+      "originalSourceLines": [
+        49,
+        76
+      ],
+      "targetSectionId": "corrected-nodal-example"
+    },
+    {
+      "id": "scwiki-c2-correction-2",
+      "description": "Christianson et al., DOI 10.1038/nature07625, concerns K-doped Ba0.6K0.4Fe2As2. The source chapter's Co-doped attribution is not retained.",
+      "sourceId": "source-716c338ddfa726d3",
+      "scope": "Selected final neutron methods/results and Figures 2–4; no unique phase assignment.",
+      "originalSourceLines": [
+        41,
+        74
+      ],
+      "targetSectionId": "experimental-criteria"
+    },
+    {
+      "id": "scwiki-c2-correction-3",
+      "description": "Added the published Kuroki 2009 gap-plot erratum to the cited 2008 proposal.",
+      "sourceId": "source-6570d4401413e026",
+      "scope": "Primary erratum text, with parameter scope retained."
+    },
+    {
+      "id": "scwiki-c2-correction-4",
+      "description": "Separate vanishing superconductivity-related neutron excess from finite integrated background; do not use7 K or50 K measurement temperatures asTc. Include QPI critique/reply and laterKFe2As2 nodal s± interpretation with distinct review limits.",
+      "sourceId": "source-716c338ddfa726d3",
+      "scope": "Preserve model dependence, source versions and competing interpretations."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "C=\\tfrac12[1-(\\xi_k\\xi_{k+q}+\\Delta_k\\Delta_{k+q})/(E_kE_{k+q})]",
+      "check": "450 real-singlet spin-coherence cases and sign-blind quasiparticle controls; 2,520 A1g rotation/reflection checks and 7 accidental-node controls. No full susceptibility or material fit."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-7c2b55d128348e6c",
+      "doi": "10.1103/PhysRevLett.101.057003",
+      "title": "Unconventional Superconductivity with a Sign Reversal in the Order Parameter of LaFeAsO1−xFx",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevLett.101.057003",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-passages-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.057003",
+        "note": "Mazin et al. abstract and published note 8 checked. The note qualifies the initial identification of the magnetic instability; full electronic-structure calculation not reproduced."
+      }
+    },
+    {
+      "id": "source-f80a18149666bd31",
+      "doi": "10.1103/PhysRevLett.101.087004",
+      "title": "Unconventional Pairing Originating from the Disconnected Fermi Surfaces of Superconducting LaFeAsO1−xFx",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevLett.101.087004",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-abstract-with-erratum-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.101.087004",
+        "note": "Kuroki et al. five-orbital RPA abstract checked alongside 2009 erratum 10.1103/PhysRevLett.102.109902. The original gap plot must not be used without its correction; full model not reproduced."
+      }
+    },
+    {
+      "id": "source-716c338ddfa726d3",
+      "doi": "10.1038/nature07625",
+      "title": "Unconventional superconductivity in Ba0.6K0.4Fe2As2 from inelastic neutron scattering",
+      "year": 2008,
+      "url": "https://doi.org/10.1038/nature07625",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-neutron-methods-and-figures-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://epubs.stfc.ac.uk/manifestation/3900/nature07625.pdf",
+        "note": "Final printed pp. 930–931 selected methods/results; p. 931 Figures 2–4 visually checked. Polycrystalline K-doped sample, MERLIN energies, vanadium normalization, 7 K/50 K and integration windows distinguished. Resonance excess fades near the transition; finite background remains. Full synthesis supplement, raw detector counts and a unique phase assignment are not independently verified."
+      }
+    },
+    {
+      "id": "source-3ee65ce8fc5080da",
+      "doi": "10.1126/science.1187399",
+      "title": "Unconventional s-Wave Superconductivity in Fe(Se,Te)",
+      "year": 2010,
+      "url": "https://doi.org/10.1126/science.1187399",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "original-abstract-and-date-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://pubmed.ncbi.nlm.nih.gov/20413495/",
+        "note": "Original abstract reproduced by PubMed; published 23 April 2010, Science 328, 474–476. Fe(Se,Te) STM and field-dependent inference, not pure FeSe. Full original methods/supplement not obtained; critique and reply are separately identified."
+      }
+    },
+    {
+      "id": "source-8a117f38b78526ff",
+      "doi": "10.1103/PhysRevLett.109.087001",
+      "title": "Universal Heat Conduction in the Iron Arsenide Superconductor KFe2As2: Evidence of a d-Wave State",
+      "year": 2012,
+      "url": "https://doi.org/10.1103/PhysRevLett.109.087001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-accepted-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/accepted/10.1103/PhysRevLett.109.087001",
+        "note": "Published 21 August 2012. Selected accepted manuscript pp.2–5 including cover in pagination: contacts, separate directional samples, low-T/H extrapolation and normalized cross-sample comparison read via web text. Local PDF download403; figures not visually checked. Material is KFe2As2, not P-Ba122."
+      }
+    },
+    {
+      "id": "source-6570d4401413e026",
+      "doi": "10.1103/PhysRevLett.102.109902",
+      "title": "Erratum: Unconventional Pairing Originating from the Disconnected Fermi Surfaces of Superconducting LaFeAsO1−xFx [Phys. Rev. Lett. 101, 087004 (2008)]",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevLett.102.109902",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-erratum-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.102.109902",
+        "note": "Complete one-page text read via web: orbital-to-band transformation correction, fully open diagonal gap for displayed parameters, parameter-dependent nodal competition retained. Direct download returned 403; figure was not visually audited or numerically reproduced."
+      }
+    },
+    {
+      "id": "source-5717dacf7df85626",
+      "doi": "10.1103/PhysRevB.78.020514",
+      "title": "Theory of neutron scattering as a probe of the superconducting gap in the iron pnictides",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevB.78.020514",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-two-orbital-response-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/0805.0316v1",
+        "note": "Journal published 31 July 2008. Author v1 submitted 3 May 2008; PDF typeset 2018 is not publication. Selected pp. 1–3, p. 2 equations visually checked. Orbital matrix elements, approximate velocities, singlet/triplet response distinguished. No full final-version or RPA numerical reproduction."
+      }
+    },
+    {
+      "id": "source-7b146cbf6ec35c32",
+      "doi": null,
+      "title": "Comment on \"Unconventional s-wave superconductivity in Fe(Se,Te)\"",
+      "year": 2010,
+      "url": "https://arxiv.org/abs/1007.0047v1",
+      "publicationStatus": "preprint",
+      "verification": {
+        "scope": "selected-preprint-critique-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/abs/1007.0047v1",
+        "note": "Mazin and Singh preprint submitted 30 June 2010. Selected pp. 1–3 and p. 2 Figure 1 visually checked. Bragg/surface reconstruction alternative and six qz model spectra; speculative surface SDW not an observed fact. Introductory January 8/page 181 attribution is inconsistent with its correct Science 328, 474 reference; do not propagate it. No raw QPI or model reproduction."
+      }
+    },
+    {
+      "id": "source-b6cd1a68d7c03084",
+      "doi": null,
+      "title": "Reply to Comment on \"Unconventional s-wave superconductivity in Fe(Se,Te)\"",
+      "year": 2010,
+      "url": "https://arxiv.org/abs/1007.0307v1",
+      "publicationStatus": "preprint",
+      "verification": {
+        "scope": "selected-preprint-reply-and-figure-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/abs/1007.0307v1",
+        "note": "Hanaguri et al. preprint submitted 2 July 2010. Selected pp. 1–2 and p. 3 Figure 1 visually checked: 0/10 T linecuts, broad gap-scale features and sharp topographic/field-enhanced components. Does not replace complete original Science methods, supplementary controls or raw-data analysis."
+      }
+    },
+    {
+      "id": "source-b934eb95c4cbf8c6",
+      "doi": "10.1038/s41567-023-02348-1",
+      "title": "Nodal s± pairing symmetry in an iron-based superconductor with only hole pockets",
+      "year": 2024,
+      "url": "https://doi.org/10.1038/s41567-023-02348-1",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-and-date-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.nature.com/articles/s41567-023-02348-1",
+        "note": "Wu et al., published 23 January 2024. Original abstract: laser ARPES node mapping in KFe2As2 interpreted as nodal s±. Full methods, angular resolution, source-data analysis and model comparison not checked; not a direct phase measurement or a family-wide verdict."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "formula": "KFe2As2",
+      "sample": "iron-arsenide single crystals in Reid et al.",
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureNote": "no comparative Tc assigned",
+      "criterion": "residual-thermal-conductivity",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "thermal conductivity; nodal inference",
+      "id": "scwiki-c2-material-1",
+      "sourceId": "source-8a117f38b78526ff",
+      "reportedTemperatureK": null,
+      "temperatureKind": "unassigned",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
+    },
+    {
+      "formula": "Ba0.6K0.4Fe2As2",
+      "sample": "Christianson2008 K-doped polycrystalline 122 sample, Figure2 low-temperature spectrum",
+      "recordType": "experiment",
+      "tcK": null,
+      "temperatureNote": "7 K neutron spectrum compared with50 K; reported38 K susceptibility transition has no extracted operational threshold here.",
+      "criterion": "spin-resonance",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "MERLIN inelastic neutron scattering, vanadium intensity normalization",
+      "id": "scwiki-c2-material-2",
+      "sourceId": "source-716c338ddfa726d3",
+      "reportedTemperatureK": 7,
+      "temperatureKind": "measurement",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-c2-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "The label s± describes relative sign reversal between superconducting gaps on relevant Fermi-surface sheets. In common tetragonal iron-based models it belongs to the fully symmetric $A_{1g}$ representation, even when different pockets carry opposite signs. A nodeless excitation gap therefore does not establish sign-preserving pairing. Identify the actual bands and crystal symmetry: the original hole–electron-pocket picture is a model for particular systems, not an inventory that every iron-based compound must share.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-7c2b55d128348e6c",
+        "source-f80a18149666bd31",
+        "source-b934eb95c4cbf8c6"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c2-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "A two-pocket illustration takes $\\Delta_h=+\\Delta_1$ and $\\Delta_e=-\\Delta_2$, with positive magnitudes. Repulsive interband pair transfer can favor this relative phase in a linearized pairing equation. Its eigenfunction depends on the interaction matrix, orbital weights and Fermi surface; the sign pattern alone does not uniquely identify the microscopic mediator. The [multiband pairing](/scwiki/multiband-pairing) article gives an independently checked common-cutoff model and its limits.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7c2b55d128348e6c",
+        "source-f80a18149666bd31"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c2-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For real singlet gaps, a simplified spin pair-creation coherence factor is $C=\\tfrac12[1-(\\xi_k\\xi_{k+q}+\\Delta_k\\Delta_{k+q})/(E_kE_{k+q})]$, with $E_k=\\sqrt{\\xi_k^2+\\Delta_k^2}$. At two Fermi-surface points it is zero for equal signs and one for opposite signs. An independent 450-case check verifies the bounds and these limits, while reversing a gap sign leaves the quasiparticle energy unchanged. This is one factor in a response function, not a complete neutron intensity or a guarantee of a resonance.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-5717dacf7df85626"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c2-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An illustrative circular-sheet gap $\\Delta(\\theta)=\\Delta_0[1+r\\cos(4\\theta)]$ retains fourfold rotations and reflections. It is fully open for $|r|<1$, touches zero at four angles for $|r|=1$, and has eight simple zeros for $|r|>1$. The zeros in this example are accidental and can disappear without changing representation. The check covers 2,520 symmetry cases and seven anisotropy controls; it is not a fitted KFe2As2 gap or a proof that all observed nodes are accidental.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f80a18149666bd31",
+        "source-6570d4401413e026"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c2-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Kuroki and colleagues published an erratum correcting an orbital-to-band transformation error in the original gap plot. The corrected diagonal band gap is fully open for the displayed parameter set, while strong anisotropy and parameter-dependent nodal or d-wave competition remain. The correction does not make every $A_{1g}$ solution nodeless. Its one-page text has been checked, but its original figure and the full five-orbital calculation have not been independently reproduced here.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f80a18149666bd31",
+        "source-6570d4401413e026"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c2-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Christianson and colleagues studied polycrystalline K-doped Ba0.6K0.4Fe2As2, correcting the pinned draft's Co-doped attribution. Their MERLIN neutron measurements used several incident energies and a vanadium intensity standard. The 7 K and 50 K comparison shows a superconductivity-related feature near 14 meV and a momentum-transfer magnitude near 1.15 inverse angstroms. These are measurement temperatures and excitation scales, not separate superconducting transitions. The paper reports a 38 K susceptibility transition, whose exact operational threshold is not assigned here.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-716c338ddfa726d3"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c2-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Figure 4 integrates momenta from 1.0 to 1.3 inverse angstroms and energies from 12.5 to 17.5 meV. The resonance contribution fades near the transition while the plotted background remains finite; the entire intensity does not fall to zero. The authors allow a possible small phonon contribution. Their phase-sensitive interpretation combines a coherence-factor model with separate gap information, rather than directly measuring an isolated gap sign. Sample-matched continuum thresholds and normal-state backgrounds matter when testing that inference.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-716c338ddfa726d3",
+        "source-5717dacf7df85626"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c2-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Maier and Scalapino's two-orbital RPA–BCS calculation illustrates why orbital matrix elements and the momentum being probed matter. The model qualitatively captures Fermi-surface shapes but acknowledges imperfect velocities. Different singlet gaps produce different responses, and triplet spin components require different coherence factors. A missing or enhanced peak cannot be interpreted from gap signs alone without the accessible scattering channels, interaction model and broadening. This selected check does not reproduce a material's complete susceptibility.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-5717dacf7df85626"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c2-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Hanaguri and colleagues inferred sign reversal from field-dependent STM interference in Fe(Se,Te), not pure FeSe. A subsequent preprint comment by Mazin and Singh argued for Bragg peaks and a possible surface reconstruction instead. Their proposed surface magnetic order was a hypothesis, not an independently observed feature of those samples. The existence of a Fourier peak does not by itself settle whether it is a lattice, interference or mixed contribution.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-3ee65ce8fc5080da",
+        "source-7b146cbf6ec35c32"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c2-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "The authors' preprint reply separates broad conductance-ratio features near the gap scale from sharp Bragg-like components. Its Figure 1 compares 0 T and 10 T linecuts against topographic peaks; a sharp field-enhanced component persists above the gap range, while the broad component has a different energy dependence. This is an explicit experimental response to the critique. Both documents remain labelled as preprints here, and their exchange does not substitute for a full raw-map or scattering-matrix reanalysis.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-b6cd1a68d7c03084"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c2-claim-corrected-nodal-example-1",
+      "sectionId": "corrected-nodal-example",
+      "statement": "Reid and colleagues' 2012 thermal-conductivity study concerns KFe2As2, not P-substituted Ba122. Its residual heat-transport evidence and cross-sample comparison support nodes, with the authors arguing for d-wave pairing. The selected accepted-manuscript check preserves the separate directional samples and low-temperature extrapolation. A citation making that argument cannot be repurposed as evidence for accidental nodes in another material.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8a117f38b78526ff"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c2-claim-corrected-nodal-example-2",
+      "sectionId": "corrected-nodal-example",
+      "statement": "Later work makes the distinction between nodal evidence and symmetry assignment especially clear. Wu and colleagues' 2024 laser-ARPES study of KFe2As2 maps gap nodes and argues for nodal s± pairing, including hole pockets around the zone corners. That publisher-abstract check identifies a competing interpretation, not a completed resolution of the disagreement. Gap magnitude and node location constrain a model; neither alone directly measures the relative phase or establishes a universal pairing glue.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8a117f38b78526ff",
+        "source-b934eb95c4cbf8c6"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c2-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "FeSe, electron-only interfaces, strongly hole-doped endpoints and nickelate proposals must retain their own electronic structure and evidence. Disorder sensitivity can also involve carrier, structural and magnetic changes, so suppressing a transition is not a unique gap-sign test. Complete scientific acceptance remains open, including original STM methods, supplementary controls, raw spectra and final-version comparisons. The neutron, QPI and thermal observations constrain different claims; none should be silently promoted to an unconditional family-wide phase verdict.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-7c2b55d128348e6c",
+        "source-716c338ddfa726d3",
+        "source-3ee65ce8fc5080da",
+        "source-8a117f38b78526ff",
+        "source-b934eb95c4cbf8c6"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c2-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "State which sheets should change sign and what result would reject that assignment. Use measured electronic structure, distinguish magnitude from phase, and compare independent probes on matched compositions and conditions. For a proposed phase-sensitive junction, explain which bands the interface couples to. For neutron and QPI interpretations, preserve the normal-state background, scattering selection and competing models. A useful evidence record makes those assumptions searchable together with the claim.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-716c338ddfa726d3",
+        "source-3ee65ce8fc5080da",
+        "source-5717dacf7df85626",
+        "source-b6cd1a68d7c03084"
+      ],
+      "conditions": "Material-specific band structure, probe, field, temperature and scattering model; sign, magnitude, nodes and pairing interaction are distinct inferences.",
+      "verificationScope": "Named source-scoped passages/figures, identified preprints and bounded coherence/anisotropy checks; full scientific acceptance open."
+    }
+  ]
+}

@@ -1,0 +1,634 @@
+{
+  "id": "scwiki-m",
+  "topicId": "scwiki-topic-m",
+  "code": "M",
+  "slug": "research-methodology",
+  "publicationKind": "handbook",
+  "title": "Research methods: data, prediction and verification",
+  "summary": "A practical guide to superconductivity databases, machine learning, computational screening and evidence-based reading, with explicit validation limits.",
+  "aliases": [
+    "research methodology",
+    "superconductor databases",
+    "SuperCon",
+    "ICSD",
+    "machine learning Tc",
+    "OpenDataLoader PDF",
+    "研究方法",
+    "超导数据库",
+    "机器学习预测",
+    "反幻觉",
+    "论文精读"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "I",
+    "J",
+    "L",
+    "B2",
+    "D3"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T20:03:38.327318+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Six research-method sections with selected original ML/DFT methods, two original figures, official dataset and documentation checks, and independent count examples.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Full supplementary data, model training, first-principles convergence and laboratory results have not been independently reproduced.",
+      "Editorial workflow recommendations are distinguished from published empirical findings.",
+      "Reference dates for undated documentation remain unknown; the review date is not a publication date."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "02_BATCH_2_IN_PLAN.md",
+    "sha256": "502293e5ed2fe8463b61a6c5b78a2c33bc33f3265bd36fe534fa2c469e42ff48",
+    "sourceId": "file-49326006ac2c2636"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 122,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Planning establishes scope, not scientific evidence."
+    },
+    {
+      "startLine": 123,
+      "endLine": 123,
+      "targetSections": [
+        "m1"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "All six approved topics retained with source-specific scientific and policy limits."
+    },
+    {
+      "startLine": 124,
+      "endLine": 124,
+      "targetSections": [
+        "m2"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "All six approved topics retained with source-specific scientific and policy limits."
+    },
+    {
+      "startLine": 125,
+      "endLine": 125,
+      "targetSections": [
+        "m3"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "All six approved topics retained with source-specific scientific and policy limits."
+    },
+    {
+      "startLine": 126,
+      "endLine": 126,
+      "targetSections": [
+        "m4"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "All six approved topics retained with source-specific scientific and policy limits."
+    },
+    {
+      "startLine": 127,
+      "endLine": 127,
+      "targetSections": [
+        "m5"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "All six approved topics retained with source-specific scientific and policy limits."
+    },
+    {
+      "startLine": 128,
+      "endLine": 128,
+      "targetSections": [
+        "m6"
+      ],
+      "decision": "new-research-for-approved-handbook-item",
+      "note": "All six approved topics retained with source-specific scientific and policy limits."
+    },
+    {
+      "startLine": 129,
+      "endLine": 177,
+      "targetSections": [],
+      "decision": "planning-only-not-republished",
+      "note": "Other scope items remain separately tracked."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "m-identifiers-and-review",
+      "description": "NIMS is the SuperCon publisher, not independent corroboration; DOI identity is not claim verification, and no DOI is invented for undated official documentation. Multiple-model agreement is not independent peer review. Preserve exact success counts and explicitly distinguish the printed percentage from arithmetic.",
+      "sourceId": "file-49326006ac2c2636",
+      "scope": "M1, M2, M4 and M5"
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\mathrm{precision}=TP/(TP+FP),\\quad\\mathrm{recall}=TP/(TP+FN)",
+      "check": "Independent binary-count example: all-negative predictions on 34 positive/966 negative labels produce 96.6% accuracy, zero recall and undefined precision. Published success-count arithmetic and condition/group distinction checked separately; no model validation."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-4a9ab24336f6fcc3",
+      "doi": "10.48505/nims.3837",
+      "title": "MDR SuperCon Datasheet Ver.220808",
+      "year": 2022,
+      "url": "https://doi.org/10.48505/nims.3837",
+      "publicationStatus": "dataset",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "official-versioned-dataset-description",
+        "evidenceUrl": "https://mdr.nims.go.jp/datasets/8ee422b8-5738-4fc2-8c7c-3b0b8bd9c9d7?locale=en",
+        "note": "Official landing page: deposited 14 December 2022; version-specific DOI and CC BY 4.0 shown. Underlying records were not exhaustively audited. NIMS is the publishing institution, not a separate competing superconductivity dataset."
+      }
+    },
+    {
+      "id": "source-7b0fd1ede1525615",
+      "doi": null,
+      "title": "ICSD versions and licenses",
+      "year": null,
+      "url": "https://icsd.products.fiz-karlsruhe.de/en/support/icsd-versions-and-licenses",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "official-database-license-description",
+        "evidenceUrl": "https://icsd.products.fiz-karlsruhe.de/en/support/icsd-versions-and-licenses",
+        "note": "Selected FIZ Karlsruhe licensing and support descriptions checked. ICSD concerns inorganic crystal structures; no licensed record export or reuse permission is claimed. Page publication date is unspecified."
+      }
+    },
+    {
+      "id": "source-219632ed94597bf3",
+      "doi": "10.1038/s41524-018-0085-8",
+      "title": "Machine learning modeling of superconducting critical temperature",
+      "year": 2018,
+      "url": "https://doi.org/10.1038/s41524-018-0085-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-text-and-figure-check",
+        "evidenceUrl": "https://www.nature.com/articles/s41524-018-0085-8",
+        "note": "Published 28 June 2018. Selected data preparation, classification, screening and methods checked; final PDF p. 5 Figure 2 visually checked. Random-forest results and candidate lists do not establish new experimental superconductors. Model, raw data and complete supplementary material not independently reproduced."
+      }
+    },
+    {
+      "id": "source-158dac7a4c8f8fb7",
+      "doi": "10.1038/s41524-023-01131-3",
+      "title": "Closed-loop superconducting materials discovery",
+      "year": 2023,
+      "url": "https://doi.org/10.1038/s41524-023-01131-3",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-text-and-figure-check",
+        "evidenceUrl": "https://www.nature.com/articles/s41524-023-01131-3",
+        "note": "Published 5 October 2023. Selected results, validation and experimental methods read; final p. 4 Figure 3 and printed success counts visually checked. The text prints 5/65 (7.5%); direct arithmetic is approximately 7.69%. Approximate phase composition and inability to isolate a single phase are explicit. Full supplement and raw experiment remain unreviewed."
+      }
+    },
+    {
+      "id": "source-f080f572de65a123",
+      "doi": "10.1038/s41524-024-01475-4",
+      "title": "Accelerating superconductor discovery through tempered deep learning of the electron-phonon spectral function",
+      "year": 2025,
+      "url": "https://doi.org/10.1038/s41524-024-01475-4",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-final-methods-check",
+        "evidenceUrl": "https://www.nature.com/articles/s41524-024-01475-4",
+        "note": "Published 9 January 2025, despite 2024 in the DOI. Selected final introduction, dataset generation, split methods and limitations read. 818 retained calculated spectra are not 818 experimentally confirmed superconductors. No complete training, phonon-grid or supplementary-data reproduction."
+      }
+    },
+    {
+      "id": "source-dedff231d5c3d3cd",
+      "doi": null,
+      "title": "Crossmark: corrections, retractions and updates",
+      "year": null,
+      "url": "https://www.crossref.org/services/crossmark/",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "official-metadata-service-documentation",
+        "evidenceUrl": "https://www.crossref.org/services/crossmark/",
+        "note": "Official service description checked. Crossmark reports registered updates and explicitly provides no guarantee of content quality. Metadata lookup is distinct from verification of an individual scientific claim. Page publication date unspecified."
+      }
+    },
+    {
+      "id": "source-d4daeb7c4b4ef52a",
+      "doi": "10.24318/cope.2019.1.9",
+      "title": "COPE Ethical guidelines for peer reviewers, Version 2",
+      "year": 2017,
+      "url": "https://doi.org/10.24318/cope.2019.1.9",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "selected-official-guideline-text",
+        "evidenceUrl": "https://members.publicationethics.org/sites/default/files/cope-ethical-guidelines-peer-reviewers-v2_0.pdf",
+        "note": "Use the DOI printed in the actual PDF, Version 2 September 2017. Selected pp. 3 and 5–7: expertise, review scope, conflicts, confidentiality and constructive evidence-based critique. Guidance is not an experimental result."
+      }
+    },
+    {
+      "id": "source-e45bc5804b6aaa96",
+      "doi": null,
+      "title": "Nature Portfolio: Artificial Intelligence editorial policy",
+      "year": null,
+      "url": "https://www.nature.com/nature-portfolio/editorial-policies/ai",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "publisher-policy-text-check",
+        "evidenceUrl": "https://www.nature.com/nature-portfolio/editorial-policies/ai",
+        "note": "Official indexed policy text checked on 19 October 2026. Human accountability, transparency and confidentiality are distinguished from delegating scholarly judgment to AI. Publisher-specific policy, not a universal rule for every journal. Page publication date unspecified."
+      }
+    },
+    {
+      "id": "source-7d4fe3e5598a78a4",
+      "doi": null,
+      "title": "OpenDataLoader PDF documentation",
+      "year": null,
+      "url": "https://www.opendataloader.org/docs",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "official-tool-documentation-check",
+        "evidenceUrl": "https://www.opendataloader.org/docs",
+        "note": "Official documentation and repository descriptions checked: structured extraction, reading order and bounding boxes. Tool claims and benchmarks are not independently validated here; no new parser installation or paper-extraction benchmark performed. Page publication date unspecified."
+      }
+    },
+    {
+      "id": "source-05f057efe73a6cda",
+      "doi": null,
+      "title": "scikit-learn: Metrics and scoring",
+      "year": null,
+      "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+      "publicationStatus": "technical-report",
+      "verification": {
+        "checkedAt": "2026-10-19",
+        "scope": "official-metric-definition-check",
+        "evidenceUrl": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "note": "Selected official definitions of accuracy, precision and recall checked. Independent count examples verify the displayed arithmetic only; no model performance is certified. Documentation publication date unspecified."
+      }
+    }
+  ],
+  "materialCases": [],
+  "claims": [
+    {
+      "id": "scwiki-m-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Reliable superconductivity research connects a question to a traceable dataset, a suitable method and an observation that could disprove the proposed answer. This handbook follows six parts of that process: finding data, predicting transitions, screening with calculations, checking claims, reviewing interpretations and reading papers closely. The aim is a reproducible chain of evidence, with the limits of each step visible.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-219632ed94597bf3",
+        "source-158dac7a4c8f8fb7",
+        "source-d4daeb7c4b4ef52a"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "These are dimensionless fractions, not transition temperatures or discovery rates. Precision is undefined if no positive prediction exists; recall is undefined if the test set contains no positives. An original teaching example with 34 positive and 966 negative labels gives 96.6% accuracy and zero positive recall when every label is predicted negative. Its precision is undefined. This arithmetic illustrates class imbalance; it is not a fitted superconductivity model.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-05f057efe73a6cda"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m1-1",
+      "sectionId": "m1",
+      "statement": "NIMS is the institution that publishes SuperCon; the two names should not be counted as independent confirmations. The MDR SuperCon datasheet provides a versioned release with a DOI and a stated reuse license. Record the release identifier and original literature reference when extracting a value. A database row is a route to evidence, not a substitute for checking how the reported transition was measured. The checked Ver.220808 release is an explicit snapshot, not a claim to be today's latest dataset.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-4a9ab24336f6fcc3"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m1-2",
+      "sectionId": "m1",
+      "statement": "ICSD serves a different purpose: inorganic crystal structures support structural identification and calculation inputs, but a structure match does not establish superconductivity. Its access and reuse terms differ from an openly licensed SuperCon release. Check the applicable license before redistributing records. In SCLib, use the [data guide](/docs/data) and [reading guide](/scwiki/using-sclib) to follow retrieved results back to their publications. Preserve the query, returned identifier and retrieval date so another researcher can repeat the search.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-4a9ab24336f6fcc3",
+        "source-7b0fd1ede1525615"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m1-3",
+      "sectionId": "m1",
+      "statement": "Keep composition, phase, sample treatment, pressure, magnetic field and transition criterion together. Separate records can share a formula while describing different experiments. Conversely, copies of the same measurement across databases are not independent evidence. For model evaluation, related compositions may need to share a train/test group even though their experimental records remain separate; this prevents data organization from silently becoming a claim of independent validation.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-219632ed94597bf3",
+        "source-158dac7a4c8f8fb7"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m2-1",
+      "sectionId": "m2",
+      "statement": "Composition descriptors and neural representations can help prioritize experiments, but the target and validation design determine what a score means. Stanev and colleagues used random forests for classification and regression; their methods explicitly discuss inconsistent records and missing pressure information. Their proposed materials remain candidates. Predicting a threshold class is a different task from predicting a numerical Tc, and neither guarantees successful synthesis.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-219632ed94597bf3"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m2-2",
+      "sectionId": "m2",
+      "statement": "Pogue and colleagues tested a neural-network approach with both uniform and leave-one-cluster-out validation. The latter exposed much poorer generalization. Their experimental loop combined model suggestions with expert filtering and new measurements. The reported counts are five successes among 190 suggestions and five among 65 after filtering. The printed second percentage is 7.5%; arithmetic from its stated count gives approximately 7.69%. These overlapping selections are not independent randomized trial arms, and the result should not be attributed to the model alone.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-158dac7a4c8f8fb7"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m2-3",
+      "sectionId": "m2",
+      "statement": "In the recommended evaluation workflow, declare the candidate space, grouping rule, held-out data, selection threshold and error metric before inspecting the test results. Report unsuccessful synthesis separately from a successfully prepared sample with no transition in the measured range. Compare against a simple baseline, and retain uncertainty and known family limits when ranking new candidates. The majority-class counterexample above shows why accuracy alone can hide complete failure to identify the desired class.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-05f057efe73a6cda"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m3-1",
+      "sectionId": "m3",
+      "statement": "A phonon-mediated screening workflow first specifies composition, crystal structure and pressure, then checks electronic structure, phonons and electron–phonon coupling under stated approximations. A calculated Eliashberg spectral function can inform an estimated transition temperature within that model. It is not a universal treatment of every unconventional pairing mechanism, nor a measurement of a synthesized material.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f080f572de65a123"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m3-2",
+      "sectionId": "m3",
+      "statement": "Gibson and colleagues report 818 retained calculated spectra after screening and numerical quality checks. Their methods specify commensurate electronic and phonon meshes, smearing, pseudopotentials and numerical cutoffs. They also discuss imaginary modes caused by numerical issues or a mismatch between ideal stoichiometry and experimental composition. Thus, a calculation that converges is not automatically physically valid, while an imaginary mode requires diagnosis before drawing a materials conclusion. Their high-pressure extrapolation remains unvalidated.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f080f572de65a123"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m3-3",
+      "sectionId": "m3",
+      "statement": "For a new candidate, save the input structure, code and pseudopotential versions, convergence evidence and failed calculations as well as successful outputs. Recheck finalists with tighter settings and the relevant stability assumptions. Report a predicted Tc with its model parameters and pressure rather than adding it to a table of experimental transitions. These workflow recommendations extend the documented calculation controls; they do not certify a new calculation or reproduce the published training run.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-f080f572de65a123"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m4-1",
+      "sectionId": "m4",
+      "statement": "A DOI helps identify a research object. It does not prove that the linked paper contains the proposed claim, that the claim concerns the right material, or that later work confirmed it. Check the title and authors, then locate the relevant passage, equation, figure or dataset. Crossmark can expose registered corrections and retractions; the service itself states that its presence is not a guarantee. Missing update metadata should not be treated as a certificate of validity.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-dedff231d5c3d3cd"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m4-2",
+      "sectionId": "m4",
+      "statement": "For each factual statement, retain the source version, location, sample identity, observable, conditions and review scope. Distinguish a publisher abstract from selected full text and a complete supplementary-data review. If a source has no DOI, preserve its official URL, title, version or date and, where appropriate, a local file checksum; inventing a DOI would weaken traceability. Versioned data and institutional documentation illustrate why the identifier must fit the source type.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-4a9ab24336f6fcc3",
+        "source-dedff231d5c3d3cd"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m4-3",
+      "sectionId": "m4",
+      "statement": "Resolve contradictions at the level of the underlying evidence. For example, onset and zero resistance should not be averaged into one transition, and a calculated field limit must not be relabelled as the highest applied field. Mark an unresolved difference explicitly, revise downstream summaries when evidence changes, and keep a correction history. This is an editorial verification workflow, not a guarantee that every indexed claim has already passed it.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-dedff231d5c3d3cd",
+        "source-d4daeb7c4b4ef52a"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m5-1",
+      "sectionId": "m5",
+      "statement": "Scientific criticism should test a specific inference. Ask which alternative explanation fits the same measurement, whether a numerical result changes under a reasonable control, and whether the cited source actually supports the wording. A useful review records the disputed claim, supporting evidence and a concrete way to resolve it. COPE guidance emphasizes relevant expertise, declared conflicts, clear scope and constructive feedback rather than personal accusations.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-d4daeb7c4b4ef52a"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m5-2",
+      "sectionId": "m5",
+      "statement": "Model-generated critiques can suggest missing checks, but agreement among several models is not independent peer review or experimental replication. They may repeat the same source error or overlook the same missing condition. Treat each objection as a hypothesis to inspect against primary evidence, and document who performed the substantive verification. A journal's peer-review decision and a wiki's editorial check are distinct events and should be labelled separately.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-d4daeb7c4b4ef52a",
+        "source-e45bc5804b6aaa96"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m5-3",
+      "sectionId": "m5",
+      "statement": "Follow the actual publisher's confidentiality and AI-use policy when reviewing a submitted manuscript. Nature Portfolio's checked policy retains human scholarly accountability and distinguishes assistance from delegating evaluative judgment. These publisher-specific rules do not establish a universal policy for every venue. For public scientific discussion, preserve the same practical discipline: make the critique inspectable, state its limitations and change the conclusion when a counterexample survives checking.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-e45bc5804b6aaa96"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m6-1",
+      "sectionId": "m6",
+      "statement": "Begin with the question the paper claims to answer, its publication version and any linked correction. Read the methods needed to interpret the central observable before summarizing the headline. Build a small evidence record containing the sample label, control conditions, definition of each reported quantity, figure location and remaining uncertainty. Compare the conclusion with the actual result rather than assuming that a familiar title supplies the necessary details. COPE's review guidance also distinguishes reading the manuscript and ancillary material from a specifically commissioned raw-data audit.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-d4daeb7c4b4ef52a"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m6-2",
+      "sectionId": "m6",
+      "statement": "OpenDataLoader PDF is one tool for converting a paper into structured text with reading order and element coordinates. Its documentation describes extraction capabilities; that description does not validate any particular extracted equation or table. Inspect the original page when columns interleave, symbols disappear, subscripts move or a legend changes the interpretation. Keep the original file and extraction version, and link a quoted or summarized finding to its page or bounding box. A parser output is a navigation aid, not the final authority on the paper.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-7d4fe3e5598a78a4"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-m6-3",
+      "sectionId": "m6",
+      "statement": "Record unavailable supplements and unresolved version differences as specific missing evidence. A practical reading note separates the author's conclusion, the observation supporting it and the reader's remaining objection. Keep the public summary within the material actually reviewed; if a figure has not been inspected, do not describe its contents from a citation title alone.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-d4daeb7c4b4ef52a"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "A null observation is bounded by the prepared sample, measurement range and sensitivity. A failed synthesis is not the same result as no superconducting transition in a well-characterized specimen. Complementary transport, magnetic and thermodynamic probes address different possibilities; retain their separate conditions and uncertainty. These distinctions matter both when curating training labels and when deciding whether a model suggestion became an experimental discovery.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-219632ed94597bf3",
+        "source-158dac7a4c8f8fb7"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Selected original methods, figures and official documentation were checked for this handbook. The independent arithmetic examples test definitions and denominators only. Complete scientific acceptance remains open: the published machine-learning models, full supplemental datasets, first-principles convergence and laboratory results were not independently reproduced. Policies and software documentation can change, so their checked date and source must remain visible.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-219632ed94597bf3",
+        "source-f080f572de65a123",
+        "source-e45bc5804b6aaa96",
+        "source-7d4fe3e5598a78a4"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    },
+    {
+      "id": "scwiki-m-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "A productive research loop records both useful predictions and informative failures, then updates the next experiment without erasing provenance. Separate the question “does the method rank this test set well?” from “does it identify a new, reproducible superconducting phase?” The answer to the second question requires evidence about the material itself.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-219632ed94597bf3",
+        "source-158dac7a4c8f8fb7"
+      ],
+      "conditions": "Method, dataset version, validation split and source-review scope as stated. Workflow recommendations are editorial synthesis; examples are not new experimental transition records.",
+      "verificationScope": "Selected original methods/figures and official documentation; independent arithmetic examples only, not full computational or experimental replication."
+    }
+  ],
+  "scopeItems": [
+    {
+      "id": "M1",
+      "sectionIds": [
+        "m1"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Official SuperCon release and ICSD documentation; record identity and reuse limits.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "No exhaustive database audit, full model/DFT reproduction or experimental replication is claimed.",
+        "Software and publisher policy descriptions are dated source checks, not universal or permanent guarantees."
+      ]
+    },
+    {
+      "id": "M2",
+      "sectionIds": [
+        "m2"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Selected final ML methods, validation and count arithmetic; no trained-model reproduction.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "No exhaustive database audit, full model/DFT reproduction or experimental replication is claimed.",
+        "Software and publisher policy descriptions are dated source checks, not universal or permanent guarantees."
+      ]
+    },
+    {
+      "id": "M3",
+      "sectionIds": [
+        "m3"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Selected final electron–phonon workflow and limitations; no new DFT or ML run.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "No exhaustive database audit, full model/DFT reproduction or experimental replication is claimed.",
+        "Software and publisher policy descriptions are dated source checks, not universal or permanent guarantees."
+      ]
+    },
+    {
+      "id": "M4",
+      "sectionIds": [
+        "m4"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Official update-service documentation and traceability rules; no universal claim-certification.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "No exhaustive database audit, full model/DFT reproduction or experimental replication is claimed.",
+        "Software and publisher policy descriptions are dated source checks, not universal or permanent guarantees."
+      ]
+    },
+    {
+      "id": "M5",
+      "sectionIds": [
+        "m5"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Selected COPE guidance and publisher AI policy; assisted critique is not independent peer review.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "No exhaustive database audit, full model/DFT reproduction or experimental replication is claimed.",
+        "Software and publisher policy descriptions are dated source checks, not universal or permanent guarantees."
+      ]
+    },
+    {
+      "id": "M6",
+      "sectionIds": [
+        "m6"
+      ],
+      "status": "scoped-check",
+      "checkedAt": "2026-10-19",
+      "scope": "Selected original PDF/figure checks and extraction documentation; no parser benchmark or full raw-data audit.",
+      "limitations": [
+        "Complete scientific acceptance remains open.",
+        "No exhaustive database audit, full model/DFT reproduction or experimental replication is claimed.",
+        "Software and publisher policy descriptions are dated source checks, not universal or permanent guarantees."
+      ]
+    }
+  ]
+}

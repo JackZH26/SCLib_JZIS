@@ -1,0 +1,472 @@
+{
+  "id": "scwiki-d15",
+  "topicId": "scwiki-topic-d15",
+  "code": "D15",
+  "slug": "magnetic-substitution-and-superconductivity",
+  "title": "Magnetic substitution and superconductivity",
+  "summary": "Separate carrier, structural, scattering and exchange effects in magnetic substitutions, with dilute alloys, rare-earth borocarbides and reentrant nickelate evidence.",
+  "aliases": [
+    "magnetic doping",
+    "magnetic substitution",
+    "magnetic impurities",
+    "磁性掺杂",
+    "磁性杂质"
+  ],
+  "evidenceTypes": [
+    "experiment",
+    "theory",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "E7",
+    "E2",
+    "G2",
+    "G5",
+    "G4"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-19T00:03:05.062786+00:00",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Yaron final methods and Figures1–3; Sugawara,Cava,Cho original abstracts; inherited E7/G5 evidence scopes; five matched-transition counterexamples and free-ion moment distinction. Yang v3 selected passages and Figures 2, 3, Extended Data 9 checked; inherited 45 T tuple withheld.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "Original AG and several classic full texts remain unaudited; review-paper equation conventions are identified separately.",
+      "Final-version, concentration calibration, raw-data and film magnetic-order acceptance remain open.",
+      "Synthetic transition inversions do not reproduce any alloy or determine a material mechanism."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "D_material_families/D15_magnetic_doping.md",
+    "sha256": "01fe5565239482cc994114a6ff1bba4bfac1093006441b75d70130723167bbaa",
+    "sourceId": "file-7dff7d5aca729b81"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 117,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Preserve substitution channels,AG,La alloys,borocarbides,JP andEu nickelate topics. Correct mutually-exclusive wording,energy/rate convention andCho family overreach. Add primary vortex-coupling evidence without universal concentration tables."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-d15-correction-1",
+      "description": "Carrier, structural, scattering and exchange effects are distinguishable but concurrent; they are not mutually exclusive. Gamma is an energy in the displayed AG convention.",
+      "sourceId": "source-3a528aeee1b7cf04",
+      "scope": "Correct categorical channel wording and rate/concentration dimensional ambiguity."
+    },
+    {
+      "id": "scwiki-d15-correction-2",
+      "description": "Cho PRB52.3684 studies ErNi2B2C specifically. Sugawara reports deviations from the AG Born approximation rather than universal agreement.",
+      "sourceId": "source-e4fdbfe063c34217",
+      "scope": "Restrict family extrapolation and theoretical inference."
+    },
+    {
+      "id": "scwiki-d15-correction-3",
+      "description": "Yaron vortex rotation below about4K is distinct from the6K antiferromagnetic transition and a1.6degree field misalignment. Yang2K/3K values are measurement temperatures; the inherited SCE0.36/0.3K/45T tuple is not verified by the later selected panels.",
+      "sourceId": "source-6666556b639390d7",
+      "scope": "Preserve experimental geometry and temperature categories."
+    },
+    {
+      "id": "scwiki-d15-correction-4",
+      "description": "The inherited SCE0.36/0.3K/45T tuple is withheld: v3 Extended Data Figure9 labels SCE0.36 at4.2K and SCE0.40 at0.3K. Figure3 uses0.5Rn contours, not zero-resistance boundaries.",
+      "sourceId": "source-3504ee9027165d0a",
+      "scope": "Version-resolved sample and criterion correction; no final-text or raw-data verification claimed."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\ln(T_{c0}/T_c)=\\psi[1/2+\\Gamma/(2\\pi k_BT_c)]-\\psi(1/2)",
+      "check": "Reuse scoped E7 AG convention/bounded Matsubara check; new5same-Tc counterexamples with distinct clean-host scales/Gamma and Eu2+ saturated versus effective moment. No material fit."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-daf8f301de81a726",
+      "doi": null,
+      "title": "Contribution to the theory of superconducting alloys with paramagnetic impurities",
+      "year": 1961,
+      "url": "https://www.itp.ac.ru/en/persons/abrikosov-alexey-alekseevich/",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "historical-bibliographic-anchor-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.itp.ac.ru/en/persons/abrikosov-alexey-alekseevich/",
+        "note": "Soviet Physics JETP12,1243–1253; Russian original39,1781–1796(1960). No DOI asserted. Attempted archive PDFs404; original full text not retrieved. Displayed convention checked separately in Balatsky author manuscript and bounded local calculations."
+      }
+    },
+    {
+      "id": "source-3a528aeee1b7cf04",
+      "doi": "10.1103/RevModPhys.78.373",
+      "title": "Impurity-induced states in conventional and unconventional superconductors",
+      "year": 2006,
+      "url": "https://doi.org/10.1103/RevModPhys.78.373",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-equation-conventions",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0411318v1",
+        "note": "Authorv1 submitted11November2004; selected sectionsVI andXIV,pp13–14 and40–41 read. p14 Eq6.8–6.15 and p40 Eq14.12–14.13 visually checked. This is a review, not a substitute for the unavailable original AG/Shiba derivations. Final-version comparison remains open."
+      }
+    },
+    {
+      "id": "source-8d0e592da8ec9c7b",
+      "doi": "10.1016/0022-3697(59)90036-8",
+      "title": "Theory of dirty superconductors",
+      "year": 1959,
+      "url": "https://doi.org/10.1016/0022-3697(59)90036-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-original-scan-reread",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://physics.umd.edu/courses/Phys798S/anlage/Phys798SAnlageSpring06/Anderson%20TimeReversed%20Pairs%20Paper.pdf",
+        "note": "Original journal pp26 and29 visually re-read: exact time-reversed states, chemical changes/DOS and anisotropy. Complete derivation and localization corrections not independently reviewed."
+      }
+    },
+    {
+      "id": "source-23c62b46f5681d83",
+      "doi": "10.1103/PhysRevX.4.041032",
+      "title": "Effect of electron irradiation on superconductivity in single crystals of Ba(Fe1-xRux)2As2 (x=0.24)",
+      "year": 2014,
+      "url": "https://doi.org/10.1103/PhysRevX.4.041032",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-methods-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1405.3255v1",
+        "note": "Authorv1 dated13May2014; selectedpp1–4 methods,annealing,Figs1–3 andmultiband discussion read; p3 Figs1–2 visually checked. Tc0 methods17.8K versus transportfigure17.85K retained; exact operational threshold not established. Final APS PDF403; completefinalcomparison/rawdata remain open."
+      }
+    },
+    {
+      "id": "source-9ff1d5edeb007a39",
+      "doi": "10.1143/JPSJ.23.965",
+      "title": "Paramagnetic Impurity Effect in Dilute Superconducting La-Alloys",
+      "year": 1967,
+      "url": "https://doi.org/10.1143/JPSJ.23.965",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-and-date",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.jstage.jst.go.jp/article/jpsj1946/23/5/23_5_965/_article/-char/en/",
+        "note": "Published 5 November 1967, not the 2007 digital release. Magnetic-method La–Ce/La–Gd transitions and critical fields; deviations from AG Born approximation depend on exchange sign, interpreted as Kondo physics. Inhomogeneous type-II behavior reported. Full methods and concentration calibration not read."
+      }
+    },
+    {
+      "id": "source-4a5af9d54dea74ba",
+      "doi": "10.1038/367252a0",
+      "title": "Superconductivity in the quaternary intermetallic compounds LnNi2B2C",
+      "year": 1994,
+      "url": "https://doi.org/10.1038/367252a0",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "indexed-publisher-original-abstract",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.nature.com/articles/367252a0",
+        "note": "Published 20 January 1994. Ln=Y,Tm,Er,Ho,Lu family established. Distinguishes unidentified superconducting phase in earlier Y–Pd–B–C work from identified LnNi2B2C compounds. No full methods or per-member numerical criteria checked."
+      }
+    },
+    {
+      "id": "source-e4fdbfe063c34217",
+      "doi": "10.1103/PhysRevB.52.3684",
+      "title": "Magnetism and superconductivity in single-crystal ErNi2B2C",
+      "year": 1995,
+      "url": "https://doi.org/10.1103/PhysRevB.52.3684",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract-and-material-scope",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.52.3684",
+        "note": "Published 1 August 1995. Cho et al. study ErNi2B2C, not a complete rare-earth series. Transport/magnetization transition10.5K; heat-capacity magnetic anomaly5.85±0.15K versus6K magnetic/transport scale. Numerical superconducting operational threshold and full methods not read."
+      }
+    },
+    {
+      "id": "source-6666556b639390d7",
+      "doi": "10.1038/382236a0",
+      "title": "Microscopic coexistence of magnetism and superconductivity in ErNi2B2C",
+      "year": 1996,
+      "url": "https://doi.org/10.1038/382236a0",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-final-SANS-methods-and-figures",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.nbi.dk/~kell/publ/1996_Nature_FLL_ErNiBC.pdf",
+        "note": "Yaron et al.,18July1996. Selected journal pp236–238 methods/results; pp237–238 Figures1–3 visually checked. Boron11 crystal, field near c/incident beam,4kOe and1.6K Figure1; magnetic peaks measured at zero field with a separate neutron wavelength. Field tilted1.6degrees from c; vortex rotation develops near4K and can reach1degree. Rocking-curve width may reflect long-scale orientation variations, not uniquely microscopic pinning. Complete raw-data/reflection fit and phase-diagram reconstruction open."
+      }
+    },
+    {
+      "id": "source-849f7f4f675464de",
+      "doi": "10.1103/PhysRevLett.9.290",
+      "title": "Ultra-High-Field Superconductivity",
+      "year": 1962,
+      "url": "https://doi.org/10.1103/PhysRevLett.9.290",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-identity-only",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.9.290",
+        "note": "Published1October1962. Original identity verified; full text unavailable. Independent field-budget illustration is not a reproduction of the original derivation."
+      }
+    },
+    {
+      "id": "source-d564bee026e788c7",
+      "doi": "10.1103/PhysRevLett.53.497",
+      "title": "Observation of Magnetic-Field-Induced Superconductivity",
+      "year": 1984,
+      "url": "https://doi.org/10.1103/PhysRevLett.53.497",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "original-publisher-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.53.497",
+        "note": "Published30July1984. Original abstract confirms Eu-Sn molybdenum chalcogenide family and compensation interpretation. Exact composition, curves and full methods not checked."
+      }
+    },
+    {
+      "id": "source-3504ee9027165d0a",
+      "doi": "10.1038/s41586-026-10547-y",
+      "title": "Field re-entrant superconductivity in Eu-doped infinite-layer nickelates",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41586-026-10547-y",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-text-and-figures",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/2508.14666v3",
+        "note": "Published23April2026; read authorv3 dated25April2026, selectedpp2–8, captionsp12, methodsp13–14; Fig2p19/Fig3p20 visually checked. Full final equivalence, calibration and all raw data remain open."
+      }
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-d15-material-1",
+      "recordType": "experiment",
+      "formula": "ErNi2B2C",
+      "sample": "Yaron1996 boron11-enriched single crystal,Figure1 vortex diffraction at4kOe near c axis",
+      "tcK": null,
+      "reportedTemperatureK": 1.6,
+      "temperatureKind": "measurement",
+      "temperatureNote": "SANS measurement temperature, not superconducting transition. Magnetic comparison at zero field uses a different neutron wavelength.",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "criterion": "vortex-diffraction",
+      "probe": "Small-angle neutron scattering",
+      "sourceId": "source-6666556b639390d7",
+      "aliases": [
+        "erbium nickel borocarbide"
+      ]
+    },
+    {
+      "id": "scwiki-d15-material-2",
+      "recordType": "experiment",
+      "formula": "Sm0.61Ca0.05Eu0.34NiO2",
+      "sample": "Yang2026 SCE0.34 film; reentrant zero resistance beyond6.23T at2K",
+      "tcK": null,
+      "reportedTemperatureK": 2.0,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Fixed-temperature field sweep, not Tc or a universal composition/field relation.",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "criterion": "field-sweep-zero-resistance",
+      "probe": "Film magnetotransport",
+      "sourceId": "source-3504ee9027165d0a",
+      "aliases": [
+        "SCE0.34",
+        "Eu-doped Sm Ca nickelate"
+      ]
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-d15-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Magnetic substitution can change carrier balance, crystal structure, potential scattering, spin-flip scattering and exchange fields at the same time. These effects are distinguishable experimental questions, not mutually exclusive channels. A falling superconducting transition temperature does not uniquely identify magnetic pair breaking, and the presence of a magnetic element does not establish magnetically mediated pairing. Compare actual composition, valence, phase purity and preparation before treating concentration as a single physical control.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-8d0e592da8ec9c7b",
+        "source-23c62b46f5681d83",
+        "source-9ff1d5edeb007a39",
+        "source-3504ee9027165d0a"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d15-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "Dilute paramagnetic impurities, an ordered lattice of rare-earth moments and a concentrated magnetic film require different models. Independent magnetic ions can scatter Cooper pairs, while their ordering, screening and coupling to itinerant states change the relevant timescales and fields. A material that contains both magnetic and superconducting signals may also be spatially inhomogeneous; their coexistence must be tested at the relevant volume and length scale.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-daf8f301de81a726",
+        "source-3a528aeee1b7cf04",
+        "source-e4fdbfe063c34217",
+        "source-6666556b639390d7"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d15-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For dilute, uncorrelated weak magnetic scattering in an isotropic singlet host, define a pair-breaking energy $\\Gamma$ through $\\ln(T_{c0}/T_c)=\\psi[1/2+\\Gamma/(2\\pi k_BT_c)]-\\psi(1/2)$. Here $T_{c0}$ is the corresponding clean-host transition, not necessarily the transition of the unsubstituted parent if substitution also changes its bands or interaction. With $g=\\Gamma/(k_BT_{c0})$ and $t=T_c/T_{c0}$, this convention gives $dt/dg=-\\pi/4$ initially and $g_c=\\pi e^{-\\gamma_E}/2\\simeq0.882$. Scattering-rate conventions require explicit factors of $\\hbar$; neither atomic fraction nor residual resistivity can be inserted directly as $\\Gamma$. The equation convention has a scoped review-paper check, while the original AG full text remains unaudited.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-daf8f301de81a726",
+        "source-3a528aeee1b7cf04",
+        "source-23c62b46f5681d83"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d15-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An independent inversion illustrates the ambiguity. In units with $k_B=1$, prescribe an observed curve $T_c=1-0.6c$, where $c$ is a synthetic dimensionless control. Both a fixed clean-host scale $T_{c0}=1$ and a changing scale $T_{c0}=1-0.2c$ admit different positive $\\Gamma(c)$ values that reproduce the same transitions. Five checked points demonstrate non-uniqueness; they are not alloy fits or concentration calibrations. Additional composition, band, magnetic and scattering measurements are needed to choose between such explanations.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-3a528aeee1b7cf04",
+        "source-8d0e592da8ec9c7b",
+        "source-23c62b46f5681d83"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d15-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a free Eu2+ ion with $S=7/2$ and $g=2$, the saturated moment is $gS\\mu_B=7\\mu_B$, whereas the Curie effective moment is $g\\sqrt{S(S+1)}\\mu_B\\simeq7.94\\mu_B$. Neither specifies the sign or strength of the exchange field acting on conduction electrons. In a collinear compensation illustration, $B_{\\mathrm{eff}}=B_{\\mathrm{ext}}+B_{\\mathrm{ex}}$ and opposite signed contributions can reduce Zeeman splitting. This does not eliminate the orbital action of the applied field. Local-moment size, exchange energy and magnetic induction have different units and roles.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-849f7f4f675464de",
+        "source-3504ee9027165d0a"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d15-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Sugawara and Eguchi measured transition temperatures and critical fields magnetically in dilute La–Ce and La–Gd alloys. Their original abstract reports deviations from the AG Born-approximation result that depend on the exchange sign, interpreting them as evidence of Kondo effects. It also describes behavior characteristic of inhomogeneous type-II superconductors. This is a historical test of the theory's limits, not permission to assign one universal critical impurity fraction or transition-temperature slope to magnetic substitutions.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-9ff1d5edeb007a39"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d15-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Anderson's robustness argument for nonmagnetic disorder applies when appropriate time-reversed states, an essentially unchanged pairing interaction and density of states, and extended electronic states remain available. It is not immunity to arbitrary chemical substitution. Prozorov's controlled electron-irradiation study of a ruthenium-substituted iron arsenide illustrates why intra- and interband scattering, annealing and sample continuity matter. Nonmagnetic disorder can suppress sign-changing pairing, so comparing magnetic and nonmagnetic substitutions alone does not supply an independent singlet verdict.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-8d0e592da8ec9c7b",
+        "source-23c62b46f5681d83"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d15-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Cava established superconductivity in the LnNi2B2C family, including magnetic rare-earth members. Cho's cited paper then studied single-crystal ErNi2B2C specifically: transport and magnetization show a superconducting transition around 10.5 K, while the magnetic transition lies near 6 K. Its heat-capacity estimate is $5.85\\pm0.15$ K. These are distinct probe-specific scales. The paper is not a systematic survey of all rare-earth ions, and changing the rare earth also changes crystal fields, structure and exchange. No universal free-ion-moment ranking follows.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-4a5af9d54dea74ba",
+        "source-e4fdbfe063c34217"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d15-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Yaron's small-angle neutron study provides a more direct coupling test. On a boron-11-enriched ErNi2B2C crystal, superconducting vortex diffraction and magnetic diffraction establish their relative orientations. Figure 1's vortex pattern is measured at 1.6 K and 4 kOe with field near the c axis; the magnetic comparison uses zero field and a different neutron wavelength. The measured vortex lines rotate away from the applied field as temperature falls, and their rocking curves broaden. These observations support microscopic coexistence through interaction between magnetic order and the vortex structure, rather than merely coincident bulk anomalies.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-6666556b639390d7"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d15-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "The geometry matters: the applied field in that experiment was already tilted about 1.6 degrees from the c axis. The additional vortex rotation begins around 4 K and can approach one degree, whereas antiferromagnetic ordering occurs near 6 K. These temperatures should not be equated. The authors also consider long-distance orientation variation as an alternative contribution to rocking-curve broadening; width alone is not a unique measure of microscopic pinning or a demonstration of triplet pairing.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-6666556b639390d7"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d15-claim-experimental-criteria-6",
+      "sectionId": "experimental-criteria",
+      "statement": "Meul's Eu–Sn molybdenum chalcogenide work reports magnetic-field-induced superconductivity interpreted through exchange compensation. The checked original abstract supports that historical connection, but does not establish every numerical endpoint or the precise alloy composition used in earlier summaries. A compensation claim in another material needs its own signed exchange estimate, local-moment response, angle dependence and orbital constraints. Large upper critical fields or field-enhanced resistance drops alone are insufficient.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-849f7f4f675464de",
+        "source-d564bee026e788c7"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d15-claim-experimental-criteria-7",
+      "sectionId": "experimental-criteria",
+      "statement": "Yang's 2026 Sm/Ca/Eu infinite-layer nickelate study involves rare-earth substitution, fixed nominal Ca content and film reduction. In the checked later author version, SCE0.34 regains zero resistance at 2 K beyond 6.23 T; SCE0.32 does so at 3 K by 13.04 T. The inherited SCE0.36 / 0.3 K / 45 T tuple is not verified by the selected later-author-version panels: Extended Data Figure 9 labels SCE0.36 at 4.2 K and SCE0.40 at 0.3 K. It is withheld pending version and sample reconciliation. These are different samples and measurement temperatures, not a single transition curve. Compensation-like explanations remain under discussion; neither established uniform ferromagnetism nor triplet pairing follows from the reported reentrance alone.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-3504ee9027165d0a"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d15-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The same substitution series may move a clean-host pairing scale, alter scattering and create an exchange contribution. An AG-looking fit cannot separate these without additional constraints. Conversely, a departure from simple AG behavior does not automatically prove unconventional pairing or exchange compensation. Complete scientific acceptance remains open: original AG and several classic full texts, final-version comparisons, calibration details and raw-data reanalysis remain unfinished. The numerical exercises check restricted inference and units, not a complete magnetic-alloy theory.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-daf8f301de81a726",
+        "source-3a528aeee1b7cf04",
+        "source-9ff1d5edeb007a39",
+        "source-e4fdbfe063c34217",
+        "source-d564bee026e788c7",
+        "source-3504ee9027165d0a"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-d15-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Track chemical composition and valence alongside diffraction, magnetic response, transport and thermodynamics. Preserve the distinction between dilute moments, ordered sublattices and possible glassy or inhomogeneous behavior. Keep onset, midpoint, measured-zero, ordering and measurement temperatures separate. For compensation, constrain the electronic exchange field and its uncertainty independently; for coexistence, seek a probe of coupling or spatial overlap. Use those measurements to distinguish explanations before extrapolating a concentration trend to a new material.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-23c62b46f5681d83",
+        "source-9ff1d5edeb007a39",
+        "source-e4fdbfe063c34217",
+        "source-6666556b639390d7",
+        "source-3504ee9027165d0a"
+      ],
+      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
+      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+    }
+  ]
+}

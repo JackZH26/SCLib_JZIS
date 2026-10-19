@@ -1,0 +1,328 @@
+{
+  "id": "scwiki-f10",
+  "topicId": "scwiki-topic-f10",
+  "code": "F10",
+  "slug": "wilson-loop",
+  "title": "Wilson loops: gauge covariance, phase conventions and topological tests",
+  "summary": "Read closed-loop eigenphases with consistent signs, isolated subspaces and converged meshes; distinguish Chern flow, time-reversal topology and physical polarization.",
+  "aliases": [
+    "Wilson loop",
+    "Wilson eigenphases",
+    "hybrid Wannier centers",
+    "non-Abelian Berry connection",
+    "parallel transport",
+    "Zak phase"
+  ],
+  "evidenceTypes": [
+    "theory"
+  ],
+  "relatedCodes": [
+    "F2",
+    "F3",
+    "F4",
+    "F5"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T15:05:30.449858+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Yu and Soluyanov overlap and Wannier passages, two original King-Smith–Vanderbilt pages, and independent gauge-covariance and Chern calculations.",
+    "limitations": [
+      "Complete scientific acceptance remains open.",
+      "The full time-reversal proof, full Zak derivation, realistic orbital sewing and material calculations have not been reproduced.",
+      "The numerical examples do not implement a general Z2 classifier or physical BdG polarization."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "F_quantum_geometry/F10_Wilson_loop.md",
+    "sha256": "52ef4b090e9292488e3e25a823ebfd4f8ea1cdf771d9ec32b80415a10142a698",
+    "sourceId": "file-b3f8876e0ad0a2f7"
+  },
+  "references": [
+    {
+      "id": "source-9302d42436e83c82",
+      "doi": "10.1103/PhysRevB.84.075119",
+      "title": "Equivalent expression of Z2 topological invariant for band insulators using the non-Abelian Berry connection",
+      "year": 2011,
+      "url": "https://doi.org/10.1103/PhysRevB.84.075119",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-overlap-and-gauge-equations",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1101.2011v1",
+        "note": "Published 8 August 2011; author v1 submitted 11 January 2011. Selected pages 2–3 and 7–8 were read; page 8 was visually checked. Appendix A defines the connection without i, so conversion to the Wiki Hermitian connection requires an explicit minus-i exponent. Full final-version comparison and the time-reversal equivalence proof remain open."
+      }
+    },
+    {
+      "id": "source-fd30087dfafb8d90",
+      "doi": "10.1103/PhysRevB.83.235401",
+      "title": "Computing topological invariants without inversion symmetry",
+      "year": 2011,
+      "url": "https://doi.org/10.1103/PhysRevB.83.235401",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-wannier-and-svd-passages",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.physics.rutgers.edu/~dhv/pubs/local_copy/as_wcc.pdf",
+        "note": "Published 2 June 2011; author v2 submitted 25 April 2011. Selected final pages 2–4 and author pages 3–5 were read for Wannier centers, parallel transport, SVD, partner exchange and branch-cut problems. Final page 3 and author page 3 were visually checked. Center units and phase signs are defined explicitly in the Wiki. Complete proof, gap-tracking implementation and material calculations have not been reproduced."
+      }
+    },
+    {
+      "id": "source-f3affc7c4f9e1271",
+      "doi": "10.1103/PhysRevB.47.1651",
+      "title": "Theory of polarization of crystalline solids",
+      "year": 1993,
+      "url": "https://doi.org/10.1103/PhysRevB.47.1651",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-original-polarization-pages",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.physics.rutgers.edu/~dhv/pubs/local_copy/dks_pol.pdf",
+        "note": "Published 15 January 1993. Original pages 1651–1652 were visually read, including insulating adiabatic paths, periodic sewing, Wannier-center displacement and polarization ambiguity. The scan has no usable text layer. Remaining pages and the GaAs calculation were not reviewed."
+      }
+    },
+    {
+      "id": "source-50b4c7274c53cf48",
+      "doi": "10.1103/PhysRevLett.62.2747",
+      "title": "Berry’s phase for energy bands in solids",
+      "year": 1989,
+      "url": "https://doi.org/10.1103/PhysRevLett.62.2747",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-original-abstract",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.62.2747",
+        "note": "Published 5 June 1989. Original abstract read for the Brillouin-zone loop and the role of symmetry in quantization. The complete original derivation was not retrieved."
+      }
+    },
+    {
+      "id": "source-688ad98fc33198c0",
+      "doi": "10.1143/JPSJ.74.1674",
+      "title": "Chern Numbers in Discretized Brillouin Zone: Efficient Method of Computing (Spin) Hall Conductances",
+      "year": 2005,
+      "url": "https://doi.org/10.1143/JPSJ.74.1674",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-discrete-invariant-equations",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0503172v2",
+        "note": "Author v2 6 April 2005, selected pp.1–3 read; p.2 Eqs.7–14 visually inspected. Imaginary connection, principal logarithm, nonzero overlap, gap/mesh conditions and determinant-link extension checked. Full final-version comparison open."
+      }
+    },
+    {
+      "id": "source-37986d2488e4cace",
+      "doi": "10.1103/PhysRevB.78.195125",
+      "title": "Classification of topological insulators and superconductors in three spatial dimensions",
+      "year": 2008,
+      "url": "https://doi.org/10.1103/PhysRevB.78.195125",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-classification-table",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/0803.2786v3",
+        "note": "Reuse the F4 review of author v3, 15 June 2009: selected pages 1–3 and visually checked Table I. This supplies the single-particle or mean-field symmetry-class scope, not a new full classification proof. The final journal version has not been compared in full."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-f10-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "A Wilson loop describes transport around a closed path within a specified band subspace. Its eigenvalues survive unitary changes of basis inside that subspace; individual matrix entries do not. Use a fixed-rank, isolated projector and a consistent boundary identification. An insulator's occupied bands and a fully gapped Bogoliubov Hamiltonian's negative-energy bands are different physical constructions. A computed phase spectrum alone does not demonstrate superconductivity, a measured bulk gap or Majorana modes.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9302d42436e83c82",
+        "source-37986d2488e4cace"
+      ],
+      "conditions": "Fixed-rank isolated subspace, explicit A=+i convention, closed and correctly sewn loop, specified symmetry and converged mesh.",
+      "verificationScope": "Selected primary passages and bounded mathematical examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f10-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The loop can organize Chern winding, time-reversal topology and hybrid Wannier centers. Those interpretations require additional assumptions. A closed-loop phase is not generally quantized, and an attractive crossing pattern is not sufficient evidence for a topological invariant. Zak's original abstract emphasizes symmetry-dependent quantization; the complete original derivation has not been reviewed here.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fd30087dfafb8d90",
+        "source-50b4c7274c53cf48"
+      ],
+      "conditions": "Fixed-rank isolated subspace, explicit A=+i convention, closed and correctly sewn loop, specified symmetry and converged mesh.",
+      "verificationScope": "Selected primary passages and bounded mathematical examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f10-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Let the columns of $U_j$ form an orthonormal frame. Define $\\mathcal A=iU^\\dagger dU$ and forward overlaps $M_j=U_j^\\dagger U_{j+1}$. In a periodic model basis, close the final link with $U_N=U_0$ and order $W=M_0M_1\\cdots M_{N-1}$ from left to right along the path. Since $M_j=I-i\\mathcal A_j\\Delta k+O(\\Delta k^2)$, the corresponding ordered exponential has $-i\\mathcal A$, not $+i\\mathcal A$. For one band, $\\arg W=-\\gamma$ modulo $2\\pi$, where $\\gamma=\\oint\\mathcal A$. The inverse-loop convention is also valid if every phase and orientation is translated consistently.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9302d42436e83c82"
+      ],
+      "conditions": "Fixed-rank isolated subspace, explicit A=+i convention, closed and correctly sewn loop, specified symmetry and converged mesh.",
+      "verificationScope": "Selected primary passages and bounded mathematical examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f10-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Under $U_j\\mapsto U_jG_j$, with unitary $G_j$, each link becomes $G_j^\\dagger M_jG_{j+1}$ and the closed product becomes $G_0^\\dagger WG_0$. Interior factors cancel. This algebra explains both spectral gauge invariance and the need for closure. Actual Bloch bases can require a reciprocal-lattice sewing operator and orbital-position information instead of a naive endpoint identification. A different orbital embedding is not automatically a harmless gauge rotation within the same physical projector.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9302d42436e83c82",
+        "source-f3affc7c4f9e1271"
+      ],
+      "conditions": "Fixed-rank isolated subspace, explicit A=+i convention, closed and correctly sewn loop, specified symmetry and converged mesh.",
+      "verificationScope": "Selected primary passages and bounded mathematical examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f10-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Finite-step overlaps are generally not unitary. For $M_j=V_j\\Sigma_j Z_j^\\dagger$, use its polar unitary factor $Q_j=V_jZ_j^\\dagger$ when the overlap is nonsingular. This construction preserves gauge covariance and yields a unitary discrete product. Record the smallest singular values, subspace dimension, direct gap and mesh convergence. Polar projection cannot repair a singular overlap, an incorrectly selected subspace or an unresolved band touching.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fd30087dfafb8d90",
+        "source-688ad98fc33198c0"
+      ],
+      "conditions": "Fixed-rank isolated subspace, explicit A=+i convention, closed and correctly sewn loop, specified symmetry and converged mesh.",
+      "verificationScope": "Selected primary passages and bounded mathematical examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f10-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An independent rank-two example combines spinors $(\\cos(\\vartheta/2),e^{iwt}\\sin(\\vartheta/2))$ in separate two-dimensional blocks. Their analytic forward phases are $2\\pi w\\sin^2(\\vartheta/2)$ modulo $2\\pi$. Meshes of 32, 64 and 128 points approach these phases while raw-product eigenvalue magnitudes remain below one. Random $U(2)$ frame rotations, shifted basepoints and reversed paths pass the covariance and conjugation checks. Omitting the closing link deliberately breaks spectral gauge invariance. These are synthetic checks, not a material calculation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9302d42436e83c82",
+        "source-fd30087dfafb8d90"
+      ],
+      "conditions": "Fixed-rank isolated subspace, explicit A=+i convention, closed and correctly sewn loop, specified symmetry and converged mesh.",
+      "verificationScope": "Selected primary passages and bounded mathematical examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f10-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For an increasing-$k_x$ loop and positive $(k_x,k_y)$ orientation, the continuously unwrapped phase $\\Theta(k_y)=\\arg\\det W(k_y)$ winds by $2\\pi C$ as $k_y$ traverses its period in this convention. Four lower-band examples of $h=(\\sin k_x,\\sin k_y,m+\\cos k_x+\\cos k_y)\\cdot\\boldsymbol\\sigma$ give $C=0,+1,-1,0$ at $m=-3,-1,+1,+3$. Three meshes agree with separate analytic-curvature quadratures, and reversing the loop reverses the sign. The critical masses $-2,0,2$ have explicit gap zeros and are rejected. Integer output alone is not a convergence certificate.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-688ad98fc33198c0"
+      ],
+      "conditions": "Fixed-rank isolated subspace, explicit A=+i convention, closed and correctly sewn loop, specified symmetry and converged mesh.",
+      "verificationScope": "Selected primary passages and bounded mathematical examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f10-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "In a two-dimensional band insulator with time reversal satisfying $\\mathcal T^2=-1$, the parity of Kramers-partner exchange over half the transverse Brillouin zone diagnoses the $\\mathbb Z_2$ class. Preserve the complete occupied projector, the bulk gap and symmetry constraints. Sorting principal phases independently at every point can invent discontinuities at a branch cut; follow spectral connectivity or a validated gap-tracking procedure. The local checks above do not implement or certify a general $\\mathbb Z_2$ classifier.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9302d42436e83c82",
+        "source-fd30087dfafb8d90"
+      ],
+      "conditions": "Fixed-rank isolated subspace, explicit A=+i convention, closed and correctly sewn loop, specified symmetry and converged mesh.",
+      "verificationScope": "Selected primary passages and bounded mathematical examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f10-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "For a single band with the stated Bloch convention, a hybrid center satisfies $\\bar x/a=\\gamma/(2\\pi)=-\\arg W/(2\\pi)$ modulo one. In multiple bands, Wilson eigenphases correspond to centers in the appropriate parallel-transport or maximally localized hybrid construction, not arbitrary individual Wannier functions. Physical electronic polarization also needs electron charge, occupations, cell volume and a consistent origin; total polarization includes ionic contributions. Insulating adiabatic changes can be meaningful while an absolute branch remains ambiguous by a polarization quantum. A BdG phase spectrum cannot simply be substituted into the ordinary electron-polarization formula.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fd30087dfafb8d90",
+        "source-f3affc7c4f9e1271",
+        "source-37986d2488e4cace"
+      ],
+      "conditions": "Fixed-rank isolated subspace, explicit A=+i convention, closed and correctly sewn loop, specified symmetry and converged mesh.",
+      "verificationScope": "Selected primary passages and bounded mathematical examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f10-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "An experimental comparison needs an explicit map from the measured observable to the modeled projector, including sample state, orbital basis, energy window and relevant symmetry. Band inversion, a calculated loop or an isolated boundary feature does not by itself verify the full pairing state. No experimental transition temperature or material certification is assigned to the synthetic examples on this page.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9302d42436e83c82",
+        "source-37986d2488e4cace"
+      ],
+      "conditions": "Fixed-rank isolated subspace, explicit A=+i convention, closed and correctly sewn loop, specified symmetry and converged mesh.",
+      "verificationScope": "Selected primary passages and bounded mathematical examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f10-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "An isolated band manifold can have a well-defined Wilson loop even when a material is metallic. Its invariant is then not automatically the invariant of all physically occupied states: a Fermi surface makes that projector change rank. Likewise, band disentanglement selects a model subspace whose validity needs separate evidence. For BdG systems, respect particle-hole and time-reversal constraints and avoid interpreting Nambu duplication as independent electron occupations. Strong interactions, disorder and nodal systems can require different formulations.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-688ad98fc33198c0",
+        "source-37986d2488e4cace"
+      ],
+      "conditions": "Fixed-rank isolated subspace, explicit A=+i convention, closed and correctly sewn loop, specified symmetry and converged mesh.",
+      "verificationScope": "Selected primary passages and bounded mathematical examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f10-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "Complete scientific acceptance remains open. Selected author and published passages, two original polarization pages and independent numerical examples have been checked. The full Yu equivalence proof, full Zak derivation, final-version comparisons, realistic orbital sewing, material fits and a general time-reversal classifier have not been reproduced. The numerical checks certify only the stated bounded constructions.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9302d42436e83c82",
+        "source-fd30087dfafb8d90",
+        "source-f3affc7c4f9e1271",
+        "source-50b4c7274c53cf48"
+      ],
+      "conditions": "Fixed-rank isolated subspace, explicit A=+i convention, closed and correctly sewn loop, specified symmetry and converged mesh.",
+      "verificationScope": "Selected primary passages and bounded mathematical examples; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-f10-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Archive the Hamiltonian or projector, basis and embedding, symmetry operators, loop orientation, sewing rule and phase convention with every topology claim. Keep raw singular values and mesh history alongside the plotted spectrum. Compare a simple limit with an independent curvature or symmetry calculation before interpreting a complicated model. This makes a Wilson-loop result a reproducible hypothesis about a specified system rather than an unsupported label attached to a candidate superconductor.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-9302d42436e83c82",
+        "source-fd30087dfafb8d90",
+        "source-688ad98fc33198c0",
+        "source-37986d2488e4cace"
+      ],
+      "conditions": "Fixed-rank isolated subspace, explicit A=+i convention, closed and correctly sewn loop, specified symmetry and converged mesh.",
+      "verificationScope": "Selected primary passages and bounded mathematical examples; complete scientific acceptance remains open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-f10-correction-1",
+      "sourceId": "source-9302d42436e83c82",
+      "description": "The pinned draft mixes A=+i U†dU with a +i exponential and a forward overlap product. The public article fixes the product ordering and uses the matching minus-i exponent; one-band forward phase is minus the Berry phase.",
+      "scope": "Selected Yu Appendix A and independent analytic spinor and Chern checks. The inverse convention remains valid when consistently translated."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "W\\mapsto G_0^\\dagger WG_0",
+      "check": "Three rank-two meshes, random U(2) gauges, shifted basepoints, reversal and omitted-closure negative controls; singular and rank-changing links rejected."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "C=\\Delta\\arg\\det W/(2\\pi)",
+      "check": "Four two-band regimes, three loop meshes and two independent curvature meshes, plus gauge and orientation checks; three explicit gap closures rejected."
+    }
+  ],
+  "materialCases": [],
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 74,
+      "targetSections": [
+        "scope",
+        "mathematical-assumptions",
+        "experimental-criteria",
+        "limits-and-disputes",
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned source preserved. Corrected mixed sign conventions, added numerical negative controls and bounded polarization, metallic and BdG interpretations."
+    }
+  ]
+}

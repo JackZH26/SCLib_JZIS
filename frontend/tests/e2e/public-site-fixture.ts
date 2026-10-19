@@ -1,6 +1,7 @@
 import { expect, test as base, type BrowserContext } from "@playwright/test";
 
-/** Browser-only HTTP restriction, not an OS sandbox or backend integration test. */
+/** One canonical loopback origin only. No additional host or external origin is allowed.
+ * Browser-only HTTP restriction, not an OS sandbox or backend integration test. */
 export async function restrictToLocalOrigin(context: BrowserContext, origin: string) {
   const blocked: string[] = [];
   await context.route("**/*", async route => {
@@ -30,7 +31,7 @@ export async function restrictToLocalOrigin(context: BrowserContext, origin: str
 
 export const test = base.extend<{ publicNetworkGuard: void }>({
   publicNetworkGuard: [async ({ context, baseURL }, use) => {
-    if (!baseURL || new URL(baseURL).origin !== "http://127.0.0.1:3102") {
+    if (!baseURL || new URL(baseURL).origin !== "http://localhost:3102") {
       throw new Error("Public browser tests require the owned loopback server.");
     }
     const blocked = await restrictToLocalOrigin(context, new URL(baseURL).origin);

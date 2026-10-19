@@ -1,0 +1,459 @@
+{
+  "id": "scwiki-b10",
+  "topicId": "scwiki-topic-b10",
+  "code": "B10",
+  "slug": "hund-coupling-and-superconductivity",
+  "title": "Hund coupling and superconductivity",
+  "summary": "Understand multiorbital exchange, atomic multiplets and metallic coherence without mistaking normal-state correlations for a verified pairing mechanism.",
+  "aliases": [
+    "Hund coupling",
+    "Hund metal",
+    "Janus effect",
+    "Kanamori interaction",
+    "spin freezing",
+    "orbital differentiation",
+    "pair hopping"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment",
+    "hypothesis"
+  ],
+  "relatedCodes": [
+    "B3",
+    "B4",
+    "B12",
+    "B9",
+    "D4"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-18T12:19:32.194497+00:00",
+  "review": {
+    "checkedAt": "2026-10-18",
+    "scope": "Selected Kanamori/Janus manuscript passages, published Yin paper and complete appended erratum, Hardy accepted passages and independent atomic models.",
+    "limitations": [
+      "Full scientific acceptance, complete final-version comparison and raw-data reproduction remain open.",
+      "Finite atomic models do not predict lattice coherence or superconducting Tc.",
+      "Hardy calorimetric transition does not prove a Hund-mediated pairing interaction; pressure and sample details are not fully re-extracted.",
+      "The Yin material-label erratum is incorporated; supplementary calculations are not independently reproduced.",
+      "The2026 cluster model100K/140K scales are theoretical and excluded from experimental Tc records."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "B_mechanisms/B10_Hund_coupling.md",
+    "sha256": "453d9d8cc07ab84f7cf45d80e6d519aa6f16d85308bd1c13dadc3416d2a6f567",
+    "sourceId": "file-def3971fd6d2301a"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 4,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained; primary evidence and independent finite checks bound the interpretation."
+    },
+    {
+      "startLine": 5,
+      "endLine": 10,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained; primary evidence and independent finite checks bound the interpretation."
+    },
+    {
+      "startLine": 11,
+      "endLine": 16,
+      "targetSections": [
+        "scope",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained; primary evidence and independent finite checks bound the interpretation."
+    },
+    {
+      "startLine": 17,
+      "endLine": 22,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained; primary evidence and independent finite checks bound the interpretation."
+    },
+    {
+      "startLine": 23,
+      "endLine": 31,
+      "targetSections": [
+        "discovery-implications"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained; primary evidence and independent finite checks bound the interpretation."
+    },
+    {
+      "startLine": 32,
+      "endLine": 40,
+      "targetSections": [
+        "related-topics",
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter retained; primary evidence and independent finite checks bound the interpretation."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-2e4683ad42b430ca",
+      "doi": "10.1103/PhysRevLett.107.256401",
+      "title": "Janus-Faced Influence of Hund’s Rule Coupling in Strongly Correlated Materials",
+      "year": 2011,
+      "url": "https://doi.org/10.1103/PhysRevLett.107.256401",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "earlier-author-manuscript-selected-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1106.0815v1",
+        "note": "Selected pp.1–2: filling dependence, atomic addition gap and its inability to explain metallic coherence alone. Only v1 listed; full published-version comparison pending."
+      }
+    },
+    {
+      "id": "source-8155406e83b90d41",
+      "doi": "10.1146/annurev-conmatphys-020911-125045",
+      "title": "Strong Correlations from Hund’s Coupling",
+      "year": 2013,
+      "url": "https://doi.org/10.1146/annurev-conmatphys-020911-125045",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "earlier-review-manuscript-selected-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/pdf/1207.3033v2",
+        "note": "Selected pp.5–6 interaction convention and rotational-invariance caveat; p6 Eqs2–7 visually inspected. Full final-version comparison pending."
+      }
+    },
+    {
+      "id": "source-68d283623978d0b0",
+      "doi": "10.1038/nmat3120",
+      "title": "Kinetic frustration and the nature of the magnetic and paramagnetic states in iron pnictides and iron chalcogenides",
+      "year": 2011,
+      "url": "https://doi.org/10.1038/nmat3120",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "published-primary-passages-with-erratum-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.physics.rutgers.edu/~haule/papers/nmat3120.pdf",
+        "note": "Published selected pp.3–4 orbital-dependent hopping, fixed interaction matrix and inference boundary; appended p5 erratum read and visually inspected. Supplementary methods/raw-data reproduction remain open."
+      }
+    },
+    {
+      "id": "source-49e40a5d456ab475",
+      "doi": "10.1038/nmat3152",
+      "title": "Erratum: Kinetic frustration and the nature of the magnetic and paramagnetic states in iron pnictides and iron chalcogenides",
+      "year": 2011,
+      "url": "https://doi.org/10.1038/nmat3152",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "published-erratum-full-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.physics.rutgers.edu/~haule/papers/nmat3120.pdf",
+        "note": "Appended p5 correction visually checked: Figures1/2 material label BaFe2As2 replaces BaFe2Se2; corrected online23September2011."
+      }
+    },
+    {
+      "id": "source-76e58b04a07e6eca",
+      "doi": "10.1103/PhysRevLett.111.027002",
+      "title": "Evidence of Strong Correlations and Coherence-Incoherence Crossover in the Iron Pnictide Superconductor KFe2As2",
+      "year": 2013,
+      "url": "https://doi.org/10.1103/PhysRevLett.111.027002",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "accepted-manuscript-selected-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://link.aps.org/accepted/10.1103/PhysRevLett.111.027002",
+        "note": "Selected accepted PDF pp.2–3 including cover: resistivity-ratio limitation, zero-field calorimetric3.4K transition,5.5T c-axis normal-state comparison. Full version/raw-data review pending."
+      }
+    },
+    {
+      "id": "source-e2a88a477c985a7e",
+      "doi": "10.1038/s41535-026-00849-9",
+      "title": "Interlayer pairing in bilayer nickelates",
+      "year": 2026,
+      "url": "https://doi.org/10.1038/s41535-026-00849-9",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "published-primary-selected-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://sces.phys.utk.edu/publications/Pub2026/s41535-026-00849-9.pdf",
+        "note": "Published pp.1–3: two-orbital DCA pairing, cluster geometry and missing spatial phase fluctuations at Nc2, sign-problem low-temperature restriction and approximate extrapolation. No independent model reproduction."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-b10-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "Hund coupling is an intra-atomic exchange interaction that changes the energies and fluctuations of multiorbital electrons. It can organize a correlated metallic state without identifying the interaction that produces superconductivity. Orbital-dependent masses, slow screening and local moments are normal-state constraints on a pairing theory; they do not specify its Cooper-channel eigenfunction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8155406e83b90d41"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "The de' Medici–Mravlje–Georges three-orbital calculation illustrates a filling-dependent distinction. For two electrons, increasing Hund coupling can reduce quasiparticle coherence while moving the Mott threshold to stronger repulsion. The corresponding singly occupied and half-filled cases behave differently. This is the Janus effect in a specified model, not a universal monotonic relation between Hund coupling and transition temperature.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2e4683ad42b430ca"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Specify the correlated orbitals, their crystal-field energies and the interaction convention. In the Kanamori convention used here, $U$ penalizes opposite spins in one orbital, $U'$ couples opposite spins in different orbitals, and $U'-J$ couples parallel spins in different orbitals. Spin-flip and pair-hopping amplitudes are retained. For the usual degenerate-shell reduction with both amplitudes equal to $J$, we impose $U'=U-2J$. The review distinguishes this assumption from more general rotationally invariant interactions; the relation cannot be inferred from spin symmetry alone.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8155406e83b90d41"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "An independent finite-atom check constructs the full Fock-space Hamiltonian, including fermionic signs, for two and three orbitals. There is no hopping between atoms, bath or spin-orbit coupling. With two electrons and positive $J$, the two-orbital eigenvalues and degeneracies are",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8155406e83b90d41"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$E=U-3J\\ (3),\\qquad U-J\\ (2),\\qquad U+J\\ (1).$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8155406e83b90d41"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The lowest triplet is threefold degenerate. Keeping density interactions alone leaves only two states at this lowest energy and shifts the opposite-spin combination. It therefore changes the spin multiplet, even when the parameters retain the same names. Direct diagonalizations at three parameter sets verify this distinction; the omission is not a harmless numerical shortcut.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8155406e83b90d41"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "With three degenerate orbitals, the two-electron sector instead has energies $U-3J$, $U-J$ and $U+2J$, with degeneracies 9, 5 and 1. Counting all 15 states checks that spin and orbital multiplicities have both been included. These finite spectra provide a reproducible convention test before a lattice calculation; they are not a prediction of quasiparticle coherence.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8155406e83b90d41"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-mathematical-assumptions-6",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Define the atomic charge-addition gap using ground-state energies at fixed electron number:",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8155406e83b90d41"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-mathematical-assumptions-7",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\Delta_{\\mathrm{at}}(N)=E_0(N+1)+E_0(N-1)-2E_0(N).$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8155406e83b90d41"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-mathematical-assumptions-8",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For the three-orbital model at the tested repulsive parameters, direct diagonalization gives $\\Delta_{\\mathrm{at}}(1)=\\Delta_{\\mathrm{at}}(2)=U-3J$, but $\\Delta_{\\mathrm{at}}(3)=U+2J$. Nine numerical charge-gap checks reproduce these expressions. The half-filled shell responds differently to exchange. A finite atomic addition gap is neither a superconducting excitation gap nor a solid's critical interaction: bandwidth, hybridization and self-consistency are missing. The original Janus paper also separates this atomic argument from the low-coherence metallic regime.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-2e4683ad42b430ca"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-mathematical-assumptions-9",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Crystal-field splitting provides a second independent illustration. Put two orbital energies at $-\\delta/2$ and $+\\delta/2$, keep two electrons, and retain pair hopping. The mixed doubly occupied singlet has energy $U-\\sqrt{\\delta^2+J^2}$, while the triplet has energy $U-3J$. Four matrix checks confirm a crossing at $|\\delta|=\\sqrt8J$. For $U=6$, $J=1$ and $\\delta=4$ in arbitrary energy units, the singlet is lower despite positive Hund coupling. This example excludes any unconditional statement that Hund exchange guarantees a high-spin ground state in a crystal.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8155406e83b90d41"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "Separate an orbital-resolved theoretical self-energy from a measured band dispersion or a thermodynamic sum over bands. State the temperature, field, reference band calculation and fitting window. A mass comparison can depend on the chosen correlated subspace and ligand hybridization; one universal enhancement factor should not be transferred between iron compounds, ruthenates and nickelates.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8155406e83b90d41"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Hardy and colleagues studied KFe2As2 using resistivity, calorimetry, thermal expansion and susceptibility. Their accepted manuscript reports a zero-field heat-capacity transition at 3.4 K and a 5.5 T, c-axis comparison for the normal-state curve. It warns that a large residual-resistivity ratio can reflect strong high-temperature scattering rather than exceptionally few defects. The normal-state coherence interpretation and the superconducting transition are separate observations; neither constitutes a direct measurement of a unique pairing interaction. Selected manuscript pages were checked, not the full raw data.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-76e58b04a07e6eca"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Yin, Haule and Kotliar compared iron compounds with DFT+DMFT while fixing the local interaction matrix. Their analysis connects orbital differentiation to structure and describes cancellation between direct and ligand-mediated hopping for the xy orbital. These are material calculations with explicit approximations. The paper's proposed structural optimization for superconductivity remains an inference, not an experimental demonstration that maximizing Hund coupling raises Tc.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-68d283623978d0b0"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "The Yin paper has a published erratum: the material label in Figures 1 and 2 is BaFe2As2, replacing the original BaFe2Se2 label. The corrected publisher PDF and appended erratum were checked, including a visual inspection of the correction. Preserve this identity when reusing the comparison.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-68d283623978d0b0",
+        "source-49e40a5d456ab475"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "A reduced bare triplet interaction $U-3J$ can remain positive. In all three repulsive parameter sets checked above it does. Lowering one atomic energy relative to another does not demonstrate an attractive effective interaction between low-energy quasiparticles. A pairing calculation must include the relevant momentum, frequency, spin and orbital structure, along with normal-state renormalization and competing orders.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-8155406e83b90d41"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-limits-and-disputes-3",
+      "sectionId": "limits-and-disputes",
+      "statement": "Spin freezing describes a dynamical regime over specified temperatures and timescales; it must not automatically be relabeled a zero-temperature magnetic phase. The finite-atom checks here cannot establish that regime because they contain no environment or relaxation process. Full final-version comparison, material-specific vertex calculations and independent experimental replication remain outside this entry's completed review.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-8155406e83b90d41"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Vary filling, crystal-field splitting or structure within a clearly specified model, and compare normal-state predictions against multiple probes before solving the pairing problem. Record which interaction terms and vertex corrections are retained. Test whether a candidate enhancement survives reduced coherence and competing magnetism. Report the resulting pairing eigenfunction and its assumptions rather than ranking materials by $J$ or mass alone.",
+      "evidenceType": "hypothesis",
+      "sourceIds": [
+        "source-8155406e83b90d41"
+      ],
+      "conditions": "Finite atomic Kanamori illustrations retain spin flip,pair hopping and Uprime=U-2J; cited review supplies background,not a claimed lattice reproduction. Normal-state evidence does not identify a Cooper kernel.",
+      "verificationScope": "Selected primary passages and tools/check_hund_models.py; complete scientific acceptance remains open."
+    },
+    {
+      "id": "scwiki-b10-claim-limits-and-disputes-4",
+      "sectionId": "limits-and-disputes",
+      "statement": "A 2026 bilayer-nickelate calculation illustrates why the pairing problem must be evaluated separately. Maier and colleagues analyze a two-orbital Hubbard–Hund model with a cluster method. Its two-site instability is near 140 K, while the authors infer a scale around 100 K for the large-system model. Neither is a measured material Tc. The two-site cluster omits spatial phase fluctuations; larger clusters encounter a low-temperature fermion sign problem. These limitations bound the proposed interlayer pairing interpretation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-e2a88a477c985a7e"
+      ],
+      "conditions": "Two-orbital bilayer DCA calculation;140K small-cluster and100K inferred model scales,not experimental records.",
+      "verificationScope": "Published pp.1–3 selected; complete supplementary and independent reproduction pending."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-b10-correction-1",
+      "description": "Retained distinct interaction conventions; density-only truncation changes the full spin multiplet. Atomic charge gaps do not establish a lattice pairing instability.",
+      "sourceId": "source-8155406e83b90d41",
+      "scope": "Selected review and independent finite models."
+    },
+    {
+      "id": "scwiki-b10-correction-2",
+      "description": "Yin Figures1/2 material identity is BaFe2As2, as specified by the published erratum.",
+      "sourceId": "source-49e40a5d456ab475",
+      "scope": "Full one-page erratum text and visual check; original pinned chapter unchanged."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "U-3J",
+      "check": "Six full two-electron spectra plus three density-only degeneracy comparisons."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\Delta_{\\mathrm{at}}(N)=E_0(N+1)+E_0(N-1)-2E_0(N)",
+      "check": "Nine charge addition gaps from independently diagonalized Fock-space Hamiltonians."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "|\\delta|=\\sqrt8J",
+      "check": "Four crystal-field matrices verify paired singlet/triplet crossing including pair hopping."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-b10-material-1",
+      "formula": "KFe2As2",
+      "sample": "Hardy2013 single-crystal calorimetry; full specimen characterization not re-extracted",
+      "recordType": "experiment",
+      "tcK": 3.4,
+      "reportedTemperatureK": 3.4,
+      "temperatureKind": "transition",
+      "temperatureNote": "Zero-field heat-capacity jump in accepted manuscript Fig2;5.5T along c used for normal-state comparison",
+      "criterion": "heat-capacity-jump",
+      "pressureRegime": "unknown",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "calorimetry,0T;5.5T along c normal-state comparison; no uncertainty re-extracted",
+      "sourceId": "source-76e58b04a07e6eca",
+      "aliases": [
+        "iron-based",
+        "iron based superconductors"
+      ]
+    }
+  ]
+}

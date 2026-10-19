@@ -1,0 +1,541 @@
+{
+  "id": "scwiki-c1",
+  "topicId": "scwiki-topic-c1",
+  "code": "C1",
+  "slug": "s-wave",
+  "title": "s-wave: gap magnitude, symmetry and sign",
+  "summary": "Separate a full gap from A1g symmetry and sign-preserving pairing, using explicit models and experimental criteria.",
+  "aliases": [
+    "s wave",
+    "s-wave",
+    "A1g",
+    "sign preserving",
+    "isotropic gap",
+    "accidental nodes",
+    "Anderson theorem",
+    "Hebel Slichter"
+  ],
+  "evidenceTypes": [
+    "theory",
+    "experiment"
+  ],
+  "relatedCodes": [
+    "B1",
+    "B2",
+    "C2",
+    "B12",
+    "A5"
+  ],
+  "editorialStatus": "scoped-check",
+  "contentState": "pilot",
+  "modifiedAt": "2026-10-19",
+  "review": {
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Anderson scan, Mishra author manuscript, original MgB2 measurement text and published hydride passages, plus scoped historical checks and independent symmetry/response illustrations. Follow-up checks official D4h/C4h character tables, BCS pp.1182–1183/1186, Anderson pp.26/29 and Mishra v1 pp.1–2; local quadrature and nonuniform-gap counterexamples remain model-scoped.",
+    "limitations": [
+      "Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
+      "Imposed-gap spectra do not establish unchanged self-consistent Tc under disorder.",
+      "The clean angular heat-jump example is not a disorder calculation; independent-band DOS omits phase-sensitive interband processes.",
+      "The aluminum measurement range and hydride synthesis/pressure scales are not interchangeable with a superconducting transition criterion.",
+      "A1g labeling here requires D4h; the uniform imposed-gap spectral identity does not extend to arbitrary site-dependent pairing or establish unchanged self-consistent Tc."
+    ]
+  },
+  "provenance": {
+    "repository": "JackZH26/jzis-superconductivity",
+    "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+    "path": "C_pairing_symmetry/C1_s_wave.md",
+    "sha256": "3f1fc5cf66008720473e2b11b28e924066c9becda8b414c9c80e9c222b259785",
+    "sourceId": "file-e12205667af480f4"
+  },
+  "sourceMap": [
+    {
+      "startLine": 1,
+      "endLine": 15,
+      "targetSections": [
+        "scope"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; corrected Choi DOI and retained distinctions between model ratios, experimental criteria and symmetry."
+    },
+    {
+      "startLine": 16,
+      "endLine": 31,
+      "targetSections": [
+        "mathematical-assumptions"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; corrected Choi DOI and retained distinctions between model ratios, experimental criteria and symmetry."
+    },
+    {
+      "startLine": 32,
+      "endLine": 45,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; corrected Choi DOI and retained distinctions between model ratios, experimental criteria and symmetry."
+    },
+    {
+      "startLine": 46,
+      "endLine": 54,
+      "targetSections": [
+        "experimental-criteria"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; corrected Choi DOI and retained distinctions between model ratios, experimental criteria and symmetry."
+    },
+    {
+      "startLine": 55,
+      "endLine": 64,
+      "targetSections": [
+        "limits-and-disputes"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; corrected Choi DOI and retained distinctions between model ratios, experimental criteria and symmetry."
+    },
+    {
+      "startLine": 65,
+      "endLine": 86,
+      "targetSections": [
+        "discovery-implications",
+        "related-topics"
+      ],
+      "decision": "edited-with-scoped-evidence",
+      "note": "Pinned chapter preserved; corrected Choi DOI and retained distinctions between model ratios, experimental criteria and symmetry."
+    }
+  ],
+  "references": [
+    {
+      "id": "source-ba10e800a1246bf6",
+      "doi": "10.1103/PhysRev.108.1175",
+      "title": "Theory of Superconductivity",
+      "year": 1957,
+      "url": "https://doi.org/10.1103/PhysRev.108.1175",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-full-text-scoped-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://journals.aps.org/pr/pdf/10.1103/PhysRev.108.1175",
+        "note": "Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review."
+      }
+    },
+    {
+      "id": "source-8d0e592da8ec9c7b",
+      "doi": "10.1016/0022-3697(59)90036-8",
+      "title": "Theory of dirty superconductors",
+      "year": 1959,
+      "url": "https://doi.org/10.1016/0022-3697(59)90036-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-scan-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://physics.umd.edu/courses/Phys798S/anlage/Phys798SAnlageSpring06/Anderson%20TimeReversed%20Pairs%20Paper.pdf",
+        "note": "Published pp. 26 and 29 visually read: exact time-reversed states, magnetic impurities, density-of-states/interaction changes and anisotropy. No blanket disorder immunity inferred."
+      }
+    },
+    {
+      "id": "source-fcdf63980c7fb4f9",
+      "doi": "10.1103/PhysRevB.79.094512",
+      "title": "Lifting of nodes by disorder in extended-s-state superconductors: Application to ferropnictides",
+      "year": 2009,
+      "url": "https://doi.org/10.1103/PhysRevB.79.094512",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-earlier-author-manuscript-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/pdf/0901.2653v1",
+        "note": "Selected pp1–3 and6–8: local pocket harmonic, weak Born scatterers, single-sheet Tc suppression and multiband/interband limitations. Submission history is January 2009; PDF body has a later internal typesetting date, not a new version. Full journal comparison pending."
+      }
+    },
+    {
+      "id": "source-99644bb2badd2d56",
+      "doi": "10.1103/PhysRev.113.1504",
+      "title": "Nuclear Spin Relaxation in Normal and Superconducting Aluminum",
+      "year": 1959,
+      "url": "https://doi.org/10.1103/PhysRev.113.1504",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "publisher-abstract-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://journals.aps.org/pr/abstract/10.1103/PhysRev.113.1504",
+        "note": "Field-cycling method and 0.94–4.2 K measurement range; full experimental paper not reviewed."
+      }
+    },
+    {
+      "id": "source-fade6558e7eafb2b",
+      "doi": "10.1038/35065039",
+      "title": "Superconductivity at 39 K in magnesium diboride",
+      "year": 2001,
+      "url": "https://doi.org/10.1038/35065039",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-author-uploaded-published-text-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www.researchgate.net/publication/12090250_Superconductivity_at_39_K_in_magnesium_diboride",
+        "note": "Author-uploaded original article text, final measurement paragraphs and Figs. 3/4 captions:39 K resistance onset,38 K endpoint,10 Oe magnetometry; raw data and original figure pixels not reviewed. Excludes neighboring article text and later citing papers."
+      }
+    },
+    {
+      "id": "source-7c4eac077ae5e221",
+      "doi": "10.1038/nature00898",
+      "title": "The origin of the anomalous superconducting properties of MgB2",
+      "year": 2002,
+      "url": "https://doi.org/10.1038/nature00898",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "primary-full-text-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://www2.lbl.gov/Science-Articles/Archive/assets/images/2002/Aug-14-2002/MgB2Nature.pdf",
+        "note": "Selected pp. 758–759 and Fig. 3 checked during A5: anisotropic calculation, band-dependent gaps and common calculated transition. This article inherits that scoped check, not independent convergence or experimental replication."
+      }
+    },
+    {
+      "id": "source-8b901b9c6008c434",
+      "doi": "10.1038/nature14964",
+      "title": "Conventional superconductivity at 203 kelvin at high pressures in the sulfur hydride system",
+      "year": 2015,
+      "url": "https://doi.org/10.1038/nature14964",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "author-abstract-scoped-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://arxiv.org/abs/1506.08190",
+        "note": "Author abstract: resistivity, field, susceptibility and isotope observations; H3S attribution qualified in that version. Publisher identity checked; detailed data and final-version comparison pending."
+      }
+    },
+    {
+      "id": "source-77b774e18b0f50c7",
+      "doi": "10.1103/PhysRevLett.122.027001",
+      "title": "Evidence for Superconductivity above 260 K in Lanthanum Superhydride at Megabar Pressures",
+      "year": 2019,
+      "url": "https://doi.org/10.1103/PhysRevLett.122.027001",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-primary-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://physics.aps.org/featured-article-pdf/10.1103/PhysRevLett.122.027001",
+        "note": "Somayazulu et al., not Drozdov. Selected published pp2–4: sample A four-probe geometry, pressure before/after cycling, instrument floor and mixed-phase/pseudo-four-probe caveats. Transition pressure not directly measured. Full supplement/raw-data review pending."
+      }
+    },
+    {
+      "id": "source-1e6e868a12cdd34f",
+      "doi": "10.1038/s41586-019-1201-8",
+      "title": "Superconductivity at 250 K in lanthanum hydride under high pressures",
+      "year": 2019,
+      "url": "https://doi.org/10.1038/s41586-019-1201-8",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-published-primary-passages-check",
+        "checkedAt": "2026-10-18",
+        "evidenceUrl": "https://public.magnet.fsu.edu/AToth/NSF%20publication%20access/2019/05%20Newly%20Entered%20Pubs%20May%202019/2019%20cited/2019_Superconductivity%20at%20250%20K%20in%20lanthanum%20hydride%20under%20high%20pressures.pdf",
+        "note": "Selected pp. 528–530 and Methods PDF pp. 5–6: onset criterion,50/90 percent field fits, unresolved small-sample magnetization, hydride/deuteride phases and isotope limits. Full replication and raw-data review pending."
+      }
+    },
+    {
+      "id": "source-23fba654f3db5472",
+      "doi": null,
+      "title": "Bilbao Crystallographic Server: Point Group Tables of D4h (4/mmm)",
+      "year": null,
+      "url": "https://www.cryst.ehu.eus/cgi-bin/rep/programs/sam/point.py?num=15&sg=123",
+      "publicationStatus": "dataset",
+      "verification": {
+        "scope": "official-point-group-character-table-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.cryst.ehu.eus/cgi-bin/rep/programs/sam/point.py?num=15&sg=123",
+        "note": "Official POINT character table inspected: A1g has all-positive unit characters and is fully symmetric. Undated online table; access date is not a publication date. This table classifies symmetry, not a material pairing mechanism."
+      }
+    },
+    {
+      "id": "source-8279a9f7f0168d6e",
+      "doi": null,
+      "title": "Bilbao Crystallographic Server: Point Group Tables of C4h (4/m)",
+      "year": null,
+      "url": "https://www.cryst.ehu.eus/cgi-bin/rep/programs/sam/point.py?num=11&sg=83",
+      "publicationStatus": "dataset",
+      "verification": {
+        "scope": "official-point-group-character-table-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.cryst.ehu.eus/cgi-bin/rep/programs/sam/point.py?num=11&sg=83",
+        "note": "Official POINT character table inspected: Ag has all-positive unit characters and is fully symmetric. Undated online table; access date is not a publication date. This table classifies symmetry, not a material pairing mechanism."
+      }
+    }
+  ],
+  "claims": [
+    {
+      "id": "scwiki-c1-claim-scope-1",
+      "sectionId": "scope",
+      "statement": "An isotropic, sign-preserving spin-singlet gap is the conventional s-wave reference. Three questions must nevertheless be separated: whether quasiparticles are fully gapped, how the order parameter transforms under crystal symmetry, and whether it changes sign between parts of the Fermi surface. A full gap answers the first question within the measurement's resolution; it does not settle the other two.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-fcdf63980c7fb4f9"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c1-claim-scope-2",
+      "sectionId": "scope",
+      "statement": "For a crystal with D4h (4/mmm) point-group symmetry, A1g denotes the fully symmetric even-parity representation. It permits a constant gap but also higher harmonics and accidental nodes. The centrosymmetric tetragonal group C4h (4/m) instead labels its fully symmetric representation Ag; use the actual crystal point group. In multiband systems, fully open gaps can have opposite signs on different sheets; see the separate s± entry. Identifying an s-wave state also does not, by itself, identify its microscopic pairing interaction.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fcdf63980c7fb4f9",
+        "source-23fba654f3db5472",
+        "source-8279a9f7f0168d6e"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Bilbao POINT tables establish the different D4h and C4h labels. Mishra v1 pp.1–2 gives nodal A1g and sign-changing multiband context. Local angular examples illustrate why symmetry alone does not fix nodes or a microscopic interaction."
+    },
+    {
+      "id": "scwiki-c1-claim-mathematical-assumptions-1",
+      "sectionId": "mathematical-assumptions",
+      "statement": "The equilibrium, single-band, isotropic, constant-density-of-states weak-coupling BCS model gives $2\\Delta(0)/(k_BT_c)\\simeq3.528$ and $\\Delta C/(\\gamma T_c)\\simeq1.426$, with $\\gamma$ the normal electronic heat-capacity coefficient. These are limiting benchmarks, not mandatory ratios for every s-wave material. The existing independent gap and entropy checks establish these model limits; strong coupling, multiband structure and anisotropy require their own calculation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "BCS published pp.1182–1183 and1186 supply the gap equation, excitation convention and entropy expression. The modern limiting constants are locally recomputed; the historical rounded ratio is not copied as an exact result."
+    },
+    {
+      "id": "scwiki-c1-claim-mathematical-assumptions-2",
+      "sectionId": "mathematical-assumptions",
+      "statement": "To illustrate symmetry without fitting a material, take a circular Fermi surface centered at the tetragonal zone center and $\\Delta(\\phi)=\\Psi f(\\phi)$, where",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local weak-coupling quadrature, circular cos(4phi) angular model, imposed-gap matrix spectra and independent-band DOS are explanatory calculations, not material fits. BCS supplies the mean-field context; Mishra uses a distinct local cos(2phi) pocket model; Anderson discusses exact time-reversed states rather than these synthetic site potentials."
+    },
+    {
+      "id": "scwiki-c1-claim-mathematical-assumptions-3",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$f(\\phi)=1+r\\cos(4\\phi).$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local weak-coupling quadrature, circular cos(4phi) angular model, imposed-gap matrix spectra and independent-band DOS are explanatory calculations, not material fits. BCS supplies the mean-field context; Mishra uses a distinct local cos(2phi) pocket model; Anderson discusses exact time-reversed states rather than these synthetic site potentials."
+    },
+    {
+      "id": "scwiki-c1-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Rotations by $\\pi/2$, reflections and inversion leave this function unchanged. For $|r|<1$ it is positive everywhere; at $|r|=1$ four zeros touch the Fermi surface without sign reversal; for $|r|>1$ there are eight sign-changing nodes. Their presence changes with a parameter rather than being required by A1g symmetry. This global fourfold example is distinct from Mishra and colleagues' local twofold harmonic on a selected off-center pocket.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fcdf63980c7fb4f9"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local weak-coupling quadrature, circular cos(4phi) angular model, imposed-gap matrix spectra and independent-band DOS are explanatory calculations, not material fits. BCS supplies the mean-field context; Mishra uses a distinct local cos(2phi) pocket model; Anderson discusses exact time-reversed states rather than these synthetic site potentials."
+    },
+    {
+      "id": "scwiki-c1-claim-mathematical-assumptions-5",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For clean weak-coupling separable pairing with uniform angular density-of-states weight, the illustrative heat-capacity jump is",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local weak-coupling quadrature, circular cos(4phi) angular model, imposed-gap matrix spectra and independent-band DOS are explanatory calculations, not material fits. BCS supplies the mean-field context; Mishra uses a distinct local cos(2phi) pocket model; Anderson discusses exact time-reversed states rather than these synthetic site potentials."
+    },
+    {
+      "id": "scwiki-c1-claim-mathematical-assumptions-6",
+      "sectionId": "mathematical-assumptions",
+      "statement": "$$\\frac{\\Delta C}{\\gamma T_c}=\\frac{12}{7\\zeta(3)}\\frac{\\langle f^2\\rangle^2}{\\langle f^4\\rangle},\\qquad \\langle f^2\\rangle=1+\\frac{r^2}{2},\\quad \\langle f^4\\rangle=1+3r^2+\\frac{3r^4}{8}.$$",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local weak-coupling quadrature, circular cos(4phi) angular model, imposed-gap matrix spectra and independent-band DOS are explanatory calculations, not material fits. BCS supplies the mean-field context; Mishra uses a distinct local cos(2phi) pocket model; Anderson discusses exact time-reversed states rather than these synthetic site potentials."
+    },
+    {
+      "id": "scwiki-c1-claim-mathematical-assumptions-7",
+      "sectionId": "mathematical-assumptions",
+      "statement": "Independent angular sums and a thermal-kernel quadrature verify five cases. At $r=0.6$ the gap remains nodeless, while the jump is about $0.933$ rather than $1.426$. This shows why applying the isotropic ratio as a symmetry test can fail. It is a clean separable-model result, not a disorder simulation or a measured sample value. The cited BCS paper provides the underlying mean-field context; the angular calculation is our independent illustration.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local weak-coupling quadrature, circular cos(4phi) angular model, imposed-gap matrix spectra and independent-band DOS are explanatory calculations, not material fits. BCS supplies the mean-field context; Mishra uses a distinct local cos(2phi) pocket model; Anderson discusses exact time-reversed states rather than these synthetic site potentials."
+    },
+    {
+      "id": "scwiki-c1-claim-mathematical-assumptions-8",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For a real symmetric normal Hamiltonian $h$ and an imposed uniform real gap, the block matrix $\\mathcal H=\\begin{pmatrix}h&\\Delta I\\\\\\Delta I&-h\\end{pmatrix}$ has energies $\\pm\\sqrt{\\epsilon_n^2+\\Delta^2}$. Six small-matrix checks confirm this relation with different scalar site potentials. It does not prove an unchanged self-consistent $T_c$: the normal eigenvalues, density of states and pairing matrix elements can change. Anderson's argument pairs exact time-reversed states; it is not a blanket guarantee against all chemical disorder, localization or magnetic scattering. This spectral identity relies on the imposed gap being a scalar multiple of the identity. For a site-dependent real gap matrix $D$, the squared block Hamiltonian contains $hD-Dh$ in its off-diagonal block. Two explicit nonuniform-gap counterexamples verify a nonzero commutator and the failure of a naive pairing of normal-state eigenvalues with site gaps; they do not solve the gap equation.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d0e592da8ec9c7b"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local weak-coupling quadrature, circular cos(4phi) angular model, imposed-gap matrix spectra and independent-band DOS are explanatory calculations, not material fits. BCS supplies the mean-field context; Mishra uses a distinct local cos(2phi) pocket model; Anderson discusses exact time-reversed states rather than these synthetic site potentials."
+    },
+    {
+      "id": "scwiki-c1-claim-experimental-criteria-1",
+      "sectionId": "experimental-criteria",
+      "statement": "A magnitude-sensitive quasiparticle spectrum cannot generally determine an interband sign. Six independent-band, broadened-DOS comparisons give identical spectra after reversing one band's gap sign. This deliberately excludes interband scattering and coherent phase-sensitive tunneling. Measurements sensitive to phase or sign need their own geometry and matrix-element analysis. Low-temperature activation alone also cannot distinguish an isotropic gap from a smaller nonzero gap minimum.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-fcdf63980c7fb4f9"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local weak-coupling quadrature, circular cos(4phi) angular model, imposed-gap matrix spectra and independent-band DOS are explanatory calculations, not material fits. BCS supplies the mean-field context; Mishra uses a distinct local cos(2phi) pocket model; Anderson discusses exact time-reversed states rather than these synthetic site potentials."
+    },
+    {
+      "id": "scwiki-c1-claim-experimental-criteria-2",
+      "sectionId": "experimental-criteria",
+      "statement": "Hebel and Slichter's aluminum experiment used field cycling: nuclear spins relaxed in the superconducting state but were read out in the normal state. Its 0.94–4.2 K interval is a measurement range, not a range of transition temperatures. Nuclear relaxation tests a response with coherence effects; observing or missing a peak alone does not measure relative signs between bands. Only the original abstract has been checked here.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-99644bb2badd2d56"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c1-claim-experimental-criteria-3",
+      "sectionId": "experimental-criteria",
+      "statement": "Nagamatsu and colleagues' MgB2 report separates a zero-field four-probe resistance onset at 39 K from its 38 K end point, alongside magnetic measurements at 10 Oe.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-fade6558e7eafb2b"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c1-claim-experimental-criteria-4",
+      "sectionId": "experimental-criteria",
+      "statement": "Choi and colleagues subsequently calculated distinct band-dependent gaps using anisotropic electron–phonon theory. The discovery experiment and the gap calculation answer different questions; neither justifies assigning one fixed gap value to every MgB2 sample. The corrected Choi DOI is nature00898.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-7c4eac077ae5e221"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c1-claim-experimental-criteria-5",
+      "sectionId": "experimental-criteria",
+      "statement": "For lanthanum superhydrides, Somayazulu's sample A had room-temperature pressures of 188 GPa before and 196 GPa after cycling; pressure at the resistance change was not directly measured. The published account distinguishes four-probe data from contact-sensitive pseudo-four-probe configurations and mixed phases. Drozdov's later study reports additional field and isotope evidence, defines $T_c$ by resistance onset, and states that magnetization of its small samples remained unresolved. Neither transport report is a phase-sensitive measurement of gap sign.",
+      "evidenceType": "experiment",
+      "sourceIds": [
+        "source-77b774e18b0f50c7",
+        "source-1e6e868a12cdd34f"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c1-claim-limits-and-disputes-1",
+      "sectionId": "limits-and-disputes",
+      "statement": "Mishra and colleagues show node lifting in a model with weak pointlike scatterers treated in the Born approximation. Their single-sheet calculation can suppress $T_c$ too strongly; additional bands change that balance, while interband scattering cannot generally be discarded. This supports a conditional explanation of activated behavior after disorder, not the rule that disorder always preserves or improves s-wave superconductivity.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-fcdf63980c7fb4f9"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c1-claim-limits-and-disputes-2",
+      "sectionId": "limits-and-disputes",
+      "statement": "The ideal isotope value $\\alpha=-d\\ln T_c/d\\ln M=1/2$ assumes a harmonic phonon scale and otherwise mass-independent model parameters. Sulfur-hydride isotope observations support phonon involvement within their experimental context. For lanthanum hydrides, the published methods discuss different hydride/deuteride phase mixtures and zero-point/anharmonic stability effects. Matching pressure, phase and preparation is therefore essential before interpreting a mass derivative.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-ba10e800a1246bf6",
+        "source-8b901b9c6008c434",
+        "source-1e6e868a12cdd34f"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    },
+    {
+      "id": "scwiki-c1-claim-discovery-implications-1",
+      "sectionId": "discovery-implications",
+      "statement": "Combine thermodynamics, spectroscopy, magnetic response and controlled perturbations. Keep disorder-induced carrier or structural changes separate from elastic scattering, and distinguish small gaps from true nodes within a stated temperature window. Track superconducting evidence, symmetry, relative phase and pairing interaction as separate conclusions. Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-8d0e592da8ec9c7b",
+        "source-fcdf63980c7fb4f9",
+        "source-1e6e868a12cdd34f"
+      ],
+      "conditions": "Separate symmetry, magnitude, relative phase and interaction. Toy models assume declared circular Fermi surface, separable pairing, imposed gap or independent bands; not material fits.",
+      "verificationScope": "Only listed source passages/abstracts and independent checks reviewed; full scientific acceptance open."
+    }
+  ],
+  "corrections": [
+    {
+      "id": "scwiki-c1-correction-1",
+      "description": "Inherited Choi DOI corrected from unrelated nature00992 to nature00898.",
+      "sourceId": "source-7c4eac077ae5e221",
+      "scope": "Identity and inherited selected primary passages."
+    },
+    {
+      "id": "scwiki-c1-correction-2",
+      "description": "Full gap,A1g and sign preservation separated; MgB2 onset and endpoint not merged.",
+      "sourceId": "source-fade6558e7eafb2b",
+      "scope": "Independent symmetry examples and selected original measurement text."
+    },
+    {
+      "id": "scwiki-c1-correction-3",
+      "description": "Restricts A1g nomenclature to D4h and distinguishes C4h Ag; makes the uniform imposed-gap assumption and local derivation attribution explicit.",
+      "scope": "Official character tables, selected primary passages and bounded matrix/thermal checks."
+    }
+  ],
+  "equationChecks": [
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "f(\\phi)=1+r\\cos(4\\phi)",
+      "check": "Five symmetry/node/moment cases and thermal coefficient quadrature."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "E_n=\\sqrt{\\epsilon_n^2+\\Delta^2}",
+      "check": "Six finite BdG spectra with imposed uniform gap; not a self-consistent disorder calculation."
+    }
+  ],
+  "materialCases": [
+    {
+      "id": "scwiki-c1-material-1",
+      "formula": "MgB2",
+      "sample": "Nagamatsu 2001 original sample; zero-field four-probe measurement",
+      "recordType": "experiment",
+      "tcK": 39,
+      "reportedTemperatureK": 39,
+      "temperatureKind": "transition",
+      "temperatureNote": "Resistance onset 39 K; endpoint 38 K recorded separately in source. Magnetometry at 10 Oe is a distinct measurement.",
+      "criterion": "resistance-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "equilibrium",
+      "probe": "Four-probe resistivity at zero applied magnetic field",
+      "sourceId": "source-fade6558e7eafb2b"
+    }
+  ]
+}

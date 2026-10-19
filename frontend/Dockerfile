@@ -54,6 +54,9 @@ RUN apk upgrade --no-cache \
       /usr/local/bin/yarnpkg
 RUN addgroup -g 1001 -S nodejs && adduser -S nextjs -u 1001
 COPY --from=builder /app/public ./public
+# Content and its build script must survive the standalone image boundary.
+COPY --from=builder /app/content/scwiki ./content/scwiki
+COPY --from=builder /app/scripts ./scripts
 COPY --from=builder --chown=nextjs:nodejs /app/.next/standalone ./
 COPY --from=builder --chown=nextjs:nodejs /app/.next/static ./.next/static
 USER nextjs
