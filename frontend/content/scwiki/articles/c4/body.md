@@ -6,7 +6,7 @@ No sample in this entry is classified as experimentally established B2g. This de
 
 ## Mathematical assumptions
 
-With lattice spacing one, an illustrative harmonic is $\Delta(\mathbf k)=\Delta_0\sin k_x\sin k_y$. It changes sign under either axial reflection and under a quarter turn, but is unchanged by inversion or interchange of $k_x$ and $k_y$. These transformations give B2g for the stated axes. Gap zeros lie on axial lines, including their periodic zone-boundary counterparts; quasiparticle nodes require intersections with the Fermi surface. Higher harmonics can add zeros without changing the representation. [R1](#ref-source-8d1b859d5ffcad9f) [R2](#ref-source-4bdcd96b3b93d462)
+The calculations in this section are local explanatory models; cited sources provide the stated theoretical context rather than the synthetic numerical results. With lattice spacing one, an illustrative harmonic is $\Delta(\mathbf k)=\Delta_0\sin k_x\sin k_y$. It changes sign under either axial reflection and under a quarter turn, but is unchanged by inversion or interchange of $k_x$ and $k_y$. These transformations give B2g for the stated axes. Gap zeros lie on axial lines, including their periodic zone-boundary counterparts; quasiparticle nodes require intersections with the Fermi surface. Higher harmonics can add zeros without changing the representation. [R1](#ref-source-8d1b859d5ffcad9f) [R2](#ref-source-4bdcd96b3b93d462)
 
 Coordinate conventions matter. For a unit circular contour, $2xy=\sin2\phi$ and $x^2-y^2=\cos2\phi$. Under the passive coordinate change $x'=(x+y)/\sqrt2$, $y'=(-x+y)/\sqrt2$, one finds $x'^2-y'^2=2xy$. The polynomial name changes while the physical pattern relative to the crystal is unchanged. Four direct checks verify this identity. A comparison between Fe–Fe and Fe–As coordinate conventions must therefore include the axes and symmetry operations, rather than matching the word “d-wave” alone. [R2](#ref-source-4bdcd96b3b93d462)
 
@@ -18,7 +18,7 @@ An orbital basis change must act on both electrons of a pair: $\Delta_{\rm band}
 
 ## Experimental criteria
 
-Momentum-resolved measurements must locate a gap minimum or node relative to measured crystal axes and Fermi sheets. Distinguish insufficient energy resolution from a true zero and compare temperatures within the same superconducting state. Thermodynamic power laws can motivate a nodal hypothesis, but without directional information they do not distinguish B1g from B2g in the circular example above. [R1](#ref-source-8d1b859d5ffcad9f)
+The following measurement checklist is editorial guidance. Momentum-resolved measurements must locate a gap minimum or node relative to measured crystal axes and Fermi sheets. Distinguish insufficient energy resolution from a true zero and compare temperatures within the same superconducting state. Thermodynamic power laws can motivate a nodal hypothesis, but without directional information they do not distinguish B1g from B2g in the circular example above. [R1](#ref-source-8d1b859d5ffcad9f)
 
 Rotating-field measurements also require a response model. Vorontsov and Vekhter calculate a reversal of specific-heat anisotropy with temperature or field while the imposed nodal directions remain fixed. Their quasiclassical treatment includes vortex scattering, a corrugated quasi-two-dimensional Fermi surface and impurity scattering; the selected manuscript neglects Zeeman splitting. The authors caution that their spatial-averaging approximation can overestimate vortex scattering at low fields. Thus a heat-capacity minimum is not universally a node locator. Their comparison with CeCoIn5 favors B1g within that analysis; this is not evidence establishing B2g. [R6](#ref-source-6c82ca23c0fda096)
 
@@ -36,7 +36,7 @@ A complex combination of two d components is a separate state, not the single-co
 
 ## Discovery implications
 
-For a proposed dxy candidate, specify the crystal axes, point group, band or orbital basis, and the sample state. Compare competing representations using both directional and phase information, with temperature, field and interface assumptions attached. Keep the present absence of an accepted material record separate from the existence of a theoretical channel. Full scientific acceptance, complete final-version comparisons and raw-data review remain open. [R1](#ref-source-8d1b859d5ffcad9f) [R2](#ref-source-4bdcd96b3b93d462) [R7](#ref-source-7700f02a5390b1cf)
+The following is editorial comparison guidance, not a validated experimental protocol. For a proposed dxy candidate, specify the crystal axes, point group, band or orbital basis, and the sample state. Compare competing representations using both directional and phase information, with temperature, field and interface assumptions attached. Keep the present absence of an accepted material record separate from the existence of a theoretical channel. Full scientific acceptance, complete final-version comparisons and raw-data review remain open. [R1](#ref-source-8d1b859d5ffcad9f) [R2](#ref-source-4bdcd96b3b93d462) [R7](#ref-source-7700f02a5390b1cf)
 
 ## Related topics
 

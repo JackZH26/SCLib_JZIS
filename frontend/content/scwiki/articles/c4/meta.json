@@ -27,7 +27,7 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T09:29:35.585048+00:00",
+  "modifiedAt": "2026-10-19T03:55:03.369180+00:00",
   "review": {
     "checkedAt": "2026-10-18",
     "scope": "Selected Graser and Vorontsov–Vekhter author manuscripts, Kuroki erratum text, scoped historical sources and independent symmetry, angular-spectrum, pairing-kernel and thermal-weight checks.",
@@ -224,19 +224,23 @@
         "source-4bdcd96b3b93d462"
       ],
       "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
-      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Inventory boundary of this entry. The theoretical source distinguishes model channels from orbital character; it cannot establish global experimental nonexistence."
     },
     {
       "id": "scwiki-c4-claim-mathematical-assumptions-1",
       "sectionId": "mathematical-assumptions",
-      "statement": "With lattice spacing one, an illustrative harmonic is $\\Delta(\\mathbf k)=\\Delta_0\\sin k_x\\sin k_y$. It changes sign under either axial reflection and under a quarter turn, but is unchanged by inversion or interchange of $k_x$ and $k_y$. These transformations give B2g for the stated axes. Gap zeros lie on axial lines, including their periodic zone-boundary counterparts; quasiparticle nodes require intersections with the Fermi surface. Higher harmonics can add zeros without changing the representation.",
+      "statement": "The calculations in this section are local explanatory models; cited sources provide the stated theoretical context rather than the synthetic numerical results. With lattice spacing one, an illustrative harmonic is $\\Delta(\\mathbf k)=\\Delta_0\\sin k_x\\sin k_y$. It changes sign under either axial reflection and under a quarter turn, but is unchanged by inversion or interchange of $k_x$ and $k_y$. These transformations give B2g for the stated axes. Gap zeros lie on axial lines, including their periodic zone-boundary counterparts; quasiparticle nodes require intersections with the Fermi surface. Higher harmonics can add zeros without changing the representation.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-8d1b859d5ffcad9f",
         "source-4bdcd96b3b93d462"
       ],
       "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
-      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local sine-harmonic symmetry and Fermi-surface intersection example. References supply classification context, not a material gap determination."
     },
     {
       "id": "scwiki-c4-claim-mathematical-assumptions-2",
@@ -247,7 +251,9 @@
         "source-4bdcd96b3b93d462"
       ],
       "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
-      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "The passive-rotation identity is derived locally; the Fe-Fe convention is documented in Graser. A polynomial name must be interpreted with its axes."
     },
     {
       "id": "scwiki-c4-claim-mathematical-assumptions-3",
@@ -258,7 +264,9 @@
         "source-8d1b859d5ffcad9f"
       ],
       "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
-      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local uniform circular-contour integrals with matched amplitude and broadening. Shift invariance and the second/fourth moments follow from elementary angular integration; no material spectrum is fitted."
     },
     {
       "id": "scwiki-c4-claim-mathematical-assumptions-4",
@@ -270,7 +278,9 @@
         "source-4bdcd96b3b93d462"
       ],
       "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
-      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Chosen separable eigenvalues illustrate channel selection and accidental degeneracy. The cited RPA work motivates the question but does not supply these numerical couplings."
     },
     {
       "id": "scwiki-c4-claim-mathematical-assumptions-5",
@@ -282,18 +292,22 @@
         "source-6570d4401413e026"
       ],
       "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
-      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "The four real constant rotations are local matrix examples. Graser and the Kuroki erratum supply orbital-to-band context; these examples do not reproduce a momentum-dependent multiorbital calculation."
     },
     {
       "id": "scwiki-c4-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "Momentum-resolved measurements must locate a gap minimum or node relative to measured crystal axes and Fermi sheets. Distinguish insufficient energy resolution from a true zero and compare temperatures within the same superconducting state. Thermodynamic power laws can motivate a nodal hypothesis, but without directional information they do not distinguish B1g from B2g in the circular example above.",
+      "statement": "The following measurement checklist is editorial guidance. Momentum-resolved measurements must locate a gap minimum or node relative to measured crystal axes and Fermi sheets. Distinguish insufficient energy resolution from a true zero and compare temperatures within the same superconducting state. Thermodynamic power laws can motivate a nodal hypothesis, but without directional information they do not distinguish B1g from B2g in the circular example above.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-8d1b859d5ffcad9f"
       ],
       "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
-      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial measurement checklist and interpretation of the local circular example; not a protocol validated by the cited review."
     },
     {
       "id": "scwiki-c4-claim-experimental-criteria-2",
@@ -315,7 +329,9 @@
         "source-6c82ca23c0fda096"
       ],
       "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
-      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local bounded spectral-difference example with fixed spectra and finite-energy thermal weighting; not a reproduction of vortex scattering or a material inversion temperature."
     },
     {
       "id": "scwiki-c4-claim-experimental-criteria-4",
@@ -366,7 +382,7 @@
     {
       "id": "scwiki-c4-claim-discovery-implications-1",
       "sectionId": "discovery-implications",
-      "statement": "For a proposed dxy candidate, specify the crystal axes, point group, band or orbital basis, and the sample state. Compare competing representations using both directional and phase information, with temperature, field and interface assumptions attached. Keep the present absence of an accepted material record separate from the existence of a theoretical channel. Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
+      "statement": "The following is editorial comparison guidance, not a validated experimental protocol. For a proposed dxy candidate, specify the crystal axes, point group, band or orbital basis, and the sample state. Compare competing representations using both directional and phase information, with temperature, field and interface assumptions attached. Keep the present absence of an accepted material record separate from the existence of a theoretical channel. Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-8d1b859d5ffcad9f",
@@ -374,7 +390,9 @@
         "source-7700f02a5390b1cf"
       ],
       "conditions": "Declared axes, point group and basis; independent circular/separable/thermal-weight examples are not material fits. Experimental claims retain source-specific sample and geometry.",
-      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open."
+      "verificationScope": "Only named source passages, abstracts and independent model checks reviewed; full scientific acceptance open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial comparison guidance based on the scoped sources; not an experimentally validated universal discovery protocol."
     }
   ],
   "corrections": [
@@ -389,6 +407,11 @@
       "description": "Kuroki original gap plot requires the 2009 orbital-to-band transformation erratum.",
       "sourceId": "source-6570d4401413e026",
       "scope": "Complete erratum text; figure reproduction remains open."
+    },
+    {
+      "id": "scwiki-c4-correction-3",
+      "description": "Separates local angular, kernel, thermal and orbital-matrix examples and editorial guidance from source-reported calculations.",
+      "scope": "Attribution clarity; experimental and original-model review limits retained."
     }
   ],
   "equationChecks": [
