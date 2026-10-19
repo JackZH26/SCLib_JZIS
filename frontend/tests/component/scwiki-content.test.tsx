@@ -1581,6 +1581,22 @@ it("matches every material condition to the public search/API enum and retrieves
  expect(searchArticles(searchIndex().entries,"LaH10",{pressure:"high",tcMin:240}).some(a=>a.code==="D6")).toBe(true);
 });
 
+it("keeps a driven magnetic null-result temperature out of transition filters and exports its detection limits",async()=>{
+ const a=articles().find(a=>a.code==="E6")!;
+ const c=a.materialCases.find(c=>c.criterion==="sensitivity-limited-magnetic-nonobservation")!;
+ expect(c.reportedTemperatureK).toBe(50);expect(c.tcK).toBeNull();expect(c.temperatureKind).toBe("measurement");
+ const includes=(q:string,filters:any)=>searchArticles(searchIndex().entries,q,filters).some(a=>a.code==="E6");
+ expect(includes("De Vecchi magnetic limit",{equilibrium:"transient"})).toBe(true);
+ expect(includes("De Vecchi magnetic limit",{tcMin:0})).toBe(false);
+ expect(includes("K3C60",{tcMin:50})).toBe(false);
+ expect(includes("K3C60",{tcMin:20,equilibrium:"equilibrium"})).toBe(true);
+ expect(includes("K3C60",{criterion:c.criterion,tcMin:0})).toBe(false);
+ const result=await(await get(["articles",a.id])).json();
+ expect(result.article.materialCases.find((x:{id:string})=>x.id===c.id)).toEqual(c);
+ const md=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ for(const phrase of ["160 ps","six reference pellets","systematic error","1 ns","long-lived response"])expect(md).toContain(phrase);
+});
+
 it("keeps MgB2 isotope transitions separate from probe temperatures and unresolved mass metadata",async()=>{
  const a=articles().find(a=>a.code==="D7")!;
  expect(a.references.some(r=>r.doi==="10.1038/nature00898")).toBe(true);

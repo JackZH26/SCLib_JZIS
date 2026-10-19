@@ -29,13 +29,14 @@
   "contentState": "pilot",
   "modifiedAt": "2026-10-19",
   "review": {
-    "checkedAt": "2026-10-19",
-    "scope": "Selected original optical/transport/magnetic passages; Fausti, Budden, Dodge and Kennes figure/equation visual checks; bounded Drude, saturation-depth and oscillator calculations. Publisher notice identifying the 24 February 2016 Mitrano caption correction checked separately on 19 October 2026.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected original optical/transport/magnetic passages; Fausti, Budden, Dodge and Kennes figure/equation visual checks; bounded Drude, saturation-depth and oscillator calculations. Publisher notice identifying the 24 February 2016 Mitrano caption correction checked separately on 19 October 2026. Follow-up: Budden final p.615 Figure 4 and transport paragraph; De Vecchi final pp.3–6 including Figure 3 and detector calibration; selected Fava p.4, Mankowsky v1 introduction, Kennes v1 pp.3–4 and Adelinia abstract.",
     "limitations": [
       "Complete scientific acceptance, remaining final-version comparisons, full supplements and raw-data reproduction remain open.",
       "Fava author-hosted journal-formatted copy retains a placeholder date; publisher dates checked separately. Hu downloaded author-version history not fully compared.",
       "The Buzzi2023 response remains explicitly a preprint; local algebra does not settle the optical-reconstruction dispute.",
-      "A model-induced attraction, driven base temperature or sensitivity-limited null signal is not a measured equilibrium superconducting transition."
+      "A model-induced attraction, driven base temperature or sensitivity-limited null signal is not a measured equilibrium superconducting transition.",
+      "Detector response and modeled long-lived susceptibility bounds do not exclude every short waveform; no full Maxwell reconstruction, circuit calibration or raw-data refit was performed."
     ]
   },
   "provenance": {
@@ -120,10 +121,10 @@
       "url": "https://doi.org/10.1038/s41567-020-01148-1",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-final-transport-calibration-and-figure",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-final-transport-probe-and-uncertainty-comparison",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://pure.mpg.de/rest/items/item_3196913_5/component/file_3319164/content",
-        "note": "M. Budden et al.; online4February2021,issueMay. Selected p.611 and p.615 Fig4/caption and transport discussion read, p.615 visually checked. Static four-terminal contact calibration is distinct from transient two-terminal transport.200ps/75ps pumps and100K base retained; complete supplement/rawdata not reviewed."
+        "note": "M. Budden et al.; online4February2021,issueMay. Selected p.611 and p.615 Fig4/caption and transport discussion read, p.615 visually checked. Static four-terminal contact calibration is distinct from transient two-terminal transport.200ps/75ps pumps and100K base retained; complete supplement/rawdata not reviewed. Follow-up visually checks p.615: 1 ns voltage probe; optical fit confidence bars versus transport contact-calibration systematic shading. These are not interchangeable uncertainties."
       }
     },
     {
@@ -163,9 +164,9 @@
       "publicationStatus": "preprint",
       "verification": {
         "scope": "selected-preprint-response",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/2303.10169v1",
-        "note": "Preprint submitted17March2023. Selected pp.1–2 response read: authors dispute the depth-profile critique and emphasize retained inductive behavior. Figure reconstruction and experimental rawdata not independently reproduced; no journal publication established here."
+        "note": "Preprint submitted17March2023. Selected pp.1–2 response read: authors dispute the depth-profile critique and emphasize retained inductive behavior. Figure reconstruction and experimental rawdata not independently reproduced; no journal publication established here. arXiv record rechecked: only v1 is listed, without a journal reference. This does not independently establish that no later journal work exists."
       }
     },
     {
@@ -204,10 +205,10 @@
       "url": "https://doi.org/10.1103/21g5-x5bj",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-final-abstract-protocol-and-null-result",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-final-null-protocol-detector-and-model-limit",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://qcmd.mpsd.mpg.de/wp-content/uploads/2025/12/deVecchi-2025-PRR.pdf",
-        "note": "Published9December2025. Original abstract and selected final pp.3–4 protocol/null result read:~1ps8micrometre pump,0.5mT applied field,~50nT sensitivity through1ns. Model-bound chiV>-0.1 does not decide Meissner presence/absence. Full appendices, calibration and simulations not reviewed."
+        "note": "Selected final pp.3–6 read; Figure 3 on p.4 and Appendix A/B calibration-response passages on p.6 visually checked. 50 K, 40 mJ/cm², 0.5 mT and the 1 ns window retained. Approximately 160 ps detector response and metal shielding distinguish short-waveform predictions from long-lived susceptibility limits. Six reference pellets provide model comparison statistics. Full Maxwell, raw-data and remaining appendices/supplement review remain open."
       }
     }
   ],
@@ -224,7 +225,9 @@
         "source-30e68110da17974c"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial synthesis retains distinctions among model mechanisms, protocols and measured observables; no universal transition is inferred."
     },
     {
       "id": "scwiki-e6-claim-scope-2",
@@ -238,7 +241,9 @@
         "source-e7138d083320dfd7"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial synthesis retains distinctions among model mechanisms, protocols and measured observables; no universal transition is inferred."
     },
     {
       "id": "scwiki-e6-claim-mathematical-assumptions-1",
@@ -250,7 +255,9 @@
         "source-a85b56be7c62bf11"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The local mathematical examples illustrate conditional models, not fits to an experiment or resolution of the reconstruction dispute."
     },
     {
       "id": "scwiki-e6-claim-mathematical-assumptions-2",
@@ -262,7 +269,9 @@
         "source-56a2c1fa63bafe80"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The local mathematical examples illustrate conditional models, not fits to an experiment or resolution of the reconstruction dispute."
     },
     {
       "id": "scwiki-e6-claim-mathematical-assumptions-3",
@@ -273,7 +282,9 @@
         "source-30e68110da17974c"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The local mathematical examples illustrate conditional models, not fits to an experiment or resolution of the reconstruction dispute."
     },
     {
       "id": "scwiki-e6-claim-experimental-criteria-1",
@@ -284,7 +295,9 @@
         "source-c60f0131e7d25c60"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific observations retain their drive, probe, uncertainty and interpretation limits."
     },
     {
       "id": "scwiki-e6-claim-experimental-criteria-2",
@@ -296,7 +309,9 @@
         "source-b47831832e13ca4e"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific observations retain their drive, probe, uncertainty and interpretation limits."
     },
     {
       "id": "scwiki-e6-claim-experimental-criteria-3",
@@ -307,18 +322,22 @@
         "source-6ee3670220e24ff1"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific observations retain their drive, probe, uncertainty and interpretation limits."
     },
     {
       "id": "scwiki-e6-claim-experimental-criteria-4",
       "sectionId": "experimental-criteria",
-      "statement": "Budden extended the response using longer pulses. Figure 4 compares optical extrapolation with electrical measurements at a 100 K base temperature and about 25 mJ/cm² fluence. The optical and transport pump durations are 200 ps and 75 ps, respectively. The electrical experiment is transient two-terminal transport with contact contributions calibrated from static four-terminal measurements; it is not a direct transient four-terminal measurement. Resistance compatible with zero within that calibration and recovery over tens of nanoseconds strengthen the authors' metastable interpretation without establishing a pump-free equilibrium transition at 100 K.",
+      "statement": "Budden extended the response using longer pulses. Figure 4 compares optical extrapolation with electrical measurements at a 100 K base temperature and about 25 mJ/cm² fluence. The optical and transport pump durations are 200 ps and 75 ps, respectively; the electrical voltage probe lasts 1 ns. The electrical experiment is transient two-terminal transport with contact contributions calibrated from static four-terminal measurements; it is not a direct transient four-terminal measurement. The optical error bars describe a fit confidence interval, while the transport shading estimates contact-calibration systematic error. Those uncertainties cannot be interchanged or discarded when assessing compatibility with zero. Recovery over tens of nanoseconds supports the authors' metastable interpretation without establishing a pump-free equilibrium transition at 100 K. The drive, probe and recovery times are different quantities.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-07be806c0002c690"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific observations retain their drive, probe, uncertainty and interpretation limits."
     },
     {
       "id": "scwiki-e6-claim-experimental-criteria-5",
@@ -329,7 +348,9 @@
         "source-930b28b64275da42"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific observations retain their drive, probe, uncertainty and interpretation limits."
     },
     {
       "id": "scwiki-e6-claim-experimental-criteria-6",
@@ -340,18 +361,22 @@
         "source-65e69ec93039deb9"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific observations retain their drive, probe, uncertainty and interpretation limits."
     },
     {
       "id": "scwiki-e6-claim-experimental-criteria-7",
       "sectionId": "experimental-criteria",
-      "statement": "De Vecchi's December 2025 K3C60 study reports no statistically significant photo-induced field signal above roughly 50 nT out to 1 ns in its protocol. Its model-based bound is $\\chi_v>-0.1$. The authors explicitly conclude that their resolution does not decide whether Meissner diamagnetism is present or absent. Granularity and a small expected response matter: this null result neither establishes superconductivity nor universally rules it out.",
+      "statement": "De Vecchi's December 2025 K3C60 study used a 50 K base temperature, about 1 ps pulses at 8 micrometres, 40 mJ/cm² fluence and a 0.5 mT applied field. No statistically significant photo-induced field signal above roughly 50 nT was found out to 1 ns. The authors also quote about 30 nT from the standard error of the mean; this is a different stated sensitivity measure. For their modeled long-lived response, the susceptibility bound is of order $\\chi_v>-0.1$. It is not a bound on an arbitrary picosecond waveform: metallic shielding strongly filters short responses, and the detector has an approximately 160 ps response scale. A simulated short-lived response produces only about 2 nT, below detection. The model compares susceptibility statistics from six reference pellets rather than measuring the driven susceptibility of six samples. The authors conclude that these measurements do not decide whether Meissner diamagnetism is present or absent.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-e7138d083320dfd7"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific observations retain their drive, probe, uncertainty and interpretation limits."
     },
     {
       "id": "scwiki-e6-claim-limits-and-disputes-1",
@@ -363,21 +388,26 @@
         "source-56a2c1fa63bafe80"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial synthesis retains distinctions among model mechanisms, protocols and measured observables; no universal transition is inferred."
     },
     {
       "id": "scwiki-e6-claim-limits-and-disputes-2",
       "sectionId": "limits-and-disputes",
-      "statement": "Long-lived after a short pulse does not mean thermodynamic equilibrium. Quantify absorbed energy, depth gradients, carrier and lattice temperatures, relaxation and repetition-rate heating. Selective excitation of a phonon does not establish that equilibrium pairing is phonon-mediated. The present review covers selected original passages and figures; full supplements, remaining version comparisons, experimental raw-data reproduction and complete scientific acceptance remain open.",
+      "statement": "Long-lived after a short pulse does not mean thermodynamic equilibrium. Quantify absorbed energy, depth gradients, carrier and lattice temperatures, relaxation and repetition-rate heating. Selective excitation of a phonon does not establish that equilibrium pairing is phonon-mediated. Report the detector and circuit response alongside the pump duration: a 1 ps drive does not give every probe 1 ps resolution. A null magnetic result constrains the response only through the measured sensitivity and the assumed geometry and time dependence. Optical, contact-calibrated electrical and magnetic observations should retain their own uncertainty models. The present review covers selected original passages and figures; full supplements, remaining version comparisons, experimental raw-data reproduction and complete scientific acceptance remain open.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-b47831832e13ca4e",
         "source-07be806c0002c690",
         "source-30e68110da17974c",
-        "source-930b28b64275da42"
+        "source-930b28b64275da42",
+        "source-e7138d083320dfd7"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial synthesis retains distinctions among model mechanisms, protocols and measured observables; no universal transition is inferred."
     },
     {
       "id": "scwiki-e6-claim-discovery-implications-1",
@@ -391,7 +421,9 @@
         "source-e7138d083320dfd7"
       ],
       "conditions": "Drive and probe protocols, base temperatures, sample granularity and transient versus equilibrium states remain distinct. Model assumptions and response bounds retained.",
-      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages/figures, explicit version limits and bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial synthesis retains distinctions among model mechanisms, protocols and measured observables; no universal transition is inferred."
     }
   ],
   "corrections": [
@@ -612,6 +644,27 @@
         "cuprate",
         "cuprates"
       ]
+    },
+    {
+      "id": "scwiki-e6-material-10",
+      "formula": "K3C60",
+      "sample": "De Vecchi driven magnetic null-result protocol",
+      "aliases": [
+        "De Vecchi magnetic limit",
+        "fulleride",
+        "fullerides"
+      ],
+      "recordType": "experiment",
+      "reportedTemperatureK": 50,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Base temperature for the driven magnetic measurement. No transition assigned; the sensitivity-limited null result does not establish absence of every transient diamagnetic waveform.",
+      "criterion": "sensitivity-limited-magnetic-nonobservation",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "transient",
+      "probe": "Faraday magnetometry in Bi:LIGG with finite detector and metallic-shielding response",
+      "sourceId": "source-e7138d083320dfd7"
     }
   ],
   "sourceMap": [
