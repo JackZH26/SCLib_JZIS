@@ -24,7 +24,7 @@ Distinguish intrinsic bulk order from an engineered interface. In the Fu–Kane 
 
 A zero-bias conductance peak alone does not uniquely identify a Majorana mode. Pan and Das Sarma construct alternatives involving quantum dots, spatially varying potentials and disorder. Their analysis also limits end-to-end correlation as a diagnostic: trivial correlations can occur, particularly in short wires, and accidental correlations require scrutiny even in longer examples. Length must be assessed relative to the relevant localization scales. Their model comparisons do not diagnose every experimental device. [R6](#ref-source-dca781066e96eecc)
 
-For an experimental claim, retain the full gate and field ranges, calibration, temperature, tunnel coupling and device-selection procedure. Compare local spectra with independent bulk-gap and nonlocal constraints. A measured gap reopening, a near-quantized peak or an isolated boundary feature must be assessed together with competing models; a checklist of individually ambiguous signatures cannot substitute for a state-specific argument.
+As an editorial review protocol, for an experimental claim, retain the full gate and field ranges, calibration, temperature, tunnel coupling and device-selection procedure. Compare local spectra with independent bulk-gap and nonlocal constraints. A measured gap reopening, a near-quantized peak or an isolated boundary feature must be assessed together with competing models; a checklist of individually ambiguous signatures cannot substitute for a state-specific argument. The model comparison and retraction supply context for this protocol, rather than independently validating it. [R6](#ref-source-dca781066e96eecc) [R7](#ref-source-f127bb2d99183698)
 
 A recent readout result illustrates a narrower, measurable advance. Van Loo and colleagues, published on 11 February 2026, report quantum-capacitance parity readout in a minimal two-site Kitaev chain, with switching lifetimes exceeding a millisecond and charge-sensing checks. Their abstract explicitly limits the protection of these minimal-chain modes relative to longer chains. Parity readout is not a demonstration of fault-tolerant braiding or a bulk material's superconducting transition. Here the published abstract and bibliographic record were checked; the full methods and raw data remain to be reviewed. [R8](#ref-source-a3c2dc153700478a)
 
@@ -36,7 +36,7 @@ Protection is conditional on the relevant gap, symmetries and isolation. Finite-
 
 ## Discovery implications
 
-Start from a specified superconducting order and its dimensionality. Compute the appropriate invariant with convergence checks, predict boundary or defect responses in the actual geometry, and test alternatives against the same data range. Keep an engineered interface result separate from a host bulk-phase claim. Record negative results, corrections and the distinction between theoretical construction, compatible measurement and unique experimental identification.
+As an editorial research workflow, start from a specified superconducting order and its dimensionality. Compute the appropriate invariant with convergence checks, predict boundary or defect responses in the actual geometry, and test alternatives against the same data range. Keep an engineered interface result separate from a host bulk-phase claim. Record negative results, corrections and the distinction between theoretical construction, compatible measurement and unique experimental identification.
 
 ## Related topics
 

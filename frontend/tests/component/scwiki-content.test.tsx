@@ -1136,6 +1136,10 @@ it("preserves topological criterion conditions, retraction and readout limits in
  const md=await(await get(["articles",a.id,"markdown"])).text();
  expect(md).toContain("uniform paired surface preserves time reversal");expect(md).toContain("retracted in 2021");expect(md).toContain("11 February 2026");expect(md).toContain("not a demonstration of fault-tolerant braiding");
  expect(a.references.find(r=>r.doi==="10.1038/s41586-025-09927-7")?.verification.scope).toBe("published-abstract-and-date-check");
+ const protocol=a.claims.find(c=>c.id==="scwiki-b11-claim-experimental-criteria-3")!;expect(protocol.sourceRelationship).toBe("context-for-editorial-analysis");expect(protocol.sourceIds).toEqual(["source-dca781066e96eecc","source-f127bb2d99183698"]);
+ const experimental=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();expect(experimental).toContain("Source relationship: context-for-editorial-analysis");expect(experimental).toContain(protocol.derivationNote!);
+ const schema=await(await get(["openapi.json"])).json();expect(schema.components.schemas.Claim.properties.sourceRelationship.enum).toContain("context-for-editorial-analysis");
+ expect(a.claims.find(c=>c.id==="scwiki-b11-claim-mathematical-assumptions-5")?.sourceRelationship).toBe("context-for-local-derivation");
  expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.evidenceType==="theory")).toBe(true);
 });
 

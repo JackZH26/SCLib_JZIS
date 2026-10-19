@@ -27,10 +27,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T08:48:04.497425+00:00",
+  "modifiedAt": "2026-10-19T00:43:12.842953+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected primary manuscripts, published abstracts, institution-hosted retraction text and independent finite-chain calculations.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected primary manuscripts, published abstracts, institution-hosted retraction text and independent finite-chain calculations. Follow-up distinguishes local chain calculations and editorial experimental-review advice from direct source results.",
     "limitations": [
       "Complete final-version, methods and raw-data review remains open.",
       "Finite-chain spectra and projectors do not establish experimental conductance or a material invariant.",
@@ -105,9 +105,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-manuscript-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0010440v2",
-        "note": "Selected pp3–6 Majorana representation and chain assumptions; independent spectra checked separately."
+        "note": "Selected pp.3–7; p.4 Eq.(4) and p.7 Eq.(13) visually rechecked. Spinless toy model, bulk spectrum and boundary assumptions; local finite calculations are separately attributed."
       }
     },
     {
@@ -175,7 +175,7 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-manuscript-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://arxiv.org/pdf/1910.11413v2",
         "note": "Abstract and selected pp13–14 correlation/disorder caveats; no transport reproduction or universal experimental diagnosis."
       }
@@ -189,7 +189,7 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "institution-hosted-retraction-text-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://research.tudelft.nl/en/publications/retraction-note-quantized-majorana-conductance-nature-2018-556-76/",
         "note": "Full retraction text reproduced by author institution read; publisher endpoint unavailable. Retracted original is not positive evidence."
       }
@@ -241,7 +241,9 @@
         "source-ade538b429fdd847"
       ],
       "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
-      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Kitaev author manuscript v2, p.4 Eq.(4) and p.7 Eq.(13), supplies the spinless chain and bulk spectrum. The displayed Nambu matrix uses the local real-pairing convention; finite checks do not establish an experimental device phase."
     },
     {
       "id": "scwiki-b11-claim-mathematical-assumptions-2",
@@ -252,7 +254,9 @@
         "source-ade538b429fdd847"
       ],
       "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
-      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Kitaev author manuscript v2, p.4 Eq.(4) and p.7 Eq.(13), supplies the spinless chain and bulk spectrum. The displayed Nambu matrix uses the local real-pairing convention; finite checks do not establish an experimental device phase."
     },
     {
       "id": "scwiki-b11-claim-mathematical-assumptions-3",
@@ -275,7 +279,9 @@
         "source-ade538b429fdd847"
       ],
       "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
-      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The finite lengths, numerical eigenvalues and deliberately decoupled trivial dot are local explanatory calculations in tools/check_topological_models.py. Kitaev supplies model context, not these particular numerical examples; no transport or material assignment is calculated."
     },
     {
       "id": "scwiki-b11-claim-mathematical-assumptions-5",
@@ -286,7 +292,9 @@
         "source-ade538b429fdd847"
       ],
       "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
-      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The finite lengths, numerical eigenvalues and deliberately decoupled trivial dot are local explanatory calculations in tools/check_topological_models.py. Kitaev supplies model context, not these particular numerical examples; no transport or material assignment is calculated."
     },
     {
       "id": "scwiki-b11-claim-mathematical-assumptions-6",
@@ -324,13 +332,16 @@
     {
       "id": "scwiki-b11-claim-experimental-criteria-3",
       "sectionId": "experimental-criteria",
-      "statement": "For an experimental claim, retain the full gate and field ranges, calibration, temperature, tunnel coupling and device-selection procedure. Compare local spectra with independent bulk-gap and nonlocal constraints. A measured gap reopening, a near-quantized peak or an isolated boundary feature must be assessed together with competing models; a checklist of individually ambiguous signatures cannot substitute for a state-specific argument.",
+      "statement": "As an editorial review protocol, for an experimental claim, retain the full gate and field ranges, calibration, temperature, tunnel coupling and device-selection procedure. Compare local spectra with independent bulk-gap and nonlocal constraints. A measured gap reopening, a near-quantized peak or an isolated boundary feature must be assessed together with competing models; a checklist of individually ambiguous signatures cannot substitute for a state-specific argument.",
       "evidenceType": "hypothesis",
       "sourceIds": [
-        "source-ade538b429fdd847"
+        "source-dca781066e96eecc",
+        "source-f127bb2d99183698"
       ],
       "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
-      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Pan and Das Sarma v2, pp.13–14, provide model-based nonlocal-correlation and selection caveats; the 2021 retraction supplies calibration and omitted-range context. The combined review protocol is editorial guidance, not a protocol directly reported or validated by either source."
     },
     {
       "id": "scwiki-b11-claim-experimental-criteria-4",
@@ -347,11 +358,11 @@
       "id": "scwiki-b11-claim-limits-and-disputes-1",
       "sectionId": "limits-and-disputes",
       "statement": "The 2018 claim titled “Quantized Majorana conductance” was retracted in 2021. The authors' retraction describes undisclosed charge-jump corrections, a mislabeled axis and recalibration that moved plateau values above the originally claimed quantized value. They withdrew the quantization claim. The original positive claim must not be reused as confirmation; the retraction does not by itself disprove every Majorana platform.",
-      "evidenceType": "hypothesis",
+      "evidenceType": "experiment",
       "sourceIds": [
         "source-f127bb2d99183698"
       ],
-      "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
+      "conditions": "Author retraction concerns the 2018 conductance report and its calibration, figure corrections and disclosed data ranges; it is not a universal statement about other devices.",
       "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
     },
     {
@@ -374,7 +385,9 @@
         "source-ade538b429fdd847"
       ],
       "conditions": "State-specific BdG assumptions; independent finite spectra/projectors do not reproduce transport or establish a material phase.",
-      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open."
+      "verificationScope": "Selected sources and independent chain checks; full scientific acceptance open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial research workflow informed by the model and evidence limits in this entry; the linked Kitaev paper is theoretical context, not a validated experimental acceptance checklist."
     }
   ],
   "corrections": [
@@ -389,6 +402,12 @@
       "description": "Retracted quantized-conductance claim excluded as positive evidence.",
       "sourceId": "source-f127bb2d99183698",
       "scope": "Institution-hosted full retraction text."
+    },
+    {
+      "id": "scwiki-b11-correction-3",
+      "description": "Experimental review protocol attributed to editorial synthesis with model and retraction context; local numerical examples separated from direct source results.",
+      "sourceId": "source-dca781066e96eecc",
+      "scope": "Selected Pan manuscript pp.13–14 and institution-hosted retraction text; no new experimental diagnosis."
     }
   ],
   "equationChecks": [
