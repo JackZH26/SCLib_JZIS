@@ -10,7 +10,7 @@ export const metadata: Metadata = {
 
 export default function UsingSCLibPage() {
   return <InformationPage title="Using SCLib" description="Learn how to use SCLib and understand the evidence behind the data.">
-    <h2>Search literature and SCWiki</h2>
+    <h2 id="search-the-literature">Search literature and SCWiki</h2>
     <p>Enter a paper topic, material formula or research question on <Link href="/">Home</Link>. Literature excerpts and SCWiki articles appear in separate result sections. Follow literature citations to the original publication; for Wiki articles and research notes, check their sources and stated review scope.</p>
     <h2>Explore materials and reported Tc</h2>
     <p><Link href="/materials">Materials</Link> provides filtering, sorting and paginated browsing. Open a material to examine reported properties and their conditions. Use the <Link href="/timeline">Reported Tc Timeline</Link> to explore how reports are distributed over time.</p>
