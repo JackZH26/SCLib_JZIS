@@ -1438,6 +1438,13 @@ it("keeps elemental pressure cases and calculated temperatures distinct",async()
  expect(md).toContain("0.0004 K, not 0.4 K");expect(md).toContain("Full scientific acceptance");
  const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
  expect(math).toContain("exact reproduction needs unrounded inputs");
+ const tunneling=a.claims.find(c=>c.id==="scwiki-d1-claim-experimental-criteria-1")!;
+ expect(tunneling.sourceRelationship).toBe("mixed-source-and-local-derivation");
+ expect(tunneling.conditions).toContain("common electron temperature");
+ const full=await(await get(["articles",a.id,"markdown"])).text();
+ for(const text of ["Finite temperature averages the spectrum", "despite zero density at zero energy", "superconducting counterelectrode", "neither invert an experimental spectrum"]) {expect(md).toContain(text);expect(full).toContain(text);}
+ expect(a.references.find(r=>r.doi==="10.1103/PhysRevLett.14.108")?.verification.scope).toBe("publisher-metadata-only");
+ expect(searchArticles(searchIndex().entries,"thermal convolution",{}).some(r=>r.id===a.id)).toBe(true);
 });
 
 it("keeps A15 transitions separate from operating and structural temperatures",async()=>{

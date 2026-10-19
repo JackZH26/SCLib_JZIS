@@ -30,10 +30,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T10:39:49.901462+00:00",
+  "modifiedAt": "2026-10-19T15:22:41.346250+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected Onnes lecture scan, Rowell normalization conditions, Sc published methods/table and Nb contextual methods; explicitly limited Li/Fe/Ca/2026 theory checks. Independent isotope derivatives, printed-parameter estimates and SI field-length check.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Onnes lecture scan, Rowell normalization conditions, Sc published methods/table and Nb contextual methods; explicitly limited Li/Fe/Ca/2026 theory checks. Independent isotope derivatives, printed-parameter estimates and SI field-length check. Follow-up: Rowell1970 published barrier/normal-reference text and Marsiglio v1 coupling/inversion passages re-read;13 local thermal-convolution and transmission controls. Other source checks not repeated.",
     "limitations": [
       "Full scientific acceptance and raw-data/convergence reviews remain open.",
       "Original mercury isotope datasets and lead inversion are metadata-level references only; original1911 scan not obtained.",
@@ -116,9 +116,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "publisher-metadata-only",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.14.108",
-        "note": "Published 25 January 1965. Identity only; original inversion not reviewed or reproduced."
+        "note": "Publisher title, DOI and25January1965 date rechecked. Content requires subscription; original spectrum/inversion not obtained or reproduced."
       }
     },
     {
@@ -158,9 +158,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-published-text-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://nvlpubs.nist.gov/nistpubs/jres/74A/jresv74An4p559_A1b.pdf",
-        "note": "Selected pp.559–561 and565 via web text: barrier limitations and Section5 normal-reference conditions. July–August1970 publication, not1969 receipt date. No original lead inversion reproduced."
+        "note": "Re-read published pp.560-561 barrier/current discussion and p.565 section5 plus oxide-excitation warning. Publication July-August1970 differs from1969 receipt. Text-only this round. Normal-reference requirements do not constitute a modern finite-temperature response fit; added SIN convolution is local."
       }
     },
     {
@@ -284,9 +284,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "author-review-scoped-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://arxiv.org/pdf/1911.05065v1",
-        "note": "Selected v1 pp. 1–5 and p. 8 model benchmark; p. 5 equations visually checked. Separate independent linearized Einstein-model computation agrees with the approximately 13.3 K benchmark. Full review/final-version equivalence not audited."
+        "note": "Follow-up author v1 text: PDFp.3 coupling-frequency dependence and PDFp.5 subsection A inversion discussion/Eq.21; current is measured and alpha2F inferred using Eliashberg equations. Prior selected model benchmark check retained; no full final-version comparison or original lead inversion rerun."
       }
     },
     {
@@ -380,15 +380,17 @@
     {
       "id": "scwiki-d1-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "Tunneling is valuable when the measured superconducting conductance is normalized by an appropriate normal reference. Rowell's 1970 account states the crucial conditions: the current must be tunneling current and the barrier must remain effectively unchanged through the transition. Unnormalized structure can instead reflect the barrier or its excitations. The 1965 McMillan–Rowell paper establishes the historical lead inversion reference, but its original quantitative inversion has not been independently rerun here. A phonon density of states alone is not the coupling-weighted spectrum $\\alpha^2F$.",
+      "statement": "Tunneling conductance needs an appropriate normal reference. Rowell's 1970 account requires tunneling-dominated current and a barrier that stays effectively unchanged across the superconducting transition. Record how the normal reference was obtained, including its temperature and field; division alone does not remove a changed barrier or an unrelated parallel current. Oxide and interface excitations need not be electrode density-of-states features. The 1965 McMillan–Rowell paper is retained as the historical lead inversion reference; its original quantitative inversion has not been rerun here. The coupling-weighted spectrum $\\alpha^2F$ is inferred using an Eliashberg model, not read directly from conductance or identified with the bare phonon density of states.\n\nFor a local illustration of thermal convolution, assume weak elastic superconductor–insulator–normal-metal (SIN) tunneling, flat normal-electrode and normal-reference densities, a constant tunneling matrix element, and a sample spectrum unchanged by bias. At a common electron temperature, $G(V)/G_N=\\int_{-\\infty}^{\\infty}n_s(E)[-f'(E-eV)]\\,dE$, where $n_s$ is the dimensionless sample density and $f$ the Fermi function. The kernel is $[4k_BT\\cosh^2((E-eV)/(2k_BT))]^{-1}$. Finite temperature averages the spectrum; it does not return $n_s(eV)$ point by point. A hard-gap toy density, zero for $|E|<\\Delta$ and one outside, gives $G(0)/G_N=2/[1+\\exp(\\Delta/k_BT)]>0$ despite zero density at zero energy. Nine current-derivative checks, three hard-gap checks and a changed-transmission control verify this local example. It omits coherence peaks and intrinsic temperature dependence. A superconducting counterelectrode, a bias-dependent barrier, momentum-selective tunneling or extra broadening requires the corresponding response model. These checks neither invert an experimental spectrum nor determine a material's pairing mechanism.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-b66885f8fdc58181",
         "source-27b24b231ced1ec3",
         "source-d56b04dc0b32c796"
       ],
-      "conditions": "Keep named source, phase, pressure and measurement criteria; abstract-only and inaccessible-comment scopes explicit.",
-      "verificationScope": "Named primary passages and bounded independent examples only; complete scientific acceptance open."
+      "conditions": "Normal-reference provenance, temperature and field retained; tunneling-dominated current and unchanged barrier required. Local thermal formula additionally assumes weak elastic SIN tunneling, flat normal densities, constant matrix element, common electron temperature and no bias-dependent sample spectrum. No material spectrum, pairing mechanism or alpha2F inversion inferred.",
+      "verificationScope": "Rowell published text p.565 and barrier discussion, Marsiglio v1 selected coupling/inversion passages and1965 publisher identity checked;13 local cases passed. Original lead inversion, full source comparisons and independent scientific review remain open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Rowell1970 supplies normalization and barrier conditions; Marsiglio author review explains model-dependent inversion and coupling-weighted alpha2F. McMillan-Rowell1965 is metadata-level historical context only. Thermal convolution, hard-gap conductance and transmission controls are local calculations, not source data reproduction."
     },
     {
       "id": "scwiki-d1-claim-experimental-criteria-2",
