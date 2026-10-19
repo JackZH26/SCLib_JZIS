@@ -1463,6 +1463,26 @@ it("keeps A15 transitions separate from operating and structural temperatures",a
  expect(math).toContain("Neither improved value was measured");expect(math).toContain("Full scientific acceptance");
  expect(a.references.find(r=>r.doi==="10.1063/1.1890447")?.verification.evidenceUrl).toMatch(/v2$/);
  expect(a.relatedCodes).toContain("A6");
+ const example=a.claims.find(c=>c.id==="scwiki-d2-claim-mathematical-assumptions-3")!;
+ expect(example.sourceRelationship).toBe("mixed-source-and-local-derivation");
+ expect(example.conditions).toContain("nearest-0.1-T rounding");
+ const fullMarkdown=await(await get(["articles",a.id,"markdown"])).text();
+ for(const text of [math,fullMarkdown]){
+  for(const boundary of ["Equal-area parallel addition","Two-point secants","series bottleneck","does not establish the cause of the discrepancy"])
+   expect(text).toContain(boundary);
+ }
+ const measurement=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(measurement).toContain("normalized to non-Cu area");
+ expect(measurement).toContain("not material volume fractions");
+ expect(measurement).toContain("without establishing a statistical confidence interval");
+ const limits=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+ expect(limits).toContain("calibrated detection threshold");
+ expect(limits).toContain("context-for-editorial-analysis");
+ const structure=a.claims.find(c=>c.id==="scwiki-d2-claim-scope-1")!;
+ const prototype=a.references.find(r=>r.url.includes("A3B_cP8_223"))!;
+ expect(structure.sourceIds).toContain(prototype.id);
+ expect(structure.statement).toContain("does not make the full crystal body-centered cubic");
+ expect(searchArticles(searchIndex().entries,"series bottleneck",{}).some(r=>r.id===a.id)).toBe(true);
 });
 
 it("carries retraction status through source, article, section and rendered references",async()=>{
