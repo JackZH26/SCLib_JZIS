@@ -1192,6 +1192,9 @@ it("keeps s-wave symmetry and imposed-gap checks separate from measured transiti
  const a=articles().find(a=>a.code==="C1")!;
  const md=await(await get(["articles",a.id,"markdown"])).text();
  expect(md).toContain("four zeros touch the Fermi surface without sign reversal");
+ expect(md).toContain("D4h (4/mmm)");expect(md).toContain("C4h (4/m)");
+ expect(md).toContain("Two explicit nonuniform-gap counterexamples");
+ expect(a.claims.filter(c=>c.sectionId==="mathematical-assumptions").every(c=>c.sourceRelationship&&c.derivationNote)).toBe(true);
  expect(md).toContain("not a disorder simulation");expect(md).toContain("does not prove an unchanged self-consistent");
  expect(md).toContain("a measurement range, not a range of transition temperatures");
  expect(a.claims.find(c=>c.id==="scwiki-c1-claim-experimental-criteria-1")?.evidenceType).toBe("theory");
