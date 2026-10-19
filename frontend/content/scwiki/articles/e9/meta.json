@@ -27,15 +27,16 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T13:32:03.797866+00:00",
+  "modifiedAt": "2026-10-20",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected BM author equations, Cao final figures, Yankowitz final pressure passages plus author supplement, Tanaka author circuit model and bounded geometry conversions.",
+    "checkedAt": "2026-10-20",
+    "scope": "Tanaka author-v2 circuit, aspect ratio, nonlinear-transport velocity estimate and supplementary fit definitions; local branch/unit calculations. Prior selected BM/Cao/Yankowitz reading retained.",
     "limitations": [
       "Complete scientific acceptance, raw-data and full supplementary reviews remain open.",
       "BM and Tanaka final-version comparisons incomplete; Cao correlated-insulator source used at publisher-abstract scope.",
       "Yankowitz exact pressure Tc values/reloading history taken from selected author supplement; final supplement and pressure-medium calibration remain unchecked.",
-      "Geometry checks do not compute a full continuum band structure or establish a pairing mechanism."
+      "Geometry checks do not compute a full continuum band structure or establish a pairing mechanism.",
+      "The circuit check is a synthetic parallel-inductor and energy-convention calculation, not full resonator simulation, raw-data fitting, a measured BKT jump or a unique quantum-geometric decomposition."
     ]
   },
   "provenance": {
@@ -110,10 +111,10 @@
       "url": "https://doi.org/10.1038/s41586-024-08494-7",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-author-circuit-and-temperature-definitions",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-author-v2-circuit-and-supplementary-fit-definition-review",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/2406.13740v2",
-        "note": "Tanaka et al, verified in publisher citation, published5February2025,Nature638,99–105. Authorv2 selected device/circuit/temperature sections pp5–7 and Supplementsection3 p31 read; earlier B13/F7 scoped evidence reused. Final comparison and rawdata review open; no model-independent geometric fraction extracted."
+        "note": "Published Tanaka et al identification retained. Author v2 pp5–7 and31–32 revisited; pp6,7,31,32 visually inspected. Supplement Fig12 fixes the half-normal reference at the zero-temperature intercept of the normal-state fit; the zero criterion is a line extrapolation. Branch calibration and active aspect ratio are model assumptions. Final-version comparison and complete supplements/raw-data audit remain open."
       }
     }
   ],
@@ -126,8 +127,10 @@
       "sourceIds": [
         "source-28797be9898b68b5"
       ],
-      "conditions": "Distinguish lattice/bond length, radians/degrees, full-band degeneracy, local angle/strain, device/carrier branch, pressure and transition criteria.",
-      "verificationScope": "Selected primary passages and bounded geometry; complete scientific acceptance open."
+      "conditions": "Keep device, carrier branch, pressure, local geometry, circuit branch, stiffness units and resistance-fit definitions distinct; measurement temperatures are not transition temperatures.",
+      "verificationScope": "Selected original source passages retained; Tanaka author-v2 pp5–7 and31–32 revisited with visual checks of pp6,7,31,32; bounded local circuit/unit calculations. Full independent acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial comparison of geometry, device identity, observable and inference boundaries; no single source is credited with the entire synthesis."
     },
     {
       "id": "scwiki-e9-claim-scope-2",
@@ -139,8 +142,10 @@
         "source-90c67b111a6e919c",
         "source-e80d36514bb4144d"
       ],
-      "conditions": "Distinguish lattice/bond length, radians/degrees, full-band degeneracy, local angle/strain, device/carrier branch, pressure and transition criteria.",
-      "verificationScope": "Selected primary passages and bounded geometry; complete scientific acceptance open."
+      "conditions": "Keep device, carrier branch, pressure, local geometry, circuit branch, stiffness units and resistance-fit definitions distinct; measurement temperatures are not transition temperatures.",
+      "verificationScope": "Selected original source passages retained; Tanaka author-v2 pp5–7 and31–32 revisited with visual checks of pp6,7,31,32; bounded local circuit/unit calculations. Full independent acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial comparison of geometry, device identity, observable and inference boundaries; no single source is credited with the entire synthesis."
     },
     {
       "id": "scwiki-e9-claim-mathematical-assumptions-1",
@@ -151,8 +156,10 @@
         "source-28797be9898b68b5",
         "source-e80d36514bb4144d"
       ],
-      "conditions": "Distinguish lattice/bond length, radians/degrees, full-band degeneracy, local angle/strain, device/carrier branch, pressure and transition criteria.",
-      "verificationScope": "Selected primary passages and bounded geometry; complete scientific acceptance open."
+      "conditions": "Keep device, carrier branch, pressure, local geometry, circuit branch, stiffness units and resistance-fit definitions distinct; measurement temperatures are not transition temperatures.",
+      "verificationScope": "Selected original source passages retained; Tanaka author-v2 pp5–7 and31–32 revisited with visual checks of pp6,7,31,32; bounded local circuit/unit calculations. Full independent acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source equations supply the model and convention; unit conversion, sensitivity and synthetic calculations are explicitly local, not experimental values or a full continuum/microwave reconstruction."
     },
     {
       "id": "scwiki-e9-claim-mathematical-assumptions-2",
@@ -163,8 +170,10 @@
         "source-28797be9898b68b5",
         "source-e80d36514bb4144d"
       ],
-      "conditions": "Distinguish lattice/bond length, radians/degrees, full-band degeneracy, local angle/strain, device/carrier branch, pressure and transition criteria.",
-      "verificationScope": "Selected primary passages and bounded geometry; complete scientific acceptance open."
+      "conditions": "Keep device, carrier branch, pressure, local geometry, circuit branch, stiffness units and resistance-fit definitions distinct; measurement temperatures are not transition temperatures.",
+      "verificationScope": "Selected original source passages retained; Tanaka author-v2 pp5–7 and31–32 revisited with visual checks of pp6,7,31,32; bounded local circuit/unit calculations. Full independent acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source equations supply the model and convention; unit conversion, sensitivity and synthetic calculations are explicitly local, not experimental values or a full continuum/microwave reconstruction."
     },
     {
       "id": "scwiki-e9-claim-mathematical-assumptions-3",
@@ -175,8 +184,23 @@
         "source-28797be9898b68b5",
         "source-e80d36514bb4144d"
       ],
-      "conditions": "Distinguish lattice/bond length, radians/degrees, full-band degeneracy, local angle/strain, device/carrier branch, pressure and transition criteria.",
-      "verificationScope": "Selected primary passages and bounded geometry; complete scientific acceptance open."
+      "conditions": "Keep device, carrier branch, pressure, local geometry, circuit branch, stiffness units and resistance-fit definitions distinct; measurement temperatures are not transition temperatures.",
+      "verificationScope": "Selected original source passages retained; Tanaka author-v2 pp5–7 and31–32 revisited with visual checks of pp6,7,31,32; bounded local circuit/unit calculations. Full independent acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source equations supply the model and convention; unit conversion, sensitivity and synthetic calculations are explicitly local, not experimental values or a full continuum/microwave reconstruction."
+    },
+    {
+      "id": "scwiki-e9-claim-mathematical-assumptions-4",
+      "sectionId": "mathematical-assumptions",
+      "statement": "For the Tanaka author-version circuit, distinguish the parallel termination inductance from the bulk MATBG branch: $L_{\\parallel}^{-1}=L_{\\rm prx}^{-1}+L_{\\rm TBG}^{-1}$. This is not the inductance of the entire resonator. With active length $\\ell$ and width $W$, the manuscript's $D_s=\\ell/(W L_{\\rm TBG})$ has units of inverse henries. In the phase-energy convention $F/A=J|\\nabla\\phi|^2/2$, the local conversion is $J=\\hbar^2D_s/(4e^2)$, with $J$ an energy. Thus $D_s$ must not be compared numerically with an energy stiffness without converting units. A synthetic example with $L_{\\rm TBG}=2.64$ nH and $L_{\\rm prx}=1.32$ nH gives $L_{\\parallel}=0.88$ nH; attributing this whole parallel response to the bulk would overestimate its stiffness threefold. These are an illustrative calculation and a source-based circuit parameter, not a measured bulk inductance. Active aspect ratio and branch separation remain model assumptions; an incompatible subtraction does not establish a negative physical stiffness.",
+      "evidenceType": "theory",
+      "sourceIds": [
+        "source-be7282623ca96056"
+      ],
+      "conditions": "Keep device, carrier branch, pressure, local geometry, circuit branch, stiffness units and resistance-fit definitions distinct; measurement temperatures are not transition temperatures.",
+      "verificationScope": "Selected original source passages retained; Tanaka author-v2 pp5–7 and31–32 revisited with visual checks of pp6,7,31,32; bounded local circuit/unit calculations. Full independent acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source equations supply the model and convention; unit conversion, sensitivity and synthetic calculations are explicitly local, not experimental values or a full continuum/microwave reconstruction."
     },
     {
       "id": "scwiki-e9-claim-experimental-criteria-1",
@@ -186,8 +210,10 @@
       "sourceIds": [
         "source-90c67b111a6e919c"
       ],
-      "conditions": "Distinguish lattice/bond length, radians/degrees, full-band degeneracy, local angle/strain, device/carrier branch, pressure and transition criteria.",
-      "verificationScope": "Selected primary passages and bounded geometry; complete scientific acceptance open."
+      "conditions": "Keep device, carrier branch, pressure, local geometry, circuit branch, stiffness units and resistance-fit definitions distinct; measurement temperatures are not transition temperatures.",
+      "verificationScope": "Selected original source passages retained; Tanaka author-v2 pp5–7 and31–32 revisited with visual checks of pp6,7,31,32; bounded local circuit/unit calculations. Full independent acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific devices, fit definitions and reported measurements are separated from the authors' physical interpretation; author-v2 evidence is not represented as a final-version comparison."
     },
     {
       "id": "scwiki-e9-claim-experimental-criteria-2",
@@ -197,8 +223,10 @@
       "sourceIds": [
         "source-e80d36514bb4144d"
       ],
-      "conditions": "Distinguish lattice/bond length, radians/degrees, full-band degeneracy, local angle/strain, device/carrier branch, pressure and transition criteria.",
-      "verificationScope": "Selected primary passages and bounded geometry; complete scientific acceptance open."
+      "conditions": "Keep device, carrier branch, pressure, local geometry, circuit branch, stiffness units and resistance-fit definitions distinct; measurement temperatures are not transition temperatures.",
+      "verificationScope": "Selected original source passages retained; Tanaka author-v2 pp5–7 and31–32 revisited with visual checks of pp6,7,31,32; bounded local circuit/unit calculations. Full independent acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific devices, fit definitions and reported measurements are separated from the authors' physical interpretation; author-v2 evidence is not represented as a final-version comparison."
     },
     {
       "id": "scwiki-e9-claim-experimental-criteria-3",
@@ -208,19 +236,23 @@
       "sourceIds": [
         "source-e80d36514bb4144d"
       ],
-      "conditions": "Distinguish lattice/bond length, radians/degrees, full-band degeneracy, local angle/strain, device/carrier branch, pressure and transition criteria.",
-      "verificationScope": "Selected primary passages and bounded geometry; complete scientific acceptance open."
+      "conditions": "Keep device, carrier branch, pressure, local geometry, circuit branch, stiffness units and resistance-fit definitions distinct; measurement temperatures are not transition temperatures.",
+      "verificationScope": "Selected original source passages retained; Tanaka author-v2 pp5–7 and31–32 revisited with visual checks of pp6,7,31,32; bounded local circuit/unit calculations. Full independent acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific devices, fit definitions and reported measurements are separated from the authors' physical interpretation; author-v2 evidence is not represented as a final-version comparison."
     },
     {
       "id": "scwiki-e9-claim-experimental-criteria-4",
       "sectionId": "experimental-criteria",
-      "statement": "Tanaka and colleagues' 2025 paper combines microwave kinetic inductance and transport to study superfluid stiffness. The checked earlier manuscript uses a parallel proximitized-edge circuit model and an assumed active-region aspect ratio to convert inductance into sheet stiffness. It distinguishes a 20 mK refrigerator base from an approximately 40 mK device temperature and uses a half-normal-resistance transition scale near 1 K over much of the dome. Its comparison supports a quantum-geometric contribution and anisotropic gap interpretation without extracting a model-independent geometric fraction or uniquely determining the pairing mediator.",
+      "statement": "Tanaka and colleagues' 2025 study combines microwave response and transport. The checked author v2 calibrates a proximitized-edge branch using an insulating-state resistance assumption; strong normal-metal damping limits resonance extraction. Its conventional-stiffness comparison uses a Fermi velocity inferred from nonlinear transport, not an independent band-velocity measurement. Refrigerator base (20 mK), effective device temperature (about 40 mK), and transition temperatures are different quantities. Supplementary Figure 12 defines onset by intersecting two fitted lines; the half-resistance criterion crosses half the normal-line intercept at zero temperature, and the “zero” criterion extrapolates the falling line to zero. The approximately 1 K half-resistance scale is therefore not a universal measured-zero threshold. The comparison with base-temperature stiffness does not directly measure the renormalized BKT jump. Geometric and gap interpretations remain model-dependent; neither a unique pairing mediator nor a model-independent geometric fraction follows.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-be7282623ca96056"
       ],
-      "conditions": "Distinguish lattice/bond length, radians/degrees, full-band degeneracy, local angle/strain, device/carrier branch, pressure and transition criteria.",
-      "verificationScope": "Selected primary passages and bounded geometry; complete scientific acceptance open."
+      "conditions": "Keep device, carrier branch, pressure, local geometry, circuit branch, stiffness units and resistance-fit definitions distinct; measurement temperatures are not transition temperatures.",
+      "verificationScope": "Selected original source passages retained; Tanaka author-v2 pp5–7 and31–32 revisited with visual checks of pp6,7,31,32; bounded local circuit/unit calculations. Full independent acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific devices, fit definitions and reported measurements are separated from the authors' physical interpretation; author-v2 evidence is not represented as a final-version comparison."
     },
     {
       "id": "scwiki-e9-claim-limits-and-disputes-1",
@@ -234,13 +266,15 @@
         "source-e80d36514bb4144d",
         "source-be7282623ca96056"
       ],
-      "conditions": "Distinguish lattice/bond length, radians/degrees, full-band degeneracy, local angle/strain, device/carrier branch, pressure and transition criteria.",
-      "verificationScope": "Selected primary passages and bounded geometry; complete scientific acceptance open."
+      "conditions": "Keep device, carrier branch, pressure, local geometry, circuit branch, stiffness units and resistance-fit definitions distinct; measurement temperatures are not transition temperatures.",
+      "verificationScope": "Selected original source passages retained; Tanaka author-v2 pp5–7 and31–32 revisited with visual checks of pp6,7,31,32; bounded local circuit/unit calculations. Full independent acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial comparison of geometry, device identity, observable and inference boundaries; no single source is credited with the entire synthesis."
     },
     {
       "id": "scwiki-e9-claim-limits-and-disputes-2",
       "sectionId": "limits-and-disputes",
-      "statement": "This review checks selected BM author equations, Cao final figures, Yankowitz final pressure passages plus selected author supplementary methods, and Tanaka author-version circuit/temperature definitions. The inherited source attributed the 2025 stiffness paper to Randeria; the publisher identifies Tanaka and colleagues. The BM and Tanaka final-version comparisons and complete supplementary/raw-data audits remain open. The correlated-insulator paper is used at publisher-abstract scope here, not as a completed microscopic-mechanism audit.",
+      "statement": "This review checks selected BM author equations, Cao final figures, Yankowitz final pressure passages plus selected author supplementary methods, and Tanaka author-v2 circuit/temperature definitions, including the visually checked supplementary fit diagram. The inherited source attributed the 2025 stiffness paper to Randeria; the publisher identifies Tanaka and colleagues. The complete BM and Tanaka final-version comparisons and complete supplementary/raw-data audits remain open. The correlated-insulator paper is used at publisher-abstract scope here, not as a completed microscopic-mechanism audit.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-28797be9898b68b5",
@@ -249,8 +283,10 @@
         "source-e80d36514bb4144d",
         "source-be7282623ca96056"
       ],
-      "conditions": "Distinguish lattice/bond length, radians/degrees, full-band degeneracy, local angle/strain, device/carrier branch, pressure and transition criteria.",
-      "verificationScope": "Selected primary passages and bounded geometry; complete scientific acceptance open."
+      "conditions": "Keep device, carrier branch, pressure, local geometry, circuit branch, stiffness units and resistance-fit definitions distinct; measurement temperatures are not transition temperatures.",
+      "verificationScope": "Selected original source passages retained; Tanaka author-v2 pp5–7 and31–32 revisited with visual checks of pp6,7,31,32; bounded local circuit/unit calculations. Full independent acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial comparison of geometry, device identity, observable and inference boundaries; no single source is credited with the entire synthesis."
     },
     {
       "id": "scwiki-e9-claim-discovery-implications-1",
@@ -262,8 +298,10 @@
         "source-e80d36514bb4144d",
         "source-be7282623ca96056"
       ],
-      "conditions": "Distinguish lattice/bond length, radians/degrees, full-band degeneracy, local angle/strain, device/carrier branch, pressure and transition criteria.",
-      "verificationScope": "Selected primary passages and bounded geometry; complete scientific acceptance open."
+      "conditions": "Keep device, carrier branch, pressure, local geometry, circuit branch, stiffness units and resistance-fit definitions distinct; measurement temperatures are not transition temperatures.",
+      "verificationScope": "Selected original source passages retained; Tanaka author-v2 pp5–7 and31–32 revisited with visual checks of pp6,7,31,32; bounded local circuit/unit calculations. Full independent acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial comparison of geometry, device identity, observable and inference boundaries; no single source is credited with the entire synthesis."
     }
   ],
   "corrections": [
@@ -285,6 +323,11 @@
       "targetSectionId": "mathematical-assumptions",
       "tex": "v_*/v_F=(1-3\\alpha^2)/(1+6\\alpha^2)",
       "check": "Algebraic zero only; full continuum diagonalization not performed."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "D_s=\\ell/(W L_{\\rm TBG}),\\quad J=\\hbar^2D_s/(4e^2)",
+      "check": "Synthetic Kirchhoff-current branch recovery, omitted-edge bias, aspect-ratio sensitivity and London/phase-energy agreement; invalid branch subtractions rejected. No full microwave simulation or measured geometric fraction."
     }
   ],
   "materialCases": [
@@ -482,6 +525,27 @@
         "MATBG",
         "twisted bilayer graphene",
         "Tanaka device"
+      ]
+    },
+    {
+      "id": "scwiki-e9-material-10",
+      "formula": "C",
+      "sample": "Tanaka refrigerator base",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.02,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "20 mK refrigerator base; not the approximately40 mK effective device temperature or a transition temperature.",
+      "criterion": "refrigerator-base-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Cryostat temperature setting",
+      "sourceId": "source-be7282623ca96056",
+      "aliases": [
+        "MATBG",
+        "twisted bilayer graphene",
+        "Tanaka refrigerator"
       ]
     }
   ],
