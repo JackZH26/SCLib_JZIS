@@ -1916,6 +1916,16 @@ it("binds nickelate temperature thresholds to their sample criteria and preprint
  expect(a.materialCases.find(m=>m.sourceId===source.id)?.pressureGPa).toEqual({min:91.5,max:91.5});
  const md=await(await get(["articles",a.id,"sections","recent-structures-and-membranes"],"?format=markdown")).text();
  expect(md).toContain("99.5%");expect(md).toContain("not assigned to a precise searchable Tc record");
+ const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(math).toContain("opposite majority populations");expect(math).toContain("two finite-field curves differ");
+ expect(math).toContain("not fits to nickelate data");expect(math).toContain("mixed-source-and-local-derivation");
+ const experiment=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(experiment).toContain("perovskite precursor");expect(experiment).toContain("not a measured nickelate penetration depth");
+ const limits=await(await get(["articles",a.id,"sections","limits-and-disputes"])).json();
+ expect(limits.section.markdown).toContain("measurement temperature, not a new transition temperature");
+ expect(limits.section.markdown).toContain("long-range magnetic order is not established");
+ expect(a.claims.find(c=>c.id==="scwiki-d5-claim-scope-1")?.sourceIds).toContain("source-2337a5bf19bca4c4");
+ expect(a.claims.find(c=>c.id==="scwiki-d5-claim-limits-and-disputes-2")?.sourceRelationship).toBe("context-for-editorial-analysis");
 });
 
 
