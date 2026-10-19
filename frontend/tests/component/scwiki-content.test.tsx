@@ -772,6 +772,13 @@ describe("SCWiki source and scientific-content contracts",()=>{
  });
  it("keeps cuprate discovery criteria and recovered sample temperature filters distinct",async()=>{
   const a=articles().find(a=>a.code==="D3")!;
+  const history=a.claims.find(c=>c.id==="scwiki-d3-claim-scope-3")!;
+  expect(history.evidenceType).toBe("experiment");
+  expect(history.sourceRelationship).toBe("context-for-editorial-analysis");
+  const phase=a.claims.find(c=>c.id==="scwiki-d3-claim-experimental-criteria-3")!;
+  expect(phase.sourceIds).toContain("source-e933e3bbd4beade6");
+  const phaseExport=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+  for(const phrase of ["three-junction ring but not the two-junction controls","change in penetration depth","not a direct measurement of gap phase","Original experiment abstracts only","context-for-editorial-analysis"]){expect(phaseExport).toContain(phrase);}
   expect(a.materialCases.find(r=>r.id==="scwiki-d3-material-2")?.pressureGPa).toBeNull();
   expect(a.materialCases.find(r=>r.id==="scwiki-d3-material-3")?.criterion).toBe("resistive-deviation-onset");
   expect(a.materialCases.find(r=>r.id==="scwiki-d3-material-4")?.tcK).toBe(80);
