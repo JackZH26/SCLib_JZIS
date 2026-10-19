@@ -1389,6 +1389,14 @@ it("exports conditional spin classification with its erratum and searchable orbi
  expect(searchArticles(searchIndex().entries,"shadowed triplet",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
  const out=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
  expect(out).toContain("particle-hole-symmetric test point");expect(out).toContain("Full scientific acceptance");
+ const gap=a.claims.find(c=>c.id==="scwiki-c9-claim-mathematical-assumptions-4")!;
+ expect(gap.sourceRelationship).toBe("context-for-local-derivation");
+ expect(gap.conditions).toContain("same momentum");
+ expect(gap.derivationNote).toContain("not results attributed");
+ for(const text of ["same helicity Fermi sheet", "Cancellation away", "Equal magnitudes alone", "transverse triplet component", "local imposed-model checks"]) {
+  expect(out).toContain(text);expect(md).toContain(text);
+ }
+ expect(searchArticles(searchIndex().entries,"helicity Fermi sheet",{}).some(r=>r.id===a.id)).toBe(true);
 });
 
 it("keeps node studies linked to their actual materials and measurement temperatures",async()=>{
