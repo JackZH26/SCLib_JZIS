@@ -30,7 +30,7 @@
   "modifiedAt": "2026-10-20",
   "review": {
     "checkedAt": "2026-10-20",
-    "scope": "Selected Hor,Butch,Zhang,Wang,Xu,Lutchyn and Oreg primary text/figures; inherited explicitly scoped B11/F5 theory,readout and retraction checks; independent wire spectra and field-length conversion. Selected July 2026 coherent-parity preprint results and explicit protection limits. Follow-up Fu–Berg criterion/proof and Fu–Kane uniform-surface/vortex scope.",
+    "scope": "Selected Hor,Butch,Zhang,Wang,Xu,Lutchyn and Oreg primary text/figures; inherited explicitly scoped B11/F5 theory,readout and retraction checks; independent wire spectra and field-length conversion. Selected July 2026 coherent-parity preprint results and explicit protection limits. Follow-up Fu–Berg criterion/proof and Fu–Kane uniform-surface/vortex scope. Follow-up classification/target distinction and original retraction trail, with selected disorder-correlation counterexamples.",
     "limitations": [
       "Complete scientific acceptance remains open.",
       "Full final-version/supplement/raw-data and alternative-state/calibration reviews remain open.",
@@ -84,6 +84,11 @@
       "id": "scwiki-d12-correction-criterion-scope",
       "description": "Made BdG inversion, one-per-Kramers-pair counting and sufficient-only parity result explicit; separated uniform proximity spectrum from phase-winding vortex solution.",
       "scope": "Clarifies theoretical assumptions and logical limits; does not classify a new material or change transition records."
+    },
+    {
+      "id": "scwiki-d12-correction-scope-and-retraction-trail",
+      "description": "Separated bulk, surface and localized-state targets; made correlation-test caveats and the withdrawn quantization claim's figure/calibration corrections explicit.",
+      "scope": "Current author source review; no new data reproduction, device diagnosis or independent approval."
     }
   ],
   "equationChecks": [
@@ -102,10 +107,10 @@
       "url": "https://doi.org/10.1103/PhysRevB.78.195125",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-author-manuscript-check",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-author-classification-scope",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/0803.2786v3",
-        "note": "Selected classification discussion pp3–5: noninteracting/BdG symmetry scope; not a full interacting classification."
+        "note": "Authorv3 submitted15June2009; selectedpp2–3/TableI re-read,p2visuallyinspected. Classification concerns single-particle/noninteracting orBdG systems; small-interaction/gap qualification retained. PDFcompiledate is not publicationdate. Fullfinal/interacting classification not certified."
       }
     },
     {
@@ -242,10 +247,10 @@
       "url": "https://doi.org/10.1103/PhysRevResearch.2.013377",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-author-manuscript-check",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-author-correlation-counterexamples",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/1910.11413v2",
-        "note": "Abstract and selected pp13–14 correlation/disorder caveats; no transport reproduction or universal experimental diagnosis."
+        "note": "Authorv2submitted2April2020; selectedpp13–14 correlation/disorder discussion re-read,p14visuallyinspected. Accidental correlations possible even in selected long-wire disordered examples; coherence-length condition retained. No transport solver/raw fit or universal current-device diagnosis."
       }
     },
     {
@@ -257,9 +262,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "official-retraction-identity-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://crossmark.crossref.org/dialog/?doi=10.1038%2Fnature26142",
-        "note": "Original identity and8March2021retraction checked; never used as positive experimental evidence."
+        "note": "Crossmark rechecked originalDOI and8March2021retraction; original2018paper retained only as retractedhistory, not positive evidence."
       },
       "retraction": {
         "noticeDoi": "10.1038/s41586-021-03373-x",
@@ -276,9 +281,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "author-institution-retraction-text",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://repository.tudelft.nl/record/uuid:1ee24710-a251-43c5-875e-5a7702c258d9",
-        "note": "Institution-hosted notice text read: charge-jump corrections,axislabel and conductance recalibration; original claim withdrawn. Publisher full notice endpoint redirected to authentication."
+        "note": "Full author-institution notice text re-read; Nature confirms8March2021publication/DOI but notice body subscription-gated. Figure2a/ED4bcharge-jump corrections,Fig4baxis,8percent recalibration andfull-range points outside2sigma stated. Zenodo4545577archive linked bypublisher; no independent archiveanalysis or instrumentcalibration."
       }
     },
     {
@@ -370,7 +375,7 @@
     {
       "id": "scwiki-d12-claim-scope-1",
       "sectionId": "scope",
-      "statement": "Topological superconductivity concerns the superconducting quasiparticle state, not merely a topological normal-state band next to a superconducting transition. Candidate platforms include intrinsically paired crystals, proximitized surfaces and engineered semiconductor devices. This comparison separates measured superconductivity, a proposed topological phase and evidence for localized Majorana modes. Their criteria and relevant dimensionality differ; a surface result does not automatically classify an entire three-dimensional bulk.",
+      "statement": "Topological superconductivity concerns the paired quasiparticle state, not merely normal-state band topology next to a superconducting transition. The target and dimensionality must be stated before interpreting a probe:\n\n| Target | What the evidence addresses | What it does not establish by itself |\n| --- | --- | --- |\n| Bulk paired phase | A gapped BdG state with specified symmetries and an appropriate invariant | A superconducting transition plus normal-state band inversion does not determine the pairing topology |\n| Superconducting surface | Surface spin texture and a superconducting surface gap, interpreted with a surface model | A surface result does not classify all three-dimensional bulk pairing or demonstrate a localized vortex mode |\n| Localized vortex state | A defect solution or spatially resolved low-energy spectroscopy | A model zero mode or local spectral peak does not demonstrate non-Abelian operations |\n\nThis comparison separates mathematical classification, probe evidence and proposed operations. The classification reference treats non-interacting or mean-field Hamiltonians and discusses stability to interactions small compared with the gap; it is not a complete classification of strongly interacting or nodal superconductivity.",
       "evidenceType": "hypothesis",
       "sourceIds": [
         "source-37986d2488e4cace",
@@ -378,8 +383,10 @@
         "source-7dc64372df6ba886",
         "source-e2865b9f2461bc7f"
       ],
-      "conditions": "Separate bulk, surface, wire and device claims; preserve composition, field, temperature, resolution, transport criterion and publication/retraction status.",
-      "verificationScope": "Selected primary text/figures and restricted model checks; full scientific acceptance remains open."
+      "conditions": "Dimension, gap and symmetry class belong to the paired Hamiltonian. Distinguish bulk phase, superconducting surface and localized vortex/operation evidence.",
+      "verificationScope": "Selected Schnyder authorv3pp2–3/TableI; Fu–Bergv1/Fu–Kanev3pp1–2; Zhang authorv2abstract/selected surface text/Fig4. No complete interacting classification or material-invariant reproduction.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial comparison of classification, Fu–Berg bulk criterion, Fu–Kane surface/vortex construction and Zhang surface spectroscopy. The table organizes distinct targets; it does not assign a measured invariant to a specimen."
     },
     {
       "id": "scwiki-d12-claim-scope-2",
@@ -503,15 +510,17 @@
     {
       "id": "scwiki-d12-claim-limits-and-disputes-1",
       "sectionId": "limits-and-disputes",
-      "statement": "Confinement, disorder and ordinary Andreev states can produce misleading local zero-bias signatures. Even apparent agreement with an ideal conductance value needs temperature, barrier, calibration and nonlocal checks. The 2018 paper *Quantized Majorana conductance* was retracted in 2021; its original result is retained here only as retracted history. The notice describes charge-jump corrections, an axis-label problem and conductance recalibration. A withdrawn claim cannot count as independent confirmation of later devices.",
+      "statement": "A local zero-bias peak can arise from ordinary Andreev states, confinement or disorder. Pan and Das Sarma's simulations also show that end-to-end conductance correlations are not conclusive on their own: accidental correlations can occur in selected disordered examples, including long wires. Length must be considered relative to the relevant coherence scale; a fixed micrometre threshold is not a universal diagnostic. These model counterexamples do not identify the mechanism in every later device. Temperature, barrier, calibration, disorder and nonlocal controls must be interpreted together.\n\n**Retracted quantization claim:** *Quantized Majorana conductance* (2018) was retracted on 8 March 2021. The author-institution copy of the notice reports:\n\n- Previously undisclosed charge-jump corrections in Figure 2a and Extended Data Figure 4b, and a mislabelled axis in Figure 4b.\n- Recalibration shifting the conductance plateaus by 8%, above $2e^2/h$; this is a reported calibration change, not an uncertainty interval.\n- Replotting the full parameter range placing points outside the stated two-sigma error bars, so the authors withdrew the quantized-conductance conclusion.\n\nThe linked notice and [raw-data archive](https://doi.org/10.5281/zenodo.4545577) document the correction trail; this review has not independently recalibrated the apparatus or reproduced that archive's analysis. The retracted result remains historical context, never positive confirmation of later devices. Nor does retracting this result decide the status of every other platform.",
       "evidenceType": "hypothesis",
       "sourceIds": [
         "source-dca781066e96eecc",
         "source-6a7f18eec743e89d",
         "source-f127bb2d99183698"
       ],
-      "conditions": "Separate bulk, surface, wire and device claims; preserve composition, field, temperature, resolution, transport criterion and publication/retraction status.",
-      "verificationScope": "Selected primary text/figures and restricted model checks; full scientific acceptance remains open."
+      "conditions": "Pan authorv2 selected short/long-wire disorder comparisons, not a current census of experimental devices; retraction applies to DOI10.1038/nature26142. Reported8percent calibration shift is not an uncertainty.",
+      "verificationScope": "Pan authorv2selectedpp13–14 withp14pixels; full author-institution notice text, Nature date/DOI and Crossmark retraction checked. Raw archive not independently reanalysed.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "The original theoretical paper supplies counterexamples and the author retraction supplies its own calibration and figure corrections. The separation of those evidence types and non-transfer of conclusions to other devices is editorial analysis, not a new disorder simulation or calibration."
     },
     {
       "id": "scwiki-d12-claim-limits-and-disputes-2",

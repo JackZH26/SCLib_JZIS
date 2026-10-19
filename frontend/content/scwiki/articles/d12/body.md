@@ -1,6 +1,14 @@
 ## Scope
 
-Topological superconductivity concerns the superconducting quasiparticle state, not merely a topological normal-state band next to a superconducting transition. Candidate platforms include intrinsically paired crystals, proximitized surfaces and engineered semiconductor devices. This comparison separates measured superconductivity, a proposed topological phase and evidence for localized Majorana modes. Their criteria and relevant dimensionality differ; a surface result does not automatically classify an entire three-dimensional bulk. [R1](#ref-source-37986d2488e4cace) [R2](#ref-source-4e92d11d59fb3441) [R3](#ref-source-7dc64372df6ba886) [R8](#ref-source-e2865b9f2461bc7f)
+Topological superconductivity concerns the paired quasiparticle state, not merely normal-state band topology next to a superconducting transition. The target and dimensionality must be stated before interpreting a probe:
+
+| Target | What the evidence addresses | What it does not establish by itself |
+| --- | --- | --- |
+| Bulk paired phase | A gapped BdG state with specified symmetries and an appropriate invariant | A superconducting transition plus normal-state band inversion does not determine the pairing topology |
+| Superconducting surface | Surface spin texture and a superconducting surface gap, interpreted with a surface model | A surface result does not classify all three-dimensional bulk pairing or demonstrate a localized vortex mode |
+| Localized vortex state | A defect solution or spatially resolved low-energy spectroscopy | A model zero mode or local spectral peak does not demonstrate non-Abelian operations |
+
+This comparison separates mathematical classification, probe evidence and proposed operations. The classification reference treats non-interacting or mean-field Hamiltonians and discusses stability to interactions small compared with the gap; it is not a complete classification of strongly interacting or nodal superconductivity. [R1](#ref-source-37986d2488e4cace) [R2](#ref-source-4e92d11d59fb3441) [R3](#ref-source-7dc64372df6ba886) [R8](#ref-source-e2865b9f2461bc7f)
 
 For a fully gapped Bogoliubov–de Gennes description, topology depends on dimensionality, symmetries and the occupied quasiparticle states. This restricted framework does not exhaust interacting or nodal superconductivity. A local zero-bias peak is neither a universal requirement for every topological superconductor nor sufficient proof of a Majorana mode. Demonstrating non-Abelian operations is a further question; it is not the definition of every bulk topological superconducting phase. [R1](#ref-source-37986d2488e4cace) [R4](#ref-source-45c980d0afc5ac14) [R5](#ref-source-87a91e2d8cd79e95) [R11](#ref-source-dca781066e96eecc)
 
@@ -36,7 +44,15 @@ A 10 July 2026 preprint by Zatelli and colleagues reports coherent parity oscill
 
 ## Limits and disputes
 
-Confinement, disorder and ordinary Andreev states can produce misleading local zero-bias signatures. Even apparent agreement with an ideal conductance value needs temperature, barrier, calibration and nonlocal checks. The 2018 paper *Quantized Majorana conductance* was retracted in 2021; its original result is retained here only as retracted history. The notice describes charge-jump corrections, an axis-label problem and conductance recalibration. A withdrawn claim cannot count as independent confirmation of later devices. [R11](#ref-source-dca781066e96eecc) [R12](#ref-source-6a7f18eec743e89d) [R13](#ref-source-f127bb2d99183698)
+A local zero-bias peak can arise from ordinary Andreev states, confinement or disorder. Pan and Das Sarma's simulations also show that end-to-end conductance correlations are not conclusive on their own: accidental correlations can occur in selected disordered examples, including long wires. Length must be considered relative to the relevant coherence scale; a fixed micrometre threshold is not a universal diagnostic. These model counterexamples do not identify the mechanism in every later device. Temperature, barrier, calibration, disorder and nonlocal controls must be interpreted together.
+
+**Retracted quantization claim:** *Quantized Majorana conductance* (2018) was retracted on 8 March 2021. The author-institution copy of the notice reports:
+
+- Previously undisclosed charge-jump corrections in Figure 2a and Extended Data Figure 4b, and a mislabelled axis in Figure 4b.
+- Recalibration shifting the conductance plateaus by 8%, above $2e^2/h$; this is a reported calibration change, not an uncertainty interval.
+- Replotting the full parameter range placing points outside the stated two-sigma error bars, so the authors withdrew the quantized-conductance conclusion.
+
+The linked notice and [raw-data archive](https://doi.org/10.5281/zenodo.4545577) document the correction trail; this review has not independently recalibrated the apparatus or reproduced that archive's analysis. The retracted result remains historical context, never positive confirmation of later devices. Nor does retracting this result decide the status of every other platform. [R11](#ref-source-dca781066e96eecc) [R12](#ref-source-6a7f18eec743e89d) [R13](#ref-source-f127bb2d99183698)
 
 Complete scientific acceptance remains open. This article checks selected primary passages, figures and restricted models. Earlier author versions are identified; complete final-version comparisons, supplements, raw-data analysis, calibration and exclusion of competing interpretations remain unfinished. These limits concern the present review and should not be inflated into a claim that every platform has the same evidential status. [R4](#ref-source-45c980d0afc5ac14) [R5](#ref-source-87a91e2d8cd79e95) [R6](#ref-source-0857b567ea17c2f2) [R7](#ref-source-4d53a5f7cdff4a54) [R8](#ref-source-e2865b9f2461bc7f) [R9](#ref-source-a972be8eb742181f) [R10](#ref-source-6861a8084ed315a1)
 
