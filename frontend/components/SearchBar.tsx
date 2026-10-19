@@ -2,7 +2,7 @@
 
 /**
  * Minimal search input used by the home page and the /search page.
- * Pushes the query to /search?q=... on submit so the full page
+ * Pushes the query to /?q=... on submit so the home page
  * can handle filters + pagination without a client-side refetch here.
  */
 import { useRouter } from "next/navigation";
@@ -11,7 +11,7 @@ import { useId, useState } from "react";
 export function SearchBar({
   placeholder = "Search papers or materials, or just ask a question…",
   initial = "",
-  target = "/search",
+  target = "/",
 }: {
   placeholder?: string;
   initial?: string;
@@ -38,7 +38,7 @@ export function SearchBar({
           id={inputId}
           type="search"
           name="q"
-          aria-label="Search the library: papers, materials, or a research question"
+          aria-label="Search the library: papers, materials, wiki, or a research question"
           minLength={2}
           required
           value={q}

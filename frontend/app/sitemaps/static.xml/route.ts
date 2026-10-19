@@ -23,7 +23,6 @@ export function GET(): Response {
       ...articles().map(a => ({ loc: absoluteUrl("/scwiki/" + a.slug), lastModified: a.modifiedAt, changeFrequency: "monthly" as const, priority: 0.6 })),
       { loc: absoluteUrl("/docs/data"), changeFrequency: "monthly", priority: 0.6 },
       { loc: absoluteUrl("/docs/api"), changeFrequency: "monthly", priority: 0.6 },
-      { loc: absoluteUrl("/search"), changeFrequency: "weekly", priority: 0.6 },
       { loc: absoluteUrl("/cookies"), changeFrequency: "yearly", priority: 0.3 },
       { loc: absoluteUrl("/privacy"), changeFrequency: "yearly", priority: 0.3 },
       { loc: absoluteUrl("/terms"), changeFrequency: "yearly", priority: 0.3 },

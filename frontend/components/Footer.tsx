@@ -2,7 +2,7 @@ import Link from "@/components/AppLink";
 import { getVersion } from "@/lib/api";
 
 const groups = [
-  { title: "SCLib", links: [["/search", "Search"], ["/materials", "Materials"], ["/timeline", "Reported Tc Timeline"], ["/discovery", "Discovery"]] },
+  { title: "SCLib", links: [["/", "Home"], ["/materials", "Materials"], ["/timeline", "Reported Tc Timeline"], ["/discovery", "Discovery"]] },
   { title: "Resources", links: [["/stats", "Library statistics"], ["/scwiki", "SCWiki"], ["/scwiki/using-sclib", "Using SCLib"], ["/docs/data", "Data & methodology"], ["/docs/api", "API reference"]] },
   { title: "JZIS", links: [["/about", "About JZIS"], ["/research", "Research"], ["/about/join", "Join & contribute"], ["/about#contact", "Contact"]] },
   { title: "Policies", links: [["/privacy", "Privacy"], ["/terms", "Terms"], ["/cookies", "Cookie Policy"]] },

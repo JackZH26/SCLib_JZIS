@@ -80,5 +80,5 @@ it("submits formulas and multilingual queries without changing their meaning", (
   render(<SearchBar />);
   fireEvent.change(screen.getByRole("searchbox"), { target: { value: "  FeSe + 超导  " } });
   fireEvent.submit(screen.getByRole("search"));
-  expect(push).toHaveBeenCalledWith("/search?q=" + encodeURIComponent("FeSe + 超导"));
+  expect(push).toHaveBeenCalledWith("/?q=" + encodeURIComponent("FeSe + 超导"));
 });

@@ -19,7 +19,7 @@ import { onAuthChange } from "@/lib/auth-session";
 import { me, type User, ApiError } from "@/lib/api";
 
 const NAV = [
-  { href: "/search", label: "Search" },
+  { href: "/", label: "Home" },
   { href: "/scwiki", label: "SCWiki" },
   { href: "/materials", label: "Materials" },
   { href: "/timeline", label: "Reported Tc Timeline" },
