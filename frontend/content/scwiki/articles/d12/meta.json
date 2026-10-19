@@ -27,10 +27,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T20:39:53.168668+00:00",
+  "modifiedAt": "2026-10-20",
   "review": {
-    "checkedAt": "2026-10-19",
-    "scope": "Selected Hor,Butch,Zhang,Wang,Xu,Lutchyn and Oreg primary text/figures; inherited explicitly scoped B11/F5 theory,readout and retraction checks; independent wire spectra and field-length conversion. Selected July 2026 coherent-parity preprint results and explicit protection limits.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected Hor,Butch,Zhang,Wang,Xu,Lutchyn and Oreg primary text/figures; inherited explicitly scoped B11/F5 theory,readout and retraction checks; independent wire spectra and field-length conversion. Selected July 2026 coherent-parity preprint results and explicit protection limits. Follow-up Fu–Berg criterion/proof and Fu–Kane uniform-surface/vortex scope.",
     "limitations": [
       "Complete scientific acceptance remains open.",
       "Full final-version/supplement/raw-data and alternative-state/calibration reviews remain open.",
@@ -79,6 +79,11 @@
       "description": "Cu0.12Bi2Se3 checked author sample has nonzero resistance below the reported transition; Xu splitting-origin extrapolation is not the first resolvable split location.",
       "sourceId": "source-0857b567ea17c2f2",
       "scope": "Preserve criterion and spatial-resolution limits rather than unconditional materialproof."
+    },
+    {
+      "id": "scwiki-d12-correction-criterion-scope",
+      "description": "Made BdG inversion, one-per-Kramers-pair counting and sufficient-only parity result explicit; separated uniform proximity spectrum from phase-winding vortex solution.",
+      "scope": "Clarifies theoretical assumptions and logical limits; does not classify a new material or change transition records."
     }
   ],
   "equationChecks": [
@@ -111,10 +116,10 @@
       "url": "https://doi.org/10.1103/PhysRevLett.105.097001",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-earlier-author-manuscript-check",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-author-criterion-and-proof",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/0912.3294v1",
-        "note": "Selected pp1–2, visually checked p1 sufficient-not-necessary criterion and parity of integer invariant; weak-pairing proof conditions retained."
+        "note": "Authorv1,17December2009;selectedpp1–2 and proofEqs2–4 re-read, bothpagesvisuallyinspected. BdG inversionP*tau_z, onefactorperKramerspair, weakpairing awayfromTRIM energies andnu=n mod2. Sufficient-only criterion; fullfinalcomparison remainsopen."
       }
     },
     {
@@ -126,9 +131,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-published-version-author-manuscript-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/0707.1692v3",
-        "note": "Selected pp1–2 uniform time-reversal preservation, surface proximity and vortex distinction."
+        "note": "Authorv3,28April2008,listed as publishedversion;selectedpp1–2/Eqs2–3 re-read,p1visuallyinspected. Uniformgapped TRIsurface differsfrom spinlesschiral analogy andphase-windingvortex zero mode. No actual device, braiding orcompletejunction/rawdata validation."
       }
     },
     {
@@ -417,14 +422,16 @@
     {
       "id": "scwiki-d12-claim-mathematical-assumptions-3",
       "sectionId": "mathematical-assumptions",
-      "statement": "Fu–Berg supplies a sufficient criterion for fully gapped, time-reversal-invariant odd-parity pairing in an inversion-symmetric weak-pairing setting, using the parity of enclosed time-reversal-invariant momenta. It is not a necessary criterion for every topological superconductor, nor proof that a particular doped crystal realizes odd parity. Fu–Kane's proximitized helical surface is a different construction: its uniform superconducting surface and a vortex carrying a localized mode must be distinguished.",
+      "statement": "The Fu–Berg criterion assumes a three-dimensional, fully gapped, time-reversal-invariant BdG state with inversion symmetry and odd-parity pairing. Its normal-state Fermi-surface shortcut also assumes weak pairing and bands separated from the Fermi energy at the time-reversal-invariant momenta (TRIM).\n\n- **Use the BdG inversion operator:** odd-parity pairing requires $\\widetilde P=P\\tau_z$. The invariant multiplies its negative-energy eigenvalues at the eight TRIM, taking one member of each Kramers pair. Multiplying both members would square each sign and lose the parity information.\n- **Read the result as a sufficient test:** the parity $\\nu=n\\bmod2$ is only part of the three-dimensional integer classification. An odd result establishes nonzero $n$ within these assumptions. An even result does not by itself establish $n=0$; an even, nonzero invariant is not excluded. Counting enclosed TRIM neither measures the pairing parity nor certifies a doped specimen.\n- **Keep surface and vortex states separate:** Fu–Kane's uniform proximitized helical surface has a gapped spectrum and preserves time reversal, despite its projected analogy with spinless $p_x+ip_y$ pairing. A vortex introduces a winding pairing phase, $\\Delta(r,\\theta)=\\Delta_0(r)e^{\\pm i\\theta}$, and admits a localized zero mode in that ideal model. The vortex calculation is not an observation of a zero mode on every uniform surface, nor a demonstration of braiding.\n\nThese are different theoretical constructions. Applying either to a material requires checking its own symmetry, gap, geometry and disorder conditions; neither theorem replaces those measurements.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-4e92d11d59fb3441",
         "source-7dc64372df6ba886"
       ],
-      "conditions": "Separate bulk, surface, wire and device claims; preserve composition, field, temperature, resolution, transport criterion and publication/retraction status.",
-      "verificationScope": "Selected primary text/figures and restricted model checks; full scientific acceptance remains open."
+      "conditions": "Fu–Berg:3D fully gapped TRI centrosymmetric odd-parity BdG state; weak-pairing shortcut with normal bands away from chemical potential atTRIM. One factor perKramers pair, BdG inversionP*tau_z. Fu–Kane:uniform helical TI surface versus phase-winding vortex in ideal proximity model.",
+      "verificationScope": "Fu–Berg authorv1 selectedpp1–2/proofEqs2–4; Fu–Kane published-version authorv3 selectedpp1–2/Eqs2–3. Three paper pages visually inspected. No complete final comparison, global invariant computation or experimental reproduction.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "The two primary theoretical constructions supply the criterion and surface/vortex solutions. The even-parity-result limitation, Kramers double-counting warning and material-evidence comparison are explicit logical consequences and editorial explanation, not a new invariant calculation or experimental validation."
     },
     {
       "id": "scwiki-d12-claim-experimental-criteria-1",
