@@ -247,3 +247,20 @@ test("Yang note retains author-version limits and sample table on mobile",async(
  expect(bad).toEqual([]);await expect(page.locator(".katex-error")).toHaveCount(0);
  await page.screenshot({path:"test-results/scwiki-yang-390.png",fullPage:true});
 });
+
+
+test("pressure-quench note keeps source versions and specimen conditions readable on mobile",async({page,request})=>{
+ await page.goto("/scwiki/library/deng-hg1223-pressure-quench");
+ await page.getByRole("button",{name:"Reject all",exact:true}).click();
+ await expect(page.locator("table")).toContainText("151 K warming; 150 K cooling");
+ await expect(page.locator(".scwiki-sources")).toContainText("2026-03-12");
+ await expect(page.locator(".scwiki-sources")).toContainText("2026-03-09");
+ await page.getByRole("navigation",{name:"Note contents"}).getByRole("link",{name:"The magnetic estimate belongs to retrieved S2"}).click();
+ await expect(page.locator("#magnetic-estimate")).toBeInViewport();
+ await expect(page.locator(".katex-error")).toHaveCount(0);
+ expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+ const data=await(await request.get("/api/scwiki/v1/library/deng-hg1223-pressure-quench")).json();
+ await expect(page.locator("main.scwiki")).toHaveAttribute("data-revision",data.note.revision);
+ const bad=await page.locator('main.scwiki a[href^="#"]').evaluateAll(links=>links.map(a=>a.getAttribute("href")!.slice(1)).filter(id=>!document.getElementById(id)));expect(bad).toEqual([]);
+ await page.screenshot({path:"test-results/scwiki-deng-390.png",fullPage:false});
+});

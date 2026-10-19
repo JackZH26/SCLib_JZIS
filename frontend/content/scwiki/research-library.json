@@ -456,6 +456,175 @@
         }
       ],
       "rights": "Original editorial synthesis adapted from Mingwei Yang and colleagues' CC BY 4.0 author manuscript, linked below. Wording, organization and cross-topic analysis have changed; no source figures are reproduced. The journal version and third-party materials retain their own stated rights."
+    },
+    {
+      "id": "deng-hg1223-pressure-quench",
+      "title": "Pressure-quenched Hg1223: onset, magnetic response and stability",
+      "summary": "Follow the sample histories behind the reported 151 K resistive onset. Magnetic-volume estimates, storage tests and an unreproduced 172 K anomaly belong to distinct specimens and protocols.",
+      "kind": "research-note-and-cross-topic-analysis",
+      "modifiedAt": "2026-10-19T00:11:00.427929+00:00",
+      "aliases": [
+        "Deng",
+        "Hg1223",
+        "Hg-1223",
+        "HgBa2Ca2Cu3O8",
+        "pressure quench",
+        "PQP",
+        "151 K",
+        "高压淬火"
+      ],
+      "evidenceTypes": [
+        "experiment",
+        "theory"
+      ],
+      "relatedCodes": [
+        "D3",
+        "E1",
+        "E10",
+        "A1",
+        "A2",
+        "N1"
+      ],
+      "review": {
+        "checkedAt": "2026-10-19",
+        "scope": "Selected arXiv:2603.12437v1 text, methods and figures, including supplementary figures contained in that author PDF. Publication metadata checked separately; complete final-version and final-supplement equivalence remain open.",
+        "limitations": [
+          "Author self-review; no independent replication, raw-data refitting or material certification.",
+          "The 151 K value is an onset criterion for S4. Retrieved S2 magnetization and S3 storage tests cannot be transferred to that specimen.",
+          "This note does not assign a superconducting transition to the unreproduced 172 K anomaly or establish room-temperature storage durability."
+        ]
+      },
+      "sections": [
+        {
+          "id": "protocol-and-criterion",
+          "title": "Preparation pressure is not measurement pressure",
+          "markdown": "Deng and colleagues compress HgBa2Ca2Cu3O8+δ, cool it, and release pressure at a chosen quench temperature. Their quoted post-quench transitions are measured at ambient pressure, after a high-pressure preparation history. The transition criterion is the rapid change of dR/dT used to identify resistive onset; it is not a zero-resistance temperature.\n\nThe selected author manuscript defines a transition width as onset minus the temperature at 50% of the onset resistance. Reported widths therefore cannot silently become onset-to-zero widths. Multiple experiments within the paper are not independent laboratory replication.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "deng-author-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "sample-ledger",
+          "title": "Read the experiments as separate sample histories",
+          "markdown": "The author text and Figure 2 report the following ambient-pressure onsets after quenching. The pressure and temperature columns describe preparation.\n\n| Experiment / sample | Quench pressure | Quench temperature | Retained resistive onset |\n| --- | ---: | ---: | --- |\n| 1 / S1 | 26.0 GPa | 77 K | 139 K on repeated warming |\n| 2 / S1 | 28.4 GPa | 4.2 K | 147 K warming and cooling |\n| 3 / S2 | 10.1 GPa | 4.2 K | 147 K warming and cooling |\n| 4 / S3 | 10.9 GPa | 4.2 K | 149 K warming; 148 K cooling |\n| 5 / S4 | 18.9 GPa | 4.2 K | 151 K warming; 150 K cooling |\n\nS1 is used twice; the rows are not five independent specimens. The five specimens S1–S5 came from three parent crystals, with S1, S2 and S4 cut from the same parent crystal. Different quench pressure, thermal history and specimen identity prevent interpreting this table as a one-variable controlled comparison. The highest onset in these rows is not evidence for a 151 K zero-resistance threshold.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "deng-author-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "magnetic-estimate",
+          "title": "The magnetic estimate belongs to retrieved S2",
+          "markdown": "After its 10.1 GPa / 4.2 K preparation and retrieval from the pressure cell, S2 shows a magnetic transition near 140 K in 10 Oe. The approximately 78% estimate uses its magnetic moment at 70 K and an approximate disk geometry. It is not a 78% superconducting-volume measurement on S4 at 151 K.\n\nThe methods use $f\\simeq\\pi(|M|/H)/r^3$ in their stated cgs convention, with $|M|/H=1.9\\times10^{-8}$ emu/Oe and $r=42.5\\times10^{-4}$ cm. Direct substitution gives $f\\simeq0.778$, matching the reported rounded estimate. This arithmetic check does not validate the sample geometry, background subtraction or demagnetization approximation. The cubic radius dependence makes geometry consequential.\n\nFigure S6 multiplies the post-quench curve by ten for display and compares it with the pristine parent crystal. Comparing the plotted amplitudes as if they were unscaled, identical-volume specimens would mislead.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "deng-author-v1"
+          ],
+          "sourceRelationship": "mixed-source-and-local-derivation"
+        },
+        {
+          "id": "stability-and-anomaly",
+          "title": "Cold retention and the unreproduced anomaly",
+          "markdown": "The temporal test uses S3 after a 10.9 GPa / 4.2 K quench. Storage at 77 K for up to three days, interrupted by measurements reaching 160–170 K, retains the elevated onset with a small decrease. A separate S2 thermal cycle reaching 293 K lowers its onset from about 147 K to 143 K. These observations do not establish room-temperature shelf life for the highest-onset S4 specimen.\n\nS5, quenched from 29.7 GPa at 4.2 K, shows a broad warming anomaly extending to about 172 K. The author text describes warming to 193 K and subsequent cooling from 180 K; the high-temperature feature disappears on cooling and was not reproduced. Its nature remains unresolved. This note keeps it as an unassigned anomaly, not an accepted superconducting transition or a searchable material-Tc record.",
+          "evidenceType": "experiment",
+          "sourceIds": [
+            "deng-author-v1"
+          ],
+          "sourceRelationship": "direct-support"
+        },
+        {
+          "id": "structure-and-theory",
+          "title": "Separate structural observations from a proposed mechanism",
+          "markdown": "Selected diffraction measurements retain the average tetragonal assignment through the measured pressure range, up to about 15 GPa, and after quenching. The (200) peak width increases from about 0.12° before compression to 0.20° after quenching. Figure 3 also marks unidentified peaks and distinguishes apparatus-related peaks. These observations cannot exclude every minority phase or prove a unique defect-stabilization mechanism.\n\nCalculations predict a pressure-driven Lifshitz change near 12.5 GPa, involving apical-oxygen-derived states. A calculated pocket and density-of-states increase is not direct observation that those states survive pressure release, nor proof that they cause the retained onset. The proposed metastability barrier and roles of strain, defects and oxygen require further tests. No universal transfer of this protocol to another material is established here.",
+          "evidenceType": "theory",
+          "sourceIds": [
+            "deng-author-v1"
+          ],
+          "sourceRelationship": "context-for-editorial-analysis"
+        },
+        {
+          "id": "cross-topic-use",
+          "title": "Use the result without combining incompatible evidence",
+          "markdown": "Read E10 for metastability and kinetic assumptions, D3 for cuprate context, and A1/A2 for transport and magnetic criteria. N1 distinguishes a high but finite onset from a room-temperature claim. An assessment should keep preparation history, measurement pressure, criterion, specimen, thermal cycle and source version together. The original reading note is retained as provenance; this synthesis replaces its overgeneralized bulk, storage and mechanism claims.",
+          "evidenceType": "hypothesis",
+          "sourceIds": [
+            "deng-author-v1"
+          ],
+          "sourceRelationship": "context-for-editorial-analysis"
+        }
+      ],
+      "sources": [
+        {
+          "id": "deng-author-v1",
+          "title": "Ambient-pressure 151-K superconductivity in HgBa2Ca2Cu3O8+δ via pressure quench",
+          "authors": "Liangzi Deng and colleagues",
+          "url": "https://arxiv.org/abs/2603.12437v1",
+          "publicationStatus": "preprint",
+          "date": "2026-03-12",
+          "dateLabel": "Author manuscript submitted",
+          "version": "arXiv:2603.12437v1, including supporting figures; later posting associated with the journal article",
+          "checkedAt": "2026-10-19",
+          "scope": "Selected pages 4–9 and Figures 2, 3, S2, S4, S5 and S6; methods geometry expression visually checked. Full final/supplement equivalence and raw-data reproduction unverified.",
+          "doi": "10.48550/arXiv.2603.12437",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "licenseLabel": "CC BY 4.0 (author version)"
+        },
+        {
+          "id": "deng-journal",
+          "title": "Ambient-pressure 151-K superconductivity in HgBa2Ca2Cu3O8+δ via pressure quench",
+          "authors": "Liangzi Deng and colleagues",
+          "url": "https://doi.org/10.1073/pnas.2536178123",
+          "publicationStatus": "journal-article",
+          "date": "2026-03-09",
+          "dateLabel": "Published online",
+          "version": "PNAS 123, e2536178123; issue dated 17 March 2026",
+          "checkedAt": "2026-10-19",
+          "scope": "Publication date, DOI and version-of-record license checked in Crossref metadata. Final text was not newly rechecked for this note; detailed evidence comes from the explicitly versioned author manuscript.",
+          "doi": "10.1073/pnas.2536178123",
+          "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+          "licenseLabel": "CC BY 4.0 (journal metadata)"
+        }
+      ],
+      "provenance": [
+        {
+          "path": "papers/library/Deng_Ambient-151K-Hg1223-PNAS2026_READING_NOTES.md",
+          "commit": "0a7c9d6696804ec26aa12f8eed68b55c9b3c0fcf",
+          "sha256": "9a089d5a903ff7cc105bfea60009a0c0efbfd1a67558b7da00e31848a6d47f3b",
+          "disposition": "merge-into",
+          "repository": "JackZH26/jzis-superconductivity"
+        }
+      ],
+      "corrections": [
+        {
+          "issue": "Transition criterion",
+          "inherited": "151 K and transition widths may be read as zero-resistance results.",
+          "resolution": "Retain derivative-defined onset and the separate onset-to-50%-resistance width convention."
+        },
+        {
+          "issue": "Specimen identity",
+          "inherited": "78% magnetism and three-day stability placed alongside the highest onset without specimen separation.",
+          "resolution": "Keep S4 onset, retrieved S2 magnetization and S3 cold storage separate; do not transfer their acceptance conditions."
+        },
+        {
+          "issue": "Unreproduced anomaly",
+          "inherited": "172 K included beside accepted transition values.",
+          "resolution": "Retain it as an unassigned S5 anomaly, without a material transition-temperature record."
+        },
+        {
+          "issue": "Structure and mechanism",
+          "inherited": "No new phase and defect stabilization stated as settled; calculated pockets treated as pairing channels.",
+          "resolution": "Restrict diffraction conclusions to measured average structure and state theoretical/metastability interpretations as hypotheses."
+        },
+        {
+          "issue": "Transferability",
+          "inherited": "Pressure quenching described as directly applicable to La3Ni2O7.",
+          "resolution": "No universal success or retained superconducting phase in another material follows from this Hg1223 study."
+        }
+      ],
+      "rights": "Original editorial synthesis adapted from Liangzi Deng and colleagues' CC BY 4.0 author manuscript, linked below. Wording, organization and local arithmetic have changed; no source figures are reproduced. Third-party material retains any separately stated rights."
     }
   ]
 }

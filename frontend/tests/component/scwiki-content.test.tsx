@@ -21,6 +21,20 @@ const getAll=async(key:"articles"|"sources"|"topics")=>{
  return {[key]:items};
 };
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("preserves pressure-quench specimen histories and limits in library exports",async()=>{
+  const result=await(await get(["library"],"?q="+encodeURIComponent("10.1073/pnas.2536178123"))).json();expect(result.total).toBe(1);
+  const n=result.notes[0];const md=await(await get(["library",n.id,"markdown"])).text();
+  for(const text of ["5 / S4 | 18.9 GPa | 4.2 K | 151 K warming; 150 K cooling","S1 is used twice","S2 at 151 K","78% superconducting-volume measurement on S4","Figure S6 multiplies the post-quench curve by ten","unassigned anomaly","unidentified peaks"]){
+   if(text==="S2 at 151 K")expect(md).not.toContain(text);else expect(md).toContain(text);
+  }
+  expect(n.sources[0].date).toBe("2026-03-12");expect(n.sources[1].date).toBe("2026-03-09");
+  for(const p of n.provenance)expect(createHash("sha256").update(readFileSync("../../sources/"+p.path)).digest("hex")).toBe(p.sha256);
+  for(const section of n.sections)for(const id of section.sourceIds)expect(n.sources.some((s:any)=>s.id===id)).toBe(true);
+  const idx=await(await import("@/lib/scwiki/library")).librarySearchEntries();
+  expect(searchArticles(idx,"pressure quench").some(x=>x.id===n.id)).toBe(true);
+  expect(searchArticles(idx,"pressure quench",{tcMin:170}).some(x=>x.id===n.id)).toBe(false);
+ });
+
  it("keeps Yang version boundaries and sample criteria through research and core exports",async()=>{
   const found=await(await get(["library"],"?q="+encodeURIComponent("10.1038/s41586-026-10547-y"))).json();expect(found.total).toBe(1);
   const note=found.notes[0];expect(note.sources.map((s:any)=>s.publicationStatus)).toEqual(["preprint","journal-article"]);
