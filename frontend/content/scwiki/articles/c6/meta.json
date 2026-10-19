@@ -32,7 +32,7 @@
   "modifiedAt": "2026-10-19",
   "review": {
     "checkedAt": "2026-10-19",
-    "scope": "Selected UPt3 Kerr and planar-state manuscripts, historical transport/review abstracts, UTe2 contrasting Kerr reports, and independent harmonic/nodal/free-energy checks. Follow-up: version-pinned Tsutsumi II.A/Table I text, explicit local derivation attribution, real/complex admixture and endpoint checks.",
+    "scope": "Selected UPt3 Kerr and planar-state manuscripts, historical transport/review abstracts, UTe2 contrasting Kerr reports, and independent harmonic/nodal/free-energy checks. Follow-up: version-pinned Tsutsumi II.A/Table I text, explicit local derivation attribution, real/complex admixture and endpoint checks. Selected Vorontsov-Vekhter model/Results and Micklitz-Norman accepted manuscript I/II.A-B; three frozen claims reassessed with explicit model and space-group limits.",
     "limitations": [
       "Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
       "Spherical harmonics and chosen free-energy coefficients are not a multiband material calculation.",
@@ -231,19 +231,36 @@
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0601126v1",
         "note": "Selected pp. 1–3 and Fig. 2 visually checked: finite-energy vortex scattering, anisotropy reversal and BPT/low-field/Zeeman limitations. Publisher identity checked. Full journal comparison and vortex calculation not reproduced."
       }
+    },
+    {
+      "id": "source-591b5b95b965e1af",
+      "doi": "10.1103/PhysRevB.95.024508",
+      "title": "Nodal lines and nodal loops in nonsymmorphic odd-parity superconductors",
+      "year": 2017,
+      "url": "https://doi.org/10.1103/PhysRevB.95.024508",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-accepted-manuscript-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://link.aps.org/accepted/10.1103/PhysRevB.95.024508",
+        "note": "Accepted manuscript dated23Dec2016, publisher identity17Jan2017; selected printedpp1-3 (PDFpp2-4), introduction andII.A-B. Space-group/fractional-phase and spin-orbit/time-reversal limits checked in text; full band/topology derivations and final-version comparison not reproduced."
+      }
     }
   ],
   "claims": [
     {
       "id": "scwiki-c6-claim-scope-1",
       "sectionId": "scope",
-      "statement": "In a rotationally invariant continuum, f-wave means orbital angular momentum $l=3$. A crystal instead classifies a gap by its actual point group, spin or pseudospin structure and basis functions. An odd cubic polynomial, an experimentally inferred node and a particular irreducible representation are different statements. The discussion below assumes even-frequency pairing unless stated otherwise; orbital exchange and spin-orbit coupling must also be included when applying parity arguments to a multiorbital material.",
+      "statement": "In a rotationally invariant continuum, f-wave means orbital angular momentum $l=3$. In a crystal, specify the point group, spin or pseudospin structure and basis functions; nonsymmorphic materials also require the fractional translations of the space group. An odd cubic polynomial is not automatically a pure $l=3$ harmonic, and a node inferred from a response is not an irreducible-representation label. The discussion below assumes even-frequency pairing unless stated otherwise. Exchange symmetry must include momentum, spin, orbital indices and frequency before drawing parity conclusions in a multiorbital material.",
       "evidenceType": "theory",
       "sourceIds": [
-        "source-8d1b859d5ffcad9f"
+        "source-34df31af237b76a7",
+        "source-591b5b95b965e1af"
       ],
-      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "conditions": "Continuum l assumes rotational invariance; crystal representations include spin/pseudospin and, when relevant, nonsymmorphic fractional translations. Even-frequency default; full index exchange required.",
+      "verificationScope": "Selected versioned primary text and local algebra checked 2026-10-19; full material theory, final-version comparison and independent scientific review remain open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Tsutsumi supplies the harmonic/classification context; Micklitz-Norman supplies space-group and band-pairing context. Harmonic decomposition and separable exchange-sign checks are local explanatory deductions."
     },
     {
       "id": "scwiki-c6-claim-scope-2",
@@ -353,17 +370,15 @@
     {
       "id": "scwiki-c6-claim-experimental-criteria-3",
       "sectionId": "experimental-criteria",
-      "statement": "Node assignment requires field direction, heat-current direction, temperature and the response model. A minimum in an angle-dependent signal is not automatically a node: vortex scattering and thermal weighting can reverse anisotropy. Compare multiple axes and independent probes before deciding between equatorial, off-equatorial and vertical zeros. The relative success of one calculation under selected assumptions does not eliminate every competing representation.",
-      "evidenceType": "experiment",
+      "statement": "For interpretation, record field direction, heat-current direction, temperature and response model. Vorontsov and Vekhter find that minima can become maxima along a node in a quasi-two-dimensional d-wave vortex calculation as temperature or field changes. Their treatment includes vortex scattering and finite-energy thermal weighting; it neglects Zeeman splitting and has low-field limitations. This is a methodological warning, not a calculated f-wave response for UPt3. Comparing multiple axes and independent probes remains editorial guidance: the apparent success of one chosen response model does not uniquely select a material representation.",
+      "evidenceType": "theory",
       "sourceIds": [
-        "source-31577c7cb2ae0ac8",
-        "source-34df31af237b76a7",
         "source-6c82ca23c0fda096"
       ],
-      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "conditions": "Quasi-two-dimensional d-wave vortex model, rotated in-plane field and specified heat-current direction; BPT approximation, no Zeeman splitting. No f-wave or UPt3 response inferred.",
+      "verificationScope": "Selected versioned primary text and local algebra checked 2026-10-19; full material theory, final-version comparison and independent scientific review remain open.",
       "sourceRelationship": "context-for-editorial-analysis",
-      "derivationNote": "Editorial comparison guidance grounded in cited examples; not a universal measurement protocol established by these papers."
+      "derivationNote": "Specific sign-reversal examples are reported theory; comparison recommendations are editorial. No new experimental result or source calculation reproduced."
     },
     {
       "id": "scwiki-c6-claim-experimental-criteria-4",
@@ -406,14 +421,15 @@
     {
       "id": "scwiki-c6-claim-limits-and-disputes-3",
       "sectionId": "limits-and-disputes",
-      "statement": "The spherical polynomial examples neglect UPt3's real multiband, nonsymmorphic band structure. The Ginzburg–Landau example does not reproduce its field–temperature phase diagram, and no surface-state or bulk-topology calculation is supplied. A change of polynomial order, a broken-symmetry signal or a high critical field cannot replace that missing analysis.",
+      "statement": "The local spherical polynomial examples omit the multiband and nonsymmorphic structure relevant to UPt3. Micklitz and Norman analyze its P63/mmc space group and explain how fractional-translation phases can alter odd-parity line-node constraints on a Brillouin-zone face intersected by the Fermi surface. The answer depends on spin-orbit coupling, time-reversal symmetry and band pairing; a point-group polynomial alone does not contain these ingredients. Their analysis supplies a missing theoretical context, not a unique experimental pairing assignment. Our chosen Ginzburg–Landau example does not reproduce the material phase diagram, and this entry supplies no calculated surface spectrum or bulk topological invariant.",
       "evidenceType": "theory",
       "sourceIds": [
-        "source-8d1b859d5ffcad9f",
-        "source-a329f7df31c7d3e9"
+        "source-591b5b95b965e1af"
       ],
-      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "conditions": "UPt3 space-group context and Fermi-surface intersection; spin-orbit, time-reversal and interband assumptions must be supplied. Local sphere and chosen free energy omit these inputs.",
+      "verificationScope": "Selected versioned primary text and local algebra checked 2026-10-19; full material theory, final-version comparison and independent scientific review remain open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "The primary theoretical study explains missing crystal/band ingredients; the statement about this entry is an audit of its limited local calculations."
     },
     {
       "id": "scwiki-c6-claim-discovery-implications-1",
@@ -456,6 +472,12 @@
       "description": "Limits the horizontal-node formula to real mixing coefficients, states endpoint and complex-coefficient cases, and separates local derivations from source results.",
       "sourceId": "source-34df31af237b76a7",
       "scope": "Local spherical model and source-attribution clarification; no new material pairing assignment."
+    },
+    {
+      "id": "scwiki-c6-correction-5",
+      "description": "Adds space-group constraints beyond point-group labels and identifies the nodal-response counterexample as d-wave theory rather than an UPt3 f-wave measurement.",
+      "sourceId": "source-591b5b95b965e1af",
+      "scope": "Selected primary theoretical passages; no measured pairing assignment or band/topology reproduction."
     }
   ],
   "equationChecks": [

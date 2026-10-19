@@ -1271,6 +1271,13 @@ it("keeps f-wave model nodes and Kerr temperatures separate from established mat
  const detail=await(await get(["articles",a.id])).json();
  const mix=detail.article.claims.find((c:{id:string})=>c.id==="scwiki-c6-claim-mathematical-assumptions-3");
  expect(mix.sourceRelationship).toBe("context-for-local-derivation");
+ const interpretation=detail.article.claims.find((c:{id:string})=>c.id==="scwiki-c6-claim-experimental-criteria-3");
+ expect(interpretation.evidenceType).toBe("theory");
+ expect(interpretation.conditions).toContain("no Zeeman splitting");
+ expect(interpretation.statement).toContain("not a calculated f-wave response for UPt3");
+ expect(md).toContain("fractional translations of the space group");
+ expect(md).toContain("P63/mmc");
+ expect(a.references.find(r=>r.doi==="10.1103/PhysRevB.95.024508")?.verification.scope).toBe("selected-accepted-manuscript-check");
  expect(mix.conditions).toContain("real a");
  expect(mix.statement).toContain("nonzero imaginary part removes its horizontal zeros");
  expect(mix.statement).toContain("not a fitted state reported by Tsutsumi");
