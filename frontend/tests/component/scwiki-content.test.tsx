@@ -1268,6 +1268,16 @@ it("keeps f-wave model nodes and Kerr temperatures separate from established mat
  const a=articles().find(a=>a.code==="C6")!;
  const md=await(await get(["articles",a.id,"markdown"])).text();
  expect(md).toContain("These are model angles, not measured node coordinates");
+ const detail=await(await get(["articles",a.id])).json();
+ const mix=detail.article.claims.find((c:{id:string})=>c.id==="scwiki-c6-claim-mathematical-assumptions-3");
+ expect(mix.sourceRelationship).toBe("context-for-local-derivation");
+ expect(mix.conditions).toContain("real a");
+ expect(mix.statement).toContain("nonzero imaginary part removes its horizontal zeros");
+ expect(mix.statement).toContain("not a fitted state reported by Tsutsumi");
+ const mathExport=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(mathExport).toContain("context-for-local-derivation");
+ expect(mathExport).toContain("quadratic equatorial zero");
+ expect(mathExport).toContain("cubic polar zeros");
  expect(md).toContain("not a density-of-states or thermal-conductivity calculation");
  expect(md).toContain("not fitted to UPt3 or UTe2");
  expect(md).toContain("Kerr onset is not the upper superconducting transition");

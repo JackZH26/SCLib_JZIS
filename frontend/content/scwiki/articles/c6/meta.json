@@ -29,10 +29,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.203509+00:00",
+  "modifiedAt": "2026-10-19",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected UPt3 Kerr and planar-state manuscripts, historical transport/review abstracts, UTe2 contrasting Kerr reports, and independent harmonic/nodal/free-energy checks.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected UPt3 Kerr and planar-state manuscripts, historical transport/review abstracts, UTe2 contrasting Kerr reports, and independent harmonic/nodal/free-energy checks. Follow-up: version-pinned Tsutsumi II.A/Table I text, explicit local derivation attribution, real/complex admixture and endpoint checks.",
     "limitations": [
       "Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
       "Spherical harmonics and chosen free-energy coefficients are not a multiband material calculation.",
@@ -262,14 +262,16 @@
     {
       "id": "scwiki-c6-claim-mathematical-assumptions-1",
       "sectionId": "mathematical-assumptions",
-      "statement": "An illustrative hexagonal E2u orbital doublet is $[k_z(k_x^2-k_y^2),2k_zk_xk_y]$. With a fixed spin vector along z, its equal-amplitude chiral combination is proportional to $k_z(k_x+ik_y)^2$. It is odd under inversion. Under rotation by angle $\\alpha$ about z, its orbital factor acquires $e^{2i\\alpha}$: the continuum harmonic has $l=3$ but axial projection $m=2$, not $m=3$. Four direct transformation checks and finite-difference Laplacians verify the polynomial identities. In a lattice, continuous angular momentum is only a comparison, not an exact conserved quantum number.",
+      "statement": "In the following local calculation, an illustrative hexagonal E2u orbital doublet is $[k_z(k_x^2-k_y^2),2k_zk_xk_y]$. With a fixed spin vector along z, its equal-amplitude chiral combination is proportional to $k_z(k_x+ik_y)^2$. It is odd under inversion. Under rotation by angle $\\alpha$ about z, its orbital factor acquires $e^{2i\\alpha}$: the continuum harmonic has $l=3$ but axial projection $m=2$, not $m=3$. Local transformation checks and finite-difference Laplacians verify these polynomial identities; they do not reproduce a cited material calculation. In a lattice, continuous angular momentum is only a comparison, not an exact conserved quantum number.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-8d1b859d5ffcad9f",
         "source-d3edee404071ac81"
       ],
-      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "conditions": "Fixed spin vectors and unit sphere for gap examples; real a for two horizontal rings (-4<a<1), complex a treated separately; chosen dimensionless GL coefficients; uncorrelated noise for variance addition.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Cited sources supply pairing-symmetry or measurement context. Polynomial transformations, coefficient admixtures, polar-cap counts, chosen free-energy coefficients and variance examples are local illustrations, not experimental fits or reproduced source calculations."
     },
     {
       "id": "scwiki-c6-claim-mathematical-assumptions-2",
@@ -279,44 +281,51 @@
       "sourceIds": [
         "source-34df31af237b76a7"
       ],
-      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "conditions": "Fixed spin vectors and unit sphere for gap examples; real a for two horizontal rings (-4<a<1), complex a treated separately; chosen dimensionless GL coefficients; uncorrelated noise for variance addition.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Cited sources supply pairing-symmetry or measurement context. Polynomial transformations, coefficient admixtures, polar-cap counts, chosen free-energy coefficients and variance examples are local illustrations, not experimental fits or reproduced source calculations."
     },
     {
       "id": "scwiki-c6-claim-mathematical-assumptions-3",
       "sectionId": "mathematical-assumptions",
-      "statement": "The constant one in the spherical E1u expressions represents $k_x^2+k_y^2+k_z^2$. Restoring it makes each component a homogeneous harmonic cubic. Yet the lower-order pair $(k_x,k_y)$ transforms as the same orbital doublet under the crystal's in-plane operations. In the chosen planar model, adding amplitude $a(k_x,k_y)$ changes the horizontal-zero condition to $k_z^2=(1-a)/5$. Five examples move or eliminate these zeros while preserving odd parity and the orbital transformation rule. A representation therefore need not fix the positions of every node.",
+      "statement": "The constant one in the spherical E1u expressions represents $k_x^2+k_y^2+k_z^2$. Restoring it makes each component a homogeneous harmonic cubic. The lower-order pair $(k_x,k_y)$ belongs to the same orbital doublet. In a local illustration with fixed orthogonal spin vectors and a unit spherical Fermi surface, add a real coefficient $a$ times this pair. The gap magnitude becomes $\\sin\\theta|5\\cos^2\\theta-1+a|$. Two distinct horizontal nodal rings occur only for $-4<a<1$, at $k_z^2=(1-a)/5$. At $a=1$ they merge into a quadratic equatorial zero; at $a=-4$ they meet the poles, giving cubic polar zeros. For real $a$ outside this interval only the polar zeros remain. This admixture is our illustration, not a fitted state reported by Tsutsumi and colleagues. For a complex coefficient, the same local model instead has squared magnitude $\\sin^2\\theta[(5\\cos^2\\theta-1+\\operatorname{Re}a)^2+(\\operatorname{Im}a)^2]$. Any nonzero imaginary part removes its horizontal zeros while retaining the poles. Odd parity and the orbital-doublet transformation rule survive, but time-reversal symmetry need not: a complex mixture cannot simply be called the same symmetry state as the real mixture. Symmetry-allowed basis mixing alone says neither which coefficients minimize a material's free energy nor where its measured nodes lie.",
       "evidenceType": "theory",
       "sourceIds": [
-        "source-8d1b859d5ffcad9f",
         "source-34df31af237b76a7"
       ],
-      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "conditions": "Fixed spin vectors and unit sphere for gap examples; real a for two horizontal rings (-4<a<1), complex a treated separately; chosen dimensionless GL coefficients; uncorrelated noise for variance addition.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Cited sources supply pairing-symmetry or measurement context. Polynomial transformations, coefficient admixtures, polar-cap counts, chosen free-energy coefficients and variance examples are local illustrations, not experimental fits or reproduced source calculations."
     },
     {
       "id": "scwiki-c6-claim-mathematical-assumptions-4",
       "sectionId": "mathematical-assumptions",
-      "statement": "The polar zeros have different local phase space. Restricting to small polar caps, count the fraction of a unit sphere with imposed gap below $\\epsilon$. Doubling a sufficiently small cutoff approximately doubles this fraction for the quadratic E2u zero, but quadruples it for the linear E1u zero. Eight cap calculations verify these limits. This is a geometric illustration, not a density-of-states or thermal-conductivity calculation; real velocities, impurity scattering and other nodes still contribute to a measured power law.",
+      "statement": "A separate local geometric calculation compares the polar zeros of the unmixed models. Restricting to small polar caps, count the fraction of a unit sphere with imposed gap below $\\epsilon$. Doubling a sufficiently small cutoff approximately doubles this fraction for the quadratic E2u zero, but quadruples it for the linear E1u zero. Eight cap calculations verify these limits. This is a geometric illustration, not a density-of-states or thermal-conductivity calculation; real velocities, impurity scattering and other nodes still contribute to a measured power law.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-8d1b859d5ffcad9f",
         "source-34df31af237b76a7"
       ],
-      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "conditions": "Fixed spin vectors and unit sphere for gap examples; real a for two horizontal rings (-4<a<1), complex a treated separately; chosen dimensionless GL coefficients; uncorrelated noise for variance addition.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Cited sources supply pairing-symmetry or measurement context. Polynomial transformations, coefficient admixtures, polar-cap counts, chosen free-energy coefficients and variance examples are local illustrations, not experimental fits or reproduced source calculations."
     },
     {
       "id": "scwiki-c6-claim-mathematical-assumptions-5",
       "sectionId": "mathematical-assumptions",
-      "statement": "A separate two-component illustration shows how split transitions can arise without determining a material representation. Set $u=|\\eta_1|^2$, $v=|\\eta_2|^2$ and relative phase $\\delta$, with dimensionless free energy $F=(t-1)u+(t-0.8)v+(u^2+v^2)/2+(0.4+0.15\\cos2\\delta)uv$. When both amplitudes are present, $\\delta=\\pm\\pi/2$ minimizes the phase term. The first onset is $t=1$; the second is $t=(0.8-0.25)/(1-0.25)\\simeq0.7333$. Five independent positive-amplitude grid comparisons agree with the analytic minima. These coefficients are chosen, not fitted to UPt3 or UTe2.",
+      "statement": "Our separate two-component free-energy illustration shows how split transitions can arise without determining a material representation. Set $u=|\\eta_1|^2$, $v=|\\eta_2|^2$ and relative phase $\\delta$, with dimensionless free energy $F=(t-1)u+(t-0.8)v+(u^2+v^2)/2+(0.4+0.15\\cos2\\delta)uv$. When both amplitudes are present, $\\delta=\\pm\\pi/2$ minimizes the phase term. The first onset is $t=1$; the second is $t=(0.8-0.25)/(1-0.25)\\simeq0.7333$. Five independent positive-amplitude grid comparisons agree with the analytic minima. These coefficients are chosen, not fitted to UPt3 or UTe2.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-8d1b859d5ffcad9f",
         "source-a329f7df31c7d3e9"
       ],
-      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "conditions": "Fixed spin vectors and unit sphere for gap examples; real a for two horizontal rings (-4<a<1), complex a treated separately; chosen dimensionless GL coefficients; uncorrelated noise for variance addition.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Cited sources supply pairing-symmetry or measurement context. Polynomial transformations, coefficient admixtures, polar-cap counts, chosen free-energy coefficients and variance examples are local illustrations, not experimental fits or reproduced source calculations."
     },
     {
       "id": "scwiki-c6-claim-experimental-criteria-1",
@@ -352,18 +361,22 @@
         "source-6c82ca23c0fda096"
       ],
       "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial comparison guidance grounded in cited examples; not a universal measurement protocol established by these papers."
     },
     {
       "id": "scwiki-c6-claim-experimental-criteria-4",
       "sectionId": "experimental-criteria",
-      "statement": "For a null Kerr result, record illumination, surface, residual field, cooldown history and statistical sensitivity. Independent noise and domain signals add in variance, $\\sigma_{\\rm total}^2=\\sigma_{\\rm noise}^2+\\sigma_{\\rm signal}^2$. A small constructed example verifies this identity for uncorrelated sequences. The equation requires its independence assumption; a measured absence of increased scatter is a constraint at finite sensitivity, not proof that all possible microscopic time-reversal breaking is absent.",
+      "statement": "As editorial guidance for a null Kerr result, record illumination, surface, residual field, cooldown history and statistical sensitivity. Independent noise and domain signals add in variance, $\\sigma_{\\rm total}^2=\\sigma_{\\rm noise}^2+\\sigma_{\\rm signal}^2$. A local constructed example, not a reanalysis of the cited measurements, verifies this identity for uncorrelated sequences. The equation requires its independence assumption; a measured absence of increased scatter is a constraint at finite sensitivity, not proof that all possible microscopic time-reversal breaking is absent.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-dd4e897d833ce69c"
       ],
-      "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "conditions": "Fixed spin vectors and unit sphere for gap examples; real a for two horizontal rings (-4<a<1), complex a treated separately; chosen dimensionless GL coefficients; uncorrelated noise for variance addition.",
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Cited sources supply pairing-symmetry or measurement context. Polynomial transformations, coefficient admixtures, polar-cap counts, chosen free-energy coefficients and variance examples are local illustrations, not experimental fits or reproduced source calculations."
     },
     {
       "id": "scwiki-c6-claim-limits-and-disputes-1",
@@ -405,7 +418,7 @@
     {
       "id": "scwiki-c6-claim-discovery-implications-1",
       "sectionId": "discovery-implications",
-      "statement": "Specify the crystal symmetry and basis first. Then test whether one proposed state explains phase splitting, directional nodes, spin response and symmetry-breaking observations under compatible conditions. Preserve null results, competing interpretations and source-version differences alongside positive evidence. Full scientific acceptance, complete final-version comparisons and raw-data review remain open; the model calculations here constrain language and logic, not the pairing state of a new material.",
+      "statement": "The following is editorial comparison guidance: specify the crystal symmetry and basis first. Then test whether one proposed state explains phase splitting, directional nodes, spin response and symmetry-breaking observations under compatible conditions. Preserve null results, competing interpretations and source-version differences alongside positive evidence. Full scientific acceptance, complete final-version comparisons and raw-data review remain open; the model calculations here constrain language and logic, not the pairing state of a new material.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-8d1b859d5ffcad9f",
@@ -414,7 +427,9 @@
         "source-dd4e897d833ce69c"
       ],
       "conditions": "Declared point group and spin/orbital conventions; spherical harmonics,GL coefficients and variance examples are not material fits. Experimental sample/field/heating limits retained.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial comparison guidance grounded in cited examples; not a universal measurement protocol established by these papers."
     }
   ],
   "corrections": [
@@ -435,6 +450,12 @@
       "description": "UTe2 multicomponent/TRSB narrative now includes zero-field null results and distinguishes Kerr and susceptibility sample sets.",
       "sourceId": "source-dd4e897d833ce69c",
       "scope": "Selected author methods/results, not universal absence of TRSB."
+    },
+    {
+      "id": "scwiki-c6-correction-4",
+      "description": "Limits the horizontal-node formula to real mixing coefficients, states endpoint and complex-coefficient cases, and separates local derivations from source results.",
+      "sourceId": "source-34df31af237b76a7",
+      "scope": "Local spherical model and source-attribution clarification; no new material pairing assignment."
     }
   ],
   "equationChecks": [
