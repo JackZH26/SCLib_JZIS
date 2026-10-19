@@ -8,7 +8,17 @@ Take one spinless orbital on each of three sites $0,\mathbf a_1/2,\mathbf a_2/2$
 
 The model has a flat-band contact at Gamma, a Dirac crossing at K and dispersive-band saddles at M. Independent diagonalization checks 1,311 momentum/hopping combinations; numerical Hessians have opposite-sign curvatures at the two M-point saddles. Adding equal same-sublattice hopping shifts all bands by $\delta(\mathbf q)=-2u[\cos q_1+\cos q_2+\cos(q_2-q_1)]$. The formerly flat branch then spans $9|u|$ between Gamma and K while the kagome geometry remains. These checks illustrate model sensitivity; they do not calculate a pairing interaction, a material transition temperature or a superconducting invariant. [R1](#ref-source-1cd7f905ef6df6e1)
 
-Real compounds add orbital character, spin–orbit coupling, interlayer hopping and reconstruction. Kang's ARPES/DFT work distinguishes van Hove features with predominantly pure or mixed sublattice content near the Fermi energy of CsV3Sb5. Such information constrains low-energy models; a large density of states alone does not select a pairing symmetry. The presently checked author abstract is not a reproduction of the full spectral assignment or pairing calculation. [R8](#ref-source-dbcbd572b05dcaa4)
+Real compounds add orbital character, interlayer hopping and reconstruction. Kang's CsV3Sb5 author manuscript combines ARPES dispersions with DFT orbital and sublattice projections:
+
+| Band | Orbital and sublattice assignment | Energy and interpretation |
+| --- | --- | --- |
+| K1 | Mainly $d_{xy}/d_{x^2-y^2}$; p-type, predominantly one sublattice | Can cross $E_F$ as $k_z$ changes; higher-order saddle behavior |
+| K2 | Mainly $d_{xz}/d_{yz}$; p-type | Saddle reported at $-0.15\pm0.03$ eV relative to $E_F$; remains below $E_F$ in the examined dispersion |
+| K2' | Mainly $d_{xz}/d_{yz}$; m-type, mixed sublattices | Can cross $E_F$ with $k_z$; opposite saddle concavity and stronger nesting |
+
+Here p/m means pure/mixed **sublattice character**, not a superconducting gap symmetry. The sublattice weights come from calculated Bloch functions; ARPES brightness alone does not measure them.
+
+Figure 3 uses 88 eV photons at 60 K. Figure 4 instead uses 95 eV photons at 35 and 95 K, with linear horizontal polarization in both datasets. Its reported approximately 20 meV feature is a **charge-order gap**, not a superconducting gap. Matrix elements change visibility across Brillouin zones. The displayed DFT analysis omits spin–orbit coupling; full reconstruction, spectral fitting and final-version comparisons remain unchecked here. These band constraints do not select the superconducting pairing symmetry. [R8](#ref-source-dbcbd572b05dcaa4)
 
 ## Experimental criteria
 

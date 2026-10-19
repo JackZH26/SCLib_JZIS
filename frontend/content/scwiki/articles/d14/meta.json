@@ -25,10 +25,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T17:57:16.510685+00:00",
+  "modifiedAt": "2026-10-19T17:39:26.273430+00:00",
   "review": {
-    "checkedAt": "2026-10-19",
-    "scope": "Selected Guo,OrtizCs and LiuCr author passages/figures, plus Liu final pressure criteria/methods/Figure3; Cheng author HTML methods/results; inherited CDW/TRSB/PDW audits; original abstracts with explicit limits; independent kagome band algebra.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected Guo,OrtizCs and LiuCr author passages/figures, plus Liu final pressure criteria/methods/Figure3; Cheng author HTML methods/results; inherited CDW/TRSB/PDW audits; original abstracts with explicit limits; independent kagome band algebra. D14 follow-up: selected Kang author v2 band assignments, DFT and methods text, Figures 3–4 and Table S1; computed sublattice and measured dispersion evidence separated.",
     "limitations": [
       "Complete scientific acceptance remains open.",
       "Abstract-only references do not establish full methods, orbital assignment or unique pairing mechanisms.",
@@ -77,6 +77,12 @@
       "description": "Flat bands/VHS and four proposed diagnostics are not universal sufficient or necessary definitions of topological superconductivity. FeGe and ScV6Sn6 comparison studies are not superconductivity reports.",
       "sourceId": "source-e9b1bdb7cb3c0ee4",
       "scope": "Remove categorical mechanism and material inferences."
+    },
+    {
+      "id": "scwiki-d14-correction-kang-scope",
+      "description": "Distinguish three band assignments, kz-dependent Fermi-level crossings, DFT-derived sublattice weights and photon/temperature conditions. The reported 20 meV charge-order gap is not a superconducting gap or pairing-symmetry measurement.",
+      "sourceId": "source-dbcbd572b05dcaa4",
+      "scope": "Selected original author-version spectroscopy/model evidence; no raw-data reproduction."
     }
   ],
   "equationChecks": [
@@ -193,10 +199,10 @@
       "url": "https://doi.org/10.1038/s41567-021-01451-5",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "author-v2-original-abstract-only",
-        "checkedAt": "2026-10-19",
-        "evidenceUrl": "https://arxiv.org/abs/2105.01689v2",
-        "note": "Version2 dated6November2021. ARPES plus DFT, pure/mixed sublattice van Hove features. This scope does not reproduce orbital assignments, all spectra, pairing theory or final-version comparison."
+        "scope": "selected-author-band-assignments-figures-and-conditions",
+        "checkedAt": "2026-10-20",
+        "evidenceUrl": "https://arxiv.org/pdf/2105.01689v2",
+        "note": "Author v2, 6 November 2021. Selected pp. 4–9, Figures 3–4 (pp. 17–18), and Table S1 (p. 31) read; three pages visually inspected. Distinguishes the K2 saddle below the Fermi level from kz-dependent K1/K2-prime crossings, DFT sublattice weights from ARPES intensity, and the charge-order gap from a superconducting gap. Complete final-version comparison, supplement and raw-data fits remain unchecked."
       }
     },
     {
@@ -411,13 +417,15 @@
     {
       "id": "scwiki-d14-claim-mathematical-assumptions-3",
       "sectionId": "mathematical-assumptions",
-      "statement": "Real compounds add orbital character, spin–orbit coupling, interlayer hopping and reconstruction. Kang's ARPES/DFT work distinguishes van Hove features with predominantly pure or mixed sublattice content near the Fermi energy of CsV3Sb5. Such information constrains low-energy models; a large density of states alone does not select a pairing symmetry. The presently checked author abstract is not a reproduction of the full spectral assignment or pairing calculation.",
-      "evidenceType": "theory",
+      "statement": "Real compounds add orbital character, interlayer hopping and reconstruction. Kang's CsV3Sb5 author manuscript combines ARPES dispersions with DFT orbital and sublattice projections:\n\n| Band | Orbital and sublattice assignment | Energy and interpretation |\n| --- | --- | --- |\n| K1 | Mainly $d_{xy}/d_{x^2-y^2}$; p-type, predominantly one sublattice | Can cross $E_F$ as $k_z$ changes; higher-order saddle behavior |\n| K2 | Mainly $d_{xz}/d_{yz}$; p-type | Saddle reported at $-0.15\\pm0.03$ eV relative to $E_F$; remains below $E_F$ in the examined dispersion |\n| K2' | Mainly $d_{xz}/d_{yz}$; m-type, mixed sublattices | Can cross $E_F$ with $k_z$; opposite saddle concavity and stronger nesting |\n\nHere p/m means pure/mixed **sublattice character**, not a superconducting gap symmetry. The sublattice weights come from calculated Bloch functions; ARPES brightness alone does not measure them.\n\nFigure 3 uses 88 eV photons at 60 K. Figure 4 instead uses 95 eV photons at 35 and 95 K, with linear horizontal polarization in both datasets. Its reported approximately 20 meV feature is a **charge-order gap**, not a superconducting gap. Matrix elements change visibility across Brillouin zones. The displayed DFT analysis omits spin–orbit coupling; full reconstruction, spectral fitting and final-version comparisons remain unchecked here. These band constraints do not select the superconducting pairing symmetry.",
+      "evidenceType": "editorial-analysis",
       "sourceIds": [
         "source-dbcbd572b05dcaa4"
       ],
-      "conditions": "Keep composition, pressure, current, surface termination, temperature type and transition criterion separate. Normal-state geometry/order is not superconducting topology.",
-      "verificationScope": "Selected primary passages/figures and restricted band checks; full scientific acceptance remains open."
+      "conditions": "CsV3Sb5; author v2 Figure 3: 88 eV photons, linear horizontal polarization, 60 K. Figure 4: 95 eV photons, linear horizontal polarization, 35 and 95 K. Sublattice assignments are calculated; energies are relative to the Fermi level. The charge-order gap is not a superconducting gap.",
+      "verificationScope": "Selected author v2 pp. 4–9, Figure 3 (p. 17), Figure 4 (p. 18), and Table S1 (p. 31); three pages visually inspected. No raw-data refit, complete final-version comparison or determination of superconducting symmetry.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial comparison of ARPES measurements and DFT projections from selected author v2 pp. 4–9, Figures 3–4 and Table S1. This table organizes measured and computed evidence; it is not a new orbital fit, DFT calculation or pairing derivation."
     },
     {
       "id": "scwiki-d14-claim-experimental-criteria-1",
