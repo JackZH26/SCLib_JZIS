@@ -112,6 +112,120 @@ def _hash(value: Any) -> bool:
     return type(value) is str and _HASH.fullmatch(value) is not None
 
 
+def _flat_scalar(value: Any) -> bool:
+    """Only immutable builtin JSON scalars, never callback-bearing objects."""
+    if value is None or type(value) is bool:
+        return True
+    if type(value) is int:
+        return value.bit_length() <= 256
+    if type(value) is float:
+        return math.isfinite(value)
+    if type(value) is str and len(value) <= 4096:
+        try:
+            value.encode("utf-8")
+            return True
+        except UnicodeError:
+            pass
+    return False
+
+
+def _inventory_limits() -> tuple[int, int, int, int]:
+    return MAX_RECORDS, MAX_BYTES, MAX_NODES, MAX_DEPTH
+
+
+@dataclass(frozen=True, slots=True)
+class _FlatInventory:
+    """Private immutable proof of an already validated complete inventory.
+
+    This saves repeated encoding only. It cannot establish source eligibility,
+    replace a SourceScope seal, or supply anomaly assessments.
+    """
+
+    rows: tuple[tuple[tuple[str, Any], ...], ...]
+    inventory_sha256: str
+    owner_seal: str
+    limits: tuple[int, int, int, int]
+    _seal: str = field(default="", repr=False, compare=False)
+    _validated_state: tuple | None = field(default=None, init=False, repr=False, compare=False)
+
+    def _signature(self) -> str:
+        message = f"flat-inventory:{self.owner_seal}:{self.inventory_sha256}:{self.limits}".encode()
+        return hmac.new(_SEAL_KEY, message, hashlib.sha256).hexdigest()
+
+    def matches(self, records: Any, *, owner_seal: str) -> bool:
+        if (type(self.owner_seal) is not str or type(self.limits) is not tuple or len(self.limits) != 4
+                or any(type(value) is not int for value in self.limits)
+                or self.owner_seal != owner_seal or self.limits != _inventory_limits()):
+            return False
+        state = (self.rows, self.inventory_sha256, self.owner_seal, self.limits, self._seal)
+        changed = (type(self._validated_state) is not tuple or len(self._validated_state) != len(state)
+                   or any(left is not right for left, right in zip(state, self._validated_state, strict=True)))
+        if changed:
+            if (type(self.rows) is not tuple or not 2 <= len(self.rows) <= MAX_RECORDS
+                    or not _hash(self.inventory_sha256) or not _hash(self.owner_seal) or not _hash(self._seal)
+                    or not hmac.compare_digest(self._seal, self._signature())):
+                return False
+            nodes, text_bytes = 1 + len(self.rows), 0
+            for row in self.rows:
+                if type(row) is not tuple or len(row) > 128:
+                    return False
+                nodes += 2 * len(row)
+                if nodes > MAX_NODES:
+                    return False
+                keys = set()
+                for pair in row:
+                    if type(pair) is not tuple or len(pair) != 2:
+                        return False
+                    key, value = pair
+                    if type(key) is not str or not _flat_scalar(key) or key in keys or not _flat_scalar(value):
+                        return False
+                    keys.add(key)
+                    text_bytes += len(key.encode("utf-8"))
+                    if type(value) is str:
+                        text_bytes += len(value.encode("utf-8"))
+                    if text_bytes > MAX_BYTES:
+                        return False
+            try:
+                digest = hashlib.sha256(_canonical([dict(row) for row in self.rows])).hexdigest()
+            except SourceScopeError:
+                return False
+            if digest != self.inventory_sha256:
+                return False
+            object.__setattr__(self, "_validated_state", state)
+        if type(records) is not list or len(records) != len(self.rows):
+            return False
+        missing = object()
+        for record, row in zip(records, self.rows, strict=True):
+            if (type(record) is not dict or len(record) != len(row)
+                    or any(type(key) is not str for key in record)):
+                return False
+            for key, expected in row:
+                actual = record.get(key, missing)
+                if type(actual) is not type(expected):
+                    return False
+                # Python equality conflates bool/int/float and signed zero;
+                # canonical JSON does not. Exact types and float bits matter.
+                if (actual.hex() != expected.hex() if type(expected) is float else actual != expected):
+                    return False
+        return True
+
+
+def _flat_inventory(records: Any, *, owner_seal: str, canonical: bytes) -> _FlatInventory | None:
+    """Capture only after the original full validation has succeeded."""
+    if type(records) is not list or not 2 <= len(records) <= MAX_RECORDS:
+        return None
+    rows = []
+    for record in records:
+        if (type(record) is not dict or len(record) > 128
+                or any(type(key) is not str or not _flat_scalar(key) or not _flat_scalar(value)
+                       for key, value in record.items())):
+            return None
+        rows.append(tuple(record.items()))
+    snapshot = _FlatInventory(tuple(rows), hashlib.sha256(canonical).hexdigest(), owner_seal, _inventory_limits())
+    object.__setattr__(snapshot, "_seal", snapshot._signature())
+    return snapshot if snapshot.matches(records, owner_seal=owner_seal) else None
+
+
 @dataclass(frozen=True, slots=True)
 class SourceScope:
     """Private, position-preserving partition. This object grants no authority."""
@@ -127,6 +241,7 @@ class SourceScope:
     _seal: str = field(default="", repr=False, compare=False)
     _validated_state: tuple | None = field(default=None, init=False, repr=False, compare=False)
     _eligible_papers: tuple[str, ...] = field(default=(), init=False, repr=False, compare=False)
+    _flat_inventory: _FlatInventory | None = field(default=None, init=False, repr=False, compare=False)
 
     def _signature(self) -> str:
         return hmac.new(_SEAL_KEY, _canonical({
@@ -165,14 +280,21 @@ class SourceScope:
         if changed:
             object.__setattr__(self, "_eligible_papers", tuple(sorted({self.paper_ids[index] for index in self.eligible_indices})))
             object.__setattr__(self, "_validated_state", state)
+            object.__setattr__(self, "_flat_inventory", None)
         if records is not None:
             if type(records) is not list or len(records) != len(self.indices):
                 raise SourceScopeError("source_scope_record_inventory_changed")
-            _canonical(records)
+            snapshot = self._flat_inventory
+            if (type(snapshot) is _FlatInventory
+                    and snapshot.matches(records, owner_seal=self._seal)):
+                return self
+            object.__setattr__(self, "_flat_inventory", None)
+            canonical = _canonical(records)
             papers = tuple(record.get("paper_id") if type(record) is dict and _identifier(record.get("paper_id"))
                            else None for record in records)
             if papers != self.paper_ids or tuple(_digest(record) for record in records) != self.record_sha256:
                 raise SourceScopeError("source_scope_record_inventory_changed")
+            object.__setattr__(self, "_flat_inventory", _flat_inventory(records, owner_seal=self._seal, canonical=canonical))
         return self
 
     @property
@@ -184,6 +306,11 @@ class SourceScope:
         if type(records) is not list:
             raise SourceScopeError("source_scope_record_inventory_changed")
         self.validate(records)
+        if self._flat_inventory is not None:
+            # Every value was proven immutable and every retained occurrence
+            # just matched, including excluded siblings. Each caller still gets
+            # a distinct dict in the current raw key order.
+            return [dict(records[index]) for index in self.eligible_indices]
         return [deepcopy(records[index]) for index in self.eligible_indices]
 
     def reason_for(self, index: int) -> tuple[str, ...]:
