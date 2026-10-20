@@ -10,6 +10,7 @@ import { pressureLabel } from "@/lib/pressure-semantics";
 import { FAMILY_COLORS, familyLabel } from "@/lib/families";
 import { timelineHoverSummary } from "@/lib/timeline-hover";
 import { FormulaDisplay } from "@/components/FormulaDisplay";
+import { timelineSvg } from "@/lib/timeline-export";
 import { knownVisibility, visibilityIsRestricted, visibilityLabel } from "@/lib/material-visibility";
 import { clusterTimelinePoints, escapePlotlyHtml, formatTimelineTc, sortedTimelinePoints, timelineOrigin, timelinePointKey, timelineRenderBudget, timelineYearBasis } from "@/lib/timeline-display";
 
@@ -113,6 +114,12 @@ export function TcTimeline({ points: receivedPoints, coverage, sampling, recordS
           <label className="text-xs font-medium">Temperature view <select className="ml-2 rounded border bg-white p-1" value={temperatureView} onChange={event => setTemperatureView(event.target.value as TemperatureView)}>
             <option value="linear">Linear (K)</option><option value="log">Logarithmic (K)</option><option value="low">Low temperature (0–1 K)</option>
           </select></label>
+          <button type="button" className="rounded border border-sage-border px-3 py-2 text-xs hover:bg-sage-surface" onClick={() => {
+            const svg = timelineSvg({ clusters: eligibleClusters, xRange: [minYear - 1, maxYear + 1], yRange: yRange as [number, number], logarithmic: temperatureView === "log", receivedCount: points.length, sourceUrl: window.location.href });
+            const url = URL.createObjectURL(new Blob([svg], { type: "image/svg+xml" }));
+            const link = document.createElement("a"); link.href = url; link.download = "sclib-reported-tc-front-view.svg"; link.click();
+            window.setTimeout(() => URL.revokeObjectURL(url), 1000);
+          }}>Export front view (SVG)</button>
         </div>
         <p className="px-4 py-2 text-xs text-slate-600">Markers describe reported result origin, not scientific approval. Catalogue eligibility is governed separately; each hover includes its visibility status. Exact year/Tc overlaps are display clusters only: no results are merged. Click a marker or use the overlap selector below to inspect every received member. Server sampling may omit additional results at the same coordinates; cluster counts refer to this received selection. Years are not jittered.</p>
         {points.some(point => !knownVisibility(point.visibility)?.public_catalogue_eligible) && <p className="border-y border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-950">Archive or visibility-unverified points are present in this response. Do not treat them as accepted records or training labels.</p>}

@@ -7,6 +7,7 @@ import type { TimelineDisplayCluster } from "@/lib/timeline-display";
 import { formatTimelineTc, timelineYearBasis } from "@/lib/timeline-display";
 import { pressureLabel } from "@/lib/pressure-semantics";
 import { FAMILY_COLORS, familyLabel } from "@/lib/families";
+import { visibilityLabel } from "@/lib/material-visibility";
 
 type Props = Omit<TimelineSceneInput, "width" | "height"> & {
   onError: () => void; onReady: () => void; onSelect: (id: string) => void;
@@ -36,7 +37,7 @@ export default function Timeline3D({ clusters, xRange, yRange, logarithmic, onEr
   useEffect(() => {
     if (!canvas.current || !width) return;
     let cancelled = false;
-    setTip(null); setPinned(false); setPerspective(false);
+    setTip(null); setPinned(false); setPerspective(false); setLabels([]);
     import("@/lib/timeline-webgpu").then(async ({ createTimelineScene }) => {
       if (cancelled) return;
       const scene = await createTimelineScene(canvas.current!, { width, height, clusters, xRange, yRange, logarithmic },
@@ -87,6 +88,8 @@ export default function Timeline3D({ clusters, xRange, yRange, logarithmic, onEr
         <strong>{point.material}</strong><p>{formatTimelineTc(tip.tc_kelvin)} · {tip.year}</p>
         <p>{timelineYearBasis(point)} · Criterion: {point.result_metadata?.tc_criterion ?? "unknown"}</p>
         <p>{pressureLabel(point.pressure_semantics, point.pressure_gpa)} · {tip.origin}</p>
+        <p>{familyLabel(point.family)} · {visibilityLabel(point.visibility)}</p>
+        <p>{point.result_metadata?.review_status === "legacy_unreviewed" ? "Legacy result · unreviewed" : "Result-level review unavailable"}. No scientific acceptance asserted.</p>
         <p>{tip.members.length} received result{tip.members.length === 1 ? "" : "s"} at these coordinates. Inspect all members in the table.</p>
         {point.paper_id && <Link href={`/paper/${encodeURIComponent(point.paper_id)}`} className="site-text-link">Source record →</Link>}
       </aside>}

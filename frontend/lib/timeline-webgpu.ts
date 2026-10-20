@@ -115,12 +115,18 @@ export async function createTimelineScene(
   const gridMaterial = new LineBasicMaterial({ color: "#dce3d8" });
   group.add(new LineSegments(gridGeometry, gridMaterial)); resources.push(gridGeometry, gridMaterial);
   let frame = 0, disposed = false;
+  let targets: { x: number; y: number; cluster: TimelineDisplayCluster }[] = [];
   const draw = () => {
     frame = 0;
     if (disposed || document.hidden) return;
     try {
       group.updateMatrixWorld(true); camera.updateMatrixWorld(true);
       renderer.render(scene, camera);
+      targets = batches.flatMap(batch => batch.clusters.map(cluster => {
+        const position = chartPosition(cluster, input)!;
+        const p = group.localToWorld(world(position.x, position.y)).project(camera);
+        return { x: (p.x + 1) * width / 2, y: (1 - p.y) * height / 2, cluster };
+      }));
       onLabels(tickAnchors.map(tick => {
         const p = group.localToWorld(tick.point.clone()).project(camera);
         return { x: (p.x + 1) * width / 2, y: (1 - p.y) * height / 2, text: tick.text, axis: tick.axis };
@@ -140,8 +146,14 @@ export async function createTimelineScene(
       group.updateMatrixWorld(true); camera.updateMatrixWorld(true);
       raycaster.setFromCamera(new Vector2(x / width * 2 - 1, 1 - y / height * 2), camera);
       const hit = raycaster.intersectObjects(batches.map(batch => batch.mesh), false)[0];
-      if (!hit || hit.instanceId === undefined) return null;
-      return batches.find(batch => batch.mesh === hit.object)?.clusters[hit.instanceId] ?? null;
+      if (hit && hit.instanceId !== undefined) return batches.find(batch => batch.mesh === hit.object)?.clusters[hit.instanceId] ?? null;
+      // Hollow origin markers remain selectable through their centres.
+      let nearest: TimelineDisplayCluster | null = null, distance = 9 * 9;
+      for (const target of targets) {
+        const squared = (target.x - x) ** 2 + (target.y - y) ** 2;
+        if (squared < distance) { distance = squared; nearest = target.cluster; }
+      }
+      return nearest;
     },
     dispose() {
       if (disposed) return; disposed = true; cancelAnimationFrame(frame);

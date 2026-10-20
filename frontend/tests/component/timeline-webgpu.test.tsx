@@ -1,5 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
 import { chartPosition, createTimelineScene, type TimelineSceneInput } from "@/lib/timeline-webgpu";
+import { timelineSvg } from "@/lib/timeline-export";
+import type { TimelineDisplayCluster } from "@/lib/timeline-display";
 
 const input: TimelineSceneInput = { width: 1000, height: 500, clusters: [], xRange: [1900, 2030], yRange: [0, 300], logarithmic: false };
 
@@ -39,5 +41,22 @@ describe("Three-dimensional timeline scientific coordinates", () => {
       context.mockRestore();
       vi.unstubAllGlobals();
     }
+  });
+  it("exports a labelled front view with source filters and escaped metadata", () => {
+    const svg = timelineSvg({ clusters: [], xRange: [1900, 2030], yRange: [0, 300], logarithmic: false, receivedCount: 72, sourceUrl: 'https://example.test/timeline?family=cuprate&label=<script>"' });
+    const document = new DOMParser().parseFromString(svg, "image/svg+xml");
+    expect(document.querySelector("parsererror")).toBeNull();
+    expect(document.querySelector("script")).toBeNull();
+    expect(document.querySelector("desc")?.textContent).toContain("72 received results; 0 visible coordinate clusters");
+    expect(document.querySelector("desc")?.textContent).toContain("family=cuprate&label=<script>");
+  });
+  it("exports logarithmic sub-kelvin records while disclosing out-of-view omissions", () => {
+    const cluster: TimelineDisplayCluster = { id: "subkelvin", year: 2000, tc_kelvin: .000001, members: [], sourceCount: 0, family: "elemental", origin: "Observed" };
+    const svg = timelineSvg({ clusters: [cluster, { ...cluster, id: "zero", tc_kelvin: 0 }], xRange: [1900, 2030], yRange: [-6, 3], logarithmic: true, receivedCount: 2, sourceUrl: "https://example.test/timeline" });
+    const document = new DOMParser().parseFromString(svg, "image/svg+xml");
+    expect(document.querySelectorAll("g[transform]")).toHaveLength(1);
+    expect(document.querySelector("desc")?.textContent).toContain("2 received results; 1 visible coordinate clusters");
+    expect(svg).not.toMatch(/NaN|Infinity/);
+    expect(svg).toContain("Out-of-view records remain in the website table");
   });
 });
