@@ -21,7 +21,7 @@ export const metadata: Metadata = {
 
 function Code({ children }: { children: React.ReactNode }) {
   return (
-    <code className="rounded bg-slate-100 px-1.5 py-0.5 text-[13px] text-sage-ink">
+    <code className="break-words rounded bg-slate-100 px-1.5 py-0.5 text-[13px] text-sage-ink [overflow-wrap:anywhere]">
       {children}
     </code>
   );
@@ -51,7 +51,7 @@ function Endpoint({
         >
           {method}
         </span>
-        <code className="text-sm font-semibold text-sage-ink">{path}</code>
+        <code className="min-w-0 text-sm font-semibold text-sage-ink [overflow-wrap:anywhere]">{path}</code>
         <span
           className={[
             "ml-auto rounded-full px-2.5 py-0.5 text-[11px] font-medium",

@@ -14,6 +14,7 @@ export function GET(): Response {
       { loc: absoluteUrl("/materials"), changeFrequency: "daily", priority: 0.9 },
       { loc: absoluteUrl("/timeline"), changeFrequency: "daily", priority: 0.8 },
       { loc: absoluteUrl("/discovery"), changeFrequency: "daily", priority: 0.8 },
+      { loc: absoluteUrl("/discovery/candidates"), changeFrequency: "daily", priority: 0.7 },
       { loc: absoluteUrl("/stats"), changeFrequency: "daily", priority: 0.7 },
       { loc: absoluteUrl("/about"), changeFrequency: "monthly", priority: 0.6 },
       { loc: absoluteUrl("/about/join"), changeFrequency: "monthly", priority: 0.6 },
