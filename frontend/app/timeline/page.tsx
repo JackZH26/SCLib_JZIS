@@ -1,3 +1,4 @@
+import { DiscoveryNav } from "@/components/DiscoveryNav";
 /**
  * /timeline — Tc-vs-year Plotly scatter for the whole corpus or a
  * single family.  Server component does the fetch; the chart itself
@@ -126,6 +127,7 @@ export default async function TimelinePage({
 
   return (
     <main className="space-y-6">
+      <DiscoveryNav />
       <div>
         <h1 className="text-3xl font-bold tracking-tight">Reported Tc Timeline</h1>
         <p className="mt-1 text-sm text-slate-600">

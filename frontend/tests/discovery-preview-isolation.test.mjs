@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 test("synthetic material preview requires an explicit query and development mode", () => {
-  const source = readFileSync(new URL("../app/discovery/page.tsx", import.meta.url), "utf8");
+  const source = readFileSync(new URL("../app/discovery/candidates/page.tsx", import.meta.url), "utf8");
   assert.match(source, /process\.env\.NODE_ENV === "development" && \(await searchParams\)\.preview === "layout"/);
   assert.match(source, /await import\("@\/components\/DiscoveryLayoutPreview"\)/);
 });

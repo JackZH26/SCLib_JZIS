@@ -1,3 +1,4 @@
+import { Brand } from "@/components/Brand";
 import Link from "@/components/AppLink";
 import { getVersion } from "@/lib/api";
 
@@ -14,6 +15,7 @@ export async function Footer() {
   return (
     <footer className="mt-16 border-t border-sage-border bg-white sm:mt-24">
       <div className="mx-auto max-w-7xl px-4 py-10 sm:px-6 sm:py-12">
+        <div className="footer-brand"><Link href="/" aria-label="SCLib home"><Brand /></Link><p>Literature, material data, and reference articles<br />for superconductivity research.</p></div>
         <nav aria-label="Footer" className="grid grid-cols-2 gap-x-6 gap-y-8 sm:grid-cols-4">
           {groups.map((group) => (
             <div key={group.title}>

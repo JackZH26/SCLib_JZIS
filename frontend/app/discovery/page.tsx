@@ -1,193 +1,38 @@
 import type { Metadata } from "next";
-import { Suspense } from "react";
-import Link from "next/link";
-import { DiscoveryFeed } from "@/components/DiscoveryFeed";
-import { ResearchCandidateBoard } from "@/components/ResearchCandidateBoard";
-import { ResearchCatalogueBoard } from "@/components/ResearchCatalogueBoard";
-import { DiscoveryResearchCycle } from "@/components/DiscoveryResearchCycle";
-import { DiscoveryExperimentalQueue } from "@/components/DiscoveryExperimentalQueue";
-import { DiscoveryNumericalPilot } from "@/components/DiscoveryNumericalPilot";
-import { getDiscoveryNumericalPilot } from "@/lib/discovery-numerical-pilot-loader";
-import type { DiscoveryNumericalPilotSummary } from "@/lib/discovery-numerical-pilot";
-import { getResearchCatalogue, type ResearchCatalogue } from "@/lib/discovery-research-catalogue";
-import { ScientificDiscoveryMatrix } from "@/components/ScientificDiscoveryMatrix";
-import { DiscoveryFieldGuide } from "@/components/DiscoveryFieldGuide";
-import { DiscoverySourceComparison } from "@/components/DiscoverySourceComparison";
-import { DiscoveryPressureSeries } from "@/components/DiscoveryPressureSeries";
-import { DiscoveryDisclosure } from "@/components/DiscoveryDisclosure";
-import { DiscoveryTabs } from "@/components/DiscoveryTabs";
-import { DiscoverySourceCandidates } from "@/components/DiscoverySourceCandidates";
-import { getSourceHypothesisBrowseCatalogue, type SourceHypothesisBrowseCatalogue } from "@/lib/discovery-source-hypotheses";
-import "./discovery.css";
-import {
-  getDiscoveryCandidates,
-  getDiscoveryMetadata,
-  verifyDiscoveryPage,
-  type DiscoveryCandidatePage,
-  type DiscoveryMetadata,
-} from "@/lib/api";
+import Link from "@/components/AppLink";
+import { DiscoveryNav } from "@/components/DiscoveryNav";
+import { LegacyDiscoveryLinks } from "@/components/LegacyDiscoveryLinks";
 import { absoluteUrl } from "@/lib/seo";
 
 export const metadata: Metadata = {
-  title: "Discovery candidate materials",
-  description:
-    "Browse unscored source-computed superconductivity research hypotheses, source comparisons, limitations and next research actions.",
+  title: "Discovery",
+  description: "Explore reported transition temperatures, candidate materials, data methodology and the SCLib API.",
   alternates: { canonical: absoluteUrl("/discovery") },
-  openGraph: { url: absoluteUrl("/discovery") },
 };
-
-const PAGE_SIZE = 24;
-
-async function safeDiscovery(): Promise<{
-  metadata: DiscoveryMetadata;
-  page: DiscoveryCandidatePage;
-} | null> {
-  try {
-    const metadata = await getDiscoveryMetadata();
-    const page = await getDiscoveryCandidates({ limit: PAGE_SIZE, dataVersion: metadata.data_version });
-    verifyDiscoveryPage(page, metadata.data_version, 0, [], null, metadata.total_candidates);
-    return { metadata, page };
-  } catch {
-    // Never combine an unversioned legacy fallback with paginated endpoints.
-    return null;
-  }
-}
-
-export default async function DiscoveryPage({ searchParams }: { searchParams: Promise<{ preview?: string }> }) {
-  // Explicit development-only layout preview. Never replace API errors with fake rows.
-  if (process.env.NODE_ENV === "development" && (await searchParams).preview === "layout") {
-    const { DiscoveryLayoutPreview } = await import("@/components/DiscoveryLayoutPreview");
-    return <DiscoveryLayoutPreview />;
-  }
-  let researchCatalogue: ResearchCatalogue | null = null;
-  try { researchCatalogue = getResearchCatalogue(); } catch { /* Integrity failure displays no proposal data. */ }
-  let sourceCatalogue: SourceHypothesisBrowseCatalogue | null = null;
-  try { sourceCatalogue = getSourceHypothesisBrowseCatalogue(); } catch { /* No source hypotheses from an unverifiable catalogue. */ }
-  let numericalPilot: DiscoveryNumericalPilotSummary | null = null;
-  if (researchCatalogue) {
-    try { numericalPilot = await getDiscoveryNumericalPilot(researchCatalogue); } catch { /* No numerical observations from unverifiable assets. */ }
-  }
-  return (
-    <main className="space-y-4">
-      <header className="space-y-2 pb-2">
-        <h1 className="text-3xl font-semibold tracking-tight">Discovery</h1>
-      </header>
-
-      <DiscoveryTabs candidates={<>
-        {sourceCatalogue ? <DiscoverySourceCandidates catalogue={sourceCatalogue} /> : <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">The source-computed research catalogue could not be verified. No hypothesis rows are shown.</p>}
-      </>} research={<>
-      <DiscoveryDisclosure id="discovery-formal-assessments" summary="Published research-priority assessments (RPS)">
-        <p className="text-sm text-sage-muted">Formal campaign scores are separate from the unscored source-computed catalogue. Their published material and action counts are not added to its total.</p>
-        <ResearchCandidateBoard />
-      </DiscoveryDisclosure>
-      <DiscoveryDisclosure id="discovery-coordinate-proposals" summary="Unrelaxed COD coordinate proposals">
-        <p className="text-sm text-sage-muted">These coordinate modifications form a separate catalogue. They are not source-computed superconducting candidates and are not counted in the main list.</p>
-        <ResearchProposals catalog={researchCatalogue} pilot={numericalPilot} />
-      </DiscoveryDisclosure>
-      <DiscoveryDisclosure id="discovery-cycle-tools" summary="Research cycle: bandwidth, carriers and geometry">
-        {researchCatalogue ? <DiscoveryResearchCycle catalog={researchCatalogue} /> : <p role="alert" className="text-sm text-red-800">The research catalogue could not be verified. Research cases are unavailable.</p>}
-      </DiscoveryDisclosure>
-      {numericalPilot ? <DiscoveryNumericalPilot summary={numericalPilot} /> : <p role="alert" className="text-sm text-red-800">The retained numerical pilot could not be verified. Numerical observations are unavailable.</p>}
-      <DiscoveryDisclosure id="discovery-experimental-queue" summary="Experimental data and ML readiness">
-        <DiscoveryExperimentalQueue />
-      </DiscoveryDisclosure>
-      <ScientificDiscoveryMatrix folded />
-      <DiscoveryDisclosure id="discovery-tools" summary="Host references and calculation tools">
-        <nav aria-label="Discovery research workflow" className="grid gap-x-5 gap-y-1 text-sm sm:grid-cols-2">
-          <Link href="/discovery/host-references" className="site-text-link inline-flex min-h-11 items-center">Host physical references</Link>
-          <Link href="/discovery/structures" className="site-text-link inline-flex min-h-11 items-center">Inspect structure coordinates</Link>
-          <Link href="/discovery/calculations" className="site-text-link inline-flex min-h-11 items-center">Read calculation output</Link>
-          <Link href="/dashboard/research/discovery-designs" className="site-text-link inline-flex min-h-11 items-center">Continue a private research plan</Link>
-        </nav>
-      </DiscoveryDisclosure>
-      <DiscoveryDisclosure id="discovery-source-studies" summary="Source studies: pressure, composition and preparation">
-      <DiscoveryPressureSeries />
-      <DiscoverySourceComparison />
-      <p className="max-w-3xl text-sm"><Link className="site-text-link inline-flex min-h-11 items-center" href="/materials/source-observations/nbsctizr-annealing">Compare reported annealing effects in NbScTiZr</Link>: an experimental preparation study with separate transition criteria and source-derived field parameters.</p>
-      </DiscoveryDisclosure>
-      <DiscoveryDisclosure id="discovery-methodology" summary="Discovery methodology and field dictionary">
-        <div className="mt-3 max-w-3xl space-y-3 text-sm leading-6 text-sage-muted">
-          <p>Research unit: Host + Modification + State + Conditions. The next action tests which physical conditions can be engineered. Approximately 300 K at 1 atm is a research target.</p>
-          <p>Stable host → Electronic activation → Pairing → Coherence → Superconducting state is a conceptual research framework. Each stage requires evidence for its own structure, state, conditions and method.</p>
-          <p>Discovery studies how doping, substitution, vacancies, strain, interfaces, layer count, twist or pressure could change those conditions. A proposed modification is a hypothesis; reference results remain attached to their original state.</p>
-          <p>High-pressure results can motivate ambient-pressure research, but translation requires matched-state comparisons and independent stability checks. Different pairing channels need their own models and evidence.</p>
-          <p>RPS allocates research effort to an action within a fixed campaign and budget. It is not a superconductivity probability or a physical design-space coordinate.</p>
-        </div>
-        <DiscoveryFieldGuide />
-      </DiscoveryDisclosure>
-      <Suspense fallback={<p className="text-sm text-sage-muted">Loading historical candidate leads…</p>}>
-        <LegacyDiscovery />
-      </Suspense>
-      </>} />
-    </main>
-  );
-}
-
-function ResearchProposals({ catalog, pilot }: { catalog: ResearchCatalogue | null; pilot: DiscoveryNumericalPilotSummary | null }) {
-  return catalog ? <ResearchCatalogueBoard catalog={catalog} pilot={pilot} /> : <p role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">The structure proposal catalogue could not be verified. No proposal rows are shown.</p>;
-}
-
-async function LegacyDiscovery() {
-  const data = await safeDiscovery();
-  const metadata = data?.metadata;
-  return (
-
-      <details className="space-y-5 rounded-xl border border-sage-border p-5">
-        <summary className="cursor-pointer text-lg font-semibold">Historical candidate leads · pending RPS assessment ({metadata?.total_candidates ?? 0})</summary>
-        <p className="mt-4 text-sm leading-6 text-sage-muted">These records retain the original SC SuperLoop feed and heuristic scores for provenance. They are not new RPS assessments, superconductivity probabilities, or proof of experimental discovery. Original checker status may be pending.</p>
-      <section className="mt-5 grid gap-4 md:grid-cols-[1.3fr_1fr]">
-        <div className="rounded-2xl border border-sage-border bg-white p-5 shadow-soft">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.08em] text-accent">
-            Legacy feed filters
-          </h2>
-          <div className="mt-4 flex flex-wrap gap-2">
-            {(metadata?.filter_rules ?? []).map((rule) => (
-              <span
-                key={rule.key}
-                className="rounded-full border border-sage-border bg-sage-surface px-3 py-1 text-xs text-sage-muted"
-              >
-                {rule.label}: {rule.value}
-              </span>
-            ))}
-          </div>
-        </div>
-
-        <div className="rounded-2xl border border-sage-border bg-white p-5 shadow-soft">
-          <h2 className="text-sm font-semibold uppercase tracking-[0.08em] text-accent">
-            Legacy feed status
-          </h2>
-          <dl className="mt-4 space-y-3 text-sm">
-            <div className="flex items-start justify-between gap-4">
-              <dt className="text-sage-muted">Status</dt>
-              <dd className="font-medium text-sage-ink">
-                {!metadata ? "Unavailable" : metadata.source_status === "stale" ? "Stale · last validated version" : metadata.status === "active" ? "Active legacy feed" : "Planned / awaiting feed"}
-              </dd>
-            </div>
-            <div className="flex items-start justify-between gap-4">
-              <dt className="text-sage-muted">Last update</dt>
-              <dd className="break-all text-right font-medium text-sage-ink">
-                {metadata?.updated_at_utc ?? "Not published yet"}
-              </dd>
-            </div>
-            <div className="flex items-start justify-between gap-4">
-              <dt className="text-sage-muted">Visible candidates</dt>
-              <dd className="font-medium text-sage-ink">{metadata?.total_candidates ?? 0}</dd>
-            </div>
-          </dl>
-        </div>
-      </section>
-
-      {!data ? (
-        <section className="rounded-2xl border border-red-200 bg-red-50 px-6 py-8 text-sm text-red-700">
-          The historical candidate feed is temporarily unavailable.
-        </section>
-      ) : (
-        <DiscoveryFeed
-          initialPage={data.page}
-          roleCounts={data.metadata.role_counts}
-          totalCandidates={data.metadata.total_candidates}
-        />
-      )}
-      </details>
-  );
+const modules = [
+  { number: "01", title: "TcTimeline", href: "/timeline", tag: "Reported transition temperatures",
+    description: "Explore reported Tc across time, material families and pressure conditions. Inspect individual results and their original sources." },
+  { number: "02", title: "Candidates", href: "/discovery/candidates", tag: "Hypotheses and research assessments",
+    description: "Review source-computed candidates, proposed modifications and research priorities. Keep predictions separate from experimental observations." },
+  { number: "03", title: "Data & methodology", href: "/docs/data", tag: "Scope, provenance and limitations",
+    description: "Understand data coverage, source attribution, measurement conditions and the boundaries of automated extraction." },
+  { number: "04", title: "API reference", href: "/docs/api", tag: "Programmatic access",
+    description: "Query literature and material records. Read request parameters, response formats, versioning and access conditions." },
+];
+export default function DiscoveryPage() {
+  return <main className="discovery-overview">
+    <LegacyDiscoveryLinks /><DiscoveryNav />
+    <header className="discovery-intro"><p className="section-kicker">Superconductivity research</p>
+      <h1 className="page-title">Discovery</h1>
+      <p className="page-description">Tools for exploring reported properties,<br className="hidden sm:block" /> evaluating hypotheses, and accessing research data.</p>
+    </header>
+    <div className="discovery-module-grid">{modules.map(module => <Link href={module.href} key={module.href} className="discovery-module">
+      <div className="module-index"><span>{module.number}</span><span aria-hidden>↗</span></div>
+      <div><p className="section-kicker">{module.tag}</p><h2>{module.title}</h2><p>{module.description}</p></div>
+    </Link>)}</div>
+    <section className="discovery-method-note"><h2>Interpret results in context.</h2>
+      <p>Reported values depend on the sample, measurement criterion and conditions. Candidate assessments guide research; they are not probabilities of superconductivity or confirmed discoveries.</p>
+      <Link href="/scwiki" className="site-text-link">Read the superconductivity reference →</Link>
+    </section>
+  </main>;
 }

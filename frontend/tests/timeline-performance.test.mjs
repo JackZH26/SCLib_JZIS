@@ -25,27 +25,20 @@ const families = readFileSync(
 const api = readFileSync(new URL("../lib/api.ts", import.meta.url), "utf8");
 const display = readFileSync(new URL("../lib/timeline-display.ts", import.meta.url), "utf8");
 
-test("timeline prefers WebGL and falls back to a bounded SVG renderer", () => {
-  assert.match(chart, /type:\s*renderer === ["']webgl["']/);
-  assert.match(chart, /["']scattergl["'] as const/);
-  assert.match(chart, /["']scatter["'] as const/);
-  assert.match(chart, /useMemo\(\(\)\s*=>/);
-  assert.match(display, /new Map<string, TimelinePoint\[\]>/);
+test("timeline uses a WebGPU-only backend and retains bounded SVG compatibility", () => {
+  const gpu = readFileSync(new URL("../lib/timeline-webgpu.ts", import.meta.url), "utf8");
+  assert.match(gpu, /new WebGPUBackend/);
+  assert.match(gpu, /getFallback: null/);
+  assert.doesNotMatch(gpu, /import .*WebGL|new WebGPURenderer|new WebGLRenderer/);
+  assert.doesNotMatch(chart, /scattergl|browserSupportsWebGL|PlotlyGl2d|getContext/);
+  assert.match(chart, /import\("@\/components\/Timeline3D"\)/);
+  assert.match(chart, /import\("@\/components\/PlotlyBasic2d"\)/);
   assert.match(chart, /timelineRenderBudget/);
   assert.match(chart, /All .*received results remain accessible in the table/);
-  assert.doesNotMatch(chart, /index % Math.ceil/);
-  assert.doesNotMatch(chart, /jitterYear/);
-  assert.match(chart, /import\(["']@\/components\/PlotlyGl2d["']\)/);
-  assert.match(chart, /import\(["']@\/components\/PlotlyBasic2d["']\)/);
-  assert.match(chart, /browserSupportsWebGL/);
-  assert.match(chart, /getContext\(["']webgl["'], attributes\)/);
-  assert.doesNotMatch(chart, /getContext\(["']webgl2["']/);
-  assert.match(chart, /querySelector\(["']\.no-webgl["']\)/);
-  assert.match(chart, /onWebGlContextLost/);
   assert.match(chart, /SVG_POINT_LIMIT\s*=\s*3000/);
-  assert.match(plotlyBundle, /plotly\.js\/dist\/plotly-gl2d\.min\.js/);
-  assert.match(plotlyFallbackBundle, /plotly\.js\/dist\/plotly-basic\.min\.js/);
-  assert.doesNotMatch(chart, /import\(["']react-plotly\.js["']\)/);
+  assert.doesNotMatch(chart, /index % Math.ceil|jitterYear/);
+  assert.match(gpu, /InstancedMesh/);
+  assert.match(gpu, /renderer.dispose/);
 });
 
 test("timeline names reported results and keeps unsampled summaries separate", () => {

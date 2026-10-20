@@ -1,3 +1,4 @@
+import { DiscoveryNav } from "@/components/DiscoveryNav";
 import type { Metadata } from "next";
 import Link from "@/components/AppLink";
 import { InformationPage } from "@/components/InformationPage";
@@ -9,7 +10,7 @@ export const metadata: Metadata = {
 };
 
 export default function DataPage() {
-  return <InformationPage title="Data & methodology" description="Use the library as a route to research evidence, with the original sources and reported conditions in view.">
+  return <><DiscoveryNav /><InformationPage title="Data & methodology" description="Use the library as a route to research evidence, with the original sources and reported conditions in view.">
     <h2>Coverage and updates</h2>
     <p>SCLib indexes superconductivity literature and links material records to supporting publications. Source coverage, paper counts and data versions are reported in <Link href="/stats">Library statistics</Link>. Coverage is not a claim to include every relevant publication.</p>
     <p>Catalogued material counts describe stored library records. Public browsing applies visibility and source policies, so its total can differ. A statistics refresh is separate from the date of the latest indexed paper or ingestion run.</p>
@@ -23,5 +24,5 @@ export default function DataPage() {
     <h2>Rights and corrections</h2>
     <p>Source publications retain their own rights and access conditions. Library visibility does not itself grant rights to redistribute full text or use it for model training. See the <Link href="/terms">Terms</Link> and repository licensing for the applicable scope.</p>
     <p>If you find an error, include the affected URL, field and supporting source in <Link href="/dashboard/feedback">Feedback</Link>. See <Link href="/about/join">Join &amp; contribute</Link> for other contribution options.</p>
-  </InformationPage>;
+  </InformationPage></>;
 }

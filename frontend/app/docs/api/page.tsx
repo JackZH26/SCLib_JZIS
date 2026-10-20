@@ -1,3 +1,4 @@
+import { DiscoveryNav } from "@/components/DiscoveryNav";
 /**
  * /docs/api — public API reference page.
  *
@@ -70,6 +71,7 @@ function Endpoint({
 export default function ApiDocsPage() {
   return (
     <main className="mx-auto max-w-4xl space-y-10 px-6 py-12">
+      <DiscoveryNav />
       {/* Header */}
       <div>
         <Link

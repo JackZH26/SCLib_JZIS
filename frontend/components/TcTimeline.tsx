@@ -13,21 +13,13 @@ import { FormulaDisplay } from "@/components/FormulaDisplay";
 import { knownVisibility, visibilityIsRestricted, visibilityLabel } from "@/lib/material-visibility";
 import { clusterTimelinePoints, escapePlotlyHtml, formatTimelineTc, sortedTimelinePoints, timelineOrigin, timelinePointKey, timelineRenderBudget, timelineYearBasis } from "@/lib/timeline-display";
 
-const PlotWebGL = dynamic(() => import("@/components/PlotlyGl2d"), { ssr: false, loading: () => null });
+const Timeline3D = dynamic(() => import("@/components/Timeline3D"), { ssr: false, loading: () => null });
 const PlotSvg = dynamic(() => import("@/components/PlotlyBasic2d"), { ssr: false, loading: () => null });
 const SVG_POINT_LIMIT = 3000;
 const TABLE_PAGE_SIZE = 25;
-type TimelineRenderer = "detecting" | "webgl" | "svg";
+type TimelineRenderer = "detecting" | "webgpu" | "svg";
 type TemperatureView = "linear" | "log" | "low";
 
-export function browserSupportsWebGL(): boolean {
-  if (typeof document === "undefined") return false;
-  try {
-    const canvas = document.createElement("canvas");
-    const attributes: WebGLContextAttributes = { preserveDrawingBuffer: true, premultipliedAlpha: true };
-    return Boolean(canvas.getContext("webgl", attributes));
-  } catch { return false; }
-}
 
 function pointOriginRole(point: TimelinePoint): string {
   const classification = recordClassification({ result_classification: point });
@@ -51,7 +43,7 @@ export function TcTimeline({ points: receivedPoints, coverage, sampling, recordS
   const [selectedCluster, setSelectedCluster] = useState<string | null>(null);
   const [page, setPage] = useState(0);
 
-  useEffect(() => { setRenderer(browserSupportsWebGL() ? "webgl" : "svg"); }, []);
+  useEffect(() => { setRenderer(typeof navigator !== "undefined" && "gpu" in navigator && navigator.gpu ? "webgpu" : "svg"); }, []);
   useEffect(() => {
     const showLinkedResult = () => {
       const index = points.findIndex(point => point.point_id && window.location.hash === `#timeline-result-${encodeURIComponent(point.point_id)}`);
@@ -62,10 +54,7 @@ export function TcTimeline({ points: receivedPoints, coverage, sampling, recordS
     return () => window.removeEventListener("hashchange", showLinkedResult);
   }, [points]);
   const fallBackToSvg = useCallback(() => { setIsPlotReady(false); setRenderer("svg"); }, []);
-  const handleInitialized = useCallback((_figure: unknown, graphDiv: Readonly<HTMLElement>) => {
-    if (renderer === "webgl" && graphDiv.querySelector(".no-webgl")) { fallBackToSvg(); return; }
-    setIsPlotReady(true);
-  }, [fallBackToSvg, renderer]);
+  const handleInitialized = useCallback(() => { setIsPlotReady(true); }, []);
 
   const eligibleClusters = useMemo(() => temperatureView === "log" ? clusters.filter(cluster => cluster.tc_kelvin > 0) : clusters, [clusters, temperatureView]);
   const renderClusters = useMemo(() => timelineRenderBudget(eligibleClusters, renderer, SVG_POINT_LIMIT), [eligibleClusters, renderer]);
@@ -76,7 +65,7 @@ export function TcTimeline({ points: receivedPoints, coverage, sampling, recordS
       if (group) group.push(cluster); else grouped.set(cluster.family, [cluster]);
     }
     return Array.from(grouped, ([family, subset]) => ({
-      type: renderer === "webgl" ? ("scattergl" as const) : ("scatter" as const),
+      type: "scatter" as const,
       mode: "markers" as const,
       name: escapePlotlyHtml(family === "mixed" ? "Mixed families (overlap)" : family === "unknown" ? "Other / unknown family" : familyLabel(family)),
       x: subset.map(cluster => cluster.year),
@@ -98,7 +87,7 @@ export function TcTimeline({ points: receivedPoints, coverage, sampling, recordS
   const totalPages = Math.max(1, Math.ceil(tablePoints.length / TABLE_PAGE_SIZE));
   const safePage = Math.min(page, totalPages - 1);
   const shownRows = tablePoints.slice(safePage * TABLE_PAGE_SIZE, (safePage + 1) * TABLE_PAGE_SIZE);
-  const Plot = renderer === "webgl" ? PlotWebGL : PlotSvg;
+  const Plot = PlotSvg;
   const minYear = coverage?.year_min ?? points[0]?.year ?? 1990;
   const maxYear = coverage?.year_max ?? points[points.length - 1]?.year ?? new Date().getUTCFullYear();
   const positiveTcs = points.filter(point => point.tc_kelvin > 0).map(point => point.tc_kelvin);
@@ -127,12 +116,13 @@ export function TcTimeline({ points: receivedPoints, coverage, sampling, recordS
         </div>
         <p className="px-4 py-2 text-xs text-slate-600">Markers describe reported result origin, not scientific approval. Catalogue eligibility is governed separately; each hover includes its visibility status. Exact year/Tc overlaps are display clusters only: no results are merged. Click a marker or use the overlap selector below to inspect every received member. Server sampling may omit additional results at the same coordinates; cluster counts refer to this received selection. Years are not jittered.</p>
         {points.some(point => !knownVisibility(point.visibility)?.public_catalogue_eligible) && <p className="border-y border-amber-200 bg-amber-50 px-4 py-2 text-xs text-amber-950">Archive or visibility-unverified points are present in this response. Do not treat them as accepted records or training labels.</p>}
-        {renderer === "svg" && <p className="border-y border-amber-100 bg-amber-50 px-4 py-2 text-xs text-amber-900" role="status">WebGL is unavailable; using the SVG compatibility renderer. {renderClusters.length < eligibleClusters.length ? `Renderer budget: showing the first ${numberLabel(renderClusters.length)} of ${numberLabel(eligibleClusters.length)} coordinate clusters in deterministic year/Tc/identity order, not a representative sample. All ${numberLabel(points.length)} received results remain accessible in the table.` : "Every coordinate cluster is rendered."}</p>}
+        {renderer === "svg" && <p className="border-y border-amber-100 bg-amber-50 px-4 py-2 text-xs text-amber-900" role="status">Using the SVG compatibility view. Three-dimensional rendering is unavailable on this device. {renderClusters.length < eligibleClusters.length ? `Renderer budget: showing the first ${numberLabel(renderClusters.length)} of ${numberLabel(eligibleClusters.length)} coordinate clusters in deterministic year/Tc/identity order, not a representative sample. All ${numberLabel(points.length)} received results remain accessible in the table.` : "Every coordinate cluster is rendered."}</p>}
         {temperatureView === "low" && <p className="px-4 py-2 text-xs">The chart is zoomed to 0–1 K. Higher-Tc results remain in the table; use Linear or Logarithmic to see their markers.</p>}
         {temperatureView === "log" && positiveTcs.length !== points.length && <p className="px-4 py-2 text-xs">Zero or nonpositive Tc cannot appear on a logarithmic axis; those results remain in the table.</p>}
         <div className="relative" style={{ minHeight: 560 }}>
           {!isPlotReady && <div className="pointer-events-none absolute right-4 top-2 z-10 rounded bg-white/90 px-3 py-2 text-xs text-slate-500" role="status">Rendering chart… The table is available below.</div>}
-          {renderer !== "detecting" && <Plot key={renderer} data={traces} useResizeHandler onInitialized={handleInitialized} onError={renderer === "webgl" ? fallBackToSvg : undefined} onWebGlContextLost={renderer === "webgl" ? fallBackToSvg : undefined}
+          {renderer === "webgpu" && <Timeline3D clusters={eligibleClusters} xRange={[minYear - 1, maxYear + 1]} yRange={yRange as [number, number]} logarithmic={temperatureView === "log"} onReady={handleInitialized} onError={fallBackToSvg} onSelect={id => { setSelectedCluster(id); setPage(0); }} />}
+          {renderer === "svg" && <Plot key={renderer} data={traces} useResizeHandler onInitialized={handleInitialized}
             onClick={event => { const custom = event.points[0]?.customdata as unknown; if (Array.isArray(custom) && typeof custom[0] === "string") { setSelectedCluster(custom[0]); setPage(0); } }}
             layout={{ autosize: true, height: 560, margin: { l: 70, r: 20, t: 24, b: 85 }, dragmode: "pan", hovermode: "closest", hoverlabel: { bgcolor: "#ffffff", bordercolor: "#d7e1da", font: { color: "#25372b", size: 13, family: "Inter, system-ui, sans-serif" }, align: "left" }, xaxis: { title: { text: "Reported year (basis shown per result)" }, range: [minYear - 1, maxYear + 1], dtick: maxYear - minYear < 15 ? 1 : undefined, gridcolor: "#eef2ee" }, yaxis: { title: { text: "Reported Tc (K)" }, type: temperatureView === "log" ? "log" : "linear", dtick: temperatureView === "log" ? 1 : undefined, range: yRange, minallowed: temperatureView === "log" ? undefined : 0, gridcolor: "#eef2ee" }, legend: { orientation: "h", y: -0.2 }, paper_bgcolor: "#fff", plot_bgcolor: "#fff" }}
             config={{ responsive: true, displayModeBar: true, scrollZoom: true, displaylogo: false, modeBarButtonsToRemove: ["lasso2d", "select2d", "autoScale2d", "toggleSpikelines"], toImageButtonOptions: { filename: "sclib-reported-tc-timeline", format: "png", scale: 2 } }} style={{ width: "100%", height: "560px" }} />}

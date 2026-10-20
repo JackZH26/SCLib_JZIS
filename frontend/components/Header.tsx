@@ -13,16 +13,21 @@
 "use client";
 
 import Link from "@/components/AppLink";
+import { Brand } from "@/components/Brand";
 import { usePathname } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
 import { onAuthChange } from "@/lib/auth-session";
 import { me, type User, ApiError } from "@/lib/api";
 
+function activeNav(pathname: string, href: string) {
+  if (href === "/discovery") return pathname.startsWith("/discovery") || pathname === "/timeline" || pathname === "/docs/data" || pathname === "/docs/api";
+  return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
+}
+
 const NAV = [
   { href: "/", label: "Home" },
   { href: "/scwiki", label: "SCWiki" },
   { href: "/materials", label: "Materials" },
-  { href: "/timeline", label: "Reported Tc Timeline" },
   { href: "/discovery", label: "Discovery" },
   { href: "/about", label: "About JZIS" },
 ];
@@ -67,20 +72,13 @@ export function Header() {
   return (
     <header className="site-header sticky top-0 z-50 border-b border-sage-border bg-white">
       <div className="mx-auto flex h-[72px] max-w-7xl items-center justify-between gap-6 px-4 sm:px-6">
-        <Link href="/" className="flex shrink-0 items-baseline gap-2">
-          <span className="bg-sage-gradient-text bg-clip-text text-xl font-bold tracking-tight text-transparent">
-            SCLib
-          </span>
-          <span className="text-xs font-semibold uppercase tracking-widest text-sage-muted">
-            by JZIS
-          </span>
-        </Link>
+        <Link href="/" aria-label="SCLib home" className="shrink-0"><Brand /></Link>
         <nav aria-label="Primary" className="hidden items-center gap-1 text-sm xl:flex">
           {NAV.map((n) => (
             <Link
               key={n.href}
               href={n.href}
-              aria-current={pathname === n.href || pathname.startsWith(n.href + "/") ? "page" : undefined}
+              aria-current={activeNav(pathname, n.href) ? "page" : undefined}
               className="site-nav-link whitespace-nowrap rounded-[10px] px-3 py-2.5 font-medium text-sage-muted transition-colors hover:bg-sage-bg hover:text-accent-deep"
             >
               {n.label}
@@ -159,9 +157,7 @@ export function Header() {
           <div className="mx-auto grid max-w-7xl grid-cols-2 gap-2">
             {NAV.map((item) => {
               const active =
-                item.href === "/"
-                  ? pathname === "/"
-                  : pathname.startsWith(item.href);
+                activeNav(pathname, item.href);
               return (
                 <Link
                   key={item.href}

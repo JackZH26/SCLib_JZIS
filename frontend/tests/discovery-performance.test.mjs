@@ -3,7 +3,7 @@ import { readFileSync } from "node:fs";
 import test from "node:test";
 
 const api = readFileSync(new URL("../lib/api.ts", import.meta.url), "utf8");
-const page = readFileSync(new URL("../app/discovery/page.tsx", import.meta.url), "utf8");
+const page = readFileSync(new URL("../app/discovery/candidates/page.tsx", import.meta.url), "utf8");
 const feed = readFileSync(new URL("../components/DiscoveryFeed.tsx", import.meta.url), "utf8");
 
 test("discovery server render uses bounded summary pages", () => {

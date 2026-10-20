@@ -1,7 +1,7 @@
 import { expect, test } from "./public-site-fixture";
 
 for (const [path, heading] of [
-  ["", "The superconductivity research library"], ["about", "About JZ Institute of Science"],
+  ["", "Superconductivity Research Library"], ["about", "About JZ Institute of Science"],
   ["about/join", "Join & contribute"], ["research", "Superconductivity research"],
   ["scwiki", "SCWiki"], ["scwiki/using-sclib", "Using SCLib"], ["docs/data", "Data & methodology"],
 ]) {

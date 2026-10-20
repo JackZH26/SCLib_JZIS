@@ -4,7 +4,7 @@ import test from "node:test";
 
 const read = path => readFileSync(new URL(`../${path}`, import.meta.url), "utf8");
 test("unscored source hypotheses lead, with separate formal scores, coordinate proposals and research tools", () => {
-  const page = read("app/discovery/page.tsx");
+  const page = read("app/discovery/candidates/page.tsx");
   assert.match(page, /<DiscoveryTabs candidates=\{/);
   const researchSlot = page.indexOf("research={");
   assert.ok(page.indexOf("<DiscoverySourceCandidates catalogue={sourceCatalogue} />") < researchSlot);

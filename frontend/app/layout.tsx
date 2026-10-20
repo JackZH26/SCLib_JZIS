@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import { Inter } from "next/font/google";
+import localFont from "next/font/local";
 import "katex/dist/katex.min.css";
 import "./globals.css";
 import { Header } from "@/components/Header";
@@ -9,12 +9,16 @@ import { CookieConsentBanner } from "@/components/CookieConsent";
 import { WebVitalsReporter } from "@/components/WebVitalsReporter";
 import { SITE_BASE_URL, SITE_ORIGIN, serializeJsonLd } from "@/lib/seo";
 
-// Preserve the existing SCLib font, self-hosted by Next.js.
-const inter = Inter({
-  subsets: ["latin"],
-  display: "swap",
-  variable: "--font-inter",
+const manrope = localFont({
+  src: [
+    { path: "../public/fonts/manrope-400.ttf", weight: "400", style: "normal" },
+    { path: "../public/fonts/manrope-500.ttf", weight: "500", style: "normal" },
+    { path: "../public/fonts/manrope-600.ttf", weight: "600", style: "normal" },
+    { path: "../public/fonts/manrope-700.ttf", weight: "700", style: "normal" },
+    { path: "../public/fonts/manrope-800.ttf", weight: "800", style: "normal" },
+  ], display: "swap", variable: "--font-manrope",
 });
+const assetBase = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE_ORIGIN),
@@ -25,6 +29,7 @@ export const metadata: Metadata = {
   description:
     "Search superconductivity papers, explore material properties, and ask grounded research questions with the JZIS Superconductivity Library.",
   applicationName: "SCLib",
+  icons: { icon: [{ url: `${assetBase}/brand/symbol.svg`, type: "image/svg+xml" }, { url: `${assetBase}/brand/favicon-32.png`, sizes: "32x32" }, { url: `${assetBase}/brand/favicon-16.png`, sizes: "16x16" }], apple: [{ url: `${assetBase}/brand/apple-touch-icon.png`, sizes: "180x180" }] },
   keywords: [
     "superconductivity",
     "superconductor materials",
@@ -87,7 +92,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className={inter.variable}>
+    <html lang="en" className={manrope.variable}>
       <body className="flex min-h-[100dvh] flex-col bg-sage-bg font-sans antialiased">
         <script
           id="sclib-website-structured-data"
