@@ -25,7 +25,7 @@ export default function Timeline3D({ clusters, xRange, yRange, logarithmic, onEr
   const pickFrame = useRef(0);
   const height = 500;
   useEffect(() => {
-    const close = (event: KeyboardEvent) => { if (event.key === "Escape") { setTip(null); setPinned(false); } };
+    const close = (event: KeyboardEvent) => { if (event.key === "Escape") { cancelAnimationFrame(pickFrame.current); setTip(null); setPinned(false); } };
     window.addEventListener("keydown", close);
     return () => window.removeEventListener("keydown", close);
   }, []);
@@ -77,10 +77,13 @@ export default function Timeline3D({ clusters, xRange, yRange, logarithmic, onEr
         }}
         onClick={event => {
           if (suppressClick.current) return;
+          // An already queued hover must not replace the clicked/pinned point
+          // while the table is showing a different member of a close overlap.
+          cancelAnimationFrame(pickFrame.current);
           const rect = event.currentTarget.getBoundingClientRect(), results = engine.current?.pick(event.clientX - rect.left, event.clientY - rect.top) ?? [];
           if (results.length) { setNearby(results); setTip(results[0]); setPinned(true); onSelect(results[0].id); }
         }}
-        onPointerLeave={() => { if (!pinned) setTip(null); }} />
+        onPointerLeave={() => { cancelAnimationFrame(pickFrame.current); if (!pinned) setTip(null); }} />
       <svg className="timeline-axis-labels" width="100%" height={height} aria-hidden="true">
         {labels.map((label, i) => <text key={i} x={label.x} y={label.y} textAnchor={label.axis === "x" ? "middle" : "end"}>{label.text}</text>)}
         <text x="50%" y={height - 10} textAnchor="middle">Reported year (basis shown per result)</text>

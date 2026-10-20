@@ -1,4 +1,7 @@
 import { describe, it, expect, vi } from "vitest";
+import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
+import * as timelineEngine from "@/lib/timeline-webgpu";
+import Timeline3D from "@/components/Timeline3D";
 import { chartPosition, createTimelineScene, type TimelineSceneInput } from "@/lib/timeline-webgpu";
 import { timelineSvg } from "@/lib/timeline-export";
 import type { TimelineDisplayCluster } from "@/lib/timeline-display";
@@ -82,5 +85,36 @@ describe("Three-dimensional timeline scientific coordinates", () => {
     expect(marks[0].getAttribute("transform")).not.toEqual(marks[1].getAttribute("transform"));
     expect(marks.map(mark => mark.getAttribute("stroke"))).toEqual([timelineFamilyColour(a.family), timelineFamilyColour(b.family)]);
     expect(marks.map(mark => mark.querySelector("title")?.textContent)).toEqual([expect.stringContaining("100 K"), expect.stringContaining("100.2 K")]);
+  });
+  it("pins the clicked overlap without a queued hover replacing it, and switches members explicitly", async () => {
+    const clusters: TimelineDisplayCluster[] = [100, 100.2].map((tc, i) => ({
+      id: String(i), year: 2000, tc_kelvin: tc, sourceCount: 0, family: "cuprate", origin: "Observed",
+      members: [{ material: `SYNTHETIC-${i}`, tc_kelvin: tc, year: 2000, family: "cuprate", pressure_gpa: null, paper_id: null, is_theoretical: false }],
+    }));
+    const frames = new Map<number, FrameRequestCallback>();
+    let frameId = 0;
+    vi.stubGlobal("requestAnimationFrame", (callback: FrameRequestCallback) => { frames.set(++frameId, callback); return frameId; });
+    vi.stubGlobal("cancelAnimationFrame", (id: number) => frames.delete(id));
+    vi.stubGlobal("ResizeObserver", class { observe() {} disconnect() {} });
+    const onReady = vi.fn(), onSelect = vi.fn();
+    const engine = { perspective: vi.fn(), zoom: vi.fn(), rotate: vi.fn(), pan: vi.fn(), dispose: vi.fn(), pick: vi.fn(() => [clusters[1], clusters[0]]) };
+    const create = vi.spyOn(timelineEngine, "createTimelineScene").mockResolvedValue(engine);
+    const view = render(<Timeline3D clusters={clusters} xRange={input.xRange} yRange={input.yRange} logarithmic={false} onError={vi.fn()} onReady={onReady} onSelect={onSelect} />);
+    try {
+      await waitFor(() => expect(onReady).toHaveBeenCalled());
+      const canvas = screen.getByLabelText(/Three-dimensional reported Tc chart/);
+      fireEvent(canvas, Object.assign(new Event("pointermove", { bubbles: true }), { pointerType: "mouse", clientX: 10, clientY: 10 }));
+      expect(frames.size).toBe(1);
+      fireEvent.click(canvas, { clientX: 10, clientY: 10 });
+      expect(frames.size).toBe(0);
+      act(() => { frames.forEach(callback => callback(0)); });
+      expect(screen.getByLabelText("Selected result details")).toHaveTextContent("SYNTHETIC-1");
+      expect(onSelect).toHaveBeenLastCalledWith("1");
+      fireEvent.change(screen.getByRole("combobox", { name: "Nearby markers (2)" }), { target: { value: "0" } });
+      expect(screen.getByLabelText("Selected result details")).toHaveTextContent("SYNTHETIC-0");
+      expect(onSelect).toHaveBeenLastCalledWith("0");
+    } finally {
+      view.unmount(); create.mockRestore(); vi.unstubAllGlobals();
+    }
   });
 });
