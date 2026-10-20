@@ -48,7 +48,12 @@ export async function createTimelineScene(
   const renderer = new Renderer(backend, { getFallback: null, antialias: true });
   renderer.library = new StandardNodeLibrary();
   renderer.onDeviceLost = onLost;
-  try { await renderer.init(); } catch (error) { renderer.dispose(); throw error; }
+  try { await renderer.init(); } catch (error) {
+    // Renderer.dispose() re-enters init through setAnimationLoop in this pinned
+    // Three.js version. A failed init has no renderer managers to dispose.
+    (backend as WebGPUBackend & { device?: { destroy: () => void } }).device?.destroy();
+    throw error;
+  }
   const { width, height } = input;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
   renderer.setSize(width, height, false);
@@ -142,7 +147,7 @@ export async function createTimelineScene(
       if (disposed) return; disposed = true; cancelAnimationFrame(frame);
       document.removeEventListener("visibilitychange", resume);
       batches.forEach(batch => batch.mesh.dispose()); resources.forEach(resource => resource.dispose());
-      renderer.dispose();
+      void renderer.dispose().catch(() => {});
     },
   };
 }

@@ -27,4 +27,17 @@ describe("Three-dimensional timeline scientific coordinates", () => {
     expect(context).not.toHaveBeenCalled();
     context.mockRestore();
   });
+  it.each(["null adapter", "rejected adapter"])("handles %s without re-entering renderer initialization", async mode => {
+    const requestAdapter = mode === "null adapter" ? vi.fn().mockResolvedValue(null) : vi.fn().mockRejectedValue(new Error("Adapter rejected"));
+    vi.stubGlobal("navigator", { gpu: { requestAdapter } });
+    const context = vi.spyOn(HTMLCanvasElement.prototype, "getContext");
+    try {
+      await expect(createTimelineScene(document.createElement("canvas"), input, () => {}, () => {})).rejects.toThrow(/adapter/i);
+      expect(requestAdapter).toHaveBeenCalledTimes(1);
+      expect(context).not.toHaveBeenCalled();
+    } finally {
+      context.mockRestore();
+      vi.unstubAllGlobals();
+    }
+  });
 });

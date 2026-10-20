@@ -28,8 +28,9 @@ export default function Timeline3D({ clusters, xRange, yRange, logarithmic, onEr
   }, []);
   useEffect(() => {
     if (!host.current) return;
-    const resize = () => setWidth(Math.max(280, Math.round(host.current!.clientWidth)));
-    resize(); const observer = new ResizeObserver(resize); observer.observe(host.current);
+    const element = host.current;
+    const resize = () => setWidth(Math.max(280, Math.round(element.clientWidth)));
+    resize(); const observer = new ResizeObserver(resize); observer.observe(element);
     return () => observer.disconnect();
   }, []);
   useEffect(() => {
