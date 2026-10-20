@@ -22,6 +22,10 @@ from scripts.schema_rehearsal_report import capture_provenance, source_unchanged
 
 ROOT = Path(__file__).resolve().parents[2]
 MAX_XML_BYTES = 32 * 1024 * 1024
+# This module snapshots every public row under a deliberate 20k-row/32 MiB
+# limit. Give it fresh owned services rather than raising the restore limits
+# or erasing unrelated committed fixtures to make a larger batch pass.
+ISOLATED_SERVICE_MODULES = frozenset({"tests/test_research_restore_worker.py"})
 
 
 def modules(root: Path) -> list[str]:
@@ -73,7 +77,17 @@ def partition(selected: list[str], batches: int) -> list[list[str]]:
         raise ValueError("invalid_batch_count")
     if selected != sorted(set(selected)):
         raise ValueError("test_modules_must_be_unique_and_sorted")
-    groups = [selected[index::batches] for index in range(batches)]
+    isolated = [module for module in selected if module in ISOLATED_SERVICE_MODULES]
+    ordinary = [module for module in selected if module not in ISOLATED_SERVICE_MODULES]
+    ordinary_batches = batches - len(isolated)
+    if ordinary and ordinary_batches <= 0:
+        raise ValueError("invalid_batch_count")
+    groups = (
+        [ordinary[index::ordinary_batches] for index in range(ordinary_batches)]
+        if ordinary
+        else []
+    )
+    groups = [group for group in groups if group] + [[module] for module in isolated]
     if sorted(module for group in groups for module in group) != selected:
         raise ValueError("incomplete_module_partition")
     return groups
@@ -163,6 +177,9 @@ def execute(
         "backend": backend,
         "module_count": len(selected),
         "batches": groups,
+        "isolated_service_modules": [
+            module for module in selected if module in ISOLATED_SERVICE_MODULES
+        ],
         "provenance": provenance,
         "scope": "ordinary_api_tests_only",
         "capacity_included": False,

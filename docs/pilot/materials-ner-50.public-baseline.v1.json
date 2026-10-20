@@ -1,0 +1,5784 @@
+{
+  "version": "materials-ner-public-baseline/1",
+  "started_at": "2026-10-10T10:25:48.943061+00:00",
+  "completed_at": "2026-10-10T10:26:11.319482+00:00",
+  "source_manifest_file_sha256": "129c527c0e604ddeea27acc3236f85124a16c1c52a8bd58832190772a43ea288",
+  "read_only_public_api": true,
+  "production_database_written": false,
+  "public_material_page_snapshot_obtained": false,
+  "absence_proves_reextractability": false,
+  "human_recoverability_adjudication_completed": false,
+  "candidate_works": 50,
+  "works_found": 50,
+  "returned_material_occurrences": 166,
+  "record_key_frequency": {
+    "family": 164,
+    "formula": 166,
+    "tc_type": 158,
+    "tc_kelvin": 95,
+    "tc_regime": 166,
+    "confidence": 166,
+    "paper_type": 166,
+    "measurement": 166,
+    "pressure_gpa": 81,
+    "evidence_type": 166,
+    "visibility": 166,
+    "result_classification": 166,
+    "pressure_semantics": 166,
+    "lattice_a": 4,
+    "lattice_c": 2,
+    "ambient_sc": 54,
+    "lambda_eph": 17,
+    "space_group": 15,
+    "crystal_structure": 28,
+    "doping_type": 24,
+    "rho_exponent": 13,
+    "competing_order": 4,
+    "is_unconventional": 12,
+    "omega_log_k": 5,
+    "gap_structure": 15,
+    "pressure_type": 25,
+    "pairing_symmetry": 15,
+    "hc2_tesla": 3,
+    "hc2_conditions": 3,
+    "sample_form": 67,
+    "structure_phase": 53,
+    "substrate": 10,
+    "doping_level": 10
+  },
+  "field_counts": {
+    "formula": {
+      "value": 166
+    },
+    "family": {
+      "value": 164,
+      "absent_key": 2
+    },
+    "tc_kelvin": {
+      "value": 95,
+      "absent_key": 71
+    },
+    "pressure_gpa": {
+      "value": 46,
+      "zero": 35,
+      "absent_key": 85
+    },
+    "tc_type": {
+      "value": 158,
+      "absent_key": 8
+    },
+    "measurement": {
+      "value": 166
+    },
+    "pairing_symmetry": {
+      "absent_key": 151,
+      "value": 15
+    },
+    "crystal_structure": {
+      "absent_key": 138,
+      "value": 28
+    },
+    "structure_phase": {
+      "absent_key": 113,
+      "value": 53
+    },
+    "lambda_eph": {
+      "absent_key": 149,
+      "value": 17
+    },
+    "omega_log_k": {
+      "absent_key": 161,
+      "value": 5
+    },
+    "mu_star": {
+      "absent_key": 166
+    },
+    "hc2_tesla": {
+      "absent_key": 163,
+      "value": 3
+    },
+    "hc2_conditions": {
+      "absent_key": 163,
+      "value": 3
+    },
+    "jc_a_cm2": {
+      "absent_key": 166
+    },
+    "lattice_a": {
+      "absent_key": 162,
+      "value": 4
+    },
+    "lattice_b": {
+      "absent_key": 166
+    },
+    "lattice_c": {
+      "absent_key": 164,
+      "value": 2
+    },
+    "space_group": {
+      "absent_key": 151,
+      "value": 15
+    },
+    "sample_form": {
+      "absent_key": 99,
+      "value": 67
+    },
+    "substrate": {
+      "absent_key": 156,
+      "value": 10
+    },
+    "doping_type": {
+      "absent_key": 142,
+      "value": 24
+    },
+    "doping_level": {
+      "absent_key": 156,
+      "zero": 1,
+      "value": 9
+    },
+    "ambient_sc": {
+      "absent_key": 112,
+      "boolean_false": 14,
+      "boolean_true": 40
+    },
+    "gap_structure": {
+      "absent_key": 151,
+      "value": 15
+    },
+    "competing_order": {
+      "absent_key": 162,
+      "value": 4
+    }
+  },
+  "rows": [
+    {
+      "paper_id": "arxiv:2309.13919",
+      "split": "development",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2309.13919",
+      "captured_at": "2026-10-10T10:25:48.943245+00:00",
+      "status": 200,
+      "body_sha256": "47269524a2cc29506cc6db012b20d3d63dde7e8c9277647fc8ccbc72fde0323f",
+      "response_date": "Sat, 10 Oct 2026 10:25:49 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 4,
+        "returned_occurrences": 4,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 4
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2309.13919",
+      "sclib_doi": null,
+      "returned_material_occurrences": 4,
+      "field_states": {
+        "formula": {
+          "value": 4
+        },
+        "family": {
+          "value": 4
+        },
+        "tc_kelvin": {
+          "value": 4
+        },
+        "pressure_gpa": {
+          "value": 4
+        },
+        "tc_type": {
+          "value": 4
+        },
+        "measurement": {
+          "value": 4
+        },
+        "pairing_symmetry": {
+          "absent_key": 4
+        },
+        "crystal_structure": {
+          "absent_key": 4
+        },
+        "structure_phase": {
+          "absent_key": 4
+        },
+        "lambda_eph": {
+          "absent_key": 4
+        },
+        "omega_log_k": {
+          "absent_key": 4
+        },
+        "mu_star": {
+          "absent_key": 4
+        },
+        "hc2_tesla": {
+          "absent_key": 4
+        },
+        "hc2_conditions": {
+          "absent_key": 4
+        },
+        "jc_a_cm2": {
+          "absent_key": 4
+        },
+        "lattice_a": {
+          "absent_key": 4
+        },
+        "lattice_b": {
+          "absent_key": 4
+        },
+        "lattice_c": {
+          "absent_key": 4
+        },
+        "space_group": {
+          "absent_key": 4
+        },
+        "sample_form": {
+          "absent_key": 4
+        },
+        "substrate": {
+          "absent_key": 4
+        },
+        "doping_type": {
+          "absent_key": 4
+        },
+        "doping_level": {
+          "absent_key": 4
+        },
+        "ambient_sc": {
+          "absent_key": 4
+        },
+        "gap_structure": {
+          "absent_key": 4
+        },
+        "competing_order": {
+          "absent_key": 4
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2502.02252",
+      "split": "development",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2502.02252",
+      "captured_at": "2026-10-10T10:25:49.370115+00:00",
+      "status": 200,
+      "body_sha256": "0f7a9f576c889cfba68601733c98f6271a6290406cda3afe0bd46673511002ca",
+      "response_date": "Sat, 10 Oct 2026 10:25:49 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 2,
+        "returned_occurrences": 2,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 2
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2502.02252",
+      "sclib_doi": null,
+      "returned_material_occurrences": 2,
+      "field_states": {
+        "formula": {
+          "value": 2
+        },
+        "family": {
+          "value": 2
+        },
+        "tc_kelvin": {
+          "absent_key": 2
+        },
+        "pressure_gpa": {
+          "zero": 1,
+          "absent_key": 1
+        },
+        "tc_type": {
+          "value": 2
+        },
+        "measurement": {
+          "value": 2
+        },
+        "pairing_symmetry": {
+          "absent_key": 2
+        },
+        "crystal_structure": {
+          "value": 1,
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "absent_key": 2
+        },
+        "lambda_eph": {
+          "value": 1,
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 2
+        },
+        "mu_star": {
+          "absent_key": 2
+        },
+        "hc2_tesla": {
+          "absent_key": 2
+        },
+        "hc2_conditions": {
+          "absent_key": 2
+        },
+        "jc_a_cm2": {
+          "absent_key": 2
+        },
+        "lattice_a": {
+          "value": 1,
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 2
+        },
+        "lattice_c": {
+          "value": 1,
+          "absent_key": 1
+        },
+        "space_group": {
+          "value": 1,
+          "absent_key": 1
+        },
+        "sample_form": {
+          "absent_key": 2
+        },
+        "substrate": {
+          "absent_key": 2
+        },
+        "doping_type": {
+          "absent_key": 2
+        },
+        "doping_level": {
+          "absent_key": 2
+        },
+        "ambient_sc": {
+          "boolean_false": 1,
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "absent_key": 2
+        },
+        "competing_order": {
+          "absent_key": 2
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2408.10625",
+      "split": "validation",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2408.10625",
+      "captured_at": "2026-10-10T10:25:49.805587+00:00",
+      "status": 200,
+      "body_sha256": "cc56c7dddced1e0f7b35bc64a966c29989a815b43abb11b5354a05de0a463ca8",
+      "response_date": "Sat, 10 Oct 2026 10:25:50 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 7,
+        "returned_occurrences": 7,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 7
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2408.10625",
+      "sclib_doi": null,
+      "returned_material_occurrences": 7,
+      "field_states": {
+        "formula": {
+          "value": 7
+        },
+        "family": {
+          "value": 7
+        },
+        "tc_kelvin": {
+          "value": 7
+        },
+        "pressure_gpa": {
+          "value": 7
+        },
+        "tc_type": {
+          "value": 7
+        },
+        "measurement": {
+          "value": 7
+        },
+        "pairing_symmetry": {
+          "absent_key": 7
+        },
+        "crystal_structure": {
+          "value": 2,
+          "absent_key": 5
+        },
+        "structure_phase": {
+          "absent_key": 7
+        },
+        "lambda_eph": {
+          "value": 1,
+          "absent_key": 6
+        },
+        "omega_log_k": {
+          "absent_key": 7
+        },
+        "mu_star": {
+          "absent_key": 7
+        },
+        "hc2_tesla": {
+          "absent_key": 7
+        },
+        "hc2_conditions": {
+          "absent_key": 7
+        },
+        "jc_a_cm2": {
+          "absent_key": 7
+        },
+        "lattice_a": {
+          "absent_key": 7
+        },
+        "lattice_b": {
+          "absent_key": 7
+        },
+        "lattice_c": {
+          "absent_key": 7
+        },
+        "space_group": {
+          "absent_key": 7
+        },
+        "sample_form": {
+          "absent_key": 7
+        },
+        "substrate": {
+          "absent_key": 7
+        },
+        "doping_type": {
+          "absent_key": 7
+        },
+        "doping_level": {
+          "absent_key": 7
+        },
+        "ambient_sc": {
+          "absent_key": 7
+        },
+        "gap_structure": {
+          "absent_key": 7
+        },
+        "competing_order": {
+          "absent_key": 7
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2307.11742",
+      "split": "validation",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2307.11742",
+      "captured_at": "2026-10-10T10:25:50.191824+00:00",
+      "status": 200,
+      "body_sha256": "b9f678c193a18afc0073d89405bf737ac8d99dcd451d0962aa6b3513ad4c7c6c",
+      "response_date": "Sat, 10 Oct 2026 10:25:50 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2307.11742",
+      "sclib_doi": null,
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "value": 1
+        },
+        "pressure_gpa": {
+          "value": 1
+        },
+        "tc_type": {
+          "value": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "value": 1
+        },
+        "structure_phase": {
+          "absent_key": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "absent_key": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "value": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "boolean_false": 1
+        },
+        "gap_structure": {
+          "absent_key": 1
+        },
+        "competing_order": {
+          "value": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2507.03383",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2507.03383",
+      "captured_at": "2026-10-10T10:25:50.751468+00:00",
+      "status": 200,
+      "body_sha256": "533e26a86c19d05349b91fe1c922877b7d7fa00f89da2fc6d3f9ddeff21ddb2d",
+      "response_date": "Sat, 10 Oct 2026 10:25:51 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 7,
+        "returned_occurrences": 7,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 7
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2507.03383",
+      "sclib_doi": null,
+      "returned_material_occurrences": 7,
+      "field_states": {
+        "formula": {
+          "value": 7
+        },
+        "family": {
+          "value": 7
+        },
+        "tc_kelvin": {
+          "value": 7
+        },
+        "pressure_gpa": {
+          "value": 7
+        },
+        "tc_type": {
+          "value": 7
+        },
+        "measurement": {
+          "value": 7
+        },
+        "pairing_symmetry": {
+          "absent_key": 7
+        },
+        "crystal_structure": {
+          "value": 7
+        },
+        "structure_phase": {
+          "absent_key": 7
+        },
+        "lambda_eph": {
+          "absent_key": 2,
+          "value": 5
+        },
+        "omega_log_k": {
+          "absent_key": 2,
+          "value": 5
+        },
+        "mu_star": {
+          "absent_key": 7
+        },
+        "hc2_tesla": {
+          "absent_key": 7
+        },
+        "hc2_conditions": {
+          "absent_key": 7
+        },
+        "jc_a_cm2": {
+          "absent_key": 7
+        },
+        "lattice_a": {
+          "absent_key": 7
+        },
+        "lattice_b": {
+          "absent_key": 7
+        },
+        "lattice_c": {
+          "absent_key": 7
+        },
+        "space_group": {
+          "value": 7
+        },
+        "sample_form": {
+          "absent_key": 7
+        },
+        "substrate": {
+          "absent_key": 7
+        },
+        "doping_type": {
+          "absent_key": 7
+        },
+        "doping_level": {
+          "absent_key": 7
+        },
+        "ambient_sc": {
+          "absent_key": 7
+        },
+        "gap_structure": {
+          "absent_key": 7
+        },
+        "competing_order": {
+          "absent_key": 7
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2510.25902",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2510.25902",
+      "captured_at": "2026-10-10T10:25:51.378181+00:00",
+      "status": 200,
+      "body_sha256": "0359b2a091ca728c7dd126b6a89ef77cc261e5f13f52764f5f4b6ab3c76c993d",
+      "response_date": "Sat, 10 Oct 2026 10:25:51 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 4,
+        "returned_occurrences": 4,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 4
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2510.25902",
+      "sclib_doi": "10.1002/andp.202500553",
+      "returned_material_occurrences": 4,
+      "field_states": {
+        "formula": {
+          "value": 4
+        },
+        "family": {
+          "value": 4
+        },
+        "tc_kelvin": {
+          "absent_key": 4
+        },
+        "pressure_gpa": {
+          "value": 4
+        },
+        "tc_type": {
+          "absent_key": 4
+        },
+        "measurement": {
+          "value": 4
+        },
+        "pairing_symmetry": {
+          "value": 4
+        },
+        "crystal_structure": {
+          "value": 2,
+          "absent_key": 2
+        },
+        "structure_phase": {
+          "absent_key": 4
+        },
+        "lambda_eph": {
+          "value": 4
+        },
+        "omega_log_k": {
+          "absent_key": 4
+        },
+        "mu_star": {
+          "absent_key": 4
+        },
+        "hc2_tesla": {
+          "absent_key": 4
+        },
+        "hc2_conditions": {
+          "absent_key": 4
+        },
+        "jc_a_cm2": {
+          "absent_key": 4
+        },
+        "lattice_a": {
+          "value": 2,
+          "absent_key": 2
+        },
+        "lattice_b": {
+          "absent_key": 4
+        },
+        "lattice_c": {
+          "absent_key": 4
+        },
+        "space_group": {
+          "value": 2,
+          "absent_key": 2
+        },
+        "sample_form": {
+          "absent_key": 4
+        },
+        "substrate": {
+          "absent_key": 4
+        },
+        "doping_type": {
+          "absent_key": 4
+        },
+        "doping_level": {
+          "absent_key": 4
+        },
+        "ambient_sc": {
+          "boolean_false": 4
+        },
+        "gap_structure": {
+          "value": 4
+        },
+        "competing_order": {
+          "absent_key": 4
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2608.11428",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2608.11428",
+      "captured_at": "2026-10-10T10:25:51.723710+00:00",
+      "status": 200,
+      "body_sha256": "d3fc49abc405ebcf0420ad8a542b4c871906231ccff7cbb1164fb7666ba0680c",
+      "response_date": "Sat, 10 Oct 2026 10:25:52 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 4,
+        "returned_occurrences": 4,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 4
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2608.11428",
+      "sclib_doi": null,
+      "returned_material_occurrences": 4,
+      "field_states": {
+        "formula": {
+          "value": 4
+        },
+        "family": {
+          "value": 4
+        },
+        "tc_kelvin": {
+          "value": 4
+        },
+        "pressure_gpa": {
+          "value": 4
+        },
+        "tc_type": {
+          "value": 4
+        },
+        "measurement": {
+          "value": 4
+        },
+        "pairing_symmetry": {
+          "absent_key": 4
+        },
+        "crystal_structure": {
+          "absent_key": 3,
+          "value": 1
+        },
+        "structure_phase": {
+          "absent_key": 4
+        },
+        "lambda_eph": {
+          "absent_key": 4
+        },
+        "omega_log_k": {
+          "absent_key": 4
+        },
+        "mu_star": {
+          "absent_key": 4
+        },
+        "hc2_tesla": {
+          "absent_key": 4
+        },
+        "hc2_conditions": {
+          "absent_key": 4
+        },
+        "jc_a_cm2": {
+          "absent_key": 4
+        },
+        "lattice_a": {
+          "absent_key": 4
+        },
+        "lattice_b": {
+          "absent_key": 4
+        },
+        "lattice_c": {
+          "absent_key": 4
+        },
+        "space_group": {
+          "absent_key": 4
+        },
+        "sample_form": {
+          "absent_key": 4
+        },
+        "substrate": {
+          "absent_key": 4
+        },
+        "doping_type": {
+          "absent_key": 4
+        },
+        "doping_level": {
+          "absent_key": 4
+        },
+        "ambient_sc": {
+          "boolean_false": 4
+        },
+        "gap_structure": {
+          "absent_key": 4
+        },
+        "competing_order": {
+          "absent_key": 4
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2401.12682",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2401.12682",
+      "captured_at": "2026-10-10T10:25:52.162643+00:00",
+      "status": 200,
+      "body_sha256": "d0f1a752a1769bf8e7ecd3d739f380cd818ec9be40f25881a008460551ba1578",
+      "response_date": "Sat, 10 Oct 2026 10:25:53 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2401.12682",
+      "sclib_doi": null,
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "value": 1
+        },
+        "pressure_gpa": {
+          "value": 1
+        },
+        "tc_type": {
+          "value": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "value": 1
+        },
+        "structure_phase": {
+          "absent_key": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "value": 1
+        },
+        "sample_form": {
+          "absent_key": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "absent_key": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "boolean_false": 1
+        },
+        "gap_structure": {
+          "absent_key": 1
+        },
+        "competing_order": {
+          "absent_key": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2306.03122",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2306.03122",
+      "captured_at": "2026-10-10T10:25:52.952850+00:00",
+      "status": 200,
+      "body_sha256": "196e7066245e163a57934a6e29d6a114172dcf2ac89e0bb8671d0c383d9a5058",
+      "response_date": "Sat, 10 Oct 2026 10:25:53 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 2,
+        "returned_occurrences": 2,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 2
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2306.03122",
+      "sclib_doi": "10.1038/s41586-024-07026-7",
+      "returned_material_occurrences": 2,
+      "field_states": {
+        "formula": {
+          "value": 2
+        },
+        "family": {
+          "value": 2
+        },
+        "tc_kelvin": {
+          "absent_key": 2
+        },
+        "pressure_gpa": {
+          "absent_key": 2
+        },
+        "tc_type": {
+          "value": 2
+        },
+        "measurement": {
+          "value": 2
+        },
+        "pairing_symmetry": {
+          "absent_key": 2
+        },
+        "crystal_structure": {
+          "absent_key": 2
+        },
+        "structure_phase": {
+          "absent_key": 2
+        },
+        "lambda_eph": {
+          "absent_key": 2
+        },
+        "omega_log_k": {
+          "absent_key": 2
+        },
+        "mu_star": {
+          "absent_key": 2
+        },
+        "hc2_tesla": {
+          "absent_key": 2
+        },
+        "hc2_conditions": {
+          "absent_key": 2
+        },
+        "jc_a_cm2": {
+          "absent_key": 2
+        },
+        "lattice_a": {
+          "absent_key": 2
+        },
+        "lattice_b": {
+          "absent_key": 2
+        },
+        "lattice_c": {
+          "absent_key": 2
+        },
+        "space_group": {
+          "absent_key": 2
+        },
+        "sample_form": {
+          "absent_key": 2
+        },
+        "substrate": {
+          "absent_key": 2
+        },
+        "doping_type": {
+          "absent_key": 2
+        },
+        "doping_level": {
+          "absent_key": 2
+        },
+        "ambient_sc": {
+          "absent_key": 2
+        },
+        "gap_structure": {
+          "absent_key": 2
+        },
+        "competing_order": {
+          "absent_key": 2
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2510.10720",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2510.10720",
+      "captured_at": "2026-10-10T10:25:53.303381+00:00",
+      "status": 200,
+      "body_sha256": "5106b852141d3480b08d07654d35dd4e7e7d3b2b70c3bd602a6852125bf8b733",
+      "response_date": "Sat, 10 Oct 2026 10:25:53 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 8,
+        "returned_occurrences": 8,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 8
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2510.10720",
+      "sclib_doi": "10.1002/andp.202500504",
+      "returned_material_occurrences": 8,
+      "field_states": {
+        "formula": {
+          "value": 8
+        },
+        "family": {
+          "value": 8
+        },
+        "tc_kelvin": {
+          "value": 3,
+          "absent_key": 5
+        },
+        "pressure_gpa": {
+          "absent_key": 6,
+          "value": 2
+        },
+        "tc_type": {
+          "value": 8
+        },
+        "measurement": {
+          "value": 8
+        },
+        "pairing_symmetry": {
+          "absent_key": 8
+        },
+        "crystal_structure": {
+          "absent_key": 6,
+          "value": 2
+        },
+        "structure_phase": {
+          "absent_key": 8
+        },
+        "lambda_eph": {
+          "absent_key": 8
+        },
+        "omega_log_k": {
+          "absent_key": 8
+        },
+        "mu_star": {
+          "absent_key": 8
+        },
+        "hc2_tesla": {
+          "absent_key": 7,
+          "value": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 7,
+          "value": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 8
+        },
+        "lattice_a": {
+          "absent_key": 8
+        },
+        "lattice_b": {
+          "absent_key": 8
+        },
+        "lattice_c": {
+          "absent_key": 8
+        },
+        "space_group": {
+          "absent_key": 6,
+          "value": 2
+        },
+        "sample_form": {
+          "absent_key": 8
+        },
+        "substrate": {
+          "absent_key": 8
+        },
+        "doping_type": {
+          "absent_key": 8
+        },
+        "doping_level": {
+          "absent_key": 8
+        },
+        "ambient_sc": {
+          "absent_key": 8
+        },
+        "gap_structure": {
+          "absent_key": 8
+        },
+        "competing_order": {
+          "absent_key": 8
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:1502.02227",
+      "split": "development",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A1502.02227",
+      "captured_at": "2026-10-10T10:25:53.745118+00:00",
+      "status": 200,
+      "body_sha256": "dad69d9df58d0a284aae30d9999ef16206831bb441dee7dd02e623011f46dec4",
+      "response_date": "Sat, 10 Oct 2026 10:25:54 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 2,
+        "returned_occurrences": 2,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 2
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "1502.02227",
+      "sclib_doi": null,
+      "returned_material_occurrences": 2,
+      "field_states": {
+        "formula": {
+          "value": 2
+        },
+        "family": {
+          "value": 2
+        },
+        "tc_kelvin": {
+          "value": 1,
+          "absent_key": 1
+        },
+        "pressure_gpa": {
+          "zero": 1,
+          "absent_key": 1
+        },
+        "tc_type": {
+          "value": 2
+        },
+        "measurement": {
+          "value": 2
+        },
+        "pairing_symmetry": {
+          "absent_key": 2
+        },
+        "crystal_structure": {
+          "value": 2
+        },
+        "structure_phase": {
+          "value": 2
+        },
+        "lambda_eph": {
+          "absent_key": 2
+        },
+        "omega_log_k": {
+          "absent_key": 2
+        },
+        "mu_star": {
+          "absent_key": 2
+        },
+        "hc2_tesla": {
+          "absent_key": 2
+        },
+        "hc2_conditions": {
+          "absent_key": 2
+        },
+        "jc_a_cm2": {
+          "absent_key": 2
+        },
+        "lattice_a": {
+          "value": 1,
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 2
+        },
+        "lattice_c": {
+          "value": 1,
+          "absent_key": 1
+        },
+        "space_group": {
+          "value": 2
+        },
+        "sample_form": {
+          "value": 2
+        },
+        "substrate": {
+          "absent_key": 2
+        },
+        "doping_type": {
+          "absent_key": 2
+        },
+        "doping_level": {
+          "absent_key": 2
+        },
+        "ambient_sc": {
+          "boolean_true": 2
+        },
+        "gap_structure": {
+          "absent_key": 2
+        },
+        "competing_order": {
+          "absent_key": 2
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:1807.08954",
+      "split": "development",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A1807.08954",
+      "captured_at": "2026-10-10T10:25:54.185640+00:00",
+      "status": 200,
+      "body_sha256": "1b3b351e1df37db099ad4369637ec596b422092437d3a3e8cc811e00533e1cf2",
+      "response_date": "Sat, 10 Oct 2026 10:25:54 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 6,
+        "returned_occurrences": 6,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 6
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "1807.08954",
+      "sclib_doi": null,
+      "returned_material_occurrences": 6,
+      "field_states": {
+        "formula": {
+          "value": 6
+        },
+        "family": {
+          "value": 6
+        },
+        "tc_kelvin": {
+          "value": 6
+        },
+        "pressure_gpa": {
+          "zero": 4,
+          "absent_key": 2
+        },
+        "tc_type": {
+          "value": 6
+        },
+        "measurement": {
+          "value": 6
+        },
+        "pairing_symmetry": {
+          "absent_key": 6
+        },
+        "crystal_structure": {
+          "absent_key": 6
+        },
+        "structure_phase": {
+          "value": 6
+        },
+        "lambda_eph": {
+          "absent_key": 6
+        },
+        "omega_log_k": {
+          "absent_key": 6
+        },
+        "mu_star": {
+          "absent_key": 6
+        },
+        "hc2_tesla": {
+          "absent_key": 6
+        },
+        "hc2_conditions": {
+          "absent_key": 6
+        },
+        "jc_a_cm2": {
+          "absent_key": 6
+        },
+        "lattice_a": {
+          "absent_key": 6
+        },
+        "lattice_b": {
+          "absent_key": 6
+        },
+        "lattice_c": {
+          "absent_key": 6
+        },
+        "space_group": {
+          "absent_key": 6
+        },
+        "sample_form": {
+          "absent_key": 5,
+          "value": 1
+        },
+        "substrate": {
+          "absent_key": 6
+        },
+        "doping_type": {
+          "absent_key": 6
+        },
+        "doping_level": {
+          "absent_key": 6
+        },
+        "ambient_sc": {
+          "absent_key": 6
+        },
+        "gap_structure": {
+          "absent_key": 6
+        },
+        "competing_order": {
+          "absent_key": 6
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:1902.05232",
+      "split": "validation",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A1902.05232",
+      "captured_at": "2026-10-10T10:25:54.615967+00:00",
+      "status": 200,
+      "body_sha256": "b7fe824d6e0702782eedfb439fd7d7334246ea01389dea834f995a49f3979619",
+      "response_date": "Sat, 10 Oct 2026 10:25:55 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 3,
+        "returned_occurrences": 3,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 3
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "1902.05232",
+      "sclib_doi": null,
+      "returned_material_occurrences": 3,
+      "field_states": {
+        "formula": {
+          "value": 3
+        },
+        "family": {
+          "value": 3
+        },
+        "tc_kelvin": {
+          "value": 3
+        },
+        "pressure_gpa": {
+          "absent_key": 3
+        },
+        "tc_type": {
+          "value": 3
+        },
+        "measurement": {
+          "value": 3
+        },
+        "pairing_symmetry": {
+          "absent_key": 3
+        },
+        "crystal_structure": {
+          "absent_key": 3
+        },
+        "structure_phase": {
+          "value": 3
+        },
+        "lambda_eph": {
+          "absent_key": 3
+        },
+        "omega_log_k": {
+          "absent_key": 3
+        },
+        "mu_star": {
+          "absent_key": 3
+        },
+        "hc2_tesla": {
+          "absent_key": 3
+        },
+        "hc2_conditions": {
+          "absent_key": 3
+        },
+        "jc_a_cm2": {
+          "absent_key": 3
+        },
+        "lattice_a": {
+          "absent_key": 3
+        },
+        "lattice_b": {
+          "absent_key": 3
+        },
+        "lattice_c": {
+          "absent_key": 3
+        },
+        "space_group": {
+          "absent_key": 3
+        },
+        "sample_form": {
+          "value": 3
+        },
+        "substrate": {
+          "absent_key": 3
+        },
+        "doping_type": {
+          "absent_key": 3
+        },
+        "doping_level": {
+          "absent_key": 3
+        },
+        "ambient_sc": {
+          "boolean_true": 3
+        },
+        "gap_structure": {
+          "absent_key": 3
+        },
+        "competing_order": {
+          "absent_key": 3
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:1910.08254",
+      "split": "validation",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A1910.08254",
+      "captured_at": "2026-10-10T10:25:55.048992+00:00",
+      "status": 200,
+      "body_sha256": "51afe61fe892bf0866f228f5b4cc99501f21fab75de58ec460acb8f50f1f2d67",
+      "response_date": "Sat, 10 Oct 2026 10:25:55 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 5,
+        "returned_occurrences": 5,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 5
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "1910.08254",
+      "sclib_doi": "10.1103/PHYSREVB.101.220509",
+      "returned_material_occurrences": 5,
+      "field_states": {
+        "formula": {
+          "value": 5
+        },
+        "family": {
+          "value": 5
+        },
+        "tc_kelvin": {
+          "value": 5
+        },
+        "pressure_gpa": {
+          "absent_key": 5
+        },
+        "tc_type": {
+          "value": 5
+        },
+        "measurement": {
+          "value": 5
+        },
+        "pairing_symmetry": {
+          "absent_key": 5
+        },
+        "crystal_structure": {
+          "absent_key": 5
+        },
+        "structure_phase": {
+          "value": 5
+        },
+        "lambda_eph": {
+          "absent_key": 5
+        },
+        "omega_log_k": {
+          "absent_key": 5
+        },
+        "mu_star": {
+          "absent_key": 5
+        },
+        "hc2_tesla": {
+          "absent_key": 5
+        },
+        "hc2_conditions": {
+          "absent_key": 5
+        },
+        "jc_a_cm2": {
+          "absent_key": 5
+        },
+        "lattice_a": {
+          "absent_key": 5
+        },
+        "lattice_b": {
+          "absent_key": 5
+        },
+        "lattice_c": {
+          "absent_key": 5
+        },
+        "space_group": {
+          "absent_key": 5
+        },
+        "sample_form": {
+          "absent_key": 2,
+          "value": 3
+        },
+        "substrate": {
+          "absent_key": 5
+        },
+        "doping_type": {
+          "absent_key": 5
+        },
+        "doping_level": {
+          "absent_key": 5
+        },
+        "ambient_sc": {
+          "absent_key": 5
+        },
+        "gap_structure": {
+          "absent_key": 5
+        },
+        "competing_order": {
+          "absent_key": 5
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2012.12539",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2012.12539",
+      "captured_at": "2026-10-10T10:25:55.400177+00:00",
+      "status": 200,
+      "body_sha256": "454345d8e1532452a818ffbaf1eab4463135a79fb1ed6e76ca03845883218b60",
+      "response_date": "Sat, 10 Oct 2026 10:25:55 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 7,
+        "returned_occurrences": 7,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 7
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2012.12539",
+      "sclib_doi": null,
+      "returned_material_occurrences": 7,
+      "field_states": {
+        "formula": {
+          "value": 7
+        },
+        "family": {
+          "value": 7
+        },
+        "tc_kelvin": {
+          "value": 6,
+          "absent_key": 1
+        },
+        "pressure_gpa": {
+          "absent_key": 5,
+          "zero": 1,
+          "value": 1
+        },
+        "tc_type": {
+          "value": 7
+        },
+        "measurement": {
+          "value": 7
+        },
+        "pairing_symmetry": {
+          "absent_key": 7
+        },
+        "crystal_structure": {
+          "absent_key": 7
+        },
+        "structure_phase": {
+          "value": 7
+        },
+        "lambda_eph": {
+          "absent_key": 7
+        },
+        "omega_log_k": {
+          "absent_key": 7
+        },
+        "mu_star": {
+          "absent_key": 7
+        },
+        "hc2_tesla": {
+          "absent_key": 7
+        },
+        "hc2_conditions": {
+          "absent_key": 7
+        },
+        "jc_a_cm2": {
+          "absent_key": 7
+        },
+        "lattice_a": {
+          "absent_key": 7
+        },
+        "lattice_b": {
+          "absent_key": 7
+        },
+        "lattice_c": {
+          "absent_key": 7
+        },
+        "space_group": {
+          "absent_key": 7
+        },
+        "sample_form": {
+          "value": 3,
+          "absent_key": 4
+        },
+        "substrate": {
+          "value": 3,
+          "absent_key": 4
+        },
+        "doping_type": {
+          "value": 3,
+          "absent_key": 4
+        },
+        "doping_level": {
+          "absent_key": 7
+        },
+        "ambient_sc": {
+          "boolean_true": 6,
+          "boolean_false": 1
+        },
+        "gap_structure": {
+          "absent_key": 7
+        },
+        "competing_order": {
+          "absent_key": 7
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2212.13339",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2212.13339",
+      "captured_at": "2026-10-10T10:25:55.854077+00:00",
+      "status": 200,
+      "body_sha256": "8cf31d5bff92d4a56d851e6b6290b578ecab2602b6023f52852f02122d2cd797",
+      "response_date": "Sat, 10 Oct 2026 10:25:56 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 4,
+        "returned_occurrences": 4,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 4
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2212.13339",
+      "sclib_doi": "10.1016/j.physc.2023.1354255",
+      "returned_material_occurrences": 4,
+      "field_states": {
+        "formula": {
+          "value": 4
+        },
+        "family": {
+          "value": 4
+        },
+        "tc_kelvin": {
+          "absent_key": 4
+        },
+        "pressure_gpa": {
+          "absent_key": 4
+        },
+        "tc_type": {
+          "value": 4
+        },
+        "measurement": {
+          "value": 4
+        },
+        "pairing_symmetry": {
+          "absent_key": 4
+        },
+        "crystal_structure": {
+          "absent_key": 4
+        },
+        "structure_phase": {
+          "value": 4
+        },
+        "lambda_eph": {
+          "absent_key": 4
+        },
+        "omega_log_k": {
+          "absent_key": 4
+        },
+        "mu_star": {
+          "absent_key": 4
+        },
+        "hc2_tesla": {
+          "absent_key": 4
+        },
+        "hc2_conditions": {
+          "absent_key": 4
+        },
+        "jc_a_cm2": {
+          "absent_key": 4
+        },
+        "lattice_a": {
+          "absent_key": 4
+        },
+        "lattice_b": {
+          "absent_key": 4
+        },
+        "lattice_c": {
+          "absent_key": 4
+        },
+        "space_group": {
+          "absent_key": 4
+        },
+        "sample_form": {
+          "value": 4
+        },
+        "substrate": {
+          "absent_key": 4
+        },
+        "doping_type": {
+          "value": 4
+        },
+        "doping_level": {
+          "zero": 1,
+          "value": 3
+        },
+        "ambient_sc": {
+          "absent_key": 4
+        },
+        "gap_structure": {
+          "absent_key": 4
+        },
+        "competing_order": {
+          "absent_key": 4
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2309.17408",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2309.17408",
+      "captured_at": "2026-10-10T10:25:56.319165+00:00",
+      "status": 200,
+      "body_sha256": "0cdbd6a24448ccc1e9837b44f42ac6218fadd8b8317b7d70b29e5e115cad27e6",
+      "response_date": "Sat, 10 Oct 2026 10:25:56 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 3,
+        "returned_occurrences": 3,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 3
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2309.17408",
+      "sclib_doi": null,
+      "returned_material_occurrences": 3,
+      "field_states": {
+        "formula": {
+          "value": 3
+        },
+        "family": {
+          "value": 3
+        },
+        "tc_kelvin": {
+          "absent_key": 3
+        },
+        "pressure_gpa": {
+          "absent_key": 3
+        },
+        "tc_type": {
+          "value": 3
+        },
+        "measurement": {
+          "value": 3
+        },
+        "pairing_symmetry": {
+          "absent_key": 3
+        },
+        "crystal_structure": {
+          "absent_key": 3
+        },
+        "structure_phase": {
+          "value": 3
+        },
+        "lambda_eph": {
+          "absent_key": 3
+        },
+        "omega_log_k": {
+          "absent_key": 3
+        },
+        "mu_star": {
+          "absent_key": 3
+        },
+        "hc2_tesla": {
+          "absent_key": 3
+        },
+        "hc2_conditions": {
+          "absent_key": 3
+        },
+        "jc_a_cm2": {
+          "absent_key": 3
+        },
+        "lattice_a": {
+          "absent_key": 3
+        },
+        "lattice_b": {
+          "absent_key": 3
+        },
+        "lattice_c": {
+          "absent_key": 3
+        },
+        "space_group": {
+          "absent_key": 3
+        },
+        "sample_form": {
+          "value": 3
+        },
+        "substrate": {
+          "value": 3
+        },
+        "doping_type": {
+          "value": 3
+        },
+        "doping_level": {
+          "absent_key": 2,
+          "value": 1
+        },
+        "ambient_sc": {
+          "absent_key": 3
+        },
+        "gap_structure": {
+          "absent_key": 3
+        },
+        "competing_order": {
+          "absent_key": 3
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2303.01961",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2303.01961",
+      "captured_at": "2026-10-10T10:25:56.713756+00:00",
+      "status": 200,
+      "body_sha256": "c87dcdbe8c95d0617adc559d1e386a6f8a992566b2bee858bf8faeb4a0d0b926",
+      "response_date": "Sat, 10 Oct 2026 10:25:57 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2303.01961",
+      "sclib_doi": "10.1103/PhysRevB.107.174523",
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "absent_key": 1
+        },
+        "pressure_gpa": {
+          "absent_key": 1
+        },
+        "tc_type": {
+          "absent_key": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "absent_key": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "absent_key": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "absent_key": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "absent_key": 1
+        },
+        "competing_order": {
+          "absent_key": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2207.07962",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2207.07962",
+      "captured_at": "2026-10-10T10:25:57.150446+00:00",
+      "status": 200,
+      "body_sha256": "9a218d11e8b4e336adec884c22b07494b251bd74c4cbd4540a2a65a1424e233d",
+      "response_date": "Sat, 10 Oct 2026 10:25:57 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2207.07962",
+      "sclib_doi": "10.1088/1674-1056/ac7214",
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "value": 1
+        },
+        "pressure_gpa": {
+          "absent_key": 1
+        },
+        "tc_type": {
+          "value": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "value": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "value": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "absent_key": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "absent_key": 1
+        },
+        "competing_order": {
+          "absent_key": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:1907.05683",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A1907.05683",
+      "captured_at": "2026-10-10T10:25:57.554326+00:00",
+      "status": 200,
+      "body_sha256": "8189db56904e7c8a5e7b63939fc033862c51e3ce4b22749d3940393b10bb9ba8",
+      "response_date": "Sat, 10 Oct 2026 10:25:58 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 3,
+        "returned_occurrences": 3,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 3
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "1907.05683",
+      "sclib_doi": "10.1088/1674-1056/28/7/077403",
+      "returned_material_occurrences": 3,
+      "field_states": {
+        "formula": {
+          "value": 3
+        },
+        "family": {
+          "value": 3
+        },
+        "tc_kelvin": {
+          "value": 3
+        },
+        "pressure_gpa": {
+          "absent_key": 3
+        },
+        "tc_type": {
+          "value": 3
+        },
+        "measurement": {
+          "value": 3
+        },
+        "pairing_symmetry": {
+          "absent_key": 3
+        },
+        "crystal_structure": {
+          "absent_key": 3
+        },
+        "structure_phase": {
+          "value": 3
+        },
+        "lambda_eph": {
+          "absent_key": 3
+        },
+        "omega_log_k": {
+          "absent_key": 3
+        },
+        "mu_star": {
+          "absent_key": 3
+        },
+        "hc2_tesla": {
+          "absent_key": 3
+        },
+        "hc2_conditions": {
+          "absent_key": 3
+        },
+        "jc_a_cm2": {
+          "absent_key": 3
+        },
+        "lattice_a": {
+          "absent_key": 3
+        },
+        "lattice_b": {
+          "absent_key": 3
+        },
+        "lattice_c": {
+          "absent_key": 3
+        },
+        "space_group": {
+          "absent_key": 3
+        },
+        "sample_form": {
+          "value": 3
+        },
+        "substrate": {
+          "absent_key": 3
+        },
+        "doping_type": {
+          "value": 3
+        },
+        "doping_level": {
+          "absent_key": 3
+        },
+        "ambient_sc": {
+          "boolean_true": 3
+        },
+        "gap_structure": {
+          "absent_key": 3
+        },
+        "competing_order": {
+          "absent_key": 3
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2408.02511",
+      "split": "development",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2408.02511",
+      "captured_at": "2026-10-10T10:25:57.954001+00:00",
+      "status": 200,
+      "body_sha256": "aee796249b81f057089b75e201c40d1e8a32eb1271b1898a2090d52bec09735c",
+      "response_date": "Sat, 10 Oct 2026 10:25:58 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 6,
+        "returned_occurrences": 6,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 6
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2408.02511",
+      "sclib_doi": "10.3390/nano14151319",
+      "returned_material_occurrences": 6,
+      "field_states": {
+        "formula": {
+          "value": 6
+        },
+        "family": {
+          "value": 6
+        },
+        "tc_kelvin": {
+          "value": 6
+        },
+        "pressure_gpa": {
+          "absent_key": 6
+        },
+        "tc_type": {
+          "value": 6
+        },
+        "measurement": {
+          "value": 6
+        },
+        "pairing_symmetry": {
+          "value": 6
+        },
+        "crystal_structure": {
+          "absent_key": 6
+        },
+        "structure_phase": {
+          "absent_key": 6
+        },
+        "lambda_eph": {
+          "absent_key": 6
+        },
+        "omega_log_k": {
+          "absent_key": 6
+        },
+        "mu_star": {
+          "absent_key": 6
+        },
+        "hc2_tesla": {
+          "absent_key": 6
+        },
+        "hc2_conditions": {
+          "absent_key": 6
+        },
+        "jc_a_cm2": {
+          "absent_key": 6
+        },
+        "lattice_a": {
+          "absent_key": 6
+        },
+        "lattice_b": {
+          "absent_key": 6
+        },
+        "lattice_c": {
+          "absent_key": 6
+        },
+        "space_group": {
+          "absent_key": 6
+        },
+        "sample_form": {
+          "value": 6
+        },
+        "substrate": {
+          "absent_key": 6
+        },
+        "doping_type": {
+          "absent_key": 3,
+          "value": 3
+        },
+        "doping_level": {
+          "absent_key": 3,
+          "value": 3
+        },
+        "ambient_sc": {
+          "boolean_true": 6
+        },
+        "gap_structure": {
+          "value": 6
+        },
+        "competing_order": {
+          "absent_key": 6
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2402.17731",
+      "split": "development",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2402.17731",
+      "captured_at": "2026-10-10T10:25:58.435202+00:00",
+      "status": 200,
+      "body_sha256": "09e67e2a9946da0b5759ce8b4f11c517d75df71ac8d827e5e12975d7b42a14f2",
+      "response_date": "Sat, 10 Oct 2026 10:25:58 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 4,
+        "returned_occurrences": 4,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 4
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2402.17731",
+      "sclib_doi": "10.1016/j.jpcs.2024.111996",
+      "returned_material_occurrences": 4,
+      "field_states": {
+        "formula": {
+          "value": 4
+        },
+        "family": {
+          "value": 4
+        },
+        "tc_kelvin": {
+          "value": 4
+        },
+        "pressure_gpa": {
+          "zero": 4
+        },
+        "tc_type": {
+          "value": 4
+        },
+        "measurement": {
+          "value": 4
+        },
+        "pairing_symmetry": {
+          "absent_key": 4
+        },
+        "crystal_structure": {
+          "absent_key": 4
+        },
+        "structure_phase": {
+          "absent_key": 4
+        },
+        "lambda_eph": {
+          "absent_key": 4
+        },
+        "omega_log_k": {
+          "absent_key": 4
+        },
+        "mu_star": {
+          "absent_key": 4
+        },
+        "hc2_tesla": {
+          "absent_key": 4
+        },
+        "hc2_conditions": {
+          "absent_key": 4
+        },
+        "jc_a_cm2": {
+          "absent_key": 4
+        },
+        "lattice_a": {
+          "absent_key": 4
+        },
+        "lattice_b": {
+          "absent_key": 4
+        },
+        "lattice_c": {
+          "absent_key": 4
+        },
+        "space_group": {
+          "absent_key": 4
+        },
+        "sample_form": {
+          "absent_key": 4
+        },
+        "substrate": {
+          "absent_key": 4
+        },
+        "doping_type": {
+          "absent_key": 4
+        },
+        "doping_level": {
+          "absent_key": 4
+        },
+        "ambient_sc": {
+          "absent_key": 4
+        },
+        "gap_structure": {
+          "absent_key": 4
+        },
+        "competing_order": {
+          "absent_key": 4
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2311.15132",
+      "split": "validation",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2311.15132",
+      "captured_at": "2026-10-10T10:25:58.920290+00:00",
+      "status": 200,
+      "body_sha256": "45db91773cdcb422dd2a158cb4fd22d365128bacd9e09bd03666e370b5420574",
+      "response_date": "Sat, 10 Oct 2026 10:25:59 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 2,
+        "returned_occurrences": 2,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 2
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2311.15132",
+      "sclib_doi": "10.1109/TASC.2023.3345821",
+      "returned_material_occurrences": 2,
+      "field_states": {
+        "formula": {
+          "value": 2
+        },
+        "family": {
+          "value": 2
+        },
+        "tc_kelvin": {
+          "value": 2
+        },
+        "pressure_gpa": {
+          "zero": 2
+        },
+        "tc_type": {
+          "value": 2
+        },
+        "measurement": {
+          "value": 2
+        },
+        "pairing_symmetry": {
+          "absent_key": 2
+        },
+        "crystal_structure": {
+          "absent_key": 2
+        },
+        "structure_phase": {
+          "value": 2
+        },
+        "lambda_eph": {
+          "absent_key": 2
+        },
+        "omega_log_k": {
+          "absent_key": 2
+        },
+        "mu_star": {
+          "absent_key": 2
+        },
+        "hc2_tesla": {
+          "absent_key": 2
+        },
+        "hc2_conditions": {
+          "absent_key": 2
+        },
+        "jc_a_cm2": {
+          "absent_key": 2
+        },
+        "lattice_a": {
+          "absent_key": 2
+        },
+        "lattice_b": {
+          "absent_key": 2
+        },
+        "lattice_c": {
+          "absent_key": 2
+        },
+        "space_group": {
+          "absent_key": 2
+        },
+        "sample_form": {
+          "value": 2
+        },
+        "substrate": {
+          "absent_key": 2
+        },
+        "doping_type": {
+          "absent_key": 2
+        },
+        "doping_level": {
+          "absent_key": 2
+        },
+        "ambient_sc": {
+          "boolean_true": 2
+        },
+        "gap_structure": {
+          "absent_key": 2
+        },
+        "competing_order": {
+          "absent_key": 2
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2402.18082",
+      "split": "validation",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2402.18082",
+      "captured_at": "2026-10-10T10:25:59.519281+00:00",
+      "status": 200,
+      "body_sha256": "7db05e12cd67ce493d9572646d1837bdbda39a58a09134911ca4d77b19c95f5a",
+      "response_date": "Sat, 10 Oct 2026 10:26:00 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 4,
+        "returned_occurrences": 4,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 4
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2402.18082",
+      "sclib_doi": null,
+      "returned_material_occurrences": 4,
+      "field_states": {
+        "formula": {
+          "value": 4
+        },
+        "family": {
+          "value": 4
+        },
+        "tc_kelvin": {
+          "absent_key": 4
+        },
+        "pressure_gpa": {
+          "absent_key": 4
+        },
+        "tc_type": {
+          "value": 4
+        },
+        "measurement": {
+          "value": 4
+        },
+        "pairing_symmetry": {
+          "absent_key": 4
+        },
+        "crystal_structure": {
+          "absent_key": 4
+        },
+        "structure_phase": {
+          "absent_key": 4
+        },
+        "lambda_eph": {
+          "absent_key": 4
+        },
+        "omega_log_k": {
+          "absent_key": 4
+        },
+        "mu_star": {
+          "absent_key": 4
+        },
+        "hc2_tesla": {
+          "absent_key": 4
+        },
+        "hc2_conditions": {
+          "absent_key": 4
+        },
+        "jc_a_cm2": {
+          "absent_key": 4
+        },
+        "lattice_a": {
+          "absent_key": 4
+        },
+        "lattice_b": {
+          "absent_key": 4
+        },
+        "lattice_c": {
+          "absent_key": 4
+        },
+        "space_group": {
+          "absent_key": 4
+        },
+        "sample_form": {
+          "absent_key": 4
+        },
+        "substrate": {
+          "absent_key": 4
+        },
+        "doping_type": {
+          "absent_key": 4
+        },
+        "doping_level": {
+          "absent_key": 4
+        },
+        "ambient_sc": {
+          "absent_key": 4
+        },
+        "gap_structure": {
+          "absent_key": 4
+        },
+        "competing_order": {
+          "absent_key": 4
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2412.16171",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2412.16171",
+      "captured_at": "2026-10-10T10:26:00.159679+00:00",
+      "status": 200,
+      "body_sha256": "aedef81ff042cef82191f8441c9c7ad109cfdfc227870650d18c598b009b4286",
+      "response_date": "Sat, 10 Oct 2026 10:26:00 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 4,
+        "returned_occurrences": 4,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 4
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2412.16171",
+      "sclib_doi": "10.1073/pnas.2409756121",
+      "returned_material_occurrences": 4,
+      "field_states": {
+        "formula": {
+          "value": 4
+        },
+        "family": {
+          "value": 4
+        },
+        "tc_kelvin": {
+          "absent_key": 4
+        },
+        "pressure_gpa": {
+          "absent_key": 4
+        },
+        "tc_type": {
+          "value": 4
+        },
+        "measurement": {
+          "value": 4
+        },
+        "pairing_symmetry": {
+          "absent_key": 4
+        },
+        "crystal_structure": {
+          "absent_key": 4
+        },
+        "structure_phase": {
+          "absent_key": 4
+        },
+        "lambda_eph": {
+          "absent_key": 4
+        },
+        "omega_log_k": {
+          "absent_key": 4
+        },
+        "mu_star": {
+          "absent_key": 4
+        },
+        "hc2_tesla": {
+          "absent_key": 4
+        },
+        "hc2_conditions": {
+          "absent_key": 4
+        },
+        "jc_a_cm2": {
+          "absent_key": 4
+        },
+        "lattice_a": {
+          "absent_key": 4
+        },
+        "lattice_b": {
+          "absent_key": 4
+        },
+        "lattice_c": {
+          "absent_key": 4
+        },
+        "space_group": {
+          "absent_key": 4
+        },
+        "sample_form": {
+          "value": 4
+        },
+        "substrate": {
+          "absent_key": 4
+        },
+        "doping_type": {
+          "absent_key": 4
+        },
+        "doping_level": {
+          "absent_key": 4
+        },
+        "ambient_sc": {
+          "boolean_true": 4
+        },
+        "gap_structure": {
+          "absent_key": 4
+        },
+        "competing_order": {
+          "value": 2,
+          "absent_key": 2
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2412.20837",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2412.20837",
+      "captured_at": "2026-10-10T10:26:00.604251+00:00",
+      "status": 200,
+      "body_sha256": "70bca18b8fe3deaf62d100af830ba81abb3fa3d008ab4e0d92d254dbe0e9074d",
+      "response_date": "Sat, 10 Oct 2026 10:26:01 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2412.20837",
+      "sclib_doi": "10.1016/j.ceramint.2025.01.208",
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "value": 1
+        },
+        "pressure_gpa": {
+          "zero": 1
+        },
+        "tc_type": {
+          "value": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "absent_key": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "absent_key": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "absent_key": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "absent_key": 1
+        },
+        "competing_order": {
+          "absent_key": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2409.12847",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2409.12847",
+      "captured_at": "2026-10-10T10:26:01.011896+00:00",
+      "status": 200,
+      "body_sha256": "091cee73bfae0d4aaa1651a9daa83fa8d808ef35856dcffbd0fe35e1989db450",
+      "response_date": "Sat, 10 Oct 2026 10:26:01 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2409.12847",
+      "sclib_doi": "10.1080/14686996.2024.2384829",
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "absent_key": 1
+        },
+        "pressure_gpa": {
+          "absent_key": 1
+        },
+        "tc_type": {
+          "value": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "absent_key": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "absent_key": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "absent_key": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "absent_key": 1
+        },
+        "competing_order": {
+          "absent_key": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2505.16184",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2505.16184",
+      "captured_at": "2026-10-10T10:26:01.455122+00:00",
+      "status": 200,
+      "body_sha256": "d7153ab64472af3d4846e2dce6e000ed54ca94b03689c22ba99ad3b6daf018f4",
+      "response_date": "Sat, 10 Oct 2026 10:26:01 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2505.16184",
+      "sclib_doi": null,
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "absent_key": 1
+        },
+        "pressure_gpa": {
+          "absent_key": 1
+        },
+        "tc_type": {
+          "value": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "value": 1
+        },
+        "crystal_structure": {
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "absent_key": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "value": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "value": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "value": 1
+        },
+        "competing_order": {
+          "absent_key": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2407.11332",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2407.11332",
+      "captured_at": "2026-10-10T10:26:01.876761+00:00",
+      "status": 200,
+      "body_sha256": "6bc71b4dcf3f598ae44cb46ce56f97b7815620f8c0bc8b0cebea9fedea411d0d",
+      "response_date": "Sat, 10 Oct 2026 10:26:02 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2407.11332",
+      "sclib_doi": "10.1021/acs.nanolett.4c02475",
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "value": 1
+        },
+        "pressure_gpa": {
+          "absent_key": 1
+        },
+        "tc_type": {
+          "value": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "absent_key": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "absent_key": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "absent_key": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "absent_key": 1
+        },
+        "competing_order": {
+          "absent_key": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2503.03473",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2503.03473",
+      "captured_at": "2026-10-10T10:26:02.234285+00:00",
+      "status": 200,
+      "body_sha256": "b251b771ce2b974d77daaa11965f4e5847f8534f239a31a6106698f926fcee0a",
+      "response_date": "Sat, 10 Oct 2026 10:26:02 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2503.03473",
+      "sclib_doi": null,
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "absent_key": 1
+        },
+        "pressure_gpa": {
+          "absent_key": 1
+        },
+        "tc_type": {
+          "value": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "value": 1
+        },
+        "crystal_structure": {
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "absent_key": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "absent_key": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "absent_key": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "absent_key": 1
+        },
+        "competing_order": {
+          "value": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2411.04896",
+      "split": "development",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2411.04896",
+      "captured_at": "2026-10-10T10:26:02.664969+00:00",
+      "status": 200,
+      "body_sha256": "a9f44b8ad3f71635258f1b9f27eca7c09b68b2e4463c86c1f5a98da1715fb67b",
+      "response_date": "Sat, 10 Oct 2026 10:26:03 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 3,
+        "returned_occurrences": 3,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 3
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2411.04896",
+      "sclib_doi": "10.1038/s43246-025-01013-9",
+      "returned_material_occurrences": 3,
+      "field_states": {
+        "formula": {
+          "value": 3
+        },
+        "family": {
+          "value": 3
+        },
+        "tc_kelvin": {
+          "value": 3
+        },
+        "pressure_gpa": {
+          "absent_key": 3
+        },
+        "tc_type": {
+          "value": 3
+        },
+        "measurement": {
+          "value": 3
+        },
+        "pairing_symmetry": {
+          "absent_key": 3
+        },
+        "crystal_structure": {
+          "absent_key": 3
+        },
+        "structure_phase": {
+          "value": 3
+        },
+        "lambda_eph": {
+          "absent_key": 3
+        },
+        "omega_log_k": {
+          "absent_key": 3
+        },
+        "mu_star": {
+          "absent_key": 3
+        },
+        "hc2_tesla": {
+          "absent_key": 3
+        },
+        "hc2_conditions": {
+          "absent_key": 3
+        },
+        "jc_a_cm2": {
+          "absent_key": 3
+        },
+        "lattice_a": {
+          "absent_key": 3
+        },
+        "lattice_b": {
+          "absent_key": 3
+        },
+        "lattice_c": {
+          "absent_key": 3
+        },
+        "space_group": {
+          "absent_key": 3
+        },
+        "sample_form": {
+          "value": 3
+        },
+        "substrate": {
+          "value": 3
+        },
+        "doping_type": {
+          "absent_key": 3
+        },
+        "doping_level": {
+          "absent_key": 3
+        },
+        "ambient_sc": {
+          "absent_key": 3
+        },
+        "gap_structure": {
+          "absent_key": 3
+        },
+        "competing_order": {
+          "absent_key": 3
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2604.09525",
+      "split": "development",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2604.09525",
+      "captured_at": "2026-10-10T10:26:03.098012+00:00",
+      "status": 200,
+      "body_sha256": "0c144691dcd9061f4fd50ef0ce8a40fa06c2694c8de6b119f0e02c9cecc44daf",
+      "response_date": "Sat, 10 Oct 2026 10:26:03 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2604.09525",
+      "sclib_doi": null,
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "value": 1
+        },
+        "pressure_gpa": {
+          "value": 1
+        },
+        "tc_type": {
+          "value": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "value": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "value": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "value": 1
+        },
+        "doping_level": {
+          "value": 1
+        },
+        "ambient_sc": {
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "absent_key": 1
+        },
+        "competing_order": {
+          "absent_key": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2508.15284",
+      "split": "validation",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2508.15284",
+      "captured_at": "2026-10-10T10:26:03.536113+00:00",
+      "status": 200,
+      "body_sha256": "5e971dedf4bcb9126fce19c5d7025895f0242da4d973b9ea890f46134de21a99",
+      "response_date": "Sat, 10 Oct 2026 10:26:03 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 2,
+        "returned_occurrences": 2,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 2
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2508.15284",
+      "sclib_doi": "10.1103/qrkk-l2ng",
+      "returned_material_occurrences": 2,
+      "field_states": {
+        "formula": {
+          "value": 2
+        },
+        "family": {
+          "value": 2
+        },
+        "tc_kelvin": {
+          "absent_key": 2
+        },
+        "pressure_gpa": {
+          "zero": 2
+        },
+        "tc_type": {
+          "value": 2
+        },
+        "measurement": {
+          "value": 2
+        },
+        "pairing_symmetry": {
+          "absent_key": 2
+        },
+        "crystal_structure": {
+          "absent_key": 2
+        },
+        "structure_phase": {
+          "value": 2
+        },
+        "lambda_eph": {
+          "absent_key": 2
+        },
+        "omega_log_k": {
+          "absent_key": 2
+        },
+        "mu_star": {
+          "absent_key": 2
+        },
+        "hc2_tesla": {
+          "absent_key": 2
+        },
+        "hc2_conditions": {
+          "absent_key": 2
+        },
+        "jc_a_cm2": {
+          "absent_key": 2
+        },
+        "lattice_a": {
+          "absent_key": 2
+        },
+        "lattice_b": {
+          "absent_key": 2
+        },
+        "lattice_c": {
+          "absent_key": 2
+        },
+        "space_group": {
+          "absent_key": 2
+        },
+        "sample_form": {
+          "value": 2
+        },
+        "substrate": {
+          "absent_key": 2
+        },
+        "doping_type": {
+          "value": 2
+        },
+        "doping_level": {
+          "absent_key": 2
+        },
+        "ambient_sc": {
+          "boolean_true": 2
+        },
+        "gap_structure": {
+          "absent_key": 2
+        },
+        "competing_order": {
+          "absent_key": 2
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2505.12603",
+      "split": "validation",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2505.12603",
+      "captured_at": "2026-10-10T10:26:03.969785+00:00",
+      "status": 200,
+      "body_sha256": "2a985aaa2ad62b9959edec1ec09fbb37ae8f00f88b3115c6fb63a79ebfc95376",
+      "response_date": "Sat, 10 Oct 2026 10:26:04 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 4,
+        "returned_occurrences": 4,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 4
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2505.12603",
+      "sclib_doi": null,
+      "returned_material_occurrences": 4,
+      "field_states": {
+        "formula": {
+          "value": 4
+        },
+        "family": {
+          "value": 4
+        },
+        "tc_kelvin": {
+          "absent_key": 3,
+          "value": 1
+        },
+        "pressure_gpa": {
+          "zero": 1,
+          "absent_key": 3
+        },
+        "tc_type": {
+          "value": 4
+        },
+        "measurement": {
+          "value": 4
+        },
+        "pairing_symmetry": {
+          "absent_key": 4
+        },
+        "crystal_structure": {
+          "absent_key": 4
+        },
+        "structure_phase": {
+          "absent_key": 4
+        },
+        "lambda_eph": {
+          "absent_key": 4
+        },
+        "omega_log_k": {
+          "absent_key": 4
+        },
+        "mu_star": {
+          "absent_key": 4
+        },
+        "hc2_tesla": {
+          "absent_key": 3,
+          "value": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 3,
+          "value": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 4
+        },
+        "lattice_a": {
+          "absent_key": 4
+        },
+        "lattice_b": {
+          "absent_key": 4
+        },
+        "lattice_c": {
+          "absent_key": 4
+        },
+        "space_group": {
+          "absent_key": 4
+        },
+        "sample_form": {
+          "value": 4
+        },
+        "substrate": {
+          "absent_key": 4
+        },
+        "doping_type": {
+          "absent_key": 2,
+          "value": 2
+        },
+        "doping_level": {
+          "absent_key": 3,
+          "value": 1
+        },
+        "ambient_sc": {
+          "boolean_true": 1,
+          "absent_key": 3
+        },
+        "gap_structure": {
+          "absent_key": 4
+        },
+        "competing_order": {
+          "absent_key": 4
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2502.14410",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2502.14410",
+      "captured_at": "2026-10-10T10:26:04.320732+00:00",
+      "status": 200,
+      "body_sha256": "d4db8d330a8d1d52588cf8b9ffffe46160f416995a9ddb0dec6d2efe19e70eed",
+      "response_date": "Sat, 10 Oct 2026 10:26:04 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2502.14410",
+      "sclib_doi": null,
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "absent_key": 1
+        },
+        "pressure_gpa": {
+          "absent_key": 1
+        },
+        "tc_type": {
+          "absent_key": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "value": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "value": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "absent_key": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "absent_key": 1
+        },
+        "competing_order": {
+          "absent_key": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2502.01018",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2502.01018",
+      "captured_at": "2026-10-10T10:26:04.792665+00:00",
+      "status": 200,
+      "body_sha256": "8939fd49ec7f3ae8135603d8d15e393b0985ad95365c9b4776f4a8acdcb9da20",
+      "response_date": "Sat, 10 Oct 2026 10:26:05 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 2,
+        "returned_occurrences": 2,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 2
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2502.01018",
+      "sclib_doi": null,
+      "returned_material_occurrences": 2,
+      "field_states": {
+        "formula": {
+          "value": 2
+        },
+        "family": {
+          "value": 2
+        },
+        "tc_kelvin": {
+          "value": 2
+        },
+        "pressure_gpa": {
+          "value": 2
+        },
+        "tc_type": {
+          "value": 2
+        },
+        "measurement": {
+          "value": 2
+        },
+        "pairing_symmetry": {
+          "absent_key": 2
+        },
+        "crystal_structure": {
+          "absent_key": 2
+        },
+        "structure_phase": {
+          "absent_key": 2
+        },
+        "lambda_eph": {
+          "absent_key": 2
+        },
+        "omega_log_k": {
+          "absent_key": 2
+        },
+        "mu_star": {
+          "absent_key": 2
+        },
+        "hc2_tesla": {
+          "absent_key": 2
+        },
+        "hc2_conditions": {
+          "absent_key": 2
+        },
+        "jc_a_cm2": {
+          "absent_key": 2
+        },
+        "lattice_a": {
+          "absent_key": 2
+        },
+        "lattice_b": {
+          "absent_key": 2
+        },
+        "lattice_c": {
+          "absent_key": 2
+        },
+        "space_group": {
+          "absent_key": 2
+        },
+        "sample_form": {
+          "value": 2
+        },
+        "substrate": {
+          "absent_key": 2
+        },
+        "doping_type": {
+          "absent_key": 2
+        },
+        "doping_level": {
+          "absent_key": 2
+        },
+        "ambient_sc": {
+          "boolean_false": 2
+        },
+        "gap_structure": {
+          "absent_key": 2
+        },
+        "competing_order": {
+          "absent_key": 2
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2501.13511",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2501.13511",
+      "captured_at": "2026-10-10T10:26:05.203233+00:00",
+      "status": 200,
+      "body_sha256": "bc6ca1ca74336fd6f54604cae59e07d2653d5b40039b4ba0fe5c74f654acf85e",
+      "response_date": "Sat, 10 Oct 2026 10:26:05 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 3,
+        "returned_occurrences": 3,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 3
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2501.13511",
+      "sclib_doi": "10.1002/adma.202507365",
+      "returned_material_occurrences": 3,
+      "field_states": {
+        "formula": {
+          "value": 3
+        },
+        "family": {
+          "value": 3
+        },
+        "tc_kelvin": {
+          "absent_key": 2,
+          "value": 1
+        },
+        "pressure_gpa": {
+          "absent_key": 2,
+          "value": 1
+        },
+        "tc_type": {
+          "value": 3
+        },
+        "measurement": {
+          "value": 3
+        },
+        "pairing_symmetry": {
+          "absent_key": 3
+        },
+        "crystal_structure": {
+          "absent_key": 3
+        },
+        "structure_phase": {
+          "absent_key": 3
+        },
+        "lambda_eph": {
+          "absent_key": 3
+        },
+        "omega_log_k": {
+          "absent_key": 3
+        },
+        "mu_star": {
+          "absent_key": 3
+        },
+        "hc2_tesla": {
+          "absent_key": 3
+        },
+        "hc2_conditions": {
+          "absent_key": 3
+        },
+        "jc_a_cm2": {
+          "absent_key": 3
+        },
+        "lattice_a": {
+          "absent_key": 3
+        },
+        "lattice_b": {
+          "absent_key": 3
+        },
+        "lattice_c": {
+          "absent_key": 3
+        },
+        "space_group": {
+          "absent_key": 3
+        },
+        "sample_form": {
+          "absent_key": 2,
+          "value": 1
+        },
+        "substrate": {
+          "absent_key": 3
+        },
+        "doping_type": {
+          "absent_key": 3
+        },
+        "doping_level": {
+          "absent_key": 3
+        },
+        "ambient_sc": {
+          "absent_key": 3
+        },
+        "gap_structure": {
+          "absent_key": 3
+        },
+        "competing_order": {
+          "absent_key": 3
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2502.17831",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2502.17831",
+      "captured_at": "2026-10-10T10:26:05.642109+00:00",
+      "status": 200,
+      "body_sha256": "6fb6d60d4165c3fd50229e57c3ded512515c7fca19010cb5c4bf5a9bb73f5520",
+      "response_date": "Sat, 10 Oct 2026 10:26:06 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2502.17831",
+      "sclib_doi": "10.1126/science.adw8329",
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "absent_key": 1
+        },
+        "pressure_gpa": {
+          "zero": 1
+        },
+        "tc_type": {
+          "value": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "value": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "value": 1
+        },
+        "substrate": {
+          "value": 1
+        },
+        "doping_type": {
+          "absent_key": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "boolean_true": 1
+        },
+        "gap_structure": {
+          "value": 1
+        },
+        "competing_order": {
+          "absent_key": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2503.05176",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2503.05176",
+      "captured_at": "2026-10-10T10:26:06.093198+00:00",
+      "status": 200,
+      "body_sha256": "49034ecd1399f09f536e6498c8682bf9f42a76de120090d6c0700dfa0ddaa0a5",
+      "response_date": "Sat, 10 Oct 2026 10:26:06 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 3,
+        "returned_occurrences": 3,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 3
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2503.05176",
+      "sclib_doi": null,
+      "returned_material_occurrences": 3,
+      "field_states": {
+        "formula": {
+          "value": 3
+        },
+        "family": {
+          "value": 3
+        },
+        "tc_kelvin": {
+          "value": 3
+        },
+        "pressure_gpa": {
+          "value": 3
+        },
+        "tc_type": {
+          "value": 3
+        },
+        "measurement": {
+          "value": 3
+        },
+        "pairing_symmetry": {
+          "absent_key": 3
+        },
+        "crystal_structure": {
+          "absent_key": 3
+        },
+        "structure_phase": {
+          "absent_key": 3
+        },
+        "lambda_eph": {
+          "absent_key": 3
+        },
+        "omega_log_k": {
+          "absent_key": 3
+        },
+        "mu_star": {
+          "absent_key": 3
+        },
+        "hc2_tesla": {
+          "absent_key": 3
+        },
+        "hc2_conditions": {
+          "absent_key": 3
+        },
+        "jc_a_cm2": {
+          "absent_key": 3
+        },
+        "lattice_a": {
+          "absent_key": 3
+        },
+        "lattice_b": {
+          "absent_key": 3
+        },
+        "lattice_c": {
+          "absent_key": 3
+        },
+        "space_group": {
+          "absent_key": 3
+        },
+        "sample_form": {
+          "absent_key": 3
+        },
+        "substrate": {
+          "absent_key": 3
+        },
+        "doping_type": {
+          "absent_key": 3
+        },
+        "doping_level": {
+          "absent_key": 3
+        },
+        "ambient_sc": {
+          "absent_key": 3
+        },
+        "gap_structure": {
+          "absent_key": 3
+        },
+        "competing_order": {
+          "absent_key": 3
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2605.30752",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2605.30752",
+      "captured_at": "2026-10-10T10:26:06.472353+00:00",
+      "status": 200,
+      "body_sha256": "ed5edd1950668dafc23ceadef3d9158f32f829760a6300d888fd5f320c103484",
+      "response_date": "Sat, 10 Oct 2026 10:26:07 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2605.30752",
+      "sclib_doi": null,
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "absent_key": 1
+        },
+        "pressure_gpa": {
+          "absent_key": 1
+        },
+        "tc_type": {
+          "value": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "value": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "value": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "value": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "absent_key": 1
+        },
+        "competing_order": {
+          "absent_key": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:1602.03211",
+      "split": "development",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A1602.03211",
+      "captured_at": "2026-10-10T10:26:06.979447+00:00",
+      "status": 200,
+      "body_sha256": "73dde002732ae6ef881d74dec0905cbbcd94c038e5853e5b25ff209fde70134a",
+      "response_date": "Sat, 10 Oct 2026 10:26:07 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 3,
+        "returned_occurrences": 3,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 3
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "1602.03211",
+      "sclib_doi": "10.1103/PhysRevB.93.144504",
+      "returned_material_occurrences": 3,
+      "field_states": {
+        "formula": {
+          "value": 3
+        },
+        "family": {
+          "value": 3
+        },
+        "tc_kelvin": {
+          "value": 3
+        },
+        "pressure_gpa": {
+          "absent_key": 1,
+          "zero": 2
+        },
+        "tc_type": {
+          "value": 3
+        },
+        "measurement": {
+          "value": 3
+        },
+        "pairing_symmetry": {
+          "absent_key": 3
+        },
+        "crystal_structure": {
+          "absent_key": 3
+        },
+        "structure_phase": {
+          "absent_key": 3
+        },
+        "lambda_eph": {
+          "absent_key": 3
+        },
+        "omega_log_k": {
+          "absent_key": 3
+        },
+        "mu_star": {
+          "absent_key": 3
+        },
+        "hc2_tesla": {
+          "absent_key": 3
+        },
+        "hc2_conditions": {
+          "absent_key": 3
+        },
+        "jc_a_cm2": {
+          "absent_key": 3
+        },
+        "lattice_a": {
+          "absent_key": 3
+        },
+        "lattice_b": {
+          "absent_key": 3
+        },
+        "lattice_c": {
+          "absent_key": 3
+        },
+        "space_group": {
+          "absent_key": 3
+        },
+        "sample_form": {
+          "absent_key": 1,
+          "value": 2
+        },
+        "substrate": {
+          "absent_key": 3
+        },
+        "doping_type": {
+          "absent_key": 3
+        },
+        "doping_level": {
+          "absent_key": 3
+        },
+        "ambient_sc": {
+          "absent_key": 1,
+          "boolean_true": 2
+        },
+        "gap_structure": {
+          "absent_key": 3
+        },
+        "competing_order": {
+          "absent_key": 3
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:1101.2596",
+      "split": "development",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A1101.2596",
+      "captured_at": "2026-10-10T10:26:07.384159+00:00",
+      "status": 200,
+      "body_sha256": "daff20a07b2bdbc25dcbff4bd92f2639a0cfc70fa57363263344595a667073aa",
+      "response_date": "Sat, 10 Oct 2026 10:26:07 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 2,
+        "returned_occurrences": 2,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 2
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "1101.2596",
+      "sclib_doi": null,
+      "returned_material_occurrences": 2,
+      "field_states": {
+        "formula": {
+          "value": 2
+        },
+        "family": {
+          "value": 2
+        },
+        "tc_kelvin": {
+          "absent_key": 2
+        },
+        "pressure_gpa": {
+          "absent_key": 2
+        },
+        "tc_type": {
+          "value": 2
+        },
+        "measurement": {
+          "value": 2
+        },
+        "pairing_symmetry": {
+          "absent_key": 2
+        },
+        "crystal_structure": {
+          "absent_key": 2
+        },
+        "structure_phase": {
+          "absent_key": 2
+        },
+        "lambda_eph": {
+          "absent_key": 2
+        },
+        "omega_log_k": {
+          "absent_key": 2
+        },
+        "mu_star": {
+          "absent_key": 2
+        },
+        "hc2_tesla": {
+          "absent_key": 2
+        },
+        "hc2_conditions": {
+          "absent_key": 2
+        },
+        "jc_a_cm2": {
+          "absent_key": 2
+        },
+        "lattice_a": {
+          "absent_key": 2
+        },
+        "lattice_b": {
+          "absent_key": 2
+        },
+        "lattice_c": {
+          "absent_key": 2
+        },
+        "space_group": {
+          "absent_key": 2
+        },
+        "sample_form": {
+          "value": 2
+        },
+        "substrate": {
+          "absent_key": 2
+        },
+        "doping_type": {
+          "absent_key": 2
+        },
+        "doping_level": {
+          "absent_key": 2
+        },
+        "ambient_sc": {
+          "boolean_true": 2
+        },
+        "gap_structure": {
+          "absent_key": 2
+        },
+        "competing_order": {
+          "absent_key": 2
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2601.13292",
+      "split": "validation",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2601.13292",
+      "captured_at": "2026-10-10T10:26:07.827492+00:00",
+      "status": 200,
+      "body_sha256": "9b979d380c2b6bea5e4d3a6a54134e189f28118fe35c69b57d9e667994182bc2",
+      "response_date": "Sat, 10 Oct 2026 10:26:08 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 15,
+        "returned_occurrences": 15,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 15
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2601.13292",
+      "sclib_doi": null,
+      "returned_material_occurrences": 15,
+      "field_states": {
+        "formula": {
+          "value": 15
+        },
+        "family": {
+          "value": 15
+        },
+        "tc_kelvin": {
+          "absent_key": 15
+        },
+        "pressure_gpa": {
+          "zero": 15
+        },
+        "tc_type": {
+          "value": 15
+        },
+        "measurement": {
+          "value": 15
+        },
+        "pairing_symmetry": {
+          "absent_key": 15
+        },
+        "crystal_structure": {
+          "absent_key": 15
+        },
+        "structure_phase": {
+          "absent_key": 15
+        },
+        "lambda_eph": {
+          "absent_key": 15
+        },
+        "omega_log_k": {
+          "absent_key": 15
+        },
+        "mu_star": {
+          "absent_key": 15
+        },
+        "hc2_tesla": {
+          "absent_key": 15
+        },
+        "hc2_conditions": {
+          "absent_key": 15
+        },
+        "jc_a_cm2": {
+          "absent_key": 15
+        },
+        "lattice_a": {
+          "absent_key": 15
+        },
+        "lattice_b": {
+          "absent_key": 15
+        },
+        "lattice_c": {
+          "absent_key": 15
+        },
+        "space_group": {
+          "absent_key": 15
+        },
+        "sample_form": {
+          "absent_key": 15
+        },
+        "substrate": {
+          "absent_key": 15
+        },
+        "doping_type": {
+          "absent_key": 15
+        },
+        "doping_level": {
+          "absent_key": 15
+        },
+        "ambient_sc": {
+          "absent_key": 15
+        },
+        "gap_structure": {
+          "absent_key": 15
+        },
+        "competing_order": {
+          "absent_key": 15
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2408.04516",
+      "split": "validation",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2408.04516",
+      "captured_at": "2026-10-10T10:26:08.345906+00:00",
+      "status": 200,
+      "body_sha256": "33e8fceb1c13d46dc570a6933bd7a1be020f7812c9a0cdbcd073efbb3bd22172",
+      "response_date": "Sat, 10 Oct 2026 10:26:08 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2408.04516",
+      "sclib_doi": "10.3390/nano14191585",
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "absent_key": 1
+        },
+        "pressure_gpa": {
+          "absent_key": 1
+        },
+        "tc_type": {
+          "value": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "absent_key": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "value": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "absent_key": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "absent_key": 1
+        },
+        "competing_order": {
+          "absent_key": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2408.10719",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2408.10719",
+      "captured_at": "2026-10-10T10:26:08.784963+00:00",
+      "status": 200,
+      "body_sha256": "367de94305a1c74da760f2a44a2b23bcb7c0898909c6f6242ce2c764a153dc18",
+      "response_date": "Sat, 10 Oct 2026 10:26:09 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 3,
+        "returned_occurrences": 3,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 3
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2408.10719",
+      "sclib_doi": "10.1002/aelm.202400687",
+      "returned_material_occurrences": 3,
+      "field_states": {
+        "formula": {
+          "value": 3
+        },
+        "family": {
+          "value": 3
+        },
+        "tc_kelvin": {
+          "value": 3
+        },
+        "pressure_gpa": {
+          "absent_key": 3
+        },
+        "tc_type": {
+          "value": 3
+        },
+        "measurement": {
+          "value": 3
+        },
+        "pairing_symmetry": {
+          "absent_key": 3
+        },
+        "crystal_structure": {
+          "absent_key": 3
+        },
+        "structure_phase": {
+          "absent_key": 3
+        },
+        "lambda_eph": {
+          "absent_key": 3
+        },
+        "omega_log_k": {
+          "absent_key": 3
+        },
+        "mu_star": {
+          "absent_key": 3
+        },
+        "hc2_tesla": {
+          "absent_key": 3
+        },
+        "hc2_conditions": {
+          "absent_key": 3
+        },
+        "jc_a_cm2": {
+          "absent_key": 3
+        },
+        "lattice_a": {
+          "absent_key": 3
+        },
+        "lattice_b": {
+          "absent_key": 3
+        },
+        "lattice_c": {
+          "absent_key": 3
+        },
+        "space_group": {
+          "absent_key": 3
+        },
+        "sample_form": {
+          "absent_key": 3
+        },
+        "substrate": {
+          "absent_key": 3
+        },
+        "doping_type": {
+          "absent_key": 3
+        },
+        "doping_level": {
+          "absent_key": 3
+        },
+        "ambient_sc": {
+          "boolean_true": 3
+        },
+        "gap_structure": {
+          "absent_key": 3
+        },
+        "competing_order": {
+          "absent_key": 3
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2308.04377",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2308.04377",
+      "captured_at": "2026-10-10T10:26:09.220954+00:00",
+      "status": 200,
+      "body_sha256": "4160a245f6a419a3dada6ac3ad619b3cfc9d1676e8ae207d18fc65b5c5ff9fcb",
+      "response_date": "Sat, 10 Oct 2026 10:26:09 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 8,
+        "returned_occurrences": 8,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 8
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2308.04377",
+      "sclib_doi": "10.1103/PhysRevB.108.094502",
+      "returned_material_occurrences": 8,
+      "field_states": {
+        "formula": {
+          "value": 8
+        },
+        "family": {
+          "value": 8
+        },
+        "tc_kelvin": {
+          "value": 7,
+          "absent_key": 1
+        },
+        "pressure_gpa": {
+          "value": 8
+        },
+        "tc_type": {
+          "value": 7,
+          "absent_key": 1
+        },
+        "measurement": {
+          "value": 8
+        },
+        "pairing_symmetry": {
+          "absent_key": 8
+        },
+        "crystal_structure": {
+          "absent_key": 8
+        },
+        "structure_phase": {
+          "value": 8
+        },
+        "lambda_eph": {
+          "absent_key": 8
+        },
+        "omega_log_k": {
+          "absent_key": 8
+        },
+        "mu_star": {
+          "absent_key": 8
+        },
+        "hc2_tesla": {
+          "absent_key": 7,
+          "value": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 7,
+          "value": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 8
+        },
+        "lattice_a": {
+          "absent_key": 8
+        },
+        "lattice_b": {
+          "absent_key": 8
+        },
+        "lattice_c": {
+          "absent_key": 8
+        },
+        "space_group": {
+          "absent_key": 8
+        },
+        "sample_form": {
+          "value": 6,
+          "absent_key": 2
+        },
+        "substrate": {
+          "absent_key": 8
+        },
+        "doping_type": {
+          "absent_key": 8
+        },
+        "doping_level": {
+          "absent_key": 8
+        },
+        "ambient_sc": {
+          "absent_key": 8
+        },
+        "gap_structure": {
+          "absent_key": 8
+        },
+        "competing_order": {
+          "absent_key": 8
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2509.23404",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2509.23404",
+      "captured_at": "2026-10-10T10:26:09.582509+00:00",
+      "status": 200,
+      "body_sha256": "03cc04662c64068fa2b046101c66d5aec1c348e6095e71a2674e6341e7f5670a",
+      "response_date": "Sat, 10 Oct 2026 10:26:10 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 1,
+        "returned_occurrences": 1,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 1
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2509.23404",
+      "sclib_doi": "10.1088/1361-6668/ae1893",
+      "returned_material_occurrences": 1,
+      "field_states": {
+        "formula": {
+          "value": 1
+        },
+        "family": {
+          "value": 1
+        },
+        "tc_kelvin": {
+          "absent_key": 1
+        },
+        "pressure_gpa": {
+          "absent_key": 1
+        },
+        "tc_type": {
+          "absent_key": 1
+        },
+        "measurement": {
+          "value": 1
+        },
+        "pairing_symmetry": {
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "absent_key": 1
+        },
+        "lambda_eph": {
+          "absent_key": 1
+        },
+        "omega_log_k": {
+          "absent_key": 1
+        },
+        "mu_star": {
+          "absent_key": 1
+        },
+        "hc2_tesla": {
+          "absent_key": 1
+        },
+        "hc2_conditions": {
+          "absent_key": 1
+        },
+        "jc_a_cm2": {
+          "absent_key": 1
+        },
+        "lattice_a": {
+          "absent_key": 1
+        },
+        "lattice_b": {
+          "absent_key": 1
+        },
+        "lattice_c": {
+          "absent_key": 1
+        },
+        "space_group": {
+          "absent_key": 1
+        },
+        "sample_form": {
+          "value": 1
+        },
+        "substrate": {
+          "absent_key": 1
+        },
+        "doping_type": {
+          "absent_key": 1
+        },
+        "doping_level": {
+          "absent_key": 1
+        },
+        "ambient_sc": {
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "absent_key": 1
+        },
+        "competing_order": {
+          "absent_key": 1
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2508.21281",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2508.21281",
+      "captured_at": "2026-10-10T10:26:10.008034+00:00",
+      "status": 200,
+      "body_sha256": "90a2c3f8e49bfc3bc6d206f43bdd769ba453dfc49bb0d04b2c34936ae1a439bb",
+      "response_date": "Sat, 10 Oct 2026 10:26:10 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 6,
+        "returned_occurrences": 6,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 6
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2508.21281",
+      "sclib_doi": null,
+      "returned_material_occurrences": 6,
+      "field_states": {
+        "formula": {
+          "value": 6
+        },
+        "family": {
+          "value": 6
+        },
+        "tc_kelvin": {
+          "absent_key": 6
+        },
+        "pressure_gpa": {
+          "absent_key": 6
+        },
+        "tc_type": {
+          "value": 6
+        },
+        "measurement": {
+          "value": 6
+        },
+        "pairing_symmetry": {
+          "absent_key": 6
+        },
+        "crystal_structure": {
+          "value": 6
+        },
+        "structure_phase": {
+          "absent_key": 6
+        },
+        "lambda_eph": {
+          "value": 6
+        },
+        "omega_log_k": {
+          "absent_key": 6
+        },
+        "mu_star": {
+          "absent_key": 6
+        },
+        "hc2_tesla": {
+          "absent_key": 6
+        },
+        "hc2_conditions": {
+          "absent_key": 6
+        },
+        "jc_a_cm2": {
+          "absent_key": 6
+        },
+        "lattice_a": {
+          "absent_key": 6
+        },
+        "lattice_b": {
+          "absent_key": 6
+        },
+        "lattice_c": {
+          "absent_key": 6
+        },
+        "space_group": {
+          "absent_key": 6
+        },
+        "sample_form": {
+          "absent_key": 6
+        },
+        "substrate": {
+          "absent_key": 6
+        },
+        "doping_type": {
+          "absent_key": 6
+        },
+        "doping_level": {
+          "absent_key": 6
+        },
+        "ambient_sc": {
+          "absent_key": 6
+        },
+        "gap_structure": {
+          "absent_key": 6
+        },
+        "competing_order": {
+          "absent_key": 6
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2602.21364",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2602.21364",
+      "captured_at": "2026-10-10T10:26:10.455661+00:00",
+      "status": 200,
+      "body_sha256": "262ce2fecafb8992cf08ee85c30b461478bbd99bc6760859f457a7d5c0ce37c2",
+      "response_date": "Sat, 10 Oct 2026 10:26:10 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 2,
+        "returned_occurrences": 2,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 2
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2602.21364",
+      "sclib_doi": null,
+      "returned_material_occurrences": 2,
+      "field_states": {
+        "formula": {
+          "value": 2
+        },
+        "family": {
+          "absent_key": 1,
+          "value": 1
+        },
+        "tc_kelvin": {
+          "value": 2
+        },
+        "pressure_gpa": {
+          "absent_key": 2
+        },
+        "tc_type": {
+          "value": 2
+        },
+        "measurement": {
+          "value": 2
+        },
+        "pairing_symmetry": {
+          "absent_key": 2
+        },
+        "crystal_structure": {
+          "absent_key": 2
+        },
+        "structure_phase": {
+          "absent_key": 2
+        },
+        "lambda_eph": {
+          "absent_key": 2
+        },
+        "omega_log_k": {
+          "absent_key": 2
+        },
+        "mu_star": {
+          "absent_key": 2
+        },
+        "hc2_tesla": {
+          "absent_key": 2
+        },
+        "hc2_conditions": {
+          "absent_key": 2
+        },
+        "jc_a_cm2": {
+          "absent_key": 2
+        },
+        "lattice_a": {
+          "absent_key": 2
+        },
+        "lattice_b": {
+          "absent_key": 2
+        },
+        "lattice_c": {
+          "absent_key": 2
+        },
+        "space_group": {
+          "absent_key": 2
+        },
+        "sample_form": {
+          "absent_key": 2
+        },
+        "substrate": {
+          "absent_key": 2
+        },
+        "doping_type": {
+          "absent_key": 2
+        },
+        "doping_level": {
+          "absent_key": 2
+        },
+        "ambient_sc": {
+          "absent_key": 2
+        },
+        "gap_structure": {
+          "absent_key": 2
+        },
+        "competing_order": {
+          "absent_key": 2
+        }
+      }
+    },
+    {
+      "paper_id": "arxiv:2607.20974",
+      "split": "blind_test",
+      "requested_url": "https://api.jzis.org/sclib/v1/paper/arxiv%3A2607.20974",
+      "captured_at": "2026-10-10T10:26:10.885867+00:00",
+      "status": 200,
+      "body_sha256": "e3d07e2e720bbe6b11e0bcdd87943f15844418b8e461b4a37acded494299a17e",
+      "response_date": "Sat, 10 Oct 2026 10:26:11 GMT",
+      "source_visibility": {
+        "version": "material-visibility/1.0.0",
+        "source_status": "active",
+        "bibliography_available": true,
+        "reported_claim_filter_eligible": true,
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "occurrence_visibility_summary": {
+        "version": "material-visibility/1.0.0",
+        "total_occurrences": 4,
+        "returned_occurrences": 4,
+        "omitted_occurrences": 0,
+        "state_counts": {
+          "unknown": 4
+        },
+        "scientific_acceptance": false,
+        "warning_codes": []
+      },
+      "sclib_arxiv_id": "2607.20974",
+      "sclib_doi": null,
+      "returned_material_occurrences": 4,
+      "field_states": {
+        "formula": {
+          "value": 4
+        },
+        "family": {
+          "value": 3,
+          "absent_key": 1
+        },
+        "tc_kelvin": {
+          "value": 3,
+          "absent_key": 1
+        },
+        "pressure_gpa": {
+          "absent_key": 4
+        },
+        "tc_type": {
+          "value": 4
+        },
+        "measurement": {
+          "value": 4
+        },
+        "pairing_symmetry": {
+          "value": 3,
+          "absent_key": 1
+        },
+        "crystal_structure": {
+          "value": 3,
+          "absent_key": 1
+        },
+        "structure_phase": {
+          "absent_key": 4
+        },
+        "lambda_eph": {
+          "absent_key": 4
+        },
+        "omega_log_k": {
+          "absent_key": 4
+        },
+        "mu_star": {
+          "absent_key": 4
+        },
+        "hc2_tesla": {
+          "absent_key": 4
+        },
+        "hc2_conditions": {
+          "absent_key": 4
+        },
+        "jc_a_cm2": {
+          "absent_key": 4
+        },
+        "lattice_a": {
+          "absent_key": 4
+        },
+        "lattice_b": {
+          "absent_key": 4
+        },
+        "lattice_c": {
+          "absent_key": 4
+        },
+        "space_group": {
+          "absent_key": 4
+        },
+        "sample_form": {
+          "value": 3,
+          "absent_key": 1
+        },
+        "substrate": {
+          "absent_key": 4
+        },
+        "doping_type": {
+          "absent_key": 4
+        },
+        "doping_level": {
+          "absent_key": 4
+        },
+        "ambient_sc": {
+          "boolean_true": 3,
+          "absent_key": 1
+        },
+        "gap_structure": {
+          "value": 3,
+          "absent_key": 1
+        },
+        "competing_order": {
+          "absent_key": 4
+        }
+      }
+    }
+  ],
+  "parent_capture_receipt_sha256": "1295a65521dce6e73809b42e700fed89b5a7316e755225f8280463ac6c15214d",
+  "analysis_version": "legacy_public_record_fields/3",
+  "absent_key_scope": "current_public_projection_only_not_source_paper_absence",
+  "measurement_field_types": {
+    "str": 166
+  },
+  "boolean_states_distinguished_from_numeric_zero": true,
+  "canonical_work_mapping_adjudicated": false,
+  "existing_extraction_source_version_verified": false,
+  "baseline_scope": "current_public_paper_projection; API response hash is not the underlying source capture hash",
+  "snapshot_is_atomic": false,
+  "catalogue_revision_verified": false,
+  "receipt_sha256": "fe201de643c3964898462f80259aec41733e81b0937c1ce0ef0ec569554155b7"
+}

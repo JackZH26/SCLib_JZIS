@@ -1,0 +1,10 @@
+{
+  "provider": "gemini",
+  "model": "gemini-3.5-flash",
+  "revision": null,
+  "context_tokens": 16384,
+  "max_output_tokens": 4096,
+  "timeout_seconds": 240,
+  "reasoning_effort": "low",
+  "endpoint": null
+}
