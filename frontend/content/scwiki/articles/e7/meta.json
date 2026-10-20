@@ -30,14 +30,14 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T16:13:01.102502+00:00",
+  "modifiedAt": "2026-10-20",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected original scans by Anderson and Yu; selected results and methods in Prozorov author, Mizukami final and Hatter final papers; bounded AG, YSR and dose calculations.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected Anderson original scans, Prozorov final pp.3–4 and Mizukami final pp.4–6 in this follow-up; earlier Yu/Hatter and bounded AG/YSR/dose checks retained, not newly repeated.",
     "limitations": [
       "Complete scientific acceptance, full supplements and raw-data reanalysis remain open.",
       "The original AG full text and complete Shiba derivation were not retrieved. Equation checks in the Balatsky review manuscript are separate; comparison with its final version remains open.",
-      "Prozorov author v1 has not been fully compared with the final paper; its exact transition threshold is not established. Mizukami TDO transitions are not relabeled as zero resistance.",
+      "Prozorov final methods and figures now checked; whole-version comparison, individual Ru fractions of the two additional specimens and operational transition thresholds remain open. Mizukami TDO transitions are not relabeled as zero resistance; the absence of a Curie upturn retains detection and model assumptions.",
       "The classical YSR formula does not model quantum Kondo screening or anisotropy and does not establish Majorana states. Irradiation and spectroscopy temperatures are excluded from transition filters."
     ]
   },
@@ -58,7 +58,7 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-original-scan-reread",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://physics.umd.edu/courses/Phys798S/anlage/Phys798SAnlageSpring06/Anderson%20TimeReversed%20Pairs%20Paper.pdf",
         "note": "Original journal pp26 and29 visually re-read: exact time-reversed states, chemical changes/DOS and anisotropy. Complete derivation and localization corrections not independently reviewed."
       }
@@ -127,10 +127,10 @@
       "url": "https://doi.org/10.1103/PhysRevX.4.041032",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-author-methods-and-figures",
-        "checkedAt": "2026-10-18",
-        "evidenceUrl": "https://arxiv.org/pdf/1405.3255v1",
-        "note": "Authorv1 dated13May2014; selectedpp1–4 methods,annealing,Figs1–3 andmultiband discussion read; p3 Figs1–2 visually checked. Tc0 methods17.8K versus transportfigure17.85K retained; exact operational threshold not established. Final APS PDF403; completefinalcomparison/rawdata remain open."
+        "scope": "selected-final-methods-and-sample-resolved-figures",
+        "checkedAt": "2026-10-20",
+        "evidenceUrl": "https://journals.aps.org/prx/pdf/10.1103/PhysRevX.4.041032",
+        "note": "Publisher final PDF now retrieved. Selected pp.3–4 read and visually checked: charge-dose calibration, room-temperature annealing, extrapolated residual resistivity, separate initial Tc0=17.85/15/13.5 K specimens and multiband assumptions. Individual Ru fractions of additional crystals and operational Tc thresholds remain unassigned. Earlier author-v1 review retained; no complete final-v1, supplement or raw-data comparison claimed."
       }
     },
     {
@@ -141,10 +141,10 @@
       "url": "https://doi.org/10.1038/ncomms6657",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-final-results-methods-and-transition-figure",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-final-results-detection-limits-and-methods",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://www.nature.com/articles/ncomms6657.pdf",
-        "note": "Published28November2014,NatCommun5,5657. Selectedpp3–6 results,Fig2/3captions andmethods read; p3Fig2 visually checked. x=.33–.36,28/29K TDO batches versus30K resistivity crystal,80mK floor and20–22K irradiation preserved. Numerical model, fullsupplement/rawdata not reproduced."
+        "note": "Earlier selected pp.3–6 transition/method review retained. This follow-up reads pp.4–6 and visually checks pp.4–5: #29A 4.9 C/cm²,80 mK floor,~1 angstrom precision and conditional ~0.2 Bohr magneton/Fe-defect bound using estimated density and lambda(0)~0.2 micrometres. Figure4 is a two-band calculation; curves are vertically offset. Model reproduction, complete supplements/raw data and independent acceptance remain open."
       }
     },
     {
@@ -201,20 +201,24 @@
         "source-23c62b46f5681d83",
         "source-c4a5c25b97df43a2"
       ],
-      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
-      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+      "conditions": "Preserve specimen/probe identity, dose and annealing history, extrapolation assumptions, magnetic detection limits, transition thresholds and tip spectral convolution.",
+      "verificationScope": "Selected original passages and source-specific protocol checks; historical equation checks retained but not repeated in this update. Full independent scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial synthesis of the cited source contexts; the practical inference boundaries are stated here, not attributed as a single verbatim result in every source."
     },
     {
       "id": "scwiki-e7-claim-scope-2",
       "sectionId": "scope",
       "statement": "Anderson's time-reversed-state argument explains the robustness of an isotropic, sign-preserving superconducting state to nonmagnetic elastic scattering under restricted assumptions. The participating states must remain extended and the averaged pairing interaction and density of states must not change substantially. It is not immunity to arbitrary chemical substitution, localization, magnetic scattering or spatial granularity. Constant $T_c$ alone does not uniquely determine pairing symmetry.",
-      "evidenceType": "experiment",
+      "evidenceType": "theory",
       "sourceIds": [
         "source-8d0e592da8ec9c7b",
         "source-23c62b46f5681d83"
       ],
-      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
-      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+      "conditions": "Preserve specimen/probe identity, dose and annealing history, extrapolation assumptions, magnetic detection limits, transition thresholds and tip spectral convolution.",
+      "verificationScope": "Selected original passages and source-specific protocol checks; historical equation checks retained but not repeated in this update. Full independent scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial synthesis of the cited source contexts; the practical inference boundaries are stated here, not attributed as a single verbatim result in every source."
     },
     {
       "id": "scwiki-e7-claim-mathematical-assumptions-1",
@@ -226,8 +230,10 @@
         "source-3a528aeee1b7cf04",
         "source-23c62b46f5681d83"
       ],
-      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
-      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+      "conditions": "Preserve specimen/probe identity, dose and annealing history, extrapolation assumptions, magnetic detection limits, transition thresholds and tip spectral convolution.",
+      "verificationScope": "Selected original passages and source-specific protocol checks; historical equation checks retained but not repeated in this update. Full independent scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Explicit local notation and restricted-model interpretation, previously checked against the Balatsky review and bounded algebra. The cited original AG/Shiba works are not claimed to have been fully read; no new equation computation in this update."
     },
     {
       "id": "scwiki-e7-claim-mathematical-assumptions-2",
@@ -240,8 +246,10 @@
         "source-3a528aeee1b7cf04",
         "source-54e8e8bbd28f62fd"
       ],
-      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
-      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+      "conditions": "Preserve specimen/probe identity, dose and annealing history, extrapolation assumptions, magnetic detection limits, transition thresholds and tip spectral convolution.",
+      "verificationScope": "Selected original passages and source-specific protocol checks; historical equation checks retained but not repeated in this update. Full independent scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Explicit local notation and restricted-model interpretation, previously checked against the Balatsky review and bounded algebra. The cited original AG/Shiba works are not claimed to have been fully read; no new equation computation in this update."
     },
     {
       "id": "scwiki-e7-claim-mathematical-assumptions-3",
@@ -251,30 +259,36 @@
       "sourceIds": [
         "source-23c62b46f5681d83"
       ],
-      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
-      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+      "conditions": "Preserve specimen/probe identity, dose and annealing history, extrapolation assumptions, magnetic detection limits, transition thresholds and tip spectral convolution.",
+      "verificationScope": "Selected original passages and source-specific protocol checks; historical equation checks retained but not repeated in this update. Full independent scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local conversion of charge fluence to electron fluence using elementary charge; no surviving-defect density is inferred. Earlier bounded arithmetic check retained, not rerun in this update."
     },
     {
       "id": "scwiki-e7-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "Prozorov studied Ba(Fe1−xRux)2As2 with WDS composition $x=0.24$ using 2.5 MeV electrons. Irradiation and in-situ resistivity measurements took place near 22 K; the initial superconducting transition is reported as 17.8 K in the methods and 17.85 K in the transport figure. Warming to room temperature between runs partially annealed the damage, by up to about 30%. The same contacts were retained. Increased resistivity and suppressed $T_c$ were compatible with the authors' multiband sign-changing scenario, whose interband/intraband scattering ratio matters. The 22 K irradiation temperature is not $T_c$, and no unverified onset, midpoint or zero-resistance label is assigned here.",
+      "statement": "Prozorov studied Ba(Fe1−xRux)2As2 with WDS composition $x=0.24$ using 2.5 MeV electrons. Irradiation and in-situ resistivity measurements took place near 22 K; the initial superconducting transition is reported as 17.8 K in the methods and 17.85 K in the transport figure. Warming to room temperature between runs partially annealed the damage, by up to about 30%. The same contacts were retained. The residual resistivity in Figure 1b is a linear extrapolation from above $T_c$ to zero temperature, not a direct zero-temperature normal-state measurement. Figure 2b includes two other crystals with initial transitions of 15 K and 13.5 K, labeled as Hall-probe measurements; these are separate sample baselines, not successive irradiated transition values of the 17.85 K transport specimen. Their individual Ru fractions and operational transition thresholds are not assigned here. Increased resistivity and suppressed $T_c$ were compatible with the authors' multiband sign-changing scenario, whose interband/intraband scattering ratio matters. An approximately unchanged Hall coefficient is an additional observation, not a complete determination of multiband carrier densities. The 22 K irradiation temperature is not $T_c$, and no unverified onset, midpoint or zero-resistance label is assigned here.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-23c62b46f5681d83"
       ],
-      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
-      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+      "conditions": "Preserve specimen/probe identity, dose and annealing history, extrapolation assumptions, magnetic detection limits, transition thresholds and tip spectral convolution.",
+      "verificationScope": "Selected original passages and source-specific protocol checks; historical equation checks retained but not repeated in this update. Full independent scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific experimental summary and explicit limits; measured quantities are separated from the authors' model interpretation. Selected passages do not certify the entire study."
     },
     {
       "id": "scwiki-e7-claim-experimental-criteria-2",
       "sectionId": "experimental-criteria",
-      "statement": "Mizukami's BaFe2(As1−xPx)2 crystals had $x=0.33$–0.36 and initial transitions of 28, 29 or 30 K. The 28/29 K batches were tracked by tunnel-diode-oscillator frequency shifts; the 30 K crystal also supplied the resistivity series. Following 2.5 MeV irradiation, low-temperature penetration-depth curves evolved from nodal behavior to an activated regime, then back to gapless behavior with further disorder. The authors interpreted that sequence with accidental nodes and sign-changing multiband pairing. Here “topological change” concerns the gap's nodal structure; it does not establish a Majorana-carrying topological superconductor. The 80 mK measurement floor and 20–22 K irradiation bath remain separate from transition records.",
+      "statement": "Mizukami's BaFe2(As1−xPx)2 crystals had $x=0.33$–0.36 and initial transitions of 28, 29 or 30 K. The 28/29 K batches were tracked by tunnel-diode-oscillator frequency shifts; the 30 K crystal also supplied the resistivity series. Following 2.5 MeV irradiation, low-temperature penetration-depth curves evolved from nodal behavior to an activated regime, then back to gapless behavior with further disorder. In sample #29A after 4.9 C/cm², the penetration depth was flat below approximately $T/T_c=0.05$ within about 1 angstrom, with measurements reaching 80 mK. The absence of a Curie upturn gives a conditional upper limit of approximately $0.2\\mu_B$ per Fe defect, using an estimated defect density and penetration depth $\\lambda(0)\\approx0.2$ micrometres; it does not establish exactly zero magnetic moment. The authors interpreted the irradiation sequence with accidental nodes and sign-changing multiband pairing. Figure 4 shows a two-band model calculation, not a directly measured density-of-states spectrum; the plotted penetration-depth curves are vertically offset for clarity. Here “topological change” concerns the gap's nodal structure; it does not establish a Majorana-carrying topological superconductor. The 80 mK measurement floor and 20–22 K irradiation bath remain separate from transition records.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-c4a5c25b97df43a2"
       ],
-      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
-      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+      "conditions": "Preserve specimen/probe identity, dose and annealing history, extrapolation assumptions, magnetic detection limits, transition thresholds and tip spectral convolution.",
+      "verificationScope": "Selected original passages and source-specific protocol checks; historical equation checks retained but not repeated in this update. Full independent scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific experimental summary and explicit limits; measured quantities are separated from the authors' model interpretation. Selected passages do not certify the entire study."
     },
     {
       "id": "scwiki-e7-claim-experimental-criteria-3",
@@ -284,8 +298,10 @@
       "sourceIds": [
         "source-54e8e8bbd28f62fd"
       ],
-      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
-      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+      "conditions": "Preserve specimen/probe identity, dose and annealing history, extrapolation assumptions, magnetic detection limits, transition thresholds and tip spectral convolution.",
+      "verificationScope": "Selected original passages and source-specific protocol checks; historical equation checks retained but not repeated in this update. Full independent scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific experimental summary and explicit limits; measured quantities are separated from the authors' model interpretation. Selected passages do not certify the entire study."
     },
     {
       "id": "scwiki-e7-claim-limits-and-disputes-1",
@@ -299,8 +315,10 @@
         "source-c4a5c25b97df43a2",
         "source-54e8e8bbd28f62fd"
       ],
-      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
-      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+      "conditions": "Preserve specimen/probe identity, dose and annealing history, extrapolation assumptions, magnetic detection limits, transition thresholds and tip spectral convolution.",
+      "verificationScope": "Selected original passages and source-specific protocol checks; historical equation checks retained but not repeated in this update. Full independent scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial synthesis of the cited source contexts; the practical inference boundaries are stated here, not attributed as a single verbatim result in every source."
     },
     {
       "id": "scwiki-e7-claim-limits-and-disputes-2",
@@ -311,8 +329,10 @@
         "source-51c947cf11bea72e",
         "source-7ba854cc57960377"
       ],
-      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
-      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+      "conditions": "Preserve specimen/probe identity, dose and annealing history, extrapolation assumptions, magnetic detection limits, transition thresholds and tip spectral convolution.",
+      "verificationScope": "Selected original passages and source-specific protocol checks; historical equation checks retained but not repeated in this update. Full independent scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial synthesis of the cited source contexts; the practical inference boundaries are stated here, not attributed as a single verbatim result in every source."
     },
     {
       "id": "scwiki-e7-claim-limits-and-disputes-3",
@@ -325,8 +345,10 @@
         "source-7383f31da800ca9e",
         "source-3a528aeee1b7cf04"
       ],
-      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
-      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+      "conditions": "Preserve specimen/probe identity, dose and annealing history, extrapolation assumptions, magnetic detection limits, transition thresholds and tip spectral convolution.",
+      "verificationScope": "Selected original passages and source-specific protocol checks; historical equation checks retained but not repeated in this update. Full independent scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial synthesis of the cited source contexts; the practical inference boundaries are stated here, not attributed as a single verbatim result in every source."
     },
     {
       "id": "scwiki-e7-claim-discovery-implications-1",
@@ -339,8 +361,10 @@
         "source-54e8e8bbd28f62fd",
         "source-51c947cf11bea72e"
       ],
-      "conditions": "Separate magnetic and potential scattering, defect morphology/annealing, irradiation/measurement temperatures, transition criteria and tip spectral convolution.",
-      "verificationScope": "Selected original passages/scans, explicitly secondary equation convention check and bounded algebra; full scientific acceptance open."
+      "conditions": "Preserve specimen/probe identity, dose and annealing history, extrapolation assumptions, magnetic detection limits, transition thresholds and tip spectral convolution.",
+      "verificationScope": "Selected original passages and source-specific protocol checks; historical equation checks retained but not repeated in this update. Full independent scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial synthesis of the cited source contexts; the practical inference boundaries are stated here, not attributed as a single verbatim result in every source."
     }
   ],
   "corrections": [],
@@ -528,6 +552,50 @@
         "manganese phthalocyanine",
         "MnPc",
         "Pb"
+      ]
+    },
+    {
+      "id": "scwiki-e7-material-9",
+      "formula": "Ba(Fe1-xRux)2As2",
+      "sample": "Prozorov separate Hall-probe specimen with pristine Tc0 15 K; individual Ru fraction unassigned",
+      "recordType": "experiment",
+      "reportedTemperatureK": 15,
+      "tcK": 15,
+      "temperatureKind": "transition",
+      "temperatureNote": "Final Figure 2b labels initial Tc0 15 K for a different crystal, not an irradiated endpoint of the 17.85 K transport specimen. Operational transition threshold and equilibrium certification were not established by this scoped check.",
+      "criterion": "hall-probe-transition-unspecified",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Hall probe (Figure 2b label); detailed transition threshold unspecified",
+      "sourceId": "source-23c62b46f5681d83",
+      "aliases": [
+        "BaRu122",
+        "iron pnictide",
+        "pnictide",
+        "Prozorov Hall baseline 15 K"
+      ]
+    },
+    {
+      "id": "scwiki-e7-material-10",
+      "formula": "Ba(Fe1-xRux)2As2",
+      "sample": "Prozorov separate Hall-probe specimen with pristine Tc0 13.5 K; individual Ru fraction unassigned",
+      "recordType": "experiment",
+      "reportedTemperatureK": 13.5,
+      "tcK": 13.5,
+      "temperatureKind": "transition",
+      "temperatureNote": "Final Figure 2b labels initial Tc0 13.5 K for a different crystal, not an irradiated endpoint of the 17.85 K transport specimen. Operational transition threshold and equilibrium certification were not established by this scoped check.",
+      "criterion": "hall-probe-transition-unspecified",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Hall probe (Figure 2b label); detailed transition threshold unspecified",
+      "sourceId": "source-23c62b46f5681d83",
+      "aliases": [
+        "BaRu122",
+        "iron pnictide",
+        "pnictide",
+        "Prozorov Hall baseline 13.5 K"
       ]
     }
   ],

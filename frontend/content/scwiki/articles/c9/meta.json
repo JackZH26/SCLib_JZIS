@@ -30,10 +30,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T10:20:14.606912+00:00",
+  "modifiedAt": "2026-10-19T15:10:03.920700+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected Frigeri and Samokhin model passages, complete Frigeri erratum text, selected Dutta exchange classification, inherited NMR/uranium evidence and explicit abstract-only proximity/shadowed-triplet sources. Independent exchange, Green-function and gap examples.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Frigeri and Samokhin model passages, complete Frigeri erratum text, selected Dutta exchange classification, inherited NMR/uranium evidence and explicit abstract-only proximity/shadowed-triplet sources. Independent exchange, Green-function and gap examples. Follow-up: Frigeri v3 model/approximations and appended erratum re-read; local aligned BdG gap versus zero-energy-node conditions tested with 120 cases and five controls. Existing reviews of other sources were not repeated.",
     "limitations": [
       "Full scientific acceptance and complete version comparisons remain open.",
       "Finite imposed models do not calculate stable phases, material mixing fractions or transition temperatures.",
@@ -188,9 +188,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-text-and-erratum-check",
-        "checkedAt": "2026-10-18",
-        "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0311354v3",
-        "note": "Author v3, 28 July 2004: selected pp.1–4 and appended erratum p.5 read, pp.2/5 visually checked. Mixing terms of order alpha/EF neglected; field calculation excludes orbital depairing and considers continuous onset. Complete data/version reproduction open."
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/html/cond-mat/0311354v3",
+        "note": "Re-read v3 (28 July 2004) model Eqs. 2-7, helicity sheets, neglected coupling of order alpha/E_F, Eq. 9 alignment restriction and appended erratum (linear MnSi term and Fig. 2 rescaling). Provides context, not a self-consistent mixed-gap prediction. No new PDF pixel review or material data reanalysis."
       }
     },
     {
@@ -201,10 +201,10 @@
       "url": "https://doi.org/10.1103/PhysRevLett.93.099903",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "published-erratum-text-check",
-        "checkedAt": "2026-10-18",
-        "evidenceUrl": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.93.099903",
-        "note": "Published 27 August 2004. Complete one-page publisher text checked; matching author appendix p.5 visually checked. Adds linear MnSi SOC term and divides Fig.2 alphaR by sqrt(3/2)."
+        "scope": "selected-author-text-and-erratum-check",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://arxiv.org/html/cond-mat/0311354v3",
+        "note": "Re-read v3 (28 July 2004) model Eqs. 2-7, helicity sheets, neglected coupling of order alpha/E_F, Eq. 9 alignment restriction and appended erratum (linear MnSi term and Fig. 2 rescaling). Provides context, not a self-consistent mixed-gap prediction. No new PDF pixel review or material data reanalysis."
       }
     },
     {
@@ -353,7 +353,9 @@
         "source-0342c1624c6eb6d0"
       ],
       "conditions": "Exchange-product rule for resolved sectors. Imposed Nambu/helicity gap examples, no self-consistency, material stability or transition prediction. Frigeri approximation and erratum both retained.",
-      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "The cited exchange classification supplies context; the finite 16-sector matrix enumeration is a local algebra check, not independent scientific review."
     },
     {
       "id": "scwiki-c9-claim-mathematical-assumptions-2",
@@ -379,19 +381,23 @@
         "source-6c944305286c9cad"
       ],
       "conditions": "Exchange-product rule for resolved sectors. Imposed Nambu/helicity gap examples, no self-consistency, material stability or transition prediction. Frigeri approximation and erratum both retained.",
-      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "The primary spin/SOC Hamiltonian supplies context; the imposed singlet-gap Green-function inversion is a local derivation and does not solve a triplet gap equation."
     },
     {
       "id": "scwiki-c9-claim-mathematical-assumptions-4",
       "sectionId": "mathematical-assumptions",
-      "statement": "With an imposed aligned component $\\mathbf d=d\\hat{\\mathbf g}$, the two gap magnitudes are $|\\psi+d|$ and $|\\psi-d|$ in this simple model. Five direct gap-matrix checks recover the squared magnitudes, including complex relative phase. A zero in one branch requires the appropriate cancellation, not merely the absence of inversion symmetry. The interaction, band structure and gap equation must determine the actual amplitudes. At points where $\\mathbf g=0$, its unit vector and this helicity construction require separate treatment.",
+      "statement": "For an imposed aligned triplet component $\\mathbf d=d\\hat{\\mathbf g}$ with nonzero $|\\mathbf g|$, the gap-matrix singular values are $|\\psi+d|$ and $|\\psi-d|$. In the declared zero-field model, take even $\\xi$, even complex scalars $\\psi,d$, real odd $\\mathbf g$, and no additional interband pairing. Direct diagonalization gives $E_\\lambda^2=(\\xi+\\lambda\\alpha|\\mathbf g|)^2+|\\psi+\\lambda d|^2$, with $\\lambda=\\pm1$. A zero-energy node requires both $\\xi+\\lambda\\alpha|\\mathbf g|=0$ and $\\psi+\\lambda d=0$ at the same momentum on the same helicity Fermi sheet. Cancellation away from that sheet leaves a finite excitation energy. Equal magnitudes alone do not suffice: $d=i\\psi$ gives both gap magnitudes $\\sqrt{2}|\\psi|$ for nonzero $\\psi$. We checked 120 aligned spin-basis BdG matrices, plus controls for on-sheet cancellation, off-sheet cancellation, relative phase, transverse triplet pairing and zero SOC. A transverse triplet component mixes helicities, so this scalar formula must not be used unchanged. At $\\mathbf g=0$, use the original spin matrix instead of the undefined unit vector. These are local imposed-model checks; the cited papers supply model context and its correction, not a self-consistent mixed-state solution. Interactions, bands and the gap equation must determine the actual amplitudes and any material nodes.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-6c944305286c9cad",
         "source-46e49166d702226d"
       ],
-      "conditions": "Exchange-product rule for resolved sectors. Imposed Nambu/helicity gap examples, no self-consistency, material stability or transition prediction. Frigeri approximation and erratum both retained.",
-      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+      "conditions": "Zero-field imposed 4x4 BdG model; even xi, psi and scalar d; real odd nonzero g; dvector=d ghat; no extra interband pairing. Both the normal helicity energy and its complex gap must vanish at the same momentum. No self-consistent phase, material node or mixing-fraction assignment.",
+      "verificationScope": "Selected Frigeri v3 model and appended erratum read on 2026-10-19; local full BdG spectrum and boundary controls checked; no material or independent scientific acceptance.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Frigeri main text supplies the spin/SOC model and explicitly neglects small channel mixing; its erratum corrects the SOC vector. The mixed-gap spectrum, 120 matrix diagonalizations and five controls are local calculations, not results attributed to those papers."
     },
     {
       "id": "scwiki-c9-claim-mathematical-assumptions-5",
@@ -403,7 +409,9 @@
         "source-46e49166d702226d"
       ],
       "conditions": "Exchange-product rule for resolved sectors. Imposed Nambu/helicity gap examples, no self-consistency, material stability or transition prediction. Frigeri approximation and erratum both retained.",
-      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "The weak-coupling approximations and corrected SOC vector come from the main paper and erratum; three angular checks are local illustrations, not transition-temperature calculations."
     },
     {
       "id": "scwiki-c9-claim-experimental-criteria-1",

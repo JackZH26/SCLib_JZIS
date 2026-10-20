@@ -28,15 +28,16 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:50:46.072481+00:00",
+  "modifiedAt": "2026-10-19T18:58:10.433841+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected Gurevich final equations/version comparison, Bianchi author calorimetry/figure, Petrovic discovery passages, Lewin final pulsed-field passages and Zambra final results/figure; bounded Zeeman/orbital/entropy checks.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected Gurevich final pp. 4–5 and author-v1 sign comparison; Petrovic author-v1 pp. 3–5; Bianchi author-v1 pp. 1–3 and Figures 1–3 with final-title metadata; Lewin final pp. 512–513 and selected Zambra figure context; restricted orbital-curve arithmetic.",
     "limitations": [
-      "Complete scientific acceptance, remaining final-version comparisons, full supplements and raw-data reproduction remain open.",
-      "WHH, Maki and Kenzelmann retain abstract-level scopes; Clogston historical identity is not a complete original derivation audit.",
-      "Kinematic wavevector mismatch does not determine optimum FFLO momentum or phase stability.",
-      "A 4K normal-state response or an internal superconducting-phase anomaly is not a new zero-field Tc."
+      "Complete scientific acceptance, full final-version comparisons, supplements and raw-data reconstruction remain open.",
+      "WHH, Maki and Kenzelmann original sources retain their prior abstract-level scopes; Clogston identity is not a complete original-derivation audit.",
+      "The 0.693 coefficient, normalized orbital curve and synthetic entropy integral are conditional mathematical checks, not material fits.",
+      "Source-v1 Maki normalization is explicitly distinguished; no verified final-paper correction or universal FFLO threshold is asserted.",
+      "Measurement temperatures, internal anomalies and finite field limits must not become new transition temperatures or exact critical fields. Thermodynamic equilibrium is not certified."
     ]
   },
   "provenance": {
@@ -55,10 +56,10 @@
       "url": "https://doi.org/10.1103/PhysRevB.67.184515",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-final-equations-and-author-version-comparison",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-final-orbital-equation-and-normalization",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://nationalmaglab.org/library/publications/nhmfl_publication-3151.pdf",
-        "note": "Final journal16May2003; selected pp4–5 equal-diffusivity limit, Eq31 and asymptotes read; p4 visually compared with arXiv0212129v1 p4. Final U(x) has minus; v1 prints plus. Detailed Usadel solution, full curves and experimental fits not reproduced."
+        "note": "Final pp. 4–5 Eqs. 31/34–39 and Figure 1 reread and visually inspected; author v1 p. 4 visually compared again. Final U uses a difference, whereas v1 prints a sum. Equal-diffusivity orbital equation is normalized by Tc times the near-Tc slope; nine roots checked independently by an integral representation. No full two-band, WHH spin/orbit or experimental fit."
       }
     },
     {
@@ -98,9 +99,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-discovery-and-field-comparison",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0103168v1",
-        "note": "D8 selected authorv1 pp2–5 discovery/growth/heat-capacity scope reused; zero-resistance/full-shielding and field-temperature paragraphs re-read for E5. Final comparison and raw-data analysis remain open."
+        "note": "Author v1 pp. 3–5 reread: 2.3 K zero resistance/full shielding; c-axis field comparison between zero resistance and heat capacity; transverse-field anisotropy at least two. The authors caution that changing normal-state C/T complicates a simple coupling-strength estimate. Final-version comparison and raw-data analysis remain open."
       }
     },
     {
@@ -111,10 +112,10 @@
       "url": "https://doi.org/10.1103/PhysRevLett.91.187004",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-author-calorimetry-and-final-abstract",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-author-calorimetry-entropy-and-conventions",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0304420v1",
-        "note": "Authorv1 submitted18April2003; selected pp1–4 text and p2Fig1 visual checked. Final publisher title/abstract and28October2003 publication checked; final adds Possible and authorlist differs. Internal PDF typesettingdate2018 is not publication. Full final comparison/rawdata remain open."
+        "note": "Only arXiv v1 is listed (18 April 2003); selected pp. 1–3 and Figures 1–3 visually inspected. Figure 3c entropy gain starts at 0.13 K. [100] heating/cooling hysteresis and [110] order-change temperature are separate. The v1 Maki definition omits the sqrt(2) used on this page; no final erratum inferred. Final publisher title says Possible, dated 28 October 2003, with a different author list. Printed 2018 typesetting date is not publication. Complete final comparison remains open."
       }
     },
     {
@@ -140,9 +141,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-final-pulsed-field-and-angle-methods",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://www.vector.umd.edu/images/publications/Science389_5122025.pdf",
-        "note": "Online31July2025; selected final pp512–513 methods/angle/resistance/PDO discussion re-read, plus selected model discussion. Prior D8 p512 visual retained. Typical60/73T pulses,0.63K measurement and2.09K normal reference distinguished. Full supplement/rawdata/orderparameter reconstruction open."
+        "note": "Final pp. 512–513 reread; p. 513 Figure 1 and adjacent discussion visually inspected. Four specimens, fixed measurement temperatures, symmetrized angular map and possible field-induced heating are explicit. Persistence beyond the 73 T field ceiling is an inference, not an observed upper boundary; ab-plane non-observation is bounded by the available field window. No complete supplement, raw-data or order-parameter reconstruction."
       }
     },
     {
@@ -199,8 +200,10 @@
         "source-a626e7fcb17b94fa",
         "source-0c4d7cebb12a0d5b"
       ],
-      "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
-      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep field orientation, source version, specimen, thermal or pulse history, response criterion and finite measurement window attached. Unknown equilibrium does not assert nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Selected source observations provide context for editorial comparisons and evidence requirements, not a new measured phase or pairing mechanism."
     },
     {
       "id": "scwiki-e5-claim-scope-2",
@@ -212,8 +215,10 @@
         "source-0c4d7cebb12a0d5b",
         "source-b717fb1db41e9f29"
       ],
-      "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
-      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep field orientation, source version, specimen, thermal or pulse history, response criterion and finite measurement window attached. Unknown equilibrium does not assert nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Selected source observations provide context for editorial comparisons and evidence requirements, not a new measured phase or pairing mechanism."
     },
     {
       "id": "scwiki-e5-claim-mathematical-assumptions-1",
@@ -224,54 +229,64 @@
         "source-d32df19524b2a1c8",
         "source-b717fb1db41e9f29"
       ],
-      "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
-      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep field orientation, source version, specimen, thermal or pulse history, response criterion and finite measurement window attached. Unknown equilibrium does not assert nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source models are separated from the local normalization, numerical solution and kinematic or entropy illustrations; no empirical fit is implied."
     },
     {
       "id": "scwiki-e5-claim-mathematical-assumptions-2",
       "sectionId": "mathematical-assumptions",
-      "statement": "A second restricted reference is the dirty, single-band, purely orbital result $B_{c2}^{\\rm orb}(0)\\simeq0.693\\,T_c|dB_{c2}/dT|_{T_c}$. Gurevich's final paper recovers it when the two diffusivities are equal. Its Eq. (31) defines $U(x)=\\psi(1/2+x)-\\psi(1/2)$, satisfying $U(0)=0$. The early author v1 prints a plus sign at that location; use the final definition. Unequal diffusivities produce different curves. This check does not validate a full WHH fit with Zeeman and spin-orbit terms, or a multiband fit to a particular material.",
+      "statement": "A second restricted reference is the dirty, single-band, purely orbital result $B_{c2}^{\\rm orb}(0)\\simeq0.693\\,T_c|dB_{c2}/dT|_{T_c}$. Gurevich's final paper recovers it when the two diffusivities are equal. The near-transition slope must refer to the same field orientation and criterion being extrapolated. Its Eq. (31) defines $U(x)=\\psi(1/2+x)-\\psi(1/2)$, satisfying $U(0)=0$. The early author v1 prints a plus sign at that location; use the final definition. For clarity, let $t=T/T_c$, $s=|dB_{c2}/dT|_{T_c}$ and $b=B_{c2}/(T_cs)$. The restricted equation is $\\ln t+U(2b/(\\pi^2t))=0$. Its limits are $b\\simeq1-t$ near $t=1$ and $b(0)=\\pi^2e^{-\\gamma_E}/8\\simeq0.6927$. Our local solution gives $b(0.5)\\simeq0.4505$, checked against an independent integral representation. These are dimensionless model values, not measured tesla. Unequal diffusivities produce different curves. This calculation does not validate a full WHH fit with Zeeman and spin-orbit terms, or a multiband fit to a particular material.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-7ba854cc57960377",
         "source-16926b3817cff55d"
       ],
-      "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
-      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep field orientation, source version, specimen, thermal or pulse history, response criterion and finite measurement window attached. Unknown equilibrium does not assert nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source models are separated from the local normalization, numerical solution and kinematic or entropy illustrations; no empirical fit is implied."
     },
     {
       "id": "scwiki-e5-claim-mathematical-assumptions-3",
       "sectionId": "mathematical-assumptions",
-      "statement": "The Maki parameter compares those reference scales, $\\alpha_M=\\sqrt{2}B_{c2}^{\\rm orb}(0)/B_P$; it is not by itself an FFLO detection criterion. In a parabolic band with small splitting, the Fermi-wavevector mismatch is $\\delta k\\simeq g\\mu_B B/(\\hbar v_F)$. The inherited expression contains an extra factor of two under the stated Zeeman convention. This kinematic estimate does not solve for the optimum finite-momentum pair wavevector or establish the stability of a Fulde–Ferrell–Larkin–Ovchinnikov state. Disorder, orbital effects, dimensionality and competing orders matter.",
+      "statement": "The Maki parameter compares those reference scales, $\\alpha_M=\\sqrt{2}B_{c2}^{\\rm orb}(0)/B_P$; it is not by itself an FFLO detection criterion. In a parabolic band with small splitting, the Fermi-wavevector mismatch is $\\delta k\\simeq g\\mu_B B/(\\hbar v_F)$. The inherited expression contains an extra factor of two under the stated Zeeman convention. This kinematic estimate does not solve for the optimum finite-momentum pair wavevector or establish the stability of a Fulde–Ferrell–Larkin–Ovchinnikov state. Disorder, orbital effects, dimensionality and competing orders matter. Bianchi's author v1 writes its parameter as $H_{c2}^{0}/H_P$, without the $\\sqrt{2}$ used in this page's definition; a numerical threshold must not be moved between those conventions without reconciliation. This identifies a source-convention difference, not a verified correction to the final paper.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-a1695d99aaf064c8",
         "source-a626e7fcb17b94fa"
       ],
-      "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
-      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep field orientation, source version, specimen, thermal or pulse history, response criterion and finite measurement window attached. Unknown equilibrium does not assert nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source models are separated from the local normalization, numerical solution and kinematic or entropy illustrations; no empirical fit is implied."
     },
     {
       "id": "scwiki-e5-claim-experimental-criteria-1",
       "sectionId": "experimental-criteria",
-      "statement": "Petrovic's discovery report describes zero resistance and full diamagnetic shielding at approximately 2.3 K in CeCoIn5. Its field–temperature paragraph compares specific heat with zero resistance for field along the c-axis. That zero-field transition is distinct from lower-temperature anomalies inside the superconducting phase.",
+      "statement": "Petrovic's discovery report describes zero resistance and full diamagnetic shielding at approximately 2.3 K in CeCoIn5. Its field–temperature paragraph compares specific heat with zero resistance for field along the c-axis. That zero-field transition is distinct from lower-temperature anomalies inside the superconducting phase. The same report finds an upper-critical-field anisotropy of at least two from additional transverse-field transport measurements, so one orientation cannot stand in for every field direction. It also cautions that a temperature-dependent normal-state heat-capacity coefficient complicates a simple weak-versus-strong-coupling inference from the jump size.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-5962cf8038597944"
       ],
-      "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
-      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep field orientation, source version, specimen, thermal or pulse history, response criterion and finite measurement window attached. Unknown equilibrium does not assert nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source observations support only their stated specimen, temperature, orientation and protocol; interpretation limits are retained."
     },
     {
       "id": "scwiki-e5-claim-experimental-criteria-2",
       "sectionId": "experimental-criteria",
-      "statement": "Bianchi's selected author-manuscript passages describe heat-pulse and temperature-decay calorimetry, including subtraction of the In/Co nuclear Schottky contribution. Figure 1 uses different vertical quantities in its panels: $(C-C_{\\rm Sch})/T$ and $C$, with a $C/T$ inset. Equal-entropy construction concerns the integral of $C/T$, not equal areas under an unconverted $C$ curve. At high in-plane fields the report finds a first-order upper boundary and an internal anomaly around 0.3 K. These are not new zero-field transition temperatures. Its final title explicitly says “Possible” FFLO state; calorimetry does not directly measure pair momentum.",
+      "statement": "Bianchi's selected author-manuscript passages describe heat-pulse and temperature-decay calorimetry, including subtraction of the In/Co nuclear Schottky contribution. Figure 1 uses different vertical quantities in its panels: $(C-C_{\\rm Sch})/T$ and $C$, with a $C/T$ inset. Equal-entropy construction concerns the integral of $C/T$, not equal areas under an unconverted $C$ curve. At high in-plane fields the report finds a first-order upper boundary and an internal anomaly around 0.3 K. These are not new zero-field transition temperatures. Figure 3c reports entropy gain starting at 0.13 K, not absolute entropy measured down to zero. The first-order-boundary evidence includes heating/cooling hysteresis in the [100] scans at 11.2 and 11.4 T; the 1.1 ± 0.1 K order-change temperature refers to [110]. These orientations and thermal paths must accompany the values. Its final title explicitly says “Possible” FFLO state; calorimetry does not directly measure pair momentum.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-a626e7fcb17b94fa"
       ],
-      "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
-      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep field orientation, source version, specimen, thermal or pulse history, response criterion and finite measurement window attached. Unknown equilibrium does not assert nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source observations support only their stated specimen, temperature, orientation and protocol; interpretation limits are retained."
     },
     {
       "id": "scwiki-e5-claim-experimental-criteria-3",
@@ -281,19 +296,23 @@
       "sourceIds": [
         "source-fda01ade7737b638"
       ],
-      "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
-      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep field orientation, source version, specimen, thermal or pulse history, response criterion and finite measurement window attached. Unknown equilibrium does not assert nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source observations support only their stated specimen, temperature, orientation and protocol; interpretation limits are retained."
     },
     {
       "id": "scwiki-e5-claim-experimental-criteria-4",
       "sectionId": "experimental-criteria",
-      "statement": "Lewin's UTe2 experiments combine pulsed-field resistance and proximity-detector-oscillator measurements. Typical pulses reached 60 T or, in a different magnet, 73 T; the common measurement temperature was about 0.63 K. The high-field zero-resistance region depends strongly on both field angles. The oscillator frequency is a conductivity-sensitive proxy, and a comparison at 2.09 K without the superconducting feature is a normal-state measurement, not a 2.09 K transition determination. A measured field extent is not necessarily an observed upper critical field.",
+      "statement": "Lewin's UTe2 experiments combine pulsed-field resistance and proximity-detector-oscillator measurements. Typical pulses reached 60 T or, in a different magnet, 73 T; the common measurement temperature was about 0.63 K. The high-field zero-resistance region depends strongly on both field angles. The oscillator frequency is a conductivity-sensitive proxy, and a comparison at 2.09 K without the superconducting feature is a normal-state measurement, not a 2.09 K transition determination. Four specimens contribute resistance or oscillator data, and the authors discuss sample dependence and possible field-induced heating. The angular map is symmetrized for visualization. At the source's $\\theta_{bc}=8^\\circ$ setting the oscillator feature persists to the 73 T magnet ceiling; continuation above that ceiling is inferred from its trend, not directly measured. In the ab plane, non-observation within the available field window does not exclude a higher-field onset. A measured field extent is not necessarily an observed upper critical field.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-0c4d7cebb12a0d5b"
       ],
-      "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
-      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep field orientation, source version, specimen, thermal or pulse history, response criterion and finite measurement window attached. Unknown equilibrium does not assert nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source observations support only their stated specimen, temperature, orientation and protocol; interpretation limits are retained."
     },
     {
       "id": "scwiki-e5-claim-experimental-criteria-5",
@@ -303,8 +322,10 @@
       "sourceIds": [
         "source-15cfc4a2f9587af0"
       ],
-      "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
-      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep field orientation, source version, specimen, thermal or pulse history, response criterion and finite measurement window attached. Unknown equilibrium does not assert nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source observations support only their stated specimen, temperature, orientation and protocol; interpretation limits are retained."
     },
     {
       "id": "scwiki-e5-claim-limits-and-disputes-1",
@@ -314,8 +335,10 @@
       "sourceIds": [
         "source-15cfc4a2f9587af0"
       ],
-      "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
-      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep field orientation, source version, specimen, thermal or pulse history, response criterion and finite measurement window attached. Unknown equilibrium does not assert nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Selected source observations provide context for editorial comparisons and evidence requirements, not a new measured phase or pairing mechanism."
     },
     {
       "id": "scwiki-e5-claim-limits-and-disputes-2",
@@ -327,8 +350,10 @@
         "source-fda01ade7737b638",
         "source-0c4d7cebb12a0d5b"
       ],
-      "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
-      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep field orientation, source version, specimen, thermal or pulse history, response criterion and finite measurement window attached. Unknown equilibrium does not assert nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Selected source observations provide context for editorial comparisons and evidence requirements, not a new measured phase or pairing mechanism."
     },
     {
       "id": "scwiki-e5-claim-discovery-implications-1",
@@ -341,8 +366,10 @@
         "source-0c4d7cebb12a0d5b",
         "source-15cfc4a2f9587af0"
       ],
-      "conditions": "Field units, crystal angles, temperature role, pulse protocol and probe criteria remain distinct; theoretical references are assumption-dependent.",
-      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open."
+      "conditions": "Keep field orientation, source version, specimen, thermal or pulse history, response criterion and finite measurement window attached. Unknown equilibrium does not assert nonequilibrium.",
+      "verificationScope": "Named selected primary passages/figures, explicitly limited abstracts and independent bounded algebra; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Selected source observations provide context for editorial comparisons and evidence requirements, not a new measured phase or pairing mechanism."
     }
   ],
   "corrections": [
@@ -378,6 +405,11 @@
       "targetSectionId": "mathematical-assumptions",
       "tex": "B_{c2}^{\\rm orb}(0)\\simeq0.693T_c|B_{c2}^{\\prime}(T_c)|",
       "check": "Restricted orbital single-band dirty-limit asymptotic coefficient pi²exp(-EulerGamma)/8, not a full WHH curve or fit."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "\\ln t+U(2b/(\\pi^2t))=0",
+      "check": "Nine normalized orbital roots agree with independent adaptive integrals; b(0)≈0.6927, normalized near-Tc slope≈1. No material fit or complete WHH model."
     }
   ],
   "materialCases": [
@@ -389,11 +421,11 @@
       "reportedTemperatureK": 2.3,
       "tcK": 2.3,
       "temperatureKind": "transition",
-      "temperatureNote": "Approximate zero-resistance/full-shielding scale, distinct from high-field internal anomalies.",
+      "temperatureNote": "Approximate zero-resistance/full-shielding scale, distinct from high-field internal anomalies. Thermodynamic equilibrium is not established by this scoped source review.",
       "criterion": "zero-resistance",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Resistivity with accompanying diamagnetic shielding",
       "sourceId": "source-5962cf8038597944",
       "aliases": [
@@ -409,11 +441,11 @@
       "reportedTemperatureK": 0.3,
       "tcK": null,
       "temperatureKind": "measurement",
-      "temperatureNote": "Approximate internal superconducting-phase anomaly; not onset from normal state or a new zero-fieldTc.",
+      "temperatureNote": "Approximate internal superconducting-phase anomaly; not onset from normal state or a new zero-field Tc. Thermodynamic equilibrium is not established by this scoped source review.",
       "criterion": "internal-phase-anomaly",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Specific heat",
       "sourceId": "source-a626e7fcb17b94fa",
       "aliases": [
@@ -424,16 +456,16 @@
     {
       "id": "scwiki-e5-material-3",
       "formula": "CeCoIn5",
-      "sample": "Bianchi field along[110] first/second-order crossover",
+      "sample": "Bianchi field along [110] first/second-order crossover",
       "recordType": "experiment",
       "reportedTemperatureK": 1.1,
       "tcK": null,
       "temperatureKind": "measurement",
-      "temperatureNote": "Reported T0=1.1+/-0.1K at change of boundary order, not independent zero-fieldTc.",
+      "temperatureNote": "Reported T0=1.1+/-0.1K at change of boundary order, not independent zero-field Tc. Thermodynamic equilibrium is not established by this scoped source review.",
       "criterion": "transition-order-crossover",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Specific heat",
       "sourceId": "source-a626e7fcb17b94fa",
       "aliases": [
@@ -449,11 +481,11 @@
       "reportedTemperatureK": 0.63,
       "tcK": null,
       "temperatureKind": "measurement",
-      "temperatureNote": "Typical measurement temperature unless otherwise stated; no Tc assigned from temperature held during field sweep.",
+      "temperatureNote": "Typical measurement temperature unless otherwise stated; no Tc assigned from temperature held during field sweep. Thermodynamic equilibrium is not established by this scoped source review.",
       "criterion": "pulsed-field-measurement",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Resistance",
       "sourceId": "source-0c4d7cebb12a0d5b",
       "aliases": [
@@ -469,11 +501,11 @@
       "reportedTemperatureK": 0.64,
       "tcK": null,
       "temperatureKind": "measurement",
-      "temperatureNote": "Frequency shift probes conductivity; fixed measurement temperature notTc.",
+      "temperatureNote": "Frequency shift probes conductivity; fixed measurement temperature not Tc. Thermodynamic equilibrium is not established by this scoped source review.",
       "criterion": "conductivity-proxy-measurement",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Proximity detector oscillator",
       "sourceId": "source-0c4d7cebb12a0d5b",
       "aliases": [
@@ -489,11 +521,11 @@
       "reportedTemperatureK": 2.09,
       "tcK": null,
       "temperatureKind": "normal-state",
-      "temperatureNote": "Superconducting feature absent in this comparison; must not become a2.09K transition record.",
+      "temperatureNote": "Superconducting feature absent in this comparison; must not become a 2.09 K transition record. Thermodynamic equilibrium is not established by this scoped source review.",
       "criterion": "normal-state-comparison",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Proximity detector oscillator",
       "sourceId": "source-0c4d7cebb12a0d5b",
       "aliases": [
@@ -509,17 +541,38 @@
       "reportedTemperatureK": 4,
       "tcK": null,
       "temperatureKind": "normal-state",
-      "temperatureNote": "All superconducting phases suppressed at4K; borrowed300mK phase diagram is a separate dataset.",
+      "temperatureNote": "All superconducting phases suppressed at 4 K; borrowed 300 mK phase diagram is a separate dataset. Thermodynamic equilibrium is not established by this scoped source review.",
       "criterion": "normal-state-magnetotropic-response",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Cantilever frequency shift",
       "sourceId": "source-15cfc4a2f9587af0",
       "aliases": [
         "heavy fermion",
         "heavy fermions"
       ]
+    },
+    {
+      "id": "scwiki-e5-material-8",
+      "formula": "CeCoIn5",
+      "sample": "Bianchi [100] entropy-gain reference in author-v1 Figure 3c",
+      "aliases": [
+        "Bianchi entropy reference",
+        "heavy fermion",
+        "heavy fermions"
+      ],
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.13,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Lower reference of the plotted entropy-gain integral. Not an absolute-entropy measurement, an experimental base-temperature claim, an internal phase boundary or a transition Tc.",
+      "criterion": "entropy-integration-reference",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Specific-heat entropy integral",
+      "sourceId": "source-a626e7fcb17b94fa"
     }
   ],
   "sourceMap": [

@@ -28,10 +28,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.213972+00:00",
+  "modifiedAt": "2026-10-19T17:57:22.529960+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected pressure-medium calibration and FeSe author passages, original Gao abstract, prior nickelate/hydride checks and the introductory pressure-quench protocol.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected pressure-medium calibration and FeSe author passages, original Gao abstract, prior nickelate/hydride checks and the introductory pressure-quench protocol. Follow-up: protocol comparison, setup-specific nickelate media, explicit cutoff units and local pressure derivative. Five unsupported equilibrium labels changed to unknown; measured temperatures, pressures and criteria retained.",
     "limitations": [
       "Complete scientific acceptance, final-version comparisons and raw-data reproduction remain open.",
       "Gao1994 full methods remain inaccessible; no exact onset/zero criterion is assigned from the abstract.",
@@ -72,9 +72,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-calibration-and-freezing-methods",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/1512.00087v1",
-        "note": "Author v1 submitted 30 November 2015; journal online 16 December 2015. Selected pp. 1–7 read, Fig. 1 on p. 6 visually checked. Manganin/Pb calibration, warming protocol, interpolation and unresolved oil freezing retained. Full results/final-version comparison and raw-data refits remain open."
+        "note": "Author v1 submitted 30 November 2015; journal online 16 December 2015. Selected pp. 1–7 read, Fig. 1 on p. 6 visually checked. Manganin/Pb calibration, warming protocol, interpolation and unresolved oil freezing retained. Full results/final-version comparison and raw-data refits remain open. Follow-up: author v1 p. 4 methods re-read and visually inspected; manometer temperatures, interpolation assumption and warming protocol retained. No raw calibration reconstructed."
       }
     },
     {
@@ -86,9 +86,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-transport-structure-and-methods",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/0903.2143v1",
-        "note": "Author v1 submitted 12 March 2009; journal 14 June 2009. Selected pp. 1–5, Methods pp. 12–13 and Fig. 2 p. 15 read; figure visually checked. Resistive maximum, broadening, nonzero resistance at 15 GPa, separate Mössbauer medium and transport ruby conditions retained. Final-version comparison and raw data not reviewed."
+        "note": "Author v1 submitted 12 March 2009; journal 14 June 2009. Selected pp. 1–5, Methods pp. 12–13 and Fig. 2 p. 15 read; figure visually checked. Resistive maximum, broadening, nonzero resistance at 15 GPa, separate Mössbauer medium and transport ruby conditions retained. Final-version comparison and raw data not reviewed. Follow-up: selected pp. 3–5 and 12 read; pp. 3 and 12 visually inspected. Room-temperature structural results and recovery after pressure release are distinct from a complete low-temperature structure or hysteresis/equilibrium audit."
       }
     },
     {
@@ -114,9 +114,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-published-primary-passages-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://iopex6.iphy.ac.cn/PDFlist/2023/Nature621%282023%29493-EX6.pdf",
-        "note": "Reused D5 scoped primary reading with unchanged limitations. Selected published p496 Fig3/caption and text, plus Methods PDFp7. Resistance onset, residual resistance, separate magnetic measurement, KBr and room-temperature ruby calibration retained. Raw-data/replication review remains open."
+        "note": "Reused D5 scoped primary reading with unchanged limitations. Selected published p496 Fig3/caption and text, plus Methods PDFp7. Resistance onset, residual resistance, separate magnetic measurement, KBr and room-temperature ruby calibration retained. Raw-data/replication review remains open. Follow-up: final Methods PDF p. 7 read and visually inspected. Transport run 2 uses KBr; runs 1, 3 and 4 use no medium. Diffraction uses silicone oil; the high-pressure magnetic powder setup has no additional medium. All retained as separate setups."
       }
     },
     {
@@ -128,9 +128,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-text-and-published-caption-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/1506.08190v1",
-        "note": "Reused D6 scoped primary reading with unchanged limitations. Published 17 August 2015. Author v1 of 26 June 2015: selected pp. 3/5 and Fig. 4 pp. 11–12, visually checked; publisher abstract and extended captions also checked. Magnetization raw data and background subtraction not independently reproduced."
+        "note": "Reused D6 scoped primary reading with unchanged limitations. Published 17 August 2015. Author v1 of 26 June 2015: selected pp. 3/5 and Fig. 4 pp. 11–12, visually checked; publisher abstract and extended captions also checked. Magnetization raw data and background subtraction not independently reproduced. Follow-up: author v1 pp. 3 and 5 re-read for phase/synthesis path and measurement context. This experiment is not evidence for the local weak-coupling pressure derivative as a quantitative hydride model."
       }
     },
     {
@@ -170,9 +170,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "primary-full-text-scoped-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://journals.aps.org/pr/pdf/10.1103/PhysRev.108.1175",
-        "note": "Reused B1 scoped primary reading with unchanged limitations. Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review."
+        "note": "Reused B1 scoped primary reading with unchanged limitations. Selected passages: pp. 1182-1183, Eqs. (2.38)-(2.40), (2.49)-(2.50); p. 1186, Eqs. (3.27)-(3.30). One-spin DOS, gap equation and excitation convention checked. Modern limiting constants are evaluated from the model, not copied from historical rounded values. Full proof, empirical fits and exhaustive correction searches remain outside this review. Follow-up: final p. 1186 Eq. (3.29) visually re-read: cutoff energy and weak-coupling regime support the model context. Pressure differentiation and unit checks are local calculations, not a material fit."
       }
     }
   ],
@@ -227,14 +227,16 @@
     {
       "id": "scwiki-e1-claim-mathematical-assumptions-3",
       "sectionId": "mathematical-assumptions",
-      "statement": "In the simplified weak-coupling expression $T_c=A\\omega\\exp(-1/\\lambda)$, holding A fixed gives $d\\ln T_c/dP=d\\ln\\omega/dP+\\lambda^{-2}d\\lambda/dP$. A rising frequency can therefore compete with decreasing coupling. This illustration neglects the Coulomb term, strong-coupling corrections, multiple bands and structural changes; it is not a quantitative model for the hydrides or FeSe. Numerical differentiation checks the stated algebra only.",
+      "statement": "For an illustrative weak-coupling model, write\n\n$$\nT_c(P)=A\\Theta(P)\\exp[-1/\\lambda(P)],\\qquad\n\\Theta=\\hbar\\omega_c/k_B.\n$$\n\nHere $\\Theta$ is a cutoff temperature in kelvin, $A$ is dimensionless, and $\\lambda>0$ is the effective attractive coupling of this simplified model. It is not automatically an experimentally determined Eliashberg coupling. The BCS source gives the weak-coupling cutoff form; the pressure derivative below is a local chain-rule calculation. Within one smooth phase and with $A$ fixed,\n\n$$\n\\frac{d\\ln T_c}{dP}=\\frac{d\\ln\\Theta}{dP}\n+\\frac{1}{\\lambda^2}\\frac{d\\lambda}{dP}.\n$$\n\nIf $A$ varies, add $d\\ln A/dP$. Pressure units must agree in both terms. For a synthetic example at $\\lambda=0.25$, a cutoff slope of $0.02\\ \\mathrm{GPa}^{-1}$ and coupling slope of $-0.003\\ \\mathrm{GPa}^{-1}$ give $d\\ln T_c/dP=-0.028\\ \\mathrm{GPa}^{-1}$: a rising cutoff need not raise $T_c$.\n\nThis example requires a positive cutoff and coupling. It excludes a separately treated Coulomb pseudopotential, strong-coupling corrections, multiple bands and structural changes. It neither predicts a hydride or FeSe transition nor shows which variable causes pairing. A phase conversion cannot be represented by differentiating one smooth expression through the boundary.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-ba10e800a1246bf6",
         "source-8b901b9c6008c434"
       ],
-      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
-      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+      "conditions": "Positive cutoff temperature and attractive coupling; one differentiable phase. Constant dimensionless prefactor unless its logarithmic derivative is included. Slopes use consistent inverse pressure units.",
+      "verificationScope": "BCS final Eq. (3.29) read and visually checked. 54 finite-difference cases, 54 pressure-unit checks, 54 variable-prefactor checks and four invalid-domain rejections; no material fit.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "BCS final p. 1186, Eq. (3.29), supplies the weak-coupling cutoff form and its regime. The pressure derivative, unit conversion and synthetic example are local algebra, not a pressure fit from BCS or the hydride experiment."
     },
     {
       "id": "scwiki-e1-claim-experimental-criteria-1",
@@ -272,7 +274,7 @@
     {
       "id": "scwiki-e1-claim-experimental-criteria-4",
       "sectionId": "experimental-criteria",
-      "statement": "The bilayer nickelate report combines resistance signatures with a separate magnetic experiment. Its checked methods use KBr and room-temperature ruby calibration; residual resistance and sample-specific onset criteria remain explicit. In sulfur and lanthanum hydrides, pressure also helps produce or stabilize the hydrogen-rich phases being measured. Pairing a transport curve with a proposed structure requires attention to synthesis history, phase fractions and the conditions of each probe.",
+      "statement": "The bilayer nickelate report combines resistance signatures with a separate magnetic experiment. Its Methods distinguish transport run 2 with KBr from runs 1, 3 and 4 without a pressure medium; the diffraction setup instead uses silicone oil. Pressure calibration is by room-temperature ruby fluorescence. The high-pressure magnetic setup uses powder without another pressure medium. Residual resistance and sample-specific onset criteria remain explicit. In sulfur and lanthanum hydrides, pressure also helps produce or stabilize the hydrogen-rich phases being measured. Pairing a transport curve with a proposed structure requires attention to synthesis history, phase fractions and the conditions of each probe.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-df0c15d62982f853",
@@ -308,15 +310,17 @@
     {
       "id": "scwiki-e1-claim-discovery-implications-1",
       "sectionId": "discovery-implications",
-      "statement": "Design a pressure series around explicit alternatives: distinguish an electronic crossover from a structural transformation, a pressure gradient from intrinsic broadening, and a reversible response from kinetic trapping. Combine loading and unloading curves with pressure calibration near the measurement temperature, and compare transport with structural or magnetic probes wherever feasible. Differences between probes are evidence to explain, not numbers to average away.",
-      "evidenceType": "theory",
+      "statement": "Design a pressure series around alternatives that the measurements can distinguish:\n\n1. **Match the pressure to the measurement.** Record the calibrant, its temperature and any interpolation. Torikachvili's room-temperature manganin and low-temperature Pb readings are not interchangeable; the freezing analysis uses a slow warming path.\n2. **Keep each probe's setup separate.** Medvedev's room-temperature diffraction does not supply a complete low-temperature structural map. In the nickelate experiment, transport run 2 used KBr, other transport runs used no medium, and diffraction used silicone oil. Do not transfer one setup's pressure medium to every result.\n3. **Check the return path.** Record unloading and subsequent sample characterization. Recovery of the starting phase does not establish identical loading and unloading curves or the lifetime of a retained state. The selected FeSe text reports phase recovery after pressure release; it is not a complete hysteresis audit.\n\nThese are editorial comparison rules. A pressure gradient, intrinsic broadening, phase conversion and kinetic trapping remain different explanations to test. Static loading alone does not establish thermodynamic equilibrium. The five material records in this entry now mark equilibrium as **unknown** because the checked source scopes do not establish it; this does not assert that those experiments were nonequilibrium. Differences between probes should be explained, not averaged into one transition.",
+      "evidenceType": "editorial-analysis",
       "sourceIds": [
         "source-c1c9ef4bc5cf71dd",
         "source-a631bcd83d23567b",
         "source-df0c15d62982f853"
       ],
-      "conditions": "Stress state, probe-specific medium, calibration temperature, phase, loading path and transition criterion remain distinct. Recovered states are not in-situ pressure records.",
-      "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
+      "conditions": "Retain sample/run identity, pressure medium, calibrant temperature, measurement temperature, loading history, probe and transition criterion. Unknown equilibrium does not mean known nonequilibrium.",
+      "verificationScope": "Selected primary methods and results; four source pages visually inspected for this protocol review. Complete final comparisons, raw calibrations and equilibrium/hysteresis acceptance remain open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial protocol comparison based on Torikachvili author v1 p. 4, Medvedev author v1 pp. 3–5 and 12, and Sun final Methods PDF p. 7. Recommendations and equilibrium-state qualification are not new measurements or a complete hysteresis reconstruction."
     },
     {
       "id": "scwiki-e1-claim-discovery-implications-2",
@@ -332,7 +336,20 @@
       "verificationScope": "Selected primary passages and bounded tensor/calculus checks; complete scientific acceptance remains open."
     }
   ],
-  "corrections": [],
+  "corrections": [
+    {
+      "id": "scwiki-e1-correction-probe-media",
+      "description": "KBr belongs to nickelate transport run 2, not every transport/diffraction/magnetic setup. Keep medium, sample form and calibration temperature attached to the particular experiment.",
+      "sourceId": "source-df0c15d62982f853",
+      "scope": "Original final Methods, PDF p. 7."
+    },
+    {
+      "id": "scwiki-e1-correction-equilibrium-scope",
+      "description": "All five local material records previously asserted equilibrium without sufficient support in their checked source scopes. Changed the state to unknown while retaining measured values and transition criteria; this is not evidence of nonequilibrium.",
+      "sourceId": "source-a631bcd83d23567b",
+      "scope": "Editorial state-of-knowledge correction across E1 material records; no phase-kinetics determination."
+    }
+  ],
   "equationChecks": [
     {
       "targetSectionId": "mathematical-assumptions",
@@ -354,14 +371,14 @@
       "reportedTemperatureK": 18.6,
       "tcK": 18.6,
       "temperatureKind": "transition",
-      "temperatureNote": "Onset at 0.8 GPa, followed by a sharp drop to zero; zero criterion is not assigned the onset value.",
+      "temperatureNote": "Onset at 0.8 GPa, followed by a sharp drop to zero; zero criterion is not assigned the onset value. Equilibrium is unverified in the checked source scope.",
       "criterion": "resistive-onset",
       "pressureRegime": "high",
       "pressureGPa": {
         "min": 0.8,
         "max": 0.8
       },
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "DC van der Pauw resistance; low- and room-temperature ruby",
       "sourceId": "source-a631bcd83d23567b",
       "aliases": [
@@ -379,14 +396,14 @@
       "reportedTemperatureK": 36.7,
       "tcK": 36.7,
       "temperatureKind": "transition",
-      "temperatureNote": "Reported high-pressure maximum; no thermodynamic or exact zero-resistance temperature inferred.",
+      "temperatureNote": "Reported high-pressure maximum; no thermodynamic or exact zero-resistance temperature inferred. Equilibrium is unverified in the checked source scope.",
       "criterion": "resistive-onset",
       "pressureRegime": "high",
       "pressureGPa": {
         "min": 8.9,
         "max": 8.9
       },
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "DC van der Pauw resistance; low- and room-temperature ruby",
       "sourceId": "source-a631bcd83d23567b",
       "aliases": [
@@ -404,14 +421,14 @@
       "reportedTemperatureK": 25,
       "tcK": 25,
       "temperatureKind": "transition",
-      "temperatureNote": "Approximate transition; resistance did not reach zero at this pressure.",
+      "temperatureNote": "Approximate transition; resistance did not reach zero at this pressure. Equilibrium is unverified in the checked source scope.",
       "criterion": "resistive-onset",
       "pressureRegime": "high",
       "pressureGPa": {
         "min": 15,
         "max": 15
       },
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "DC van der Pauw resistance",
       "sourceId": "source-a631bcd83d23567b",
       "aliases": [
@@ -429,11 +446,11 @@
       "reportedTemperatureK": 164,
       "tcK": 164,
       "temperatureKind": "transition",
-      "temperatureNote": "Exact point pressure and onset/zero criterion remain unknown at this review scope; 45 GPa is the study range, not the assigned pressure.",
+      "temperatureNote": "Exact point pressure and onset/zero criterion remain unknown at this review scope; 45 GPa is the study range, not the assigned pressure. Equilibrium is unverified in the checked source scope.",
       "criterion": "resistive-transition-unspecified",
       "pressureRegime": "high",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Resistance under quasihydrostatic pressure; original abstract",
       "sourceId": "source-6d09a24a26a15997",
       "aliases": [
@@ -449,14 +466,14 @@
       "reportedTemperatureK": 96.9,
       "tcK": null,
       "temperatureKind": "measurement",
-      "temperatureNote": "Freezing-related anomaly, not superconducting Tc; pressure near 0.28 GPa estimated by interpolation.",
+      "temperatureNote": "Freezing-related anomaly, not superconducting Tc; pressure near 0.28 GPa estimated by interpolation. Equilibrium is unverified in the checked source scope.",
       "criterion": "pressure-medium-freezing-proxy",
       "pressureRegime": "high",
       "pressureGPa": {
         "min": 0.28,
         "max": 0.28
       },
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Sample derivative anomaly cross-checked against manganin",
       "sourceId": "source-c1c9ef4bc5cf71dd"
     }

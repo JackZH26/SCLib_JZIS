@@ -32,10 +32,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.212011+00:00",
+  "modifiedAt": "2026-10-19T16:38:16.196320+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected CeCu2Si2 and CeCoIn5 methods, nuclear subtraction, proposed gap model and UTe2 pulsed-field passages; previously scoped uranium evidence and independent bounded algebra.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected CeCu2Si2 and CeCoIn5 methods, nuclear subtraction, proposed gap model and UTe2 pulsed-field passages; previously scoped uranium evidence and independent bounded algebra. Follow-up separates Pang sample/probe criteria, fitting window, assumed penetration-depth scale and model-inference limits.",
     "limitations": [
       "Full scientific acceptance and raw-data reproduction remain open.",
       "Author manuscripts are version-labelled; complete final-version comparisons remain open.",
@@ -117,10 +117,10 @@
       "url": "https://doi.org/10.1073/pnas.1720291115",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-published-methods-model-check",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-published-sample-probe-and-fit-boundaries",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://www.pnas.org/doi/10.1073/pnas.1720291115",
-        "note": "Published 8 May 2018. Selected Results, simplified quadrature, conclusion and Materials and Methods read. Supplement and raw fits not reviewed; simplified angular model is not a full band calculation."
+        "note": "Published online 8 May 2018; issue 22 May 2018. Selected Results, Figs. 1–3/5 captions and Methods checked. Separate S/A-S resistive, specific-heat and penetration-depth criteria; approximately 40 mK TDO base and 0.12 K fit cutoff. Superfluid-density conversion uses lambda(0)=2000 Angstrom; two-gap s-wave and d+d fits, calibration caveat and digitized Kittaka heat capacity distinguished. Sign-change arguments additionally use cited earlier probes. Figure pixels, complete supplement and raw fits not rechecked in this follow-up."
       }
     },
     {
@@ -321,7 +321,9 @@
         "source-e721bddb9ef11661"
       ],
       "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
-      "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+      "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "The reference supplies the simplified quadrature model and fitted amplitudes. Extrema, exchange invariance and scalar/matrix magnitude comparison are local algebra; they do not establish the full quasiparticle spectrum or equivalent symmetry."
     },
     {
       "id": "scwiki-d8-claim-experimental-criteria-1",
@@ -337,13 +339,15 @@
     {
       "id": "scwiki-d8-claim-experimental-criteria-2",
       "sectionId": "experimental-criteria",
-      "statement": "Pang's penetration-depth measurements reached 40 mK. Its S-type sample showed a specific-heat transition near 0.64 K; an A/S-type sample showed superconducting and antiferromagnetic anomalies near 0.53 and 0.7 K. These are different transitions. Nodeless low-temperature behavior motivates the proposed d+d description, but fitting these data does not uniquely settle the order parameter. Raw-data refitting and the complete supplement remain outside this scoped review.",
+      "statement": "Pang measured penetration-depth shifts down to about 40 mK using a tunnel-diode oscillator. Keep each reported temperature tied to its sample and criterion:\n\n| Sample | Criterion in Pang | Approximate temperature |\n|---|---|---|\n| S-type | Resistive onset | 0.65 K |\n| S-type | Zero resistivity | 0.60 K |\n| S-type | Superconducting specific-heat anomaly | 0.64 K |\n| S-type | Penetration-depth onset | 0.62 K |\n| A/S-type | Resistive onset | 0.62 K |\n| A/S-type | Superconducting specific-heat anomaly | 0.53 K |\n| A/S-type | Antiferromagnetic specific-heat anomaly | 0.70 K; not superconducting Tc |\n\nLow-temperature exponential fits extend to 0.12 K. Finite-window power-law fits are also reported; their exponents increase as the upper fitting temperature decreases. This supports a low-temperature full gap without uniquely selecting the pairing state. Superfluid-density conversion assumes a zero-temperature penetration depth of 2000 Å, and both two-gap s-wave and d+d fits describe it. The paper's sign-change argument additionally invokes earlier neutron and NQR evidence; it is not a direct phase measurement by the oscillator. Its later heat-capacity fit uses data digitized from Kittaka. Raw-data refitting and the complete supplement remain outside this scoped review.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-e721bddb9ef11661"
       ],
-      "conditions": "Material, sample, pressure, field direction and probe-specific conditions; model amplitudes and operating temperatures are not measured transition temperatures.",
-      "verificationScope": "Selected primary passages and bounded algebra; full scientific acceptance and original-data reproduction remain open."
+      "conditions": "Pang final Figs. 1–3/5 and Methods; distinct S and A/S crystals, probe-specific transitions, approximately 40 mK base temperature and 0.12 K low-temperature fit cutoff. Superfluid density assumes lambda(0)=2000 Angstrom. AFM anomaly is not superconducting Tc.",
+      "verificationScope": "Selected published results, figure captions and Methods checked; no new figure-pixel inspection, raw-data fit or full supplement review.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "The paper reports sample/probe temperatures and alternative model fits. Keeping magnetic ordering, transport criteria and measurement floors separate is editorial interpretation; fit agreement alone is not a phase-sensitive identification of a unique order parameter."
     },
     {
       "id": "scwiki-d8-claim-experimental-criteria-3",
@@ -425,6 +429,12 @@
       "description": "Removed blanket ferromagnetic characterization of UTe2, retained probe/phase-dependent evidence, and corrected the 2026 transverse-fluctuation paper article number to 3742.",
       "sourceId": "source-15cfc4a2f9587af0",
       "scope": "Edited public article; pinned source preserved."
+    },
+    {
+      "id": "scwiki-d8-correction-2",
+      "description": "Separated S/A-S sample and probe criteria; retained antiferromagnetic anomaly and TDO floor outside experimental Tc. Distinguished assumed penetration depth, alternative fits and reused heat-capacity data from unique pairing identification.",
+      "sourceId": "source-e721bddb9ef11661",
+      "scope": "Selected D8 claim, material cases and provenance; fixed source unchanged."
     }
   ],
   "equationChecks": [
@@ -555,6 +565,126 @@
       "equilibrium": "unknown",
       "probe": "Pulsed-field magnetic fluctuation probe",
       "sourceId": "source-15cfc4a2f9587af0",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
+    },
+    {
+      "id": "scwiki-d8-material-7",
+      "formula": "CeCu2Si2",
+      "sample": "Pang S-type crystal, Fig. 1A",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.65,
+      "tcK": 0.65,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate onset; distinct from zero resistivity at about 0.60 K and specific heat at 0.64 K.",
+      "criterion": "resistive-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Resistivity",
+      "sourceId": "source-e721bddb9ef11661",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
+    },
+    {
+      "id": "scwiki-d8-material-8",
+      "formula": "CeCu2Si2",
+      "sample": "Pang S-type crystal, Fig. 1A",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.6,
+      "tcK": 0.6,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate zero-resistivity criterion; onset is about 0.65 K.",
+      "criterion": "zero-resistivity",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Resistivity",
+      "sourceId": "source-e721bddb9ef11661",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
+    },
+    {
+      "id": "scwiki-d8-material-9",
+      "formula": "CeCu2Si2",
+      "sample": "Pang A/S-type crystal, Fig. 1B",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.62,
+      "tcK": 0.62,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate transport onset; same sample has a distinct superconducting specific-heat anomaly near 0.53 K.",
+      "criterion": "resistive-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Resistivity",
+      "sourceId": "source-e721bddb9ef11661",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
+    },
+    {
+      "id": "scwiki-d8-material-10",
+      "formula": "CeCu2Si2",
+      "sample": "Pang S-type crystal, Fig. 2A inset",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.62,
+      "tcK": 0.62,
+      "temperatureKind": "transition",
+      "temperatureNote": "Approximate penetration-depth onset; not a specific-heat or resistive criterion.",
+      "criterion": "penetration-depth-onset",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Tunnel-diode oscillator frequency shift",
+      "sourceId": "source-e721bddb9ef11661",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
+    },
+    {
+      "id": "scwiki-d8-material-11",
+      "formula": "CeCu2Si2",
+      "sample": "Pang A/S-type crystal, Fig. 1B",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.7,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Antiferromagnetic ordering anomaly, not superconducting Tc. Separate superconducting specific-heat anomaly near 0.53 K.",
+      "criterion": "antiferromagnetic-specific-heat-anomaly",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Specific heat",
+      "sourceId": "source-e721bddb9ef11661",
+      "aliases": [
+        "heavy fermion",
+        "heavy fermions"
+      ]
+    },
+    {
+      "id": "scwiki-d8-material-12",
+      "formula": "CeCu2Si2",
+      "sample": "Pang penetration-depth measurement, base temperature",
+      "recordType": "experiment",
+      "reportedTemperatureK": 0.04,
+      "tcK": null,
+      "temperatureKind": "measurement",
+      "temperatureNote": "Approximate measurement floor, not a transition temperature; low-temperature fits extend to 0.12 K.",
+      "criterion": "penetration-depth-base-temperature",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Tunnel-diode oscillator",
+      "sourceId": "source-e721bddb9ef11661",
       "aliases": [
         "heavy fermion",
         "heavy fermions"

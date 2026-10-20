@@ -29,7 +29,8 @@
     "rehype-katex": "7.0.1",
     "rehype-sanitize": "6.0.0",
     "remark-gfm": "4.0.0",
-    "remark-math": "6.0.0"
+    "remark-math": "6.0.0",
+    "three": "0.186.1"
   },
   "devDependencies": {
     "@playwright/test": "1.61.1",
@@ -46,7 +47,8 @@
     "postcss": "8.5.23",
     "tailwindcss": "3.4.3",
     "typescript": "5.4.3",
-    "vitest": "4.1.11"
+    "vitest": "4.1.11",
+    "@types/three": "0.186.0"
   },
   "pnpm": {
     "overrides": {

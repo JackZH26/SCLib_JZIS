@@ -6,9 +6,25 @@ Ising protection refers to the influence of spin–orbit coupling on the respons
 
 ## Mathematical assumptions
 
-A restricted normal-state illustration uses $H_\eta=\eta\lambda\sigma_z+b\sigma_x$, where $\eta=\pm1$ labels opposite valleys, $\sigma$ acts on spin, $\lambda$ is an Ising spin–orbit energy and $b$ an in-plane Zeeman energy. Its eigenvalues are $\pm\sqrt{\lambda^2+b^2}$. On the positive branch the spin directions are $\mathbf n_\eta=(b,0,\eta\lambda)/\sqrt{\lambda^2+b^2}$: opposite out-of-plane components persist while the field cants both spins in-plane. This two-level model omits momentum-dependent bands, Rashba terms and other pockets. [R3](#ref-source-ec4b77f9e011c26e) [R6](#ref-source-804e0c9690bde4d8)
+A local normal-state illustration uses $H_\eta=\eta\lambda\sigma_z+b\sigma_x$, where $\eta=\pm1$ labels opposite valleys and $\sigma$ acts on spin. Here $\lambda$ and $b$ are Hamiltonian energy coefficients: the zero-field spin splitting is $2|\lambda|$, and $|b|=g\mu_B|B_\parallel|/2$ for an isotropic Zeeman coupling. Do not insert a reported full spin splitting directly as $\lambda$ without checking conventions. With $R=\sqrt{\lambda^2+b^2}>0$, the eigenvalues are $\pm R$ and the positive-branch spin directions are $\mathbf n_\eta=(b,0,\eta\lambda)/R$. The field cants both spins in-plane. This illustration omits band dispersion, occupations, other pockets, Rashba coupling and interactions; it is not the full band or pairing calculation of either cited paper. [R3](#ref-source-ec4b77f9e011c26e) [R6](#ref-source-804e0c9690bde4d8)
 
-For corresponding spinors, $|u_+^T i\sigma_yu_-|^2=\lambda^2/(\lambda^2+b^2)$ is the squared singlet pairing matrix element. It is twice the singlet probability of the normalized tensor-product state, so those quantities must not be confused. Twelve independent diagonalizations check this distinction and spin orientations. This normal-state calculation neither solves a superconducting gap equation nor establishes singlet dominance, a critical field or a material pairing mechanism. [R3](#ref-source-ec4b77f9e011c26e) [R6](#ref-source-804e0c9690bde4d8)
+Choose normalized spinors $u_+$ and $u_-$ on the same positive-energy branch. The antisymmetric spin contraction $A=u_+^T i\sigma_yu_-$ obeys
+
+$$
+|A|^2=\frac{1-\mathbf n_+\cdot\mathbf n_-}{2}
+=\frac{\lambda^2}{\lambda^2+b^2}.
+$$
+
+This is a squared matrix element, not a measured fraction of singlet Cooper pairs. For the **ordered tensor product** $|u_+\rangle\otimes|u_-\rangle$, projection onto the normalized spin singlet $|S\rangle=(|\uparrow\downarrow\rangle-|\downarrow\uparrow\rangle)/\sqrt2$ instead gives
+
+$$
+P_S=|\langle S|u_+\otimes u_-\rangle|^2
+=\frac{|A|^2}{2}.
+$$
+
+The factor comes from the singlet's normalization, equivalently the spin projector $(1-\boldsymbol\sigma_1\cdot\boldsymbol\sigma_2)/4$. At $b=0$ and $\lambda\ne0$, the opposite-spin product has $|A|^2=1$ but $P_S=1/2$. This does not imply a half-singlet superconducting condensate: an ordered product of two normal-state spinors is not a specified antisymmetrized orbital-spin pair wavefunction or a many-body order parameter. At $\lambda=0$ and $b\ne0$, same-branch spins are parallel and both quantities vanish. At $\lambda=b=0$, the Hamiltonian is degenerate and selects no unique spinors; the ratio is undefined.
+
+Local spinor and spin-projector checks include signed couplings, complex in-plane spin directions, arbitrary spinor phases and common spin rotations. They verify this limited identity, not a gap equation, pairing dominance, topology or critical field. Saito's supplementary model separately includes momentum-dependent bands, a pairing interaction and a linearized gap equation. De la Barrera's discussion compares more complete theories with experiment and retains quantitative disagreements. Their results motivate the example; neither paper is claimed to derive this exact local normalization exercise. [R3](#ref-source-ec4b77f9e011c26e) [R6](#ref-source-804e0c9690bde4d8)
 
 The weak-coupling reference $B_P=\Delta_0/(\sqrt2\mu_B)\simeq1.86\,T_c$ uses tesla for field and kelvin for temperature, with $g=2$, negligible spin–orbit effects and $\Delta_0\simeq1.764k_BT_c$. This is a paramagnetic benchmark, not a universal upper bound including orbital effects. Similarly, the BKT transport signature $V\propto I^3$ has a restricted dynamical regime; finite size, heating and inhomogeneity can invalidate a naive exponent-only diagnosis. Neither comparison identifies the pairing interaction. [R11](#ref-source-d32df19524b2a1c8) [R12](#ref-source-1ebdfccc067bc6a7)
 

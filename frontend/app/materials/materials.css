@@ -3,8 +3,8 @@
   --materials-surface: #ffffff; --materials-soft: #f3f7f4; --materials-ink: #253c2f; --materials-muted: #52675b; --materials-line: #c9d9ce; --materials-accent: var(--accent-deep, #24503a);
   color: var(--materials-ink); min-width: 0; display: grid; gap: 1rem;
 }
-.materials-heading h1 { margin: 0; font-size: clamp(1.75rem, 3vw, 2.25rem); line-height: 1.15; letter-spacing: -.025em; font-weight: 650; }
-.materials-heading p { margin-top: .4rem; color: var(--materials-muted); font-size: .9rem; line-height: 1.5; max-width: 70ch; }
+.materials-heading h1 { margin: 0; font-size: clamp(2.6rem, 5vw, 4rem); line-height: 1.12; letter-spacing: -.045em; font-weight: 600; }
+.materials-heading p { margin-top: .75rem; color: var(--materials-muted); font-size: 1rem; line-height: 1.65; max-width: 70ch; }
 .materials-filter-section { min-width: 0; background: var(--materials-surface); border: 1px solid var(--materials-line); border-radius: .5rem; }
 .materials-filter-form { padding: 1rem; }
 .materials-basic-grid { display: grid; grid-template-columns: minmax(0, 1.35fr) repeat(3, minmax(0, 1fr)) auto; gap: .75rem; align-items: end; }

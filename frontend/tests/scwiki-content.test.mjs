@@ -27,6 +27,17 @@ function inventoryFixture(t){
  return {cwd,directory,manifest,save,build};
 }
 
+test("content generation rejects conflicting publication identities before writing outputs",t=>{
+ const f=inventoryFixture(t),filename=path.join(f.directory,"articles/c8/meta.json");
+ const meta=JSON.parse(readFileSync(filename,"utf8"));
+ const migdal=JSON.parse(readFileSync(path.join(f.directory,"articles/b2/meta.json"),"utf8")).references.find(r=>r.id==="source-21442c6eb33d9b94");
+ meta.references.push({...migdal,title:"Nonuniform state of superconductors"});
+ writeFileSync(filename,JSON.stringify(meta));
+ const original=readFileSync(path.join(f.directory,"catalogue.json"),"utf8"),result=f.build();
+ assert.notEqual(result.status,0);assert.match(result.stderr,/conflicting publication identities/);
+ assert.equal(readFileSync(path.join(f.directory,"catalogue.json"),"utf8"),original);
+});
+
 test("pressure ranges reject malformed values before rendering material conditions",async t=>{
  for(const [name,pressure] of [["scalar",.13],["missing",undefined],["text",{min:"0.13",max:.13}],["partial",{min:.13}],["reversed",{min:2,max:1}],["negative",{min:-1,max:0}],["array",[.13,.13]]]){
   await t.test(name,t=>{
@@ -123,6 +134,14 @@ test("DOI fields distinguish a canonical historical link from malformed identifi
   await t.test(String(value),t=>{
    const f=inventoryFixture(t),filename=path.join(f.directory,"articles/a1/meta.json");
    const meta=JSON.parse(readFileSync(filename,"utf8"));meta.references[0].doi=value;
+   if(value===null){
+    // This schema example changes identity; do not mutate one copy of a shared paper.
+    const oldId=meta.references[0].id,newId="source-0000000000000002";
+    const remapped=JSON.parse(JSON.stringify(meta).replaceAll(oldId,newId));
+    Object.assign(meta,remapped);
+    const body=path.join(f.directory,"articles/a1/body.md");
+    writeFileSync(body,readFileSync(body,"utf8").replaceAll(oldId,newId));
+   }
    writeFileSync(filename,JSON.stringify(meta));const result=f.build();
    if(value===null){assert.equal(result.status,0,result.stderr);const cat=JSON.parse(readFileSync(path.join(f.directory,"catalogue.json"),"utf8"));assert.ok(cat.articles.find(a=>a.code==="A1").markdown.includes("[Source publication]"));}
    else {assert.notEqual(result.status,0);assert.match(result.stderr,/reference schema/);}
@@ -285,4 +304,23 @@ test("publisher correction notices cannot omit their evidence and review boundar
  const f=inventoryFixture(t),file=path.join(f.directory,"articles/a1/meta.json"),m=JSON.parse(readFileSync(file,"utf8"));
  const source=m.references.find(r=>r.id==="source-6ee3670220e24ff1");delete source.updates[0].scope;
  writeFileSync(file,JSON.stringify(m));const result=f.build();assert.notEqual(result.status,0);assert.match(result.stderr,/invalid publisher update notice/);
+});
+
+
+test("optional preparation data rejects malformed or unbound conditions",async()=>{
+ const {validatePreparation,preparationMarkdown}=await import("../scripts/scwiki-preparation.mjs");
+ const ids=new Set(["source-fixture"]),base={method:"pressure-quench",pressureGPa:{min:18.9,max:18.9},temperatureK:4.2,releaseRateGPaPerSecond:null,sourceId:"source-fixture",sourceLocation:"Synthetic fixture",notes:"Preparation is separate from observation."};
+ assert.doesNotThrow(()=>validatePreparation(undefined,ids));assert.doesNotThrow(()=>validatePreparation(base,ids));
+ assert.doesNotThrow(()=>validatePreparation({...base,pressureGPa:null,temperatureK:null},ids));
+ for(const value of [null,[],{...base,method:"pressure-quenhc"},{...base,sourceId:"missing"},{...base,pressureGPa:{min:20,max:10}},{...base,pressureGPa:{min:1,max:2,unit:"GPa"}},{...base,temperatureK:"4.2"},{...base,releaseRateGPaPerSecond:-1},{...base,releaseRateGPaPerSecond:Infinity},{...base,releaseRateGPaPerSecond:undefined},{...base,sourceLocation:"<script>"},{...base,notes:"bad|cell"},{...base,releaseRate:12}])assert.throws(()=>validatePreparation(value,ids),/invalid material preparation/);
+ const {releaseRateGPaPerSecond,...missing}=base;assert.throws(()=>validatePreparation(missing,ids));
+ assert.equal(preparationMarkdown([{sample:"Legacy"}]),"");
+ assert.match(preparationMarkdown([{sample:"Fixture",preparation:base}]),/Unknown/);
+ assert.match(preparationMarkdown([{sample:"Fixture",preparation:{...base,releaseRateGPaPerSecond:0}}]),/0 GPa\/s/);
+});
+
+test("builder rejects an orphan preparation source before changing outputs",t=>{
+ const f=inventoryFixture(t),filename=path.join(f.directory,"articles/e10/meta.json"),meta=JSON.parse(readFileSync(filename,"utf8"));
+ meta.materialCases[0].preparation.sourceId="source-missing";writeFileSync(filename,JSON.stringify(meta));
+ const before=readFileSync(path.join(f.directory,"catalogue.json"),"utf8"),result=f.build();assert.notEqual(result.status,0);assert.match(result.stderr,/invalid material preparation/);assert.equal(readFileSync(path.join(f.directory,"catalogue.json"),"utf8"),before);
 });

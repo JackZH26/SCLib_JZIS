@@ -27,15 +27,16 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T13:41:32.040544+00:00",
+  "modifiedAt": "2026-10-20",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected final Hg1223 text and author figures; cgs disk estimate and illustrative kinetic integration; historical publisher abstracts and selected Kramers original.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected final Hg1223 text and author figures; cgs disk estimate and illustrative kinetic integration; historical publisher abstracts and selected Kramers original. Follow-up of author-v1 preparation records and interrupted thermal history; original numerical observations retained. No new material-specific lifetime fit.",
     "limitations": [
       "Complete scientific acceptance, raw-data and final supplementary comparison remain open.",
       "Independent replication has not been verified in this review.",
       "Gao and Schilling are publisher-abstract checks, not full primary methods audits.",
-      "No material-specific retention barrier, lifetime or universal pressure-quench mechanism is calculated."
+      "No material-specific retention barrier, lifetime or universal pressure-quench mechanism is calculated.",
+      "Figure2F gives26.0GPa for S1experiment1, whereas the introduction says26.3GPa; values are not silently reconciled or interpreted as an uncertainty range."
     ]
   },
   "provenance": {
@@ -82,10 +83,10 @@
       "url": "https://doi.org/10.1073/pnas.2536178123",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-final-text-and-author-figures",
-        "checkedAt": "2026-10-18",
-        "evidenceUrl": "https://pmc.ncbi.nlm.nih.gov/articles/PMC12993975/",
-        "note": "Final selected PMC methods/results checked; author2603.12437v1 pp9,15,21,24,25 visually checked. Online9March2026; authorv1 12March2026. Final SI comparison,rawdata and replication remain open."
+        "scope": "selected-author-v1-protocol-and-figure-followup",
+        "checkedAt": "2026-10-20",
+        "evidenceUrl": "https://arxiv.org/pdf/2603.12437v1",
+        "note": "Prior selected final PMC text comparison retained. This follow-up visually checks author Fig2(p15),S2(p21),S5(p24),S6(p25) and rereads methods/stability text. Preparation pressure differs from measurement pressure; source gives no quantitative cold-release rate in checked methods. S1first pressure discrepancy26.0vs26.3GPa explicitly retained. Final SI could not be newly accessed; equivalence and rawdata review remain open."
       }
     },
     {
@@ -113,7 +114,9 @@
         "source-14d1e9e0097f7ffb"
       ],
       "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
-      "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+      "verificationScope": "Selected author-v1 Fig2/S2/S5/S6 and protocol text revisited; final SI comparison and independent scientific acceptance remain open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial distinction between preparation, observation, sample identity and the limits of inference; not a single-source experimental conclusion."
     },
     {
       "id": "scwiki-e10-claim-scope-2",
@@ -125,7 +128,9 @@
         "source-d95477ebe515f481"
       ],
       "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
-      "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+      "verificationScope": "Selected author-v1 Fig2/S2/S5/S6 and protocol text revisited; final SI comparison and independent scientific acceptance remain open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial distinction between preparation, observation, sample identity and the limits of inference; not a single-source experimental conclusion."
     },
     {
       "id": "scwiki-e10-claim-mathematical-assumptions-1",
@@ -136,7 +141,9 @@
         "source-26d03be9d47579df"
       ],
       "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
-      "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+      "verificationScope": "Selected author-v1 Fig2/S2/S5/S6 and protocol text revisited; final SI comparison and independent scientific acceptance remain open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Illustrative escape model or reported disk-estimate arithmetic; neither yields a fitted retention barrier, measured lifetime or independent magnetic volume."
     },
     {
       "id": "scwiki-e10-claim-mathematical-assumptions-2",
@@ -147,7 +154,9 @@
         "source-14d1e9e0097f7ffb"
       ],
       "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
-      "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+      "verificationScope": "Selected author-v1 Fig2/S2/S5/S6 and protocol text revisited; final SI comparison and independent scientific acceptance remain open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Illustrative escape model or reported disk-estimate arithmetic; neither yields a fitted retention barrier, measured lifetime or independent magnetic volume."
     },
     {
       "id": "scwiki-e10-claim-experimental-criteria-1",
@@ -158,7 +167,9 @@
         "source-14d1e9e0097f7ffb"
       ],
       "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
-      "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+      "verificationScope": "Selected author-v1 Fig2/S2/S5/S6 and protocol text revisited; final SI comparison and independent scientific acceptance remain open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific preparation and measurement conditions; no transfer of one specimen's magnetic or retention evidence to another."
     },
     {
       "id": "scwiki-e10-claim-experimental-criteria-2",
@@ -169,29 +180,35 @@
         "source-14d1e9e0097f7ffb"
       ],
       "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
-      "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+      "verificationScope": "Selected author-v1 Fig2/S2/S5/S6 and protocol text revisited; final SI comparison and independent scientific acceptance remain open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific preparation and measurement conditions; no transfer of one specimen's magnetic or retention evidence to another."
     },
     {
       "id": "scwiki-e10-claim-experimental-criteria-3",
       "sectionId": "experimental-criteria",
-      "statement": "The stability experiment used S3, initially near 149 K: storage at 77 K for up to three days and excursions to 160–170 K caused a slight decrease. A separate S2 cycle to 293 K lowered its onset from about 147 K to 143 K. Cold-storage survival does not establish a room-temperature shelf life for the 151 K specimen. In S5 after a 29.7 GPa/4.2 K quench, a broad warming anomaly extended to about 172 K, disappeared on subsequent cooling after a 180–193 K excursion, and was not reproduced. This entry records 172 K as an unassigned anomaly, with no searchable superconducting transition temperature.",
+      "statement": "The stability experiment used S3, initially near 149 K: storage at 77 K was interrupted by transport measurements after 9 hours and 1, 2 and 3 days, with warming to 160 or 170 K. The reported slight decrease therefore belongs to this combined storage-and-cycling path, not a calibrated isothermal decay curve. A change in onset temperature is not itself a measured transformed volume fraction. A separate S2 cycle to 293 K lowered its onset from about 147 K to 143 K. Cold-storage survival does not establish a room-temperature shelf life for the 151 K specimen. In S5 after a 29.7 GPa/4.2 K quench, a broad warming anomaly extended to about 172 K, disappeared on subsequent cooling after a 180–193 K excursion, and was not reproduced. This entry records 172 K as an unassigned anomaly, with no searchable superconducting transition temperature.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-14d1e9e0097f7ffb"
       ],
       "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
-      "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+      "verificationScope": "Selected author-v1 Fig2/S2/S5/S6 and protocol text revisited; final SI comparison and independent scientific acceptance remain open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Selected author-v1 methods and figures. Source observations are separated from the editorial inference that cycling and onset shifts cannot identify a single isothermal decay or transformed fraction."
     },
     {
       "id": "scwiki-e10-claim-experimental-criteria-4",
       "sectionId": "experimental-criteria",
-      "statement": "The transport methods use van der Pauw contacts, a solid cubic-boron-nitride pressure medium and room-temperature ruby-fluorescence/diamond-Raman pressure calibration. Screws were released while cold. These details should accompany the preparation path; a generic label such as hydrostatic pressure is insufficient for the actual stress environment. The release rate has not been quantitatively reconstructed in this review.",
+      "statement": "The transport methods use van der Pauw contacts, a solid cubic-boron-nitride pressure medium and room-temperature ruby-fluorescence/diamond-Raman pressure calibration. Screws were released while cold. These details should accompany the preparation path; a generic label such as hydrostatic pressure is insufficient for the actual stress environment. The checked methods describe cold screw release without a quantitative release-rate value. The new preparation records therefore retain an unknown rate, separately from the ambient measurement pressure. For S1 experiment 1, Figure 2F reports 26.0 GPa while the introduction says 26.3 GPa; the record follows the figure and flags the unresolved difference rather than treating it as a measured uncertainty interval.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-14d1e9e0097f7ffb"
       ],
       "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
-      "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+      "verificationScope": "Selected author-v1 Fig2/S2/S5/S6 and protocol text revisited; final SI comparison and independent scientific acceptance remain open.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Source-specific preparation and measurement conditions; no transfer of one specimen's magnetic or retention evidence to another."
     },
     {
       "id": "scwiki-e10-claim-limits-and-disputes-1",
@@ -202,12 +219,14 @@
         "source-14d1e9e0097f7ffb"
       ],
       "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
-      "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+      "verificationScope": "Selected author-v1 Fig2/S2/S5/S6 and protocol text revisited; final SI comparison and independent scientific acceptance remain open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial distinction between preparation, observation, sample identity and the limits of inference; not a single-source experimental conclusion."
     },
     {
       "id": "scwiki-e10-claim-limits-and-disputes-2",
       "sectionId": "limits-and-disputes",
-      "statement": "The journal article was published online on 9 March 2026; the checked author manuscript is arXiv v1 dated 12 March. Selected final PMC text was compared with author transport/magnetization methods and Figures 2, S2, S5 and S6. Final supplementary-file comparison, raw-data reanalysis and complete scientific acceptance remain open. The inherited bibliography names X. Deng; the published first author is Liangzi Deng. Gao and Schilling remain abstract-level checks here. Kramers supplies a simplified classical model, not a validated mechanism for this material.",
+      "statement": "The journal article was published online on 9 March 2026; the checked author manuscript is arXiv v1 dated 12 March. Selected final PMC text was compared with author transport/magnetization methods and Figures 2, S2, S5 and S6. The final supplementary file could not be newly accessed during this follow-up; the author version is retained without claiming equivalence. Final supplementary-file comparison, raw-data reanalysis and complete scientific acceptance remain open. The inherited bibliography names X. Deng; the published first author is Liangzi Deng. Gao and Schilling remain abstract-level checks here. Kramers supplies a simplified classical model, not a validated mechanism for this material.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-6d09a24a26a15997",
@@ -216,7 +235,9 @@
         "source-26d03be9d47579df"
       ],
       "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
-      "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+      "verificationScope": "Selected author-v1 Fig2/S2/S5/S6 and protocol text revisited; final SI comparison and independent scientific acceptance remain open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial distinction between preparation, observation, sample identity and the limits of inference; not a single-source experimental conclusion."
     },
     {
       "id": "scwiki-e10-claim-discovery-implications-1",
@@ -228,7 +249,9 @@
         "source-26d03be9d47579df"
       ],
       "conditions": "Bind specimen, preparation pressure/temperature, ambient observation, operational onset/magnetic criterion and warming/storage history.",
-      "verificationScope": "Selected primary passages and bounded arithmetic; complete scientific acceptance open."
+      "verificationScope": "Selected author-v1 Fig2/S2/S5/S6 and protocol text revisited; final SI comparison and independent scientific acceptance remain open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial distinction between preparation, observation, sample identity and the limits of inference; not a single-source experimental conclusion."
     }
   ],
   "corrections": [
@@ -272,7 +295,19 @@
         "Hg-1223",
         "Hg1223",
         "Deng S1"
-      ]
+      ],
+      "preparation": {
+        "method": "pressure-quench",
+        "pressureGPa": {
+          "min": 26,
+          "max": 26
+        },
+        "temperatureK": 77,
+        "releaseRateGPaPerSecond": null,
+        "sourceId": "source-14d1e9e0097f7ffb",
+        "sourceLocation": "Figure 2F (author p.15); transport methods pp.8-9",
+        "notes": "Figure value retained; introduction says 26.3 GPa instead of 26.0 GPa, an unresolved source discrepancy. Pressure calibration was at room temperature; the value is not an in-situ cold pressure measurement."
+      }
     },
     {
       "id": "scwiki-e10-material-2",
@@ -293,7 +328,19 @@
         "Hg-1223",
         "Hg1223",
         "Deng S1"
-      ]
+      ],
+      "preparation": {
+        "method": "pressure-quench",
+        "pressureGPa": {
+          "min": 28.4,
+          "max": 28.4
+        },
+        "temperatureK": 4.2,
+        "releaseRateGPaPerSecond": null,
+        "sourceId": "source-14d1e9e0097f7ffb",
+        "sourceLocation": "Figure 2F (author p.15); transport methods pp.8-9",
+        "notes": "S1 second preparation; distinct from its earlier77 K run. Pressure calibration was at room temperature; the value is not an in-situ cold pressure measurement."
+      }
     },
     {
       "id": "scwiki-e10-material-3",
@@ -314,7 +361,19 @@
         "Hg-1223",
         "Hg1223",
         "Deng S2"
-      ]
+      ],
+      "preparation": {
+        "method": "pressure-quench",
+        "pressureGPa": {
+          "min": 10.1,
+          "max": 10.1
+        },
+        "temperatureK": 4.2,
+        "releaseRateGPaPerSecond": null,
+        "sourceId": "source-14d1e9e0097f7ffb",
+        "sourceLocation": "Figure 2F (author p.15); transport methods pp.8-9",
+        "notes": "S2 transport after release; later retrieval magnetism is a separate observation. Pressure calibration was at room temperature; the value is not an in-situ cold pressure measurement."
+      }
     },
     {
       "id": "scwiki-e10-material-4",
@@ -335,7 +394,19 @@
         "Hg-1223",
         "Hg1223",
         "Deng S3"
-      ]
+      ],
+      "preparation": {
+        "method": "pressure-quench",
+        "pressureGPa": {
+          "min": 10.9,
+          "max": 10.9
+        },
+        "temperatureK": 4.2,
+        "releaseRateGPaPerSecond": null,
+        "sourceId": "source-14d1e9e0097f7ffb",
+        "sourceLocation": "Figure 2F (author p.15); transport methods pp.8-9",
+        "notes": "S3 transport; storage and thermal cycles must remain attached to this specimen. Pressure calibration was at room temperature; the value is not an in-situ cold pressure measurement."
+      }
     },
     {
       "id": "scwiki-e10-material-5",
@@ -356,7 +427,19 @@
         "Hg-1223",
         "Hg1223",
         "Deng S4"
-      ]
+      ],
+      "preparation": {
+        "method": "pressure-quench",
+        "pressureGPa": {
+          "min": 18.9,
+          "max": 18.9
+        },
+        "temperatureK": 4.2,
+        "releaseRateGPaPerSecond": null,
+        "sourceId": "source-14d1e9e0097f7ffb",
+        "sourceLocation": "Figure 2F (author p.15); transport methods pp.8-9",
+        "notes": "S4 onset; no transfer of S2 magnetism or S3 storage evidence. Pressure calibration was at room temperature; the value is not an in-situ cold pressure measurement."
+      }
     },
     {
       "id": "scwiki-e10-material-6",
@@ -377,7 +460,19 @@
         "Hg-1223",
         "Hg1223",
         "Deng S2 magnetization"
-      ]
+      ],
+      "preparation": {
+        "method": "pressure-quench",
+        "pressureGPa": {
+          "min": 10.1,
+          "max": 10.1
+        },
+        "temperatureK": 4.2,
+        "releaseRateGPaPerSecond": null,
+        "sourceId": "source-14d1e9e0097f7ffb",
+        "sourceLocation": "Stability text and Fig.S6 (author pp.6,25); transport methods pp.8-9",
+        "notes": "S2 measured after retrieval and handling; do not identify its transition with S4. Pressure calibration was at room temperature; the value is not an in-situ cold pressure measurement."
+      }
     },
     {
       "id": "scwiki-e10-material-7",
@@ -398,7 +493,19 @@
         "Hg-1223",
         "Hg1223",
         "Deng S2 magnetization"
-      ]
+      ],
+      "preparation": {
+        "method": "pressure-quench",
+        "pressureGPa": {
+          "min": 10.1,
+          "max": 10.1
+        },
+        "temperatureK": 4.2,
+        "releaseRateGPaPerSecond": null,
+        "sourceId": "source-14d1e9e0097f7ffb",
+        "sourceLocation": "Magnetization methods and Fig.S6 (author pp.9,25); transport methods pp.8-9",
+        "notes": "Same retrieved S2; 70 K is the shielding-estimate measurement temperature. Pressure calibration was at room temperature; the value is not an in-situ cold pressure measurement."
+      }
     },
     {
       "id": "scwiki-e10-material-8",
@@ -419,7 +526,19 @@
         "Hg-1223",
         "Hg1223",
         "Deng S5"
-      ]
+      ],
+      "preparation": {
+        "method": "pressure-quench",
+        "pressureGPa": {
+          "min": 29.7,
+          "max": 29.7
+        },
+        "temperatureK": 4.2,
+        "releaseRateGPaPerSecond": null,
+        "sourceId": "source-14d1e9e0097f7ffb",
+        "sourceLocation": "Fig.S2 (author p.21); transport methods pp.8-9",
+        "notes": "S5 unassigned anomaly; preparation does not convert it into a confirmed transition. Pressure calibration was at room temperature; the value is not an in-situ cold pressure measurement."
+      }
     },
     {
       "id": "scwiki-e10-material-9",
@@ -440,7 +559,19 @@
         "Hg-1223",
         "Hg1223",
         "Deng S3"
-      ]
+      ],
+      "preparation": {
+        "method": "pressure-quench",
+        "pressureGPa": {
+          "min": 10.9,
+          "max": 10.9
+        },
+        "temperatureK": 4.2,
+        "releaseRateGPaPerSecond": null,
+        "sourceId": "source-14d1e9e0097f7ffb",
+        "sourceLocation": "Fig.S5 (author p.24); transport methods pp.8-9",
+        "notes": "S3 storage at 77 K interrupted by measurements at 9 h,1 d,2 d,3 d reaching 160 or 170 K; no isolated isothermal lifetime. Pressure calibration was at room temperature; the value is not an in-situ cold pressure measurement."
+      }
     }
   ],
   "sourceMap": [

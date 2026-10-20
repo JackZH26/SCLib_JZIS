@@ -46,3 +46,18 @@ export function searchArticles(entries: SearchEntry[], query: string, filters: S
     return score(a)-score(b)||a.code.localeCompare(b.code,"en",{numeric:true});
   });
 }
+
+/** A short passage from the matched text, with the real rendered section anchor. */
+export function matchedPassage(entry:SearchEntry,query:string) {
+ const terms=normalizeSearch(query).split(/\s+/).filter(Boolean);
+ if(!terms.length)return null;
+ const candidates=(entry.sections?.length?entry.sections:[{id:"",title:"Matched passage",start:0,end:entry.text.length}])
+  .map(section=>({section,text:entry.text.slice(section.start,section.end),score:terms.filter(t=>normalizeSearch(entry.text.slice(section.start,section.end)).includes(t)).length}))
+  .filter(x=>x.score).sort((a,b)=>b.score-a.score);
+ const found=candidates[0];if(!found)return null;
+ const plain=found.text.replace(/\[([^\]]+)\]\([^)]+\)/g,"$1").replace(/[#*`_]/g,"").replace(/\s+/g," ").trim();
+ const literal=query.trim().toLowerCase(),exact=plain.toLowerCase().indexOf(literal);
+ const positions=terms.map(t=>plain.toLowerCase().indexOf(t)).filter(p=>p>=0);
+ const at=exact>=0?exact:Math.min(...positions,plain.length),start=Math.max(0,at-85),end=Math.min(plain.length,start+250);
+ return {text:(start?"…":"")+plain.slice(start,end)+(end<plain.length?"…":""),sectionId:found.section.id,sectionTitle:found.section.title};
+}

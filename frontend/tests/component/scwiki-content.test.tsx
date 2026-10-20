@@ -23,6 +23,36 @@ const getAll=async(key:"articles"|"sources"|"topics")=>{
  return {[key]:items};
 };
 describe("SCWiki source and scientific-content contracts",()=>{
+ it("exports source-backed editorial analysis without presenting a retraction as a scientific hypothesis",async()=>{
+  const a=(await(await get(["articles","scwiki-d12"])).json()).article;
+  const c=a.claims.find((c:any)=>c.id==="scwiki-d12-claim-limits-and-disputes-1");
+  expect(c.evidenceType).toBe("editorial-analysis");expect(c.sourceRelationship).toBe("context-for-editorial-analysis");
+  const ref=a.references.find((r:any)=>r.doi==="10.1038/nature26142");expect(ref.retraction.retractedAt).toBe("2021-03-08");
+  const md=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+  expect(md).toContain("Evidence: editorial-analysis");expect(md).toContain("never positive confirmation");expect(md).toContain("not an uncertainty interval");
+ });
+ it("keeps editorial commentary out of material evidence and exposes the separate claim contract",async()=>{
+  const schema=(await(await get(["openapi.json"])).json());
+  expect(schema.info.version).toBe("1.6.0");expect(schema.components.schemas.Claim.properties.evidenceType.$ref).toBe("#/components/schemas/ClaimEvidenceType");
+  expect(schema.components.schemas.ClaimEvidenceType.enum).toContain("editorial-analysis");
+  expect(schema.components.schemas.ClaimEvidenceType.enum).toContain("experimental");
+  for(const c of articles().flatMap(a=>a.claims)) expect(schema.components.schemas.ClaimEvidenceType.enum).toContain(c.evidenceType);
+  expect(schema.components.schemas.MaterialCase.properties.recordType.$ref).toBe("#/components/schemas/EvidenceType");
+  expect(schema.components.schemas.EvidenceType.enum).not.toContain("editorial-analysis");
+  expect(schema.components.schemas.EvidenceType.enum).not.toContain("experimental");
+  expect(articles().flatMap(a=>a.materialCases).some(m=>String(m.recordType)==="editorial-analysis")).toBe(false);
+  const r=await get(["search"],"?q=topological&evidence=editorial-analysis");expect(r.status).toBe(400);
+ });
+ it("rejects unlabeled source roles for editorial claims and unknown claim evidence values",async()=>{
+  const {validateClaimEvidence}=await import("../../scripts/scwiki-claim-evidence.mjs");
+  const valid={id:"synthetic-editorial",evidenceType:"editorial-analysis",sourceRelationship:"context-for-editorial-analysis",derivationNote:"Compares source scope without claiming a new experiment."};
+  expect(()=>validateClaimEvidence(valid)).not.toThrow();
+  expect(()=>validateClaimEvidence({id:"legacy-experiment",evidenceType:"experimental"})).not.toThrow();
+  expect(()=>validateClaimEvidence({...valid,sourceRelationship:"direct-support"})).toThrow();
+  expect(()=>validateClaimEvidence({...valid,derivationNote:" "})).toThrow();
+  expect(()=>validateClaimEvidence({...valid,evidenceType:"editorial-typo"})).toThrow();
+ });
+
  it("retains magnetic-excitation windows and unresolved primary-source calibration conflicts",async()=>{
   const result=await(await get(["library"],"?q="+encodeURIComponent("10.1038/nmat3723"))).json();expect(result.total).toBe(1);
   const n=result.notes[0];expect(n.id).toBe("dean-lsco-magnetic-excitations");const md=await(await get(["library",n.id,"markdown"])).text();
@@ -761,6 +791,14 @@ describe("SCWiki source and scientific-content contracts",()=>{
  });
  it("preserves iron-based source-version criteria and excludes nondetection and gap scales",async()=>{
   const a=articles().find(a=>a.code==="D4")!;
+  const model=a.claims.find(c=>c.id==="scwiki-d4-claim-mathematical-assumptions-3")!;
+  expect(model.sourceRelationship).toBe("mixed-source-and-local-derivation");
+  expect(model.conditions).toContain("Near-Tc");expect(model.derivationNote).toContain("not source-fitted");
+  expect(model.sourceIds).toContain("source-5717dacf7df85626");
+  const modelExport=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+  for(const phrase of ["Opposite signs do not require equal gap magnitudes","zero-temperature prediction","mixed-source-and-local-derivation"]){expect(modelExport).toContain(phrase);}
+  const limits=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();expect(limits).toContain("initially described as ferromagnetic was misidentified");
+
   for(const [q,filters,expected] of [["Ba0.6K0.4Fe2As2","&tcMin=38&criterion=resistive-midpoint",true],["Ba0.6K0.4Fe2As2","&tcMin=38&criterion=reported-zero-resistance",false],["Fe1.03Se","&tcMin=1",false],["FeSe STO","&tcMin=1",false],["FeSe0.88","&tcMin=7&criterion=zero-resistance&pressure=ambient",true],["FeSe0.88","&tcMin=7&pressure=high",false]] as const){
    const data=await(await get(["search"],"?q="+encodeURIComponent(q)+filters)).json();expect(data.results.some((r:{code:string})=>r.code==="D4")).toBe(expected);
   }
@@ -772,6 +810,13 @@ describe("SCWiki source and scientific-content contracts",()=>{
  });
  it("keeps cuprate discovery criteria and recovered sample temperature filters distinct",async()=>{
   const a=articles().find(a=>a.code==="D3")!;
+  const history=a.claims.find(c=>c.id==="scwiki-d3-claim-scope-3")!;
+  expect(history.evidenceType).toBe("experiment");
+  expect(history.sourceRelationship).toBe("context-for-editorial-analysis");
+  const phase=a.claims.find(c=>c.id==="scwiki-d3-claim-experimental-criteria-3")!;
+  expect(phase.sourceIds).toContain("source-e933e3bbd4beade6");
+  const phaseExport=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+  for(const phrase of ["three-junction ring but not the two-junction controls","change in penetration depth","not a direct measurement of gap phase","Original experiment abstracts only","context-for-editorial-analysis"]){expect(phaseExport).toContain(phrase);}
   expect(a.materialCases.find(r=>r.id==="scwiki-d3-material-2")?.pressureGPa).toBeNull();
   expect(a.materialCases.find(r=>r.id==="scwiki-d3-material-3")?.criterion).toBe("resistive-deviation-onset");
   expect(a.materialCases.find(r=>r.id==="scwiki-d3-material-4")?.tcK).toBe(80);
@@ -1268,6 +1313,23 @@ it("keeps f-wave model nodes and Kerr temperatures separate from established mat
  const a=articles().find(a=>a.code==="C6")!;
  const md=await(await get(["articles",a.id,"markdown"])).text();
  expect(md).toContain("These are model angles, not measured node coordinates");
+ const detail=await(await get(["articles",a.id])).json();
+ const mix=detail.article.claims.find((c:{id:string})=>c.id==="scwiki-c6-claim-mathematical-assumptions-3");
+ expect(mix.sourceRelationship).toBe("context-for-local-derivation");
+ const interpretation=detail.article.claims.find((c:{id:string})=>c.id==="scwiki-c6-claim-experimental-criteria-3");
+ expect(interpretation.evidenceType).toBe("theory");
+ expect(interpretation.conditions).toContain("no Zeeman splitting");
+ expect(interpretation.statement).toContain("not a calculated f-wave response for UPt3");
+ expect(md).toContain("fractional translations of the space group");
+ expect(md).toContain("P63/mmc");
+ expect(a.references.find(r=>r.doi==="10.1103/PhysRevB.95.024508")?.verification.scope).toBe("selected-accepted-manuscript-check");
+ expect(mix.conditions).toContain("real a");
+ expect(mix.statement).toContain("nonzero imaginary part removes its horizontal zeros");
+ expect(mix.statement).toContain("not a fitted state reported by Tsutsumi");
+ const mathExport=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(mathExport).toContain("context-for-local-derivation");
+ expect(mathExport).toContain("quadratic equatorial zero");
+ expect(mathExport).toContain("cubic polar zeros");
  expect(md).toContain("not a density-of-states or thermal-conductivity calculation");
  expect(md).toContain("not fitted to UPt3 or UTe2");
  expect(md).toContain("Kerr onset is not the upper superconducting transition");
@@ -1289,7 +1351,18 @@ it("separates chiral topology and kagome measurement temperatures in article exp
  const md=await(await get(["articles",a.id,"markdown"])).text();
  expect(md).toContain("no gapped-band invariant is assigned there");
  expect(md).toContain("not a universal absence of current");
- expect(md).toContain("approximately constant across the superconducting transition");
+ expect(md).toContain("stays approximately constant across the superconducting transition");
+ expect(md).toContain("transverse-field measurements at 5 and 10 mT");
+ expect(md).toContain("Zero-field data alone do not establish time-reversal breaking");
+ expect(md).toContain("undefined on the nodal slices");
+ const detail=await(await get(["articles",a.id])).json();
+ const local=detail.article.claims.find((c:{id:string})=>c.id==="scwiki-c7-claim-limits-and-disputes-3");
+ expect(local.sourceRelationship).toBe("context-for-local-derivation");
+ expect(local.conditions).toContain("exclude gapless slices");
+ const muon=detail.article.claims.find((c:{id:string})=>c.id==="scwiki-c7-claim-experimental-criteria-3");
+ expect(muon.sourceRelationship).toBe("direct-support");
+ expect(muon.conditions).toContain("charge order near 80 K is not Tc near 1.1 K");
+ expect(a.materialCases[0].temperatureNote).toContain("transverse-field vortex damping increases below Tc");
  expect(md).toContain("roton excitations were not directly observed");
  expect(md).toContain("bulk signatures near 2.8 K from a surface transition near 2.3 K");
  expect(a.materialCases.map(r=>r.reportedTemperatureK)).toEqual([80,.3]);
@@ -1333,6 +1406,17 @@ it("keeps the two Bi2212 PDW experiments and limited modern source checks distin
  expect(out).toContain("8.25 T");expect(out).toContain("Full scientific acceptance");
  expect(a.references.find(r=>r.doi==="10.1038/nature17411")?.verification.scope).toBe("selected-published-and-author-text-check");
  expect(a.references.find(r=>r.doi===null)?.verification.scope).toBe("institutional-bibliographic-check");
+ const lo=a.references.find(r=>r.doi===null)!;
+ const migdal=articles().find(a=>a.code==="B2")!.references.find(r=>r.id==="source-21442c6eb33d9b94")!;
+ expect(lo.id).not.toBe(migdal.id);expect(lo.year).toBe(1965);expect(migdal.year).toBe(1958);
+ expect(lo.url).toContain("itp.ac.ru");expect(migdal.url).toContain("e_007_06_0996.pdf");
+ const all=await getAll("sources");
+ expect(all.sources.find((r:any)=>r.id===lo.id).usedBy).toEqual(["scwiki-c8"]);
+ expect(all.sources.find((r:any)=>r.id===migdal.id).usedBy).toEqual(["scwiki-b2"]);
+ expect(md).toContain("quadrature component does not");
+ expect(md).toContain("equilibrium total current is zero");
+ const harmonic=await(await get(["articles",a.id,"sections","mathematical-assumptions"])).json();
+ expect(harmonic.claims.find((c:any)=>c.id==="scwiki-c8-claim-mathematical-assumptions-2").sourceRelationship).toBe("context-for-local-derivation");
  expect(a.references.find(r=>r.doi==="10.1038/s41586-026-10325-w")?.verification.scope).toBe("institutional-abstract-and-publication-check");
 });
 
@@ -1350,6 +1434,14 @@ it("exports conditional spin classification with its erratum and searchable orbi
  expect(searchArticles(searchIndex().entries,"shadowed triplet",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
  const out=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
  expect(out).toContain("particle-hole-symmetric test point");expect(out).toContain("Full scientific acceptance");
+ const gap=a.claims.find(c=>c.id==="scwiki-c9-claim-mathematical-assumptions-4")!;
+ expect(gap.sourceRelationship).toBe("context-for-local-derivation");
+ expect(gap.conditions).toContain("same momentum");
+ expect(gap.derivationNote).toContain("not results attributed");
+ for(const text of ["same helicity Fermi sheet", "Cancellation away", "Equal magnitudes alone", "transverse triplet component", "local imposed-model checks"]) {
+  expect(out).toContain(text);expect(md).toContain(text);
+ }
+ expect(searchArticles(searchIndex().entries,"helicity Fermi sheet",{}).some(r=>r.id===a.id)).toBe(true);
 });
 
 it("keeps node studies linked to their actual materials and measurement temperatures",async()=>{
@@ -1367,6 +1459,12 @@ it("keeps node studies linked to their actual materials and measurement temperat
  expect(searchArticles(searchIndex().entries,"Pfaffian",{tcMin:1}).some(r=>r.id===a.id)).toBe(false);
  const out=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
  expect(out).toContain("KFe2As2, not P-substituted");expect(out).toContain("Full scientific acceptance");
+ const node=a.claims.find(c=>c.id==="scwiki-c10-claim-mathematical-assumptions-1")!;
+ expect(node.sourceRelationship).toBe("context-for-local-derivation");
+ expect(node.conditions).toContain("finite nonzero transverse velocities");
+ const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ for(const text of ["finite-window ambiguity", "only zero remains a point", "not their result or a material fit", "scalar impurity-self-energy approximation", "above relevant broadening scales"]) {expect(math).toContain(text);expect(md).toContain(text);}
+ expect(searchArticles(searchIndex().entries,"finite-window ambiguity",{}).some(r=>r.id===a.id)).toBe(true);
 });
 
 it("keeps elemental pressure cases and calculated temperatures distinct",async()=>{
@@ -1385,6 +1483,13 @@ it("keeps elemental pressure cases and calculated temperatures distinct",async()
  expect(md).toContain("0.0004 K, not 0.4 K");expect(md).toContain("Full scientific acceptance");
  const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
  expect(math).toContain("exact reproduction needs unrounded inputs");
+ const tunneling=a.claims.find(c=>c.id==="scwiki-d1-claim-experimental-criteria-1")!;
+ expect(tunneling.sourceRelationship).toBe("mixed-source-and-local-derivation");
+ expect(tunneling.conditions).toContain("common electron temperature");
+ const full=await(await get(["articles",a.id,"markdown"])).text();
+ for(const text of ["Finite temperature averages the spectrum", "despite zero density at zero energy", "superconducting counterelectrode", "neither invert an experimental spectrum"]) {expect(md).toContain(text);expect(full).toContain(text);}
+ expect(a.references.find(r=>r.doi==="10.1103/PhysRevLett.14.108")?.verification.scope).toBe("publisher-metadata-only");
+ expect(searchArticles(searchIndex().entries,"thermal convolution",{}).some(r=>r.id===a.id)).toBe(true);
 });
 
 it("keeps A15 transitions separate from operating and structural temperatures",async()=>{
@@ -1403,6 +1508,26 @@ it("keeps A15 transitions separate from operating and structural temperatures",a
  expect(math).toContain("Neither improved value was measured");expect(math).toContain("Full scientific acceptance");
  expect(a.references.find(r=>r.doi==="10.1063/1.1890447")?.verification.evidenceUrl).toMatch(/v2$/);
  expect(a.relatedCodes).toContain("A6");
+ const example=a.claims.find(c=>c.id==="scwiki-d2-claim-mathematical-assumptions-3")!;
+ expect(example.sourceRelationship).toBe("mixed-source-and-local-derivation");
+ expect(example.conditions).toContain("nearest-0.1-T rounding");
+ const fullMarkdown=await(await get(["articles",a.id,"markdown"])).text();
+ for(const text of [math,fullMarkdown]){
+  for(const boundary of ["Equal-area parallel addition","Two-point secants","series bottleneck","does not establish the cause of the discrepancy"])
+   expect(text).toContain(boundary);
+ }
+ const measurement=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(measurement).toContain("normalized to non-Cu area");
+ expect(measurement).toContain("not material volume fractions");
+ expect(measurement).toContain("without establishing a statistical confidence interval");
+ const limits=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+ expect(limits).toContain("calibrated detection threshold");
+ expect(limits).toContain("context-for-editorial-analysis");
+ const structure=a.claims.find(c=>c.id==="scwiki-d2-claim-scope-1")!;
+ const prototype=a.references.find(r=>r.url.includes("A3B_cP8_223"))!;
+ expect(structure.sourceIds).toContain(prototype.id);
+ expect(structure.statement).toContain("does not make the full crystal body-centered cubic");
+ expect(searchArticles(searchIndex().entries,"series bottleneck",{}).some(r=>r.id===a.id)).toBe(true);
 });
 
 it("carries retraction status through source, article, section and rendered references",async()=>{
@@ -1429,13 +1554,20 @@ it("carries retraction status through source, article, section and rendered refe
  expect(spec.components.schemas.Source.properties.retraction.required).toEqual(["noticeDoi","retractedAt","evidenceUrl"]);
  expect(html).toContain('"creativeWorkStatus":"Retracted"');
 });
-it("does not promote hydride negative measurement limits or predictions to measured transition temperatures",()=>{
+it("does not promote hydride negative measurement limits or predictions to measured transition temperatures",async()=>{
  const a=articles().find(a=>a.code==="D6")!;
  for(const formula of ["LuH2±xNy","Y3Fe4H20"]){const c=a.materialCases.find(c=>c.formula===formula)!;expect(c.tcK).toBeNull();expect(c.temperatureKind).toBe("measurement");}
  const prediction=a.materialCases.find(c=>c.recordType==="prediction")!;expect(prediction.tcK).toBeNull();
  expect(a.body).toContain("249 K and 180 K");expect(a.body).toContain("151 and 152 GPa");
  expect(a.body).toContain("not direct measurements at 136 T");
  expect(a.review.limitations[0]).toContain("remain open");
+ const negative=a.materialCases.find(c=>c.id==="scwiki-d6-material-4")!;
+ expect(negative.pressureGPa).toEqual({min:.4,max:40.1});expect(negative.reportedTemperatureK).toBe(2);
+ expect(negative.temperatureNote).toContain("not imply continuous coverage");expect(negative.probe).toContain("room-temperature ruby");
+ expect(searchArticles(searchIndex().entries,"LuH2±xNy",{tcMin:.01})).toEqual([]);
+ const exported=await(await get(["articles",a.id,"sections","limits-and-disputes"],"?format=markdown")).text();
+ for(const phrase of ["not the full transport window","cannot detect hydrogen","arxiv.org/abs/2303.08759v3","mixed-source-and-local-derivation"])expect(exported).toContain(phrase);
+ expect(a.claims.find(c=>c.id==="scwiki-d6-claim-limits-and-disputes-2")?.conditions).toContain("discrete pressures");
 });
 
 
@@ -1447,6 +1579,23 @@ it("matches every material condition to the public search/API enum and retrieves
  }
  expect(searchArticles(searchIndex().entries,"Budden",{equilibrium:"transient"}).some(a=>a.code==="B7")).toBe(true);
  expect(searchArticles(searchIndex().entries,"LaH10",{pressure:"high",tcMin:240}).some(a=>a.code==="D6")).toBe(true);
+});
+
+it("keeps a driven magnetic null-result temperature out of transition filters and exports its detection limits",async()=>{
+ const a=articles().find(a=>a.code==="E6")!;
+ expect(searchArticles(searchIndex().entries,"light-driven superconductivity")[0].code).toBe("E6");
+ const c=a.materialCases.find(c=>c.criterion==="sensitivity-limited-magnetic-nonobservation")!;
+ expect(c.reportedTemperatureK).toBe(50);expect(c.tcK).toBeNull();expect(c.temperatureKind).toBe("measurement");
+ const includes=(q:string,filters:any)=>searchArticles(searchIndex().entries,q,filters).some(a=>a.code==="E6");
+ expect(includes("De Vecchi magnetic limit",{equilibrium:"transient"})).toBe(true);
+ expect(includes("De Vecchi magnetic limit",{tcMin:0})).toBe(false);
+ expect(includes("K3C60",{tcMin:50})).toBe(false);
+ expect(includes("K3C60",{tcMin:20,equilibrium:"equilibrium"})).toBe(true);
+ expect(includes("K3C60",{criterion:c.criterion,tcMin:0})).toBe(false);
+ const result=await(await get(["articles",a.id])).json();
+ expect(result.article.materialCases.find((x:{id:string})=>x.id===c.id)).toEqual(c);
+ const md=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ for(const phrase of ["160 ps","six reference pellets","systematic error","1 ns","long-lived response"])expect(md).toContain(phrase);
 });
 
 it("keeps MgB2 isotope transitions separate from probe temperatures and unresolved mass metadata",async()=>{
@@ -1469,7 +1618,13 @@ it("keeps MgB2 isotope transitions separate from probe temperatures and unresolv
 it("keeps heavy-fermion transition criteria separate from magnetic and normal-state temperatures",async()=>{
  const a=articles().find(a=>a.code==="D8")!;
  const pang=a.references.find(r=>r.doi==="10.1073/pnas.1720291115")!;
- expect(a.materialCases.filter(c=>c.sourceId===pang.id).map(c=>c.tcK)).toEqual([.64,.53]);
+ expect(a.materialCases.filter(c=>c.sourceId===pang.id&&c.criterion==="specific-heat-anomaly").map(c=>c.tcK)).toEqual([.64,.53]);
+ const magnetic=a.materialCases.find(c=>c.criterion==="antiferromagnetic-specific-heat-anomaly")!;
+ expect(magnetic.reportedTemperatureK).toBe(.7);expect(magnetic.tcK).toBeNull();
+ expect(a.materialCases.filter(c=>c.sourceId===pang.id&&c.criterion==="resistive-onset").map(c=>c.tcK)).toEqual([.65,.62]);
+ expect(a.materialCases.find(c=>c.criterion==="zero-resistivity")?.tcK).toBe(.6);
+ expect(searchArticles(searchIndex().entries,"CeCu2Si2",{tcMin:.66}).some(a=>a.code==="D8")).toBe(false);
+ expect(searchArticles(searchIndex().entries,"CeCu2Si2",{tcMin:.64,criterion:"resistive-onset"}).some(a=>a.code==="D8")).toBe(true);
  expect(a.materialCases.find(c=>c.temperatureKind==="normal-state")?.tcK).toBeNull();
  expect(a.materialCases.filter(c=>c.temperatureKind==="measurement").every(c=>c.tcK===null)).toBe(true);
  expect(searchArticles(searchIndex().entries,"heavy fermion",{tcMin:2,criterion:"zero-resistance-and-shielding"}).some(a=>a.code==="D8")).toBe(true);
@@ -1486,7 +1641,13 @@ it("preserves fulleride polymorph and transport criteria while excluding driven 
  expect(fcc.map(c=>[c.tcK,c.pressureGPa])).toEqual([[25.6,{min:.13,max:.13}],[29.7,{min:.22,max:.22}],[35,{min:.7,max:.7}]]);
  const film=a.materialCases.filter(c=>c.formula==="Rb2.98C60");
  expect(film.map(c=>[c.tcK,c.criterion])).toEqual([[26.4,"local-resistivity-maximum"],[14.5,"resistivity-derivative-threshold"]]);
- expect(a.materialCases.find(c=>c.reportedTemperatureK===100)?.tcK).toBeNull();
+ const driven=a.materialCases.filter(c=>c.reportedTemperatureK===100);
+ expect(driven).toHaveLength(2);
+ for(const record of driven){
+  expect(record.tcK).toBeNull();expect(record.equilibrium).toBe("transient");
+  expect(searchArticles(searchIndex().entries,"fullerides",{criterion:record.criterion}).some(a=>a.code==="D9")).toBe(true);
+  expect(searchArticles(searchIndex().entries,"fullerides",{tcMin:1,criterion:record.criterion}).some(a=>a.code==="D9")).toBe(false);
+ }
  expect(a.materialCases.find(c=>c.reportedTemperatureK===2.2)?.tcK).toBeNull();
  expect(searchArticles(searchIndex().entries,"fullerides",{tcMin:30,pressureRegime:"high"}).some(a=>a.code==="D9")).toBe(true);
  expect(searchArticles(searchIndex().entries,"fullerides",{tcMin:36}).some(a=>a.code==="D9")).toBe(false);
@@ -1507,11 +1668,20 @@ it("keeps organic transition criteria separate from Mott endpoints and low-tempe
  expect(a.references.some(r=>r.doi==="10.1021/ic00331a012")).toBe(false);
  const br=a.materialCases.filter(c=>c.formula==="κ-(ET)2Cu[N(CN)2]Br");
  expect(br.map(c=>[c.tcK,c.criterion])).toEqual([[11.6,"inductive-onset"],[12.5,"resistive-onset"]]);
- for(const t of [39.7,13.1,24,.43,.1,.032])expect(a.materialCases.find(c=>c.reportedTemperatureK===t)?.tcK).toBeNull();
+ for(const t of [39.7,13.1,24,.43,.52,.72,.1,.032]){
+  const records=a.materialCases.filter(c=>c.reportedTemperatureK===t);
+  expect(records.length).toBeGreaterThan(0);expect(records.every(c=>c.tcK===null)).toBe(true);
+ }
+ for(const criterion of ["angular-thermal-conductivity-probe","high-field-knight-shift-probe"]){
+  expect(searchArticles(searchIndex().entries,"organic",{criterion}).some(a=>a.code==="D10")).toBe(true);
+  expect(searchArticles(searchIndex().entries,"organic",{tcMin:.01,criterion}).some(a=>a.code==="D10")).toBe(false);
+ }
  expect(a.materialCases.find(c=>c.reportedTemperatureK===39.7)?.pressureGPa).toEqual({min:.0248,max:.0248});
  expect(searchArticles(searchIndex().entries,"organic",{tcMin:13}).some(a=>a.code==="D10")).toBe(false);
  expect(searchArticles(searchIndex().entries,"organic",{tcMin:12,criterion:"inductive-onset"}).some(a=>a.code==="D10")).toBe(false);
  expect(searchArticles(searchIndex().entries,"organic",{tcMin:12,criterion:"resistive-onset"}).some(a=>a.code==="D10")).toBe(true);
+ expect(searchArticles(searchIndex().entries,"organic",{tcMin:10,criterion:"reported-transition-unspecified"}).some(a=>a.code==="D10")).toBe(true);
+ expect(searchArticles(searchIndex().entries,"organic",{tcMin:10,criterion:"resistive-transition"}).some(a=>a.code==="D10")).toBe(false);
  const md=await(await get(["articles",a.id,"markdown"])).text();
  expect(md).toContain("0.0248 to 0.0248 GPa");expect(md).toContain("0.0282 to 0.0282 GPa");
  expect(md).toContain("anion-ordering-temperature");expect(md).toContain("7mK/min");
@@ -1551,7 +1721,8 @@ it("binds recognized material names and curated aliases to the same record as nu
 it("keeps composition conventions and doping-series criteria intact across search and exports",async()=>{
  const a=articles().find(a=>a.code==="E2")!;
  const md=await(await get(["articles",a.id,"markdown"])).text();
- expect(md).toContain("y=2x");expect(md).toContain("factor-of-two mismatch");
+ expect(md).toContain("y=2x");expect(md).toContain("y=0.35");
+ expect(a.claims.find(c=>c.id==="scwiki-e2-claim-scope-2")?.sourceRelationship).toBe("mixed-source-and-local-derivation");
  expect(md).toContain("0.078");expect(md).toContain("final-version");
  expect(a.materialCases.find(c=>c.reportedTemperatureK===20)?.tcK).toBeNull();
  expect(a.materialCases.find(c=>c.tcK===23)?.criterion).toBe("series-maximum-multiple-criteria");
@@ -1619,7 +1790,12 @@ it("separates calibrated strain, magnetic midpoints and film resistive endpoints
  const md=await(await get(["articles",a.id,"markdown"])).text();
  expect(md).toContain("−2.0%/−1.6%");expect(md).toContain("−1.2%/−0.9%");expect(md).toContain("+1.9%/+1.8%");
  expect(md).toContain("10.1038/s41586-026-10335-8");expect(md).toContain("mΩ cm");
- expect(md).toContain("sample broke");expect(md).toContain("not retrieved");
+ expect(md).toContain("sample broke");expect(md).toContain("not a verified copy of the corrected journal version");
+ const ko=a.references.find(r=>r.id==="source-98849f3ad0a2df49")!;
+ expect(ko.verification.evidenceUrl).toBe("https://www.osti.gov/servlets/purl/2509524");
+ expect(searchArticles(index,"Ko A1",{tcMin:42.1,criterion:"resistive-onset"}).some(a=>a.code==="E4")).toBe(true);
+ expect(searchArticles(index,"Ko A1",{criterion:"zero-resistance"}).some(a=>a.code==="E4")).toBe(false);
+ expect(a.materialCases.every(c=>c.equilibrium==="unknown")).toBe(true);
  expect(md).not.toContain("undefined");expect(md).not.toContain("(#R");
  const data=await(await get(["search"],"?q=nickelate&tcMin=40&criterion=zero-resistance&pressure=ambient")).json();
  expect(data.results.some((r:{code:string})=>r.code==="E4")).toBe(false);
@@ -1821,6 +1997,16 @@ it("binds nickelate temperature thresholds to their sample criteria and preprint
  expect(a.materialCases.find(m=>m.sourceId===source.id)?.pressureGPa).toEqual({min:91.5,max:91.5});
  const md=await(await get(["articles",a.id,"sections","recent-structures-and-membranes"],"?format=markdown")).text();
  expect(md).toContain("99.5%");expect(md).toContain("not assigned to a precise searchable Tc record");
+ const math=await(await get(["articles",a.id,"sections","mathematical-assumptions"],"?format=markdown")).text();
+ expect(math).toContain("opposite majority populations");expect(math).toContain("two finite-field curves differ");
+ expect(math).toContain("not fits to nickelate data");expect(math).toContain("mixed-source-and-local-derivation");
+ const experiment=await(await get(["articles",a.id,"sections","experimental-criteria"],"?format=markdown")).text();
+ expect(experiment).toContain("perovskite precursor");expect(experiment).toContain("not a measured nickelate penetration depth");
+ const limits=await(await get(["articles",a.id,"sections","limits-and-disputes"])).json();
+ expect(limits.section.markdown).toContain("measurement temperature, not a new transition temperature");
+ expect(limits.section.markdown).toContain("long-range magnetic order is not established");
+ expect(a.claims.find(c=>c.id==="scwiki-d5-claim-scope-1")?.sourceIds).toContain("source-2337a5bf19bca4c4");
+ expect(a.claims.find(c=>c.id==="scwiki-d5-claim-limits-and-disputes-2")?.sourceRelationship).toBe("context-for-editorial-analysis");
 });
 
 
@@ -1979,4 +2165,30 @@ it("propagates the identified Mitrano publisher correction without certifying th
   const md=await(await get(["articles",a.id,"markdown"])).text();expect(md).toContain("24 February 2016");
  }
  const sources=await getAll("sources");expect(sources.sources.find((r:any)=>r.id===sid).updates[0].date).toBe("2016-02-24");
+});
+
+
+describe("SCWiki preparation and observation separation",()=>{
+ it("retains preparation provenance across full, projected and section exports without changing pressure filters",async()=>{
+  const a=(await(await get(["articles","scwiki-e10"])).json()).article;
+  expect(a.materialCases).toHaveLength(9);expect(a.materialCases.map((x:any)=>x.tcK)).toEqual([139,147,147,149,151,140,null,null,null]);
+  expect(a.materialCases.every((x:any)=>x.pressureRegime==="ambient"&&x.pressureGPa===null&&x.preparation.releaseRateGPaPerSecond===null)).toBe(true);
+  expect(a.materialCases[4].preparation.pressureGPa).toEqual({min:18.9,max:18.9});expect(a.materialCases[4].preparation.temperatureK).toBe(4.2);
+  for(const query of ["?fields=materialCases","?fields=summary"]){const p=(await(await get(["articles",a.id],query)).json()).article;expect(p.materialCases).toEqual(a.materialCases);expect(p.references.some((r:any)=>r.id===a.materialCases[4].preparation.sourceId)).toBe(true);}
+  const context=(await(await get(["articles",a.id,"sections","material-cases"])).json());expect(context.materialCases).toEqual(a.materialCases);
+  for(const path of [["articles",a.id,"markdown"],["articles",a.id,"sections","material-cases"]]){const md=await(await get(path,path.length===4?"?format=markdown":"")).text();for(const word of ["Preparation history","not measurement pressure","Unknown release rate is not zero","18.9 to 18.9 GPa","26.3 GPa"])expect(md).toContain(word);}
+  for(const [params,want]of [["pressure=ambient&tcMin=151",true],["pressure=high&tcMin=151",false],["pressure=ambient&criterion=zero-resistance&tcMin=151",false]]as const){const d=await(await get(["search"],"?q=Deng%20S4&"+params)).json();expect(d.results.some((x:any)=>x.id===a.id)).toBe(want);}
+  expect((await(await get(["articles","scwiki-f7"])).json()).article.materialCases[0]).not.toHaveProperty("preparation");
+ });
+ it("includes a distinct preparation source in material-section context",async()=>{
+  const a=articles().find(x=>x.code==="E10")!,record=a.materialCases[0],before=record.preparation!;
+  const different=a.references.find(x=>x.id!==record.sourceId)!.id;
+  try{record.preparation={...before,sourceId:different};const d=await(await get(["articles",a.id,"sections","material-cases"])).json();expect(d.sources.map((x:any)=>x.id)).toContain(different);expect(d.sources.map((x:any)=>x.id)).toContain(record.sourceId);}
+  finally{record.preparation=before;}
+ });
+ it("documents the optional nullable preparation contract and English agent guidance",async()=>{
+  const s=await(await get(["openapi.json"])).json();expect(s.info.version).toBe("1.6.0");expect(s.components.schemas.MaterialCase.properties.preparation.$ref).toBe("#/components/schemas/SamplePreparation");expect(s.components.schemas.MaterialCase.required).not.toContain("preparation");expect(s.components.schemas.SamplePreparation.properties.releaseRateGPaPerSecond.type).toContain("null");expect(s.paths['/search'].get.parameters.find((x:any)=>x.name==='pressure').description).toContain('Measurement pressure');
+  const Guide=(await import("@/app/scwiki/agent-guide/page")).default;const html=renderToStaticMarkup(<Guide/>);expect(html).toContain("Separate preparation from measurement");expect(html).toContain("Preparation temperature is not a critical temperature");
+  const llms=await(await(await import("@/app/scwiki/llms.txt/route")).GET()).text();expect(llms).toContain("materialCases[].preparation");expect(llms).toContain("Unknown release rate remains null");
+ });
 });

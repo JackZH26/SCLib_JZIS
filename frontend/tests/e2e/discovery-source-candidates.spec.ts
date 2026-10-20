@@ -16,7 +16,7 @@ for (const viewport of [{ name: "desktop", width: 1440, height: 1000 }, { name: 
     page.on("request", request => { if (new URL(request.url()).pathname.startsWith("/research-hypotheses/details/")) detailRequests.push(request.url()); });
     page.on("request", request => { if (new URL(request.url()).pathname.startsWith("/research-hypotheses/evidence-cards/")) cardRequests.push(request.url()); });
     page.on("pageerror", error => pageErrors.push(error.message));
-    await page.goto("/discovery");
+    await page.goto("/discovery/candidates");
     await expect(page.getByRole("heading", { name: "Source-computed candidate materials" })).toBeVisible();
     await page.getByRole("button", { name: "Reject all", exact: true }).click();
     const directory = page.locator("#discovery-source-candidates");
@@ -74,7 +74,7 @@ for (const viewport of [{ name: "desktop", width: 1440, height: 1000 }, { name: 
 test("320px: horizontally scrolled Details keeps verified source evidence in view", async ({ page }, info) => {
   await page.setViewportSize({ width: 320, height: 844 });
   await page.route("https://api.jzis.org/**", route => route.abort("blockedbyclient"));
-  await page.goto("/discovery");
+  await page.goto("/discovery/candidates");
   await page.getByRole("button", { name: "Reject all", exact: true }).click();
   const directory = page.locator("#discovery-source-candidates");
   await expect(directory.locator("tr[data-source-candidate]")).toHaveCount(24);
@@ -126,7 +126,7 @@ test("320px: horizontally scrolled Details keeps verified source evidence in vie
 test("specific source-state phase captions retain formula and source identity", async ({ page }, info) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.route("https://api.jzis.org/**", route => route.abort("blockedbyclient"));
-  await page.goto("/discovery");
+  await page.goto("/discovery/candidates");
   await page.getByRole("button", { name: "Reject all", exact: true }).click();
   const directory = page.locator("#discovery-source-candidates");
   for (const [state, formula, caption] of [
@@ -149,7 +149,7 @@ test("specific source-state phase captions retain formula and source identity", 
 test("selected-control discordance remains scoped when switching to the room-temperature target", async ({ page }) => {
   await page.setViewportSize({ width: 1440, height: 1000 });
   await page.route("https://api.jzis.org/**", route => route.abort("blockedbyclient"));
-  await page.goto("/discovery");
+  await page.goto("/discovery/candidates");
   await page.getByRole("button", { name: "Reject all", exact: true }).click();
   const directory = page.locator("#discovery-source-candidates");
   await directory.getByRole("searchbox", { name: "Find a source candidate" }).fill("ScZr2");

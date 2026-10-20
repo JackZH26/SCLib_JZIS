@@ -162,6 +162,30 @@ describe("Reported Tc Timeline accessible UI", () => {
     expect(screen.getByText(/chart is zoomed to 0–1 K/)).toBeInTheDocument();
     expect(screen.getByLabelText("Timeline traces")).toHaveTextContent('"range":[0,1]');
   });
+  it("shares chart ranges without hiding received records or removing server filters", () => {
+    window.history.replaceState(null, "", "/timeline?family=elemental");
+    render(<TcTimeline points={[point("early", { year: 1911 }), point("late", { year: 2026 })]} coverage={null} />);
+    fireEvent.change(screen.getByLabelText("Chart start year"), { target: { value: "2000" } });
+    fireEvent.change(screen.getByLabelText("Chart end year"), { target: { value: "2020" } });
+    fireEvent.click(screen.getByRole("button", { name: "Apply chart range" }));
+    expect(screen.getByLabelText("Timeline traces")).toHaveTextContent('"range":[1999,2021]');
+    expect(window.location.search).toContain("family=elemental");
+    expect(window.location.search).toContain("view_from=2000");
+    expect(within(screen.getByRole("table")).getByText("TEST-early")).toBeInTheDocument();
+    expect(within(screen.getByRole("table")).getByText("TEST-late")).toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button", { name: "Reset chart range" }));
+    expect(window.location.search).toBe("?family=elemental");
+  });
+  it("restores a shared range and rejects reversed chart years", () => {
+    window.history.replaceState(null, "", "/timeline?view_from=2000&view_to=2020&tc_scale=log");
+    render(<TcTimeline points={[point()]} coverage={null} />);
+    expect(screen.getByLabelText("Timeline traces")).toHaveTextContent('"range":[1999,2021]');
+    expect(screen.getByLabelText("Temperature view")).toHaveValue("log");
+    fireEvent.change(screen.getByLabelText("Chart start year"), { target: { value: "2025" } });
+    fireEvent.click(screen.getByRole("button", { name: "Apply chart range" }));
+    expect(screen.getByRole("alert")).toHaveTextContent("start no later than the end");
+    expect(screen.getByLabelText("Timeline traces")).toHaveTextContent('"range":[1999,2021]');
+  });
   it("escapes malicious source strings in Plotly traces and uses non-color origin symbols", () => {
     render(<TcTimeline points={[point("a", { material: "<script>unsafe</script>", paper_id: "doi:<b>unsafe</b>" }), point("b", { tc_kelvin: 10, knowledge_origin: "Computed" })]} coverage={null} />);
     const plot = screen.getByLabelText("Timeline traces");

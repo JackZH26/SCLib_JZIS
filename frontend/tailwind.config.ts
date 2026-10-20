@@ -12,37 +12,37 @@ const config: Config = {
       colors: {
         // Existing data components use these sage aliases.
         slate: {
-          50:  "#f0f5f0", // --bg         page background
-          100: "#e8f0e8", // --surface    section-alt, code bg
-          200: "#d4e4d4", // --border     default borders
+          50:  "#f7f5ef", // --bg         page background
+          100: "#e8eddf", // --surface    section-alt, code bg
+          200: "#d8ded2", // --border     default borders
           300: "#bed3be", // stronger borders / input rings
           400: "#9aaf9a", // disabled / plot grid
-          500: "#6b7c6b", // --text-tertiary
-          600: "#5a6b5a", // --text-secondary
+          500: "#637166", // --text-tertiary
+          600: "#536257", // --text-secondary
           700: "#3f4f3f", // button hover (lightens toward accent)
-          800: "#3A7D5C", // --accent     buttons use this for hover
-          900: "#24503A", // --accent-deep  primary button bg + strong text
+          800: "#2d654f", // --accent     buttons use this for hover
+          900: "#204B3C", // --accent-deep  primary button bg + strong text
         },
         // Semantic aliases for the few places we want to reach directly
         // (gradient endpoints, accent links, badge backgrounds).
         sage: {
-          bg:      "#f0f5f0",
-          surface: "#e8f0e8",
+          bg:      "#f7f5ef",
+          surface: "#e8eddf",
           card:    "#ffffff",
-          border:  "#d4e4d4",
-          ink:     "#2d3b2d",
-          muted:   "#5a6b5a",
-          tertiary:"#6b7c6b",
+          border:  "#d8ded2",
+          ink:     "#192720",
+          muted:   "#536257",
+          tertiary:"#637166",
         },
         accent: {
-          DEFAULT: "#3A7D5C",
-          deep:    "#24503A",
+          DEFAULT: "#2d654f",
+          deep:    "#204B3C",
           light:   "#4ea27a",
         },
       },
       fontFamily: {
         sans: [
-          "var(--font-inter)",
+          "var(--font-manrope)",
           "-apple-system",
           "BlinkMacSystemFont",
           "Inter",
@@ -64,8 +64,8 @@ const config: Config = {
         "sage-lg": "0 8px 24px rgba(36, 80, 58, 0.14)",
       },
       backgroundImage: {
-        "sage-gradient":      "linear-gradient(135deg, #3A7D5C, #24503A)",
-        "sage-gradient-text": "linear-gradient(135deg, #3A7D5C, #24503A)",
+        "sage-gradient":      "linear-gradient(135deg, #2d654f, #204B3C)",
+        "sage-gradient-text": "linear-gradient(135deg, #2d654f, #204B3C)",
       },
     },
   },

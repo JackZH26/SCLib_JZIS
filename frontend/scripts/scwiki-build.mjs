@@ -3,6 +3,12 @@ import path from "node:path";
 import {createHash} from "node:crypto";
 import katex from "katex";
 import {articleIdPattern,sectionAnchor,validateExtensionInventory,validateExtensionArticle} from "./scwiki-publication.mjs";
+import {validateReferenceIdentities} from "./scwiki-reference-identity.mjs";
+import {validatePreparation,preparationMarkdown} from "./scwiki-preparation.mjs";
+import {validateClaimEvidence} from "./scwiki-claim-evidence.mjs";
+
+import {validateResearch} from "./scwiki-research-model.mjs";
+validateResearch(JSON.parse(readFileSync(path.join(process.cwd(),"content/scwiki/research-issues.json"),"utf8")));
 
 const directory=path.join(process.cwd(),"content/scwiki");
 const sha=value=>createHash("sha256").update(value).digest("hex");
@@ -69,6 +75,7 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  }
  for(const claim of meta.claims)if(!sectionIds.has(claim.sectionId)||!claim.sourceIds.length||claim.sourceIds.some(id=>!refIds.has(id))||!claim.conditions)fail(folder+" claim mapping "+claim.id);
  for(const c of meta.claims){
+  validateClaimEvidence(c);
   if(c.sourceRelationship!==undefined&&(!["direct-support","context-for-local-derivation","context-for-editorial-analysis","mixed-source-and-local-derivation"].includes(c.sourceRelationship)||typeof c.derivationNote!=="string"||!c.derivationNote.trim()))fail(folder+" invalid claim source relationship "+c.id);
   if(c.derivationNote!==undefined&&c.sourceRelationship===undefined)fail(folder+" missing claim source relationship "+c.id);
  }
@@ -78,6 +85,7 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
   catch(error){fail(folder+" invalid math: "+error.message)}
  }
  for(const record of meta.materialCases){
+  validatePreparation(record.preparation,refIds);
   if(record.aliases!==undefined&&(!Array.isArray(record.aliases)||record.aliases.some(a=>typeof a!=="string"||!a.trim())))fail(folder+" invalid material aliases");
   const pressure=record.pressureGPa;
   if(pressure!==null&&(typeof pressure!=="object"||Array.isArray(pressure)||!Number.isFinite(pressure.min)||!Number.isFinite(pressure.max)||pressure.min<0||pressure.max<pressure.min))fail(folder+" invalid pressure range");
@@ -90,9 +98,10 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
   if(record.recordType!=="experiment"&&record.tcK!==null)fail(folder+" non-experimental Tc cannot enter experimental records");
   if(record.tcK!==null&&meta.references.find(r=>r.id===record.sourceId)?.retraction)fail(folder+" retracted source cannot supply an experimental Tc");
  }
- const conditions=meta.materialCases.length===0?"## Material cases\n\nNo sample-specific material records are included in this article. Model results are not experimental transition temperatures.":"## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n"+
+ let conditions=meta.materialCases.length===0?"## Material cases\n\nNo sample-specific material records are included in this article. Model results are not experimental transition temperatures.":"## Material cases\n\nValues describe individual reports, not a ranking. Unknown means the checked source did not supply the field at this review scope.\n\n"+
  "| Material and sample | Reported temperature | Criterion | Probe | Pressure | State | Evidence |\n|---|---|---|---|---|---|---|\n"+
  meta.materialCases.map(r=>"| "+r.formula+(r.aliases?.length?" (aliases: "+r.aliases.join(", ")+")":"")+"; "+r.sample+" | "+(r.reportedTemperatureK===null?r.temperatureNote:r.reportedTemperatureK+" K; "+r.temperatureNote)+" | "+r.temperatureKind+"; "+r.criterion+" | "+r.probe+" | "+r.pressureRegime+"; "+(r.pressureGPa?r.pressureGPa.min+" to "+r.pressureGPa.max+" GPa":"unknown GPa")+" | "+r.equilibrium+" | "+r.recordType+"; [source](#ref-"+r.sourceId+") |").join("\n");
+ conditions+=preparationMarkdown(meta.materialCases);
  const referenceText=meta.references.map((r,i)=>"### Ref "+r.id+"\n\n[R"+(i+1)+"] "+r.title+" ("+(r.year??"Publication date unknown")+"). ["+(r.doi?"DOI "+r.doi:"Source publication")+"]("+r.url+"). Publication: "+r.publicationStatus+". "+(r.retraction?"Retracted: "+r.retraction.retractedAt+". [Retraction notice]("+r.retraction.evidenceUrl+"). ":"")+"Check: "+r.verification.scope+". Checked: "+r.verification.checkedAt+". "+(r.verification.note??"")).join("\n");
  // Export v4 also retains each material record's probe and measurement protocol.
  const revision=sha("scwiki-export-v4\n"+JSON.stringify(meta)+"\n"+body).slice(0,20);
@@ -103,10 +112,16 @@ for(const folder of readdirSync(path.join(directory,"articles")).sort()){
  articles.push({...meta,body,revision,sections:[...chunks,{id:"material-cases",title:"Material cases",markdown:conditions}],markdown,wordCount:body.split(/\s+/).length});
 }
 if(articles.length!==expectedIds.size||articles.some(a=>!expectedIds.has(a.id)))fail("published articles do not match the publication inventory");
+validateReferenceIdentities(articles);
 for(const a of articles)for(const code of a.relatedCodes)if(!articles.some(other=>other.code===code))fail("unpublished related article "+code);
 const revision=sha(articles.map(a=>a.revision).join("\n")).slice(0,20);
 const catalogue={schemaVersion:"1.0",revision,articles};
-const entries=articles.map(({id,topicId,code,slug,title,summary,aliases,evidenceTypes,editorialStatus,revision,materialCases,references,body})=>({id,topicId,code,slug,title,summary,aliases,evidenceTypes,editorialStatus,revision,materialCases,dois:references.map(r=>r.doi).filter(doi=>typeof doi==="string"),text:body.replace(/\[[^\]]+\]\([^)]+\)/g,"").replace(/[$#*_\x60]/g,"")}));
+const searchText=value=>value.replace(/\[[^\]]+\]\([^)]+\)/g,"").replace(/[$#*_\x60]/g,"");
+const entries=articles.map(({id,topicId,code,slug,title,summary,aliases,evidenceTypes,editorialStatus,revision,materialCases,references,body,sections})=>{
+ const text=searchText(body);
+ const passages=sections.flatMap(section=>{const part=searchText(section.markdown),start=text.indexOf(part);return start<0?[]:[{id:section.id,title:section.title,start,end:start+part.length}];});
+ return {id,topicId,code,slug,title,summary,aliases,evidenceTypes,editorialStatus,revision,materialCases,dois:references.map(r=>r.doi).filter(doi=>typeof doi==="string"),text,kind:"article",sections:passages};
+});
 for(const[name,value]of[["catalogue.json",catalogue],["search-index.json",{schemaVersion:"1.0",revision,entries}]]){
  const data=JSON.stringify(value,null,2)+"\n",filename=path.join(directory,name);
  if(process.argv.includes("--check")){if(readFileSync(filename,"utf8")!==data)fail(name+" is stale");}

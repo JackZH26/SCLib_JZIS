@@ -29,14 +29,14 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-19",
+  "modifiedAt": "2026-10-20",
   "review": {
-    "checkedAt": "2026-10-19",
-    "scope": "Selected fcc Cs3C60 pressure/magnetometry, fulleride model equations, 2026 intercalation transport criteria, prior scoped driven-state readings and complete indexed retraction notice. Publisher notice identifying the 24 February 2016 Mitrano caption correction checked separately on 19 October 2026.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected fcc Cs3C60 pressure/magnetometry, fulleride model equations, 2026 intercalation transport criteria, prior scoped driven-state readings and complete indexed retraction notice. Publisher notice identifying the 24 February 2016 Mitrano caption correction checked separately on 19 October 2026. Follow-up ideal filling versus actual multiphase sample and selected final Budden Fig.4/text.",
     "limitations": [
       "Full scientific acceptance, complete final-version comparisons and raw-data reproduction remain open.",
       "1991 discoveries remain abstract-level; 2008 A15 methods have not been reviewed.",
-      "The 2026 supplement and transient-state final-version details remain outside this check.",
+      "The 2026 supplement and complete transient-state supplement and raw data remain outside this check.",
       "No computed DMFT phase diagram, microscopic-mechanism uniqueness or device qualification is claimed."
     ]
   },
@@ -115,9 +115,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-published-pressure-magnetism-methods",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://cienciaescolar.wordpress.com/wp-content/uploads/2010/07/nature09120.pdf",
-        "note": "Original Nature466,221–225, issue8July2010, hosted as an unchanged paper PDF. Selected pp221–222, Fig3 caption p224 and online magnetic Methods read; p222 visually inspected. Multiphase sample, pressure calibration and shielding criteria retained. Complete supplement and raw data not reanalyzed."
+        "note": "Original Nature466,221–225, issue8July2010, hosted as an unchanged paper PDF. Selected pp221–222, Fig3 caption p224 and online magnetic Methods read; p222 visually inspected. Multiphase sample, pressure calibration and shielding criteria retained. Complete supplement and raw data not reanalyzed. Follow-up selected published p.221: refined Cs2.901(6)C60, about86%fcc fraction, minority phases and ambient-pressure magnetic insulating behavior; not a new whole-paper review."
       }
     },
     {
@@ -129,9 +129,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-model-equations-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/0809.0910v1",
-        "note": "Authorv1 submitted4September2008; journal19June2009. Selected p5 Eq1–3, p8 model discussion and p9 heuristic Cooper amplitude read; p5 visually inspected. Independent n=3 multiplets and illustrative amplitude/unit checks, not a DMFT reproduction. Final-version comparison and complete review remain open."
+        "note": "Authorv1 submitted4September2008; journal19June2009. Selected p5 Eq1–3, p8 model discussion and p9 heuristic Cooper amplitude read; p5 visually inspected. Independent n=3 multiplets and illustrative amplitude/unit checks, not a DMFT reproduction. Final-version comparison and complete review remain open. Follow-up author-v1 p.2 introduction: three donated electrons half-fill the molecular t1u manifold; this count alone does not establish the electronic phase."
       }
     },
     {
@@ -166,10 +166,10 @@
       "url": "https://doi.org/10.1038/s41567-020-01148-1",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "earlier-author-manuscript-scoped-check",
-        "checkedAt": "2026-10-18",
-        "evidenceUrl": "https://arxiv.org/pdf/2002.12835v1",
-        "note": "Reused B7/A1 scoped primary reading, with the same version and methods limitations. Budden selected PDF pp.8–10,29–33; p.9 Fig4 visually inspected. Two-terminal transient probe, static four-terminal contact calibration and100K base temperature distinguished. Publisher PDF endpoints unavailable; raw data and complete final-version comparison pending."
+        "scope": "selected-final-figure-and-transport-calibration",
+        "checkedAt": "2026-10-20",
+        "evidenceUrl": "https://pure.mpg.de/rest/items/item_3196913_5/component/file_3319164/content",
+        "note": "Cached final published paper p.615 Fig.4/caption and text read; figure pixels visually inspected.200ps optical and75ps transport pumps at100K,approximately25mJ/cm2; optical zero-frequency extrapolation versus transient two-terminal contact-calibrated resistance and1ns voltage probe. Supersedes earlier-manuscript-only scope for these passages. Web refetch returned403; cached final artifact retained. Complete supplement, raw-data refit and full author/final version comparison remain open."
       }
     },
     {
@@ -224,14 +224,17 @@
     {
       "id": "scwiki-d9-claim-scope-1",
       "sectionId": "scope",
-      "statement": "Alkali-doped fullerides join molecular vibrations, narrow electronic bands and strong local interactions in one material family. In ideal A₃C₆₀, three donated electrons half-fill the three molecular t₁ᵤ orbitals, whose spin capacity is six. Potassium, rubidium and cesium compounds must be identified by stoichiometry, crystal structure and preparation. Pressure-induced equilibrium superconductivity and light-driven responses are separate evidence classes.",
+      "statement": "Alkali-doped fullerides combine molecular vibrations, narrow electronic bands and strong local interactions. Ideal A₃C₆₀ has three donated electrons in a molecular t₁ᵤ manifold with six spin-orbital states: half-filling describes electron counting, not a guarantee of metallic transport or superconductivity. The same nominal Cs₃C₆₀ composition supports fcc and A15 packings with different magnetic and pressure-dependent superconducting behavior. Specify composition, structure, preparation and measurement conditions before comparing temperatures. Pressure-induced equilibrium superconductivity and optically driven responses are separate evidence classes.\n\nNominal composition is not a sample assay. Ganin's fcc-rich powder had refined composition Cs₂.₉₀₁₍₆₎C₆₀ and an fcc fraction of about 86%, with minority phases. Its ambient-pressure magnetic insulating behavior illustrates why three donated electrons alone cannot define the phase. These preparation and phase-fraction qualifications accompany the idealized A₃C₆₀ description.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-e2b9d469a7c556df",
+        "source-5e6d3e7ed715ad6a",
         "source-07be806c0002c690"
       ],
-      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
-      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+      "conditions": "Ideal three-electron t1u manifold; actual fcc-rich Cs3C60 powder is multiphase, refined Cs2.901(6)C60. Pressure, polymorph, probe and optical excitation must remain attached.",
+      "verificationScope": "Selected Capone author-v1 introduction, Ganin published p.221 and Budden final p.615/Fig.4; not a full review or raw-data reproduction.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Capone supplies the ideal molecular electron count; Ganin supplies the polymorph, refined composition and phase-fraction evidence; Budden supplies the driven experiment. Separating nominal filling, measured composition and equilibrium/driven evidence is editorial synthesis, not a new phase calculation."
     },
     {
       "id": "scwiki-d9-claim-scope-2",
@@ -326,14 +329,16 @@
     {
       "id": "scwiki-d9-claim-limits-and-disputes-1",
       "sectionId": "limits-and-disputes",
-      "statement": "Mitrano's optical study and Budden's longer-lived driven response concern pumped K₃C₆₀. A finite-frequency inductive response and suppressed transient resistance constrain the nonequilibrium state, but do not by themselves establish an equilibrium thermodynamic transition. Budden's 100 K operating condition is therefore recorded as a transient-response temperature with no equilibrium Tc. Its pulsed two-terminal readout and static four-terminal contact calibration are distinct measurement steps. Pulse conditions, delay, lifetime and alternative conductivity models remain essential.",
+      "statement": "Mitrano's optical study and Budden's longer-lived driven response concern pumped K₃C₆₀. A finite-frequency inductive response and suppressed transient resistance constrain the nonequilibrium state, but do not by themselves establish an equilibrium thermodynamic transition. Budden's final Figure 4 separates two measurements at a 100 K base temperature and approximately 25 mJ cm⁻² pump fluence:\n\n| Measurement | What the reported value means |\n|---|---|\n| Optical, Fig. 4a; 200 ps pump | Zero-frequency resistivity extrapolated from a Drude–Lorentz fit to transient optical conductivity; error bars reflect the fit confidence interval. |\n| Electrical, Fig. 4b; 75 ps pump | Transient two-terminal resistance after contact correction from a separate static four-terminal measurement; the shaded band estimates calibration error. |\n\nThe electrical readout uses a 1 ns voltage probe pulse. The corrected resistance is compatible with zero within the stated calibration uncertainty, and recovers on a tens-of-nanoseconds timescale. This supports the authors' assignment of a metastable superconducting state; it does not turn the 100 K measurement condition into an equilibrium Tc. Neither the pump duration nor the probe duration is the state lifetime. Both records retain `transient-response` temperatures with no equilibrium Tc. Complete supplement review, raw-data refitting and comparison of alternative conductivity models remain open.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-6ee3670220e24ff1",
         "source-07be806c0002c690"
       ],
-      "conditions": "Stoichiometry, polymorph, pressure, probe and criterion are distinct; transient and magnetic temperatures are not equilibrium Tc.",
-      "verificationScope": "Selected original passages, dated retraction notice and bounded model algebra; full scientific acceptance remains open."
+      "conditions": "Budden final Fig.4,100K base,approximately25mJ/cm2,200ps optical/75ps transport pumps; electrical1ns voltage probe; optical extrapolation and contact-corrected transient transport are distinct.",
+      "verificationScope": "Selected final published Fig.4/caption and p.615 text with figure pixels inspected; complete supplement and raw-data fits not checked.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Budden final Fig.4/caption and text supply distinct fit/calibration errors, 200ps and75ps pumps, 1ns voltage probe,100K base and transient recovery. Exclusion from equilibrium Tc rankings is an editorial classification; it does not claim an independent adjudication of the driven-state mechanism."
     },
     {
       "id": "scwiki-d9-claim-limits-and-disputes-2",
@@ -385,6 +390,11 @@
       "description": "Identified the previously unspecified Mitrano update as the publisher’s 24 February 2016 correction of a truncated Figure 4 caption sentence in the advance-online PDF.",
       "sourceId": "source-6ee3670220e24ff1",
       "scope": "Correction-notice identity only; earlier manuscript limits, full version comparison and raw-data limitations remain."
+    },
+    {
+      "id": "scwiki-d9-correction-filling-and-final-pump-probes",
+      "description": "Distinguish ideal half-filling from refined composition and phase fraction; replace earlier-manuscript-only Budden scope with selected final Fig.4, separate optical extrapolation from contact-calibrated transport, and retain100K as transient base temperature.",
+      "scope": "D9 body and machine-readable claims/material records; no new equilibrium transition and no change to the fixed source repository."
     }
   ],
   "equationChecks": [
@@ -592,17 +602,37 @@
     {
       "id": "scwiki-d9-material-10",
       "formula": "K3C60",
-      "sample": "Budden optically driven specimen",
+      "sample": "Budden final Fig.4b optically driven K3C60 pellet",
       "recordType": "experiment",
       "reportedTemperatureK": 100,
       "tcK": null,
       "temperatureKind": "transient-response",
-      "temperatureNote": "Operating temperature of driven response, not equilibrium thermodynamic Tc.",
+      "temperatureNote": "100K base; approximately25mJ/cm2 fluence and75ps pump. Contact-corrected resistance compatible with zero within calibration uncertainty. Transient recovery is not an equilibrium transition; pump/probe duration is not lifetime.",
       "criterion": "driven-resistance-suppression",
       "pressureRegime": "ambient",
       "pressureGPa": null,
       "equilibrium": "transient",
-      "probe": "Pulsed two-terminal readout with separate static four-terminal calibration",
+      "probe": "Transient two-terminal transport;1ns voltage probe; static four-terminal contact calibration",
+      "sourceId": "source-07be806c0002c690",
+      "aliases": [
+        "fulleride",
+        "fullerides"
+      ]
+    },
+    {
+      "id": "scwiki-d9-material-11",
+      "formula": "K3C60",
+      "sample": "Budden final Fig.4a optically driven K3C60 optical measurement",
+      "recordType": "experiment",
+      "reportedTemperatureK": 100,
+      "tcK": null,
+      "temperatureKind": "transient-response",
+      "temperatureNote": "100K base; approximately25mJ/cm2 fluence and200ps pump. Error bars are fit confidence intervals. Extrapolated transient resistivity is not a direct equilibrium DC transport measurement or equilibrium Tc.",
+      "criterion": "driven-optical-zero-frequency-extrapolation",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "transient",
+      "probe": "Drude-Lorentz fit to transient optical conductivity, extrapolated to zero frequency",
       "sourceId": "source-07be806c0002c690",
       "aliases": [
         "fulleride",

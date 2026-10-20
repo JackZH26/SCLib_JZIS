@@ -29,10 +29,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T09:56:38.868362+00:00",
+  "modifiedAt": "2026-10-19T14:45:44.059096+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected topology, boundary-current and optical manuscripts; kagome muon/STM passages; inherited UPt3 and Sr2RuO4 scoped evidence; independent lattice and angular checks.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected topology, boundary-current and optical manuscripts; kagome muon/STM passages; inherited UPt3 and Sr2RuO4 scoped evidence; independent lattice and angular checks. Follow-up: distinguish KV3Sb5 zero-field and transverse-field responses; check a local three-dimensional slice example.",
     "limitations": [
       "Full scientific acceptance, complete final-version comparisons and raw-data review remain open.",
       "Fixed-gap lattice topology and sharp-edge continuum currents are not realistic material calculations.",
@@ -131,9 +131,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-manuscript-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://arxiv.org/pdf/1512.01151v2",
-        "note": "Kallin and Berlinsky, version 2 April 2016. Selected pp. 5–7 and 15–17: multiband formalism, half-quantum vortices and optical response. Historical candidate assignments are not current confirmations."
+        "note": "Kallin and Berlinsky, version 2 April 2016. Selected pp. 5–7 and 15–17: multiband formalism, half-quantum vortices and optical response. Historical candidate assignments are not current confirmations. Follow-up: III.2, Eqs.16-21, edge modes versus nonquantized charge current and screening. Local stacked-slice example is not attributed to this review."
       }
     },
     {
@@ -187,9 +187,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-manuscript-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://arxiv.org/pdf/2106.13443v2",
-        "note": "Selected pp. 2–3 and 6 plus experimental-methods passages; Fig. 1 on p. 2 visually checked. December 2021 author version 2, published February 2022. Nuclear/electronic and charge/superconducting distinctions retained; full final-version/data review open."
+        "note": "Selected pp. 2–3 and 6 plus experimental-methods passages; Fig. 1 on p. 2 visually checked. December 2021 author version 2, published February 2022. Nuclear/electronic and charge/superconducting distinctions retained; full final-version/data review open. Follow-up: v2 text, Magnetic Response Across Charge Order, Unconventional Superconductivity, Eq.1, Fig.1/3 captions and Methods. Gamma versus transverse Gaussian damping distinguished. Publisher page was inaccessible; no new final-version or figure-pixel review."
       }
     },
     {
@@ -256,7 +256,9 @@
         "source-3c7aa9b4c8da3abf"
       ],
       "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "The three-band model motivates a local fixed-phase vector; the common-phase test is an author illustration, not the source phase diagram."
     },
     {
       "id": "scwiki-c7-claim-mathematical-assumptions-1",
@@ -279,7 +281,9 @@
         "source-69d33a869fbbb0c6"
       ],
       "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The references supply topology context; the stated lattice convention and Chern calculation are local, not reproduced material results."
     },
     {
       "id": "scwiki-c7-claim-mathematical-assumptions-3",
@@ -290,7 +294,9 @@
         "source-a33c639b7db4f05a"
       ],
       "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Local mesh and analytic checks of the declared lattice Hamiltonian, not a primary-paper numerical replication."
     },
     {
       "id": "scwiki-c7-claim-mathematical-assumptions-4",
@@ -301,7 +307,9 @@
         "source-25d6a80b561d5ad2"
       ],
       "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "The ideal sharp-edge equations and assumptions are reported theory; their numerical angular quadrature is a local check."
     },
     {
       "id": "scwiki-c7-claim-mathematical-assumptions-5",
@@ -342,13 +350,15 @@
     {
       "id": "scwiki-c7-claim-experimental-criteria-3",
       "sectionId": "experimental-criteria",
-      "statement": "Mielke and colleagues studied KV3Sb5, not the whole AV3Sb5 family interchangeably. Their selected manuscript shows an increased muon relaxation below the charge-order scale near 80 K that remains approximately constant across the superconducting transition near 1.1 K. They explicitly discuss electric-field-gradient contributions and use high-field measurements to support an electronic interpretation. The methods report residual-field compensation better than 30 mG; a 50 G longitudinal field decouples the relaxation. These are charge-order constraints, not a new superconducting chirality onset at 80 K.",
+      "statement": "Mielke and colleagues studied KV3Sb5, not the whole AV3Sb5 family interchangeably. The additional zero-field exponential relaxation rate $\\Gamma$ rises below charge order near 80 K and stays approximately constant across the superconducting transition near 1.1 K. This is not a statement about every muon signal: field-cooled transverse-field measurements at 5 and 10 mT show increased Gaussian damping below that superconducting transition, attributed to the flux-line lattice. Zero-field data alone do not establish time-reversal breaking: nuclear and electric-field-gradient effects can contribute. The authors combine zero-field and high-field evidence for their charge-order interpretation without resolving the orbital-current pattern. Residual-field compensation better than 30 mG and longitudinal decoupling at 50 G belong to the zero-field controls, not the transverse-field vortex measurement. The 80 K feature is not a superconducting chirality onset.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-484da7abcc165cd3"
       ],
-      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "conditions": "KV3Sb5 crystal measurements, not an AV3Sb5-family assignment. Separate zero-field exponential Gamma from field-cooled transverse-field Gaussian damping at 5 and 10 mT; charge order near 80 K is not Tc near 1.1 K.",
+      "verificationScope": "Selected primary text and local slice calculation checked 2026-10-19; no independent review, raw-data reanalysis or final-version equivalence claimed.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Selected versioned experimental text separates zero-field exponential relaxation, transverse-field vortex damping and charge-order interpretation; no raw-data refit."
     },
     {
       "id": "scwiki-c7-claim-experimental-criteria-4",
@@ -370,7 +380,9 @@
         "source-057c43c86174f961"
       ],
       "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Conjugation invariance is local algebra; the cited spectroscopy motivates the evidential distinction, not a derivation of the identity."
     },
     {
       "id": "scwiki-c7-claim-limits-and-disputes-2",
@@ -387,15 +399,15 @@
     {
       "id": "scwiki-c7-claim-limits-and-disputes-3",
       "sectionId": "limits-and-disputes",
-      "statement": "The local topology check is a fully gapped two-dimensional model. Nodal three-dimensional superconductors may instead require momentum-resolved invariants; a single integer cannot simply be carried over. Edge spectra, thermal transport, optical response and screened equilibrium charge currents require distinct calculations. Complete scientific acceptance, final-version comparisons, raw-data review and material-specific modelling remain open.",
+      "statement": "The preceding Chern numbers apply only to gapped two-dimensional Hamiltonians. A local three-dimensional extension illustrates the restriction: add $-2\\cos k_z$ to $h_z$ and fix $\\mu=-4$. Each fixed-$k_z$ slice has $\\mu_{\\rm eff}=-4+2\\cos k_z$. In the same occupied-band convention, $C(k_z)=-\\chi$ for $|k_z|<\\pi/2$ and zero for $\\pi/2<|k_z|\\leq\\pi$; it is undefined on the nodal slices $k_z=\\pm\\pi/2$. Solving all three components of $\\mathbf{h}=0$ gives only $(0,0,\\pm\\pi/2)$. Sixteen numerical comparisons and this analytic zero classification check the chosen model, not a material or a calculation reproduced from the references. Thus a single gapped two-dimensional integer cannot be assigned unchanged to this gapless three-dimensional example. Edge spectra, thermal transport, optical response and screened equilibrium charge currents still require their own calculations. Complete scientific acceptance, final-version comparisons, raw-data review and material-specific modelling remain open.",
       "evidenceType": "theory",
       "sourceIds": [
-        "source-a33c639b7db4f05a",
-        "source-69d33a869fbbb0c6",
-        "source-25d6a80b561d5ad2"
+        "source-69d33a869fbbb0c6"
       ],
-      "conditions": "Explicit band, Berry and boundary conventions; fixed-gap models are not material fits. Experimental temperatures retain sample, probe and phase distinctions.",
-      "verificationScope": "Named primary passages and independent examples only; complete scientific acceptance remains open."
+      "conditions": "Local spinless fixed-gap lattice: t=t_z=Delta=1, mu=-4, chi=+/-1, kz in [-pi,pi], occupied-band A=i<u-|grad u-> and oriented kx,ky. Chern numbers exclude gapless slices.",
+      "verificationScope": "Selected primary text and local slice calculation checked 2026-10-19; no independent review, raw-data reanalysis or final-version equivalence claimed.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "The stacked lattice and slice calculation are new author illustrations. References supply topology and response context; no actual material invariant or measured current is inferred."
     },
     {
       "id": "scwiki-c7-claim-discovery-implications-1",
@@ -430,6 +442,12 @@
       "description": "Kagome charge-order response, surface superconductivity and proposed roton-PDW interpretation retain distinct evidential roles.",
       "sourceId": "source-057c43c86174f961",
       "scope": "Selected methods/results; no universal chirality verdict."
+    },
+    {
+      "id": "scwiki-c7-correction-4",
+      "description": "Specified zero-field exponential Gamma rather than all muon relaxation; retained the separate transverse-field superconducting damping increase.",
+      "sourceId": "source-484da7abcc165cd3",
+      "scope": "Selected author manuscript v2 text and captions, not raw-data refitting or complete final-version comparison."
     }
   ],
   "equationChecks": [
@@ -447,6 +465,11 @@
       "targetSectionId": "limits-and-disputes",
       "tex": "|\\Delta|^2=|\\Delta^*|^2",
       "check": "Four complex spatial examples; three separate global-phase tests, without a microscopic stability claim."
+    },
+    {
+      "targetSectionId": "limits-and-disputes",
+      "tex": "C(k_z)=-\\chi\\quad (|k_z|<\\pi/2)",
+      "check": "Local stacked lattice, 16 Berry-link versus sphere-area comparisons on gapped slices, analytic classification of all four in-plane sine-zero candidates, and two gap-closing points; no Chern number on nodal slices."
     }
   ],
   "materialCases": [
@@ -458,7 +481,7 @@
       "tcK": null,
       "reportedTemperatureK": 80,
       "temperatureKind": "unassigned",
-      "temperatureNote": "Approximate charge-order scale; not superconducting Tc. Selected relaxation stays approximately constant across the separate low-temperature transition.",
+      "temperatureNote": "Approximate charge-order scale, not superconducting Tc. The additional zero-field exponential Gamma remains approximately constant across Tc near 1.1 K; transverse-field vortex damping increases below Tc and is a different observable.",
       "criterion": "charge-order-associated-relaxation",
       "pressureRegime": "unknown",
       "pressureGPa": null,

@@ -28,10 +28,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:19:32.200287+00:00",
+  "modifiedAt": "2026-10-19T15:16:44.180547+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected Reid accepted methods, Hashimoto/Mizukami author passages, published Vorontsov field-angle model, Durst nodal/thermal passages and Agterberg Pfaffian model. Explicit abstract-only Hardy and Schnyder–Ryu scopes. Independent phase-volume, thermal, root and determinant checks.",
+    "checkedAt": "2026-10-19",
+    "scope": "Selected Reid accepted methods, Hashimoto/Mizukami author passages, published Vorontsov field-angle model, Durst nodal/thermal passages and Agterberg Pfaffian model. Explicit abstract-only Hardy and Schnyder–Ryu scopes. Independent phase-volume, thermal, root and determinant checks. Follow-up: Durst-Lee v3 pp.2-3 local nodal measure, cutoff and clean/impurity DOS approximation re-read; 24 local phase-volume/crossover checks. Other source reviews not repeated.",
     "limitations": [
       "Full scientific acceptance, complete version comparisons and raw-data fits remain open.",
       "Fixed numerical spectra and gap functions do not reproduce self-consistent disorder/vortex response or energetic stability.",
@@ -144,9 +144,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-text-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/9908182v3",
-        "note": "Author v3 dated 24 April 2000, not later typeset date. Selected p.2 nodal dispersion/coordinate measure and Eqs.4.19–4.25 thermal limit passages read; full vertex and Fermi-liquid derivation not reproduced."
+        "note": "Re-read author v3 dated 24 April 2000, pp.2-3 Eqs.2.5-2.6 and2.9-2.15: 2D nodal dispersion, measure, finite cutoff, scalar self-energy approximation, clean linear DOS versus impurity-induced finite N(0). Later2018 typesetting date is not publication date. New PDF screenshot requests failed; text-only review this round. No full vertex/Fermi-liquid or raw-data reproduction; 3D crossover is local."
       }
     },
     {
@@ -277,25 +277,29 @@
     {
       "id": "scwiki-c10-claim-mathematical-assumptions-1",
       "sectionId": "mathematical-assumptions",
-      "statement": "For $m$ linearly dispersing directions transverse to a nodal manifold, an ideal spectrum $E^2=\\sum_{i=1}^{m}v_i^2q_i^2$ has phase volume below E proportional to $E^m$, hence density of states $N(E)\\propto E^{m-1}$. A three-dimensional line node has two such directions; an isolated linear point has three. Independent cross-section integrations recover these powers. A point with $E^2=q_z^2+(q_x^2+q_y^2)^2$ instead has volume proportional to $E^2$ and a linear density of states. This explicit quadratic-dispersion example shows why the same density-of-states exponent need not imply the same nodal dimension. Velocities, units and degeneracies set the prefactors; these examples use dimensionless coordinates.",
+      "statement": "In a clean local spectrum with $m$ independent linearly dispersing directions transverse to a smooth nodal manifold, $E^2=\\sum_{i=1}^{m}v_i^2q_i^2$ gives momentum volume below $E$ proportional to $E^m$, hence $N(E)\\propto E^{m-1}$. All transverse velocities must be finite and nonzero; the nodal measure and degeneracy must not introduce another low-energy singularity. A three-dimensional line node has two transverse directions; an isolated linear point has three. These powers count states, not probe matrix elements. A point with $E^2=q_z^2+(q_x^2+q_y^2)^2$ instead gives $N(E)\\propto E$. To illustrate a finite-window ambiguity, define $r^2=q_x^2+q_y^2$ and the dimensionless imposed spectrum $E^2=q_z^2+\\delta^2r^2+r^4$. Its only zero remains a point for every $\\delta\\ge0$. For $\\delta>0$, direct phase-volume differentiation gives $N(E)=2\\pi E\\arctan(2E/\\delta^2)$, before momentum-normalization and degeneracy factors. Thus $N\\propto E^2$ for $E\\ll\\delta^2$, while $N\\propto E$ for $E\\gg\\delta^2$ within this model. At $\\delta=0$, $N(E)=\\pi^2E$. The limits of vanishing $\\delta$ and low energy give different apparent exponents. Nine anisotropic linear cases and fifteen crossover cases check these relations. The added term is assumed allowed, not inferred from a material symmetry. Durst and Lee provide the two-dimensional linear nodal context; the three-dimensional crossover is a local illustration, not their result or a material fit.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-d140b2e83ddf11d9"
       ],
-      "conditions": "Fixed dimensionless spectra/amplitudes, explicit Fermi surface and symmetry sector. No material fit, disorder/vortex self-consistency or stability calculation.",
-      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+      "conditions": "Clean fixed spectrum; finite nonzero transverse velocities, smooth nodal measure and nonsingular degeneracy. Dimensionless delta crossover assumes an allowed linear term. DOS is phase-volume derivative before state-counting factors; no probe weighting, disorder self-consistency, material fit or topology.",
+      "verificationScope": "Selected author v3 pp.2-3 nodal model, cutoff and clean/disordered DOS passages re-read; 24 local phase-volume/crossover cases checked. No independent scientific or material acceptance.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Durst and Lee Eqs. 2.5-2.6 supply the linear 2D nodal spectrum and integration measure. General codimension counting, anisotropic volume checks and the 3D quadratic-to-linear crossover are local derivations, not attributed source results."
     },
     {
       "id": "scwiki-c10-claim-mathematical-assumptions-2",
       "sectionId": "mathematical-assumptions",
-      "statement": "With a temperature-independent low-energy density of states $N(E)=AE^p$ and $k_B=1$, the positive-energy quasiparticle contribution satisfies $C(T)=\\int_0^\\infty N(E)E^2 e^{E/T}/[T^2(1+e^{E/T})^2]dE\\propto T^{p+1}$. Direct energy integrals and numerical derivatives of internal energy agree for $p=0,1,2$. Thus ideal linear line nodes give $C\\propto T^2$, whereas ideal linear point nodes in three dimensions give $C\\propto T^3$. These are electronic contributions in the stated regime, not the total measured heat capacity. Two hard-gap toy densities also show increasing suppression as temperature falls below the gap; they do not model a BCS coherence peak or an actual sample.",
+      "statement": "With a temperature-independent low-energy density of states $N(E)=AE^p$ and $k_B=1$, the positive-energy quasiparticle contribution satisfies $C(T)=\\int_0^\\infty N(E)E^2 e^{E/T}/[T^2(1+e^{E/T})^2]dE\\propto T^{p+1}$. Direct energy integrals and numerical derivatives of internal energy agree for $p=0,1,2$. Thus ideal linear line nodes give $C\\propto T^2$, whereas ideal linear point nodes in three dimensions give $C\\propto T^3$. These are electronic contributions in the stated regime, not the total measured heat capacity. Two hard-gap toy densities also show increasing suppression as temperature falls below the gap; they do not model a BCS coherence peak or an actual sample. A nonzero residual density of states changes this asymptotic inference: Durst and Lee obtain finite $N(0)$ in their scalar impurity-self-energy approximation. It does not justify assigning every observed linear heat-capacity term to that mechanism. Apply clean nodal powers only above relevant broadening scales and within the nodal energy cutoff.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-d140b2e83ddf11d9",
         "source-6c82ca23c0fda096"
       ],
       "conditions": "Fixed dimensionless spectra/amplitudes, explicit Fermi surface and symmetry sector. No material fit, disorder/vortex self-consistency or stability calculation.",
-      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "The DOS and impurity warning uses Durst-Lee Eqs. 2.9 and 2.14-2.15 under their stated self-energy/cutoff approximation. Heat-capacity integrals and hard-gap examples are local calculations; the field-angle source supplies separate response-model context, not these toy integrals."
     },
     {
       "id": "scwiki-c10-claim-mathematical-assumptions-3",
@@ -307,7 +311,9 @@
         "source-fcdf63980c7fb4f9"
       ],
       "conditions": "Fixed dimensionless spectra/amplitudes, explicit Fermi surface and symmetry sector. No material fit, disorder/vortex self-consistency or stability calculation.",
-      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Circular-Fermi-surface harmonic roots are local examples. The cited symmetry/disorder papers supply context and do not establish the imposed harmonic ratio as a dose-dependent material gap."
     },
     {
       "id": "scwiki-c10-claim-mathematical-assumptions-4",
@@ -318,7 +324,9 @@
         "source-558057f5efd127fe"
       ],
       "conditions": "Fixed dimensionless spectra/amplitudes, explicit Fermi surface and symmetry sector. No material fit, disorder/vortex self-consistency or stability calculation.",
-      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open."
+      "verificationScope": "Selected primary passages and independent finite examples; full scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "The real Pfaffian and specified polynomial are from the named Agterberg model. The five determinant evaluations are local consistency checks, not independent proof of material topology or stability."
     },
     {
       "id": "scwiki-c10-claim-experimental-criteria-1",

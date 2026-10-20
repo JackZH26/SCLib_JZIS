@@ -28,15 +28,16 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T12:29:08.051872+00:00",
+  "modifiedAt": "2026-10-19T18:33:48.941677+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected Caviglia, Lu and Sajadi author passages; Fatemi and Jeong final-journal passages and figures; limited Ueno and Ye source checks; bounded capacitance algebra.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected Caviglia, Lu and Sajadi author passages; Fatemi and Jeong final-journal passages and figures; limited Ueno and Ye source checks; bounded capacitance algebra. Follow-up: Sajadi S1 device geometry and S8 characteristic-criterion passages; source attribution/dates rechecked; local series-capacitance model comparison.",
     "limitations": [
       "Complete scientific acceptance, full supplements, remaining final-version comparisons and raw-data reproduction remain open.",
       "Ueno identity and author summary do not supply a checked transition criterion; ZrNCl15.2K retains an unspecified criterion from an abstract.",
       "Simple capacitance calculations do not establish mobile-carrier density or the absence of electrochemistry.",
-      "Device thresholds, BKT fits and normal-state reference temperatures cannot be treated as equivalent Tc values."
+      "Device thresholds, BKT fits and normal-state reference temperatures cannot be treated as equivalent Tc values.",
+      "Selected supplementary sections do not constitute a complete supplement or independent scientific review. None of these records is certified thermodynamically equilibrated."
     ]
   },
   "provenance": {
@@ -86,9 +87,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "publisher-identity-and-author-institute-summary",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://www.imr.tohoku.ac.jp/en/news/results/detail---id-817.html",
-        "note": "Published online 12 October 2008. Publisher metadata and authors institute summary identify SrTiO3, not ZrNCl. Original full methods and transition criterion were not read; no exact Tc is assigned here."
+        "note": "Published online 12 October 2008. Publisher metadata and authors institute summary identify SrTiO3, not ZrNCl. Original full methods and transition criterion were not read; no exact Tc is assigned here. Publisher dates and author-institution records rechecked; full text remains unavailable at checked official endpoints. No expanded transition-criterion claim."
       }
     },
     {
@@ -100,9 +101,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "author-institution-abstract-and-publisher-dates",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://research.rug.nl/en/publications/liquid-gated-interface-superconductivity-on-an-atomically-flat-fi/",
-        "note": "Ye et al.; online 22 November 2009, issue February 2010. Authors institutional abstract identifies ZrNCl and 15.2 K; publisher confirms dates. Full methods and exact onset/midpoint/zero criterion not reviewed."
+        "note": "Ye et al.; online 22 November 2009, issue February 2010. Authors institutional abstract identifies ZrNCl and 15.2 K; publisher confirms dates. Full methods and exact onset/midpoint/zero criterion not reviewed. Publisher dates and author-institution records rechecked; full text remains unavailable at checked official endpoints. No expanded transition-criterion claim."
       }
     },
     {
@@ -155,10 +156,10 @@
       "url": "https://doi.org/10.1126/science.aar4426",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-author-density-definition-and-resistance-criteria",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-author-density-definition-device-geometry-and-criteria",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/1809.04691v1",
-        "note": "Author v1 submitted 12 September 2018; journal online 25 October, issue 23 November. Selected pp. 1–3 read and p. 3 Fig. 2 visually checked. Capacitive doping is not automatically carrier density; half-1K criterion and finite noise floor retained. NSF final PDF download timed out; remaining methods/supplement and final comparison open."
+        "note": "Author v1 submitted 12 September 2018; journal online 25 October, issue 23 November. Selected pp. 2–4, S1/Table 1 pp. 9–10 and S8 p. 17 read; pp. 2, 3, 10 and 17 visually inspected. Geometric estimates, two device stacks, half-R(1 K), the finite 0.3 ohm floor at 20 mK and assumed current geometry remain distinct. Local series-capacitance arithmetic is not a carrier measurement. Complete supplement, raw-data reconstruction and final-version equivalence remain unchecked."
       }
     },
     {
@@ -191,14 +192,16 @@
     {
       "id": "scwiki-e3-claim-scope-2",
       "sectionId": "scope",
-      "statement": "Keep the early platforms separate. Ueno's 2008 work concerned SrTiO3. The 15.2 K ZrNCl report was by Ye and colleagues, published online in November 2009 and in the February 2010 issue. The inherited draft conflated their attribution. This page corrects it while retaining the limited review scope: the ZrNCl institutional abstract supplies the reported temperature but not an independently checked onset, midpoint or zero-resistance definition.",
-      "evidenceType": "experiment",
+      "statement": "Keep the early platforms separate. Ueno and colleagues reported gated SrTiO3 in a paper published online on 12 October 2008. Ye and colleagues reported ZrNCl with a transition temperature of 15.2 K; that paper appeared online on 22 November 2009 and in the February 2010 issue. The online and issue dates describe one ZrNCl paper, not separate discoveries. The accessible author-institution records support the material and attribution; the checked ZrNCl abstract does not specify an onset, midpoint or zero-resistance criterion. No exact SrTiO3 transition temperature or common criterion is assigned from these limited records.",
+      "evidenceType": "editorial-analysis",
       "sourceIds": [
         "source-3c6933981eaa417d",
         "source-831c3a9c5619ac1d"
       ],
-      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
-      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+      "conditions": "Keep device M1/M2, gate geometry, assumed permittivity, estimated doping, temperature reference, resistance criterion and detection limit separate. No mobile-carrier measurement inferred from electrostatic arithmetic.",
+      "verificationScope": "Selected author v1 pp.2–4, S1/Table1 pp.9–10 and S8 p.17; pp.2/3/10/17 visually inspected where applicable. Ueno/Ye remain publisher/author-institution bibliographic and summary scope. No complete supplement, final comparison or raw-data fit.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Comparison of publisher bibliographic dates and author-institution material/abstract records. Full Ueno/Ye transition methods remain unreviewed."
     },
     {
       "id": "scwiki-e3-claim-mathematical-assumptions-1",
@@ -209,7 +212,9 @@
         "source-e9e3a49b753191bc"
       ],
       "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
-      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source experiments motivate the geometry and capacitance conditions. Displayed ideal circuit identities and unit conversions are local illustrative derivations, not source-measured carrier counts."
     },
     {
       "id": "scwiki-e3-claim-mathematical-assumptions-2",
@@ -222,19 +227,23 @@
         "source-e8160470a5b03301"
       ],
       "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
-      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Source experiments motivate the geometry and capacitance conditions. Displayed ideal circuit identities and unit conversions are local illustrative derivations, not source-measured carrier counts."
     },
     {
       "id": "scwiki-e3-claim-mathematical-assumptions-3",
       "sectionId": "mathematical-assumptions",
-      "statement": "The distinction between induced charge and mobile carriers survives accurate capacitance arithmetic. Sajadi explicitly calls the gate-derived quantity a doping density rather than a carrier density; correlated insulating behavior and edge conduction complicate that interpretation. Likewise, integrating a gate current gives transferred charge, $Q=\\int I_gdt$, without proving how much enters the conducting channel or participates in chemistry. Local calculations here check units, integration and illustrative circuit identities; they do not measure charge transfer in a sample.",
+      "statement": "Sajadi calls the gate-derived quantity a doping density, not a measured mobile-carrier density: correlations and edge conduction complicate that identification. The author's supplementary Table 1 uses AFM thicknesses and assumed relative permittivities of 4 for hBN and 3.9 for SiO2 to calculate geometric areal capacitances:\n\n| Device and gate | Dielectric stack | Calculated capacitance (nF/cm²) |\n| --- | --- | --- |\n| M1 top | 5.8 nm hBN | 611 |\n| M1 bottom | 18 nm hBN + 285 nm SiO2 | 11.4 |\n| M2 top | 8 nm hBN | 443 |\n| M2 bottom | 29 nm hBN | 122 |\n\nIn a uniform planar model, the layers in M1's bottom dielectric are in series. Omitting its SiO2 layer would overestimate that capacitance by about 17 times. This is a local calculation from rounded source inputs, not an experimental recalibration. The geometric approximation does not include every quantum-capacitance, contact-screening or trapping effect.\n\nEven a fixed estimated density does not specify both gate voltages: with constant capacitances, $c_t\\Delta V_t+c_b\\Delta V_b=0$ leaves the voltage-weighted sum unchanged while their difference changes. This identity does not demonstrate an unchanged transverse field, current path or superconducting state. Similarly, $Q=\\int I_gdt$ is transferred charge, without assigning its partition among the channel, traps and chemical reactions. Geometry arithmetic does not measure mobile carriers.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-e8160470a5b03301",
         "source-cd5c2b85b8e3a53c"
       ],
-      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
-      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+      "conditions": "Keep device M1/M2, gate geometry, assumed permittivity, estimated doping, temperature reference, resistance criterion and detection limit separate. No mobile-carrier measurement inferred from electrostatic arithmetic.",
+      "verificationScope": "Selected author v1 pp.2–4, S1/Table1 pp.9–10 and S8 p.17; pp.2/3/10/17 visually inspected where applicable. Ueno/Ye remain publisher/author-institution bibliographic and summary scope. No complete supplement, final comparison or raw-data fit.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Sajadi author v1 pp.2–3 and S1/Table1 supply definitions and geometric inputs. Series reconstruction and equal weighted-charge identities are local model checks; gate-current partition is an editorial inference limit informed by Jeong chemical controls."
     },
     {
       "id": "scwiki-e3-claim-experimental-criteria-1",
@@ -273,13 +282,15 @@
     {
       "id": "scwiki-e3-claim-experimental-criteria-4",
       "sectionId": "experimental-criteria",
-      "statement": "Sajadi's WTe2 manuscript instead defines a characteristic temperature at half the resistance measured at 1 K. A reported noise floor around 0.3 ohm at 20 mK is an instrumental bound at a measurement temperature, not an exact superconducting transition. Record contact geometry, current distribution and residual resistance alongside nominal four-terminal measurements; a poorly known current path can affect the inferred sheet resistance.",
+      "statement": "Sajadi's M1 device uses the characteristic temperature $T_{1/2}$ where the measured resistance reaches half its value at 1 K. The 1 K reference is not $T_c$. Supplementary section S8 explicitly distinguishes characteristic parameters from precise critical parameters; gradual transitions and limited contact arrangements constrain their interpretation. Different fractions of the normal resistance produce different characteristic fields and derived lengths.\n\nAt 20 mK, M1 reaches a roughly 0.3 ohm experimental noise floor for the reported gate-derived density above $7\\times10^{12}\\,\\mathrm{cm}^{-2}$. This is finite measurement sensitivity under specified conditions, not exact mathematical zero or a transition at 20 mK. Its sheet-resistivity estimate additionally assumes that current spreads little outside a chosen rectangle, with width/length about 10. A four-terminal resistance does not remove uncertainty in that current path. No new numerical $T_c$ or thermodynamic phase boundary is extracted here.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-e8160470a5b03301"
       ],
-      "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
-      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+      "conditions": "Keep device M1/M2, gate geometry, assumed permittivity, estimated doping, temperature reference, resistance criterion and detection limit separate. No mobile-carrier measurement inferred from electrostatic arithmetic.",
+      "verificationScope": "Selected author v1 pp.2–4, S1/Table1 pp.9–10 and S8 p.17; pp.2/3/10/17 visually inspected where applicable. Ueno/Ye remain publisher/author-institution bibliographic and summary scope. No complete supplement, final comparison or raw-data fit.",
+      "sourceRelationship": "direct-support",
+      "derivationNote": "Sajadi author v1 p.3 and selected S1/S8 passages distinguish a characteristic resistance threshold, finite measurement floor and assumed current geometry."
     },
     {
       "id": "scwiki-e3-claim-limits-and-disputes-1",
@@ -321,8 +332,8 @@
     {
       "id": "scwiki-e3-claim-discovery-implications-1",
       "sectionId": "discovery-implications",
-      "statement": "Treat the device and voltage history as part of the material record: dielectric or electrolyte, thickness, gate geometry, charging temperature, dwell time, leakage, reset protocol and independent carrier estimate. Separate superconducting onset, midpoint, measured zero and model-extracted BKT temperatures. Use chemistry-sensitive controls to decide whether a changed state belongs under electrostatic tuning or compositional modification. The source-linked records below preserve reported observations and explicit unknowns; they are not a ranking of intrinsic material performance.",
-      "evidenceType": "theory",
+      "statement": "Treat the device and voltage history as part of the material record: dielectric or electrolyte, thickness, gate geometry, charging temperature, dwell time, leakage, reset protocol and independent carrier estimate. Separate superconducting onset, midpoint, measured zero and model-extracted BKT temperatures. Use chemistry-sensitive controls to decide whether a changed state belongs under electrostatic tuning or compositional modification. The source-linked records below preserve reported observations and explicit unknowns; they are not a ranking of intrinsic material performance. These records use unknown for equilibrium because their checked provenance does not establish a thermodynamic equilibrium state; this is not evidence of nonequilibrium.",
+      "evidenceType": "editorial-analysis",
       "sourceIds": [
         "source-e9e3a49b753191bc",
         "source-cba51ab2111ccf0a",
@@ -330,7 +341,9 @@
         "source-cd5c2b85b8e3a53c"
       ],
       "conditions": "Gate history, device, capacitance convention, temperature reference, transport threshold and chemical controls remain distinct. A gated topological insulator is not automatically a topological superconductor.",
-      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open."
+      "verificationScope": "Selected original passages and figures, explicit limited abstracts and bounded circuit algebra; complete scientific acceptance remains open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial comparison of device/probe requirements; no synthesis ranking or equilibrium certification."
     }
   ],
   "corrections": [
@@ -341,6 +354,12 @@
       "scope": "Original bibliographic identity and authors institutional abstracts/summaries; ZrNCl full criterion not checked.",
       "originalSourceLines": [],
       "targetSectionId": "scope"
+    },
+    {
+      "id": "scwiki-e3-correction-gate-geometry-and-reference",
+      "description": "Expanded selected Sajadi geometry/criterion scope, kept 1K normalization and20mK measurement separate from Tc, and withheld equilibrium assertions lacking support. Ueno/Ye attribution and date comparison use explicit limited sources.",
+      "sourceId": "source-e8160470a5b03301",
+      "scope": "Selected source passages plus bounded local electrostatic arithmetic; no new experiment or full independent acceptance."
     }
   ],
   "equationChecks": [
@@ -358,6 +377,11 @@
       "targetSectionId": "mathematical-assumptions",
       "tex": "en_{2D}=C_{t,A}V_t+C_{b,A}V_b",
       "check": "Rounded Fatemi15/8nm BN geometry with epsilonR3.5 and zero offsets yields density near5e12cm^-2; illustration, not a measured density."
+    },
+    {
+      "targetSectionId": "mathematical-assumptions",
+      "tex": "C_A^{-1}=\\sum_i d_i/(\\epsilon_0\\epsilon_{r,i})",
+      "check": "Sajadi M1/M2 four published rounded capacitances reproduced from stated geometry within0.2%; independent series check and8constant-estimated-charge voltage identities. Local model only."
     }
   ],
   "materialCases": [
@@ -369,11 +393,11 @@
       "reportedTemperatureK": 0.31,
       "tcK": 0.31,
       "temperatureKind": "transition",
-      "temperatureNote": "Approximate maximum from a BKT fit; not an onset or measured-zero temperature.",
+      "temperatureNote": "Approximate maximum from a BKT fit; not an onset or measured-zero temperature. Thermodynamic equilibrium is unverified in the checked provenance.",
       "criterion": "BKT-resistance-fit",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Four-point sheet resistance",
       "sourceId": "source-e9e3a49b753191bc"
     },
@@ -385,11 +409,11 @@
       "reportedTemperatureK": 0.82,
       "tcK": 0.82,
       "temperatureKind": "transition",
-      "temperatureNote": "Approximate onset at90percent normal resistance; same device transition has lower midpoint and zero.",
+      "temperatureNote": "Approximate onset at90percent normal resistance; same device transition has lower midpoint and zero. Thermodynamic equilibrium is unverified in the checked provenance.",
       "criterion": "resistance-90-percent-normal",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Four-probe resistance",
       "sourceId": "source-117f1ab64b772ff1",
       "aliases": [
@@ -404,11 +428,11 @@
       "reportedTemperatureK": 0.58,
       "tcK": 0.58,
       "temperatureKind": "transition",
-      "temperatureNote": "Approximate midpoint, distinct from onset and zero.",
+      "temperatureNote": "Approximate midpoint, distinct from onset and zero. Thermodynamic equilibrium is unverified in the checked provenance.",
       "criterion": "resistance-50-percent-normal",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Four-probe resistance",
       "sourceId": "source-117f1ab64b772ff1",
       "aliases": [
@@ -423,11 +447,11 @@
       "reportedTemperatureK": 0.35,
       "tcK": 0.35,
       "temperatureKind": "transition",
-      "temperatureNote": "Approximate measured zero; not mathematical proof of zero uncertainty.",
+      "temperatureNote": "Approximate measured zero; not mathematical proof of zero uncertainty. Thermodynamic equilibrium is unverified in the checked provenance.",
       "criterion": "zero-resistance",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Four-probe resistance",
       "sourceId": "source-117f1ab64b772ff1",
       "aliases": [
@@ -442,11 +466,11 @@
       "reportedTemperatureK": 0.95,
       "tcK": 0.95,
       "temperatureKind": "transition",
-      "temperatureNote": "Residual resistance persists due to reported device imperfection; not zero-resistance at0.95K.",
+      "temperatureNote": "Residual resistance persists due to reported device imperfection; not zero-resistance at0.95K. Thermodynamic equilibrium is unverified in the checked provenance.",
       "criterion": "resistance-50-percent-normal",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Four-probe resistance",
       "sourceId": "source-117f1ab64b772ff1",
       "aliases": [
@@ -461,11 +485,11 @@
       "reportedTemperatureK": 2.63,
       "tcK": 2.63,
       "temperatureKind": "transition",
-      "temperatureNote": "Phase-diagram criterion relative to normal resistance at15K; same state midpoint2.37K.",
+      "temperatureNote": "Phase-diagram criterion relative to normal resistance at15K; same state midpoint2.37K. Thermodynamic equilibrium is unverified in the checked provenance.",
       "criterion": "resistance-90-percent-normal",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Gate-induced sheet resistance",
       "sourceId": "source-cba51ab2111ccf0a",
       "aliases": [
@@ -480,11 +504,11 @@
       "reportedTemperatureK": 2.37,
       "tcK": 2.37,
       "temperatureKind": "transition",
-      "temperatureNote": "Midpoint criterion used for subsequent field analysis; not the90percent phase-diagram label.",
+      "temperatureNote": "Midpoint criterion used for subsequent field analysis; not the90percent phase-diagram label. Thermodynamic equilibrium is unverified in the checked provenance.",
       "criterion": "resistance-50-percent-normal",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Gate-induced sheet resistance",
       "sourceId": "source-cba51ab2111ccf0a",
       "aliases": [
@@ -499,31 +523,32 @@
       "reportedTemperatureK": 15.2,
       "tcK": 15.2,
       "temperatureKind": "transition",
-      "temperatureNote": "Exact onset/midpoint/zero criterion not independently reviewed. Not Ueno2008SrTiO3.",
+      "temperatureNote": "Exact onset/midpoint/zero criterion not independently reviewed. Not Ueno2008SrTiO3. Thermodynamic equilibrium is unverified in the checked provenance.",
       "criterion": "transition-unspecified",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Field-induced superconductivity; abstract-level evidence",
       "sourceId": "source-831c3a9c5619ac1d"
     },
     {
       "id": "scwiki-e3-material-9",
       "formula": "WTe2",
-      "sample": "Sajadi M1 noise-floor observation",
+      "sample": "Sajadi M1 author v1; gate-derived doping above 7e12 cm^-2",
       "recordType": "experiment",
       "reportedTemperatureK": 0.02,
       "tcK": null,
       "temperatureKind": "measurement",
-      "temperatureNote": "At20mK resistance reaches approximately0.3ohm noise floor for specified gate density; measurement temperature is not Tc.",
+      "temperatureNote": "At 20 mK, M1 reaches an approximately 0.3 ohm noise floor for gate-derived doping above 7 × 10^12 cm^-2. This is finite sensitivity, not exact zero or a 20 mK transition. Density is capacitance-derived, not an independent mobile-carrier measurement. Thermodynamic equilibrium remains unverified.",
       "criterion": "resistance-noise-floor-observation",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Four-terminal differential resistance",
       "sourceId": "source-e8160470a5b03301",
       "aliases": [
-        "tungsten ditelluride"
+        "tungsten ditelluride",
+        "Sajadi M1"
       ]
     },
     {
@@ -534,11 +559,11 @@
       "reportedTemperatureK": 15,
       "tcK": null,
       "temperatureKind": "normal-state",
-      "temperatureNote": "Normalization reference used in the90percent criterion, not superconducting Tc.",
+      "temperatureNote": "Normalization reference used in the90percent criterion, not superconducting Tc. Thermodynamic equilibrium is unverified in the checked provenance.",
       "criterion": "normal-resistance-reference",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Sheet resistance",
       "sourceId": "source-cba51ab2111ccf0a",
       "aliases": [
@@ -553,13 +578,33 @@
       "reportedTemperatureK": 300,
       "tcK": null,
       "temperatureKind": "measurement",
-      "temperatureNote": "Gating temperature for the Fig2protocol; no superconducting transition reported.",
+      "temperatureNote": "Gating temperature for the Fig2protocol; no superconducting transition reported. Thermodynamic equilibrium is unverified in the checked provenance.",
       "criterion": "gate-application-temperature",
       "pressureRegime": "ambient",
       "pressureGPa": null,
-      "equilibrium": "equilibrium",
+      "equilibrium": "unknown",
       "probe": "Transport, XPS and isotope/SIMS controls",
       "sourceId": "source-cd5c2b85b8e3a53c"
+    },
+    {
+      "id": "scwiki-e3-material-12",
+      "formula": "WTe2",
+      "sample": "Sajadi M1 reference for the characteristic half-resistance temperature",
+      "recordType": "experiment",
+      "reportedTemperatureK": 1,
+      "tcK": null,
+      "temperatureKind": "normal-state",
+      "temperatureNote": "1 K is the resistance normalization reference for T1/2; it is not a transition temperature. No new numerical Tc is extracted. Thermodynamic equilibrium remains unverified.",
+      "criterion": "normal-resistance-reference",
+      "pressureRegime": "ambient",
+      "pressureGPa": null,
+      "equilibrium": "unknown",
+      "probe": "Four-terminal resistance reference",
+      "sourceId": "source-e8160470a5b03301",
+      "aliases": [
+        "tungsten ditelluride",
+        "Sajadi M1"
+      ]
     }
   ]
 }

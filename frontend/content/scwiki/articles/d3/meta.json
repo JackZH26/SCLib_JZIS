@@ -32,10 +32,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T18:30:36.998991+00:00",
+  "modifiedAt": "2026-10-19",
   "review": {
     "checkedAt": "2026-10-19",
-    "scope": "Wu1987 final selected methods/results and p909 figures; Liang2005 author v1 selected doping methods/Figure1; original discovery abstracts and inherited E10 pressure-quench source checks; bounded doping/charge algebra.",
+    "scope": "Wu1987 final selected methods/results and p909 figures; Liang2005 author v1 selected doping methods/Figure1; original discovery abstracts and inherited E10 pressure-quench source checks; bounded doping/charge algebra. Follow-up: Wu p909 original page visually rechecked, Grant publication attribution, Tsuei/Hardy original abstract measurement/control distinctions, and selected Tsuei–Kirtley published review pp973–976.",
     "limitations": [
       "Complete scientific acceptance remains open.",
       "Bednorz, Grant, Schilling, Gao, Tsuei and Hardy remain original-abstract checks; full methods/raw analyses are not certified.",
@@ -216,9 +216,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "publisher-original-abstract",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.73.593",
-        "note": "Published 25 July 1994. The original abstract reports scanning SQUID observations at 4.2 K in rings with different junction counts. The complete original article and raw flux maps have not been reviewed here."
+        "note": "Original abstract: 4.2 K scanning SQUID, zero/two/three junction rings, spontaneous half flux quantum in three-junction but not two-junction rings; consistent with d-wave. Full methods, flux maps and junction controls not independently reanalyzed."
       }
     },
     {
@@ -286,9 +286,23 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "publisher-abstract-check",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-19",
         "evidenceUrl": "https://journals.aps.org/prl/abstract/10.1103/PhysRevLett.70.3999",
-        "note": "900 MHz resonator and 3–25 K linear term checked in abstract. Full traces, calibration and sample comparison not reviewed."
+        "note": "Original abstract: 900 MHz resonator at1.3K, change in penetration depth toTc, approximately linear3–25K term. Not an absolute penetration-depth or direct gap-phase measurement. Full calibration, traces and sample comparison not reviewed."
+      }
+    },
+    {
+      "id": "source-e933e3bbd4beade6",
+      "doi": "10.1103/RevModPhys.72.969",
+      "title": "Pairing symmetry in cuprate superconductors",
+      "year": 2000,
+      "url": "https://doi.org/10.1103/RevModPhys.72.969",
+      "publicationStatus": "journal-article",
+      "verification": {
+        "scope": "selected-review-full-text",
+        "checkedAt": "2026-10-19",
+        "evidenceUrl": "https://www.physics.umd.edu/courses/Phys798C/AnlageFall25/Kirtley%20Tsuei%20RMP.pdf",
+        "note": "Selected published review pp973–976: orthorhombic mixing, penetration depth and scattering, phase-insensitive inference limits. Conceptual context does not replace original Tsuei1994 or Hardy1993 full experimental review."
       }
     }
   ],
@@ -486,14 +500,16 @@
     {
       "id": "scwiki-d3-claim-scope-3",
       "sectionId": "scope",
-      "statement": "Wu and colleagues' 1987 discovery studied mixed-phase material with nominal composition Y1.2Ba0.8CuO4−y. It established a reproducible transition above liquid-nitrogen temperature using transport and magnetic measurements, while detailed phase identification remained open. The later Grant study of the principal YBa2Cu3Ox superconducting phase is a separate publication. Do not replace the original sample composition with a retrospectively assigned pure Y123 crystal.",
-      "evidenceType": "hypothesis",
+      "statement": "Wu and colleagues' 1987 discovery studied mixed-phase material with nominal composition Y1.2Ba0.8CuO4−y. Transport and magnetic measurements established a reproducible superconducting transition above liquid-nitrogen temperature, while powder diffraction showed multiple phases and their individual roles remained unresolved. Nominal starting composition is not an identification of the superconducting crystallographic phase. Grant and colleagues' separate paper, published on 1 May 1987, identifies YBa2Cu3Ox as the principal superconducting phase in its title and abstract; its full structural refinement has not been reviewed here. Do not retrospectively label Wu's original sample a phase-pure Y123 crystal.",
+      "evidenceType": "experiment",
       "sourceIds": [
         "source-9350a30b2eabe27e",
         "source-82098193516b8d9a"
       ],
-      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
-      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
+      "conditions": "Nominal mixed-phase composition; transport and magnetic criteria; unresolved individual phase roles in Wu1987; Grant1987 is a separate publication.",
+      "verificationScope": "Wu final pp908–909 selected text and p909 image; Grant original title/abstract/date only; no full structural refinement or raw-data reproduction.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Wu selected final text reports mixed phases and unresolved phase roles; Grant's separate title/abstract reports the principal phase. The warning against retroactive phase-pure attribution is an editorial inference, not a new structural analysis."
     },
     {
       "id": "scwiki-d3-claim-mathematical-assumptions-1",
@@ -504,7 +520,9 @@
         "source-e24ef58054ac9b71"
       ],
       "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
-      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open.",
+      "sourceRelationship": "context-for-local-derivation",
+      "derivationNote": "Liang supplies the plane/chain calibration context; the assigned ionic charges and ten allocations are an explicitly local formal exercise, not measured orbital populations."
     },
     {
       "id": "scwiki-d3-claim-mathematical-assumptions-2",
@@ -515,7 +533,9 @@
         "source-e24ef58054ac9b71"
       ],
       "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
-      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Liang supplies the empirical dome and one-eighth-doping limitation; inversion branch counting and the five algebra controls are local checks, not a reproduction of the experimental calibration."
     },
     {
       "id": "scwiki-d3-claim-mathematical-assumptions-3",
@@ -527,7 +547,9 @@
         "source-6c1991333d4a6fed"
       ],
       "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
-      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
+      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "The lattice expression is an ideal symmetry illustration. The cited experimental and review context does not determine its amplitude, actual Fermi surface or microscopic mediator for every cuprate."
     },
     {
       "id": "scwiki-d3-claim-experimental-criteria-1",
@@ -554,14 +576,17 @@
     {
       "id": "scwiki-d3-claim-experimental-criteria-3",
       "sectionId": "experimental-criteria",
-      "statement": "Phase-sensitive and magnitude-sensitive probes answer different questions. Tsuei and colleagues' original abstract reports scanning-SQUID measurements of tricrystal rings at 4.2 K, providing a phase-sensitive constraint. Hardy and colleagues' penetration-depth abstract describes a low-temperature linear term in YBa2Cu3O6.95, constraining low-energy excitations. Neither abstract alone verifies all junction assumptions, sample comparisons or raw traces; combine complementary evidence without turning a nodal observation into an unconditional mechanism verdict.",
+      "statement": "Phase-sensitive and magnitude-sensitive probes answer different questions. Tsuei and colleagues' original abstract describes scanning-SQUID measurements at 4.2 K on YBa2Cu3O7−δ rings containing zero, two or three grain-boundary junctions. It reports spontaneous half-flux-quantum magnetization, $\\Phi_0/2=h/(4e)$, in the three-junction ring but not the two-junction controls, consistent with d-wave pairing. Ring geometry and junction assumptions remain part of that inference. Hardy and colleagues' original abstract reports a 900 MHz resonator measurement of the change in penetration depth in YBa2Cu3O6.95 from 1.3 K to the transition, with an approximately linear term over 3–25 K. This is a change in penetration depth, not a direct measurement of gap phase. The Tsuei–Kirtley review distinguishes such low-energy constraints from phase-sensitive tests and discusses scattering sensitivity. Neither original abstract constitutes a check of the complete flux maps, resonator calibration or sample comparisons. Nodal evidence and pairing symmetry constrain mechanisms without selecting a unique interaction.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-2e4d7fdb6c1797b7",
-        "source-b7bc48c845a47b53"
+        "source-b7bc48c845a47b53",
+        "source-e933e3bbd4beade6"
       ],
-      "conditions": "Composition, oxygen order, plane/chain allocation, probe criterion, pressure and recovered-sample history remain distinct.",
-      "verificationScope": "Named selected final/author passages or original abstracts, and bounded independent algebra; complete scientific acceptance open."
+      "conditions": "Tsuei: 4.2 K, zero/two/three grain-boundary rings, three-versus-two-junction comparison. Hardy: 900 MHz, change in penetration depth, approximately linear 3–25 K term. Junction geometry, scattering and calibration remain relevant.",
+      "verificationScope": "Original experiment abstracts only; selected Tsuei–Kirtley review Sec.II.A and symmetry context. Complete original methods, flux maps, calibration and raw-data review remain open.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Experimental numbers and controls are restricted to the original Tsuei and Hardy abstracts. The selected Tsuei–Kirtley review supplies phase-versus-magnitude and scattering context; the combined inference boundary is editorial analysis, not a full experimental reanalysis."
     },
     {
       "id": "scwiki-d3-claim-pressure-and-recovered-samples-1",

@@ -26,10 +26,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-19T00:03:05.062786+00:00",
+  "modifiedAt": "2026-10-19T17:49:19.830223+00:00",
   "review": {
-    "checkedAt": "2026-10-19",
-    "scope": "Selected Yaron final methods and Figures1–3; Sugawara,Cava,Cho original abstracts; inherited E7/G5 evidence scopes; five matched-transition counterexamples and free-ion moment distinction. Yang v3 selected passages and Figures 2, 3, Extended Data 9 checked; inherited 45 T tuple withheld.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected Yaron final methods and Figures1–3; Sugawara,Cava,Cho original abstracts; inherited E7/G5 evidence scopes; five matched-transition counterexamples and free-ion moment distinction. Yang v3 selected passages and Figures 2, 3, Extended Data 9 checked; inherited 45 T tuple withheld. Follow-up: impurity-ensemble assumptions and coexistence evidence organized by sample, coupling and length scale; explicit editorial-analysis role.",
     "limitations": [
       "Complete scientific acceptance remains open.",
       "Original AG and several classic full texts remain unaudited; review-paper equation conventions are identified separately.",
@@ -84,6 +84,12 @@
       "description": "The inherited SCE0.36/0.3K/45T tuple is withheld: v3 Extended Data Figure9 labels SCE0.36 at4.2K and SCE0.40 at0.3K. Figure3 uses0.5Rn contours, not zero-resistance boundaries.",
       "sourceId": "source-3504ee9027165d0a",
       "scope": "Version-resolved sample and criterion correction; no final-text or raw-data verification claimed."
+    },
+    {
+      "id": "scwiki-d15-correction-coexistence-scope",
+      "description": "Distinguish same-sample signals from evidence that magnetic order couples to the vortex lattice. Retain the original rocking-curve length-scale ambiguity and avoid treating diffraction as an atomic map or volume-fraction measurement.",
+      "sourceId": "source-6666556b639390d7",
+      "scope": "Editorial evidence criteria grounded in selected source passages; not raw-data reproduction."
     }
   ],
   "equationChecks": [
@@ -117,9 +123,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-author-equation-conventions",
-        "checkedAt": "2026-10-18",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0411318v1",
-        "note": "Authorv1 submitted11November2004; selected sectionsVI andXIV,pp13–14 and40–41 read. p14 Eq6.8–6.15 and p40 Eq14.12–14.13 visually checked. This is a review, not a substitute for the unavailable original AG/Shiba derivations. Final-version comparison remains open."
+        "note": "Authorv1 submitted11November2004; selected sectionsVI andXIV,pp13–14 and40–41 read. p14 Eq6.8–6.15 and p40 Eq14.12–14.13 visually checked. This is a review, not a substitute for the unavailable original AG/Shiba derivations. Final-version comparison remains open. Additional selected pp. 11 and 39–40 read; pp. 11 and 39 visually inspected. Spin dynamics, classical-spin limit and neglected inter-impurity interactions/interference define model limits. This review is not independent primary experimental evidence."
       }
     },
     {
@@ -201,9 +207,9 @@
       "publicationStatus": "journal-article",
       "verification": {
         "scope": "selected-final-SANS-methods-and-figures",
-        "checkedAt": "2026-10-19",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://www.nbi.dk/~kell/publ/1996_Nature_FLL_ErNiBC.pdf",
-        "note": "Yaron et al.,18July1996. Selected journal pp236–238 methods/results; pp237–238 Figures1–3 visually checked. Boron11 crystal, field near c/incident beam,4kOe and1.6K Figure1; magnetic peaks measured at zero field with a separate neutron wavelength. Field tilted1.6degrees from c; vortex rotation develops near4K and can reach1degree. Rocking-curve width may reflect long-scale orientation variations, not uniquely microscopic pinning. Complete raw-data/reflection fit and phase-diagram reconstruction open."
+        "note": "Yaron et al.,18July1996. Selected journal pp236–238 methods/results; pp237–238 Figures1–3 visually checked. Boron11 crystal, field near c/incident beam,4kOe and1.6K Figure1; magnetic peaks measured at zero field with a separate neutron wavelength. Field tilted1.6degrees from c; vortex rotation develops near4K and can reach1degree. Rocking-curve width may reflect long-scale orientation variations, not uniquely microscopic pinning. Complete raw-data/reflection fit and phase-diagram reconstruction open. Final pp. 237–238 re-read and visually checked: transverse magnetization agrees with the inferred vortex rotation; longer-scale orientation variation remains an alternative to microscopic pinning. No calibrated coexistence volume fraction or real-space atomic map extracted."
       }
     },
     {
@@ -308,16 +314,18 @@
     {
       "id": "scwiki-d15-claim-scope-2",
       "sectionId": "scope",
-      "statement": "Dilute paramagnetic impurities, an ordered lattice of rare-earth moments and a concentrated magnetic film require different models. Independent magnetic ions can scatter Cooper pairs, while their ordering, screening and coupling to itinerant states change the relevant timescales and fields. A material that contains both magnetic and superconducting signals may also be spatially inhomogeneous; their coexistence must be tested at the relevant volume and length scale.",
-      "evidenceType": "hypothesis",
+      "statement": "Dilute paramagnetic impurities, an ordered rare-earth sublattice and a concentrated magnetic film are different physical regimes. Balatsky et al.'s review distinguishes dynamic impurity spins from the classical-spin limit. Its ensemble treatment neglects interactions between impurity spins and interference between different scatterers. Those assumptions cannot simply be carried over to an ordered magnetic lattice. The original AG paper remains a historical citation here; its full derivation has not been checked.\n\nFor a claim of magnetic–superconducting coexistence, separate three questions:\n\n1. **Same sample?** Check composition, phase purity, field, temperature and the volume sampled by each probe. Two bulk signals alone leave spatial separation as a possibility.\n2. **Coupled orders?** Seek a response of one ordered state to the other. In Yaron's ErNi2B2C experiment, the changing vortex orientation was also consistent with transverse magnetization. This supports a coupling-based argument for microscopic coexistence, beyond coincident transition anomalies.\n3. **Which spatial scale?** Report what the measurement resolves. The authors retain longer-scale vortex-orientation variation as an explanation of rocking-curve broadening. Broadening alone does not identify microscopic pinning. Their experiment is not an atom-by-atom map or a calibrated superconducting volume-fraction measurement.\n\nThese are editorial criteria for comparing evidence, not a new model fit. Neither a magnetic element nor coexistence by itself establishes magnetic pairing, triplet pairing or a universal impurity threshold.",
+      "evidenceType": "editorial-analysis",
       "sourceIds": [
         "source-daf8f301de81a726",
         "source-3a528aeee1b7cf04",
         "source-e4fdbfe063c34217",
         "source-6666556b639390d7"
       ],
-      "conditions": "Preserve composition, valence, sample, field direction, probe and temperature type; scattering energy is not nominal concentration.",
-      "verificationScope": "Named primary passages/figures and restricted inference checks; full scientific acceptance remains open."
+      "conditions": "Distinguish isolated or uncorrelated impurity spins from an ordered sublattice. Match sample, field, temperature, probe volume and spatial resolution before inferring coexistence. Coupling evidence is not a measured universal volume fraction or pairing symmetry.",
+      "verificationScope": "Selected review pages and original Yaron final pp. 236–238; four selected source pages visually inspected this round. No raw neutron-data fit, complete microscopic model, calibrated volume fraction or independent scientific review.",
+      "sourceRelationship": "context-for-editorial-analysis",
+      "derivationNote": "Editorial comparison of impurity-model assumptions and the original ErNi2B2C coupling experiment. Balatsky author v1 pp. 11 and 39–40 provide review context; Yaron final pp. 237–238 provide measured vortex/magnetization evidence and the length-scale caveat. The original AG derivation and full Cho paper remain unchecked."
     },
     {
       "id": "scwiki-d15-claim-mathematical-assumptions-1",

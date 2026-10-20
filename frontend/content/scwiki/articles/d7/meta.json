@@ -29,10 +29,10 @@
   ],
   "editorialStatus": "scoped-check",
   "contentState": "pilot",
-  "modifiedAt": "2026-10-18T11:19:34.848076+00:00",
+  "modifiedAt": "2026-10-19T16:30:29.378385+00:00",
   "review": {
-    "checkedAt": "2026-10-18",
-    "scope": "Selected original discovery and Choi published passages, Budko/Hinks/Szabo/Mazin author-version methods and equations; independent isotope ratios, toy pairing eigenmodes and parallel-band weights.",
+    "checkedAt": "2026-10-20",
+    "scope": "Selected original sources and follow-up on isotope criteria, contact weights and computed-gap/thermodynamic comparisons; author checks and bounded algebra only.",
     "limitations": [
       "Full scientific acceptance, raw-data and full numerical reproduction remain open.",
       "Hinks v1 table Mg mass conflicts with methods; final table unresolved, no Mg-mass refit presented.",
@@ -100,10 +100,10 @@
       "url": "https://doi.org/10.1103/PhysRevLett.86.1877",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-author-methods-isotope-check",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-author-criterion-normalization-check",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0101463v1",
-        "note": "Journal published 26 February 2001. Author v1 submitted 31 January 2001, selected pp.1–2: 25 G ZFC warming,2% onset,40.2/39.2 K and mixed-isotope broadening. Boron-only study; not source for measured Mg coefficient. No raw magnetization refit."
+        "note": "Author v1 submitted 31 January 2001, pp. 1–2 reread: 25 G ZFC warming, 2% diamagnetic onset and curves normalized to minus one at low temperature; boron-only comparison. Publisher identity and arXiv history checked; v2 exists but its full text and final journal methods were not compared in this follow-up. No raw magnetization refit."
       }
     },
     {
@@ -114,10 +114,10 @@
       "url": "https://doi.org/10.1038/35078037",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-author-methods-table-check",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-author-criterion-table-and-published-abstract-check",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0104242v1",
-        "note": "Author v1 submitted 12 April 2001, selected pp.2–3 and Table 1 p. 7 visually checked. 1 G warming, onset/10% criteria and impurity caveat. Table prints 25.001 Mg mass despite 26Mg methods; final version inaccessible, discrepancy unresolved. Only boron ratios recalculated."
+        "note": "Author v1 submitted 12 April 2001, pp. 2–3 and Table 1 p. 7 checked: cooling to about 20 K, 1 G warming, onset and 10% criteria, unquantified impurity caveat. Table 1 visually inspected and six boron comparisons recalculated. Published 24 May 2001; final publisher abstract checked, final table remains unavailable. Printed Mg mass 25.001 versus enriched 26Mg methods leaves the discrepancy unresolved; no Mg-mass regression."
       }
     },
     {
@@ -128,10 +128,10 @@
       "url": "https://doi.org/10.1103/PhysRevLett.87.137005",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-author-spectroscopy-methods-check",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-author-contact-weight-and-temperature-check",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://arxiv.org/pdf/cond-mat/0105598v1",
-        "note": "Journal published 11 September 2001; author v1 submitted 30 May 2001, selected methods/results pp.2–3. Cu tips,400 Hz differential resistance, two BTK contributions, fixed weight/Z across T, field to 1 T. Final journal first-page text compared; complete final methods/raw fits not reproduced."
+        "note": "Author v1 submitted 30 May 2001, selected pp. 2–3 reread: Cu contacts, 400 Hz differential resistance, approximately 10%–90% relative weights between contacts, fixed weight and barrier parameter within each temperature series, thermal smearing and fields to 1 T. Journal published 11 September 2001; complete final methods and raw BTK fits not reproduced."
       }
     },
     {
@@ -142,10 +142,10 @@
       "url": "https://doi.org/10.1038/nature00898",
       "publicationStatus": "journal-article",
       "verification": {
-        "scope": "selected-published-anisotropic-gap-check",
-        "checkedAt": "2026-10-18",
+        "scope": "selected-final-gap-fit-dos-and-heat-capacity-check",
+        "checkedAt": "2026-10-20",
         "evidenceUrl": "https://www2.lbl.gov/Science-Articles/Archive/assets/images/2002/Aug-14-2002/MgB2Nature.pdf",
-        "note": "Published 15 August 2002. Original pp.758–760 selected discussion and Figs. 2–4; p.759 visually checked. Calculated distributions/thermodynamics distinguished from measured gap constants. No anisotropic Eliashberg solve or original specific-heat reanalysis."
+        "note": "Final Nature 418, 758–760, published 15 August 2002. Selected discussion and Figs. 2–4 checked; p. 759 visually re-inspected. Fig. 3a separate empirical fits to calculated averages use exponents 2.9/1.8; Fig. 3b assumes broadening 0.1 meV. Fig. 4 compares three experimental datasets with calculated electronic specific heat. Calculated density-of-states shares are not point-contact weights. No full anisotropic Eliashberg solve or original specific-heat reanalysis."
       }
     },
     {
@@ -212,7 +212,9 @@
         "source-a9d7d0b720a3bafd"
       ],
       "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
-      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "References provide physical context and any explicitly attributed inputs; the stated toy-matrix, parallel-channel or logarithmic-ratio calculation is local algebra, not a reproduced material fit."
     },
     {
       "id": "scwiki-d7-claim-mathematical-assumptions-2",
@@ -223,7 +225,9 @@
         "source-a9d7d0b720a3bafd"
       ],
       "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
-      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "References provide physical context and any explicitly attributed inputs; the stated toy-matrix, parallel-channel or logarithmic-ratio calculation is local algebra, not a reproduced material fit."
     },
     {
       "id": "scwiki-d7-claim-mathematical-assumptions-3",
@@ -235,7 +239,9 @@
         "source-60ffd9b4ef2c9ccd"
       ],
       "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
-      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "References provide physical context and any explicitly attributed inputs; the stated toy-matrix, parallel-channel or logarithmic-ratio calculation is local algebra, not a reproduced material fit."
     },
     {
       "id": "scwiki-d7-claim-experimental-criteria-1",
@@ -251,14 +257,16 @@
     {
       "id": "scwiki-d7-claim-experimental-criteria-2",
       "sectionId": "experimental-criteria",
-      "statement": "Bud'ko used a 2% diamagnetic-onset criterion on warming after zero-field cooling, with a 25 G measuring field. The isotopically enriched samples had narrow but different transition widths. Hinks used a 1 G field and compared extrapolated onset with a 10% criterion; natural and enriched Mg samples showed possible impurity differences that the authors could not quantify. The Mg contribution therefore belongs to the Hinks study, not to the earlier boron-only experiment. The six printed boron comparisons have been recalculated here, but the raw magnetization has not been refitted.",
+      "statement": "Bud'ko measured on warming after zero-field cooling in 25 G, using 2% of the low-temperature diamagnetic signal to define onset. The curves were normalized for comparison; their displayed height is not an absolute superconducting volume fraction. Hinks instead cooled to about 20 K in nominal zero field, applied 1 G and recorded on warming, comparing extrapolated onset with a 10% criterion. Its six boron isotope comparisons retain the same criterion within each pair. The natural-Mg samples had higher transition temperatures than the enriched-Mg samples; an unquantified impurity contribution limits the small Mg-isotope inference. The Mg coefficient belongs to Hinks, not Bud'ko's boron-only experiment. For the last 10% pair, the printed temperatures give 0.3049, versus the table's 0.31(1): agreement within stated uncertainty is not exact last-digit reproduction. Recalculating printed temperatures does not refit magnetization or resolve the Hinks manuscript's Mg-mass discrepancy.",
       "evidenceType": "experiment",
       "sourceIds": [
         "source-22ad55507a1e49c5",
         "source-60ffd9b4ef2c9ccd"
       ],
-      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
-      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+      "conditions": "Budko author v1: ZFC warming, 25 G and 2% criterion; Hinks author v1: cooling to about 20 K, 1 G warming, separate onset and 10% pairs; final Hinks table unresolved.",
+      "verificationScope": "Selected identified author methods/table and final Choi figure captions; source-specific quantitative comparisons, no complete final-author comparison or raw-data reanalysis.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Named papers support the method and figure details; limits on transferring normalized weights, criteria or calculated quantities are editorial reasoning. No independent raw-data or full numerical reproduction."
     },
     {
       "id": "scwiki-d7-claim-experimental-criteria-3",
@@ -274,14 +282,16 @@
     {
       "id": "scwiki-d7-claim-limits-and-disputes-1",
       "sectionId": "limits-and-disputes",
-      "statement": "The final Choi calculation uses the anisotropic Eliashberg framework and compares calculated thermodynamics with experiments. Its successful description does not turn a two-constant-gap approximation into an exact band-resolved result. Spectroscopic weights depend on geometry and matrix elements; fitting two components is strongest when checked against independent thermodynamic and field-dependent evidence. The original specific-heat datasets and full anisotropic numerical calculation have not been independently reproduced in this review.",
+      "statement": "The Choi calculation resolves momentum-dependent gaps. In Fig. 3a, separate empirical fits describe the calculated average gaps with exponents 2.9 for the sigma sheets and 1.8 for the pi sheets; these are not one universal temperature curve. Fig. 3b assumes a 0.1 meV lifetime-broadening parameter. Fig. 4 compares calculated electronic specific heat with three experimental datasets having different transition temperatures, rather than fitting a single specimen's spectroscopy. Szabo's author manuscript fits point-contact conductance with two BTK contributions: their relative weight varies from about 10% to 90% between contacts, while weight and barrier parameter remain fixed during a given temperature series. That contact-dependent weight must not be substituted for Choi's calculated band density-of-states shares. Thermal smearing also obscures separate peaks near the transition. These distinctions support comparing multiple probes; they do not establish gap sign from these spectra or independently reproduce the specific-heat data or Eliashberg calculation.",
       "evidenceType": "theory",
       "sourceIds": [
         "source-69ced9b5dda860f1",
         "source-7c4eac077ae5e221"
       ],
-      "conditions": "Source-specific sample, temperature, probe, isotope and publication version; toy models are not fitted material results.",
-      "verificationScope": "Selected primary passages and bounded algebra only; final-version/raw-data issues explicitly retained."
+      "conditions": "Choi final Figs. 2–4 and Szabo author v1 temperature/field spectroscopy: computed gaps, density of states, heat capacity and contact-dependent BTK weights have different meanings.",
+      "verificationScope": "Selected identified author methods/table and final Choi figure captions; source-specific quantitative comparisons, no complete final-author comparison or raw-data reanalysis.",
+      "sourceRelationship": "mixed-source-and-local-derivation",
+      "derivationNote": "Named papers support the method and figure details; limits on transferring normalized weights, criteria or calculated quantities are editorial reasoning. No independent raw-data or full numerical reproduction."
     },
     {
       "id": "scwiki-d7-claim-limits-and-disputes-2",
@@ -325,6 +335,11 @@
       "description": "Replaced inherited unrelated Choi DOI with nature00898; separated Budko boron-only evidence from Hinks Mg measurement and retained the unresolved author-table mass discrepancy.",
       "sourceId": "source-7c4eac077ae5e221",
       "scope": "Edited public article; pinned source bytes preserved."
+    },
+    {
+      "id": "scwiki-d7-correction-2",
+      "description": "Separated isotope criteria and normalized magnetic traces; distinguished contact-dependent spectroscopy weights from computed gap/DOS quantities. Printed isotope rounding and unresolved Hinks final-table issue remain explicit.",
+      "scope": "Selected D7 claims and public source metadata; fixed source bytes unchanged."
     }
   ],
   "equationChecks": [
