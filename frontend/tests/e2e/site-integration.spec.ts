@@ -163,7 +163,7 @@ test("information-page contents reach preserved anchors without covering the hea
 test("hero asset is local, bounded and labelled as conceptual at every layout size", async ({ page }) => {
   await page.goto("/");
   await page.getByRole("button", { name: "Reject all", exact: true }).click();
-  const artwork = page.getByRole("img", { name: /AI-generated conceptual illustration/ });
+  const artwork = page.getByRole("img", { name: /Conceptual illustration of a magnet levitating/ });
   await expect(artwork).toBeVisible();
   await expect(artwork).toHaveJSProperty("complete", true);
   expect(await artwork.evaluate(img => (img as HTMLImageElement).naturalWidth)).toBeGreaterThan(0);
@@ -179,6 +179,7 @@ test("hero asset is local, bounded and labelled as conceptual at every layout si
     expect(layout.width).toBeLessThanOrEqual(width);
     expect(layout.lines, `Heading at ${width}px`).toBeLessThanOrEqual(2.01);
     expect(layout.searchBottom).toBeLessThan(700);
+    if ([320, 390, 1440].includes(width)) await page.screenshot({ path: `test-results/approved-home-${width}.png`, fullPage: true });
   }
   await page.emulateMedia({ reducedMotion: "reduce" });
   const arrow = page.locator(".entry-arrow").first();
@@ -190,9 +191,9 @@ test("the preserved light theme and image budget do not depend on OS preferences
   await page.emulateMedia({ colorScheme: "dark", reducedMotion: "reduce" });
   await page.goto("/");
   expect(await page.evaluate(() => getComputedStyle(document.documentElement).colorScheme)).toBe("light");
-  expect(await page.locator("body").evaluate(el => getComputedStyle(el).backgroundColor)).toBe("rgb(240, 245, 240)");
+  expect(await page.locator("body").evaluate(el => getComputedStyle(el).backgroundColor)).toBe("rgb(247, 245, 239)");
   for (const width of [640, 1120]) {
-    const response = await request.get(`/images/layered-material-concept-${width}.webp`);
+    const response = await request.get(`/images/superconductivity-hero-${width}.webp`);
     expect(response.status()).toBe(200);
     expect(response.headers()["content-type"]).toContain("image/webp");
     expect((await response.body()).length).toBeLessThan(100_000);

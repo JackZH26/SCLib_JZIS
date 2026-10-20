@@ -170,6 +170,7 @@ a:hover {
 @media(max-width: 640px) {
   .sclib-brand { width: 140px; height: 40px; }
   .library-hero { padding-top: 1.5rem; gap: 2rem; }
+  .library-headline { font-size: clamp(2.125rem, 10vw, 2.75rem); }
   .hero-material-image { max-height: 350px; }
   .footer-brand, .discovery-method-note { display: block; }
   .footer-brand p { margin-top: 1.5rem; }

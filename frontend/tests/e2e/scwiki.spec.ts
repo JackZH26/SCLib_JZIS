@@ -81,7 +81,8 @@ test("six topic sections pack without overlaps or long empty rows across screen 
     const above=boxes.filter(other=>Math.abs(other.left-box.left)<1&&Math.abs(other.width-box.width)<1&&other.bottom<=box.top);
     if(above.length)expect(box.top-Math.max(...above.map(other=>other.bottom))).toBeLessThan(41);
    }
-   if(width>900)expect(boxes[3].width).toBeGreaterThan(boxes[0].width*2);
+   // All six approved topic groups use equal-width columns; no wide fourth panel.
+   for(const box of boxes)expect(Math.abs(box.width-boxes[0].width)).toBeLessThan(1);
   } else for(let i=1;i<boxes.length;i++)expect(boxes[i].top).toBeGreaterThanOrEqual(boxes[i-1].bottom);
   expect(await page.evaluate(()=>document.documentElement.scrollWidth)).toBeLessThanOrEqual(width);
   await page.screenshot({path:`test-results/scwiki-topic-layout-${width}.png`,fullPage:true});
@@ -116,7 +117,7 @@ test("SCWiki navigation order, keyboard focus and old docs anchors work",async({
  await page.goto("/scwiki");await page.getByRole("button",{name:"Reject all",exact:true}).click();
  const toggle=page.getByRole("button",{name:"Open navigation"});await toggle.click();
  const menu=page.getByRole("navigation",{name:"Mobile navigation"});
- expect((await menu.getByRole("link").allTextContents()).filter(t=>!t.includes("Sign in")).map(t=>t.trim())).toEqual(["Home","SCWiki","Materials","Reported Tc Timeline","Discovery","About JZIS"]);
+ expect((await menu.getByRole("link").allTextContents()).filter(t=>!t.includes("Sign in")).map(t=>t.trim())).toEqual(["Home","SCWiki","Materials","Discovery","About JZIS"]);
  await menu.getByRole("link",{name:"SCWiki",exact:true}).focus();await page.keyboard.press("Escape");await expect(toggle).toBeFocused();
  await page.goto("/docs#search-the-literature");
  await expect(page).toHaveURL(/\/scwiki\/using-sclib#search-the-literature$/);
