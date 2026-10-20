@@ -13,7 +13,8 @@ import {
   Float32BufferAttribute, Vector2, Vector3,
 } from "three/src/Three.Core.js";
 import type { TimelineDisplayCluster } from "./timeline-display";
-import { FAMILY_COLORS } from "./families";
+import { nearbyTimelineTargets, type TimelineScreenTarget } from "./timeline-display";
+import { timelineFamilyColour, timelineMarkerDiameter } from "./timeline-style";
 
 export type AxisLabel = { x: number; y: number; text: string; axis: "x" | "y" };
 export type TimelineSceneInput = {
@@ -23,7 +24,7 @@ export type TimelineSceneInput = {
 export type TimelineScene = {
   perspective: (enabled: boolean) => void;
   zoom: (factor: number) => void;
-  pick: (x: number, y: number) => TimelineDisplayCluster | null;
+  pick: (x: number, y: number) => TimelineDisplayCluster[];
   rotate: (dx: number, dy: number) => void;
   pan: (dx: number, dy: number) => void;
   dispose: () => void;
@@ -66,7 +67,7 @@ export async function createTimelineScene(
   const scene = new Scene();
   const group = new Group();
   scene.add(group, new AmbientLight(0xffffff, 2));
-  const light = new DirectionalLight(0xffffff, 3);
+  const light = new DirectionalLight(0xffffff, 2);
   light.position.set(-150, 250, 400); scene.add(light);
   const camera = new OrthographicCamera(-width / 2, width / 2, height / 2, -height / 2, 1, 2000);
   camera.position.z = 1000;
@@ -79,10 +80,10 @@ export async function createTimelineScene(
     const members = groups.get(cluster.origin) ?? []; members.push(cluster); groups.set(cluster.origin, members);
   }
   for (const [origin, clusters] of groups) {
-    const geometry = origin === "Observed" ? new SphereGeometry(5.3, 16, 12) :
-      origin === "Computed" ? new TorusGeometry(5, 1.3, 8, 20) :
+    const geometry = origin === "Observed" ? new SphereGeometry(4, 16, 12) :
+      origin === "Computed" ? new TorusGeometry(3.4, .65, 8, 20) :
       origin === "Unknown / conflict" ? (() => {
-        const first = new BoxGeometry(12, 2, 2), second = new BoxGeometry(2, 12, 2);
+        const first = new BoxGeometry(8, 1.2, 1.2), second = new BoxGeometry(1.2, 8, 1.2);
         const a = first.toNonIndexed(), b = second.toNonIndexed();
         first.dispose(); second.dispose();
         a.rotateZ(Math.PI / 4); b.rotateZ(Math.PI / 4);
@@ -95,16 +96,16 @@ export async function createTimelineScene(
         }
         a.dispose(); b.dispose(); return merged;
       })() :
-      origin === "Mixed origins" ? new BoxGeometry(9, 9, 3) : new OctahedronGeometry(6);
-    const material = new MeshStandardMaterial({ roughness: .36, metalness: .08, wireframe: origin === "Mixed origins" });
+      origin === "Mixed origins" ? new BoxGeometry(7, 7, 2) : new OctahedronGeometry(4.5);
+    const material = new MeshStandardMaterial({ roughness: .85, metalness: 0, wireframe: origin === "Mixed origins" });
     const mesh = new InstancedMesh(geometry, material, clusters.length);
     const transform = new Matrix4();
     clusters.forEach((cluster, index) => {
       const position = chartPosition(cluster, input)!;
-      const size = Math.min(1.8, 1 + Math.log2(cluster.members.length) * .15);
+      const size = timelineMarkerDiameter(cluster.members.length) / 8;
       transform.makeScale(size, size, size).setPosition(world(position.x, position.y));
       mesh.setMatrixAt(index, transform);
-      mesh.setColorAt(index, new Color(FAMILY_COLORS[cluster.family] ?? "#536b60"));
+      mesh.setColorAt(index, new Color(timelineFamilyColour(cluster.family)));
     });
     mesh.instanceMatrix.needsUpdate = true;
     if (mesh.instanceColor) mesh.instanceColor.needsUpdate = true;
@@ -129,7 +130,7 @@ export async function createTimelineScene(
   const gridMaterial = new LineBasicMaterial({ color: "#dce3d8" });
   group.add(new LineSegments(gridGeometry, gridMaterial)); resources.push(gridGeometry, gridMaterial);
   let frame = 0;
-  let targets: { x: number; y: number; cluster: TimelineDisplayCluster }[] = [];
+  let targets: TimelineScreenTarget[] = [];
   const draw = () => {
     frame = 0;
     if (disposed || document.hidden) return;
@@ -158,17 +159,15 @@ export async function createTimelineScene(
     pan(dx, dy) { group.position.x = Math.max(-width / 2, Math.min(width / 2, group.position.x + dx / camera.zoom)); group.position.y = Math.max(-height / 2, Math.min(height / 2, group.position.y - dy / camera.zoom)); schedule(); },
     zoom(factor) { camera.zoom = Math.max(.8, Math.min(2, camera.zoom * factor)); camera.updateProjectionMatrix(); schedule(); },
     pick(x, y) {
+      // Keep every nearby record reachable even when markers overlap. Projected
+      // centres also make hollow markers selectable without a geometry hit.
+      const nearby = nearbyTimelineTargets(targets, x, y);
+      if (nearby.length) return nearby;
       group.updateMatrixWorld(true); camera.updateMatrixWorld(true);
       raycaster.setFromCamera(new Vector2(x / width * 2 - 1, 1 - y / height * 2), camera);
       const hit = raycaster.intersectObjects(batches.map(batch => batch.mesh), false)[0];
-      if (hit && hit.instanceId !== undefined) return batches.find(batch => batch.mesh === hit.object)?.clusters[hit.instanceId] ?? null;
-      // Hollow origin markers remain selectable through their centres.
-      let nearest: TimelineDisplayCluster | null = null, distance = 9 * 9;
-      for (const target of targets) {
-        const squared = (target.x - x) ** 2 + (target.y - y) ** 2;
-        if (squared < distance) { distance = squared; nearest = target.cluster; }
-      }
-      return nearest;
+      const cluster = hit && hit.instanceId !== undefined ? batches.find(batch => batch.mesh === hit.object)?.clusters[hit.instanceId] : undefined;
+      return cluster ? [cluster] : [];
     },
     dispose() {
       if (disposed) return; disposed = true; cancelAnimationFrame(frame);

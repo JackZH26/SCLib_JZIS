@@ -2,6 +2,8 @@ import { describe, it, expect, vi } from "vitest";
 import { chartPosition, createTimelineScene, type TimelineSceneInput } from "@/lib/timeline-webgpu";
 import { timelineSvg } from "@/lib/timeline-export";
 import type { TimelineDisplayCluster } from "@/lib/timeline-display";
+import { nearbyTimelineTargets } from "@/lib/timeline-display";
+import { timelineFamilyColour, timelineMarkerDiameter } from "@/lib/timeline-style";
 
 const input: TimelineSceneInput = { width: 1000, height: 500, clusters: [], xRange: [1900, 2030], yRange: [0, 300], logarithmic: false };
 
@@ -10,6 +12,17 @@ describe("Three-dimensional timeline scientific coordinates", () => {
     const first = chartPosition({ year: 2000, tc_kelvin: 10 }, input);
     expect(chartPosition({ year: 2000, tc_kelvin: 10 }, input)).toEqual(first);
     expect(chartPosition({ year: 2000, tc_kelvin: 10.0001 }, input)?.y).not.toEqual(first?.y);
+  });
+  it("keeps naturally overlapping Tc markers individually selectable, ordered by screen distance", () => {
+    const first: TimelineDisplayCluster = { id: "first", year: 2000, tc_kelvin: 100, members: [], sourceCount: 0, family: "cuprate", origin: "Observed" };
+    const second = { ...first, id: "second", tc_kelvin: 100.2, family: "hydride" };
+    const a = chartPosition(first, input)!, b = chartPosition(second, input)!;
+    expect(Math.abs(a.y - b.y)).toBeLessThan(timelineMarkerDiameter(1));
+    const targets = [{ ...b, cluster: second }, { ...a, cluster: first }];
+    expect(nearbyTimelineTargets(targets, a.x, a.y)).toEqual([first, second]);
+    expect(nearbyTimelineTargets(targets, b.x, b.y)).toEqual([second, first]);
+    expect(nearbyTimelineTargets(targets, a.x + 30, a.y)).toEqual([]);
+    expect([first.tc_kelvin, second.tc_kelvin]).toEqual([100, 100.2]);
   });
   it("rejects points outside a chosen view without changing the original records", () => {
     const point = { year: 2000, tc_kelvin: 90 };
@@ -58,5 +71,16 @@ describe("Three-dimensional timeline scientific coordinates", () => {
     expect(document.querySelector("desc")?.textContent).toContain("2 received results; 1 visible coordinate clusters");
     expect(svg).not.toMatch(/NaN|Infinity/);
     expect(svg).toContain("Out-of-view records remain in the website table");
+  });
+  it("exports close values at distinct overlapping positions with the same family colours as the chart", () => {
+    const a: TimelineDisplayCluster = { id: "a", year: 2000, tc_kelvin: 100, members: [], sourceCount: 0, family: "cuprate", origin: "Observed" };
+    const b = { ...a, id: "b", family: "hydride", tc_kelvin: 100.2 };
+    const svg = timelineSvg({ clusters: [a, b], xRange: [1900, 2030], yRange: [0, 300], logarithmic: false, receivedCount: 2, sourceUrl: "https://example.test/timeline" });
+    const doc = new DOMParser().parseFromString(svg, "image/svg+xml");
+    const marks = [...doc.querySelectorAll("g[transform]")];
+    expect(marks).toHaveLength(2);
+    expect(marks[0].getAttribute("transform")).not.toEqual(marks[1].getAttribute("transform"));
+    expect(marks.map(mark => mark.getAttribute("stroke"))).toEqual([timelineFamilyColour(a.family), timelineFamilyColour(b.family)]);
+    expect(marks.map(mark => mark.querySelector("title")?.textContent)).toEqual([expect.stringContaining("100 K"), expect.stringContaining("100.2 K")]);
   });
 });

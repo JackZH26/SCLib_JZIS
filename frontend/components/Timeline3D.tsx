@@ -6,7 +6,8 @@ import type { AxisLabel, TimelineScene, TimelineSceneInput } from "@/lib/timelin
 import type { TimelineDisplayCluster } from "@/lib/timeline-display";
 import { formatTimelineTc, timelineYearBasis } from "@/lib/timeline-display";
 import { pressureLabel } from "@/lib/pressure-semantics";
-import { FAMILY_COLORS, familyLabel } from "@/lib/families";
+import { familyLabel } from "@/lib/families";
+import { timelineFamilyColour } from "@/lib/timeline-style";
 import { visibilityLabel } from "@/lib/material-visibility";
 
 type Props = Omit<TimelineSceneInput, "width" | "height"> & {
@@ -18,6 +19,7 @@ export default function Timeline3D({ clusters, xRange, yRange, logarithmic, onEr
   const [width, setWidth] = useState(0), [labels, setLabels] = useState<AxisLabel[]>([]);
   const [perspective, setPerspective] = useState(false);
   const [tip, setTip] = useState<TimelineDisplayCluster | null>(null), [pinned, setPinned] = useState(false);
+  const [nearby, setNearby] = useState<TimelineDisplayCluster[]>([]);
   const gesture = useRef<{ x: number; y: number; moved: boolean } | null>(null);
   const suppressClick = useRef(false);
   const pickFrame = useRef(0);
@@ -37,7 +39,7 @@ export default function Timeline3D({ clusters, xRange, yRange, logarithmic, onEr
   useEffect(() => {
     if (!canvas.current || !width) return;
     let cancelled = false;
-    setTip(null); setPinned(false); setPerspective(false); setLabels([]);
+    setTip(null); setPinned(false); setNearby([]); setPerspective(false); setLabels([]);
     import("@/lib/timeline-webgpu").then(async ({ createTimelineScene }) => {
       if (cancelled) return;
       const scene = await createTimelineScene(canvas.current!, { width, height, clusters, xRange, yRange, logarithmic },
@@ -71,12 +73,12 @@ export default function Timeline3D({ clusters, xRange, yRange, logarithmic, onEr
           if (pinned || event.pointerType !== "mouse") return;
           const rect = event.currentTarget.getBoundingClientRect(), x = event.clientX - rect.left, y = event.clientY - rect.top;
           cancelAnimationFrame(pickFrame.current);
-          pickFrame.current = requestAnimationFrame(() => setTip(engine.current?.pick(x, y) ?? null));
+          pickFrame.current = requestAnimationFrame(() => setTip(engine.current?.pick(x, y)[0] ?? null));
         }}
         onClick={event => {
           if (suppressClick.current) return;
-          const rect = event.currentTarget.getBoundingClientRect(), result = engine.current?.pick(event.clientX - rect.left, event.clientY - rect.top);
-          if (result) { setTip(result); setPinned(true); onSelect(result.id); }
+          const rect = event.currentTarget.getBoundingClientRect(), results = engine.current?.pick(event.clientX - rect.left, event.clientY - rect.top) ?? [];
+          if (results.length) { setNearby(results); setTip(results[0]); setPinned(true); onSelect(results[0].id); }
         }}
         onPointerLeave={() => { if (!pinned) setTip(null); }} />
       <svg className="timeline-axis-labels" width="100%" height={height} aria-hidden="true">
@@ -92,10 +94,19 @@ export default function Timeline3D({ clusters, xRange, yRange, logarithmic, onEr
         <p>{familyLabel(point.family)} · {visibilityLabel(point.visibility)}</p>
         <p>{point.result_metadata?.review_status === "legacy_unreviewed" ? "Legacy result · unreviewed" : "Result-level review unavailable"}. No scientific acceptance asserted.</p>
         <p>{tip.members.length} received result{tip.members.length === 1 ? "" : "s"} at these coordinates. Inspect all members in the table.</p>
+        {pinned && nearby.length > 1 && <label className="mt-3 block text-sm">
+          Nearby markers ({nearby.length})
+          <select className="mt-1 w-full min-w-0 rounded border border-slate-300 bg-white p-2 text-slate-800" value={tip.id} onChange={event => {
+            const selected = nearby.find(cluster => cluster.id === event.target.value);
+            if (selected) { setTip(selected); onSelect(selected.id); }
+          }}>
+            {nearby.map(cluster => <option key={cluster.id} value={cluster.id}>{formatTimelineTc(cluster.tc_kelvin)} · {cluster.year} · {cluster.members[0]?.material}</option>)}
+          </select>
+        </label>}
         {point.paper_id && <Link href={`/paper/${encodeURIComponent(point.paper_id)}`} className="site-text-link">Source record →</Link>}
       </aside>}
     </div>
-    <div className="timeline-family-legend" aria-label="Material families">{Array.from(new Set(clusters.map(c => c.family))).map(family => <span key={family}><i style={{ background: FAMILY_COLORS[family] ?? "#536b60" }} />{family === "mixed" ? "Mixed families" : familyLabel(family)}</span>)}</div>
-    <p className="timeline-view-note">Choose a point for details. Drag to pan in Front view; drag to rotate in 3D perspective, or Shift-drag to pan. Front view resets the camera. Depth is visual only; it does not encode a scientific quantity.</p>
+    <div className="timeline-family-legend" aria-label="Material families">{Array.from(new Set(clusters.map(c => c.family))).map(family => <span key={family}><i style={{ background: timelineFamilyColour(family) }} />{family === "mixed" ? "Mixed families" : familyLabel(family)}</span>)}</div>
+    <p className="timeline-view-note">Choose a point for details; use Nearby markers when points overlap. Drag to pan in Front view; drag to rotate in 3D perspective, or Shift-drag to pan. Front view resets the camera. Depth is visual only; it does not encode a scientific quantity.</p>
   </div>;
 }

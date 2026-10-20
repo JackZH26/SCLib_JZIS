@@ -55,6 +55,16 @@ export interface TimelineDisplayCluster {
   origin: string;
 }
 
+export type TimelineScreenTarget = { x: number; y: number; cluster: TimelineDisplayCluster };
+
+/** Pick on-screen neighbours without clustering or changing scientific values. */
+export function nearbyTimelineTargets(targets: TimelineScreenTarget[], x: number, y: number, radius = 9) {
+  return targets.map(target => ({ target, distance: (target.x - x) ** 2 + (target.y - y) ** 2 }))
+    .filter(hit => hit.distance <= radius * radius)
+    .sort((a, b) => a.distance - b.distance || a.target.cluster.id.localeCompare(b.target.cluster.id, "en"))
+    .map(hit => hit.target.cluster);
+}
+
 /** Exact chart-coordinate overlap only: never a scientific identity or deduplication. */
 export function clusterTimelinePoints(points: TimelinePoint[]): TimelineDisplayCluster[] {
   const grouped = new Map<string, TimelinePoint[]>();

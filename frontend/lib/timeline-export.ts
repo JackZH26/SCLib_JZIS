@@ -1,5 +1,6 @@
 import type { TimelineDisplayCluster } from "./timeline-display";
-import { FAMILY_COLORS, familyLabel } from "./families";
+import { familyLabel } from "./families";
+import { timelineFamilyColour, timelineMarkerDiameter } from "./timeline-style";
 
 const xml = (value: unknown) => String(value).replace(/[&<>"']/g, character =>
   ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&apos;" })[character]!);
@@ -11,8 +12,9 @@ export function timelineSvg({
   clusters: TimelineDisplayCluster[]; xRange: [number, number]; yRange: [number, number];
   logarithmic: boolean; receivedCount: number; sourceUrl: string;
 }) {
-  const width = 1200, height = 760, left = 85, top = 65, plotWidth = 1060, plotHeight = 470;
+  const width = 1200, left = 85, top = 65, plotWidth = 1060, plotHeight = 470;
   const marks: string[] = [], ticks: string[] = [];
+  const visibleFamilies = new Set<string>();
   let shown = 0;
   for (let i = 0; i <= 5; i++) {
     const x = left + i * plotWidth / 5, y = top + plotHeight - i * plotHeight / 5;
@@ -27,17 +29,24 @@ export function timelineSvg({
     const value = logarithmic ? Math.log10(cluster.tc_kelvin) : cluster.tc_kelvin;
     if (!Number.isFinite(value) || value < yRange[0] || value > yRange[1] || cluster.year < xRange[0] || cluster.year > xRange[1]) continue;
     shown++;
+    visibleFamilies.add(cluster.family);
     const x = left + (cluster.year - xRange[0]) / Math.max(1, xRange[1] - xRange[0]) * plotWidth;
     const y = top + plotHeight - (value - yRange[0]) / Math.max(.000001, yRange[1] - yRange[0]) * plotHeight;
-    const color = FAMILY_COLORS[cluster.family] ?? "#536b60";
+    const color = timelineFamilyColour(cluster.family);
+    const radius = timelineMarkerDiameter(cluster.members.length) / 2;
     const title = `${cluster.year}; ${cluster.tc_kelvin} K; ${cluster.origin}; ${familyLabel(cluster.family)}; ${cluster.members.length} received result(s). ${cluster.members.map(p => `${p.material}; ${p.paper_id ?? "Source unavailable"}`).join(" | ")}`;
-    const shape = cluster.origin === "Observed" ? `<circle r="4.5" fill="${color}"/>` :
-      cluster.origin === "Computed" ? `<circle r="4.5" fill="white"/>` :
-      cluster.origin === "Mixed origins" ? '<rect x="-4.5" y="-4.5" width="9" height="9" fill="white"/>' :
-      cluster.origin === "Unknown / conflict" ? '<path d="M-4 -4L4 4M-4 4L4 -4" fill="none"/>' :
-      '<path d="M0 -5L5 0L0 5L-5 0Z" fill="white"/>';
-    marks.push(`<g transform="translate(${x} ${y})" stroke="${color}" stroke-width="1.3"><title>${xml(title)}</title>${shape}</g>`);
+    const shape = cluster.origin === "Observed" ? `<circle r="${radius}" fill="${color}"/>` :
+      cluster.origin === "Computed" ? `<circle r="${radius}" fill="none"/>` :
+      cluster.origin === "Mixed origins" ? `<rect x="${-radius}" y="${-radius}" width="${2 * radius}" height="${2 * radius}" fill="none"/>` :
+      cluster.origin === "Unknown / conflict" ? `<path d="M${-radius} ${-radius}L${radius} ${radius}M${-radius} ${radius}L${radius} ${-radius}" fill="none"/>` :
+      `<path d="M0 ${-radius}L${radius} 0L0 ${radius}L${-radius} 0Z" fill="none"/>`;
+    marks.push(`<g transform="translate(${x} ${y})" stroke="${color}" stroke-width="1.1" opacity=".85"><title>${xml(title)}</title>${shape}</g>`);
   }
+  const familyKeys = [...visibleFamilies].map((family, index) => {
+    const x = left + (index % 5) * 212, y = 760 + Math.floor(index / 5) * 25;
+    return `<circle cx="${x + 4}" cy="${y - 4}" r="4" fill="${timelineFamilyColour(family)}"/><text x="${x + 16}" y="${y}">${xml(family === "mixed" ? "Mixed families" : familyLabel(family))}</text>`;
+  }).join("");
+  const height = 780 + Math.max(0, Math.ceil(visibleFamilies.size / 5) - 1) * 25;
   return `<svg xmlns="http://www.w3.org/2000/svg" width="${width}" height="${height}" viewBox="0 0 ${width} ${height}" role="img" aria-labelledby="title description">
 <title id="title">SCLib reported Tc timeline — front view</title>
 <desc id="description">${xml(`${receivedCount} received results; ${shown} visible coordinate clusters. Chart ranges: ${xRange.join("–")} years; ${yRange.join("–")} ${logarithmic ? "log10(K)" : "K"}. Display overlaps are not scientific deduplication. Selection may be sampled; omitted records are not represented. Source view: ${sourceUrl}`)}</desc>
@@ -48,5 +57,5 @@ export function timelineSvg({
 <text x="${left}" y="650">${receivedCount.toLocaleString("en-US")} received results · ${shown.toLocaleString("en-US")} visible coordinate clusters · ${logarithmic ? "Logarithmic" : "Linear"} temperature scale</text>
 <text x="${left}" y="675">Overlaps are display groups. Colours identify material families. Results are source reports, not scientific approval.</text>
 <text x="${left}" y="700">The received selection may be sampled. Out-of-view records remain in the website table.</text>
-<text x="${left}" y="725">Filters and source view are recorded in this SVG description. SCLib · jzis.org</text></g></svg>`;
+<text x="${left}" y="725">Filters and source view are recorded in this SVG description. SCLib · jzis.org</text>${familyKeys}</g></svg>`;
 }

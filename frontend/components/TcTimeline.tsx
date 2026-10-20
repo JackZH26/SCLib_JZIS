@@ -7,7 +7,8 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import type { TimelineCoverage, TimelinePoint, TimelineRecordSummary, TimelineSampling } from "@/lib/api";
 import { recordClassification } from "@/lib/result-semantics";
 import { pressureLabel } from "@/lib/pressure-semantics";
-import { FAMILY_COLORS, familyLabel } from "@/lib/families";
+import { familyLabel } from "@/lib/families";
+import { timelineFamilyColour, timelineMarkerDiameter } from "@/lib/timeline-style";
 import { timelineHoverSummary } from "@/lib/timeline-hover";
 import { FormulaDisplay } from "@/components/FormulaDisplay";
 import { timelineSvg } from "@/lib/timeline-export";
@@ -86,9 +87,9 @@ export function TcTimeline({ points: receivedPoints, coverage, sampling, recordS
       customdata: subset.map(cluster => [cluster.id, timelineHoverSummary(cluster)]),
       hovertemplate: "%{customdata[1]}<extra></extra>",
       marker: {
-        size: subset.map(cluster => Math.min(15, 6 + Math.log2(cluster.members.length) * 2)),
-        opacity: 0.75,
-        color: FAMILY_COLORS[family] ?? "#64748b",
+        size: subset.map(cluster => timelineMarkerDiameter(cluster.members.length)),
+        opacity: 0.85,
+        color: timelineFamilyColour(family),
         symbol: subset.map(cluster => cluster.origin === "Observed" ? "circle" : cluster.origin === "Computed" ? "circle-open" : cluster.origin === "Unknown / conflict" ? "x" : cluster.origin === "Mixed origins" ? "square-open" : "diamond-open"),
         line: { width: 1.3 },
       },
