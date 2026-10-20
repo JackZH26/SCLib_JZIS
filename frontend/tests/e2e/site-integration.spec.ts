@@ -87,12 +87,25 @@ test("redesigned search has a visible label and retains the query contract", asy
   });
   await page.goto("/");
   await page.getByRole("button", { name: "Reject all", exact: true }).click();
-  await expect(page.locator('label[for]')).toContainText("Search the library");
-  const input = page.getByRole("searchbox");
+  // React streaming may temporarily retain a second form in a hidden segment.
+  // Assert the accessible form and its actual label association, not every
+  // label in the document (which also includes that invisible staging DOM).
+  const form = page.getByRole("search", { name: "Library search", exact: true });
+  await expect(form).toHaveCount(1);
+  const label = form.locator("label[for]");
+  await expect(label).toBeVisible();
+  await expect(label).toHaveText("Search the library");
+  const input = form.getByRole("searchbox");
+  await expect(input).toBeVisible();
+  await expect(label).toHaveAttribute("for", (await input.getAttribute("id"))!);
   await expect(input).toHaveAttribute("name", "q");
   await input.fill("FeSe + FeTe");
   await page.getByRole("button", { name: "Search", exact: true }).click();
-  await expect(page).toHaveURL(/\/\?q=FeSe%20%2B%20FeTe$/);
+  // A pre-hydration GET form uses "+" for spaces; client navigation uses
+  // "%20". Both must retain the literal plus and the exact decoded query.
+  await expect(page).toHaveURL(url =>
+    url.pathname === "/" && url.searchParams.get("q") === "FeSe + FeTe");
+  expect([...new URL(page.url()).searchParams.keys()]).toEqual(["q"]);
   await expect(page.getByRole("heading", { name: "Results for “FeSe + FeTe”", exact: true })).toBeVisible();
   await expect(page.getByRole("searchbox")).toHaveValue("FeSe + FeTe");
   await expect.poll(() => queries).toEqual(["FeSe + FeTe"]);
