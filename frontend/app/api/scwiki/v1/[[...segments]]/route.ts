@@ -92,7 +92,7 @@ async function resource(request:NextRequest,{params}:{params:Promise<{segments?:
 }
 
 export async function GET(request:NextRequest,context:{params:Promise<{segments?:string[]}>}){
- try{return await finalizeResponse(request,await resource(request,context));}
+ try{const response=await resource(request,context);if(response.status===200&&(await context.params).segments?.[0]==="research")response.headers.set("Cache-Control","public, max-age=60");return await finalizeResponse(request,response);}
  catch(error){if(error instanceof ApiError)return apiError(error);throw error;}
 }
 const allow="GET, HEAD, OPTIONS";

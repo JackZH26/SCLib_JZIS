@@ -15,7 +15,7 @@ export function librarySearchEntries():SearchEntry[]{return libraryNotes.map(not
 export function discoveryIndex(index:{revision:string;entries:SearchEntry[]}){
  let research:SearchEntry[]=[],weeklyRevision="unavailable";
  try{const data=researchCollection();weeklyRevision=data.revision;research=data.issues.flatMap(issue=>issue.items.map(item=>({
-  id:issue.id+"-"+item.id,topicId:item.topicSlug,code:"Weekly selection",kind:"weekly-selection" as const,slug:"research/"+issue.id+"#"+item.id,title:item.title,summary:item.summary,aliases:[item.paperTitle,item.topicLabel],evidenceTypes:[],editorialStatus:"scoped-check" as const,revision:researchDigest(item),materialCases:[],dois:item.doi?[item.doi]:[],text:[item.paperTitle,item.summary,item.whyItMatters,item.limitation,item.verificationScope,...data.notices.filter(n=>n.paperId===item.paperId).map(n=>n.kind+": "+n.description)].join("\n")
+  notices:data.notices.filter(n=>n.paperId===item.paperId).map(n=>n.date+" · "+n.kind+": "+n.description),id:issue.id+"-"+item.id,topicId:item.topicSlug,code:"Weekly selection",kind:"weekly-selection" as const,slug:"research/"+issue.id+"#"+item.id,title:item.title,summary:item.summary,aliases:[item.paperTitle,item.topicLabel],evidenceTypes:[],editorialStatus:"scoped-check" as const,revision:researchDigest(item),materialCases:[],dois:item.doi?[item.doi]:[],text:[item.paperTitle,item.summary,item.whyItMatters,item.limitation,item.verificationScope,...data.notices.filter(n=>n.paperId===item.paperId).map(n=>n.kind+": "+n.description)].join("\n")
  })));}catch{}
  return {revision:digest([index.revision,libraryRevision,weeklyRevision]),articleRevision:index.revision,libraryRevision,weeklyRevision,entries:[...index.entries,...librarySearchEntries(),...research]};
 }

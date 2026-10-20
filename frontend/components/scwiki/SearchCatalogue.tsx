@@ -60,6 +60,7 @@ export function SearchCatalogue({initial,children,researchCount=0}:{initial:Card
     <ol className="scwiki-article-grid">{results.map(article=>{
      const match=matchedPassage(article,query),href="/scwiki/"+article.slug;
      return <li key={article.id}><article className="scwiki-result"><p className="scwiki-article-code">{article.kind==="weekly-selection"?"Weekly selection":article.kind==="research-note"?"Research note":article.code} <span>{article.evidenceTypes.join(" / ")}</span></p><h2><Link href={href}>{article.title}</Link></h2><p>{article.summary}</p>
+      {article.notices?.map(notice=><aside className="scwiki-research-notice" key={notice}>{notice}</aside>)}
       {match&&<div className="scwiki-match-snippet"><p>{match.text}</p>{match.sectionId&&<Link href={href+"#"+match.sectionId}>Jump to: {match.sectionTitle} →</Link>}</div>}
       <Link href={href} className="scwiki-read-link" aria-label={"Read article: "+article.title}>{article.kind==="weekly-selection"?"Read selection":article.kind==="research-note"?"Read research note":"Read article"} <span aria-hidden="true">↗</span></Link></article></li>;
     })}</ol>
