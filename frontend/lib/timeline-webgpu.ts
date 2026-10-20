@@ -11,8 +11,7 @@ import {
   LineSegments, Matrix4, MeshStandardMaterial, OctahedronGeometry, OrthographicCamera,
   Raycaster, Scene, SphereGeometry, TorusGeometry, BoxGeometry, BufferGeometry,
   Float32BufferAttribute, Vector2, Vector3,
-} from "three";
-import { mergeGeometries } from "three/addons/utils/BufferGeometryUtils.js";
+} from "three/src/Three.Core.js";
 import type { TimelineDisplayCluster } from "./timeline-display";
 import { FAMILY_COLORS } from "./families";
 
@@ -26,6 +25,7 @@ export type TimelineScene = {
   zoom: (factor: number) => void;
   pick: (x: number, y: number) => TimelineDisplayCluster | null;
   rotate: (dx: number, dy: number) => void;
+  pan: (dx: number, dy: number) => void;
   dispose: () => void;
 };
 
@@ -45,15 +45,20 @@ export async function createTimelineScene(
 ): Promise<TimelineScene> {
   if (!("gpu" in navigator) || !navigator.gpu) throw new Error("WebGPU unavailable");
   const backend = new WebGPUBackend({ canvas });
+  const gpuBackend = backend as WebGPUBackend & { device?: { destroy: () => void; lost: Promise<unknown> } };
   const renderer = new Renderer(backend, { getFallback: null, antialias: true });
+  let disposed = false;
   renderer.library = new StandardNodeLibrary();
   renderer.onDeviceLost = onLost;
+  renderer.onError = onLost;
   try { await renderer.init(); } catch (error) {
     // Renderer.dispose() re-enters init through setAnimationLoop in this pinned
     // Three.js version. A failed init has no renderer managers to dispose.
-    (backend as WebGPUBackend & { device?: { destroy: () => void } }).device?.destroy();
+    gpuBackend.device?.destroy();
     throw error;
   }
+  // Also cover external destruction. Three.js ignores the "destroyed" reason.
+  void gpuBackend.device?.lost.then(() => { if (!disposed) onLost(); });
   const { width, height } = input;
   renderer.setPixelRatio(Math.min(window.devicePixelRatio || 1, 1.5));
   renderer.setSize(width, height, false);
@@ -77,9 +82,18 @@ export async function createTimelineScene(
     const geometry = origin === "Observed" ? new SphereGeometry(5.3, 16, 12) :
       origin === "Computed" ? new TorusGeometry(5, 1.3, 8, 20) :
       origin === "Unknown / conflict" ? (() => {
-        const a = new BoxGeometry(12, 2, 2), b = new BoxGeometry(2, 12, 2);
+        const first = new BoxGeometry(12, 2, 2), second = new BoxGeometry(2, 12, 2);
+        const a = first.toNonIndexed(), b = second.toNonIndexed();
+        first.dispose(); second.dispose();
         a.rotateZ(Math.PI / 4); b.rotateZ(Math.PI / 4);
-        const merged = mergeGeometries([a, b]); a.dispose(); b.dispose(); return merged;
+        const merged = new BufferGeometry();
+        for (const name of ["position", "normal"]) {
+          const left = a.getAttribute(name), right = b.getAttribute(name);
+          const values = new Float32Array(left.array.length + right.array.length);
+          values.set(left.array); values.set(right.array, left.array.length);
+          merged.setAttribute(name, new Float32BufferAttribute(values, left.itemSize));
+        }
+        a.dispose(); b.dispose(); return merged;
       })() :
       origin === "Mixed origins" ? new BoxGeometry(9, 9, 3) : new OctahedronGeometry(6);
     const material = new MeshStandardMaterial({ roughness: .36, metalness: .08, wireframe: origin === "Mixed origins" });
@@ -114,7 +128,7 @@ export async function createTimelineScene(
   const gridGeometry = new BufferGeometry(); gridGeometry.setAttribute("position", new Float32BufferAttribute(linePoints, 3));
   const gridMaterial = new LineBasicMaterial({ color: "#dce3d8" });
   group.add(new LineSegments(gridGeometry, gridMaterial)); resources.push(gridGeometry, gridMaterial);
-  let frame = 0, disposed = false;
+  let frame = 0;
   let targets: { x: number; y: number; cluster: TimelineDisplayCluster }[] = [];
   const draw = () => {
     frame = 0;
@@ -139,8 +153,9 @@ export async function createTimelineScene(
   schedule();
   const raycaster = new Raycaster();
   return {
-    perspective(enabled) { group.rotation.set(enabled ? -.16 : 0, enabled ? .26 : 0, 0); camera.zoom = 1; camera.updateProjectionMatrix(); schedule(); },
+    perspective(enabled) { group.rotation.set(enabled ? -.16 : 0, enabled ? .26 : 0, 0); group.position.set(0, 0, 0); camera.zoom = 1; camera.updateProjectionMatrix(); schedule(); },
     rotate(dx, dy) { group.rotation.y = Math.max(-.45, Math.min(.45, group.rotation.y + dx * .003)); group.rotation.x = Math.max(-.3, Math.min(.3, group.rotation.x + dy * .003)); schedule(); },
+    pan(dx, dy) { group.position.x = Math.max(-width / 2, Math.min(width / 2, group.position.x + dx / camera.zoom)); group.position.y = Math.max(-height / 2, Math.min(height / 2, group.position.y - dy / camera.zoom)); schedule(); },
     zoom(factor) { camera.zoom = Math.max(.8, Math.min(2, camera.zoom * factor)); camera.updateProjectionMatrix(); schedule(); },
     pick(x, y) {
       group.updateMatrixWorld(true); camera.updateMatrixWorld(true);

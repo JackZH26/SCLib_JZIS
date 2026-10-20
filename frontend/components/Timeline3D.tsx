@@ -61,10 +61,11 @@ export default function Timeline3D({ clusters, xRange, yRange, logarithmic, onEr
         onPointerUp={() => { suppressClick.current = gesture.current?.moved ?? false; gesture.current = null; }}
         onPointerCancel={() => { gesture.current = null; }}
         onPointerMove={event => {
-          if (gesture.current && perspective && event.pointerType === "mouse") {
+          if (gesture.current && event.pointerType === "mouse") {
             const { x, y } = gesture.current;
             if (Math.abs(event.clientX - x) + Math.abs(event.clientY - y) > 2) gesture.current.moved = true;
-            engine.current?.rotate(event.clientX - x, event.clientY - y);
+            if (perspective && !event.shiftKey) engine.current?.rotate(event.clientX - x, event.clientY - y);
+            else engine.current?.pan(event.clientX - x, event.clientY - y);
             gesture.current.x = event.clientX; gesture.current.y = event.clientY; return;
           }
           if (pinned || event.pointerType !== "mouse") return;
@@ -95,6 +96,6 @@ export default function Timeline3D({ clusters, xRange, yRange, logarithmic, onEr
       </aside>}
     </div>
     <div className="timeline-family-legend" aria-label="Material families">{Array.from(new Set(clusters.map(c => c.family))).map(family => <span key={family}><i style={{ background: FAMILY_COLORS[family] ?? "#536b60" }} />{family === "mixed" ? "Mixed families" : familyLabel(family)}</span>)}</div>
-    <p className="timeline-view-note">Choose a point for details. In 3D perspective, drag with a mouse to rotate. Depth is visual only; it does not encode a scientific quantity.</p>
+    <p className="timeline-view-note">Choose a point for details. Drag to pan in Front view; drag to rotate in 3D perspective, or Shift-drag to pan. Front view resets the camera. Depth is visual only; it does not encode a scientific quantity.</p>
   </div>;
 }
