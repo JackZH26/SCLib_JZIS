@@ -9,7 +9,7 @@ import highlights from "@/content/scwiki/research-highlights.json";
 import {discoveryIndex,libraryNotes,librarySearchEntries} from "@/lib/scwiki/library";
 vi.mock("next/navigation",()=>({useRouter:()=>({replace:vi.fn()})}));
 const initial=articles().map(({id,code,slug,title,summary,evidenceTypes})=>({id,code,slug,title,summary,evidenceTypes}));
-afterEach(()=>{cleanup();vi.unstubAllGlobals();});
+afterEach(()=>{cleanup();vi.unstubAllGlobals();history.replaceState(null,"","/");});
 
 describe("SCWiki home discovery and research provenance",()=>{
  it("finds research-note body text without treating notes as measured material records",async()=>{
@@ -23,6 +23,17 @@ describe("SCWiki home discovery and research provenance",()=>{
   fireEvent.click(screen.getByRole("button",{name:/Filters/}));
   fireEvent.change(screen.getByLabelText("Pressure"),{target:{value:"ambient"}});
   await waitFor(()=>expect(screen.queryByRole("link",{name:"Read article: "+libraryNotes[0].title})).not.toBeInTheDocument());
+ });
+ it("restores shared search filters and links an actual matching passage to its section",async()=>{
+  history.replaceState(null,"","/scwiki?q=current-even");
+  vi.stubGlobal("fetch",vi.fn().mockResolvedValue({ok:true,json:async()=>discoveryIndex(searchIndex())}));
+  render(<SearchCatalogue initial={initial}/>);
+  expect(screen.getByRole("searchbox")).toHaveValue("current-even");
+  const links=await screen.findAllByRole("link",{name:/Jump to:/});
+  expect(links.some(link=>link.getAttribute("href")?.includes("#experimental-criteria"))).toBe(true);
+  fireEvent.change(screen.getByRole("searchbox"),{target:{value:"nickelate"}});
+  expect(location.search).toContain("q=nickelate");
+  await screen.findAllByText("Weekly selection");
  });
  it("renders search before research and a linked topic portal without the old article-summary wall",()=>{
   const html=renderToStaticMarkup(<SCWikiPage/>);

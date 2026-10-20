@@ -33,7 +33,7 @@ describe("SCWiki source and scientific-content contracts",()=>{
  });
  it("keeps editorial commentary out of material evidence and exposes the separate claim contract",async()=>{
   const schema=(await(await get(["openapi.json"])).json());
-  expect(schema.info.version).toBe("1.5.0");expect(schema.components.schemas.Claim.properties.evidenceType.$ref).toBe("#/components/schemas/ClaimEvidenceType");
+  expect(schema.info.version).toBe("1.6.0");expect(schema.components.schemas.Claim.properties.evidenceType.$ref).toBe("#/components/schemas/ClaimEvidenceType");
   expect(schema.components.schemas.ClaimEvidenceType.enum).toContain("editorial-analysis");
   expect(schema.components.schemas.ClaimEvidenceType.enum).toContain("experimental");
   for(const c of articles().flatMap(a=>a.claims)) expect(schema.components.schemas.ClaimEvidenceType.enum).toContain(c.evidenceType);
@@ -2187,7 +2187,7 @@ describe("SCWiki preparation and observation separation",()=>{
   finally{record.preparation=before;}
  });
  it("documents the optional nullable preparation contract and English agent guidance",async()=>{
-  const s=await(await get(["openapi.json"])).json();expect(s.info.version).toBe("1.5.0");expect(s.components.schemas.MaterialCase.properties.preparation.$ref).toBe("#/components/schemas/SamplePreparation");expect(s.components.schemas.MaterialCase.required).not.toContain("preparation");expect(s.components.schemas.SamplePreparation.properties.releaseRateGPaPerSecond.type).toContain("null");expect(s.paths['/search'].get.parameters.find((x:any)=>x.name==='pressure').description).toContain('Measurement pressure');
+  const s=await(await get(["openapi.json"])).json();expect(s.info.version).toBe("1.6.0");expect(s.components.schemas.MaterialCase.properties.preparation.$ref).toBe("#/components/schemas/SamplePreparation");expect(s.components.schemas.MaterialCase.required).not.toContain("preparation");expect(s.components.schemas.SamplePreparation.properties.releaseRateGPaPerSecond.type).toContain("null");expect(s.paths['/search'].get.parameters.find((x:any)=>x.name==='pressure').description).toContain('Measurement pressure');
   const Guide=(await import("@/app/scwiki/agent-guide/page")).default;const html=renderToStaticMarkup(<Guide/>);expect(html).toContain("Separate preparation from measurement");expect(html).toContain("Preparation temperature is not a critical temperature");
   const llms=await(await(await import("@/app/scwiki/llms.txt/route")).GET()).text();expect(llms).toContain("materialCases[].preparation");expect(llms).toContain("Unknown release rate remains null");
  });

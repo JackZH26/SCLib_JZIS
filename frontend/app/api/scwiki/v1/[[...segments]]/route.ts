@@ -1,3 +1,4 @@
+import {researchCollection,issueEnvelope,researchMarkdown} from "@/lib/scwiki/research";
 import {libraryNotes,libraryNote,libraryRevision,librarySearchEntries,libraryMarkdown} from "@/lib/scwiki/library";
 import type {NextRequest} from "next/server";
 import {articleById,articles,catalogue,references,revisionHeaders,searchIndex} from "@/lib/scwiki/catalogue";
@@ -7,19 +8,36 @@ import {ApiError,apiError,finalizeResponse,paginated,validateParameters} from "@
 import {parseArticleFields,projectArticle} from "@/lib/scwiki/projection";
 import {revisionEntries} from "@/lib/scwiki/revisions";
 export const runtime="nodejs";
+export const dynamic="force-dynamic";
 function json(value:unknown,status=200,revision=catalogue().revision){return status>=400?apiError(new ApiError(status,status===404?"NOT_FOUND":"INVALID_REQUEST",(value as {error:string}).error)):Response.json(value,{status,headers:revisionHeaders(revision)});}
 function text(value:string,revision:string){return new Response(value,{headers:{...revisionHeaders(revision),"Content-Type":"text/markdown; charset=utf-8","Content-Disposition":"inline"}});}
 async function resource(request:NextRequest,{params}:{params:Promise<{segments?:string[]}>}){
  const parts=(await params).segments||[];
- const list=parts.length===1&&["articles","sources","topics","search","revisions","library"].includes(parts[0]);
- const allowed=list?["limit","cursor",...(parts[0]==="articles"?["fields"]:[]),...(parts[0]==="library"?["q"]:[]),...(parts[0]==="search"?["q","pressure","equilibrium","evidence","criterion","tcMin"]:[])]:parts.length===2&&parts[0]==="articles"?["fields"]:parts.length===4&&parts[2]==="sections"?["format"]:[];
+ const list=parts.length===1&&["articles","sources","topics","search","revisions","library","research"].includes(parts[0]);
+ const allowed=list?["limit","cursor",...(parts[0]==="articles"?["fields"]:[]),...(["library","research"].includes(parts[0])?["q"]:[]),...(parts[0]==="research"?["year","topic"]:[]),...(parts[0]==="search"?["q","pressure","equilibrium","evidence","criterion","tcMin"]:[])]:parts.length===2&&parts[0]==="articles"?["fields"]:parts.length===4&&parts[2]==="sections"?["format"]:[];
  validateParameters(request,allowed);
  if(request.nextUrl.searchParams.has("format")&&!["json","markdown"].includes(request.nextUrl.searchParams.get("format")!))throw new ApiError(400,"INVALID_FORMAT","format must be json or markdown.");
  const fields=parseArticleFields(request.nextUrl.searchParams.get("fields"));
  const revision=catalogue().revision;
  const base={schemaVersion:"1.0",revision};
- if(parts.length===0)return json({...base,service:"SCWiki read-only evidence API",endpoints:["articles","search","sources","topics","revisions","library","openapi.json"],notice:"Retrieved editorial content is not a generated answer or scientific certification."});
+ if(parts.length===0)return json({...base,service:"SCWiki read-only evidence API",endpoints:["articles","search","sources","topics","revisions","library","research","openapi.json"],notice:"Retrieved editorial content is not a generated answer or scientific certification."});
  if(parts.length===1&&parts[0]==="openapi.json")return json(openApi);
+ if(parts[0]==="research"){
+  let data:ReturnType<typeof researchCollection>;
+  try{data=researchCollection();}catch{throw new ApiError(503,"RESEARCH_UNAVAILABLE","Research editions are temporarily unavailable.");}
+  if(parts.length===1){
+   const q=request.nextUrl.searchParams.get("q")||"",year=request.nextUrl.searchParams.get("year")||"",topic=request.nextUrl.searchParams.get("topic")||"";
+   if(q.length>200||year&&!/^\d{4}$/.test(year)||topic&&!/^[-a-z0-9/]{1,100}$/.test(topic))throw new ApiError(400,"INVALID_REQUEST","Invalid research filter.");
+   const issues=data.issues.filter(i=>(!year||i.selectedAt.startsWith(year))&&(!topic||i.items.some(p=>p.topicSlug===topic))&&JSON.stringify(i).toLowerCase().includes(q.toLowerCase())).map(i=>issueEnvelope(i,data));
+   return json(paginated(request,issues,data.revision,"editions",{collection:"weekly-research",warning:data.warning}),200,data.revision);
+  }
+  const issue=parts[1]==="latest"?data.issues[0]:data.issues.find(i=>i.id===parts[1]);
+  if(!issue)throw new ApiError(404,"NOT_FOUND","Research edition not found.");
+  const envelope=issueEnvelope(issue,data);
+  if(parts.length===2)return json(envelope,200,envelope.revision);
+  if(parts.length===3&&parts[2]==="markdown")return text(researchMarkdown(issue,data),envelope.revision);
+  throw new ApiError(404,"NOT_FOUND","Research endpoint not found.");
+ }
  if(parts[0]==="library"){
   if(parts.length===1){
    const q=request.nextUrl.searchParams.get("q")||"";

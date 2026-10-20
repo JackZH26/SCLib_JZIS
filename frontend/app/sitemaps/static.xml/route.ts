@@ -1,10 +1,13 @@
+import {researchCollection} from "@/lib/scwiki/research";
 import {libraryNotes} from "@/lib/scwiki/library";
 import { articles } from "@/lib/scwiki/catalogue";
 import { absoluteUrl, sitemapXml, xmlResponse } from "@/lib/seo";
 
-export const revalidate = 3600;
+export const dynamic = "force-dynamic";
 
 export function GET(): Response {
+  let editions:ReturnType<typeof researchCollection>["issues"]=[];
+  try{editions=researchCollection().issues;}catch{}
   return xmlResponse(
     sitemapXml([
       { loc: absoluteUrl("/"), changeFrequency: "daily", priority: 1 },
@@ -19,6 +22,8 @@ export function GET(): Response {
       { loc: absoluteUrl("/scwiki/using-sclib"), changeFrequency: "monthly", priority: 0.6 },
       { loc: absoluteUrl("/scwiki/agent-guide"), changeFrequency: "monthly", priority: 0.5 },
       {loc:absoluteUrl("/scwiki/library"),changeFrequency:"weekly",priority:0.6},
+      {loc:absoluteUrl("/scwiki/research"),changeFrequency:"weekly",priority:0.7},
+      ...editions.map(i=>({loc:absoluteUrl("/scwiki/research/"+i.id),lastModified:i.selectedAt,changeFrequency:"weekly" as const,priority:0.6})),
       ...libraryNotes.map(n=>({loc:absoluteUrl("/scwiki/library/"+n.id),lastModified:n.modifiedAt,changeFrequency:"monthly" as const,priority:0.6})),
       ...articles().map(a => ({ loc: absoluteUrl("/scwiki/" + a.slug), lastModified: a.modifiedAt, changeFrequency: "monthly" as const, priority: 0.6 })),
       { loc: absoluteUrl("/docs/data"), changeFrequency: "monthly", priority: 0.6 },

@@ -1,0 +1,8 @@
+# One-time site integration. Future weekly publications change only this volume.
+# Initialize research.json with the checked seed before enabling this override.
+services:
+  frontend:
+    environment:
+      SCWIKI_RESEARCH_STORE: /var/lib/scwiki-research/research.json
+    volumes:
+      - ${SCWIKI_RESEARCH_DIRECTORY:?Set a persistent research directory}:/var/lib/scwiki-research:ro

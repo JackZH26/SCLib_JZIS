@@ -7,6 +7,9 @@ import {validateReferenceIdentities} from "./scwiki-reference-identity.mjs";
 import {validatePreparation,preparationMarkdown} from "./scwiki-preparation.mjs";
 import {validateClaimEvidence} from "./scwiki-claim-evidence.mjs";
 
+import {validateResearch} from "./scwiki-research-model.mjs";
+validateResearch(JSON.parse(readFileSync(path.join(process.cwd(),"content/scwiki/research-issues.json"),"utf8")));
+
 const directory=path.join(process.cwd(),"content/scwiki");
 const sha=value=>createHash("sha256").update(value).digest("hex");
 const anchor=sectionAnchor;
@@ -113,7 +116,12 @@ validateReferenceIdentities(articles);
 for(const a of articles)for(const code of a.relatedCodes)if(!articles.some(other=>other.code===code))fail("unpublished related article "+code);
 const revision=sha(articles.map(a=>a.revision).join("\n")).slice(0,20);
 const catalogue={schemaVersion:"1.0",revision,articles};
-const entries=articles.map(({id,topicId,code,slug,title,summary,aliases,evidenceTypes,editorialStatus,revision,materialCases,references,body})=>({id,topicId,code,slug,title,summary,aliases,evidenceTypes,editorialStatus,revision,materialCases,dois:references.map(r=>r.doi).filter(doi=>typeof doi==="string"),text:body.replace(/\[[^\]]+\]\([^)]+\)/g,"").replace(/[$#*_\x60]/g,"")}));
+const searchText=value=>value.replace(/\[[^\]]+\]\([^)]+\)/g,"").replace(/[$#*_\x60]/g,"");
+const entries=articles.map(({id,topicId,code,slug,title,summary,aliases,evidenceTypes,editorialStatus,revision,materialCases,references,body,sections})=>{
+ const text=searchText(body);
+ const passages=sections.flatMap(section=>{const part=searchText(section.markdown),start=text.indexOf(part);return start<0?[]:[{id:section.id,title:section.title,start,end:start+part.length}];});
+ return {id,topicId,code,slug,title,summary,aliases,evidenceTypes,editorialStatus,revision,materialCases,dois:references.map(r=>r.doi).filter(doi=>typeof doi==="string"),text,kind:"article",sections:passages};
+});
 for(const[name,value]of[["catalogue.json",catalogue],["search-index.json",{schemaVersion:"1.0",revision,entries}]]){
  const data=JSON.stringify(value,null,2)+"\n",filename=path.join(directory,name);
  if(process.argv.includes("--check")){if(readFileSync(filename,"utf8")!==data)fail(name+" is stale");}
