@@ -1,0 +1,187 @@
+{
+  "schema_version": "sclib-main-linux-validation/1.0.0",
+  "recorded_at": "2026-10-09T12:14:10.843494+00:00",
+  "source_revision": "4c56af1693510d148a1642bc035910b064141819",
+  "test_run": 37917133614,
+  "test_run_attempt": 1,
+  "test_run_url": "https://github.com/JackZH26/SCLib_JZIS/actions/runs/37917133614",
+  "workflow_status": "completed",
+  "workflow_conclusion": "success",
+  "workflow_updated_at": "2026-10-09T12:01:52Z",
+  "backend": "owned Docker PostgreSQL 16 / Redis",
+  "counts": {
+    "passed": 8500,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 9,
+    "test_cases": 8509
+  },
+  "module_count": 268,
+  "duration_seconds": 5747.159,
+  "full_module_coverage": true,
+  "junit_replay_exact": true,
+  "batches": [
+    {
+      "batch": 1,
+      "module_count": 34,
+      "runner_exit_code": 0,
+      "counts": {
+        "passed": 1106,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 3,
+        "test_cases": 1109
+      },
+      "junit": {
+        "file": "batch-01.xml",
+        "bytes": 195755,
+        "sha256": "11dcf51c81031d4639973896b68963f1a75e62d23b05a17c6a57891e98118cb3"
+      }
+    },
+    {
+      "batch": 2,
+      "module_count": 34,
+      "runner_exit_code": 0,
+      "counts": {
+        "passed": 980,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 1,
+        "test_cases": 981
+      },
+      "junit": {
+        "file": "batch-02.xml",
+        "bytes": 166632,
+        "sha256": "d7aa620e882aba989db7806a41bb108f7660ed66f60a7ca40853fcdec7ff9d55"
+      }
+    },
+    {
+      "batch": 3,
+      "module_count": 34,
+      "runner_exit_code": 0,
+      "counts": {
+        "passed": 1549,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "test_cases": 1549
+      },
+      "junit": {
+        "file": "batch-03.xml",
+        "bytes": 259153,
+        "sha256": "62c4ec89e6c66b048f3d05398c40aa38a7b1dd18756a174712864effc2e40276"
+      }
+    },
+    {
+      "batch": 4,
+      "module_count": 34,
+      "runner_exit_code": 0,
+      "counts": {
+        "passed": 1030,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "test_cases": 1030
+      },
+      "junit": {
+        "file": "batch-04.xml",
+        "bytes": 188912,
+        "sha256": "5fd9f0ef3fd3f5f44ecde43160932c443d10c6e51f195fae14627257bf30abfb"
+      }
+    },
+    {
+      "batch": 5,
+      "module_count": 33,
+      "runner_exit_code": 0,
+      "counts": {
+        "passed": 858,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "test_cases": 858
+      },
+      "junit": {
+        "file": "batch-05.xml",
+        "bytes": 134006,
+        "sha256": "573507ca70953d527fe0fe80d2c69fd3026b83427aaf9527bef60b07c3c09a11"
+      }
+    },
+    {
+      "batch": 6,
+      "module_count": 33,
+      "runner_exit_code": 0,
+      "counts": {
+        "passed": 972,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 2,
+        "test_cases": 974
+      },
+      "junit": {
+        "file": "batch-06.xml",
+        "bytes": 163263,
+        "sha256": "fa68b26f3f076558c93bac71426b206aff3c4207aa50e32f9a7f0d3c8a8dc739"
+      }
+    },
+    {
+      "batch": 7,
+      "module_count": 33,
+      "runner_exit_code": 0,
+      "counts": {
+        "passed": 1126,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 3,
+        "test_cases": 1129
+      },
+      "junit": {
+        "file": "batch-07.xml",
+        "bytes": 176353,
+        "sha256": "622d28e6bae62fe2a2431fa2648391aa5db6cf7af587e0229c5868e760c0813f"
+      }
+    },
+    {
+      "batch": 8,
+      "module_count": 33,
+      "runner_exit_code": 0,
+      "counts": {
+        "passed": 879,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "test_cases": 879
+      },
+      "junit": {
+        "file": "batch-08.xml",
+        "bytes": 133775,
+        "sha256": "cb18adbd270f5e77b4b8e855796d95fb5cdf01b440e7114bf01f7b584e35732b"
+      }
+    }
+  ],
+  "provenance": {
+    "dirty_worktree": true,
+    "head_revision": "4c56af1693510d148a1642bc035910b064141819",
+    "inputs_sha256": "78e0da9243140b7f59b70b33a60ab4fc57eb8b80f9ffee511f30043bf698b436",
+    "source_dirty": false,
+    "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unchanged_during_rehearsal": true
+  },
+  "source_inventory_file_count": 940,
+  "source_inventory_scope": "enumerated API/scripts source inputs",
+  "whole_worktree_scope_note": "The whole-worktree dirty flag is true. The plan does not enumerate other dirty paths; no whole-worktree cleanliness claim is made.",
+  "retained_artifacts": [
+    {
+      "file": "plan.json",
+      "bytes": 190308,
+      "sha256": "580a776ba31e8f9a6d7dd4e52667f0ac9fcd3473b76dbe6918106182756eec11"
+    },
+    {
+      "file": "result.json",
+      "bytes": 17558,
+      "sha256": "1e0a2b986dedb7e5e52b4d2e4c114dcfde551921aef0fb61953aa34e8e24158f"
+    }
+  ],
+  "capacity_included": false,
+  "production_performance_acceptance": false,
+  "scientific_acceptance": false
+}

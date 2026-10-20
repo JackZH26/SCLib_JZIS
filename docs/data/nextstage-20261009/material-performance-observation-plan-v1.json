@@ -1,0 +1,64 @@
+{
+  "schema_version": "sclib-material-performance-observation-plan/1.0.0",
+  "plan_id": "material-list-observation-20261009-v1",
+  "prepared_at": "2026-10-09T11:03:16.682517+00:00",
+  "status": "prepared_pending_instrumented_public_release",
+  "baseline_code_merge": "4c56af1693510d148a1642bc035910b064141819",
+  "optimization_PR": 167,
+  "optimization_original_head": "d7c1bdb2d3e9146e7edc007416e1189b40bf2949",
+  "local_combined_rehearsal": "8a91067f254ee9c2f1cfaafb36d5011023aa74bb",
+  "query_order": [
+    {
+      "id": "default",
+      "path": "/materials?limit=25&offset=0"
+    },
+    {
+      "id": "formula",
+      "path": "/materials?q=MgB2&limit=25&offset=0"
+    },
+    {
+      "id": "observed_cuprate",
+      "path": "/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0"
+    },
+    {
+      "id": "source_count",
+      "path": "/materials?sort=total_papers&limit=25&offset=0"
+    },
+    {
+      "id": "source_count_min2",
+      "path": "/materials?sort=total_papers&min_papers=2&limit=25&offset=0"
+    }
+  ],
+  "encoding": "gzip",
+  "samples_per_query_per_capture": 5,
+  "max_captures_per_arm": 2,
+  "max_materials_GETs_per_arm": 50,
+  "client_concurrency": 1,
+  "provider_calls": 0,
+  "tool_order": [
+    "After actual release/deployment and a fresh /version read, invoke fixed-query collector with --samples 5 --require-server-timing to a new output",
+    "Then capture all 206 static-source/evidence files and sixteen recovery windows with fresh version/footer fences",
+    "If no natural scan or the first capture is incomplete, retain it and permit at most one later identical capture after normal cache lifecycle; never purge or vary parameters"
+  ],
+  "cohorts": [
+    "exact fixed query",
+    "server materials_path",
+    "observed software/dataset/API versions",
+    "encoding"
+  ],
+  "comparison_requirements": [
+    "Each individual capture has equal before/after version fences and valid server timings",
+    "Retain every request, HTTP refusal/failure, missing header, cache path and actual elapsed time",
+    "Match query, encoding, total/row counts and decoded response-byte hashes for before/after interpretation; a mismatch requires semantic/currentness review",
+    "Never compare ranking/page_hit/waited_hit to scan as an optimization effect",
+    "Client latency includes TLS/network/decode; server total includes child stages, which are never added again",
+    "Scope may include SQL; stage times alone do not establish a PostgreSQL query plan or pure CPU cost",
+    "Missing natural scan remains unavailable; release or first-request ordering does not prove cold database/cache"
+  ],
+  "diagnostic_goal": "Identify whether naturally observed scan time is dominated by scan_fetch, scope, selection, serialization or lock_wait before promoting the Tc selection experiment",
+  "formal_slo_targets": null,
+  "formal_slo_acceptance": null,
+  "single_scan_scope": "A diagnostic observation, not p95, statistical significance or production performance acceptance",
+  "scientific_acceptance": false,
+  "production_mutations_performed_by_sampling": 0
+}

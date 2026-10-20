@@ -1,0 +1,221 @@
+{
+  "schema_version": "sclib-material-timing-completion/1.0.0",
+  "recorded_at": "2026-10-09T09:31:10.250573+00:00",
+  "updates_record": "docs/data/nextstage-20261009/material-timing-validation-v1.json",
+  "historical_record_preserved": true,
+  "head_revision": "1b54e0e41530e154bce19b32f1bfaffb9c875263",
+  "backend": "native",
+  "source_clean": true,
+  "unchanged_during_rehearsal": true,
+  "status": "completed",
+  "full_module_coverage": true,
+  "module_count": 268,
+  "counts": {
+    "test_cases": 8509,
+    "passed": 8500,
+    "skipped": 9,
+    "failed": 0,
+    "errors": 0
+  },
+  "duration_seconds": 3706.606,
+  "input_artifacts": [
+    {
+      "file": "result.json",
+      "bytes": 17558,
+      "sha256": "3c962cea60ff296303012b5ca9a2a917c8a4b652b04600690f6a3b901a5e3df8"
+    },
+    {
+      "file": "plan.json",
+      "bytes": 190309,
+      "sha256": "d35c1f47d525281dfcb788fb05c449da61eed6873083b6a89c6c0328ec7c7859"
+    }
+  ],
+  "batches": [
+    {
+      "batch": 1,
+      "runner_exit_code": 0,
+      "assigned_modules": 34,
+      "counts": {
+        "test_cases": 1109,
+        "passed": 1106,
+        "skipped": 3,
+        "failed": 0,
+        "errors": 0
+      },
+      "artifact": {
+        "file": "batch-01.xml",
+        "bytes": 195808,
+        "sha256": "450ba7ee83784c2da88ee283cb2d255e81fa68be1707f21771b6bb9ce1e23deb"
+      }
+    },
+    {
+      "batch": 2,
+      "runner_exit_code": 0,
+      "assigned_modules": 34,
+      "counts": {
+        "test_cases": 981,
+        "passed": 980,
+        "skipped": 1,
+        "failed": 0,
+        "errors": 0
+      },
+      "artifact": {
+        "file": "batch-02.xml",
+        "bytes": 166654,
+        "sha256": "47e052976f0f37ae4eee1fd0377fb11d9851e6e72646a037759b8f3dad20a678"
+      }
+    },
+    {
+      "batch": 3,
+      "runner_exit_code": 0,
+      "assigned_modules": 34,
+      "counts": {
+        "test_cases": 1549,
+        "passed": 1549,
+        "skipped": 0,
+        "failed": 0,
+        "errors": 0
+      },
+      "artifact": {
+        "file": "batch-03.xml",
+        "bytes": 259164,
+        "sha256": "cbb03fb14e4e8a254e065a2004beb93ddda2c5b3273a35b57d81cfcc44d9ca5b"
+      }
+    },
+    {
+      "batch": 4,
+      "runner_exit_code": 0,
+      "assigned_modules": 34,
+      "counts": {
+        "test_cases": 1030,
+        "passed": 1030,
+        "skipped": 0,
+        "failed": 0,
+        "errors": 0
+      },
+      "artifact": {
+        "file": "batch-04.xml",
+        "bytes": 188925,
+        "sha256": "4dad76677bf1ca344b7887e8a1fe79dc609d2b75b716c2711ea32441366d618c"
+      }
+    },
+    {
+      "batch": 5,
+      "runner_exit_code": 0,
+      "assigned_modules": 33,
+      "counts": {
+        "test_cases": 858,
+        "passed": 858,
+        "skipped": 0,
+        "failed": 0,
+        "errors": 0
+      },
+      "artifact": {
+        "file": "batch-05.xml",
+        "bytes": 134013,
+        "sha256": "b486eae309fbc14bf528d108329b6e7a57333fe8764f6c0b1c9419f5166e6fbb"
+      }
+    },
+    {
+      "batch": 6,
+      "runner_exit_code": 0,
+      "assigned_modules": 33,
+      "counts": {
+        "test_cases": 974,
+        "passed": 972,
+        "skipped": 2,
+        "failed": 0,
+        "errors": 0
+      },
+      "artifact": {
+        "file": "batch-06.xml",
+        "bytes": 163301,
+        "sha256": "553e43c019734a64fff7e9ae116bee6a40f1984a48b3e993c98e359c266eaaa5"
+      }
+    },
+    {
+      "batch": 7,
+      "runner_exit_code": 0,
+      "assigned_modules": 33,
+      "counts": {
+        "test_cases": 1129,
+        "passed": 1126,
+        "skipped": 3,
+        "failed": 0,
+        "errors": 0
+      },
+      "artifact": {
+        "file": "batch-07.xml",
+        "bytes": 176395,
+        "sha256": "dcd16262345144748c812603dab64d8e7f6f2e8f82d45339708a57ea3e084441"
+      }
+    },
+    {
+      "batch": 8,
+      "runner_exit_code": 0,
+      "assigned_modules": 33,
+      "counts": {
+        "test_cases": 879,
+        "passed": 879,
+        "skipped": 0,
+        "failed": 0,
+        "errors": 0
+      },
+      "artifact": {
+        "file": "batch-08.xml",
+        "bytes": 133787,
+        "sha256": "18903f3e5b725d0a84804fe5fa50fa52fc207b9c97b8455fd338f5368e2067bd"
+      }
+    }
+  ],
+  "skipped_cases": [
+    {
+      "classname": "tests.test_scientific_import_reference_canaries",
+      "name": "test_genuine_source_bytes_pending_import_and_exact_replay[al-example14]",
+      "message": "Explicit pinned local reference paths not supplied; no download attempted"
+    },
+    {
+      "classname": "tests.test_scientific_import_reference_canaries",
+      "name": "test_genuine_source_bytes_pending_import_and_exact_replay[alas-grid-recover]",
+      "message": "Explicit pinned local reference paths not supplied; no download attempted"
+    },
+    {
+      "classname": "tests.test_scientific_import_reference_canaries",
+      "name": "test_genuine_source_bytes_pending_import_and_exact_replay[bn-example17-2d]",
+      "message": "Explicit pinned local reference paths not supplied; no download attempted"
+    },
+    {
+      "classname": "tests.test_discovery_designs",
+      "name": "test_empty_migration_roundtrip_uses_actual_metadata_guards",
+      "message": "Empty migration roundtrip requires a fresh owned disposable database"
+    },
+    {
+      "classname": "tests.test_material_field_cases",
+      "name": "test_actual_conference_four_expressions_are_historical_pending",
+      "message": "Private inspected conference package is not available on this host"
+    },
+    {
+      "classname": "tests.test_material_field_cases",
+      "name": "test_actual_pt_onset_zero_and_crystallography_stay_separate_pending",
+      "message": "Private inspected Pt fragments are not available on this host"
+    },
+    {
+      "classname": "tests.test_material_field_review",
+      "name": "test_pinned_genuine_packets_remain_refusal_or_clarification_not_real_native_acceptance[/private/tmp/sclib-field-cases-genuine-pt-packages-r2-20261002/pt_resistivity_onset_zero.json-4620f292957f04f6fbf7e7009f80205e2fdb707cc3ec548a20fae7954b3c1994-0-tc_criterion-1]",
+      "message": "Pinned local source packet is unavailable; no genuine-source assertion made."
+    },
+    {
+      "classname": "tests.test_material_field_review",
+      "name": "test_pinned_genuine_packets_remain_refusal_or_clarification_not_real_native_acceptance[/private/tmp/sclib-scientific-completion-ranks97-166-199-20261002-r1/packages-r1/1603.02892.source-expression-v2.json-f503220bce5941786798573a6d3f6acbfdd858d4101a35ab367026484566cd28-1-tc_criterion-1]",
+      "message": "Pinned local source packet is unavailable; no genuine-source assertion made."
+    },
+    {
+      "classname": "tests.test_material_field_review",
+      "name": "test_pinned_genuine_packets_remain_refusal_or_clarification_not_real_native_acceptance[/private/tmp/sclib-scientific-completion-ranks97-166-199-20261002-r1/packages-r2-caption-scope/1501.06203.source-expression-v2.json-34bb4c106b5d97c0f883b3bdda25046f031a513b6fbeb16d6688c6feab55bd82-0-pressure_gpa-0]",
+      "message": "Pinned local source packet is unavailable; no genuine-source assertion made."
+    }
+  ],
+  "linux_ci_evidence": "separate; see captured PR checks",
+  "production_acceptance": false,
+  "scientific_acceptance": false
+}

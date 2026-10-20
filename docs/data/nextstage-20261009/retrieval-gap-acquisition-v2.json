@@ -1,0 +1,671 @@
+{
+  "schema_version": "sclib-gap-acquisition-readiness/1.0.0",
+  "input_pins": [
+    {
+      "file": "retrieval-gap-cases-v1.json",
+      "bytes": 28615,
+      "sha256": "2035f0a2abf9d528b587fcdd51d41c706e04d967e6b182c45fe117a53399eb4b"
+    },
+    {
+      "file": "source-acquisition-v1.json",
+      "bytes": 48183,
+      "sha256": "9aad070d5fe423790d26d61955d459550393c8d10b9aa986490032206a7b50f8"
+    }
+  ],
+  "cases": [
+    {
+      "case_id": "gap-cuprate-hg-pressure",
+      "family": "cuprates",
+      "label": "Hg cuprate composition/pressure series",
+      "primary_urls": [
+        "https://journals.aps.org/prb/abstract/10.1103/PhysRevB.50.4260"
+      ],
+      "dois": [
+        "10.1103/PhysRevB.50.4260"
+      ],
+      "questions": [
+        {
+          "id": "gap-cuprate-hg-pressure-1",
+          "language": "en",
+          "prompt": "Retrieve the reported superconducting transition measurements separately for each Hg cuprate composition and pressure in this study; distinguish those rows from Pb-substituted samples.",
+          "connected_group": "gap-cuprate-hg-pressure",
+          "gold_answer": null,
+          "human_scores": null,
+          "live_retrieval": null,
+          "status": "draft_acquisition"
+        },
+        {
+          "id": "gap-cuprate-hg-pressure-2",
+          "language": "zh",
+          "prompt": "Hg 铜氧化物研究中的实验压力上限，是否等于每个最高临界温度点的测量压力？请逐个组成列出原文依据及缺失条件。",
+          "connected_group": "gap-cuprate-hg-pressure",
+          "gold_answer": null,
+          "human_scores": null,
+          "live_retrieval": null,
+          "status": "draft_acquisition"
+        }
+      ],
+      "fulltext_retained": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "split": "unassigned",
+      "scientific_acceptance": false,
+      "acquisition_blockers": [
+        "retained_original_fulltext",
+        "complete_evaluation_corpus_binding",
+        "accepted_Work_root_Result_association",
+        "task_specific_rights",
+        "independent_human_case_and_citation_review"
+      ]
+    },
+    {
+      "case_id": "gap-nickelate-pr-film",
+      "family": "nickelates",
+      "label": "Pr nickelate film / parent / substrate distinction",
+      "primary_urls": [
+        "https://arxiv.org/abs/2006.13369"
+      ],
+      "dois": [
+        "10.1021/acs.nanolett.0c01392"
+      ],
+      "questions": [
+        {
+          "id": "gap-nickelate-pr-film-1",
+          "language": "en",
+          "prompt": "For the superconducting praseodymium nickelate report, identify the doped thin-film state, substrate and transition criterion; separate direct observations from the cited Nd nickelate result.",
+          "connected_group": "gap-nickelate-pr-film",
+          "gold_answer": null,
+          "human_scores": null,
+          "live_retrieval": null,
+          "status": "draft_acquisition"
+        },
+        {
+          "id": "gap-nickelate-pr-film-2",
+          "language": "zh",
+          "prompt": "PrNiO2 母相、掺 Sr 薄膜和 SrTiO3 衬底，能否共享同一个超导状态标签？请按该原始研究核对样品与条件。",
+          "connected_group": "gap-nickelate-pr-film",
+          "gold_answer": null,
+          "human_scores": null,
+          "live_retrieval": null,
+          "status": "draft_acquisition"
+        }
+      ],
+      "fulltext_retained": true,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "split": "unassigned",
+      "scientific_acceptance": false,
+      "source_acquisition": {
+        "source_revision": "2006.13369v1",
+        "pdf_sha256": "d59c0fec91b4c2472f2c41cb37d38c7f899a31b95fc0569d0707822fff76905a",
+        "pdf_bytes": 3199740,
+        "pdf_pages": 19,
+        "license_uris": [
+          "http://arxiv.org/licenses/nonexclusive-distrib/1.0/"
+        ],
+        "related_doi_matches": true,
+        "current_metadata_receipt": {
+          "url": "https://arxiv.org/abs/2006.13369",
+          "captured_at": "2026-10-09T09:32:45.979284+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://arxiv.org/abs/2006.13369",
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 44204,
+          "sha256": "af286c06a217673a08c65f1142853aec9391e3912f21f4f23054886e0b4fe99a",
+          "elapsed_seconds": 0.5911039169877768
+        },
+        "fixed_metadata_receipt": {
+          "url": "https://arxiv.org/abs/2006.13369v1",
+          "captured_at": "2026-10-09T09:32:49.587208+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://arxiv.org/abs/2006.13369v1",
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 44214,
+          "sha256": "15463f3f45af8af5976d64377fde499c6ed80c8f848e6b0c051664fe0e899dfb",
+          "elapsed_seconds": 0.6468132920563221
+        },
+        "pdf_receipt": {
+          "url": "https://arxiv.org/pdf/2006.13369v1",
+          "captured_at": "2026-10-09T09:32:53.253465+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://arxiv.org/pdf/2006.13369v1",
+          "content_type": "application/pdf",
+          "bytes": 3199740,
+          "sha256": "d59c0fec91b4c2472f2c41cb37d38c7f899a31b95fc0569d0707822fff76905a",
+          "elapsed_seconds": 1.7087976660113782
+        },
+        "all_page_text_pins": [
+          {
+            "page": 1,
+            "text_bytes": 1579,
+            "text_sha256": "a57a01e9520b80805166f36faccc4d64dc03be82160a87f366a0080ef8ffb467"
+          },
+          {
+            "page": 2,
+            "text_bytes": 1952,
+            "text_sha256": "4fdbfa5d379eaf2a3ae60c410cf331d706879973987adb176d3a095e7c1b8e52"
+          },
+          {
+            "page": 3,
+            "text_bytes": 2198,
+            "text_sha256": "ed7605b514f5c47e5037aa6c670600bbb65a00d8b6a0cb336717114ab5ee69a2"
+          },
+          {
+            "page": 4,
+            "text_bytes": 2117,
+            "text_sha256": "c1e807ed5077f5da1a87c29b6295e1a99f3a94ced7b5d1b49117174be8521d82"
+          },
+          {
+            "page": 5,
+            "text_bytes": 2160,
+            "text_sha256": "2f9a6960d4ccc382b827fedd20688e6ff64fa100a0f1a4f62a5867bc3938b637"
+          },
+          {
+            "page": 6,
+            "text_bytes": 2180,
+            "text_sha256": "4ec9979b968c743125867df545645b272dd64eaf6b8297cfa3bd06db3dbc41c5"
+          },
+          {
+            "page": 7,
+            "text_bytes": 2229,
+            "text_sha256": "76da9e997cdf0da918fbd5107baa770d4ad25709446500e318bca251abb2705d"
+          },
+          {
+            "page": 8,
+            "text_bytes": 2213,
+            "text_sha256": "8a4af069d780849f81028c289851cf0714ac5c6af4dfb52bdef739c0cdd1773c"
+          },
+          {
+            "page": 9,
+            "text_bytes": 1481,
+            "text_sha256": "5c4f84b6b3019cfc840ff21346296a66b755385121a8229aabb95448729c0f1a"
+          },
+          {
+            "page": 10,
+            "text_bytes": 400,
+            "text_sha256": "6303c598c4589747535c03448583067e7a2efb55cadf38137645b361cf2159ef"
+          },
+          {
+            "page": 11,
+            "text_bytes": 782,
+            "text_sha256": "50ea9e5cefbf40e7eb3245d183485d92d593ced309a748f463101f3844299c0c"
+          },
+          {
+            "page": 12,
+            "text_bytes": 586,
+            "text_sha256": "4f9d8bc41956370d1e89aec6958ff9cbdb1e425a6399485ae43ade787f96506d"
+          },
+          {
+            "page": 13,
+            "text_bytes": 808,
+            "text_sha256": "a9113a7ff8fea38dfd25c476ad6864f1c7b7176351d63d5aef4e938d5ec2e628"
+          },
+          {
+            "page": 14,
+            "text_bytes": 1534,
+            "text_sha256": "8bd64eba795181f9aeee02b17a638d00fb860b5363d0aa1c3e10d62dbd0eebc2"
+          },
+          {
+            "page": 15,
+            "text_bytes": 5036,
+            "text_sha256": "11cbb8c3af555d621f7684dbb984f654d6814b8eefb25fab6294d32da2412e4b"
+          },
+          {
+            "page": 16,
+            "text_bytes": 1601,
+            "text_sha256": "8306b80520518869dd3d34e0ee2b7f9d5eee0c9f6b3bb50898cad90326dd55a9"
+          },
+          {
+            "page": 17,
+            "text_bytes": 1531,
+            "text_sha256": "0e24f00c087c51f302ab56ed4219915b48ea4518090791f4a8f566d5e72c4da1"
+          },
+          {
+            "page": 18,
+            "text_bytes": 1791,
+            "text_sha256": "af6cf4db4e1411620f04fd511d90855bda572cc2b496d54b77de665e20a94cf2"
+          },
+          {
+            "page": 19,
+            "text_bytes": 532,
+            "text_sha256": "a3e115efbb4e10aa93930441bf4b88685c8e341960626cfd17a14591f0ed52eb"
+          }
+        ],
+        "private_archive_reference": "gap-nickelate-pr-film/source.pdf",
+        "title_page_visual_check": "AI-assisted identity check only; no scientific adjudication"
+      },
+      "acquisition_blockers": [
+        "complete_evaluation_corpus_binding",
+        "accepted_Work_root_Result_association",
+        "task_specific_rights",
+        "independent_human_case_and_citation_review"
+      ]
+    },
+    {
+      "case_id": "gap-heavy-fermion-cecoin5",
+      "family": "heavy_fermions",
+      "label": "CeCoIn5 direct result / CeIn3 cited pressure result",
+      "primary_urls": [
+        "https://arxiv.org/abs/cond-mat/0103168"
+      ],
+      "dois": [
+        "10.1088/0953-8984/13/17/103"
+      ],
+      "questions": [
+        {
+          "id": "gap-heavy-fermion-cecoin5-1",
+          "language": "en",
+          "prompt": "Identify the direct superconductivity evidence for CeCoIn5 in the original report. Keep the cited pressure-induced CeIn3 result separate and locate each measurement condition.",
+          "connected_group": "gap-heavy-fermion-cecoin5",
+          "gold_answer": null,
+          "human_scores": null,
+          "live_retrieval": null,
+          "status": "draft_acquisition"
+        },
+        {
+          "id": "gap-heavy-fermion-cecoin5-2",
+          "language": "zh",
+          "prompt": "CeCoIn5 文中的直接测量与引用的 CeIn3 压力结果，分别属于哪些材料和实验状态？哪些条件在摘要中无法确定？",
+          "connected_group": "gap-heavy-fermion-cecoin5",
+          "gold_answer": null,
+          "human_scores": null,
+          "live_retrieval": null,
+          "status": "draft_acquisition"
+        }
+      ],
+      "fulltext_retained": true,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "split": "unassigned",
+      "scientific_acceptance": false,
+      "source_acquisition": {
+        "source_revision": "cond-mat/0103168v1",
+        "pdf_sha256": "047f3ec8f44410d83fe9a0735c6c1a241e8f85b7eeec43ee2a7e13e99ce65011",
+        "pdf_bytes": 82427,
+        "pdf_pages": 16,
+        "license_uris": [
+          "http://arxiv.org/licenses/assumed-1991-2003/"
+        ],
+        "related_doi_matches": true,
+        "current_metadata_receipt": {
+          "url": "https://arxiv.org/abs/cond-mat/0103168",
+          "captured_at": "2026-10-09T09:32:58.473180+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://arxiv.org/abs/cond-mat/0103168",
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 41416,
+          "sha256": "59baa14613d8bf2541a908fe7f9edebff3211b73df1acc4c2947be5201f671ff",
+          "elapsed_seconds": 0.39234158396720886
+        },
+        "fixed_metadata_receipt": {
+          "url": "https://arxiv.org/abs/cond-mat/0103168v1",
+          "captured_at": "2026-10-09T09:33:01.877422+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://arxiv.org/abs/cond-mat/0103168v1",
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 41426,
+          "sha256": "c2e923e2d5c659a4a9334688cccf3627b1b11c412c05db47c0b1df72d4c93c95",
+          "elapsed_seconds": 0.5363100419053808
+        },
+        "pdf_receipt": {
+          "url": "https://arxiv.org/pdf/cond-mat/0103168v1",
+          "captured_at": "2026-10-09T09:33:05.427558+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://arxiv.org/pdf/cond-mat/0103168v1",
+          "content_type": "application/pdf",
+          "bytes": 82427,
+          "sha256": "047f3ec8f44410d83fe9a0735c6c1a241e8f85b7eeec43ee2a7e13e99ce65011",
+          "elapsed_seconds": 0.6399798330385238
+        },
+        "all_page_text_pins": [
+          {
+            "page": 1,
+            "text_bytes": 790,
+            "text_sha256": "030f8b5c156fca28085a48d181b34f5045fbeeef80d3c04e1021a9b3c5f646cd"
+          },
+          {
+            "page": 2,
+            "text_bytes": 1974,
+            "text_sha256": "d9dd2661b867ae107564fd44ede7e01bf99ba4d4cadc0d0399418ac89e1dd4b8"
+          },
+          {
+            "page": 3,
+            "text_bytes": 1860,
+            "text_sha256": "fc9a85900f81370095200433d904f133e805e8a699652cba2a2a379d7f7f8723"
+          },
+          {
+            "page": 4,
+            "text_bytes": 2031,
+            "text_sha256": "71a8e5c24234ee6f4f8f8198576060f851f01691af0523f31a897bbf7efb99c0"
+          },
+          {
+            "page": 5,
+            "text_bytes": 1760,
+            "text_sha256": "4614389a645d2e695158541371839b69332ff1bd795460c50aa647dd689f9ed7"
+          },
+          {
+            "page": 6,
+            "text_bytes": 1928,
+            "text_sha256": "9f250ac3eddea0a8b3585a0f609e1acc9652b78d123d301137d949b6feaaa48f"
+          },
+          {
+            "page": 7,
+            "text_bytes": 1852,
+            "text_sha256": "5a493df0473d997ac022a6cdbb9442b39f0cff5cf723dcf1af7dde9277aaa24f"
+          },
+          {
+            "page": 8,
+            "text_bytes": 1904,
+            "text_sha256": "0aa39789e210cb5af52e40d1e0929681a7236dd72884846d94255e5f95164897"
+          },
+          {
+            "page": 9,
+            "text_bytes": 1262,
+            "text_sha256": "8c8c35d1bafa283661d3030984c4351a18a740714f42a6d60ee39500ad84e9e9"
+          },
+          {
+            "page": 10,
+            "text_bytes": 790,
+            "text_sha256": "3357211de0ccb973a881a0c410e0a377e80b6787e7bb3e95b4cfb863b173c9ab"
+          },
+          {
+            "page": 11,
+            "text_bytes": 600,
+            "text_sha256": "e640629968c73d750cfadc0b6dff1a2101c1563f45bdb64c75de0fc89abfb1d4"
+          },
+          {
+            "page": 12,
+            "text_bytes": 1460,
+            "text_sha256": "8a86449e8d27d7c0c7e5d84b66d51290bdf6ecb8b2f12b242bdf7b52eaca374e"
+          },
+          {
+            "page": 13,
+            "text_bytes": 149,
+            "text_sha256": "e17f71dc33764724b02a40319443cb02196f52baba3bee0c13e9237e49ea38ab"
+          },
+          {
+            "page": 14,
+            "text_bytes": 139,
+            "text_sha256": "b1aa735f7e9a15aaec670790c97bce2a02e3bf1cf0b87894a7796b4e577c34f5"
+          },
+          {
+            "page": 15,
+            "text_bytes": 49,
+            "text_sha256": "fe10be8ed149de6317c8508622d2b98306d2e07e544f62e58d1aa0d77051944e"
+          },
+          {
+            "page": 16,
+            "text_bytes": 81,
+            "text_sha256": "354dc4158dd5a194aa8411d8ecf5dd68de248a20e8fbd8bd79e3738cb75af007"
+          }
+        ],
+        "private_archive_reference": "gap-heavy-fermion-cecoin5/source.pdf",
+        "title_page_visual_check": "AI-assisted identity check only; no scientific adjudication"
+      },
+      "acquisition_blockers": [
+        "complete_evaluation_corpus_binding",
+        "accepted_Work_root_Result_association",
+        "task_specific_rights",
+        "independent_human_case_and_citation_review"
+      ]
+    },
+    {
+      "case_id": "gap-organic-tmtsf",
+      "family": "organics",
+      "label": "Organic conductor pressure and resistive criterion",
+      "primary_urls": [
+        "https://doi.org/10.1051/jphyslet:0198000410409500"
+      ],
+      "dois": [
+        "10.1051/jphyslet:0198000410409500"
+      ],
+      "questions": [
+        {
+          "id": "gap-organic-tmtsf-1",
+          "language": "en",
+          "prompt": "Acquire the original (TMTSF)2PF6 report and identify the pressure, resistive transition criterion and sample conditions supporting its superconductivity claim; leave unavailable evidence unresolved.",
+          "connected_group": "gap-organic-tmtsf",
+          "gold_answer": null,
+          "human_scores": null,
+          "live_retrieval": null,
+          "status": "draft_acquisition"
+        },
+        {
+          "id": "gap-organic-tmtsf-2",
+          "language": "zh",
+          "prompt": "原始 (TMTSF)2PF6 研究的临界温度、压力、磁场方向和电阻判据如何对应？不要把摘要或后来的综述代替原文条件。",
+          "connected_group": "gap-organic-tmtsf",
+          "gold_answer": null,
+          "human_scores": null,
+          "live_retrieval": null,
+          "status": "draft_acquisition"
+        }
+      ],
+      "fulltext_retained": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "split": "unassigned",
+      "scientific_acceptance": false,
+      "acquisition_blockers": [
+        "retained_original_fulltext",
+        "complete_evaluation_corpus_binding",
+        "accepted_Work_root_Result_association",
+        "task_specific_rights",
+        "independent_human_case_and_citation_review"
+      ]
+    },
+    {
+      "case_id": "gap-interface-lao-sto",
+      "family": "interfaces",
+      "label": "Gate-tuned oxide interface / bulk distinction",
+      "primary_urls": [
+        "https://www.nature.com/articles/nature07576"
+      ],
+      "dois": [
+        "10.1038/nature07576"
+      ],
+      "questions": [
+        {
+          "id": "gap-interface-lao-sto-1",
+          "language": "en",
+          "prompt": "In the LaAlO3/SrTiO3 electric-field study, identify the gate/device state and measurement evidence for superconductivity. Explain what the study does and does not establish about either bulk constituent.",
+          "connected_group": "gap-interface-lao-sto",
+          "gold_answer": null,
+          "human_scores": null,
+          "live_retrieval": null,
+          "status": "draft_acquisition"
+        },
+        {
+          "id": "gap-interface-lao-sto-2",
+          "language": "zh",
+          "prompt": "LaAlO3/SrTiO3 界面研究中，栅压和载流子状态改变时的结果能否合并为单一材料 Tc？请给出状态条件与原文定位。",
+          "connected_group": "gap-interface-lao-sto",
+          "gold_answer": null,
+          "human_scores": null,
+          "live_retrieval": null,
+          "status": "draft_acquisition"
+        }
+      ],
+      "fulltext_retained": true,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "split": "unassigned",
+      "scientific_acceptance": false,
+      "source_acquisition": {
+        "source_revision": "0807.0585v1",
+        "pdf_sha256": "89a38597610eef90de0d0ff337de5f9032c2999e3880f7826831e809f7ce6757",
+        "pdf_bytes": 1011010,
+        "pdf_pages": 11,
+        "license_uris": [
+          "http://arxiv.org/licenses/nonexclusive-distrib/1.0/"
+        ],
+        "related_doi_matches": true,
+        "current_metadata_receipt": {
+          "url": "https://arxiv.org/abs/0807.0585",
+          "captured_at": "2026-10-09T09:33:09.602527+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://arxiv.org/abs/0807.0585",
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 45272,
+          "sha256": "b7f5c8af5abbed89abe670c1a7adbde40c741b29b8fb71c9375a456311ff15c4",
+          "elapsed_seconds": 0.33636195806320757
+        },
+        "fixed_metadata_receipt": {
+          "url": "https://arxiv.org/abs/0807.0585v1",
+          "captured_at": "2026-10-09T09:33:12.955218+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://arxiv.org/abs/0807.0585v1",
+          "content_type": "text/html; charset=utf-8",
+          "bytes": 45266,
+          "sha256": "c7fead4137ae8d73a4649625bcc0705c558c7597d8806fa8c473483b54652a1e",
+          "elapsed_seconds": 0.6791077919770032
+        },
+        "pdf_receipt": {
+          "url": "https://arxiv.org/pdf/0807.0585v1",
+          "captured_at": "2026-10-09T09:33:16.644262+00:00",
+          "status": 200,
+          "error": null,
+          "final_url": "https://arxiv.org/pdf/0807.0585v1",
+          "content_type": "application/pdf",
+          "bytes": 1011010,
+          "sha256": "89a38597610eef90de0d0ff337de5f9032c2999e3880f7826831e809f7ce6757",
+          "elapsed_seconds": 1.2061457500094548
+        },
+        "all_page_text_pins": [
+          {
+            "page": 1,
+            "text_bytes": 772,
+            "text_sha256": "6327416f7b5487bb0467b7f13cf0320170fb278c82bddb679979fb30ddbd3f67"
+          },
+          {
+            "page": 2,
+            "text_bytes": 2687,
+            "text_sha256": "f0c0ad9f5b30646a04ef9b65161da44de920b41f4c75bde6c77eda5824d3daba"
+          },
+          {
+            "page": 3,
+            "text_bytes": 2061,
+            "text_sha256": "d13715da441a6e2c730e1ab4ac1ba3f8b859e05dded2a4439ec952987139d7e0"
+          },
+          {
+            "page": 4,
+            "text_bytes": 2622,
+            "text_sha256": "322fe93e5531ff4d5b9b1488ed02c48022c6404d61c9b2cc9762e8db8db8c64c"
+          },
+          {
+            "page": 5,
+            "text_bytes": 1475,
+            "text_sha256": "e261ce65f9e3f419da0cccd99f964ca443d9e027a373f8d3d7b081b9b9b5fabe"
+          },
+          {
+            "page": 6,
+            "text_bytes": 1603,
+            "text_sha256": "03424fab78b0ca236bdd6527b2ba056dfdc81a004590847315ba5594e40e73c5"
+          },
+          {
+            "page": 7,
+            "text_bytes": 1524,
+            "text_sha256": "5e0e160442214cdc6192cec8c91df65c4ab299ab4379cc2b35a82d82450f4634"
+          },
+          {
+            "page": 8,
+            "text_bytes": 2605,
+            "text_sha256": "3e76528b2e5d1d8b702cee23a4f57905e0bdae7e834c3841f45eb0c81bf685c9"
+          },
+          {
+            "page": 9,
+            "text_bytes": 1850,
+            "text_sha256": "7e48b9047548419f775e80b36e22d4c84d7fc3b0918b4ef0138af5bd2ed01b81"
+          },
+          {
+            "page": 10,
+            "text_bytes": 2134,
+            "text_sha256": "fd36ee6f77a4bc9133f0cb6b1ea20613a3d3de87bb0ef17371b8f8dfac240550"
+          },
+          {
+            "page": 11,
+            "text_bytes": 255,
+            "text_sha256": "07ac3bb91183781df909c82babb844fb3a3f74c0d8cb1aec346dc311ba5ccbb3"
+          }
+        ],
+        "private_archive_reference": "gap-interface-lao-sto/source.pdf",
+        "title_page_visual_check": "AI-assisted identity check only; no scientific adjudication"
+      },
+      "acquisition_blockers": [
+        "complete_evaluation_corpus_binding",
+        "accepted_Work_root_Result_association",
+        "task_specific_rights",
+        "independent_human_case_and_citation_review"
+      ]
+    },
+    {
+      "case_id": "gap-retracted-lu-h-n",
+      "family": "withdrawn_sources",
+      "label": "Retracted Lu-H-N claim and publisher notice",
+      "primary_urls": [
+        "https://www.nature.com/articles/s41586-023-05742-0",
+        "https://www.nature.com/articles/s41586-023-06774-2"
+      ],
+      "dois": [
+        "10.1038/s41586-023-05742-0",
+        "10.1038/s41586-023-06774-2"
+      ],
+      "questions": [
+        {
+          "id": "gap-retracted-lu-h-n-1",
+          "language": "en",
+          "prompt": "Retrieve the Lu-H-N article together with the publisher retraction notice and explain how its source status should affect a current-evidence answer; distinguish historical quotation from active scientific support.",
+          "connected_group": "gap-retracted-lu-h-n",
+          "gold_answer": null,
+          "human_scores": null,
+          "live_retrieval": null,
+          "status": "draft_acquisition"
+        },
+        {
+          "id": "gap-retracted-lu-h-n-2",
+          "language": "zh",
+          "prompt": "如果检索返回已撤稿的 Lu-H-N 室温超导报道，应怎样同时展示原始主张、出版社通知和当前证据状态？哪些结论需要拒绝或暂缓？",
+          "connected_group": "gap-retracted-lu-h-n",
+          "gold_answer": null,
+          "human_scores": null,
+          "live_retrieval": null,
+          "status": "draft_acquisition"
+        }
+      ],
+      "fulltext_retained": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "split": "unassigned",
+      "scientific_acceptance": false,
+      "acquisition_blockers": [
+        "retained_original_fulltext",
+        "complete_evaluation_corpus_binding",
+        "accepted_Work_root_Result_association",
+        "task_specific_rights",
+        "independent_human_case_and_citation_review"
+      ]
+    }
+  ],
+  "case_count": 6,
+  "question_count": 12,
+  "fulltext_retained_cases": 3,
+  "scientific_acceptance": false,
+  "gold_set": false,
+  "complete_evaluation_corpus": false,
+  "provider_calls": 0,
+  "database_writes": 0
+}

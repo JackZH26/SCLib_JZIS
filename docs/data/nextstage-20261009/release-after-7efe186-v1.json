@@ -1,0 +1,62 @@
+{
+  "schema_version": "sclib-retained-release-replay/1.0.0",
+  "recorded_at": "2026-10-09T10:17:04.782909+00:00",
+  "source_revision": "7efe1866d610ad227fef9be9f59000173c09d248",
+  "release_run": 37910387089,
+  "test_run": 37897281585,
+  "deploy_run": 37910749759,
+  "components": [
+    {
+      "component": "frontend",
+      "source_revision": "7efe1866d610ad227fef9be9f59000173c09d248",
+      "digest": "sha256:d7148def2409c4274cfa9d6b44d39378bf1483bbcb41aa12540a24b910c54f62"
+    },
+    {
+      "component": "api",
+      "source_revision": "7efe1866d610ad227fef9be9f59000173c09d248",
+      "digest": "sha256:0db7d13a59f12c978d5fb12860483d23832cd0a9eb7be281713de22b554179ca",
+      "parity_report_pin": {
+        "file": "release-parity-report.json",
+        "bytes": 2878,
+        "sha256": "7bbed778e97e36f2668f0194fa6880cf43500d4f72653ecf733b152e3a585f7f"
+      },
+      "inventory_checks": [
+        {
+          "artifact": "api-test-runtime-inventory-attempt-1",
+          "test_inventory_sha256": "b8e1b6b3342467768557f6ac054338ccd217ca3b8044d9b3eb42bae68313f7ce",
+          "matches": true
+        },
+        {
+          "artifact": "migration-test-runtime-inventory-attempt-1",
+          "test_inventory_sha256": "b8e1b6b3342467768557f6ac054338ccd217ca3b8044d9b3eb42bae68313f7ce",
+          "matches": true
+        }
+      ],
+      "runtime_inventory_sha256": "034b3e7cea6ebf1bb7cf00c7a495d205a02b223ac3a8235d579ffaca43000073",
+      "platform": "linux/amd64",
+      "scope": "python_package_versions_not_os_libraries_or_application_execution"
+    },
+    {
+      "component": "ingestion",
+      "source_revision": "7efe1866d610ad227fef9be9f59000173c09d248",
+      "digest": "sha256:a960b4574876847d4db9eeff60f8143a6041c4d1cf9112ce940a53901802e784",
+      "parity_report_pin": {
+        "file": "release-parity-report.json",
+        "bytes": 2152,
+        "sha256": "848eecb03efdd59f62dffd6ffda2de6e6a662d134a387717b451506124555018"
+      },
+      "inventory_checks": [
+        {
+          "artifact": "ingestion-test-runtime-inventory-attempt-1",
+          "test_inventory_sha256": "9a99c21638b6b3655e86fe917fc62781bb35e2503033e5f4e77621c505cdaec9",
+          "matches": true
+        }
+      ],
+      "runtime_inventory_sha256": "82cb028c391fa8ffafe1e4dc8a6f5c81bf3803b516c4b412cde374b5f6ba7545",
+      "platform": "linux/amd64",
+      "scope": "python_package_versions_not_os_libraries_or_application_execution"
+    }
+  ],
+  "scope": "Independent replay of retained image SHA files and locked Python package inventories. Not OS/ABI or scientific acceptance.",
+  "public_acceptance_receipt": "public-after-7efe186-v1.json"
+}

@@ -1,0 +1,64 @@
+{
+  "schema_version": "sclib-pr166-linux-regression-replay/2.0.0",
+  "test_run": 37903095507,
+  "pull_request_head_revision": "1b54e0e41530e154bce19b32f1bfaffb9c875263",
+  "actual_ci_checkout_revision": "844e0e568a727ff57963433f41fe5c03996f7255",
+  "merged_revision": "4c56af1693510d148a1642bc035910b064141819",
+  "commit_identities": {
+    "1b54e0e41530e154bce19b32f1bfaffb9c875263": {
+      "sha": "1b54e0e41530e154bce19b32f1bfaffb9c875263",
+      "tree_sha": "9558861ce0ad8428376bb3fa9b8d314a15b4b38b",
+      "parents": [
+        "75adfa23079e40721c060c00ada8d1b8707e6c45"
+      ]
+    },
+    "844e0e568a727ff57963433f41fe5c03996f7255": {
+      "sha": "844e0e568a727ff57963433f41fe5c03996f7255",
+      "tree_sha": "9558861ce0ad8428376bb3fa9b8d314a15b4b38b",
+      "parents": [
+        "7efe1866d610ad227fef9be9f59000173c09d248",
+        "1b54e0e41530e154bce19b32f1bfaffb9c875263"
+      ]
+    },
+    "4c56af1693510d148a1642bc035910b064141819": {
+      "sha": "4c56af1693510d148a1642bc035910b064141819",
+      "tree_sha": "9558861ce0ad8428376bb3fa9b8d314a15b4b38b",
+      "parents": [
+        "f219a8e8afb92c4142bc2cc0646ad7872ace7a30",
+        "1b54e0e41530e154bce19b32f1bfaffb9c875263"
+      ]
+    }
+  },
+  "tracked_file_tree_equal": true,
+  "source_dirty": false,
+  "source_unchanged": true,
+  "dirty_worktree_in_plan": true,
+  "dirty_scope": "Untracked execution evidence; tracked source unchanged.",
+  "status": "completed",
+  "counts": {
+    "errors": 0,
+    "failed": 0,
+    "passed": 8500,
+    "skipped": 9,
+    "test_cases": 8509
+  },
+  "module_count": 268,
+  "duration_seconds": 7625.136,
+  "full_module_coverage": true,
+  "all_runner_exits_zero": true,
+  "independently_replayed_batches": 8,
+  "input_pins": [
+    {
+      "file": "result.json",
+      "bytes": 17558,
+      "sha256": "b7544977268cd0199cf407d88df38697300f88538b7e30263815845771c6d27a"
+    },
+    {
+      "file": "plan.json",
+      "bytes": 190308,
+      "sha256": "4965f0a49a7039da778761bfa752877aea35f6af926a0a1f32a6a8c033a6ae21"
+    }
+  ],
+  "supersedes_private_v1_identity_attribution": "PR head is distinct from actual CI checkout; tracked trees match.",
+  "production_or_scientific_acceptance": false
+}

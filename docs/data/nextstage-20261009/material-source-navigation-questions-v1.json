@@ -1,0 +1,893 @@
+{
+  "schema_version": "sclib-source-navigation-questions/1.0.0",
+  "recorded_at": "2026-10-09T11:28:37.003938+00:00",
+  "input_pins": [
+    {
+      "file": "material-source-acquisition-v2.json",
+      "bytes": 36193,
+      "sha256": "d0a599a5917d5fdf017186446383ef88235323aae3fd439a2cdb107d490790a6"
+    },
+    {
+      "file": "material-source-acquisition-v1.json",
+      "bytes": 38775,
+      "sha256": "f09c11d5d6a45a2b8fd3a673b50bff18af7d9b0c874d8c365da58036d8eec685"
+    },
+    {
+      "file": "receipt.json",
+      "bytes": 538769,
+      "sha256": "09b3692674d367fd521978ca1dfbe22b95bd1db3ff8694038f6afa77919f81dc",
+      "archive_id": "current-200-public-recheck-v1"
+    }
+  ],
+  "material_cases": 4,
+  "question_count": 16,
+  "scope": "Companion material review questions for ZIP v5; not added retrieval evaluation questions or approved labels.",
+  "cases": [
+    {
+      "material_id": "mat:mosr2eu1.5ce0.5cu2o10",
+      "legacy_rank": 3,
+      "historical_public_response_pin": {
+        "file": "003-cf15c2669713.json",
+        "bytes": 78570,
+        "sha256": "7a0ad4ae5b833a11602864e1aa1bb234b81a199f304d9a1c92da50a4110a178e"
+      },
+      "historical_selected_result_id": "legacy-result:04770f30cfeef172223ad75d6501efcf119e7ac020d897be46460ec7317cad13",
+      "historical_selected_source": {
+        "paper_id": "arxiv:cond-mat/0304552",
+        "doi": null,
+        "arxiv_id": null,
+        "year": 2003,
+        "source_locator": {}
+      },
+      "historical_value_and_conditions": {
+        "value": 23.0,
+        "conditions": {
+          "hc2_conditions": null,
+          "tc_conditions": null,
+          "tc_type": null,
+          "tc_criterion": null,
+          "hc2_direction": null,
+          "field_orientation": null,
+          "magnetic_field_orientation": null,
+          "method": null,
+          "measurement": null,
+          "measurement_method": null,
+          "calculation_method": null,
+          "protocol_id": null,
+          "calculation_protocol": null,
+          "temperature_k": null,
+          "measurement_temperature_k": null,
+          "hc2_temperature_k": null
+        },
+        "state": {
+          "state_id": null,
+          "structure_id": null,
+          "sample_id": null,
+          "run_id": null,
+          "formula": "MoSr2Eu1.5Ce0.5Cu2O10-δ",
+          "formula_raw": null,
+          "pressure_semantics": {
+            "pressure_state": "not_reported",
+            "pressure_gpa": null,
+            "relation": "unreported",
+            "value_lower_gpa": null,
+            "value_upper_gpa": null,
+            "uncertainty_gpa": null,
+            "uncertainty_interpretation": null,
+            "raw_value": null,
+            "raw_unit": null,
+            "unit_basis": "unreported",
+            "approximate": false,
+            "source_locator": {},
+            "reasons": [
+              "pressure_not_reported"
+            ],
+            "classifier_version": "pressure-policy/1.0.0"
+          },
+          "sample_form": null,
+          "substrate": null,
+          "doping_type": null,
+          "doping_level": null
+        },
+        "structure": {
+          "crystal_structure": null,
+          "space_group": null,
+          "structure_phase": null,
+          "lattice_params": null,
+          "lattice_quantities": {}
+        }
+      },
+      "source_revision": "cond-mat/0304552v1",
+      "pdf_bytes": 271093,
+      "pdf_sha256": "c7a06872b99be9caf371222950ff976a8ec4700de4654c6c2c0c950ea789e98e",
+      "pdf_pages": 8,
+      "source_acquisition_receipt_pin": {
+        "file": "receipt.json",
+        "bytes": 35658,
+        "sha256": "9a1b3abaad6e46254223e33d9e8172e5e63a6523610d180ff80649c5aeeaed44",
+        "archive_id": "material-source-acquisition-20261009T100456Z/material-source-003"
+      },
+      "all_page_text_pins": [
+        {
+          "page": 1,
+          "text_bytes": 1399,
+          "text_sha256": "df44cea59dbb7ac4e893093e82f290a99f9dbde7f6f3fb15a0e5a6146b77f078"
+        },
+        {
+          "page": 2,
+          "text_bytes": 2746,
+          "text_sha256": "af50fad7ada419d13f0afc8cfe6b1439905c21db8040e4218a8c8801708c68cf"
+        },
+        {
+          "page": 3,
+          "text_bytes": 2983,
+          "text_sha256": "f4d8130806e56a646aba7021888b5fc6d395a89cbe84e25a66561a3390c6b523"
+        },
+        {
+          "page": 4,
+          "text_bytes": 3047,
+          "text_sha256": "fc29264ec661f38188811b0a7fe9ff4002ce0bfe642e48ef97f79eac65451a32"
+        },
+        {
+          "page": 5,
+          "text_bytes": 2979,
+          "text_sha256": "5f01df9961096fe7c0853200ef840ae59719683376b00c0ace90794b6fde9bbb"
+        },
+        {
+          "page": 6,
+          "text_bytes": 1851,
+          "text_sha256": "747f2db1ee6f888c2145ef77e78349ea2e72209960b0be302a1b9bfe065dcc47"
+        },
+        {
+          "page": 7,
+          "text_bytes": 264,
+          "text_sha256": "9e7054818a41e0b78dd6d8b686e5e3cf888f1cd8decba1ed446f4ef918486cec"
+        },
+        {
+          "page": 8,
+          "text_bytes": 273,
+          "text_sha256": "407ee80300358b4c5ddaa158ff0645a58397335b7234e01f5ae5d50adb5d8f58"
+        }
+      ],
+      "AI_review_scope": "Read relevant retained extracted text and visually inspected listed pages to prepare navigation/questions; no complete-pilot inspection or accepted entailment credit.",
+      "visual_navigation_page_pins": [
+        {
+          "page": 6,
+          "png_sha256": "ccc5e46bf7c43617509931bafd79937dc6c029ec3c666f55d2a5896034819182"
+        },
+        {
+          "page": 7,
+          "png_sha256": "90a833231f9ad4846331eb5c9338701a82c62049148cee51cae99a996ede754a"
+        }
+      ],
+      "questions": [
+        "Review whether the arXiv and declared APS DOI versions belong to the same Work and sample/result lineage; matching Tc values cannot be counted as independent experiments.",
+        "Bind the retained Tc to the Eu sample, onset and magnetic measurement protocol; assess the table uncertainty notation without silently changing the inherited exact-point value.",
+        "Separate the oxygen-pressure annealing step from the superconductivity measurement pressure; preserve unreported or ambiguous pressure until source support is established.",
+        "Review nominal composition, Mo deficiency and impurity phases before joining lattice, magnetic and superconducting fields into one observation."
+      ],
+      "navigation": [
+        {
+          "page": 2,
+          "char_start": 2213,
+          "char_end": 2228,
+          "page_text_sha256": "af50fad7ada419d13f0afc8cfe6b1439905c21db8040e4218a8c8801708c68cf",
+          "span_text_sha256": "05e37fcb51bccffc55ebb5867e911503fb5156508b433cefa65cefdc9e25543d",
+          "purpose": "sample preparation and annealing",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 3,
+          "char_start": 1698,
+          "char_end": 1711,
+          "page_text_sha256": "f4d8130806e56a646aba7021888b5fc6d395a89cbe84e25a66561a3390c6b523",
+          "span_text_sha256": "4a0c816b256c82b73a4483855f79a9bac468869ab3c01a5746608d6975d50af5",
+          "purpose": "nominal versus analyzed composition",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 4,
+          "char_start": 340,
+          "char_end": 355,
+          "page_text_sha256": "fc29264ec661f38188811b0a7fe9ff4002ce0bfe642e48ef97f79eac65451a32",
+          "span_text_sha256": "141c3be71600d8dd245fb2656ec0651f95ddf26ac851a225b79bbd1297d5d898",
+          "purpose": "Eu transition and annealing context",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 6,
+          "char_start": 1511,
+          "char_end": 1519,
+          "page_text_sha256": "747f2db1ee6f888c2145ef77e78349ea2e72209960b0be302a1b9bfe065dcc47",
+          "span_text_sha256": "aa827a5b9fe23ba43c5fd39a408cd7edc7f88f50691e6f036a0dd613bd261392",
+          "purpose": "Table I Eu row and uncertainty notation",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 7,
+          "char_start": 195,
+          "char_end": 202,
+          "page_text_sha256": "9e7054818a41e0b78dd6d8b686e5e3cf888f1cd8decba1ed446f4ef918486cec",
+          "span_text_sha256": "d5ba4b32cdfaad38651c310c90b7392dc83bf6299813b0494eca78815da63f4a",
+          "purpose": "Figure 2 field/protocol and distinct compositions",
+          "scope": "Navigation only; full original context and independent review required."
+        }
+      ],
+      "accepted_Work_root_binding": null,
+      "material_Result_association": null,
+      "source_role_decision": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "resolver": null,
+      "scientific_decision": null,
+      "scientific_acceptance": false,
+      "canonical_changes": 0
+    },
+    {
+      "material_id": "mat:la0.4sm0.6o0.5f0.5bis2",
+      "legacy_rank": 21,
+      "historical_public_response_pin": {
+        "file": "021-23afa24e5a03.json",
+        "bytes": 62082,
+        "sha256": "9d874931a9d121690cd1e6d03ca6e69b2d2db545637aa17e24fb402f012151b8"
+      },
+      "historical_selected_result_id": "legacy-result:7cf7757b5c5b76fb136a538da77f467c3fb09939abcacc138dc67c1cfebb12c3",
+      "historical_selected_source": {
+        "paper_id": "arxiv:1507.03172",
+        "doi": null,
+        "arxiv_id": null,
+        "year": 2015,
+        "source_locator": {}
+      },
+      "historical_value_and_conditions": {
+        "value": 7.0,
+        "conditions": {
+          "hc2_conditions": null,
+          "tc_conditions": null,
+          "tc_type": "midpoint",
+          "tc_criterion": null,
+          "hc2_direction": null,
+          "field_orientation": null,
+          "magnetic_field_orientation": null,
+          "method": null,
+          "measurement": "resistivity",
+          "measurement_method": null,
+          "calculation_method": null,
+          "protocol_id": null,
+          "calculation_protocol": null,
+          "temperature_k": null,
+          "measurement_temperature_k": null,
+          "hc2_temperature_k": null
+        },
+        "state": {
+          "state_id": null,
+          "structure_id": null,
+          "sample_id": null,
+          "run_id": null,
+          "formula": "La0.4Sm0.6O0.5F0.5BiS2",
+          "formula_raw": null,
+          "pressure_semantics": {
+            "pressure_state": "reported",
+            "pressure_gpa": 1.4,
+            "relation": "exact",
+            "value_lower_gpa": null,
+            "value_upper_gpa": null,
+            "uncertainty_gpa": null,
+            "uncertainty_interpretation": null,
+            "raw_value": 1.4,
+            "raw_unit": null,
+            "unit_basis": "field_schema_assumption",
+            "approximate": false,
+            "source_locator": {},
+            "reasons": [
+              "legacy_field_unit_assumed_gpa"
+            ],
+            "classifier_version": "pressure-policy/1.0.0"
+          },
+          "sample_form": "polycrystal",
+          "substrate": null,
+          "doping_type": null,
+          "doping_level": null
+        },
+        "structure": {
+          "crystal_structure": null,
+          "space_group": null,
+          "structure_phase": null,
+          "lattice_params": null,
+          "lattice_quantities": {}
+        }
+      },
+      "source_revision": "1507.03172v1",
+      "pdf_bytes": 4144428,
+      "pdf_sha256": "e92845614dc28993c45c8fb486f12285729242f4a7d751ca6b1d9991c84fe484",
+      "pdf_pages": 6,
+      "source_acquisition_receipt_pin": {
+        "file": "receipt.json",
+        "bytes": 44528,
+        "sha256": "bb80362750c4210ae22f2424670298955820a90586e1993b010f1d90369a63c4",
+        "archive_id": "material-source-acquisition-20261009T100456Z/material-source-021"
+      },
+      "all_page_text_pins": [
+        {
+          "page": 1,
+          "text_bytes": 5473,
+          "text_sha256": "5ca3605b17564b21230dcc91ddf6e1cd95c637a531e61c55232d41c0b70fc286"
+        },
+        {
+          "page": 2,
+          "text_bytes": 3809,
+          "text_sha256": "666f2acc9c9c2dc77c36c16e3fc1ba0baceb6ae2313e3bb6c3d0ce5e234fd4f4"
+        },
+        {
+          "page": 3,
+          "text_bytes": 5054,
+          "text_sha256": "f393ee9783f5e9add4924acc5cd8825e75263917e9e98d0f63d95d664b36a334"
+        },
+        {
+          "page": 4,
+          "text_bytes": 3877,
+          "text_sha256": "5e4c20861cec868560c1de2410d3ac63fe71d96f9b088687919f3493cb9d34e9"
+        },
+        {
+          "page": 5,
+          "text_bytes": 5790,
+          "text_sha256": "a0b836910c013ffc9a0532d16c408827a874cbb7f0c761ebabc6306e20870d59"
+        },
+        {
+          "page": 6,
+          "text_bytes": 3867,
+          "text_sha256": "aae4eb1afeab700a3a1c00ef05f3817ab734bd1aa3efd532baae788ce8ea2644"
+        }
+      ],
+      "AI_review_scope": "Read relevant retained extracted text and visually inspected listed pages to prepare navigation/questions; no complete-pilot inspection or accepted entailment credit.",
+      "visual_navigation_page_pins": [
+        {
+          "page": 1,
+          "png_sha256": "ef2cd7aa1ccaa28a8af540f82fefa09278863dca346c3eb6707162ffaba0feb2"
+        },
+        {
+          "page": 2,
+          "png_sha256": "802b6b93900f48e2d7271701fe0e8e4078076015921c27f9f7d37a4fe009a30b"
+        },
+        {
+          "page": 3,
+          "png_sha256": "84972c3e7360e36a43bc9c2586f98f0286529f723f29d55d4ee51e04d694f3d4"
+        }
+      ],
+      "questions": [
+        "Review whether the inherited 7 K / 1.4 GPa association is a directly measured point, rounded/interpolated value or a phase-transition pressure; identify loading direction and transition width.",
+        "Bind the inherited midpoint tag to the source resistivity criterion and separate it from onset, completion and pressure-midpoint labels.",
+        "Keep nominal x=0.6 composition, impurities, pressure medium and calibration attached to the actual measured sample.",
+        "Separate the measured substituted compositions from extrapolated Sm-end-member predictions and ambient lattice descriptions; review the PDF displayed date against the frozen arXiv metadata before temporal splitting."
+      ],
+      "navigation": [
+        {
+          "page": 1,
+          "char_start": 3412,
+          "char_end": 3435,
+          "page_text_sha256": "5ca3605b17564b21230dcc91ddf6e1cd95c637a531e61c55232d41c0b70fc286",
+          "span_text_sha256": "a03ddb71be9ab9b062124a6411483fee5172eea0e374ad227ef98170e8f92873",
+          "purpose": "nominal composition, impurities and pressure methods",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 2,
+          "char_start": 1985,
+          "char_end": 1995,
+          "page_text_sha256": "666f2acc9c9c2dc77c36c16e3fc1ba0baceb6ae2313e3bb6c3d0ce5e234fd4f4",
+          "span_text_sha256": "f563590dc98ebe76318fac059c86591a1e4ceca648b4ea63e2fc48f59801122a",
+          "purpose": "resistivity Tc criterion",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 2,
+          "char_start": 1306,
+          "char_end": 1322,
+          "page_text_sha256": "666f2acc9c9c2dc77c36c16e3fc1ba0baceb6ae2313e3bb6c3d0ce5e234fd4f4",
+          "span_text_sha256": "9588b46696b5c62f0397140d65ff8ba004f39022605655991d5bd84b24356cbb",
+          "purpose": "pressure-transition labels",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 3,
+          "char_start": 236,
+          "char_end": 243,
+          "page_text_sha256": "f393ee9783f5e9add4924acc5cd8825e75263917e9e98d0f63d95d664b36a334",
+          "span_text_sha256": "6b13597204c1ec3f08d13201325d97b5b6dc6eb1dfcfbddceae6e4e320d89d09",
+          "purpose": "composition-specific pressure diagram and history",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 4,
+          "char_start": 556,
+          "char_end": 577,
+          "page_text_sha256": "5e4c20861cec868560c1de2410d3ac63fe71d96f9b088687919f3493cb9d34e9",
+          "span_text_sha256": "09256cb8abc99297b4229d49459ff92fa6b308bbf6a92fcd673e0bb85f29c1d1",
+          "purpose": "end-member prediction context",
+          "scope": "Navigation only; full original context and independent review required."
+        }
+      ],
+      "accepted_Work_root_binding": null,
+      "material_Result_association": null,
+      "source_role_decision": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "resolver": null,
+      "scientific_decision": null,
+      "scientific_acceptance": false,
+      "canonical_changes": 0
+    },
+    {
+      "material_id": "mat:bi2tei",
+      "legacy_rank": 23,
+      "historical_public_response_pin": {
+        "file": "023-257d162ed58b.json",
+        "bytes": 66135,
+        "sha256": "c5a02da8f7accc400f4e148d8164d7c2d714143b7e40f7a8ad21ca6e1e5a89d5"
+      },
+      "historical_selected_result_id": "legacy-result:343cbf49c1d4a534e4f45a8ecca09e3879366539336d5e330a970b27f75379b0",
+      "historical_selected_source": {
+        "paper_id": "arxiv:2209.02688",
+        "doi": null,
+        "arxiv_id": null,
+        "year": 2022,
+        "source_locator": {}
+      },
+      "historical_value_and_conditions": {
+        "value": 7.0,
+        "conditions": {
+          "hc2_conditions": null,
+          "tc_conditions": null,
+          "tc_type": null,
+          "tc_criterion": null,
+          "hc2_direction": null,
+          "field_orientation": null,
+          "magnetic_field_orientation": null,
+          "method": null,
+          "measurement": "susceptibility",
+          "measurement_method": null,
+          "calculation_method": null,
+          "protocol_id": null,
+          "calculation_protocol": null,
+          "temperature_k": null,
+          "measurement_temperature_k": null,
+          "hc2_temperature_k": null
+        },
+        "state": {
+          "state_id": null,
+          "structure_id": null,
+          "sample_id": null,
+          "run_id": null,
+          "formula": "Bi2TeI",
+          "formula_raw": null,
+          "pressure_semantics": {
+            "pressure_state": "reported",
+            "pressure_gpa": 13.0,
+            "relation": "exact",
+            "value_lower_gpa": null,
+            "value_upper_gpa": null,
+            "uncertainty_gpa": null,
+            "uncertainty_interpretation": null,
+            "raw_value": 13.0,
+            "raw_unit": null,
+            "unit_basis": "field_schema_assumption",
+            "approximate": false,
+            "source_locator": {},
+            "reasons": [
+              "legacy_field_unit_assumed_gpa"
+            ],
+            "classifier_version": "pressure-policy/1.0.0"
+          },
+          "sample_form": "single_crystal",
+          "substrate": null,
+          "doping_type": null,
+          "doping_level": null
+        },
+        "structure": {
+          "crystal_structure": "bcc",
+          "space_group": "Im3m",
+          "structure_phase": null,
+          "lattice_params": null,
+          "lattice_quantities": {}
+        }
+      },
+      "source_revision": "2209.02688v1",
+      "pdf_bytes": 1002916,
+      "pdf_sha256": "7f6470dcf95733ab4ff8ef750547724b8c227fb0478a5f8642deff83e32e9ed0",
+      "pdf_pages": 9,
+      "source_acquisition_receipt_pin": {
+        "file": "receipt.json",
+        "bytes": 28271,
+        "sha256": "0d70c1670e66b3c5ee000d6287d97ce1572d5bfef0bf2784494b8c0466b39fb2",
+        "archive_id": "material-source-acquisition-20261009T100456Z/material-source-023"
+      },
+      "all_page_text_pins": [
+        {
+          "page": 1,
+          "text_bytes": 5300,
+          "text_sha256": "3f6cb1ae86ffd636f43c43e03ba82f16636b5f9ec84d6c2034687c07e6e5c1ec"
+        },
+        {
+          "page": 2,
+          "text_bytes": 5803,
+          "text_sha256": "2970649b567cbf2aa20fb7bec5832367f926b51cf1efe0f2ec38318edf7c1e64"
+        },
+        {
+          "page": 3,
+          "text_bytes": 4406,
+          "text_sha256": "de9999760fa6cb8d2dfd43ccbb5acd8420d40416a3f44ddef5dcafbbbbd01cb7"
+        },
+        {
+          "page": 4,
+          "text_bytes": 3133,
+          "text_sha256": "db1d568b4b40af7f35260b0282434522525b0293d28833b9c3b2c1b25b974c94"
+        },
+        {
+          "page": 5,
+          "text_bytes": 3378,
+          "text_sha256": "0139b95ab93c6bd284ea3b1a0c8c5bee298f3f8b1ae4e165b32361ea722acad5"
+        },
+        {
+          "page": 6,
+          "text_bytes": 3227,
+          "text_sha256": "946f683206c83b449fb92ce259103458658b0112638edd413ff266066b7408d2"
+        },
+        {
+          "page": 7,
+          "text_bytes": 3802,
+          "text_sha256": "b878a13c840b07d3c7f286b2ebd2c6666d784ff26f133ffd657ed878383d5b7d"
+        },
+        {
+          "page": 8,
+          "text_bytes": 5620,
+          "text_sha256": "ed9bd0c61d3a5a8dace0a34230b942ce5d164a72b371eb3ecf2bcc215ed63c8c"
+        },
+        {
+          "page": 9,
+          "text_bytes": 2496,
+          "text_sha256": "83902c29fbe9d351b92ceebc6894fee48a6c0d78933a680825deae1e9f66d33a"
+        }
+      ],
+      "AI_review_scope": "Read relevant retained extracted text and visually inspected listed pages to prepare navigation/questions; no complete-pilot inspection or accepted entailment credit.",
+      "visual_navigation_page_pins": [
+        {
+          "page": 4,
+          "png_sha256": "d125816c977371765f395d4dfaed9c451312e4cdbb6bf04c78dcab3bd9a4f66e"
+        },
+        {
+          "page": 5,
+          "png_sha256": "d6e98e92fd7e55341747db639985c4c759cf0d101858f66687966b1a2dc11043"
+        },
+        {
+          "page": 6,
+          "png_sha256": "06b7b0b71f8929775bae119927e27253e73a2e2545012ff73bc1956fa5eaf642"
+        }
+      ],
+      "questions": [
+        "Bind the inherited Tc and pressure to the exact Bi2TeI sample and susceptibility or transport trace; method records from one paper are not independent evidence by default.",
+        "Record loading/unloading and temperature history; a superconducting response retained after decompression cannot silently become a new equilibrium ambient-state claim.",
+        "Review whether the rounded inherited pressure and maximum Tc belong to one measured susceptibility point or summarize several traces; retain method-specific criteria and uncertainty.",
+        "Keep the high-pressure disordered-alloy structural model separate from the starting single crystal, powdered XRD specimen and different-medium transport/susceptibility measurements."
+      ],
+      "navigation": [
+        {
+          "page": 2,
+          "char_start": 3059,
+          "char_end": 3097,
+          "page_text_sha256": "2970649b567cbf2aa20fb7bec5832367f926b51cf1efe0f2ec38318edf7c1e64",
+          "span_text_sha256": "620eb8f1544f7b52b54b9e40445ef7c4acbe7151eda2d77a5d770e139e151a7e",
+          "purpose": "susceptibility specimen and pressure method",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 3,
+          "char_start": 2,
+          "char_end": 24,
+          "page_text_sha256": "de9999760fa6cb8d2dfd43ccbb5acd8420d40416a3f44ddef5dcafbbbbd01cb7",
+          "span_text_sha256": "03fb6102d976502489bfef63c55f68c00b2db19b18891a272103998d6df6c3c6",
+          "purpose": "sample-dependent temperature/pressure history",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 4,
+          "char_start": 898,
+          "char_end": 905,
+          "page_text_sha256": "db1d568b4b40af7f35260b0282434522525b0293d28833b9c3b2c1b25b974c94",
+          "span_text_sha256": "966b07c0654cd312c7cd9ad61b954c7021a0ea1fe67c44d1224bf7a67be5516a",
+          "purpose": "transport/susceptibility difference under decompression",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 5,
+          "char_start": 30,
+          "char_end": 37,
+          "page_text_sha256": "0139b95ab93c6bd284ea3b1a0c8c5bee298f3f8b1ae4e165b32361ea722acad5",
+          "span_text_sha256": "acf123c6e2475b32f64fb0cf1f0e4d95448f36a7c3c52ddbf49fac6cafb28b25",
+          "purpose": "susceptibility traces and method-specific conditions",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 6,
+          "char_start": 1885,
+          "char_end": 1891,
+          "page_text_sha256": "946f683206c83b449fb92ce259103458658b0112638edd413ff266066b7408d2",
+          "span_text_sha256": "c76e8903d50ddadf1ebcaf553f25a941469be54b7409417e6478bbf2afc20e47",
+          "purpose": "sample/method-resolved phase diagram",
+          "scope": "Navigation only; full original context and independent review required."
+        }
+      ],
+      "accepted_Work_root_binding": null,
+      "material_Result_association": null,
+      "source_role_decision": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "resolver": null,
+      "scientific_decision": null,
+      "scientific_acceptance": false,
+      "canonical_changes": 0
+    },
+    {
+      "material_id": "mat:bapb0.72bi0.28o3",
+      "legacy_rank": 22,
+      "historical_public_response_pin": {
+        "file": "022-bcbf220b0b20.json",
+        "bytes": 31635,
+        "sha256": "11d36cfdac909ccc1106f9038622cbd10d1570db7671c5e101d9b2a282449c1b"
+      },
+      "historical_selected_result_id": "legacy-result:24a44e5855f399dccb5c6dbf10dace88234688356dbdf0094e57eda279fe6f7d",
+      "historical_selected_source": {
+        "paper_id": "arxiv:1706.06999",
+        "doi": null,
+        "arxiv_id": null,
+        "year": 2017,
+        "source_locator": {}
+      },
+      "historical_value_and_conditions": {
+        "value": 7.0,
+        "conditions": {
+          "hc2_conditions": null,
+          "tc_conditions": null,
+          "tc_type": null,
+          "tc_criterion": null,
+          "hc2_direction": null,
+          "field_orientation": null,
+          "magnetic_field_orientation": null,
+          "method": null,
+          "measurement": "resistivity",
+          "measurement_method": null,
+          "calculation_method": null,
+          "protocol_id": null,
+          "calculation_protocol": null,
+          "temperature_k": null,
+          "measurement_temperature_k": null,
+          "hc2_temperature_k": null
+        },
+        "state": {
+          "state_id": null,
+          "structure_id": null,
+          "sample_id": null,
+          "run_id": null,
+          "formula": "BaPb0.72Bi0.28O3",
+          "formula_raw": null,
+          "pressure_semantics": {
+            "pressure_state": "not_reported",
+            "pressure_gpa": null,
+            "relation": "unreported",
+            "value_lower_gpa": null,
+            "value_upper_gpa": null,
+            "uncertainty_gpa": null,
+            "uncertainty_interpretation": null,
+            "raw_value": null,
+            "raw_unit": null,
+            "unit_basis": "unreported",
+            "approximate": false,
+            "source_locator": {},
+            "reasons": [
+              "pressure_not_reported"
+            ],
+            "classifier_version": "pressure-policy/1.0.0"
+          },
+          "sample_form": null,
+          "substrate": null,
+          "doping_type": null,
+          "doping_level": null
+        },
+        "structure": {
+          "crystal_structure": null,
+          "space_group": null,
+          "structure_phase": null,
+          "lattice_params": null,
+          "lattice_quantities": {}
+        }
+      },
+      "source_revision": "1706.06999v2",
+      "pdf_bytes": 2244818,
+      "pdf_sha256": "995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+      "pdf_pages": 19,
+      "source_acquisition_receipt_pin": {
+        "file": "receipt.json",
+        "bytes": 34475,
+        "sha256": "a2ceb265f34a0e4d1932dec168681dd0f71e2a59563d4fe5b16e7fac0966f9f1",
+        "archive_id": "material-source-acquisition-20261009T100456Z/material-source-022"
+      },
+      "all_page_text_pins": [
+        {
+          "page": 1,
+          "text_bytes": 2531,
+          "text_sha256": "3886f08fbb84da2a23262af2f6c85e4aa75c816f5e30637a316a38e108a5d274"
+        },
+        {
+          "page": 2,
+          "text_bytes": 1885,
+          "text_sha256": "00f4ef5b293d5103a010e7f491eaf95584c71f8483be630fde173d4d9da5fc66"
+        },
+        {
+          "page": 3,
+          "text_bytes": 2001,
+          "text_sha256": "bf7cad2272273fa699f00cf293ddc56808aaefbe83fa5b190b849e8806306838"
+        },
+        {
+          "page": 4,
+          "text_bytes": 1912,
+          "text_sha256": "1d4080591d13833ee0798739e0cc75104f6530d4e95ad0366e48ea889eb45f23"
+        },
+        {
+          "page": 5,
+          "text_bytes": 2028,
+          "text_sha256": "797626395eceee8d85d4469a362e67e181467d538e9d0407850fb42c32f04353"
+        },
+        {
+          "page": 6,
+          "text_bytes": 1116,
+          "text_sha256": "64ae08f611c6a469bc9de61fbb459829d6674e4e66deb9b48451f242e12849ea"
+        },
+        {
+          "page": 7,
+          "text_bytes": 1906,
+          "text_sha256": "3799d629f90cba016cfb885523525929ff2f46dc3ce4ba4edb31b2a8de4acf50"
+        },
+        {
+          "page": 8,
+          "text_bytes": 1616,
+          "text_sha256": "b85d00525d4ee3995257df4e69a986e851c4854fdadd5db225c9a276005d5151"
+        },
+        {
+          "page": 9,
+          "text_bytes": 1766,
+          "text_sha256": "f71f33161769a26f3e845460d04ce4f39e944b5a3e8d04983717365593be6da1"
+        },
+        {
+          "page": 10,
+          "text_bytes": 1311,
+          "text_sha256": "dc6a00836ecbee7e92ebe563643736a619988e6c66e1dd54e599ff0c28f0dd4c"
+        },
+        {
+          "page": 11,
+          "text_bytes": 1922,
+          "text_sha256": "42516d8ef735b09de6aacea9278547e9ee9756fb356fab9141028547d430002e"
+        },
+        {
+          "page": 12,
+          "text_bytes": 1460,
+          "text_sha256": "4ba4f9414f8be0cb65fe8eea785d4929e414f968fe595f7552fdee700a3fe4ab"
+        },
+        {
+          "page": 13,
+          "text_bytes": 2386,
+          "text_sha256": "67b76c18efd763d733a637e139102c0aa2c8603ebbe1f0fbbdf5b51bad87da98"
+        },
+        {
+          "page": 14,
+          "text_bytes": 1964,
+          "text_sha256": "efedb3df5862f14bd36250908f7445c80651077b2dd1f5c2c7f6e0124814d600"
+        },
+        {
+          "page": 15,
+          "text_bytes": 1462,
+          "text_sha256": "4c8c581e24d0a6e5d4217b622db4633a50bc2754fdeba8ba267f67e014ce7d77"
+        },
+        {
+          "page": 16,
+          "text_bytes": 2477,
+          "text_sha256": "258458672f35993d7b88610f5cb7a8028f8a0098e1a576164f6f44d27079efe0"
+        },
+        {
+          "page": 17,
+          "text_bytes": 2730,
+          "text_sha256": "063eae63c416074ff129689e01485574ca0f15924e70e9f86d649824cc40b0ac"
+        },
+        {
+          "page": 18,
+          "text_bytes": 2473,
+          "text_sha256": "715a8b93c93e51e19529e7f76d2f857722f3410443708fa30776cdb69494e866"
+        },
+        {
+          "page": 19,
+          "text_bytes": 1397,
+          "text_sha256": "1fe9ffddc507e3703950a5b0d09a9b62a949209088ff88ec849279f6cb2bd53a"
+        }
+      ],
+      "AI_review_scope": "Read relevant retained extracted text and visually inspected listed pages to prepare navigation/questions; no complete-pilot inspection or accepted entailment credit.",
+      "visual_navigation_page_pins": [
+        {
+          "page": 5,
+          "png_sha256": "eeb93e369bbd0067b4c9e0f5a46b61992c1602692d854ef74eedc3c302eb3f6b"
+        },
+        {
+          "page": 6,
+          "png_sha256": "3bfaa5a28b8af75e4f525b4b22655c2da35fac164758baf73be4a2fd96ca2091"
+        }
+      ],
+      "questions": [
+        "Review the frozen preprint, journal publication and chemical-formula correction together; do not propagate a formula variant across source versions without exact context.",
+        "Separate the background equilibrium Tc from the normal-state transient optical response and its temperature/energy scales; enhanced photoconductivity alone is not an accepted new Tc.",
+        "Review analyzed Bi composition and its reported uncertainty, crystal batch and polymorph context before accepting an exact composition/sample binding.",
+        "Locate direct support for the inherited resistivity method and Tc criterion; distinguish this paper's optical measurements from the cited phase diagram and earlier sample characterization."
+      ],
+      "navigation": [
+        {
+          "page": 4,
+          "char_start": 1751,
+          "char_end": 1782,
+          "page_text_sha256": "1d4080591d13833ee0798739e0cc75104f6530d4e95ad0366e48ea889eb45f23",
+          "span_text_sha256": "f2967cf12163facced32fb6ff5a141e78d81a60612e51cd3f8d493c10cc8380b",
+          "purpose": "composition-specific background transitions",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 5,
+          "char_start": 195,
+          "char_end": 214,
+          "page_text_sha256": "797626395eceee8d85d4469a362e67e181467d538e9d0407850fb42c32f04353",
+          "span_text_sha256": "37452adb12dd677547e16a68b9ce898e8a31f6c575ebf102f6cdd5d2d25a543a",
+          "purpose": "analyzed composition and sample uncertainty",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 6,
+          "char_start": 188,
+          "char_end": 209,
+          "page_text_sha256": "64ae08f611c6a469bc9de61fbb459829d6674e4e66deb9b48451f242e12849ea",
+          "span_text_sha256": "b56788eb8ba0fa246b557fafee2fd0ca894655d189e96d2645988abd34668b0e",
+          "purpose": "scope of the reported optical study",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 6,
+          "char_start": 320,
+          "char_end": 327,
+          "page_text_sha256": "64ae08f611c6a469bc9de61fbb459829d6674e4e66deb9b48451f242e12849ea",
+          "span_text_sha256": "27c75d0a0ec6f2da57ebf141b3713c7232f10d4cc3f6d9a641842cd79627a54c",
+          "purpose": "cited phase-diagram root",
+          "scope": "Navigation only; full original context and independent review required."
+        },
+        {
+          "page": 14,
+          "char_start": 712,
+          "char_end": 732,
+          "page_text_sha256": "efedb3df5862f14bd36250908f7445c80651077b2dd1f5c2c7f6e0124814d600",
+          "span_text_sha256": "927c6428d26648426d14e5fae4866bf17595dbe2058f98178e099b5f842de55a",
+          "purpose": "optical relaxation versus superconducting temperature context",
+          "scope": "Navigation only; full original context and independent review required."
+        }
+      ],
+      "accepted_Work_root_binding": null,
+      "material_Result_association": null,
+      "source_role_decision": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "resolver": null,
+      "scientific_decision": null,
+      "scientific_acceptance": false,
+      "canonical_changes": 0
+    }
+  ],
+  "complete_pilot_inspections_added": 0,
+  "pilot_inspection_boundary": {
+    "inspected": 16,
+    "pending": 184
+  },
+  "human_reviews": 0,
+  "scientific_acceptance": false,
+  "database_writes": 0
+}
