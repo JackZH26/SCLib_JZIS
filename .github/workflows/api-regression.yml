@@ -18,7 +18,7 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
@@ -33,7 +33,7 @@ jobs:
           args=()
           if [[ "$FORCE_FULL" == "true" ]]; then args+=(--force-full); fi
           python -m scripts.api_test_scope plan --base "$BASE" "${args[@]}" --output "$RUNNER_TEMP/plan.json"
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: api-selection-plan-attempt-${{ github.run_attempt }}
           path: ${{ runner.temp }}/plan.json
@@ -50,14 +50,14 @@ jobs:
       matrix:
         shard: [0, 1, 2, 3]
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: api-selection-plan-attempt-${{ github.run_attempt }}
           path: ${{ runner.temp }}/selection
@@ -82,7 +82,7 @@ jobs:
         run: api/.venv/bin/python -m scripts.api_test_scope batch --plan "$RUNNER_TEMP/selection/plan.json" --index "$((SHARD * 2 + 0))" --backend docker --output "$RUNNER_TEMP/batch-0"
       - name: Upload batch 0 outcomes and timings immediately
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: api-batch-${{ matrix.shard }}-0-attempt-${{ github.run_attempt }}
           path: ${{ runner.temp }}/batch-0/
@@ -94,7 +94,7 @@ jobs:
         run: api/.venv/bin/python -m scripts.api_test_scope batch --plan "$RUNNER_TEMP/selection/plan.json" --index "$((SHARD * 2 + 1))" --backend docker --output "$RUNNER_TEMP/batch-1"
       - name: Upload batch 1 outcomes and timings immediately
         if: ${{ !cancelled() }}
-        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: api-batch-${{ matrix.shard }}-1-attempt-${{ github.run_attempt }}
           path: ${{ runner.temp }}/batch-1/
@@ -107,18 +107,18 @@ jobs:
     runs-on: ubuntu-latest
     timeout-minutes: 5
     steps:
-      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           fetch-depth: 0
           persist-credentials: false
       - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
         with:
           python-version: "3.11"
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           name: api-selection-plan-attempt-${{ github.run_attempt }}
           path: ${{ runner.temp }}/selection
-      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+      - uses: actions/download-artifact@9000827ccba6bdab643e8b6fd33ac0654aef8333 # v8.0.2
         with:
           pattern: api-batch-*-attempt-${{ github.run_attempt }}
           path: ${{ runner.temp }}/batches
@@ -128,7 +128,7 @@ jobs:
         run: |
           test "$MODULE_RESULT" = success
           python -m scripts.api_test_scope aggregate --plan "$RUNNER_TEMP/selection/plan.json" --directory "$RUNNER_TEMP/batches" --output "$RUNNER_TEMP/api-summary.json"
-      - uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
         with:
           name: api-validation-summary-attempt-${{ github.run_attempt }}
           path: ${{ runner.temp }}/api-summary.json
