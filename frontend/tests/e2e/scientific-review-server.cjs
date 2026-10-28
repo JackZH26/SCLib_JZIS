@@ -16,7 +16,7 @@ for (const entry of ["app", "components", "lib", "public", "package.json", "tsco
   cpSync(path.join(original, entry), path.join(isolated, entry), { recursive: true });
 }
 symlinkSync(path.join(original, "node_modules"), path.join(isolated, "node_modules"), "dir");
-const child = spawn(process.execPath, [path.join(original, "node_modules/next/dist/bin/next"), "dev",
+const child = spawn(process.execPath, ["--require", path.join(__dirname, "scientific-review-offline-fetch.cjs"), path.join(original, "node_modules/next/dist/bin/next"), "dev",
   "--hostname", "127.0.0.1", "--port", port], {
   cwd: isolated,
   stdio: "inherit",

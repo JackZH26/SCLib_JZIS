@@ -48,6 +48,7 @@ dependencies = [
 dev = [
     "pytest>=8.3",
     "pytest-asyncio>=0.24",
+    "jsonschema>=4.26",  # shared NER contract fixtures in disposable database checks
     "httpx>=0.28",
     "ruff>=0.7",
 ]

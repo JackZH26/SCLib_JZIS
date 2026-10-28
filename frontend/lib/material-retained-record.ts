@@ -42,6 +42,14 @@ export function retainedTcCriteria(record: Row): RetainedTextField[] {
     ["tc_criterion", "Reported criterion"], ["criterion", "Criterion alias"]]);
 }
 
+/** Source-local labels stay lexical: neither a form nor a shared formula identifies a sample. */
+export function retainedSampleContext(record: Row): RetainedTextField[] {
+  return fields(record, [["sample_label", "Sample label"], ["sample_form", "Sample form"],
+    ["composition_basis", "Composition basis"], ["nominal_formula", "Nominal composition"],
+    ["measured_formula", "Measured composition"], ["state_label", "State label"],
+    ["substrate", "Substrate"], ["preparation_raw", "Preparation"]]);
+}
+
 /** `hc2_tesla` supplies the API field unit, never a measurement/extrapolation role. */
 export function retainedHc2(record: Row): RetainedHc2Reading | null {
   const context = fields(record, [["hc2_conditions", "Hc2 conditions"], ["hc2_direction", "Hc2 direction"],

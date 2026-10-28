@@ -1,0 +1,44 @@
+{
+  "schema": "materials-evidence-regression-fixture/1",
+  "work_id": "arxiv:0711.2257",
+  "source_packet_sha256": "84160380a9c53e30f3649a48f8c0e293414209cb5dd8b711ce7423ea0365c221",
+  "note": "One actual quarantined Luna result, with evidence omitted for transport tests. Known scientific and literal defects are retained. Not a Gold or ML record.",
+  "native_result": {
+    "cited_source_raw": null,
+    "component_raw": "$^{16}$O",
+    "definition": {
+      "criterion": "unspecified",
+      "criterion_raw": "the temperatures where the linearly extrapolated $M_{FC}(T)$'s intersect the zero line",
+      "parameters": []
+    },
+    "dependencies": [],
+    "evidence": [],
+    "id": "item:I1",
+    "interpretation_raw": null,
+    "origin": "observed",
+    "protocol_id": "protocol:1",
+    "qualifiers": [],
+    "quantity": {
+      "approximate": false,
+      "lower": null,
+      "raw": "91.19(5)",
+      "relation": "exact",
+      "status": "reported",
+      "uncertainty": {
+        "kind": "reported_unspecified",
+        "level": null,
+        "minus": 0.05,
+        "plus": 0.05,
+        "raw": "(5)"
+      },
+      "unit": "K",
+      "upper": null,
+      "value": 91.19
+    },
+    "quantity_kind": "tc",
+    "quantity_name_raw": "$^{16}T_c",
+    "sample_id": "sample:1",
+    "source_role": "primary",
+    "state_id": "state:1:1"
+  }
+}

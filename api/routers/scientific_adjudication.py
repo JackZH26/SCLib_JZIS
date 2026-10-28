@@ -161,3 +161,46 @@ async def receipt(request: Request, request_key: str):
         if value is None:
             raise _failure(404)
     return _response({**value, "committed": True})
+
+
+# V2 has an explicit route/version boundary. Old property clients and their
+# historical request bytes retain their existing v1 behavior.
+@router.post("/claims/context")
+async def claim_context(request: Request):
+    from services import materials_adjudication as claims
+    async with _session(request) as (db, actor):
+        await service._reader(db, actor)
+        body = await _body(request)
+        contract.require(type(body) is dict and set(body) == {"targets"}, "closed_adjudication_context_required")
+        value = await claims.action_context(db, actor_user_id=actor, targets=body["targets"])
+    return _response(value)
+
+
+@router.post("/claims/preview")
+async def claim_preview(request: Request):
+    from services import materials_adjudication as claims
+    async with _session(request, write=True) as (db, actor):
+        await service._reviewer(db, actor)
+        value = await claims.adjudicate(db, actor_user_id=actor, request=await _body(request), dry_run=True)
+    return _response(value)
+
+
+@router.post("/claims/commit")
+async def claim_commit(request: Request):
+    from services import materials_adjudication as claims
+    async with _session(request, write=True) as (db, actor):
+        await service._reviewer(db, actor)
+        body = await _body(request, max_bytes=contract.MAX_COMMIT_BYTES)
+        contract.require(type(body) is dict and set(body) == {"request", "expected_preview_sha256"}, "closed_adjudication_commit_required")
+        value = await claims.adjudicate(db, actor_user_id=actor, request=body["request"],
+            expected_preview_sha256=body["expected_preview_sha256"], dry_run=False)
+    return _response({**value, "committed": True})
+
+
+@router.get("/claims/requests/{request_key}")
+async def claim_receipt(request: Request, request_key: str):
+    from services import materials_adjudication as claims
+    async with _session(request) as (db, actor):
+        value = await claims.inspect_request(db, actor_user_id=actor, request_key=request_key)
+        if value is None: raise _failure(404)
+    return _response({**value, "committed": True})

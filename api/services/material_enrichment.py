@@ -24,7 +24,7 @@ from services.result_semantics import classify_result
 from services.scientific_values import FIELD_UNITS, parse_scientific_value, record_quantity
 
 VERSION = "materials-enrichment/1.0.0"
-EXTRACTOR_VERSION = "materials-literal-extractor/1.2.0"
+EXTRACTOR_VERSION = "materials-literal-extractor/1.2.1"
 MAX_MATERIALS = 1000
 MAX_SOURCES = 10000
 MAX_SOURCE_CHARS = 200000
@@ -75,7 +75,10 @@ _NUMERIC_LABELS = {
     "omega_log_source_value": r"(?:omega_log|ωlog|ω_log|logarithmic(?: average)? phonon frequency)",
     "mu_star": r"(?:mu_star|μ\*|Coulomb pseudopotential)",
     "hc2_tesla": r"(?:Hc2|H_c2|upper critical field)",
-    "lambda_london_nm": r"(?:London penetration depth|penetration depth)",
+    # A length dimension or the generic name does not identify London depth.
+    # Josephson, effective and unspecified depths require their own source
+    # definition; never route them into a London feature through this fallback.
+    "lambda_london_nm": r"\bLondon penetration depth\b",
     "xi_gl_nm": r"(?:coherence length)",
 }
 # Routes are suggestions. An external chemical formula match is not a state match.

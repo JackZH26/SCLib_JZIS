@@ -21,6 +21,8 @@ from sqlalchemy.exc import SQLAlchemyError
 from services.research_release_spec import TABLE_FIELDS
 
 VERSION = "scientific-result-subject/1.0.0"
+VERSION_V2 = "scientific-result-subject/2.0.0"
+VERSION_V3 = "scientific-result-subject/3.0.0"
 MAX_SUBJECT_BYTES = 8 * 1024 * 1024
 MAX_ROWS = 1000
 MAX_ARTIFACTS = 200
@@ -65,7 +67,8 @@ def identifier(value):
     return result
 
 
-def _json(text):
+def _json(text, *, version=VERSION):
+    require(version in {VERSION, VERSION_V2, VERSION_V3}, "scientific_subject_version_required")
     require(type(text) is str, "scientific_subject_byte_limit")
     try:
         size = len(text.encode("utf-8"))
@@ -107,7 +110,7 @@ def _json(text):
         type(result) is dict
         and set(result)
         == {"version", "target", "rows", "artifacts", "support_artifact_ids", "native_import"}
-        and result.get("version") == VERSION
+        and result.get("version") == version
         and type(result.get("target")) is dict
         and type(result.get("rows")) is list
         and 1 <= len(result["rows"]) <= MAX_ROWS
@@ -116,24 +119,34 @@ def _json(text):
         "scientific_subject_shape",
     )
     target = result["target"]
+    target_fields = (TARGET_FIELDS if version == VERSION else
+                     (TARGET_FIELDS - {"property_id"}) | {"result_kind", "result_id"})
+    target_key = "property_id" if version == VERSION else "result_id"
+    kind = "property" if version == VERSION else target.get("result_kind")
+    require(type(kind) is str and kind in {"claim", "property"}, "scientific_subject_result_kind")
+    target_table = "material_claims" if kind == "claim" else "event_properties"
     require(
-        set(target) == TARGET_FIELDS
+        set(target) == target_fields
         and type(target["event_revision"]) is int
         and target["event_revision"] >= 1
         and type(target["material_id"]) is str
         and 1 <= len(target["material_id"]) <= 100,
         "scientific_subject_target_shape",
     )
-    for key in TARGET_FIELDS - {"event_revision", "material_id"}:
-        if target[key] is not None or key in {"property_id", "event_id", "state_id"}:
+    for key in target_fields - {"event_revision", "material_id", "result_kind"}:
+        if target[key] is not None or key in {target_key, "event_id", "state_id"}:
             identifier(target[key])
+    allowed_tables = set(TABLE_FIELDS)
+    if version == VERSION_V3:
+        from models.materials_context_v1 import TABLE_FIELDS as CONTEXT_FIELDS
+        allowed_tables.update(CONTEXT_FIELDS)
     keys, artifact_rows, records = [], {}, {}
     for row in result["rows"]:
         require(
             type(row) is dict
             and set(row) == {"table", "row_id", "snapshot"}
             and type(row["table"]) is str
-            and row["table"] in TABLE_FIELDS
+            and row["table"] in allowed_tables
             and type(row["row_id"]) is str
             and 1 <= len(row["row_id"]) <= 200
             and type(row["snapshot"]) is dict,
@@ -144,14 +157,14 @@ def _json(text):
         if row["table"] == "evidence_artifacts":
             artifact_rows[row["row_id"]] = row["snapshot"]
     require(
-        keys == sorted(set(keys)) and ("event_properties", target["property_id"]) in keys,
+        keys == sorted(set(keys)) and (target_table, target[target_key]) in keys,
         "scientific_subject_row_inventory",
     )
-    prop = records[("event_properties", target["property_id"])]
+    prop = records[(target_table, target[target_key])]
     event = records.get(("research_events", target["event_id"]))
     state = records.get(("material_states", target["state_id"]))
     require(
-        prop.get("id") == target["property_id"]
+        prop.get("id") == target[target_key]
         and prop.get("event_id") == target["event_id"]
         and event is not None
         and state is not None
@@ -164,6 +177,11 @@ def _json(text):
         and state.get("sample_id") == target["sample_id"],
         "scientific_subject_target_bindings",
     )
+    if kind == "claim":
+        require(prop.get("material_id") == target["material_id"]
+                and prop.get("property_type") in {"tc", "non_transition"}
+                and target["native_outcome_id"] is None and result["native_import"] is None,
+                "scientific_subject_claim_bindings")
     artifact_ids = []
     for artifact in result["artifacts"]:
         require(

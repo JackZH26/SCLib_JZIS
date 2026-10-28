@@ -50,7 +50,7 @@ def test_each_source_field_preserves_printed_value_unit_uncertainty_role_and_spa
     assert data["raw_uncertainty"] == uncertainty
     assert data["role"] == candidate["subject"]["field_role"] == role
     assert data["normalization"] == "none"
-    assert candidate["extractor_version"] == "materials-literal-extractor/1.2.0"
+    assert candidate["extractor_version"] == "materials-literal-extractor/1.2.1"
     for span in [candidate["source"]["span"], data["value_span"], data["cue_span"], data["unit_span"]]:
         if span is not None:
             retained = text[span["char_start"]:span["char_end"]]
@@ -122,6 +122,29 @@ def test_london_lambda_is_not_electron_phonon_coupling():
     mat = material()
     rows = enrich.extract_source_candidates(mat, mat["records"][0], source("NbN has London penetration depth λ = 316 nm."))
     assert not any(c["field"] == "lambda_eph" for c in rows)
+
+
+@pytest.mark.parametrize('label', ['Josephson penetration depth', 'penetration depth',
+                                 'effective penetration depth', 'magnetic penetration depth'])
+def test_unspecified_and_other_depths_never_become_london_features(label):
+    mat = material()
+    src = source('NbN has ' + label + ' 100 nm.')
+    original = deepcopy(src)
+    rows = enrich.extract_source_candidates(mat, mat['records'][0], src)
+    assert not any(c['field'] == 'lambda_london_nm' for c in rows)
+    assert src == original
+
+
+def test_explicit_london_depth_keeps_its_own_number_when_josephson_depth_is_nearby():
+    mat = material()
+    text = 'NbN has Josephson penetration depth 500 nm and London penetration depth 100 nm.'
+    src = source(text)
+    rows = enrich.extract_source_candidates(mat, mat['records'][0], src)
+    london, = [c for c in rows if c['field'] == 'lambda_london_nm']
+    assert london['quantity']['value'] == 100 and london['quantity']['unit'] == 'nm'
+    span = london['source']['span']
+    assert text[span['char_start']:span['char_end']] == 'London penetration depth 100 nm'
+    assert all(london[k] is False for k in enrich.AUTHORITY)
 
 
 def test_source_roles_qualifiers_and_distinct_fit_windows_remain_visible():

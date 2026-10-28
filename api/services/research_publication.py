@@ -230,8 +230,11 @@ async def _current_catalogue(db, release):
     # additional exact-review read. This is still a required admission gate in
     # the same stable snapshot, not a check after publication has been served.
     try:
+        from services.materials_review_effects import gate_exact_claim_reviews
         await gate_exact_property_reviews(db, [row["row_id"] for row in release["manifest"]["rows"]
                                               if row["table"] == "event_properties"])
+        await gate_exact_claim_reviews(db, [row["row_id"] for row in release["manifest"]["rows"]
+                                           if row["table"] == "material_claims"])
     except ScientificResultReviewHeld:
         raise PublicationUnavailable("Exact scientific result has a review hold") from None
 

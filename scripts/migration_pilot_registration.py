@@ -6,6 +6,7 @@ approval. Importing this helper does not import clients or open connections.
 
 from __future__ import annotations
 
+from migration_revision_scope import pre_materials_context_tables
 from test_safety import validate_test_environment, verify_postgres_identity
 from migration_discovery_designs import TABLES as DISCOVERY_DESIGN_TABLES
 from migration_discovery_condition_batches import TABLES as DISCOVERY_CONDITION_BATCH_TABLES
@@ -26,7 +27,7 @@ def snapshot(connection, *, old_only=False):
     from sqlalchemy import inspect, text
 
     connection.execute(text("SET LOCAL TIME ZONE 'UTC'"))
-    return {
+    result = {
         name: connection.execute(
             text(
                 f'SELECT to_jsonb(t) FROM public."{name}" t ORDER BY to_jsonb(t)::text'
@@ -34,10 +35,15 @@ def snapshot(connection, *, old_only=False):
         )
         .scalars()
         .all()
-        for name in inspect(connection).get_table_names(schema="public")
+        for name in (pre_materials_context_tables(connection, inspect(connection).get_table_names(schema="public")) if old_only else inspect(connection).get_table_names(schema="public"))
         if not old_only
         or name not in {"alembic_version", *TABLES, "ml_pilot_review_attestations", "scientific_result_passage_links", *LEGACY_CORPUS_TABLES, *SOURCE_PROPERTY_TABLES, *DISCOVERY_DESIGN_TABLES, *DISCOVERY_CONDITION_BATCH_TABLES, *DISCOVERY_FEEDBACK_TABLES, *CALCULATION_TABLES}
     }
+
+    if old_only:
+        from migration_revision_scope import pre_claim_review_rows
+        return {name: pre_claim_review_rows(name, rows) for name, rows in result.items()}
+    return result
 
 
 def objects(connection):

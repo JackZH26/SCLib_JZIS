@@ -20,6 +20,7 @@ from migration_discovery_designs import function_signatures as discovery_design_
 from migration_discovery_condition_batches import function_signatures as condition_batch_function_signatures
 from migration_discovery_feedback import function_signatures as feedback_function_signatures
 from migration_discovery_calculations import function_signatures as calculation_function_signatures
+from migration_revision_scope import pre_materials_context_tables
 from test_safety import validate_test_environment, verify_postgres_identity
 
 TABLES = (*INTAKE_V2_TABLES, *FIELD_CASE_TABLES, *FIELD_REVIEW_TABLES)
@@ -57,7 +58,7 @@ def snapshot(connection):
     return {
         name: connection.execute(text(
             f'SELECT to_jsonb(t) FROM public."{name}" t ORDER BY to_jsonb(t)::text')).scalars().all()
-        for name in inspect(connection).get_table_names(schema="public")
+        for name in pre_materials_context_tables(connection, inspect(connection).get_table_names(schema="public"))
         if name not in {"alembic_version", *TABLES, *DISCOVERY_DESIGN_TABLES, *DISCOVERY_CONDITION_BATCH_TABLES, *DISCOVERY_FEEDBACK_TABLES, *CALCULATION_TABLES}
     }
 
@@ -103,15 +104,26 @@ def public_objects(connection):
 
 
 def empty_roundtrip(capability, engine, config):
+    # Exercise this historical boundary at its actual revision. The outer
+    # comparison restores the current head and checks every public row/function/
+    # trigger, without excluding later definitions or pretending they predate 83.
+    from migration_revision_scope import at_revision
+
+    with at_revision(capability, engine, config, "0091_material_table_fields"):
+        _roundtrip_at_0091(capability, engine, config)
+
+
+def _roundtrip_at_0091(capability, engine, config):
     validate_test_environment()
     from alembic import command
+    from migration_revision_scope import assert_revision
     from services.schema_lifecycle import SchemaLifecycleError, check_connection_schema
     from sqlalchemy import inspect, text
 
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
         connection.rollback()  # Admission requires a fresh transaction after identity reads.
-        assert check_connection_schema(connection)["status"] == "compatible"
+        assert_revision(connection, "0091_material_table_fields")
         assert_empty(connection)
         before, definitions = snapshot(connection), objects(connection)
         all_definitions = public_objects(connection)
@@ -142,11 +154,11 @@ def empty_roundtrip(capability, engine, config):
         functions, triggers = objects(connection)
         assert functions == (None,) * len(definitions[0]) and not triggers
     validate_test_environment()
-    command.upgrade(config, "head")
+    command.upgrade(config, "0091_material_table_fields")
     with engine.connect() as connection:
         verify_postgres_identity(connection, capability)
         connection.rollback()
-        assert check_connection_schema(connection)["status"] == "compatible"
+        assert_revision(connection, "0091_material_table_fields")
         assert_empty(connection)
         assert snapshot(connection) == before
         assert objects(connection) == definitions

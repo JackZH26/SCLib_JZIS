@@ -12,6 +12,11 @@ Usage::
     docker compose run --rm ingestion python -m ingestion.rener \\
       arxiv:2604.17712 arxiv:2603.22662 ...
 
+APS Abstract/Facts chunks are not original full text and are rejected.
+Empty legacy responses cannot distinguish failure from a real empty result
+and therefore never replace existing extraction data. New full-corpus work
+uses ``ingestion.materials_ner`` and its private review queue.
+
 At the end the script invokes ``aggregate_from_papers`` so the
 materials table picks up the fresh ``materials_extracted`` values
 in the same run. Safe to re-run; idempotent per paper.
@@ -86,11 +91,16 @@ async def _rebuild_parsed(session, paper_id: str) -> ParsedPaper | None:
 
 
 async def rener_one(session, paper_id: str) -> dict[str, Any]:
+    if paper_id.startswith("aps:"):
+        return {"paper_id": paper_id, "ok": False, "reason": "aps_original_source_required"}
     parsed = await _rebuild_parsed(session, paper_id)
     if parsed is None:
         return {"paper_id": paper_id, "ok": False, "reason": "missing"}
     # NER is a blocking Gemini call; keep it off the event loop.
     materials = await asyncio.to_thread(extract_materials, parsed)
+    if not materials:
+        return {"paper_id": paper_id, "ok": False,
+                "reason": "empty_or_failed_extraction_preserved_previous"}
     await session.execute(
         update(papers_table)
         .where(papers_table.c.id == paper_id)
@@ -122,6 +132,7 @@ async def main_async(paper_ids: list[str], run_aggregator: bool) -> int:
             try:
                 r = await rener_one(db, pid)
             except Exception as e:  # noqa: BLE001
+                await db.rollback()
                 log.exception("rener failed for %s", pid)
                 r = {"paper_id": pid, "ok": False, "reason": str(e)}
             results.append(r)

@@ -127,6 +127,17 @@ async def read_rows(db, table, identifiers, *, column=None, byte_budget, limit=M
     body = ("(" + "||".join("jsonb_build_object(" + ",".join(
         "'" + key + "',t.\"" + key + "\"" for key in fields[start:start + 40]) + ")"
         for start in range(0, len(fields), 40)) + ")" if fields else "to_jsonb(t)")
+    if table in {"scientific_result_subjects", "scientific_result_decisions"}:
+        # The frozen v1 audit wire predates 0095. Its genuine property rows
+        # retain their exact original projection and record hash. A claim row
+        # retains claim_id and therefore fails the closed v1 verifier; it is
+        # never silently converted to a property or omitted from a request.
+        # JSON access also works in actual pre-0095 migration rehearsals,
+        # whose table has no claim_id column at all.
+        legacy = "COALESCE(to_jsonb(t)->'claim_id','null'::jsonb)='null'::jsonb AND t.property_id IS NOT NULL"
+        if table == "scientific_result_subjects":
+            legacy += " AND t.subject_version='scientific-result-subject/1.0.0'"
+        body = f"(CASE WHEN {legacy} THEN to_jsonb(t)-'claim_id' ELSE to_jsonb(t) END)"
     where = f't."{column}"::text IN :ids'
     params = {"ids": keys}
     sizes_query = sa.text(f'SELECT octet_length(({body})::text) FROM public."{table}" t WHERE {where} LIMIT {limit + 1}')

@@ -1,0 +1,20 @@
+# Optional Materials release overlay, applied after docker-compose.prod.yml.
+# Enable only after the frozen arXiv first pass and final data verification.
+# Setting SCLIB_MATERIALS_VNEXT_ENABLED=false restores the legacy public view
+# while retaining the migrated database and the current application images.
+services:
+  frontend:
+    environment:
+      MATERIALS_VNEXT_ENABLED: ${SCLIB_MATERIALS_VNEXT_ENABLED:-false}
+
+  api:
+    environment:
+      MATERIALS_VNEXT_ENABLED: ${SCLIB_MATERIALS_VNEXT_ENABLED:-false}
+      MATERIALS_DATASET_DOWNLOAD_ROOT: /data/sclib/materials-vnext/downloads
+    volumes:
+      - type: bind
+        source: ${SCLIB_MATERIALS_DATASET_DIR:?set the verified Materials download snapshot directory}
+        target: /data/sclib/materials-vnext/downloads
+        read_only: true
+        bind:
+          create_host_path: false

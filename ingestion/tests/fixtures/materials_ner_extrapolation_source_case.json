@@ -1,0 +1,182 @@
+{
+  "author": {
+    "identity": "Codex bounded source semantic review",
+    "kind": "assistant",
+    "thread_id": "01a159e0-3847-7a80-a4f5-91961c1676db"
+  },
+  "basis": "By smoothly extrapolating the temperature dependence of $\\lambda^{-2}$ to $T=0$",
+  "context": {
+    "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+    "end_char": 14434,
+    "quote": "By smoothly extrapolating the temperature dependence of $\\lambda^{-2}$ to $T=0$, we estimate the $T=0$ limit as $\\lambda(0)^{-2}\\sim 7$ $\\mu$m$^{-2}$, or equivalently,  $\\lambda(0) \\sim 378$ nm.  Our estimation of the London penetration depth $\\lambda(0)$ is averaged over all possible orientations.  As noted above, however, LaFeAsO$_{1-x}$F$_{x}$ should be considered a highly anisotropic system, hence we expect an anisotropic penetration depth, $\\lambda_{ab} \\ll \\lambda_{c}$.  Theoretically, the in-plane penetration depth $\\lambda_{ab}$ and the powder averaged penetration depth $\\lambda$ satisfy a simple relation,  $\\lambda_{ab} \\sim \\lambda / 1.23$ \\cite{Braford}, hence we arrive at $\\lambda_{ab}(0) \\sim 308$~nm.  This is comparable to $\\lambda_{ab}(0)=250$~nm observed for the high $T_c$ cuprate La$_{1.85}$Sr$_{0.15}$CuO$_{4}$ with comparable $T_{c}=38$~K \\cite{Sonier}.\n\n",
+    "start_char": 13549
+  },
+  "expected_inverse_square_nm": 7e-06,
+  "independent_review": false,
+  "quantities": [
+    {
+      "evidence": [
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 14434,
+          "field": "/quantity_kind",
+          "quote": "By smoothly extrapolating the temperature dependence of $\\lambda^{-2}$ to $T=0$, we estimate the $T=0$ limit as $\\lambda(0)^{-2}\\sim 7$ $\\mu$m$^{-2}$, or equivalently,  $\\lambda(0) \\sim 378$ nm.  Our estimation of the London penetration depth $\\lambda(0)$ is averaged over all possible orientations.  As noted above, however, LaFeAsO$_{1-x}$F$_{x}$ should be considered a highly anisotropic system, hence we expect an anisotropic penetration depth, $\\lambda_{ab} \\ll \\lambda_{c}$.  Theoretically, the in-plane penetration depth $\\lambda_{ab}$ and the powder averaged penetration depth $\\lambda$ satisfy a simple relation,  $\\lambda_{ab} \\sim \\lambda / 1.23$ \\cite{Braford}, hence we arrive at $\\lambda_{ab}(0) \\sim 308$~nm.  This is comparable to $\\lambda_{ab}(0)=250$~nm observed for the high $T_c$ cuprate La$_{1.85}$Sr$_{0.15}$CuO$_{4}$ with comparable $T_{c}=38$~K \\cite{Sonier}.\n\n",
+          "start_char": 13549
+        },
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 13743,
+          "field": "/quantity",
+          "quote": "By smoothly extrapolating the temperature dependence of $\\lambda^{-2}$ to $T=0$, we estimate the $T=0$ limit as $\\lambda(0)^{-2}\\sim 7$ $\\mu$m$^{-2}$, or equivalently,  $\\lambda(0) \\sim 378$ nm.",
+          "start_char": 13549
+        },
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 13677,
+          "field": "/quantity_name_raw",
+          "quote": "\\lambda(0)^{-2}",
+          "start_char": 13662
+        },
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 13683,
+          "field": "/quantity/raw",
+          "quote": "\\sim 7",
+          "start_char": 13677
+        },
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 13698,
+          "field": "/quantity/unit",
+          "quote": "$\\mu$m$^{-2}$",
+          "start_char": 13685
+        }
+      ],
+      "kind": "inverse_square_penetration_depth",
+      "quantity": {
+        "approximate": true,
+        "lower": null,
+        "raw": "\\sim 7",
+        "relation": "exact",
+        "status": "reported",
+        "uncertainty": null,
+        "unit": "$\\mu$m$^{-2}$",
+        "upper": null,
+        "value": 7.0
+      },
+      "quantity_name_raw": "\\lambda(0)^{-2}",
+      "result_id": "r1"
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 14434,
+          "field": "/quantity_kind",
+          "quote": "By smoothly extrapolating the temperature dependence of $\\lambda^{-2}$ to $T=0$, we estimate the $T=0$ limit as $\\lambda(0)^{-2}\\sim 7$ $\\mu$m$^{-2}$, or equivalently,  $\\lambda(0) \\sim 378$ nm.  Our estimation of the London penetration depth $\\lambda(0)$ is averaged over all possible orientations.  As noted above, however, LaFeAsO$_{1-x}$F$_{x}$ should be considered a highly anisotropic system, hence we expect an anisotropic penetration depth, $\\lambda_{ab} \\ll \\lambda_{c}$.  Theoretically, the in-plane penetration depth $\\lambda_{ab}$ and the powder averaged penetration depth $\\lambda$ satisfy a simple relation,  $\\lambda_{ab} \\sim \\lambda / 1.23$ \\cite{Braford}, hence we arrive at $\\lambda_{ab}(0) \\sim 308$~nm.  This is comparable to $\\lambda_{ab}(0)=250$~nm observed for the high $T_c$ cuprate La$_{1.85}$Sr$_{0.15}$CuO$_{4}$ with comparable $T_{c}=38$~K \\cite{Sonier}.\n\n",
+          "start_char": 13549
+        },
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 13743,
+          "field": "/quantity",
+          "quote": "By smoothly extrapolating the temperature dependence of $\\lambda^{-2}$ to $T=0$, we estimate the $T=0$ limit as $\\lambda(0)^{-2}\\sim 7$ $\\mu$m$^{-2}$, or equivalently,  $\\lambda(0) \\sim 378$ nm.",
+          "start_char": 13549
+        },
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 13804,
+          "field": "/quantity_name_raw",
+          "quote": "$\\lambda(0)$",
+          "start_char": 13792
+        },
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 13738,
+          "field": "/quantity/raw",
+          "quote": "\\sim 378",
+          "start_char": 13730
+        },
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 13742,
+          "field": "/quantity/unit",
+          "quote": "nm",
+          "start_char": 13740
+        }
+      ],
+      "kind": "penetration_depth",
+      "quantity": {
+        "approximate": true,
+        "lower": null,
+        "raw": "\\sim 378",
+        "relation": "exact",
+        "status": "reported",
+        "uncertainty": null,
+        "unit": "nm",
+        "upper": null,
+        "value": 378.0
+      },
+      "quantity_name_raw": "$\\lambda(0)$",
+      "result_id": "r2"
+    },
+    {
+      "evidence": [
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 14434,
+          "field": "/quantity_kind",
+          "quote": "By smoothly extrapolating the temperature dependence of $\\lambda^{-2}$ to $T=0$, we estimate the $T=0$ limit as $\\lambda(0)^{-2}\\sim 7$ $\\mu$m$^{-2}$, or equivalently,  $\\lambda(0) \\sim 378$ nm.  Our estimation of the London penetration depth $\\lambda(0)$ is averaged over all possible orientations.  As noted above, however, LaFeAsO$_{1-x}$F$_{x}$ should be considered a highly anisotropic system, hence we expect an anisotropic penetration depth, $\\lambda_{ab} \\ll \\lambda_{c}$.  Theoretically, the in-plane penetration depth $\\lambda_{ab}$ and the powder averaged penetration depth $\\lambda$ satisfy a simple relation,  $\\lambda_{ab} \\sim \\lambda / 1.23$ \\cite{Braford}, hence we arrive at $\\lambda_{ab}(0) \\sim 308$~nm.  This is comparable to $\\lambda_{ab}(0)=250$~nm observed for the high $T_c$ cuprate La$_{1.85}$Sr$_{0.15}$CuO$_{4}$ with comparable $T_{c}=38$~K \\cite{Sonier}.\n\n",
+          "start_char": 13549
+        },
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 14272,
+          "field": "/quantity",
+          "quote": "Theoretically, the in-plane penetration depth $\\lambda_{ab}$ and the powder averaged penetration depth $\\lambda$ satisfy a simple relation,  $\\lambda_{ab} \\sim \\lambda / 1.23$ \\cite{Braford}, hence we arrive at $\\lambda_{ab}(0) \\sim 308$~nm.",
+          "start_char": 14031
+        },
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 14258,
+          "field": "/quantity_name_raw",
+          "quote": "\\lambda_{ab}(0)",
+          "start_char": 14243
+        },
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 14267,
+          "field": "/quantity/raw",
+          "quote": "\\sim 308",
+          "start_char": 14259
+        },
+        {
+          "block_id": "doc:4dd7ec88ed4042ba9d88:b00000",
+          "end_char": 14271,
+          "field": "/quantity/unit",
+          "quote": "nm",
+          "start_char": 14269
+        }
+      ],
+      "kind": "penetration_depth",
+      "quantity": {
+        "approximate": true,
+        "lower": null,
+        "raw": "\\sim 308",
+        "relation": "exact",
+        "status": "reported",
+        "uncertainty": null,
+        "unit": "nm",
+        "upper": null,
+        "value": 308.0
+      },
+      "quantity_name_raw": "\\lambda_{ab}(0)",
+      "result_id": "r3"
+    }
+  ],
+  "schema": "materials-extrapolation-source-case/1",
+  "source_block_sha256": "b3896ab0d31f60b3fa962e9f5059bcd6e00fb747817692f05de7f8194573b248",
+  "source_url": "https://arxiv.org/html/0804.4026v3",
+  "work_id": "arxiv:0804.4026",
+  "fixture_note": "Complete original span covering retained numeric and property bindings, including trailing source whitespace. The full original block is verified by the source revision rehearsal."
+}

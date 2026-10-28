@@ -1,0 +1,537 @@
+{
+  "schema": "materials-quantity-adoption-source-cases/1",
+  "work_id": "arxiv:1402.7054",
+  "source_scope": {
+    "path": "QUANTITY_ADOPTION_SCOPE_V1.json",
+    "sha256": "7c530fce0edde68f61dcd7b8b98366dd625b6299a2d91aca86dd58be92aede24"
+  },
+  "evaluation_role": "assisted development source regression; not independent Gold",
+  "scientific_acceptance": false,
+  "cases": [
+    {
+      "kind": "tc_pressure_slope",
+      "original_record_id": "A8",
+      "window": "pages-9-10",
+      "quantity": {
+        "status": "reported",
+        "raw": "≈ −1.1(1) K GPa−1",
+        "relation": "exact",
+        "value": -1.1,
+        "lower": null,
+        "upper": null,
+        "unit": "K GPa−1",
+        "approximate": true,
+        "uncertainty": {
+          "kind": "reported_unspecified",
+          "minus": 0.1,
+          "plus": 0.1,
+          "level": null,
+          "raw": "≈ −1.1(1) K GPa−1"
+        }
+      },
+      "source": {
+        "kind": "value",
+        "start_char": 4391,
+        "end_char": 4408,
+        "quote": "≈ −1.1(1) K GPa−1",
+        "quote_sha256": "fdb0b89df8fc6b717b1aefa811419c64b841e0a6577d8eef5d6bc345d7a9db39",
+        "source_unit": "K GPa-1",
+        "syntax_shape": {
+          "relation": "exact",
+          "value": -1.1,
+          "lower": null,
+          "upper": null,
+          "approximate": true,
+          "unit": "K GPa-1",
+          "uncertainty": {
+            "kind": "reported_unspecified",
+            "minus": 0.1,
+            "plus": 0.1,
+            "level": null,
+            "raw": "≈ −1.1(1) K GPa−1"
+          }
+        },
+        "quantity": {
+          "status": "reported",
+          "raw": "≈ −1.1(1) K GPa−1",
+          "relation": "exact",
+          "value": -1.1,
+          "lower": null,
+          "upper": null,
+          "unit": "K GPa-1",
+          "approximate": true,
+          "uncertainty": {
+            "kind": "reported_unspecified",
+            "minus": 0.1,
+            "plus": 0.1,
+            "level": null,
+            "raw": "≈ −1.1(1) K GPa−1"
+          }
+        },
+        "evidence": {
+          "raw": {
+            "start_char": 4391,
+            "end_char": 4408,
+            "quote": "≈ −1.1(1) K GPa−1",
+            "quote_sha256": "fdb0b89df8fc6b717b1aefa811419c64b841e0a6577d8eef5d6bc345d7a9db39"
+          },
+          "unit": {
+            "start_char": 4401,
+            "end_char": 4408,
+            "quote": "K GPa−1",
+            "quote_sha256": "26972f8ff608a7370103b00fb1a2ac0b25860ad856e0fad07c4b8efe9711a45b"
+          }
+        },
+        "issues": [],
+        "scientific_acceptance": false,
+        "block_id": "doc:07b8d707295a73bd45bf:supplement:b00003",
+        "source_span_ids": [
+          "S53"
+        ],
+        "unit_raw": "K GPa−1",
+        "selectable": true,
+        "unit_basis_unresolved": false,
+        "pdf_unicode_policy": true
+      },
+      "context": [
+        {
+          "purpose": "property",
+          "ordinal": 1,
+          "text_id": "T83",
+          "source": {
+            "block_id": "doc:07b8d707295a73bd45bf:supplement:b00003",
+            "start_char": 4261,
+            "end_char": 4411,
+            "quote": "When piston cylinder cells are used [16–18], or in our study using a diamond anvil cell with helium as a pressure medium,\ndTc /dp ≈ −1.1(1) K GPa−1 . ",
+            "quote_sha256": "f85414a08fa53457776672b1d534b3635a0e337f8ed5ffea70e1d89730532a83",
+            "source_span_ids": [
+              "S53"
+            ],
+            "target": true,
+            "selectable": true,
+            "source_kind": "original_pdf",
+            "tex_comment_policy": false
+          }
+        },
+        {
+          "purpose": "subject",
+          "ordinal": 1,
+          "text_id": "T83",
+          "source": {
+            "block_id": "doc:07b8d707295a73bd45bf:supplement:b00003",
+            "start_char": 4261,
+            "end_char": 4411,
+            "quote": "When piston cylinder cells are used [16–18], or in our study using a diamond anvil cell with helium as a pressure medium,\ndTc /dp ≈ −1.1(1) K GPa−1 . ",
+            "quote_sha256": "f85414a08fa53457776672b1d534b3635a0e337f8ed5ffea70e1d89730532a83",
+            "source_span_ids": [
+              "S53"
+            ],
+            "target": true,
+            "selectable": true,
+            "source_kind": "original_pdf",
+            "tex_comment_policy": false
+          }
+        },
+        {
+          "purpose": "support",
+          "ordinal": 1,
+          "text_id": "T82",
+          "source": {
+            "block_id": "doc:07b8d707295a73bd45bf:supplement:b00003",
+            "start_char": 4177,
+            "end_char": 4261,
+            "quote": "The first point can be understood when noticing essentially two values for dTc /dp. ",
+            "quote_sha256": "9bce3a2a14503ceaac5d7529f1b94006621c7112e215cd2508f793c5357d2206",
+            "source_span_ids": [
+              "S53"
+            ],
+            "target": true,
+            "selectable": true,
+            "source_kind": "original_pdf",
+            "tex_comment_policy": false
+          }
+        },
+        {
+          "purpose": "support",
+          "ordinal": 2,
+          "text_id": "T83",
+          "source": {
+            "block_id": "doc:07b8d707295a73bd45bf:supplement:b00003",
+            "start_char": 4261,
+            "end_char": 4411,
+            "quote": "When piston cylinder cells are used [16–18], or in our study using a diamond anvil cell with helium as a pressure medium,\ndTc /dp ≈ −1.1(1) K GPa−1 . ",
+            "quote_sha256": "f85414a08fa53457776672b1d534b3635a0e337f8ed5ffea70e1d89730532a83",
+            "source_span_ids": [
+              "S53"
+            ],
+            "target": true,
+            "selectable": true,
+            "source_kind": "original_pdf",
+            "tex_comment_policy": false
+          }
+        },
+        {
+          "purpose": "support",
+          "ordinal": 3,
+          "text_id": "T84",
+          "source": {
+            "block_id": "doc:07b8d707295a73bd45bf:supplement:b00003",
+            "start_char": 4411,
+            "end_char": 4557,
+            "quote": "By contrast, dTc /dp ≈\n−0.7(1) K GPa−1 when anvil-based pressure cells are\nused (moissanite anvil cell and modified Bridgman cell\nin this study). ",
+            "quote_sha256": "59dfdfef13846ddbeeeb3ce7e816d74196e88c5b4a53e20b83058b020a90d8a3",
+            "source_span_ids": [
+              "S53",
+              "S54"
+            ],
+            "target": true,
+            "selectable": true,
+            "source_kind": "original_pdf",
+            "tex_comment_policy": false
+          }
+        }
+      ],
+      "expected_unit": "K/GPa",
+      "expected_value": -1.1,
+      "expected_error": 0.1
+    },
+    {
+      "kind": "tc_pressure_slope",
+      "original_record_id": "A9",
+      "window": "pages-9-10",
+      "quantity": {
+        "status": "reported",
+        "raw": "≈\n−0.7(1) K GPa−1",
+        "relation": "exact",
+        "value": -0.7,
+        "lower": null,
+        "upper": null,
+        "unit": "K GPa−1",
+        "approximate": true,
+        "uncertainty": {
+          "kind": "reported_unspecified",
+          "minus": 0.1,
+          "plus": 0.1,
+          "level": null,
+          "raw": "≈\n−0.7(1) K GPa−1"
+        }
+      },
+      "source": {
+        "kind": "value",
+        "start_char": 4432,
+        "end_char": 4449,
+        "quote": "≈\n−0.7(1) K GPa−1",
+        "quote_sha256": "7e600644f42133426b38334dd80724615c1b21e4b3a247d11c9d070dff38a15a",
+        "source_unit": "K GPa-1",
+        "syntax_shape": {
+          "relation": "exact",
+          "value": -0.7,
+          "lower": null,
+          "upper": null,
+          "approximate": true,
+          "unit": "K GPa-1",
+          "uncertainty": {
+            "kind": "reported_unspecified",
+            "minus": 0.1,
+            "plus": 0.1,
+            "level": null,
+            "raw": "≈\n−0.7(1) K GPa−1"
+          }
+        },
+        "quantity": {
+          "status": "reported",
+          "raw": "≈\n−0.7(1) K GPa−1",
+          "relation": "exact",
+          "value": -0.7,
+          "lower": null,
+          "upper": null,
+          "unit": "K GPa-1",
+          "approximate": true,
+          "uncertainty": {
+            "kind": "reported_unspecified",
+            "minus": 0.1,
+            "plus": 0.1,
+            "level": null,
+            "raw": "≈\n−0.7(1) K GPa−1"
+          }
+        },
+        "evidence": {
+          "raw": {
+            "start_char": 4432,
+            "end_char": 4449,
+            "quote": "≈\n−0.7(1) K GPa−1",
+            "quote_sha256": "7e600644f42133426b38334dd80724615c1b21e4b3a247d11c9d070dff38a15a"
+          },
+          "unit": {
+            "start_char": 4442,
+            "end_char": 4449,
+            "quote": "K GPa−1",
+            "quote_sha256": "26972f8ff608a7370103b00fb1a2ac0b25860ad856e0fad07c4b8efe9711a45b"
+          }
+        },
+        "issues": [],
+        "scientific_acceptance": false,
+        "block_id": "doc:07b8d707295a73bd45bf:supplement:b00003",
+        "source_span_ids": [
+          "S53",
+          "S54"
+        ],
+        "unit_raw": "K GPa−1",
+        "selectable": true,
+        "unit_basis_unresolved": false,
+        "pdf_unicode_policy": true
+      },
+      "context": [
+        {
+          "purpose": "property",
+          "ordinal": 1,
+          "text_id": "T84",
+          "source": {
+            "block_id": "doc:07b8d707295a73bd45bf:supplement:b00003",
+            "start_char": 4411,
+            "end_char": 4557,
+            "quote": "By contrast, dTc /dp ≈\n−0.7(1) K GPa−1 when anvil-based pressure cells are\nused (moissanite anvil cell and modified Bridgman cell\nin this study). ",
+            "quote_sha256": "59dfdfef13846ddbeeeb3ce7e816d74196e88c5b4a53e20b83058b020a90d8a3",
+            "source_span_ids": [
+              "S53",
+              "S54"
+            ],
+            "target": true,
+            "selectable": true,
+            "source_kind": "original_pdf",
+            "tex_comment_policy": false
+          }
+        },
+        {
+          "purpose": "subject",
+          "ordinal": 1,
+          "text_id": "T84",
+          "source": {
+            "block_id": "doc:07b8d707295a73bd45bf:supplement:b00003",
+            "start_char": 4411,
+            "end_char": 4557,
+            "quote": "By contrast, dTc /dp ≈\n−0.7(1) K GPa−1 when anvil-based pressure cells are\nused (moissanite anvil cell and modified Bridgman cell\nin this study). ",
+            "quote_sha256": "59dfdfef13846ddbeeeb3ce7e816d74196e88c5b4a53e20b83058b020a90d8a3",
+            "source_span_ids": [
+              "S53",
+              "S54"
+            ],
+            "target": true,
+            "selectable": true,
+            "source_kind": "original_pdf",
+            "tex_comment_policy": false
+          }
+        },
+        {
+          "purpose": "support",
+          "ordinal": 1,
+          "text_id": "T82",
+          "source": {
+            "block_id": "doc:07b8d707295a73bd45bf:supplement:b00003",
+            "start_char": 4177,
+            "end_char": 4261,
+            "quote": "The first point can be understood when noticing essentially two values for dTc /dp. ",
+            "quote_sha256": "9bce3a2a14503ceaac5d7529f1b94006621c7112e215cd2508f793c5357d2206",
+            "source_span_ids": [
+              "S53"
+            ],
+            "target": true,
+            "selectable": true,
+            "source_kind": "original_pdf",
+            "tex_comment_policy": false
+          }
+        },
+        {
+          "purpose": "support",
+          "ordinal": 2,
+          "text_id": "T83",
+          "source": {
+            "block_id": "doc:07b8d707295a73bd45bf:supplement:b00003",
+            "start_char": 4261,
+            "end_char": 4411,
+            "quote": "When piston cylinder cells are used [16–18], or in our study using a diamond anvil cell with helium as a pressure medium,\ndTc /dp ≈ −1.1(1) K GPa−1 . ",
+            "quote_sha256": "f85414a08fa53457776672b1d534b3635a0e337f8ed5ffea70e1d89730532a83",
+            "source_span_ids": [
+              "S53"
+            ],
+            "target": true,
+            "selectable": true,
+            "source_kind": "original_pdf",
+            "tex_comment_policy": false
+          }
+        },
+        {
+          "purpose": "support",
+          "ordinal": 3,
+          "text_id": "T84",
+          "source": {
+            "block_id": "doc:07b8d707295a73bd45bf:supplement:b00003",
+            "start_char": 4411,
+            "end_char": 4557,
+            "quote": "By contrast, dTc /dp ≈\n−0.7(1) K GPa−1 when anvil-based pressure cells are\nused (moissanite anvil cell and modified Bridgman cell\nin this study). ",
+            "quote_sha256": "59dfdfef13846ddbeeeb3ce7e816d74196e88c5b4a53e20b83058b020a90d8a3",
+            "source_span_ids": [
+              "S53",
+              "S54"
+            ],
+            "target": true,
+            "selectable": true,
+            "source_kind": "original_pdf",
+            "tex_comment_policy": false
+          }
+        }
+      ],
+      "expected_unit": "K/GPa",
+      "expected_value": -0.7,
+      "expected_error": 0.1
+    },
+    {
+      "kind": "electrical_resistivity",
+      "original_record_id": "A1",
+      "window": "pages-7-8",
+      "quantity": {
+        "status": "reported",
+        "raw": "(300 ± 30) µΩ·cm",
+        "relation": "exact",
+        "value": 300.0,
+        "lower": null,
+        "upper": null,
+        "unit": "µΩ·cm",
+        "approximate": false,
+        "uncertainty": {
+          "kind": "reported_unspecified",
+          "minus": 30.0,
+          "plus": 30.0,
+          "level": null,
+          "raw": "(300 ± 30) µΩ·cm"
+        }
+      },
+      "source": {
+        "kind": "value",
+        "start_char": 2186,
+        "end_char": 2202,
+        "quote": "(300 ± 30) µΩ·cm",
+        "quote_sha256": "0f95b24feed539153b68a14fcbcb93f931c9229f59253e8000a6ed243961bcc3",
+        "source_unit": "µΩ·cm",
+        "syntax_shape": {
+          "relation": "exact",
+          "value": 300.0,
+          "lower": null,
+          "upper": null,
+          "approximate": false,
+          "unit": "µΩ·cm",
+          "uncertainty": {
+            "kind": "reported_unspecified",
+            "minus": 30.0,
+            "plus": 30.0,
+            "level": null,
+            "raw": "(300 ± 30) µΩ·cm"
+          }
+        },
+        "quantity": {
+          "status": "reported",
+          "raw": "(300 ± 30) µΩ·cm",
+          "relation": "exact",
+          "value": 300.0,
+          "lower": null,
+          "upper": null,
+          "unit": "µΩ·cm",
+          "approximate": false,
+          "uncertainty": {
+            "kind": "reported_unspecified",
+            "minus": 30.0,
+            "plus": 30.0,
+            "level": null,
+            "raw": "(300 ± 30) µΩ·cm"
+          }
+        },
+        "evidence": {
+          "raw": {
+            "start_char": 2186,
+            "end_char": 2202,
+            "quote": "(300 ± 30) µΩ·cm",
+            "quote_sha256": "0f95b24feed539153b68a14fcbcb93f931c9229f59253e8000a6ed243961bcc3"
+          },
+          "unit": {
+            "start_char": 2197,
+            "end_char": 2202,
+            "quote": "µΩ·cm",
+            "quote_sha256": "9ad6ed341d08daab49971acc928bb54a550a4d4e50cfb5a85aa58310cbaea518"
+          }
+        },
+        "issues": [],
+        "scientific_acceptance": false,
+        "block_id": "doc:07b8d707295a73bd45bf:supplement:b00000",
+        "source_span_ids": [
+          "S38"
+        ],
+        "unit_raw": "µΩ·cm",
+        "selectable": true,
+        "unit_basis_unresolved": false,
+        "pdf_unicode_policy": true
+      },
+      "context": [
+        {
+          "purpose": "property",
+          "ordinal": 1,
+          "text_id": "T54",
+          "source": {
+            "block_id": "doc:07b8d707295a73bd45bf:supplement:b00000",
+            "start_char": 2011,
+            "end_char": 2217,
+            "quote": "Due to non negligible contact dimensions compared to the small sample size, the absolute resistivity\nwas measured on several bigger samples at ambient pressure and a value of (300 ± 30) µΩ·cm was obtained. ",
+            "quote_sha256": "80bc04d63d660badb308594f0fdfc793bb7a73289c3e953bc3afd8568af37fcc",
+            "source_span_ids": [
+              "S38"
+            ],
+            "target": true,
+            "selectable": true,
+            "source_kind": "original_pdf",
+            "tex_comment_policy": false
+          }
+        },
+        {
+          "purpose": "subject",
+          "ordinal": 1,
+          "text_id": "T54",
+          "source": {
+            "block_id": "doc:07b8d707295a73bd45bf:supplement:b00000",
+            "start_char": 2011,
+            "end_char": 2217,
+            "quote": "Due to non negligible contact dimensions compared to the small sample size, the absolute resistivity\nwas measured on several bigger samples at ambient pressure and a value of (300 ± 30) µΩ·cm was obtained. ",
+            "quote_sha256": "80bc04d63d660badb308594f0fdfc793bb7a73289c3e953bc3afd8568af37fcc",
+            "source_span_ids": [
+              "S38"
+            ],
+            "target": true,
+            "selectable": true,
+            "source_kind": "original_pdf",
+            "tex_comment_policy": false
+          }
+        },
+        {
+          "purpose": "support",
+          "ordinal": 1,
+          "text_id": "T55",
+          "source": {
+            "block_id": "doc:07b8d707295a73bd45bf:supplement:b00000",
+            "start_char": 2217,
+            "end_char": 2311,
+            "quote": "All\npressure dependent data were normalized to this ambient\npressure, room temperature value.\n",
+            "quote_sha256": "4641bc8e5e7408631211b139167f4d47950329c24d476028f5f581136b9a0782",
+            "source_span_ids": [
+              "S38"
+            ],
+            "target": true,
+            "selectable": true,
+            "source_kind": "original_pdf",
+            "tex_comment_policy": false
+          }
+        }
+      ],
+      "expected_unit": "Ω m",
+      "expected_value": 3e-06,
+      "expected_error": 3e-07
+    }
+  ]
+}

@@ -2,6 +2,42 @@
 from contextlib import contextmanager
 
 
+def pre_materials_context_tables(connection, names):
+    """Only pre-0096 comparisons may omit the three demonstrably empty tables.
+
+    Never use this for current-head or refused-downgrade snapshots. No scientific
+    row, hash or field is projected away; populated history fails immediately.
+    """
+    from sqlalchemy import text
+    added = {"sample_compositions", "research_protocols", "sample_relations"}
+    for name in added.intersection(names):
+        assert not connection.execute(text(f"SELECT EXISTS(SELECT 1 FROM public.{name})")).scalar_one(), \
+            "Retained Materials context cannot enter a pre-0096 comparison"
+    return [name for name in names if name not in added]
+
+
+def pre_claim_review_rows(name, rows):
+    """Compare legacy rows across 0095's *absent vs NULL* additive column.
+
+    Use only for a historical boundary which predates claim review. Never
+    erase a populated claim target or relax any legacy value/hash comparison.
+    Current-head and refused-downgrade full snapshots keep every column.
+    """
+    if name not in {"scientific_result_subjects", "scientific_result_decisions"}:
+        return rows
+    result = []
+    for row in rows:
+        if "claim_id" in row:
+            assert row["claim_id"] is None, "Claim review history cannot enter a pre-0095 comparison"
+            assert row.get("property_id") is not None, "Legacy review must retain its property target"
+            if name == "scientific_result_subjects":
+                assert row["subject_version"] == "scientific-result-subject/1.0.0"
+            row = {key: value for key, value in row.items() if key != "claim_id"}
+        result.append(row)
+    import json
+    return sorted(result, key=lambda row: json.dumps(row, sort_keys=True))
+
+
 def assert_revision(connection, revision):
     from alembic.migration import MigrationContext
 

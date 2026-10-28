@@ -2,7 +2,7 @@ import { fireEvent, render, screen, within } from "@testing-library/react";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { cleanup } from "@testing-library/react";
 import MaterialDetailPage from "@/app/materials/[id]/page";
-import { RetainedHc2, RetainedTcCriteria } from "@/components/RetainedRecordScientificFields";
+import { RetainedHc2, RetainedSampleContext, RetainedTcCriteria } from "@/components/RetainedRecordScientificFields";
 import { retainedHc2, retainedRecordText, retainedTcCriteria } from "@/lib/material-retained-record";
 import { getMaterial, getMaterialEnrichment, getMaterialHydrideParameters, type MaterialDetail } from "@/lib/api";
 import { materialVisibility } from "../fixtures/material-visibility";
@@ -20,6 +20,26 @@ beforeEach(() => {
 afterEach(cleanup);
 
 describe("retained Tc and Hc2 field reading", () => {
+  it("keeps nominal/measured composition and source-local sample labels distinct in English", () => {
+    render(<RetainedSampleContext record={{ sample_label: "S1", sample_form: "thin film",
+      nominal_formula: "La2NiO4", measured_formula: "La1.9NiO4", composition_basis: "nominal",
+      state_label: "after annealing", substrate: "SrTiO3" }} />);
+    expect(screen.getByText("Form: thin film")).toBeInTheDocument();
+    expect(document.body).toHaveTextContent("Nominal composition: La2NiO4");
+    expect(document.body).toHaveTextContent("Measured composition: La1.9NiO4");
+    expect(document.body).toHaveTextContent("State label: after annealing");
+    expect(document.body).toHaveTextContent("require source verification");
+    expect(document.body.textContent).not.toMatch(/[\u4e00-\u9fff]/);
+  });
+
+  it("does not manufacture sample identity or composition from a material headline", () => {
+    render(<RetainedSampleContext record={{ sample_form: "bulk", formula: "MgB2",
+      nominal_formula: { value: "Mg10B2" }, sample_id: "canonical-looking-id" }} />);
+    expect(screen.getByText("Sample label not supplied")).toBeInTheDocument();
+    expect(document.body.textContent).not.toContain("Mg10B2");
+    expect(document.body.textContent).not.toContain("MgB2");
+    expect(document.body.textContent).not.toContain("canonical-looking-id");
+  });
   it("keeps coarse type and distinct criterion aliases beside one another", () => {
     const record = { tc_type: "onset", tc_definition: "diamagnetic", tc_criterion: "90% of normal-state resistivity", criterion: "Heat-capacity midpoint" };
     expect(retainedTcCriteria(record).map(item => item.key)).toEqual(["tc_type", "tc_definition", "tc_criterion", "criterion"]);
@@ -87,13 +107,15 @@ describe("retained Tc and Hc2 field reading", () => {
   it("reads per-row criteria and Hc2 in the real material detail table without merging equal Tc", async () => {
     const record = (overrides: Record<string, unknown>) => ({ tc_kelvin: 23, paper_id: "arxiv:0912.2752", measurement: "resistivity", visibility: materialVisibility(), ...overrides });
     const mat = { id: "synthetic", formula: "TEST", family: null, subfamily: null, visibility: materialVisibility(), records: [
-      record({ tc_type: "onset", tc_criterion: "90% of normal-state resistivity", hc2_tesla: 65, hc2_conditions: "GL fit" }),
-      record({ tc_type: "zero_resistance", hc2_tesla: 5.123456789 }),
+      record({ tc_type: "onset", tc_criterion: "90% of normal-state resistivity", hc2_tesla: 65, hc2_conditions: "GL fit", sample_label: "S1" }),
+      record({ tc_type: "zero_resistance", hc2_tesla: 5.123456789, sample_label: "S2" }),
     ], variants: [], disputed: false, retracted: false, total_papers: 1, arxiv_year: 2026, property_evidence: undefined, hc2_tesla: 999 } as unknown as MaterialDetail;
     vi.mocked(getMaterial).mockResolvedValue(mat);
     render(await MaterialDetailPage({ params: Promise.resolve({ id: mat.id }) }));
     const region = within(screen.getByRole("region", { name: "Scrollable retained evidence" }));
     expect(region.getAllByRole("row")).toHaveLength(3);
+    expect(region.getAllByText("S1").length).toBeGreaterThan(0);
+    expect(region.getAllByText("S2").length).toBeGreaterThan(0);
     expect(region.getByRole("columnheader", { name: "Retained Hc2" })).toBeInTheDocument();
     expect(region.getByText("onset")).toBeInTheDocument();
     expect(region.getByText("zero_resistance")).toBeInTheDocument();

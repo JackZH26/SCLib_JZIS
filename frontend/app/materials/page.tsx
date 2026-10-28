@@ -5,6 +5,7 @@ import { listMaterials } from "@/lib/api";
 import { MaterialTable } from "@/components/MaterialTable";
 import { MaterialsFilters } from "@/components/MaterialsFilters";
 import { Pagination } from "@/components/Pagination";
+import { MaterialsVNext } from "@/components/MaterialsVNext";
 import { absoluteUrl } from "@/lib/seo";
 import { materialsHref, materialsPageIndex, materialsPageSize, materialsParams, materialsQueryErrors, materialsQueryFromSearchParams, materialResultFiltersActive, type MaterialsSearchParams } from "@/lib/materials-browser";
 import "./materials.css";
@@ -16,7 +17,9 @@ export const metadata: Metadata = {
 };
 
 export default async function MaterialsPage({ searchParams }: { searchParams: Promise<MaterialsSearchParams> }) {
-  const { query, errors: parameterErrors } = materialsQueryFromSearchParams(await searchParams);
+  const search = await searchParams;
+  if (process.env.MATERIALS_VNEXT_ENABLED === "true") return <MaterialsVNext searchParams={search} />;
+  const { query, errors: parameterErrors } = materialsQueryFromSearchParams(search);
   const page = materialsPageIndex(query.page);
   const perPage = materialsPageSize(query.per_page);
   const params = materialsParams(query);

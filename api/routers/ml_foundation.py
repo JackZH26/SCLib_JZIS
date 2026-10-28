@@ -39,6 +39,7 @@ from models.ml_foundation import (
     MaterialClaimResponse,
     MlDatasetManifestResponse,
     MlDatasetSnapshotResponse,
+    ProductionAdmissionResponse,
     SourceSnapshotResponse,
     WorkResponse,
 )
@@ -177,6 +178,7 @@ def _claim_response(claim, material_context, paper_status, work_status, witnesse
     temporal = result_temporal_provenance(claim_id=str(claim.id), witnesses=witnesses)
     known_at = utc_datetime(temporal["result_available_at"]) if temporal["status"] == "known_by" else None
     payload.update(visibility=material_context.visibility, claim_visibility=claim_visibility,
+                   production_admission=ProductionAdmissionResponse.from_extraction_metadata(claim.extraction_metadata),
                    temporal_provenance=temporal, legacy_available_at=claim.available_at,
                    available_at=known_at.date() if known_at is not None else None)
     typed = MaterialClaimResponse.model_validate(payload)

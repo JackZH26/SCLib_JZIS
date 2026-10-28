@@ -341,7 +341,10 @@ async def _current_sources(db, inventory):
         require(not (await db.execute(sa.select(notices.c.id).where(notices.c.release_id == ids[0]).limit(1))).first(),
                 "distribution_capsule_notice_hold")
     try:
-        return await gate_exact_property_reviews(db, sorted(grouped.get("event_properties", set())))
+        from services.materials_review_effects import gate_exact_claim_reviews
+        properties = await gate_exact_property_reviews(db, sorted(grouped.get("event_properties", set())))
+        claims = await gate_exact_claim_reviews(db, sorted(grouped.get("material_claims", set())))
+        return properties if claims is None else _sha({"properties": properties, "claims": claims})
     except ScientificResultReviewHeld:
         raise ResearchDistributionError("distribution_exact_scientific_review_hold") from None
 

@@ -1,0 +1,1131 @@
+{
+  "$defs": {
+    "CompositionVariable": {
+      "additionalProperties": false,
+      "properties": {
+        "symbol": {
+          "title": "Symbol",
+          "type": "string"
+        },
+        "site": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Site"
+        },
+        "basis": {
+          "enum": [
+            "nominal",
+            "measured",
+            "refined",
+            "calculation_input",
+            "unresolved"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "amount": {
+          "$ref": "#/$defs/Quantity"
+        }
+      },
+      "required": [
+        "symbol",
+        "basis",
+        "amount"
+      ],
+      "title": "CompositionVariable",
+      "type": "object"
+    },
+    "Condition": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "pressure",
+            "temperature",
+            "magnetic_flux_density",
+            "magnetic_field_strength",
+            "mu0_h",
+            "thickness",
+            "strain",
+            "carrier_density",
+            "gate_voltage",
+            "delay"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "measurement",
+            "synthesis",
+            "simulation",
+            "detection_window",
+            "pump",
+            "unknown"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "quantity": {
+          "$ref": "#/$defs/Quantity"
+        },
+        "orientation_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Orientation Raw"
+        },
+        "basis_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Basis Raw"
+        }
+      },
+      "required": [
+        "kind",
+        "role",
+        "quantity",
+        "orientation_raw",
+        "basis_raw"
+      ],
+      "title": "Condition",
+      "type": "object"
+    },
+    "ConditionalExistence": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "conditional_existence",
+          "title": "Kind",
+          "type": "string"
+        },
+        "condition": {
+          "const": "if_superconducting",
+          "title": "Condition",
+          "type": "string"
+        },
+        "raw": {
+          "minLength": 1,
+          "title": "Raw",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "condition",
+        "raw"
+      ],
+      "title": "ConditionalExistence",
+      "type": "object"
+    },
+    "Dependency": {
+      "additionalProperties": false,
+      "properties": {
+        "result_id": {
+          "title": "Result Id",
+          "type": "string"
+        },
+        "relation": {
+          "enum": [
+            "derived_from",
+            "same_measurement",
+            "compares_with"
+          ],
+          "title": "Relation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "result_id",
+        "relation"
+      ],
+      "title": "Dependency",
+      "type": "object"
+    },
+    "Evidence": {
+      "additionalProperties": false,
+      "properties": {
+        "block_id": {
+          "minLength": 1,
+          "title": "Block Id",
+          "type": "string"
+        },
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        },
+        "field": {
+          "pattern": "^/",
+          "title": "Field",
+          "type": "string"
+        }
+      },
+      "required": [
+        "block_id",
+        "quote",
+        "field"
+      ],
+      "title": "Evidence",
+      "type": "object"
+    },
+    "FormulaAssertion": {
+      "additionalProperties": false,
+      "properties": {
+        "formula_raw": {
+          "minLength": 1,
+          "title": "Formula Raw",
+          "type": "string"
+        },
+        "basis": {
+          "enum": [
+            "nominal",
+            "measured",
+            "refined",
+            "calculation_input",
+            "unresolved"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "context_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Context Raw"
+        }
+      },
+      "required": [
+        "formula_raw",
+        "basis",
+        "context_raw"
+      ],
+      "title": "FormulaAssertion",
+      "type": "object"
+    },
+    "Isotope": {
+      "additionalProperties": false,
+      "properties": {
+        "element": {
+          "pattern": "^[A-Z][a-z]?$",
+          "title": "Element",
+          "type": "string"
+        },
+        "mass_number": {
+          "exclusiveMinimum": 0,
+          "title": "Mass Number",
+          "type": "integer"
+        },
+        "fraction": {
+          "$ref": "#/$defs/Quantity"
+        }
+      },
+      "required": [
+        "element",
+        "mass_number",
+        "fraction"
+      ],
+      "title": "Isotope",
+      "type": "object"
+    },
+    "NonDetection": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "non_detection",
+          "title": "Kind",
+          "type": "string"
+        },
+        "target": {
+          "const": "superconductivity",
+          "title": "Target",
+          "type": "string"
+        },
+        "observable": {
+          "enum": [
+            "resistive_transition",
+            "zero_resistance",
+            "diamagnetic_signal",
+            "heat_capacity_anomaly",
+            "unspecified"
+          ],
+          "title": "Observable",
+          "type": "string"
+        },
+        "existence": {
+          "const": "not_established",
+          "title": "Existence",
+          "type": "string"
+        },
+        "raw": {
+          "minLength": 1,
+          "title": "Raw",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "target",
+        "observable",
+        "existence",
+        "raw"
+      ],
+      "title": "NonDetection",
+      "type": "object"
+    },
+    "ProtocolParameter": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "frequency",
+            "magnetic_flux_density",
+            "magnetic_field_strength",
+            "coulomb_pseudopotential"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "name_raw": {
+          "minLength": 1,
+          "title": "Name Raw",
+          "type": "string"
+        },
+        "quantity": {
+          "$ref": "#/$defs/Quantity"
+        }
+      },
+      "required": [
+        "kind",
+        "name_raw",
+        "quantity"
+      ],
+      "title": "ProtocolParameter",
+      "type": "object"
+    },
+    "ProtocolV2": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Method"
+        },
+        "observable": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observable"
+        },
+        "criterion": {
+          "enum": [
+            "onset",
+            "midpoint",
+            "zero_resistance",
+            "offset",
+            "diamagnetic_onset",
+            "heat_capacity_anomaly",
+            "gap_closure",
+            "bkt",
+            "fit_parameter",
+            "not_applicable",
+            "unspecified"
+          ],
+          "title": "Criterion",
+          "type": "string"
+        },
+        "criterion_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Criterion Raw"
+        },
+        "details_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Details Raw"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "method_class": {
+          "default": "unspecified",
+          "enum": [
+            "resistivity",
+            "magnetization",
+            "specific_heat",
+            "tunneling",
+            "muon_spin",
+            "calculation",
+            "other",
+            "unspecified"
+          ],
+          "title": "Method Class",
+          "type": "string"
+        },
+        "parameters": {
+          "items": {
+            "$ref": "#/$defs/ProtocolParameter"
+          },
+          "title": "Parameters",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "method",
+        "observable",
+        "criterion",
+        "criterion_raw",
+        "details_raw",
+        "evidence"
+      ],
+      "title": "ProtocolV2",
+      "type": "object"
+    },
+    "Quantity": {
+      "additionalProperties": false,
+      "properties": {
+        "status": {
+          "enum": [
+            "reported",
+            "not_reported",
+            "not_accessible",
+            "not_extracted",
+            "ambiguous",
+            "conflicted",
+            "not_applicable"
+          ],
+          "title": "Status",
+          "type": "string"
+        },
+        "raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Raw"
+        },
+        "relation": {
+          "anyOf": [
+            {
+              "enum": [
+                "exact",
+                "interval",
+                "lt",
+                "le",
+                "gt",
+                "ge"
+              ],
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Relation"
+        },
+        "value": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Value"
+        },
+        "lower": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Lower"
+        },
+        "upper": {
+          "anyOf": [
+            {
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Upper"
+        },
+        "unit": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "description": "Source unit for dimensional values. Use '1' for a dimensionless quantity, which does not imply that the paper printed a unit. A conflicted raw quantity may preserve its known unit without choosing a number.",
+          "title": "Unit"
+        },
+        "approximate": {
+          "default": false,
+          "title": "Approximate",
+          "type": "boolean"
+        },
+        "uncertainty": {
+          "anyOf": [
+            {
+              "$ref": "#/$defs/Uncertainty"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null
+        }
+      },
+      "required": [
+        "status"
+      ],
+      "title": "Quantity",
+      "type": "object"
+    },
+    "ResultV2": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "sample_id": {
+          "title": "Sample Id",
+          "type": "string"
+        },
+        "state_id": {
+          "title": "State Id",
+          "type": "string"
+        },
+        "protocol_id": {
+          "title": "Protocol Id",
+          "type": "string"
+        },
+        "quantity_kind": {
+          "enum": [
+            "tc",
+            "model_temperature_scale",
+            "critical_pressure",
+            "hc2",
+            "gap_energy",
+            "electron_phonon_lambda",
+            "omega_log",
+            "superfluid_stiffness",
+            "debye_temperature",
+            "magnetic_transition_temperature",
+            "heat_capacity_maximum_temperature",
+            "hc2_field_strength",
+            "pauli_limit_flux_density",
+            "hc2_flux_density_slope",
+            "hc2_field_strength_slope",
+            "tc_flux_density_slope",
+            "tc_field_strength_slope",
+            "penetration_depth",
+            "coherence_length",
+            "crystalline_domain_size",
+            "charge_gap_energy",
+            "sommerfeld_coefficient_molar",
+            "lattice_heat_capacity_beta_molar",
+            "heat_capacity_jump_over_tc_molar",
+            "normalized_heat_capacity_jump",
+            "heat_capacity_fraction",
+            "lattice_strain",
+            "relative_debye_temperature_change",
+            "gap_amplitude_ratio",
+            "pairing_component_fraction",
+            "surface_resistance",
+            "quality_factor",
+            "nmr_relaxation_power_law_exponent",
+            "non_detection",
+            "unmapped"
+          ],
+          "title": "Quantity Kind",
+          "type": "string"
+        },
+        "quantity_name_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Quantity Name Raw"
+        },
+        "quantity": {
+          "$ref": "#/$defs/Quantity"
+        },
+        "origin": {
+          "enum": [
+            "observed",
+            "computed",
+            "model_derived",
+            "unknown"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "source_role": {
+          "enum": [
+            "primary",
+            "cited",
+            "unknown"
+          ],
+          "title": "Source Role",
+          "type": "string"
+        },
+        "component_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Component Raw"
+        },
+        "interpretation_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Interpretation Raw"
+        },
+        "cited_source_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cited Source Raw"
+        },
+        "dependencies": {
+          "items": {
+            "$ref": "#/$defs/Dependency"
+          },
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "qualifiers": {
+          "items": {
+            "anyOf": [
+              {
+                "$ref": "#/$defs/TransitionStage"
+              },
+              {
+                "$ref": "#/$defs/ConditionalExistence"
+              },
+              {
+                "$ref": "#/$defs/NonDetection"
+              },
+              {
+                "$ref": "#/$defs/TemperatureRole"
+              }
+            ]
+          },
+          "title": "Qualifiers",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "sample_id",
+        "state_id",
+        "protocol_id",
+        "quantity_kind",
+        "quantity",
+        "origin",
+        "source_role",
+        "component_raw",
+        "interpretation_raw",
+        "cited_source_raw",
+        "dependencies",
+        "evidence"
+      ],
+      "title": "ResultV2",
+      "type": "object"
+    },
+    "SampleV2": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Label"
+        },
+        "formula_raw": {
+          "title": "Formula Raw",
+          "type": "string"
+        },
+        "composition_basis": {
+          "enum": [
+            "nominal",
+            "measured",
+            "refined",
+            "calculation_input",
+            "unresolved"
+          ],
+          "title": "Composition Basis",
+          "type": "string"
+        },
+        "identity_resolution": {
+          "enum": [
+            "source_scoped",
+            "unresolved",
+            "conflicted"
+          ],
+          "title": "Identity Resolution",
+          "type": "string"
+        },
+        "target_kind": {
+          "enum": [
+            "bulk",
+            "film",
+            "interface",
+            "device",
+            "phase",
+            "component",
+            "calculation_model",
+            "unresolved"
+          ],
+          "title": "Target Kind",
+          "type": "string"
+        },
+        "form_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Form Raw"
+        },
+        "substrate_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Substrate Raw"
+        },
+        "isotopes": {
+          "items": {
+            "$ref": "#/$defs/Isotope"
+          },
+          "title": "Isotopes",
+          "type": "array"
+        },
+        "variables": {
+          "items": {
+            "$ref": "#/$defs/CompositionVariable"
+          },
+          "title": "Variables",
+          "type": "array"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        },
+        "additional_formula_assertions": {
+          "items": {
+            "$ref": "#/$defs/FormulaAssertion"
+          },
+          "title": "Additional Formula Assertions",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "label",
+        "formula_raw",
+        "composition_basis",
+        "identity_resolution",
+        "target_kind",
+        "form_raw",
+        "substrate_raw",
+        "isotopes",
+        "variables",
+        "evidence"
+      ],
+      "title": "SampleV2",
+      "type": "object"
+    },
+    "State": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "sample_id": {
+          "title": "Sample Id",
+          "type": "string"
+        },
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Label"
+        },
+        "conditions": {
+          "items": {
+            "$ref": "#/$defs/Condition"
+          },
+          "title": "Conditions",
+          "type": "array"
+        },
+        "preparation_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Preparation Raw"
+        },
+        "evidence": {
+          "items": {
+            "$ref": "#/$defs/Evidence"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "sample_id",
+        "label",
+        "conditions",
+        "preparation_raw",
+        "evidence"
+      ],
+      "title": "State",
+      "type": "object"
+    },
+    "TemperatureRole": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "temperature_role",
+          "title": "Kind",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "system_transition",
+            "component_model_parameter"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "raw": {
+          "minLength": 1,
+          "title": "Raw",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "role",
+        "raw"
+      ],
+      "title": "TemperatureRole",
+      "type": "object"
+    },
+    "TransitionStage": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "const": "transition_stage",
+          "title": "Kind",
+          "type": "string"
+        },
+        "stage": {
+          "enum": [
+            "primary",
+            "secondary",
+            "other"
+          ],
+          "title": "Stage",
+          "type": "string"
+        },
+        "raw": {
+          "minLength": 1,
+          "title": "Raw",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "stage",
+        "raw"
+      ],
+      "title": "TransitionStage",
+      "type": "object"
+    },
+    "Uncertainty": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "standard_deviation",
+            "standard_error",
+            "confidence_interval",
+            "resolution",
+            "reported_unspecified"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "minus": {
+          "minimum": 0,
+          "title": "Minus",
+          "type": "number"
+        },
+        "plus": {
+          "minimum": 0,
+          "title": "Plus",
+          "type": "number"
+        },
+        "level": {
+          "anyOf": [
+            {
+              "exclusiveMaximum": 1,
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "default": null,
+          "title": "Level"
+        },
+        "raw": {
+          "title": "Raw",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "minus",
+        "plus",
+        "raw"
+      ],
+      "title": "Uncertainty",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "materials-ner/2",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "work_id": {
+      "title": "Work Id",
+      "type": "string"
+    },
+    "outcome": {
+      "enum": [
+        "results",
+        "empty",
+        "incomplete"
+      ],
+      "title": "Outcome",
+      "type": "string"
+    },
+    "empty_reason": {
+      "anyOf": [
+        {
+          "type": "string"
+        },
+        {
+          "type": "null"
+        }
+      ],
+      "title": "Empty Reason"
+    },
+    "processed_block_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Processed Block Ids",
+      "type": "array"
+    },
+    "unread_block_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unread Block Ids",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "samples": {
+      "items": {
+        "$ref": "#/$defs/SampleV2"
+      },
+      "title": "Samples",
+      "type": "array"
+    },
+    "states": {
+      "items": {
+        "$ref": "#/$defs/State"
+      },
+      "title": "States",
+      "type": "array"
+    },
+    "protocols": {
+      "items": {
+        "$ref": "#/$defs/ProtocolV2"
+      },
+      "title": "Protocols",
+      "type": "array"
+    },
+    "results": {
+      "items": {
+        "$ref": "#/$defs/ResultV2"
+      },
+      "title": "Results",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "work_id",
+    "outcome",
+    "empty_reason",
+    "processed_block_ids",
+    "unread_block_ids",
+    "limitations",
+    "samples",
+    "states",
+    "protocols",
+    "results"
+  ],
+  "title": "ExtractionV2",
+  "type": "object"
+}

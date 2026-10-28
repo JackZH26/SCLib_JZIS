@@ -1,0 +1,214 @@
+{
+  "$defs": {
+    "ContextAssertion": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "kind": {
+          "enum": [
+            "sample",
+            "composition",
+            "protocol",
+            "condition",
+            "identity_conflict",
+            "sample_relation"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "description": {
+          "minLength": 1,
+          "title": "Description",
+          "type": "string"
+        },
+        "span_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Span Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "kind",
+        "description",
+        "span_ids"
+      ],
+      "title": "ContextAssertion",
+      "type": "object"
+    },
+    "InventoryItem": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "minLength": 1,
+          "title": "Id",
+          "type": "string"
+        },
+        "sample_raw": {
+          "minLength": 1,
+          "title": "Sample Raw",
+          "type": "string"
+        },
+        "quantity_name_raw": {
+          "minLength": 1,
+          "title": "Quantity Name Raw",
+          "type": "string"
+        },
+        "value_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Value Raw"
+        },
+        "source_span_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Source Span Ids",
+          "type": "array"
+        },
+        "context_span_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Context Span Ids",
+          "type": "array"
+        }
+      },
+      "required": [
+        "id",
+        "sample_raw",
+        "quantity_name_raw",
+        "value_raw",
+        "source_span_ids",
+        "context_span_ids"
+      ],
+      "title": "InventoryItem",
+      "type": "object"
+    },
+    "SpanDisposition": {
+      "additionalProperties": false,
+      "properties": {
+        "span_id": {
+          "title": "Span Id",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "result_assertions",
+            "context_only",
+            "no_relevant_result",
+            "unread"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "item_ids": {
+          "items": {
+            "type": "string"
+          },
+          "title": "Item Ids",
+          "type": "array"
+        },
+        "reason": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Reason"
+        }
+      },
+      "required": [
+        "span_id",
+        "role",
+        "item_ids",
+        "reason"
+      ],
+      "title": "SpanDisposition",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "materials-source-inventory/1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "work_id": {
+      "title": "Work Id",
+      "type": "string"
+    },
+    "processed_block_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Processed Block Ids",
+      "type": "array"
+    },
+    "unread_block_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unread Block Ids",
+      "type": "array"
+    },
+    "items": {
+      "items": {
+        "$ref": "#/$defs/InventoryItem"
+      },
+      "title": "Items",
+      "type": "array"
+    },
+    "context_assertions": {
+      "items": {
+        "$ref": "#/$defs/ContextAssertion"
+      },
+      "title": "Context Assertions",
+      "type": "array"
+    },
+    "span_dispositions": {
+      "items": {
+        "$ref": "#/$defs/SpanDisposition"
+      },
+      "title": "Span Dispositions",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "work_id",
+    "processed_block_ids",
+    "unread_block_ids",
+    "items",
+    "context_assertions",
+    "span_dispositions",
+    "limitations"
+  ],
+  "title": "Inventory",
+  "type": "object"
+}

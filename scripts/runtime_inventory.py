@@ -16,8 +16,16 @@ from pathlib import Path
 import tomllib
 
 SCHEMA = "sclib-runtime-inventory/v2"
-# Exclusive dev-extra tools/dependencies only. Runtime packages always match.
-DEV_ONLY = {"pytest", "pytest-asyncio", "ruff", "iniconfig", "pluggy", "pygments"}
+# Extra tools in the test inventories of the ordinary API/ingestion images.
+# JSON Schema validates retained NER fixtures; PDF/font tools exercise the
+# separately installed materials-ner capability. This allowance does not claim
+# that the ordinary ingestion image includes that optional capability. Every
+# package actually present in a runtime must still match the test version.
+DEV_ONLY = {
+    "pytest", "pytest-asyncio", "ruff", "iniconfig", "pluggy", "pygments",
+    "jsonschema", "attrs", "jsonschema-specifications", "referencing", "rpds-py",
+    "pypdf", "fonttools",
+}
 FIELDS = {"schema", "python_minor", "python_version", "implementation", "system", "machine",
           "lock_sha256", "pyproject_sha256", "collector_sha256", "source_revision",
           "project_name", "project_version", "packages"}

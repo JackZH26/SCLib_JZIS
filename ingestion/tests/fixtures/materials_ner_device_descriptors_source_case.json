@@ -1,0 +1,26 @@
+{
+  "work_id": "arxiv:1808.07865",
+  "publication_version": "v2",
+  "source_archive_sha256": "ebfe32db322c4de260d58f14efec86be0bba4f4389b6b736217423d000215abd",
+  "author": "Codex development reference; not independent Gold",
+  "scientific_acceptance": false,
+  "twist": {
+    "block_id": "doc:ebfe32db322c4de260d5:b00001",
+    "start_char": 49058,
+    "end_char": 49242,
+    "quote": "D2 & ~$\\sim$1.27$^{\\circ}$ & 1.33 & 300 & well-developed at $\\pm n_s/2$ and $+ 3n_s/4$, resistive state at $+n_s/4$ & $T_c \\approx$ 3.1 K for holes, still developing for electrons & \\\\"
+  },
+  "displacement": {
+    "block_id": "doc:ebfe32db322c4de260d5:b00001",
+    "start_char": 65767,
+    "end_char": 65888,
+    "quote": "Device resistance for hole-doping around $-n_s/2$ versus $T$ at\n(\\textbf{A}) $-0.51$ V/nm and \n(\\textbf{B}) $+0.61$ V/nm."
+  },
+  "criterion": "$T_c$ is defined as the crossover point between low and high temperature linear fits to the curves in (C).",
+  "criterion_anchor": {
+    "block_id": "doc:ebfe32db322c4de260d5:b00001",
+    "start_char": 16920,
+    "end_char": 17026,
+    "quote": "$T_c$ is defined as the crossover point between low and high temperature linear fits to the curves in (C)."
+  }
+}

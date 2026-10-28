@@ -1,0 +1,1231 @@
+{
+  "$defs": {
+    "CompositionVariable": {
+      "additionalProperties": false,
+      "properties": {
+        "symbol": {
+          "title": "Symbol",
+          "type": "string"
+        },
+        "site": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Site"
+        },
+        "basis": {
+          "enum": [
+            "nominal",
+            "measured",
+            "refined",
+            "calculation_input",
+            "unresolved"
+          ],
+          "title": "Basis",
+          "type": "string"
+        },
+        "amount": {
+          "$ref": "#/$defs/Quantity"
+        }
+      },
+      "required": [
+        "symbol",
+        "site",
+        "basis",
+        "amount"
+      ],
+      "title": "CompositionVariable",
+      "type": "object"
+    },
+    "Condition": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "pressure",
+            "temperature",
+            "magnetic_flux_density",
+            "magnetic_field_strength",
+            "mu0_h",
+            "thickness",
+            "strain",
+            "carrier_density",
+            "gate_voltage",
+            "delay"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "role": {
+          "enum": [
+            "measurement",
+            "synthesis",
+            "simulation",
+            "detection_window",
+            "pump",
+            "unknown"
+          ],
+          "title": "Role",
+          "type": "string"
+        },
+        "quantity": {
+          "$ref": "#/$defs/Quantity"
+        },
+        "orientation_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Orientation Raw"
+        },
+        "basis_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Basis Raw"
+        }
+      },
+      "required": [
+        "kind",
+        "role",
+        "quantity",
+        "orientation_raw",
+        "basis_raw"
+      ],
+      "title": "Condition",
+      "type": "object"
+    },
+    "Dependency": {
+      "additionalProperties": false,
+      "properties": {
+        "result_id": {
+          "title": "Result Id",
+          "type": "string"
+        },
+        "relation": {
+          "enum": [
+            "derived_from",
+            "same_measurement",
+            "compares_with"
+          ],
+          "title": "Relation",
+          "type": "string"
+        }
+      },
+      "required": [
+        "result_id",
+        "relation"
+      ],
+      "title": "Dependency",
+      "type": "object"
+    },
+    "EmptyCompletion": {
+      "additionalProperties": false,
+      "properties": {
+        "outcome": {
+          "const": "empty",
+          "title": "Outcome",
+          "type": "string"
+        },
+        "empty_reason": {
+          "description": "Concrete reason this target has no results.",
+          "minLength": 1,
+          "title": "Empty Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "outcome",
+        "empty_reason"
+      ],
+      "title": "EmptyCompletion",
+      "type": "object"
+    },
+    "EvidenceReference": {
+      "additionalProperties": false,
+      "properties": {
+        "evidence_id": {
+          "title": "Evidence Id",
+          "type": "string"
+        },
+        "fields": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Fields",
+          "type": "array"
+        }
+      },
+      "required": [
+        "evidence_id",
+        "fields"
+      ],
+      "title": "EvidenceReference",
+      "type": "object"
+    },
+    "IncompleteCompletion": {
+      "additionalProperties": false,
+      "properties": {
+        "outcome": {
+          "const": "incomplete",
+          "title": "Outcome",
+          "type": "string"
+        },
+        "empty_reason": {
+          "title": "Empty Reason",
+          "type": "null"
+        }
+      },
+      "required": [
+        "outcome",
+        "empty_reason"
+      ],
+      "title": "IncompleteCompletion",
+      "type": "object"
+    },
+    "Isotope": {
+      "additionalProperties": false,
+      "properties": {
+        "element": {
+          "pattern": "^[A-Z][a-z]?$",
+          "title": "Element",
+          "type": "string"
+        },
+        "mass_number": {
+          "exclusiveMinimum": 0,
+          "title": "Mass Number",
+          "type": "integer"
+        },
+        "fraction": {
+          "$ref": "#/$defs/Quantity"
+        }
+      },
+      "required": [
+        "element",
+        "mass_number",
+        "fraction"
+      ],
+      "title": "Isotope",
+      "type": "object"
+    },
+    "Observation": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "sample": {
+          "$ref": "#/$defs/ObservationSample"
+        },
+        "state": {
+          "$ref": "#/$defs/ObservationState"
+        },
+        "protocol": {
+          "$ref": "#/$defs/ObservationProtocol"
+        },
+        "result": {
+          "$ref": "#/$defs/ObservationResult"
+        }
+      },
+      "required": [
+        "id",
+        "sample",
+        "state",
+        "protocol",
+        "result"
+      ],
+      "title": "Observation",
+      "type": "object"
+    },
+    "ObservationProtocol": {
+      "additionalProperties": false,
+      "properties": {
+        "method": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Method"
+        },
+        "observable": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Observable"
+        },
+        "criterion": {
+          "enum": [
+            "onset",
+            "midpoint",
+            "zero_resistance",
+            "offset",
+            "diamagnetic_onset",
+            "heat_capacity_anomaly",
+            "gap_closure",
+            "bkt",
+            "fit_parameter",
+            "not_applicable",
+            "unspecified"
+          ],
+          "title": "Criterion",
+          "type": "string"
+        },
+        "criterion_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Criterion Raw"
+        },
+        "details_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Details Raw"
+        },
+        "evidence": {
+          "description": "Source bindings for every asserted field required by the extraction instructions.",
+          "items": {
+            "$ref": "#/$defs/EvidenceReference"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "method",
+        "observable",
+        "criterion",
+        "criterion_raw",
+        "details_raw",
+        "evidence"
+      ],
+      "title": "ObservationProtocol",
+      "type": "object"
+    },
+    "ObservationResult": {
+      "additionalProperties": false,
+      "properties": {
+        "quantity_kind": {
+          "enum": [
+            "tc",
+            "model_temperature_scale",
+            "critical_pressure",
+            "hc2",
+            "gap_energy",
+            "electron_phonon_lambda",
+            "omega_log",
+            "superfluid_stiffness",
+            "non_detection",
+            "unmapped"
+          ],
+          "title": "Quantity Kind",
+          "type": "string"
+        },
+        "quantity_name_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Quantity Name Raw"
+        },
+        "quantity": {
+          "$ref": "#/$defs/Quantity"
+        },
+        "origin": {
+          "enum": [
+            "observed",
+            "computed",
+            "model_derived",
+            "unknown"
+          ],
+          "title": "Origin",
+          "type": "string"
+        },
+        "source_role": {
+          "enum": [
+            "primary",
+            "cited",
+            "unknown"
+          ],
+          "title": "Source Role",
+          "type": "string"
+        },
+        "component_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Component Raw"
+        },
+        "interpretation_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Interpretation Raw"
+        },
+        "cited_source_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Cited Source Raw"
+        },
+        "dependencies": {
+          "items": {
+            "$ref": "#/$defs/Dependency"
+          },
+          "title": "Dependencies",
+          "type": "array"
+        },
+        "evidence": {
+          "description": "Source bindings for every asserted field required by the extraction instructions.",
+          "items": {
+            "$ref": "#/$defs/EvidenceReference"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "quantity_kind",
+        "quantity_name_raw",
+        "quantity",
+        "origin",
+        "source_role",
+        "component_raw",
+        "interpretation_raw",
+        "cited_source_raw",
+        "dependencies",
+        "evidence"
+      ],
+      "title": "ObservationResult",
+      "type": "object"
+    },
+    "ObservationSample": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Label"
+        },
+        "formula_raw": {
+          "title": "Formula Raw",
+          "type": "string"
+        },
+        "composition_basis": {
+          "enum": [
+            "nominal",
+            "measured",
+            "refined",
+            "calculation_input",
+            "unresolved"
+          ],
+          "title": "Composition Basis",
+          "type": "string"
+        },
+        "identity_resolution": {
+          "enum": [
+            "source_scoped",
+            "unresolved",
+            "conflicted"
+          ],
+          "title": "Identity Resolution",
+          "type": "string"
+        },
+        "target_kind": {
+          "enum": [
+            "bulk",
+            "film",
+            "interface",
+            "device",
+            "phase",
+            "component",
+            "calculation_model",
+            "unresolved"
+          ],
+          "title": "Target Kind",
+          "type": "string"
+        },
+        "form_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Form Raw"
+        },
+        "substrate_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Substrate Raw"
+        },
+        "isotopes": {
+          "items": {
+            "$ref": "#/$defs/Isotope"
+          },
+          "title": "Isotopes",
+          "type": "array"
+        },
+        "variables": {
+          "items": {
+            "$ref": "#/$defs/CompositionVariable"
+          },
+          "title": "Variables",
+          "type": "array"
+        },
+        "evidence": {
+          "description": "Source bindings for every asserted field required by the extraction instructions.",
+          "items": {
+            "$ref": "#/$defs/EvidenceReference"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "label",
+        "formula_raw",
+        "composition_basis",
+        "identity_resolution",
+        "target_kind",
+        "form_raw",
+        "substrate_raw",
+        "isotopes",
+        "variables",
+        "evidence"
+      ],
+      "title": "ObservationSample",
+      "type": "object"
+    },
+    "ObservationState": {
+      "additionalProperties": false,
+      "properties": {
+        "label": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Label"
+        },
+        "conditions": {
+          "items": {
+            "$ref": "#/$defs/Condition"
+          },
+          "title": "Conditions",
+          "type": "array"
+        },
+        "preparation_raw": {
+          "anyOf": [
+            {
+              "type": "string"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Preparation Raw"
+        },
+        "evidence": {
+          "description": "Required source bindings. Include /sample_id even when conditions is empty.",
+          "items": {
+            "$ref": "#/$defs/EvidenceReference"
+          },
+          "title": "Evidence",
+          "type": "array"
+        }
+      },
+      "required": [
+        "label",
+        "conditions",
+        "preparation_raw",
+        "evidence"
+      ],
+      "title": "ObservationState",
+      "type": "object"
+    },
+    "Quantity": {
+      "anyOf": [
+        {
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "reported"
+              ]
+            },
+            "raw": {
+              "type": "string",
+              "minLength": 1
+            },
+            "relation": {
+              "type": "string",
+              "enum": [
+                "exact"
+              ]
+            },
+            "value": {
+              "type": "number"
+            },
+            "lower": {
+              "type": "null"
+            },
+            "upper": {
+              "type": "null"
+            },
+            "unit": {
+              "type": "string",
+              "minLength": 1
+            },
+            "approximate": {
+              "title": "Approximate",
+              "type": "boolean"
+            },
+            "uncertainty": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Uncertainty"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "raw",
+            "relation",
+            "value",
+            "lower",
+            "upper",
+            "unit",
+            "approximate",
+            "uncertainty"
+          ],
+          "title": "Quantity",
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "reported"
+              ]
+            },
+            "raw": {
+              "type": "string",
+              "minLength": 1
+            },
+            "relation": {
+              "type": "string",
+              "enum": [
+                "interval"
+              ]
+            },
+            "value": {
+              "type": "null"
+            },
+            "lower": {
+              "type": "number"
+            },
+            "upper": {
+              "type": "number"
+            },
+            "unit": {
+              "type": "string",
+              "minLength": 1
+            },
+            "approximate": {
+              "title": "Approximate",
+              "type": "boolean"
+            },
+            "uncertainty": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Uncertainty"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "raw",
+            "relation",
+            "value",
+            "lower",
+            "upper",
+            "unit",
+            "approximate",
+            "uncertainty"
+          ],
+          "title": "Quantity",
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "reported"
+              ]
+            },
+            "raw": {
+              "type": "string",
+              "minLength": 1
+            },
+            "relation": {
+              "type": "string",
+              "enum": [
+                "lt"
+              ]
+            },
+            "value": {
+              "type": "null"
+            },
+            "lower": {
+              "type": "null"
+            },
+            "upper": {
+              "type": "number"
+            },
+            "unit": {
+              "type": "string",
+              "minLength": 1
+            },
+            "approximate": {
+              "title": "Approximate",
+              "type": "boolean"
+            },
+            "uncertainty": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Uncertainty"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "raw",
+            "relation",
+            "value",
+            "lower",
+            "upper",
+            "unit",
+            "approximate",
+            "uncertainty"
+          ],
+          "title": "Quantity",
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "reported"
+              ]
+            },
+            "raw": {
+              "type": "string",
+              "minLength": 1
+            },
+            "relation": {
+              "type": "string",
+              "enum": [
+                "le"
+              ]
+            },
+            "value": {
+              "type": "null"
+            },
+            "lower": {
+              "type": "null"
+            },
+            "upper": {
+              "type": "number"
+            },
+            "unit": {
+              "type": "string",
+              "minLength": 1
+            },
+            "approximate": {
+              "title": "Approximate",
+              "type": "boolean"
+            },
+            "uncertainty": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Uncertainty"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "raw",
+            "relation",
+            "value",
+            "lower",
+            "upper",
+            "unit",
+            "approximate",
+            "uncertainty"
+          ],
+          "title": "Quantity",
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "reported"
+              ]
+            },
+            "raw": {
+              "type": "string",
+              "minLength": 1
+            },
+            "relation": {
+              "type": "string",
+              "enum": [
+                "gt"
+              ]
+            },
+            "value": {
+              "type": "null"
+            },
+            "lower": {
+              "type": "number"
+            },
+            "upper": {
+              "type": "null"
+            },
+            "unit": {
+              "type": "string",
+              "minLength": 1
+            },
+            "approximate": {
+              "title": "Approximate",
+              "type": "boolean"
+            },
+            "uncertainty": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Uncertainty"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "raw",
+            "relation",
+            "value",
+            "lower",
+            "upper",
+            "unit",
+            "approximate",
+            "uncertainty"
+          ],
+          "title": "Quantity",
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "type": "string",
+              "enum": [
+                "reported"
+              ]
+            },
+            "raw": {
+              "type": "string",
+              "minLength": 1
+            },
+            "relation": {
+              "type": "string",
+              "enum": [
+                "ge"
+              ]
+            },
+            "value": {
+              "type": "null"
+            },
+            "lower": {
+              "type": "number"
+            },
+            "upper": {
+              "type": "null"
+            },
+            "unit": {
+              "type": "string",
+              "minLength": 1
+            },
+            "approximate": {
+              "title": "Approximate",
+              "type": "boolean"
+            },
+            "uncertainty": {
+              "anyOf": [
+                {
+                  "$ref": "#/$defs/Uncertainty"
+                },
+                {
+                  "type": "null"
+                }
+              ]
+            }
+          },
+          "required": [
+            "status",
+            "raw",
+            "relation",
+            "value",
+            "lower",
+            "upper",
+            "unit",
+            "approximate",
+            "uncertainty"
+          ],
+          "title": "Quantity",
+          "type": "object"
+        },
+        {
+          "additionalProperties": false,
+          "properties": {
+            "status": {
+              "enum": [
+                "not_reported",
+                "not_accessible",
+                "not_extracted",
+                "ambiguous",
+                "conflicted",
+                "not_applicable"
+              ],
+              "title": "Status",
+              "type": "string"
+            },
+            "raw": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "title": "Raw"
+            },
+            "relation": {
+              "type": "null"
+            },
+            "value": {
+              "type": "null"
+            },
+            "lower": {
+              "type": "null"
+            },
+            "upper": {
+              "type": "null"
+            },
+            "unit": {
+              "anyOf": [
+                {
+                  "type": "string"
+                },
+                {
+                  "type": "null"
+                }
+              ],
+              "description": "Source unit for dimensional values. Use '1' for a dimensionless quantity, which does not imply that the paper printed a unit. A conflicted raw quantity may preserve its known unit without choosing a number.",
+              "title": "Unit"
+            },
+            "approximate": {
+              "title": "Approximate",
+              "type": "boolean"
+            },
+            "uncertainty": {
+              "type": "null"
+            }
+          },
+          "required": [
+            "status",
+            "raw",
+            "relation",
+            "value",
+            "lower",
+            "upper",
+            "unit",
+            "approximate",
+            "uncertainty"
+          ],
+          "title": "Quantity",
+          "type": "object"
+        }
+      ]
+    },
+    "Quote": {
+      "additionalProperties": false,
+      "properties": {
+        "id": {
+          "title": "Id",
+          "type": "string"
+        },
+        "block_id": {
+          "title": "Block Id",
+          "type": "string"
+        },
+        "quote": {
+          "minLength": 1,
+          "title": "Quote",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "block_id",
+        "quote"
+      ],
+      "title": "Quote",
+      "type": "object"
+    },
+    "ResultsCompletion": {
+      "additionalProperties": false,
+      "properties": {
+        "outcome": {
+          "const": "results",
+          "title": "Outcome",
+          "type": "string"
+        },
+        "empty_reason": {
+          "title": "Empty Reason",
+          "type": "null"
+        }
+      },
+      "required": [
+        "outcome",
+        "empty_reason"
+      ],
+      "title": "ResultsCompletion",
+      "type": "object"
+    },
+    "Uncertainty": {
+      "additionalProperties": false,
+      "properties": {
+        "kind": {
+          "enum": [
+            "standard_deviation",
+            "standard_error",
+            "confidence_interval",
+            "resolution",
+            "reported_unspecified"
+          ],
+          "title": "Kind",
+          "type": "string"
+        },
+        "minus": {
+          "minimum": 0,
+          "title": "Minus",
+          "type": "number"
+        },
+        "plus": {
+          "minimum": 0,
+          "title": "Plus",
+          "type": "number"
+        },
+        "level": {
+          "anyOf": [
+            {
+              "exclusiveMaximum": 1,
+              "exclusiveMinimum": 0,
+              "type": "number"
+            },
+            {
+              "type": "null"
+            }
+          ],
+          "title": "Level"
+        },
+        "raw": {
+          "title": "Raw",
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "minus",
+        "plus",
+        "level",
+        "raw"
+      ],
+      "title": "Uncertainty",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "materials-ner-compact/2",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "work_id": {
+      "title": "Work Id",
+      "type": "string"
+    },
+    "completion": {
+      "anyOf": [
+        {
+          "$ref": "#/$defs/EmptyCompletion"
+        },
+        {
+          "$ref": "#/$defs/ResultsCompletion"
+        },
+        {
+          "$ref": "#/$defs/IncompleteCompletion"
+        }
+      ],
+      "title": "Completion"
+    },
+    "processed_block_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Processed Block Ids",
+      "type": "array"
+    },
+    "unread_block_ids": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Unread Block Ids",
+      "type": "array"
+    },
+    "limitations": {
+      "items": {
+        "type": "string"
+      },
+      "title": "Limitations",
+      "type": "array"
+    },
+    "evidence_pool": {
+      "items": {
+        "$ref": "#/$defs/Quote"
+      },
+      "title": "Evidence Pool",
+      "type": "array"
+    },
+    "observations": {
+      "items": {
+        "$ref": "#/$defs/Observation"
+      },
+      "title": "Observations",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "work_id",
+    "completion",
+    "processed_block_ids",
+    "unread_block_ids",
+    "limitations",
+    "evidence_pool",
+    "observations"
+  ],
+  "title": "CompactExtraction",
+  "type": "object"
+}
