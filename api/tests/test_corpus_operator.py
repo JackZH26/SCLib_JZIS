@@ -48,11 +48,32 @@ async def test_resumable_operator_preserves_originals_and_activates_only_after_f
 ):
     tmp_path.chmod(0o700)
     rows = []
+    untouched_tables = (
+        "legacy_index_papers",
+        "legacy_index_sources",
+        "legacy_index_windows",
+        "rag_evidence_revisions",
+        "embedding_completion_receipts",
+        "index_generations",
+    )
+
+    async def chunk_snapshot(db):
+        return dict((await db.execute(sa.text("SELECT id, to_jsonb(c) FROM chunks c"))).all())
+
     async with get_session_factory()() as db:
+        # The operator must coexist with retained data from outside this pack.
+        # Keep that case present even when this test runs by itself.
+        await input_window(db)
         for _ in range(3):
             chunk, member, args = await input_window(db)
             rows.append((chunk, json.loads(args["paper_raw"])))
         await db.commit()
+        original_chunks = await chunk_snapshot(db)
+        original_counts = {
+            table: await db.scalar(sa.text("SELECT count(*) FROM " + table))
+            for table in untouched_tables
+        }
+        original_active = await index_generations.load_active_generation(db)
     pack = Pack(tmp_path / "pack.sqlite", specification({"synthetic": True}))
     for n, (chunk, paper) in enumerate(sorted(rows, key=lambda row: row[0]["id"]), 1):
         pack.append(n, chunk, paper)
@@ -105,7 +126,7 @@ async def test_resumable_operator_preserves_originals_and_activates_only_after_f
         journal=tmp_path / "journal.sqlite",
         max_new_partitions=1,
         validation_id=None,
-        expected_event_id="none",
+        expected_event_id=original_active["activation_event_id"] if original_active else "none",
         idempotency_key="synthetic-corpus-operator",
     )
     # API tests construct the exact model metadata; Alembic admission itself is
@@ -121,22 +142,15 @@ async def test_resumable_operator_preserves_originals_and_activates_only_after_f
     for _ in range(3):
         await run(args)
     async with get_session_factory()() as db:
-        assert await db.scalar(sa.text("SELECT count(*) FROM chunks")) == 3
-        for table in (
-            "legacy_index_papers",
-            "legacy_index_sources",
-            "legacy_index_windows",
-            "rag_evidence_revisions",
-            "embedding_completion_receipts",
-            "index_generations",
-        ):
-            assert await db.scalar(sa.text("SELECT count(*) FROM " + table)) == 0
+        assert await chunk_snapshot(db) == original_chunks
+        for table in untouched_tables:
+            assert await db.scalar(sa.text("SELECT count(*) FROM " + table)) == original_counts[table]
     args.command = "stage"
     for _ in range(3):
         await run(args)
     async with get_session_factory()() as db:
-        assert await db.scalar(sa.text("SELECT count(*) FROM chunks")) == 3
-        assert await index_generations.load_active_generation(db) is None
+        assert await chunk_snapshot(db) == original_chunks
+        assert await index_generations.load_active_generation(db) == original_active
     index_vector_adapter.register_disposable(target)
     args.command = "publish"
     await run(args)
@@ -150,14 +164,14 @@ async def test_resumable_operator_preserves_originals_and_activates_only_after_f
         row["validation_id"] for row in reversed(events) if row["stage"] == "validated"
     )
     async with get_session_factory()() as db:
-        assert await index_generations.load_active_generation(db) is None
+        assert await index_generations.load_active_generation(db) == original_active
     args.command = "activate"
     await run(args)
     async with get_session_factory()() as db:
         assert (await index_generations.load_active_generation(db))[
             "generation_id"
         ] == args.generation_id
-        assert await db.scalar(sa.text("SELECT count(*) FROM chunks")) == 3
+        assert await chunk_snapshot(db) == original_chunks
     from services import rag, retrieval_currentness
 
     # This fixture keeps all operator commits in one rollback-only outer
