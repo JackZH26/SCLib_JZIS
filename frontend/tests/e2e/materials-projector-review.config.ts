@@ -5,7 +5,8 @@ import { defineConfig } from "@playwright/test";
 
 const port = 32046, baseURL = `http://127.0.0.1:${port}`;
 export default defineConfig({
-  testDir: ".", testMatch: "materials-projector-review.visual.ts", fullyParallel: false, workers: 1, retries: 0,
+  // Original HTTP captures are opt-in; the synthetic CI suite collects *.visual.ts.
+  testDir: ".", testMatch: "materials-projector-review.capture.ts", fullyParallel: false, workers: 1, retries: 0,
   timeout: 60_000, reporter: "list", outputDir: process.env.SCLIB_PROJECTOR_BROWSER_OUTPUT ?? mkdtempSync(path.join(tmpdir(), "sclib-projector-browser-")),
   use: { baseURL, browserName: "chromium", serviceWorkers: "block", screenshot: "only-on-failure", trace: "retain-on-failure" },
   webServer: {

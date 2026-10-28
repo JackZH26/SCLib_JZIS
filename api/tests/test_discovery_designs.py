@@ -388,6 +388,15 @@ async def test_empty_migration_roundtrip_uses_actual_metadata_guards(db_session,
         ops = Operations(MigrationContext.configure(connection))
         for revision in revisions:
             monkeypatch.setattr(revision.module, "op", ops)
+        # Base.metadata excludes the private proposal schema. Apply its actual
+        # migrations before replaying the complete current dependency chain.
+        private_revisions = {
+            "0092_materials_ner_proposals", "0100_materials_ner_relations",
+            "0103_materials_ner_amendments",
+        }
+        for revision in reversed(revisions):
+            if revision.revision in private_revisions:
+                revision.module.upgrade()
         foreign_keys = sa.text("SELECT conrelid::regclass::text, conname FROM pg_constraint "
                                "WHERE contype='f' AND connamespace='public'::regnamespace "
                                "ORDER BY 1, 2")

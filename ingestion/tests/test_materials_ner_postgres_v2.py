@@ -174,7 +174,7 @@ async def test_duplicate_import_checks_all_relational_rows(database, packets, sq
 
 
 @pytest.mark.parametrize("change,match", [
-    ("rows", "row derivation mismatch"), ("evidence", "evidence projection mismatch"),
+    ("rows", "row derivation mismatch"), ("evidence", "proposal evidence derivation mismatch"),
     ("job", "job binding mismatch"), ("approval", "cannot self-approve"),
 ])
 @pytest.mark.asyncio
