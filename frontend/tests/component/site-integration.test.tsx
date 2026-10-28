@@ -82,3 +82,11 @@ it("submits formulas and multilingual queries without changing their meaning", (
   fireEvent.submit(screen.getByRole("search"));
   expect(push).toHaveBeenCalledWith("/?q=" + encodeURIComponent("FeSe + 超导"));
 });
+
+it("submits the current DOM value even when no React change event was received", () => {
+  render(<SearchBar initial="FeSe" target="/search" />);
+  const input = screen.getByRole("searchbox") as HTMLInputElement;
+  input.value = "  FeTe + FeSe  ";
+  fireEvent.submit(screen.getByRole("search"));
+  expect(push).toHaveBeenCalledWith("/search?q=" + encodeURIComponent("FeTe + FeSe"));
+});
