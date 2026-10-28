@@ -67,3 +67,34 @@ def test_metadata_upgrade_keeps_the_existing_group_split(tmp_path):
         work = row['groups']['work_id']
         score = int(hashlib.sha256(('materials-reported-tc-training-view/1:' + work).encode()).hexdigest()[:16], 16) / 2**64
         assert row['groups']['split'] == ('train' if score < .8 else 'validation' if score < .9 else 'test')
+
+
+@pytest.mark.parametrize('pressure', [0.0, 1.5])
+def test_reported_pressure_survives_unknown_regime_without_imputation(tmp_path, pressure):
+    explicit = record()
+    explicit.update(id='reported-pressure', pressure_gpa=pressure, pressure_status='reported')
+    explicit['conditions']['pressure']['availability'] = 'reported'
+    _, manifest, rows, excluded = run(tmp_path, [record(), explicit])
+    assert not excluded and manifest['rows'] == 2
+    assert 'pressure_gpa' not in rows[0]['features']
+    assert rows[1]['features']['pressure_gpa'] == pressure
+    assert rows[1]['features']['pressure_regime'] == 'unknown'
+
+
+def test_explicit_ambient_numeric_pressure_is_preserved(tmp_path):
+    row = record()
+    row.update(pressure_gpa=0.0, pressure_status='explicit_ambient')
+    row['conditions']['pressure'].update(availability='reported', regime='explicit_ambient')
+    _, _, rows, excluded = run(tmp_path, [row])
+    assert not excluded
+    assert rows[0]['features']['pressure_gpa'] == 0.0
+    assert rows[0]['features']['pressure_regime'] == 'explicit_ambient'
+
+
+@pytest.mark.parametrize('pressure,status', [(float('nan'), 'reported'), (float('inf'), 'reported'), (0.0, 'not_reported')])
+def test_numeric_pressure_requires_a_finite_reported_value(tmp_path, pressure, status):
+    row = record()
+    row.update(pressure_gpa=pressure, pressure_status=status)
+    row['conditions']['pressure']['availability'] = status
+    with pytest.raises(ValueError, match='inconsistent_numeric_pressure'):
+        run(tmp_path, [row])

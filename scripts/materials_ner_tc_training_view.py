@@ -83,7 +83,9 @@ def build(dataset, output):
         features = dict(formula_as_written=formulas[0],
                         specimen_form=row['composition_context']['target_kind'], pressure_regime=regime)
         if row['pressure_gpa'] is not None:
-            if regime == 'unknown' or not finite(row['pressure_gpa']):
+            # A reported pressure can lack a categorical ambient/nonambient label.
+            # Keep both source fields; do not infer that label from a zero value.
+            if row['conditions']['pressure'].get('availability') != 'reported' or not finite(row['pressure_gpa']):
                 raise ValueError('inconsistent_numeric_pressure')
             features['pressure_gpa'] = row['pressure_gpa']
         if row['magnetic_field_t'] is not None:
@@ -146,7 +148,7 @@ def build(dataset, output):
         uncertainty_policy='Approximate point labels are retained and flagged. Bounds and intervals remain in the source dataset; no midpoint is created.',
         composition_policy='As-written formula text is a feature; normalized or measured stoichiometry is not inferred.',
         interpretation_policy='Inspect attribution and sample context in the source snapshot for task-specific selection. Specimen form is not proof of bulk superconductivity.',
-        missing_condition_policy='Missing numeric conditions are omitted; unknown pressure is never ambient or zero.',
+        missing_condition_policy='Missing numeric conditions are omitted. Explicitly reported numeric pressure is retained even when its regime is unknown; unknown never supplies an ambient label or a zero value.',
         admission_policy_changed=False, independent_expert_review=False, predictive_model_trained=False)
     rr.put(output / 'MANIFEST.json', manifest)
     return manifest
