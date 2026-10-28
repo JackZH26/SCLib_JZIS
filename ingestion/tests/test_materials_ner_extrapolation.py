@@ -148,5 +148,5 @@ def test_explicit_upgrade_replays_without_mutating_parent_or_default_projection(
     with pytest.raises(ValueError,match='canonical_tc_mapping_contract_not_qualified'):amendments.tc_mapping(a)
     with pytest.raises(ValueError,match='reviewed_proposal_existing_contract_required'):
         validate_graph(a['graph'],prepared[3],{},prepared[4])
-    bad=deepcopy(a);bad['changes'][0]['after']='materials-ner/15'
+    bad=deepcopy(a);bad['changes'][0]['after']='materials-ner/unsupported'
     with pytest.raises(ValueError,match='amendment_contract_upgrade_not_supported'):amendments.verify(bad,parent)

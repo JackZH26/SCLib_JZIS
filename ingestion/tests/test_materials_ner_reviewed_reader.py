@@ -226,7 +226,11 @@ def test_real_process_exit_and_fresh_process_recovery(queued, phase, tmp_path):
     store, _, identifier = queued
     crash = tmp_path / 'crash.py'
     crash.write_text('''import os,sys\nfrom pathlib import Path\nfrom ingestion.materials_ner import reviewed_reader as r\nfrom ingestion.materials_ner.store import Store\nfrom test_materials_ner_reviewed_reader import Fake\ns=Store(Path(sys.argv[1])); phase=sys.argv[3]\nif phase.startswith('after_return'):\n s.finish=lambda *a,**k:os._exit(73)\n p=Fake()\nelse:\n p=Fake(hook=lambda:os._exit(73))\nr.run(s,sys.argv[2],provider_override=p)\n''')
-    result = subprocess.run([sys.executable, str(crash), str(store.root), identifier, phase], capture_output=True, timeout=30)
+    # Pytest's test-module path is not inherited by a fresh Python process.
+    child_env = dict(os.environ, PYTHONPATH=os.pathsep.join(filter(None, [
+        str(Path(__file__).resolve().parent), os.environ.get('PYTHONPATH'),
+    ])))
+    result = subprocess.run([sys.executable, str(crash), str(store.root), identifier, phase], capture_output=True, timeout=30, env=child_env)
     assert result.returncode == 73, result.stderr.decode()
     if phase == 'after_return_expired':
         with store.connect() as db:
