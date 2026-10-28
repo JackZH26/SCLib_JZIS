@@ -7,12 +7,14 @@ from html.parser import HTMLParser
 import json
 from pathlib import Path
 from uuid import UUID
+import xml.etree.ElementTree as ET
 
 import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import insert
 from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine
 
 from ingestion.materials_ner import reviewed_reader as rr
+from ingestion.materials_ner.source_metadata import ATOM, parse_metadata
 from materials_ner_tc_intake import uid, checked_projection, AdmissionValidation, prepare, apply, source_provenance
 from materials_ner_tc_sampling import retained, BATCH_ROUTE, RECORD_ROUTE
 from materials_ner_canonical_bridge import _put, require
@@ -29,6 +31,32 @@ class Metadata(HTMLParser):
         values=dict(attrs)
         if tag=='meta' and values.get('name') and values.get('content'):
             self.values.setdefault(values['name'],[]).append(values['content'])
+
+
+def paper_metadata(preflight, work_id):
+    receipt=read_pin(preflight['official_metadata_receipt']);ref=receipt['artifact']
+    raw=Path(ref['path']).read_bytes()
+    require(hashlib.sha256(raw).hexdigest()==ref['sha256'],'official_metadata_changed')
+    format_name=preflight.get('official_metadata_format','abs_html')
+    if format_name=='abs_html':
+        parser=Metadata();parser.feed(raw.decode());return parser.values
+    require(format_name=='arxiv_atom_batch','official_metadata_format_unsupported')
+    aid=work_id.removeprefix('arxiv:');entries=parse_metadata(receipt,raw)
+    require(aid in entries,'official_metadata_work_missing')
+    require(entries[aid]['version']==preflight['latest_version_observed'],'official_metadata_version_mismatch')
+    require(not entries[aid]['withdrawn'],'official_metadata_source_withdrawn')
+    entry=next(e for e in ET.fromstring(raw).findall(ATOM+'entry')
+        if e.findtext(ATOM+'id','').strip().split('/abs/',1)[-1]==aid+entries[aid]['version'])
+    values={}
+    for key,tag in [('citation_title','title'),('description','summary')]:
+        value=' '.join(entry.findtext(ATOM+tag,'').split())
+        if value:values[key]=[value]
+    authors=[' '.join(a.findtext(ATOM+'name','').split()) for a in entry.findall(ATOM+'author')]
+    values['citation_author']=[author for author in authors if author]
+    try:published=datetime.fromisoformat(entry.findtext(ATOM+'published','').strip().replace('Z','+00:00'))
+    except ValueError:pass
+    else:values['citation_date']=[published.date().isoformat()]
+    return values
 
 
 def capture(path,value):
@@ -74,10 +102,7 @@ async def existing_results(db,packet,projection,selection,audit,*,admission_rout
 async def identities(db,packet,projection,selection,audit,snapshot,excluded_result_ids=(),*,admission_route=BATCH_ROUTE):
     work=packet['work_id'];aid=work.removeprefix('arxiv:')
     pv=source_provenance(packet);pre=json.loads(pv['preflight_json'])
-    receipt=read_pin(pre['official_metadata_receipt']);ref=receipt['artifact']
-    raw=Path(ref['path']).read_bytes()
-    require(hashlib.sha256(raw).hexdigest()==ref['sha256'],'official_metadata_changed')
-    parser=Metadata();parser.feed(raw.decode());metadata=parser.values
+    metadata=paper_metadata(pre,work)
     title=metadata.get('citation_title',[packet['bundle']['title']])[0]
     paper_table=Base.metadata.tables['papers'];work_table=Base.metadata.tables['works']
     existing=(await db.execute(sa.select(paper_table).where(paper_table.c.id==work))).mappings().one_or_none()
