@@ -23,7 +23,7 @@ from materials_ner_tc_admit import admit
 from materials_ner_tc_intake import checked_projection, freeze
 from materials_ner_tc_sampling import RANDOM_METHOD, BATCH_ROUTE, RECORD_ROUTE
 
-VERSION='production90-prospective-pipeline/3'
+VERSION='production90-prospective-pipeline/4'
 TARGET=500
 
 
@@ -164,6 +164,7 @@ def run(args):
         fcntl.flock(lock,fcntl.LOCK_EX|fcntl.LOCK_NB)
         files=[SCRIPT_DIRECTORY/p for p in STAGE_SCRIPTS]
         files += [SCRIPT_DIRECTORY/'materials_ner_tc_capacity.py',Path(__file__),SCRIPT_DIRECTORY/'materials_ner_production90.py',Path(core_tc.__file__),Path(core_tc_audit.__file__)]
+        files += [Path(rr.__file__),Path(rr.__file__).with_name('source_metadata.py')]
         plan=dict(schema=VERSION,source_plan=rr.reference(args.plan),goal=rr.reference(args.goal),
             root=str(args.root),campaign=str(args.campaign),audit_root=str(args.audit_root),
             source_python=str(args.source_python),ssh_host=args.ssh_host,source_start=args.source_start,

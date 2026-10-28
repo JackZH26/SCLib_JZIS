@@ -20,6 +20,7 @@ from ingestion.materials_ner import reviewed_reader as rr, source_audit
 from ingestion.materials_ner.contract import digest
 from ingestion.materials_ner.planning import diverse_order, load_plan
 from ingestion.materials_ner.sources import load_bundle, parse_local, save_bundle, sha, private_write
+from ingestion.materials_ner.source_metadata import metadata_url, parse_metadata
 
 
 def latest_version(html, aid):
@@ -70,8 +71,28 @@ def write_progress(path,value):
 class OfficialReader:
     def __init__(self):
         self.last=0.0
+        self.batch_metadata={}
+        self.batch_metadata_pin=None
         self.client=httpx.Client(follow_redirects=True,timeout=35,
             headers={'User-Agent':'SCLib-Production90/1.0 (research source provenance)'})
+
+    def prepare_metadata(self,papers,directory):
+        """One rate-limited request; unavailable entries retain the HTML route."""
+        ids=[paper['id'].removeprefix('arxiv:') for paper in papers]
+        if not ids:return
+        response,pin=self.fetch(metadata_url(ids),directory/'metadata.atom')
+        report=dict(schema='materials-official-batch-metadata/1',request=pin,requested_ids=ids,
+            entries={},fallback_ids=ids,rate_limit_seconds=3.1)
+        if response.get('status')==200:
+            # A changed captured artifact is an integrity error, not an HTTP fallback.
+            raw=rr.checked(response['artifact']).read_bytes()
+            try:entries=parse_metadata(response,raw)
+            except ValueError as exc:report['fallback_reason']=str(exc)
+            else:
+                self.batch_metadata=entries;self.batch_metadata_pin=pin
+                report.update(entries=entries,fallback_ids=sorted(set(ids)-set(entries)))
+        else:report['fallback_reason']='official_batch_metadata_unavailable'
+        rr.put(directory/'BATCH_METADATA.json',report)
 
     def fetch(self,url,path):
         receipt=path.with_suffix(path.suffix+'.receipt.json')
@@ -101,13 +122,27 @@ class OfficialVersionUnavailable(ValueError):
 
 def preflight(paper,folder,cache,plan_hash,official):
     work=paper['id'];aid=work.removeprefix('arxiv:');folder.mkdir(parents=True,exist_ok=True)
+    existing=folder/'PREFLIGHT.json'
+    if existing.exists():
+        pin=rr.reference(existing);saved,bundle,_=rr.source_input(pin)
+        if saved['work_id']!=work:raise ValueError('source_resume_identity_changed')
+        return dict(work_id=work,state='source_ready',preflight=pin,profile='core',
+            route=saved['route'],version=saved['latest_version_observed'],blocks=len(bundle.blocks),
+            characters=sum(len(b.text) for b in bundle.blocks))
     acquisition=cache/'acquisitions'/plan_hash/(digest(work)+'.json');bundle=None;gcs_pin=None
     if acquisition.exists():
         gcs_pin=rr.reference(acquisition);captured=json.loads(acquisition.read_bytes())
         if captured['state']=='bundled':bundle=load_bundle(cache/'bundles'/(captured['bundle_sha256']+'.json'))
-    meta,metadata_pin=official.fetch('https://arxiv.org/abs/'+aid,folder/'abstract.html')
-    if meta.get('status')!=200:raise ValueError('official_metadata_unavailable')
-    version=latest_version(rr.checked(meta['artifact']).read_text(errors='replace'),aid)
+    metadata_entry=getattr(official,'batch_metadata',{}).get(aid)
+    metadata_format='abs_html'
+    if metadata_entry is not None:
+        if metadata_entry['withdrawn']:raise ValueError('reader_source_advisory_hold')
+        metadata_pin=official.batch_metadata_pin
+        version=metadata_entry['version'];metadata_format='arxiv_atom_batch'
+    else:
+        meta,metadata_pin=official.fetch('https://arxiv.org/abs/'+aid,folder/'abstract.html')
+        if meta.get('status')!=200:raise ValueError('official_metadata_unavailable')
+        version=latest_version(rr.checked(meta['artifact']).read_text(errors='replace'),aid)
     if bundle is None:
         kind='src' if any(c['source_kind']=='archive' for c in paper.get('candidates',[])) else 'pdf'
     else:
@@ -161,7 +196,8 @@ def preflight(paper,folder,cache,plan_hash,official):
     holds=sorted(set(structure['hold_codes'])-{'publication_version_unverified'})
     result=dict(schema='materials-source-preflight/1',work_id=work,route='gcs_verified' if reused else 'official_arxiv_version',
         bundle=rr.reference(bpath),bundle_sha256=bh,original=rr.reference(cached),structure=rr.reference(folder/'STRUCTURE.json'),
-        official_metadata_receipt=metadata_pin,official_identity_verified=True,latest_version_observed=version,
+        official_metadata_receipt=metadata_pin,official_metadata_format=metadata_format,
+        official_identity_verified=True,latest_version_observed=version,
         exact_version_binding=dict(publication_version=version,source_sha256=source_hash,
             official_bytes=source['artifact'],request_receipt=source_pin),
         version_requests=version_requests,hold_codes=holds,permits_bounded_passage_reading=True,
@@ -199,6 +235,15 @@ def run(plan_path,queue_root,directory,cache,limit,ssh_host,work_ids=None,*,retr
             archive_then_pdf_fallback=True,source_selection_changed=False))
         official=OfficialReader();rows=[]
         try:
+            unfinished=False
+            for paper in cohort['papers']:
+                folder=directory/paper['id'][6:].replace('/','_')
+                result=folder/'RESULT_RETRY.json'
+                if not result.exists():result=folder/'RESULT.json'
+                if (not result.exists() or (retry_held and result.name=='RESULT.json'
+                        and json.loads(result.read_bytes())['state']=='source_route_held')):
+                    unfinished=True;break
+            if unfinished:official.prepare_metadata(cohort['papers'],directory)
             for paper in cohort['papers']:
                 folder=directory/paper['id'][6:].replace('/','_');folder.mkdir(exist_ok=True)
                 result_path=folder/'RESULT.json'

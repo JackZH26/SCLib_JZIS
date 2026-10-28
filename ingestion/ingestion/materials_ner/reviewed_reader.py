@@ -79,7 +79,7 @@ def protocol():
 
 
 def implementation():
-    names = ['reviewed_reader.py', 'store.py', 'providers.py', 'sources.py', 'contract.py', 'page_images.py', 'reader_scope.py', '__init__.py']
+    names = ['reviewed_reader.py', 'store.py', 'providers.py', 'sources.py', 'source_metadata.py', 'contract.py', 'page_images.py', 'reader_scope.py', '__init__.py']
     return [reference(Path(__file__).with_name(name)) for name in names] + [reference(PROTOCOL / name) for name in PINS]
 
 
@@ -114,18 +114,30 @@ def source_input(preflight_pin):
             or request.get('final_url') not in expected_urls or request.get('artifact') != binding['official_bytes']):
         raise ValueError('reader_version_request_mismatch')
     metadata = json.loads(checked(preflight['official_metadata_receipt']).read_bytes())
-    if metadata.get('status') != 200 or metadata.get('requested_url') != f'https://arxiv.org/abs/{aid}':
-        raise ValueError('reader_official_metadata_unresolved')
-    html = checked(metadata['artifact']).read_text(errors='replace')
+    metadata_format = preflight.get('official_metadata_format', 'abs_html')
+    if metadata_format == 'arxiv_atom_batch':
+        from .source_metadata import parse_metadata
+        entries = parse_metadata(metadata, checked(metadata['artifact']).read_bytes())
+        entry = entries.get(aid)
+        if not entry or entry['version'] != version:
+            raise ValueError('reader_official_version_history_mismatch')
+        if entry['withdrawn']:
+            raise ValueError('reader_source_advisory_hold')
+    elif metadata_format == 'abs_html':
+        if metadata.get('status') != 200 or metadata.get('requested_url') != f'https://arxiv.org/abs/{aid}':
+            raise ValueError('reader_official_metadata_unresolved')
+        html = checked(metadata['artifact']).read_text(errors='replace')
+        if not re.search(r'name=["\']citation_arxiv_id["\'][^>]*content=["\']' + re.escape(aid) + r'(?:v\d+)?["\']', html):
+            raise ValueError('reader_official_metadata_identity')
+        versions = {int(v) for v in re.findall(re.escape(aid) + r'v([1-9]\d*)', html)}
+        versions.update(int(v) for v in re.findall(r'\[v([1-9]\d*)\]', html))
+        if not versions or version != f'v{max(versions)}':
+            raise ValueError('reader_official_version_history_mismatch')
+        if re.search(r'(?:this (?:paper|article|submission) (?:has been|is|was) withdrawn|arxiv:withdrawn)', html, re.I):
+            raise ValueError('reader_source_advisory_hold')
+    else:
+        raise ValueError('reader_official_metadata_format_unsupported')
     pins.append(metadata['artifact'])
-    if not re.search(r'name=["\']citation_arxiv_id["\'][^>]*content=["\']' + re.escape(aid) + r'(?:v\d+)?["\']', html):
-        raise ValueError('reader_official_metadata_identity')
-    versions = {int(v) for v in re.findall(re.escape(aid) + r'v([1-9]\d*)', html)}
-    versions.update(int(v) for v in re.findall(r'\[v([1-9]\d*)\]', html))
-    if not versions or version != f'v{max(versions)}':
-        raise ValueError('reader_official_version_history_mismatch')
-    if re.search(r'(?:this (?:paper|article|submission) (?:has been|is|was) withdrawn|arxiv:withdrawn)', html, re.I):
-        raise ValueError('reader_source_advisory_hold')
     if any(code in preflight.get('hold_codes', []) for code in [
             'withdrawn_source', 'retracted_source', 'archived_version_is_not_latest',
             'unsafe_archive_path', 'archive_link_requires_review', 'duplicate_archive_member_path']):
