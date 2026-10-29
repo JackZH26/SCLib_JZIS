@@ -15,13 +15,17 @@ VERSION_RE = re.compile(r'[0-9a-f]{64}')
 async def canonical_download_state(db):
     # Hash all source rows used by the exporter, including same-ID corrections.
     # Database-local paths stay inside this fingerprint and never reach clients.
+    # Keep composition lookup on its UUID index. Only canonical lowercase UUID
+    # strings matched the former id::text comparison; ignore other spellings.
     rows = (await db.execute(text('''SELECT c.id::text AS id,
         md5(jsonb_build_object('claim',to_jsonb(c),'event',to_jsonb(ev),
             'state',to_jsonb(s),'sample',to_jsonb(rs),'protocol',to_jsonb(rp),
             'paper_status',p.status,'publication_status',w.publication_status,
             'compositions',(SELECT jsonb_agg(to_jsonb(sc) ORDER BY sc.id)
-                FROM sample_compositions sc WHERE sc.id::text IN
-                (SELECT jsonb_array_elements_text(ev.context->'materials_context'->'composition_ids'))),
+                FROM sample_compositions sc WHERE sc.id = ANY(ARRAY(
+                SELECT CASE WHEN cid ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
+                    THEN cid::uuid END
+                FROM jsonb_array_elements_text(ev.context->'materials_context'->'composition_ids') AS ids(cid)))),
             'source_occurrences',(SELECT jsonb_agg(jsonb_build_object('occurrence',to_jsonb(o),
                 'revision',to_jsonb(r)) ORDER BY o.id) FROM claim_source_occurrences o
                 JOIN source_revisions r ON r.id=o.source_revision_id WHERE o.claim_id=c.id),
