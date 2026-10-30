@@ -1,5 +1,7 @@
 # Optional Materials release overlay, applied after docker-compose.prod.yml.
 # Enable only after the frozen arXiv first pass and final data verification.
+# Production deploys load this overlay when /etc/sclib/materials-vnext.env exists.
+# Keep the two SCLIB_MATERIALS_* settings in that persistent operator configuration.
 # Setting SCLIB_MATERIALS_VNEXT_ENABLED=false restores the legacy public view
 # while retaining the migrated database and the current application images.
 services:

@@ -199,6 +199,45 @@ required by [`OBSERVABILITY_SLO.md`](OBSERVABILITY_SLO.md). The deployment gate
 fails closed if any prerequisite is missing; SSH connectivity alone is not a
 production-readiness signal.
 
+## Materials vNext cutover and later releases
+
+The signed-image workflow keeps the legacy Materials view until an operator
+creates `/etc/sclib/materials-vnext.env`. Create this non-secret configuration
+only after the frozen arXiv first pass is accounted for, the final admission
+scope and exclusions are transferred, and the database and download snapshot
+agree. Complete the database backup, migration, runtime-table permissions and
+rollback checks before enabling the new view.
+
+The configuration contains these two settings, with the actual verified host
+directory substituted for the example path:
+
+```dotenv
+SCLIB_MATERIALS_VNEXT_ENABLED=true
+SCLIB_MATERIALS_DATASET_DIR=/data/sclib/materials-vnext/downloads
+```
+
+When this file exists, `Deploy to VPS2` reads both the existing project `.env`
+and this configuration through Compose and includes
+`docker-compose.materials-vnext.yml`. Subsequent image releases retain the
+Materials flag and read-only dataset mount. An empty or invalid configuration
+fails deployment; it does not silently fall back to the legacy view. The file
+is not executed as a shell script. Release image digests still come from the
+verified signed-image workflow.
+
+For the initial cutover or a view rollback using the current signed images,
+include these same options in the established production Compose command:
+
+```bash
+--env-file .env --env-file /etc/sclib/materials-vnext.env \
+  -f docker-compose.materials-vnext.yml
+```
+
+Set `SCLIB_MATERIALS_VNEXT_ENABLED=false` in the file and recreate only the API
+and frontend to restore the legacy view while retaining the upgraded database,
+download files and image pins. Check the public Materials page, API and dataset
+downloads after enabling the view; the ordinary deployment health checks do
+not replace these data-consistency checks.
+
 ## Data bootstrap
 
 ### Papers (Phase 2 smoke)
