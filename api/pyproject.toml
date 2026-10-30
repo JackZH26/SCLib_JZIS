@@ -82,5 +82,5 @@ asyncio_default_fixture_loop_scope = "session"
 testpaths = ["tests"]
 
 [tool.uv]
-# email-validator uses dnspython; retain the patched DNS parser on re-resolution.
-constraint-dependencies = ["dnspython>=2.9.0"]
+# Retain patched transitive DNS and JOSE parsers on re-resolution.
+constraint-dependencies = ["dnspython>=2.9.0", "joserfc>=1.7.6"]
