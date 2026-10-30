@@ -90,7 +90,7 @@ export async function MaterialsVNext({ searchParams, materialId }: { searchParam
   };
   return <main className="materials-browser">
     <header className="materials-heading">{materialId && <Link className="site-text-link" href="/materials">Browse all materials</Link>}<h1>{materialId ? (data?.items[0] ? <ReportedFormula formula={data.items[0].formula} /> : "Material results") : "Materials"}</h1><p>{materialId ? "Reported superconducting transitions for this material entry, with their samples, conditions, and original sources." : "Explore reported superconducting transitions, their measurement conditions, and original sources."}</p></header>
-    <p className="materials-vnext-note">Dataset preview · Admission uses a 90% source-check threshold or an individual check against the original paper. Full-corpus processing is in progress.</p>
+    <p className="materials-vnext-note">Admission requires at least 90% correct results in a random batch sample or an individual check against the original paper. Checks are performed by models; errors and missing results may remain.</p>
     <section className="materials-filter-section" aria-label="Filter reported results"><form key={JSON.stringify([materialId, q, pressure, criterion])} className="materials-filter-form materials-vnext-filters" action={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}${route}`} method="get">
       <label className="materials-field"><span>Material or arXiv ID</span><input name="q" defaultValue={q} placeholder="e.g. FeSe or 2301.04984" maxLength={200} /></label>
       <label className="materials-field"><span>Pressure</span><select name="pressure" defaultValue={pressure}>
