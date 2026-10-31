@@ -33,7 +33,9 @@ def write_rows(path, rows):
 
 def build(dataset, output):
     dataset, output = Path(dataset).resolve(), Path(output).resolve()
-    rows = [json.loads(line) for line in dataset.read_text().splitlines() if line.strip()]
+    # JSONL uses LF record delimiters; Unicode paragraph separators belong to
+    # quoted source text and must not split a scientific record.
+    rows = [json.loads(line) for line in dataset.read_text().split('\n') if line.strip()]
     dataset_pin = rr.reference(dataset)
     if len({row['id'] for row in rows}) != len(rows):
         raise ValueError('duplicate_input_record_id')

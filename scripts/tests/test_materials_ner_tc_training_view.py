@@ -69,6 +69,22 @@ def test_metadata_upgrade_keeps_the_existing_group_split(tmp_path):
         assert row['groups']['split'] == ('train' if score < .8 else 'validation' if score < .9 else 'test')
 
 
+@pytest.mark.parametrize('separator', ['\u0085', '\u2028', '\u2029'])
+def test_source_paragraph_separators_do_not_split_jsonl_records(tmp_path, separator):
+    row = record()
+    row['evidence'] = [{'quote': 'Reported Tc' + separator + 'is 5.1 K.'}]
+    source = tmp_path / 'source.jsonl'
+    source.write_text(json.dumps(row, ensure_ascii=False) + '\n')
+    original = source.read_bytes()
+    output = tmp_path / 'training'
+    manifest = build(source, output)
+    included = json.loads((output / 'TRAINING_ROWS.jsonl').read_text())
+    assert manifest['rows'] == 1 and manifest['excluded_from_scalar_view'] == 0
+    assert included['target']['tc_kelvin'] == 5.1
+    assert included['provenance']['dataset_version'] == hashlib.sha256(original).hexdigest()
+    assert source.read_bytes() == original
+
+
 @pytest.mark.parametrize('pressure', [0.0, 1.5])
 def test_reported_pressure_survives_unknown_regime_without_imputation(tmp_path, pressure):
     explicit = record()
