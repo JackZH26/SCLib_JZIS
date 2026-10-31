@@ -55,3 +55,7 @@ packages = ["ingestion"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+
+[tool.uv]
+# Retain the patched ASN.1 parser used by cloud authentication dependencies.
+constraint-dependencies = ["pyasn1>=0.6.5"]

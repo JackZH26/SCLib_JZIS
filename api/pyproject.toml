@@ -82,5 +82,5 @@ asyncio_default_fixture_loop_scope = "session"
 testpaths = ["tests"]
 
 [tool.uv]
-# Retain patched transitive DNS and JOSE parsers on re-resolution.
-constraint-dependencies = ["dnspython>=2.9.0", "joserfc>=1.7.6"]
+# Retain patched transitive DNS, JOSE and ASN.1 parsers on re-resolution.
+constraint-dependencies = ["dnspython>=2.9.0", "joserfc>=1.7.6", "pyasn1>=0.6.5"]
