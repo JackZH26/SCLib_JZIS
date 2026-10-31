@@ -37,6 +37,7 @@ from routers import (
     health,
     history,
     material_field_cases,
+    materials_proposal_review,
     discovery_designs,
     discovery_condition_batches,
     discovery_feedback,
@@ -44,6 +45,7 @@ from routers import (
     material_field_review,
     material_literal_fields,
     materials,
+    materials_vnext,
     ml_foundation,
     ml_pilot_registration,
     ml_use_governance,
@@ -632,6 +634,7 @@ async def request_contract_middleware(request: Request, call_next):
     return response
 
 app.include_router(health.router)
+app.include_router(materials_proposal_review.router, prefix="/v1")
 app.include_router(observability.router)
 app.include_router(auth.router, prefix="/v1")
 app.include_router(search.router, prefix="/v1")
@@ -664,6 +667,7 @@ app.include_router(discovery_calculations.router, prefix="/v1")
 app.include_router(material_field_review.router, prefix="/v1")
 app.include_router(material_literal_fields.router, prefix="/v1")
 app.include_router(ml_foundation.router, prefix="/v1")
+app.include_router(materials_vnext.router, prefix="/v1")
 app.include_router(materials.router, prefix="/v1")
 app.include_router(papers.router, prefix="/v1")
 app.include_router(seo.router, prefix="/v1")

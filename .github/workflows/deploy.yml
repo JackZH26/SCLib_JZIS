@@ -199,6 +199,15 @@ jobs:
                 ;;
               *) echo "invalid alert delivery mode" >&2; exit 1 ;;
             esac
+            # Retain the operator's Materials cutover on later image releases.
+            # Compose reads this optional configuration; never source it as shell.
+            materials_options=()
+            materials_env=/etc/sclib/materials-vnext.env
+            if test -e "$materials_env"; then
+              test -f "$materials_env" && test -s "$materials_env"
+              materials_options+=(--env-file "$DEPLOY_PATH/.env"
+                --env-file "$materials_env" -f docker-compose.materials-vnext.yml)
+            fi
             cleanup_preflight
             trap - EXIT
 
@@ -224,7 +233,9 @@ jobs:
             done
 
             compose=(docker compose --profile observability \
-              -f docker-compose.yml -f docker-compose.prod.yml "${alert_options[@]}")
+              -f docker-compose.yml -f docker-compose.prod.yml \
+              "${alert_options[@]}" "${materials_options[@]}")
+            "${compose[@]}" config --quiet
             "${compose[@]}" up -d --no-build --wait --wait-timeout 60 \
               postgres redis
             # All Alembic entrypoints share a nonblocking database session lock.

@@ -1,4 +1,22 @@
-import { retainedHc2, retainedTcCriteria } from "@/lib/material-retained-record";
+import { retainedHc2, retainedRecordText, retainedSampleContext, retainedTcCriteria } from "@/lib/material-retained-record";
+
+/** Show only this retained row's sample context; identity requires source review. */
+export function RetainedSampleContext({ record }: { record: Record<string, unknown> }) {
+  const context = retainedSampleContext(record);
+  const label = retainedRecordText(record.sample_label);
+  const form = retainedRecordText(record.sample_form);
+  return <div className="min-w-[9rem] max-w-[22rem] break-words text-xs leading-5">
+    <p>{label ?? "Sample label not supplied"}</p>
+    {form && <p className="text-sage-muted">Form: {form}</p>}
+    {context.length > 0 && <details className="mt-1">
+      <summary className="min-h-11 cursor-pointer content-center text-accent-deep focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-accent-deep">Sample and state context</summary>
+      <dl className="space-y-1">{context.map(item => <div key={item.key}>
+        <dt className="inline text-sage-muted">{item.label}: </dt><dd className="inline">{item.value}</dd>
+      </div>)}</dl>
+      <p className="mt-2 text-sage-muted">Retained source labels. Sample identity and its association with this result require source verification.</p>
+    </details>}
+  </div>;
+}
 
 /** Retained lexical fields do not inherit the selected headline's criterion. */
 export function RetainedTcCriteria({ record }: { record: Record<string, unknown> }) {

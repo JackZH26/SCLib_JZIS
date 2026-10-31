@@ -1809,6 +1809,42 @@ from models.material_table_fields_v1 import register as _register_material_table
 
 _register_material_table_fields(Base.metadata)
 
+from models.materials_result_definitions_v1 import register as _register_materials_result_definitions  # noqa: E402
+
+_register_materials_result_definitions(Base.metadata)
+
+from models.materials_review_subjects_v2 import register as _register_materials_review_subjects  # noqa: E402
+
+_register_materials_review_subjects(Base.metadata)
+
+from models.materials_adjudication_v2 import register as _register_materials_adjudication  # noqa: E402
+
+_register_materials_adjudication(Base.metadata)
+
+from models.materials_context_v1 import register as _register_materials_context
+
+_register_materials_context(Base.metadata)
+
+from models.materials_context_subject_v3 import register as _register_materials_context_subject
+
+_register_materials_context_subject(Base.metadata)
+
+from models.materials_conditions_v1 import register as _register_materials_conditions
+
+_register_materials_conditions(Base.metadata)
+
+from models.materials_claim_outcomes_v1 import register as _register_materials_claim_outcomes
+
+_register_materials_claim_outcomes(Base.metadata)
+
+from models.materials_observation_outcomes_v1 import register as _register_materials_observation_outcomes
+
+_register_materials_observation_outcomes(Base.metadata)
+
+from models.materials_conditions_adoption_v2 import register as _register_materials_conditions_v2
+
+_register_materials_conditions_v2(Base.metadata)
+
 
 def _to_async_dsn(dsn: str) -> str:
     """Convert a postgresql:// DSN to postgresql+asyncpg:// for the async engine.
@@ -1854,3 +1890,11 @@ async def get_db() -> AsyncIterator[AsyncSession]:
         except Exception:
             await session.rollback()
             raise
+
+from models.materials_properties_v3 import register as _register_materials_properties_v3
+
+_register_materials_properties_v3(Base.metadata)
+
+from models.materials_device_descriptors_v3 import register as _register_materials_device_descriptors
+
+_register_materials_device_descriptors(Base.metadata)

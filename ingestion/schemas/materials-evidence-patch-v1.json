@@ -1,0 +1,114 @@
+{
+  "$defs": {
+    "Bound": {
+      "additionalProperties": false,
+      "properties": {
+        "target_id": {
+          "title": "Target Id",
+          "type": "string"
+        },
+        "resolution": {
+          "const": "bound",
+          "title": "Resolution",
+          "type": "string"
+        },
+        "span_ids": {
+          "items": {
+            "type": "string"
+          },
+          "minItems": 1,
+          "title": "Span Ids",
+          "type": "array"
+        },
+        "reason": {
+          "title": "Reason",
+          "type": "null"
+        }
+      },
+      "required": [
+        "target_id",
+        "resolution",
+        "span_ids",
+        "reason"
+      ],
+      "title": "Bound",
+      "type": "object"
+    },
+    "Unsupported": {
+      "additionalProperties": false,
+      "properties": {
+        "target_id": {
+          "title": "Target Id",
+          "type": "string"
+        },
+        "resolution": {
+          "enum": [
+            "unsupported",
+            "remove_invalid_pointer"
+          ],
+          "title": "Resolution",
+          "type": "string"
+        },
+        "span_ids": {
+          "items": {
+            "type": "string"
+          },
+          "maxItems": 0,
+          "title": "Span Ids",
+          "type": "array"
+        },
+        "reason": {
+          "minLength": 1,
+          "title": "Reason",
+          "type": "string"
+        }
+      },
+      "required": [
+        "target_id",
+        "resolution",
+        "span_ids",
+        "reason"
+      ],
+      "title": "Unsupported",
+      "type": "object"
+    }
+  },
+  "additionalProperties": false,
+  "properties": {
+    "schema_version": {
+      "const": "materials-evidence-patch/1",
+      "title": "Schema Version",
+      "type": "string"
+    },
+    "work_id": {
+      "title": "Work Id",
+      "type": "string"
+    },
+    "base_compact_sha256": {
+      "title": "Base Compact Sha256",
+      "type": "string"
+    },
+    "decisions": {
+      "items": {
+        "anyOf": [
+          {
+            "$ref": "#/$defs/Bound"
+          },
+          {
+            "$ref": "#/$defs/Unsupported"
+          }
+        ]
+      },
+      "title": "Decisions",
+      "type": "array"
+    }
+  },
+  "required": [
+    "schema_version",
+    "work_id",
+    "base_compact_sha256",
+    "decisions"
+  ],
+  "title": "EvidencePatch",
+  "type": "object"
+}

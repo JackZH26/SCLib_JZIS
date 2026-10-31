@@ -6,7 +6,7 @@
  * can handle filters + pagination without a client-side refetch here.
  */
 import { useRouter } from "next/navigation";
-import { useId, useState } from "react";
+import { useId } from "react";
 
 export function SearchBar({
   placeholder = "Search papers or materials, or just ask a question…",
@@ -18,15 +18,16 @@ export function SearchBar({
   target?: string;
 }) {
   const inputId = useId();
-  const [q, setQ] = useState(initial);
   const router = useRouter();
 
   return (
     <form
       onSubmit={(e) => {
         e.preventDefault();
-        if (q.trim().length < 2) return;
-        router.push(`${target}?q=${encodeURIComponent(q.trim())}`);
+        // Read the actual input, including typing before hydration or autofill.
+        const q = String(new FormData(e.currentTarget).get("q") ?? "").trim();
+        if (q.length < 2) return;
+        router.push(`${target}?q=${encodeURIComponent(q)}`);
       }}
       role="search"
       aria-label="Library search"
@@ -41,8 +42,7 @@ export function SearchBar({
           aria-label="Search the library: papers, materials, wiki, or a research question"
           minLength={2}
           required
-          value={q}
-          onChange={(e) => setQ(e.target.value)}
+          defaultValue={initial}
           placeholder={placeholder}
           className="min-w-0 flex-1 rounded-lg bg-white px-3 py-3 text-base text-sage-ink placeholder:text-sage-muted focus-visible:outline-offset-[-2px]"
         />

@@ -1,5 +1,6 @@
 """0081 backfill/roundtrip on owned migrated data, including sealed members."""
 
+from migration_revision_scope import pre_materials_context_tables
 from test_safety import validate_test_environment, verify_postgres_identity
 from migration_discovery_designs import TABLES as DISCOVERY_DESIGN_TABLES
 from migration_discovery_condition_batches import TABLES as DISCOVERY_CONDITION_BATCH_TABLES
@@ -17,7 +18,7 @@ def populated_roundtrip(capability, engine, config):
     def retained(connection):
         return {name: connection.execute(text(
             f'SELECT to_jsonb(t) FROM public."{name}" t ORDER BY to_jsonb(t)::text'
-        )).scalars().all() for name in inspect(connection).get_table_names(schema="public")
+        )).scalars().all() for name in pre_materials_context_tables(connection, inspect(connection).get_table_names(schema="public"))
             if name not in {"alembic_version", "index_generation_search", *SOURCE_PROPERTY_TABLES, *DISCOVERY_DESIGN_TABLES, *DISCOVERY_CONDITION_BATCH_TABLES, *DISCOVERY_FEEDBACK_TABLES, *CALCULATION_TABLES}}
 
     def projected(connection):

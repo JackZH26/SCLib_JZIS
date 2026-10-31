@@ -58,7 +58,8 @@ class SchemaLifecycleBoundaryTests(unittest.TestCase):
     def test_empty_expression_and_field_roundtrip_uses_separate_migration_database(self):
         helper = (ROOT / "scripts/migration_source_expressions.py").read_text()
         for marker in ('command.downgrade(config, "0082_source_property_pending")',
-                       'command.upgrade(config, "head")', "assert_empty(connection)",
+                       'with at_revision(capability, engine, config, "0091_material_table_fields")',
+                       'command.upgrade(config, "0091_material_table_fields")', "assert_empty(connection)",
                        "snapshot(connection) == before", "objects(connection) == definitions",
                        'assert any(before.values())', "verify_postgres_identity(connection, capability)"):
             self.assertIn(marker, helper)

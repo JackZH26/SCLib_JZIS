@@ -50,6 +50,21 @@ def require(condition, reason="ml_review_capture_unavailable"):
         raise MlReviewCaptureError(reason)
 
 
+async def _require_v1_claim_scope(db, claim_ids):
+    """V1 cannot represent a current claim review; require the new companion.
+
+    Only consumed labels/input dependencies are checked. Unrelated claim
+    history does not block an old property export. JSON access preserves actual
+    pre-0095 migration rehearsals; the existing property index narrows NULLs.
+    """
+    import sqlalchemy as sa
+    require(len(claim_ids) <= MAX_AUDIT_ROWS, "ml_review_claim_inventory_limit")
+    if not claim_ids: return
+    query = sa.text("""SELECT EXISTS(SELECT 1 FROM scientific_result_decisions d
+        WHERE d.property_id IS NULL AND to_jsonb(d)->>'claim_id' IN :ids)""").bindparams(sa.bindparam("ids",expanding=True))
+    require(not await db.scalar(query,{"ids":sorted(claim_ids)}), "ml_review_claim_contract_required")
+
+
 async def _audit(db, property_ids, admission, budget):
     initial = await read_rows(db, "scientific_result_decisions", property_ids,
         column="property_id", byte_budget=budget)
@@ -149,6 +164,7 @@ async def capture_ml_review_companion(db, *, actor_user_id, expected_actor_grant
                 require(all(retained_bytes.get(key) == value for key, value in artifact_bytes.items()),
                     "ml_review_base_artifact_bytes_mismatch")
                 inventory = review_feature_inventory(base_manifest, artifact_bytes)
+                await _require_v1_claim_scope(db, inventory["claim_pins"])
                 release = await _release(db, base_hash=expected_base_manifest_sha256)
                 require(release["manifest"] == base_manifest and str(release["id"]) == source_companion["base_release_id"],
                         "ml_review_exact_base_required")

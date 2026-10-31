@@ -1,0 +1,12 @@
+{
+  "type": "object",
+  "properties": {
+    "reading": {
+      "type": "string"
+    }
+  },
+  "required": [
+    "reading"
+  ],
+  "additionalProperties": false
+}

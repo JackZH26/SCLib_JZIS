@@ -27,6 +27,53 @@ def replace_wire(wire, row):
     wire["row_sha256"] = raw_text_sha256(wire["row_text"])
 
 
+async def test_v1_audit_wire_is_preserved_with_coexisting_claim_reviews(db_session):
+    from tests.test_materials_adjudication import setup, context, request_for as claim_request, append
+    from tests.test_research_freeze import state
+    seeded=await reviewed_fixture(db_session)
+    original=await capture_ml_review_companion(db_session,**seeded["args"])
+    fixture,people,_=await setup(db_session)
+    _,receipt=await append(db_session,people["reviewer"],claim_request(await context(db_session,fixture,people["reviewer"])))
+    before=await state(db_session)
+    captured=await capture_ml_review_companion(db_session,**seeded["args"])
+    verify(captured,seeded)
+    assert captured["observation"]["audit_rows"]==original["observation"]["audit_rows"]
+    assert before==await state(db_session)
+    assert all("claim_id" not in parse_sql_json(wire["row_text"]) for wire in captured["observation"]["audit_rows"]
+               if wire["table"] in {"scientific_result_subjects","scientific_result_decisions"})
+    assert all(wire["row_id"]!=receipt["items"][0]["decision_id"] for wire in captured["observation"]["audit_rows"])
+
+
+async def test_claim_target_cannot_be_projected_into_the_frozen_v1_audit(db_session):
+    from services.ml_review_source_observation import read_rows
+    from services.ml_feature_review_companion import _audit
+    from tests.test_materials_adjudication import setup, context, request_for as claim_request, append
+    fixture,people,_=await setup(db_session)
+    _,receipt=await append(db_session,people["reviewer"],claim_request(await context(db_session,fixture,people["reviewer"])))
+    wire=await read_rows(db_session,"scientific_result_decisions",[receipt["items"][0]["decision_id"]],byte_budget={"bytes":0})
+    assert parse_sql_json(wire[0]["row_text"])["claim_id"]==str(fixture["claim"])
+    from services.ml_review_projection import adjudication_record_sha256
+    assert adjudication_record_sha256(wire[0]["row_text"])==receipt["items"][0]["decision_sha256"]
+    with pytest.raises(MlReviewCompanionError,match="closed_object_required"): _audit(wire)
+
+
+async def test_reviewed_label_requires_a_claim_aware_companion_instead_of_disappearing(db_session):
+    from services.ml_review_capture import MlReviewCaptureError
+    from tests.test_materials_adjudication import context, request_for as claim_request, append
+    from tests.test_research_freeze import state
+    from uuid import UUID
+    seeded=await reviewed_fixture(db_session)
+    # The fixture's ML label is part of the actual frozen dataset. It is not
+    # added to the feature graph to discover this review dependency.
+    label=next(row["data"]["claim_id"] for row in seeded["args"]["base_manifest"]["rows"] if row["table"]=="ml_examples")
+    ctx=await context(db_session,{"claim":UUID(label)},seeded["people"]["reviewer"])
+    await append(db_session,seeded["people"]["reviewer"],claim_request(ctx,decision="reject"))
+    before=await state(db_session)
+    with pytest.raises(MlReviewCaptureError,match="claim_contract_required"):
+        await capture_ml_review_companion(db_session,**seeded["args"])
+    assert before==await state(db_session)
+
+
 async def test_repinned_outer_envelope_does_not_hide_missing_inputs_heads_or_exact_audit_bytes(db_session):
     seeded = await reviewed_fixture(db_session)
     original = await capture_ml_review_companion(db_session, **seeded["args"])

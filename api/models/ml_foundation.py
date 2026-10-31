@@ -11,7 +11,7 @@ import uuid
 from datetime import date, datetime
 from typing import Any, Literal
 
-from pydantic import BaseModel, ConfigDict, Field, field_validator
+from pydantic import BaseModel, ConfigDict, Field, ValidationError, field_validator, model_validator
 
 from services.material_visibility import MATERIAL_VISIBILITY_VERSION, sanitize_review_metadata
 from services.temporal_provenance import public_locator
@@ -125,6 +125,47 @@ class ClaimTemporalFilterResponse(BaseModel):
     reproducible_snapshot_established: Literal[False] = False
 
 
+class ProductionAdmissionResponse(BaseModel):
+    """Extraction review provenance, separate from scientific validity."""
+
+    model_config = ConfigDict(extra="forbid", strict=True)
+
+    policy: Literal["production90/1"]
+    quality_status: Literal["model_source_checked", "batch_sampled"]
+    batch_qualified: bool
+    admission_route: Literal["qualified_batch", "individual_source_check"] = "qualified_batch"
+    per_record_checked: bool
+    review_kind: Literal["model"]
+    independent_expert_review: Literal[False]
+    selection_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    audit_sha256: str = Field(pattern=r"^[0-9a-f]{64}$")
+    source_scope: Literal["selected_source_assertion"]
+    complete_paper: Literal[False]
+
+    @model_validator(mode="after")
+    def consistent_review_scope(self):
+        if self.per_record_checked != (self.quality_status == "model_source_checked"):
+            raise ValueError("Record review and batch sampling must remain distinct")
+        if self.admission_route == "qualified_batch" and not self.batch_qualified:
+            raise ValueError("Batch admission requires a qualifying batch")
+        if self.admission_route == "individual_source_check" and not self.per_record_checked:
+            raise ValueError("Individual admission requires a source-checked record")
+        return self
+
+    @classmethod
+    def from_extraction_metadata(cls, metadata: Any) -> ProductionAdmissionResponse | None:
+        stored = metadata.get("production_admission") if isinstance(metadata, dict) else None
+        if not isinstance(stored, dict):
+            return None
+        try:
+            # Raw model text, file paths and other internal metadata stay private.
+            public = {key: stored[key] for key in cls.model_fields if key in stored}
+            public["review_kind"] = stored.get("reviewer_kind")
+            return cls.model_validate(public)
+        except ValidationError:
+            return None
+
+
 class MaterialClaimResponse(BaseModel):
     model_config = ConfigDict(from_attributes=True)
 
@@ -169,6 +210,7 @@ class MaterialClaimResponse(BaseModel):
     updated_at: datetime
     visibility: dict[str, Any] = Field(default_factory=dict)
     claim_visibility: dict[str, Any] = Field(default_factory=dict)
+    production_admission: ProductionAdmissionResponse | None = None
 
     @field_validator("source_locator", mode="before")
     @classmethod

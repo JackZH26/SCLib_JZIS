@@ -68,6 +68,22 @@ class RuntimeInventoryTests(unittest.TestCase):
         self.runtime["packages"]["pytest"] = "8.0"
         self.assertIn("runtime package mismatch: pytest", compare(self.runtime, self.tests))
 
+    def test_optional_ner_test_tools_do_not_require_them_in_base_images(self):
+        self.tests["packages"].update({name: "1.0" for name in (
+            "jsonschema", "attrs", "jsonschema-specifications", "referencing", "rpds-py",
+            "pypdf", "fonttools",
+        )})
+        self.assertEqual(compare(self.runtime, self.tests), [])
+        self.tests["packages"]["unlisted-ner-tool"] = "1.0"
+        self.assertTrue(any("unlisted-ner-tool" in x for x in compare(self.runtime, self.tests)))
+
+    def test_optional_ner_runtime_versions_are_still_checked(self):
+        self.runtime["packages"]["jsonschema"] = "4.26.0"
+        self.tests["packages"]["jsonschema"] = "4.25.0"
+        self.assertIn("runtime package mismatch: jsonschema", compare(self.runtime, self.tests))
+        del self.tests["packages"]["jsonschema"]
+        self.assertIn("runtime package mismatch: jsonschema", compare(self.runtime, self.tests))
+
     def test_capture_binds_real_bytes_and_checks_installed_lock_membership(self):
         with tempfile.TemporaryDirectory() as directory:
             lock, project = Path(directory) / "uv.lock", Path(directory) / "pyproject.toml"
@@ -98,6 +114,8 @@ class RuntimeInventoryTests(unittest.TestCase):
             self.assertIn("if-no-files-found: error", block)
             self.assertNotIn("uv pip install", block)
         self.assertIn("pnpm install --frozen-lockfile", workflow)
+        ingestion = workflow.split("\n  ingestion-tests:", 1)[1].split("\n  frontend-build:", 1)[0]
+        self.assertIn("uv sync --locked --extra dev --python 3.11 --extra materials-ner", ingestion)
         self.assertEqual(len([line for line in workflow.splitlines() if line.startswith("  ") and not line.startswith("   ") and line.endswith(":") and line.strip() not in {"pull_request:", "push:"}]), 7)
 
     def test_database_test_jobs_only_use_guarded_runner(self):

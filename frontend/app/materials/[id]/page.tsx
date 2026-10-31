@@ -17,7 +17,10 @@ import type { Metadata } from "next";
 import Link from "@/components/AppLink";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { getMaterial, getMaterialHydrideParameters } from "@/lib/api";
+import { getMaterial, getMaterialHydrideParameters, listAdmittedTcResults } from "@/lib/api";
+import { MaterialsVNext } from "@/components/MaterialsVNext";
+import type { MaterialsSearchParams } from "@/lib/materials-browser";
+import "../materials.css";
 import type { HydrideTcParameterRecord } from "@/lib/api";
 import { ApiError } from "@/lib/api";
 import { familyLabel } from "@/lib/families";
@@ -41,13 +44,14 @@ import { ExternalCalculationReferences } from "@/components/ExternalCalculationR
 import { ExternalSuperconReferences } from "@/components/ExternalSuperconReferences";
 import { MaterialProviderAvailabilityProvider } from "@/components/MaterialProviderAvailability";
 import { materialStudyReading } from "@/lib/material-study-reading";
-import { RetainedHc2, RetainedTcCriteria } from "@/components/RetainedRecordScientificFields";
+import { RetainedHc2, RetainedSampleContext, RetainedTcCriteria } from "@/components/RetainedRecordScientificFields";
 import { retainedHc2 } from "@/lib/material-retained-record";
 
 export const dynamic = "force-dynamic";
 
 type MaterialPageProps = {
   params: Promise<{ id: string }>;
+  searchParams?: Promise<MaterialsSearchParams>;
 };
 
 const loadMaterial = cache(getMaterial);
@@ -67,6 +71,13 @@ export async function generateMetadata({
 }: MaterialPageProps): Promise<Metadata> {
   const { id: encodedId } = await params;
   const id = decodeURIComponent(encodedId);
+  if (process.env.MATERIALS_VNEXT_ENABLED === "true") {
+    const data = await listAdmittedTcResults({ material_id: id, limit: 1, offset: 0 }).catch(() => null);
+    return { title: data?.items[0] ? `${data.items[0].formula} reported superconducting transitions` : "Material results",
+      description: "Reported transition temperatures with sample conditions, original sources, and extraction review status.",
+      alternates: { canonical: absoluteUrl(`/materials/${encodeURIComponent(id)}`) },
+      robots: data?.total ? undefined : { index: false, follow: false } };
+  }
   try {
     const mat = await loadMaterial(id);
     const eligible = eligibleForScientificSeo(mat.visibility);
@@ -98,9 +109,12 @@ export async function generateMetadata({
   }
 }
 
-export default async function MaterialDetailPage({ params }: MaterialPageProps) {
+export default async function MaterialDetailPage({ params, searchParams }: MaterialPageProps) {
   const { id: encodedId } = await params;
   const id = decodeURIComponent(encodedId);
+  if (process.env.MATERIALS_VNEXT_ENABLED === "true") {
+    return await MaterialsVNext({ materialId: id, searchParams: await searchParams ?? {} });
+  }
   let mat;
   try {
     mat = await loadMaterial(id);
@@ -308,6 +322,7 @@ export default async function MaterialDetailPage({ params }: MaterialPageProps) 
         <ExternalCalculationReferences materialId={mat.id} />
       </MaterialProviderAvailabilityProvider>}
       <p className="text-xs text-sage-muted"><Link href={`/dashboard/research/material-field-cases?material=${encodeURIComponent(mat.id)}`} prefetch={false} className="text-accent-deep underline">Open private field cases for this material</Link> · Authorized workspace; source proposals remain pending.</p>
+      <p className="text-xs text-sage-muted"><Link href="/dashboard/research/materials-ner" prefetch={false} className="text-accent-deep underline">Review paper assertions and source evidence</Link> · Private review by paper; sample identity may be unresolved.</p>
 
     </main>
   );
@@ -490,7 +505,7 @@ function RecordsTable({
               <th className="px-3 py-3 text-left font-medium">Record origin / role</th>
               <th className="px-3 py-3 text-left font-medium">Review</th>
               <th className="px-3 py-3 text-right font-medium">P (GPa)</th>
-              <th className="px-3 py-3 text-left font-medium">Sample</th>
+              <th className="px-3 py-3 text-left font-medium">Sample / state</th>
               <th className="px-3 py-3 text-left font-medium">Method</th>
               {hasRetainedHc2 && <th className="px-3 py-3 text-left font-medium">Retained Hc2</th>}
               <th className="px-3 py-3 text-left font-medium">Pairing</th>
@@ -507,8 +522,6 @@ function RecordsTable({
               const p = num(r.pressure_gpa ?? r.pressure);
               const pid = typeof r.paper_id === "string" ? r.paper_id : null;
               const paperRef = paperReference(pid);
-              const sample =
-                typeof r.sample_form === "string" ? r.sample_form : "";
               const methods = Array.from(r._methods as Set<string>).join(", ");
               const pairing =
                 typeof r.pairing_symmetry === "string" ? r.pairing_symmetry : "";
@@ -527,7 +540,7 @@ function RecordsTable({
                     {pressureLabel(r.pressure_semantics, p)}
                   </td>
                   <td className="px-3 py-2.5 text-slate-600">
-                    {sample || "—"}
+                    <RetainedSampleContext record={r} />
                   </td>
                   <td className="px-3 py-2.5 text-slate-600">
                     {methods || "—"}

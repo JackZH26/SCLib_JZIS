@@ -115,7 +115,36 @@
 .materials-core-evidence dd { color: var(--materials-ink); line-height: 1.5; overflow-wrap: anywhere; }
 .materials-core-evidence a { color: var(--materials-accent); text-decoration: underline; text-underline-offset: 3px; }
 .materials-core-source { grid-column: 1 / -1; }
+.materials-vnext-filters { display: grid; grid-template-columns: minmax(12rem, 2fr) 1fr 1fr auto; gap: 1rem; align-items: end; }
+.materials-vnext-note { color: var(--materials-muted); font-size: .85rem; line-height: 1.6; }
+.materials-vnext-table { min-width: 950px; table-layout: fixed; }
+.materials-vnext-table th:nth-child(1) { width: 24%; }
+.materials-vnext-table th:nth-child(2) { width: 10%; }
+.materials-vnext-table th:nth-child(3) { width: 20%; }
+.materials-vnext-table th:nth-child(4) { width: 21%; }
+.materials-vnext-table th:nth-child(5) { width: 25%; }
+.materials-vnext-table td { vertical-align: top; white-space: normal; overflow-wrap: anywhere; }
+.materials-vnext-secondary { margin-top: .4rem; color: var(--materials-muted); font-size: .78rem; line-height: 1.5; }
+.materials-vnext-tc { font-weight: 600; font-variant-numeric: tabular-nums; }
+.materials-vnext-review { margin-top: .5rem; font-size: .72rem; color: var(--materials-accent); }
+.materials-vnext-evidence { margin-top: .5rem; font-size: .75rem; }
+.materials-vnext-evidence summary { color: var(--materials-accent); cursor: pointer; }
+.materials-vnext-evidence p, .materials-vnext-evidence ul { margin-top: .6rem; line-height: 1.5; }
+.materials-vnext-pagination { display: flex; justify-content: center; gap: 2rem; font-size: .85rem; }
+.materials-vnext-pagination a { text-decoration: underline; color: var(--materials-accent); }
+@media (max-width: 800px) { .materials-vnext-filters { grid-template-columns: 1fr 1fr; } .materials-vnext-filters > label:first-child { grid-column: 1 / -1; } }
 .materials-full-result-context { margin-top: 1rem; }
 @media (max-width: 639px) { .materials-core-evidence { gap: .65rem 1rem; } }
 
 .materials-quantity-kind { margin-left: .45rem; font-weight: 400; }
+.materials-dataset-downloads {
+  margin-top: 2rem;
+  padding: 1.25rem;
+  border: 1px solid var(--border-color, #d8dee8);
+  border-radius: 0.75rem;
+}
+.materials-dataset-downloads h2 { font-size: 1.25rem; margin: 0 0 0.75rem; }
+.materials-dataset-downloads p { margin: 0.65rem 0; }
+.materials-dataset-downloads ul { display: flex; flex-wrap: wrap; gap: 0.75rem 1.5rem; list-style: none; padding: 0; }
+.materials-dataset-downloads details { margin-top: 0.85rem; }
+.materials-dataset-downloads summary { cursor: pointer; }

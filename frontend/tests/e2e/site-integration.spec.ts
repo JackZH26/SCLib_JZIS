@@ -87,9 +87,7 @@ test("redesigned search has a visible label and retains the query contract", asy
   });
   await page.goto("/");
   await page.getByRole("button", { name: "Reject all", exact: true }).click();
-  // React streaming may temporarily retain a second form in a hidden segment.
-  // Assert the accessible form and its actual label association, not every
-  // label in the document (which also includes that invisible staging DOM).
+  // Check the accessible form and its actual label association.
   const form = page.getByRole("search", { name: "Library search", exact: true });
   await expect(form).toHaveCount(1);
   const label = form.locator("label[for]");
@@ -109,6 +107,44 @@ test("redesigned search has a visible label and retains the query contract", asy
   await expect(page.getByRole("heading", { name: "Results for “FeSe + FeTe”", exact: true })).toBeVisible();
   await expect(page.getByRole("searchbox")).toHaveValue("FeSe + FeTe");
   await expect.poll(() => queries).toEqual(["FeSe + FeTe"]);
+});
+
+test("homepage preserves a query typed before client scripts load", async ({ page }) => {
+  const queries: string[] = [];
+  await page.route("https://api.jzis.org/sclib/v1/search", async route => {
+    queries.push(route.request().postDataJSON().query);
+    await route.fulfill({ status: 200, contentType: "application/json",
+      headers: { "access-control-allow-origin": "http://localhost:3102", "access-control-allow-credentials": "true" },
+      body: JSON.stringify({ results: [], query_time_ms: 0 }) });
+  });
+
+  let releaseScripts!: () => void;
+  const scriptsReady = new Promise<void>(resolve => { releaseScripts = resolve; });
+  let heldScripts = 0;
+  await page.route(url => url.origin === "http://localhost:3102"
+    && url.pathname.startsWith("/_next/static/") && url.pathname.endsWith(".js"), async route => {
+    heldScripts += 1;
+    await scriptsReady;
+    await route.continue();
+  });
+  try {
+    await page.goto("/", { waitUntil: "commit" });
+    const input = page.getByRole("searchbox");
+    await input.fill("FeSe + FeTe");
+    await expect.poll(() => heldScripts).toBeGreaterThan(0);
+    releaseScripts();
+    await page.waitForLoadState("load");
+    await page.getByRole("button", { name: "Reject all", exact: true }).click();
+    await expect(input).toHaveValue("FeSe + FeTe");
+    await page.getByRole("button", { name: "Search", exact: true }).click();
+    await expect(page).toHaveURL(url =>
+      url.pathname === "/" && url.searchParams.get("q") === "FeSe + FeTe");
+    await expect(page.getByRole("heading", { name: "Results for “FeSe + FeTe”", exact: true })).toBeVisible();
+    await expect(input).toHaveValue("FeSe + FeTe");
+    await expect.poll(() => queries).toEqual(["FeSe + FeTe"]);
+  } finally {
+    releaseScripts();
+  }
 });
 
 for (const width of [1440, 390]) {

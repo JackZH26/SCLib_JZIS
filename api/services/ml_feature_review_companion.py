@@ -178,7 +178,14 @@ def review_feature_inventory(base_manifest, artifact_bytes):
     properties = {identifier: {"table": table, "row_id": identifier,
                   "row_sha256": index[(table, identifier)]["row_sha256"]}
                   for table, identifier in sorted(visited) if table == "event_properties"}
-    return {"property_pins": properties, "input_pins": inputs}
+    # Labels are consumed claims, but must never be inserted into the feature
+    # traversal above. That would turn label-derived properties into features.
+    claims = {identifier for table, identifier in visited if table == "material_claims"}
+    claims.update(row["data"]["claim_id"] for (table,_),row in index.items() if table == "ml_examples")
+    require(all(("material_claims",key) in index for key in claims), "ml_review_frozen_dependency_missing")
+    claim_pins = {key: {"table":"material_claims","row_id":key,"row_sha256":index[("material_claims",key)]["row_sha256"]}
+                  for key in sorted(claims)}
+    return {"property_pins": properties, "input_pins": inputs, "claim_pins": claim_pins}
 
 
 def _audit(rows):

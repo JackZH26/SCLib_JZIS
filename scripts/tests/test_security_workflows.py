@@ -739,6 +739,117 @@ class SecurityWorkflowTests(unittest.TestCase):
             self.assertEqual(services["migration"]["environment"]["DATABASE_URL"], "")
             self.assertIn("SCLIB_MIGRATION_DATABASE_URL_FILE", services["migration"]["environment"])
 
+    def _materials_deploy_options(self, directory: Path, configuration: Path, *, compose=False):
+        # Execute only the option-selection fragment from the real deployment
+        # workflow. No deployment, credentials or container commands are run.
+        deploy = (WORKFLOW_DIR / "deploy.yml").read_text()
+        fragment = deploy.split("            materials_options=()\n", 1)[1].split(
+            "            cleanup_preflight\n", 1
+        )[0]
+        fragment = fragment.replace(
+            "materials_env=/etc/sclib/materials-vnext.env",
+            'materials_env="$MATERIALS_TEST_ENV"',
+        )
+        script = "set -euo pipefail\nmaterials_options=()\n" + fragment
+        if compose:
+            command = deploy.split("            compose=(docker compose", 1)[1].split(
+                '            "${compose[@]}" config --quiet\n', 1
+            )[0]
+            script += '\nalert_options=()\ncompose=(docker compose' + command
+            script += '\nprintf \'%s\\0\' "${compose[@]}"\n'
+        else:
+            script += ('\nif ((${#materials_options[@]})); then '
+                       'printf \'%s\\0\' "${materials_options[@]}"; fi\n')
+        environment = {key: value for key, value in os.environ.items()
+                       if key in {"PATH", "HOME", "LANG", "LC_ALL", "TMPDIR", "SYSTEMROOT"}}
+        environment.update(DEPLOY_PATH=str(directory), MATERIALS_TEST_ENV=str(configuration))
+        result = subprocess.run(
+            ["bash", "-c", script], env=environment, capture_output=True, timeout=10,
+        )
+        options = result.stdout.decode().split("\0")[:-1] if result.stdout else []
+        return result, options
+
+    def test_materials_deploy_configuration_is_optional_and_empty_file_fails(self) -> None:
+        with tempfile.TemporaryDirectory(prefix="sclib-materials-deploy-") as temporary:
+            directory = Path(temporary)
+            configuration = directory / "materials config.env"
+            result, options = self._materials_deploy_options(directory, configuration)
+            self.assertEqual(result.returncode, 0, result.stderr.decode())
+            self.assertEqual(options, [])
+            configuration.touch()
+            result, options = self._materials_deploy_options(directory, configuration)
+            self.assertNotEqual(result.returncode, 0)
+            self.assertEqual(options, [])
+
+    @unittest.skipUnless(shutil.which("docker"), "Docker CLI is required for Compose resolution")
+    def test_materials_cutover_and_rollback_survive_compose_resolution(self) -> None:
+        # Resolve the options selected by the real workflow using synthetic
+        # configuration. This needs the CLI only, never a daemon or production.
+        with tempfile.TemporaryDirectory(prefix="sclib-materials-compose-") as temporary:
+            directory = Path(temporary)
+            configuration = directory / "materials config.env"
+            downloads = directory / "verified dataset"
+            downloads.mkdir()
+            for name in ("docker-compose.yml", "docker-compose.prod.yml",
+                         "docker-compose.materials-vnext.yml"):
+                shutil.copyfile(ROOT / name, directory / name)
+            runtime_url = "postgresql+asyncpg://sclib_runtime:application-only@postgres/sclib"
+            (directory / ".env").write_text(
+                "DB_PASSWORD=infrastructure-only\n"
+                "GRAFANA_ADMIN_PASSWORD=monitoring-only\n"
+                f"DATABASE_URL={runtime_url}\n"
+            )
+            environment = {key: value for key, value in os.environ.items()
+                           if key in {"PATH", "HOME", "LANG", "LC_ALL", "TMPDIR", "SYSTEMROOT"}}
+            images = {f"SCLIB_{name.upper()}_IMAGE":
+                      f"ghcr.io/jackzh26/sclib-{name}@sha256:" + "1" * 64
+                      for name in ("api", "frontend", "ingestion")}
+            environment.update(images)
+            for enabled in (None, "true", "false"):
+                with self.subTest(enabled=enabled):
+                    if enabled is not None:
+                        configuration.write_text(
+                            f"SCLIB_MATERIALS_VNEXT_ENABLED={enabled}\n"
+                            f"SCLIB_MATERIALS_DATASET_DIR={downloads}\n"
+                        )
+                    result, command = self._materials_deploy_options(
+                        directory, configuration, compose=True
+                    )
+                    self.assertEqual(result.returncode, 0, result.stderr.decode())
+                    result = subprocess.run(
+                        [*command, "config", "--format", "json"],
+                        cwd=directory, env=environment, capture_output=True, text=True, timeout=30,
+                    )
+                    self.assertEqual(result.returncode, 0, result.stderr)
+                    services = json.loads(result.stdout)["services"]
+                    for name in ("api", "frontend"):
+                        self.assertEqual(services[name]["environment"].get("MATERIALS_VNEXT_ENABLED"), enabled)
+                        self.assertEqual(services[name]["image"], images[f"SCLIB_{name.upper()}_IMAGE"])
+                    api = services["api"]
+                    self.assertEqual(api["environment"]["DATABASE_URL"], runtime_url)
+                    self.assertEqual(api["environment"]["DB_PASSWORD"], "")
+                    if enabled is None:
+                        self.assertNotIn("MATERIALS_DATASET_DOWNLOAD_ROOT", api["environment"])
+                        self.assertFalse(any(v["target"] == "/data/sclib/materials-vnext/downloads"
+                                             for v in api["volumes"]))
+                        continue
+                    self.assertEqual(api["environment"]["MATERIALS_DATASET_DOWNLOAD_ROOT"],
+                                     "/data/sclib/materials-vnext/downloads")
+                    mount = next(v for v in api["volumes"]
+                                 if v["target"] == "/data/sclib/materials-vnext/downloads")
+                    self.assertEqual(mount["source"], str(downloads))
+                    self.assertTrue(mount["read_only"])
+                    self.assertFalse(mount["bind"]["create_host_path"])
+            configuration.write_text("SCLIB_MATERIALS_VNEXT_ENABLED=true\n")
+            result, command = self._materials_deploy_options(directory, configuration, compose=True)
+            self.assertEqual(result.returncode, 0, result.stderr.decode())
+            result = subprocess.run(
+                [*command, "config", "--quiet"], cwd=directory, env=environment,
+                capture_output=True, text=True, timeout=30,
+            )
+            self.assertNotEqual(result.returncode, 0)
+            self.assertIn("SCLIB_MATERIALS_DATASET_DIR", result.stderr)
+
     def test_scheduled_jobs_reuse_last_signed_release_manifest(self) -> None:
         deploy = (WORKFLOW_DIR / "deploy.yml").read_text()
         ingest = (WORKFLOW_DIR / "ingest-daily.yml").read_text()

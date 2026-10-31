@@ -16,6 +16,8 @@ from config import get_settings
 from models.db import get_engine
 from routers.auth import current_user_from_jwt
 from services import scientific_result_dossier as dossier
+from services.materials_review_context import review_context
+from services.scientific_result_subject import ScientificSubjectUnavailable
 from services.research_access import ResearchAccessDenied
 from services.research_release_manifest import canonical
 from services.scientific_result_impact import ScientificResultImpactUnavailable
@@ -41,7 +43,7 @@ class PrivateReadRoute(APIRoute):
                 raise HTTPException(exc.status_code, {401: "Authentication required", 403: "Research access required",
                     404: "Scientific review unavailable", 422: "Invalid scientific review query"}.get(
                         exc.status_code, "Scientific review request rejected"), headers=HEADERS) from None
-            except (SQLAlchemyError, TimeoutError, ScientificResultImpactUnavailable):
+            except (SQLAlchemyError, TimeoutError, ScientificResultImpactUnavailable, ScientificSubjectUnavailable):
                 raise HTTPException(503, "Scientific review temporarily unavailable", headers=HEADERS) from None
             except (ValueError, TypeError, OverflowError, RecursionError):
                 raise HTTPException(400, "Scientific evidence snapshot unavailable or unsupported", headers=HEADERS) from None
@@ -96,3 +98,9 @@ async def results(request: Request, after: str | None = Query(None, max_length=3
 async def detail(request: Request, property_id: str):
     async with read(request) as (db, actor):
         return response(await dossier.result_dossier(db, actor_user_id=actor, property_id=property_id))
+
+
+@router.get("/targets/{result_kind}/{result_id}")
+async def typed_result_context(request: Request, result_kind: str, result_id: str):
+    async with read(request) as (db, actor):
+        return response(await review_context(db, actor_user_id=actor, result_kind=result_kind, result_id=result_id))

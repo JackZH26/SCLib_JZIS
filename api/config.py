@@ -38,6 +38,9 @@ class Settings(BaseSettings):
     mp_api_key: str = ""
     # Private, separately authorized pending source-expression ledger.
     source_property_pending_enabled: bool = False
+    materials_ner_review_enabled: bool = False
+    materials_vnext_enabled: bool = False
+    materials_dataset_download_root: str | None = None
     discovery_designs_enabled: bool = False
     discovery_condition_batches_enabled: bool = False
     discovery_feedback_enabled: bool = False

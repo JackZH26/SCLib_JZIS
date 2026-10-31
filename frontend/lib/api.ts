@@ -368,6 +368,60 @@ export function scientificReviewCapabilities(signal?: AbortSignal): Promise<unkn
   return request("/ml/scientific-review/capabilities", { signal, cache: "no-store" });
 }
 
+export function materialsProposalCapabilities(signal?: AbortSignal): Promise<unknown> {
+  return request("/research/materials-ner/capabilities", { signal, cache: "no-store", responseByteLimit: 16384 });
+}
+export function materialsProposalRuns(workId = "", after: string | null = null, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ limit: "10" });
+  if (workId) query.set("work_id", workId);
+  if (after !== null) query.set("after", after);
+  return request(`/research/materials-ner/runs?${query}`, { signal, cache: "no-store", responseByteLimit: 2 * 1024 * 1024 });
+}
+export function materialsProposalDetail(runId: string, after: string | null = null, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ limit: "10" });
+  if (after !== null) query.set("after", after);
+  return request(`/research/materials-ner/runs/${encodeURIComponent(runId)}?${query}`, { signal, cache: "no-store", responseByteLimit: 2 * 1024 * 1024 });
+}
+export function materialsProposalEvidence(runId: string, resultId: string, after = -1, signal?: AbortSignal): Promise<unknown> {
+  const query = new URLSearchParams({ result_id: resultId, after: String(after), limit: "40" });
+  return request(`/research/materials-ner/runs/${encodeURIComponent(runId)}/evidence?${query}`, { signal, cache: "no-store", responseByteLimit: 2 * 1024 * 1024 });
+}
+export function materialsProposalExport(runId: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/materials-ner/runs/${encodeURIComponent(runId)}/export`, { signal, cache: "no-store", responseByteLimit: 16384 });
+}
+export function materialsProposalAmendments(runId: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/materials-ner/runs/${encodeURIComponent(runId)}/amendments`, { signal, cache: "no-store", responseByteLimit: 2 * 1024 * 1024 });
+}
+export function materialsProposalAmendment(runId: string, amendmentId: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/materials-ner/runs/${encodeURIComponent(runId)}/amendments/${encodeURIComponent(amendmentId)}`, { signal, cache: "no-store", responseByteLimit: 2 * 1024 * 1024 });
+}
+export function materialsAmendmentTargets(runId: string, amendmentId: string, resultId: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/research/materials-ner/runs/${encodeURIComponent(runId)}/amendments/${encodeURIComponent(amendmentId)}/canonical-targets?result_id=${encodeURIComponent(resultId)}`, { signal, cache: "no-store", responseByteLimit: 2 * 1024 * 1024 });
+}
+export function materialsClaimReviewContext(claimId: string, signal?: AbortSignal): Promise<unknown> {
+  return request(`/ml/scientific-review/targets/claim/${encodeURIComponent(claimId)}`, { signal, cache: "no-store", responseByteLimit: 2 * 1024 * 1024 });
+}
+export async function materialsProposalExportFile(runId: string, expectedSha256: string, size: number, signal?: AbortSignal): Promise<Uint8Array> {
+  if (!/^[0-9a-f]{64}$/.test(runId) || !/^[0-9a-f]{64}$/.test(expectedSha256) || !Number.isSafeInteger(size) || size < 1 || size > 8388608) throw new Error("Invalid review export selector");
+  let response: Response;
+  try { response = await fetch(`${API_BASE}/research/materials-ner/runs/${runId}/export/package?${new URLSearchParams({ expected_sha256: expectedSha256 })}`, { credentials: "include", cache: "no-store", signal }); }
+  catch { throw new ApiError(0, null, "Review export unavailable."); }
+  if (!response.ok) { const body = await boundedJson(response, 16384); throw new ApiError(response.status, body, `HTTP ${response.status}`); }
+  if (response.headers.get("content-type") !== "application/zip") { await response.body?.cancel(); throw new ApiError(0, null, "Unsupported review export."); }
+  const reader = response.body?.getReader();
+  if (!reader) throw new ApiError(0, null, "Review export unavailable.");
+  const bytes = new Uint8Array(size); let offset = 0, chunks = 0;
+  try {
+    while (true) { const { done, value } = await reader.read(); if (done) break; if (offset + value.length > size || ++chunks > 4096) throw new Error("Review export limit"); bytes.set(value, offset); offset += value.length; }
+    if (offset !== size || bytes[0] !== 0x50 || bytes[1] !== 0x4b || bytes[2] !== 3 || bytes[3] !== 4) throw new Error("Incomplete review archive");
+    const digest = await crypto.subtle.digest("SHA-256", bytes);
+    const actual = Array.from(new Uint8Array(digest), b => b.toString(16).padStart(2, "0")).join("");
+    if (actual !== expectedSha256) throw new Error("Review export hash mismatch");
+    return bytes;
+  } catch { await reader.cancel().catch(() => {}); throw new ApiError(0, null, "Review export could not be verified."); }
+  finally { reader.releaseLock(); }
+}
+
 export function scientificReviewQueue(after: string | null = null, signal?: AbortSignal): Promise<unknown> {
   const query = new URLSearchParams({ limit: "25" });
   if (after !== null) query.set("after", after);
@@ -1973,6 +2027,20 @@ export interface MaterialListParams {
   offset?: number;
   include_skeletons?: boolean;
   only_aps?: boolean;
+}
+
+export function listAdmittedTcResults(params: { q?: string; material_id?: string; pressure?: string; criterion?: string; limit: number; offset: number }) {
+  const query = new URLSearchParams();
+  for (const [key, value] of Object.entries(params)) if (value !== undefined && value !== "") query.set(key, String(value));
+  return request<import("./materials-vnext").AdmittedTcPage>(`/materials/results?${query}`, { cache: "no-store" });
+}
+
+export function getMaterialsDataset() {
+  return request<import("./materials-vnext").MaterialsDataset>("/materials/dataset", { cache: "no-store" });
+}
+
+export function materialsDatasetDownloadUrl(version: string, kind: "results" | "evidence" | "training") {
+  return `${PUBLIC_API_BASE.replace(/\/$/, "")}/materials/dataset/${encodeURIComponent(version)}/${kind}`;
 }
 
 export function listMaterials(params: MaterialListParams) {

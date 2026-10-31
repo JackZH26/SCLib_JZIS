@@ -74,6 +74,11 @@ jobs:
         run: |
           docker pull postgres:16-alpine
           docker pull redis:7-alpine
+      - name: Verify Materials NER storage in separate owned databases
+        timeout-minutes: 5
+        run: |
+          .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite api -- -q ../ingestion/tests/test_materials_ner_postgres.py
+          .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite api -- -q ../ingestion/tests/test_materials_ner_postgres_v2.py
       - name: Verify actual capacity boundaries in separate owned services
         run: .venv/bin/python ../scripts/run_disposable_tests.py --backend docker --suite api -- -q tests_capacity
       - name: Upload test runtime inventory
@@ -159,7 +164,9 @@ jobs:
       - name: Install uv
         run: python -m pip install --disable-pip-version-check uv==0.11.16
       - name: Install dependencies
-        run: uv sync --locked --extra dev --python 3.11
+        # The complete unit suite includes the optional Materials NER parser
+        # and retained-receipt validators. The ordinary image remains base-only.
+        run: uv sync --locked --extra dev --python 3.11 --extra materials-ner
       - name: Prepare hash-verified tokenizer data (dependency download)
         timeout-minutes: 2
         run: .venv/bin/python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
@@ -170,7 +177,12 @@ jobs:
       - name: Compare built ingestion release image with the locked test runtime
         run: .venv/bin/python ../scripts/run_runtime_parity.py --project ingestion --tests ../runtime-parity-ingestion/test-runtime.json --output ../runtime-parity-ingestion
       - name: Run unit tests only
-        run: .venv/bin/python -m pytest -q
+        # The two storage suites run above in separate owned databases.
+        # They retain their fail-closed capability checks; no implicit skip.
+        run: >-
+          .venv/bin/python -m pytest -q
+          --ignore=tests/test_materials_ner_postgres.py
+          --ignore=tests/test_materials_ner_postgres_v2.py
       - name: Upload ingestion runtime inventory
         if: ${{ !cancelled() }}
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1

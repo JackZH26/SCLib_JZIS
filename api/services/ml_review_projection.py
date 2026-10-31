@@ -166,6 +166,11 @@ def sql_canonical(value):
 def adjudication_record_sha256(row_text):
     row = parse_sql_json(row_text)
     _require(type(row) is dict, "ml_review_projection_record_shape")
+    # Match the 0095 SQL compatibility projection without rewriting old hash
+    # bytes. Non-null claim targets remain part of the hash; the separate v1
+    # closed-wire verifier still rejects those new target rows.
+    if "claim_id" in row and row["claim_id"] is None:
+        row = {key: value for key, value in row.items() if key != "claim_id"}
     return raw_text_sha256(sql_canonical({key: value for key, value in row.items() if key not in _RECORD_EXCLUDED}))
 
 

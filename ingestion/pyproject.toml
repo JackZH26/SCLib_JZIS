@@ -25,6 +25,12 @@ dependencies = [
 ]
 
 [project.optional-dependencies]
+materials-ner = [
+    "pypdf>=6.21,<7",
+    "pydantic>=2.13,<3",
+    "fonttools>=4.60,<5",
+    "jsonschema>=4.26,<5",  # verify retained NER parent receipts during admission
+]
 dev = [
     "pytest>=8.3",
     "pytest-asyncio>=0.24",
@@ -37,6 +43,7 @@ sclib-import-nims = "ingestion.nims:main"
 sclib-ingest-aps = "ingestion.aps_pipeline:main"
 sclib-ingest-aps-batch = "ingestion.aps_batch:main"
 sclib-hydride-ner = "ingestion.hydride_parameters:main"
+sclib-materials-ner = "ingestion.materials_ner.cli:main"
 
 [build-system]
 requires = ["hatchling"]
@@ -48,3 +55,7 @@ packages = ["ingestion"]
 [tool.ruff]
 line-length = 100
 target-version = "py311"
+
+[tool.uv]
+# Retain the patched ASN.1 parser used by cloud authentication dependencies.
+constraint-dependencies = ["pyasn1>=0.6.5"]
