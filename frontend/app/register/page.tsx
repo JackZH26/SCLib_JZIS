@@ -1,8 +1,9 @@
 "use client";
 
 import Link from "@/components/AppLink";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { register, friendlyErrorMessage, PUBLIC_API_BASE } from "@/lib/api";
+import { materialsAuthReturn, rememberMaterialsAuthReturn } from "@/lib/materials-auth-return";
 
 export default function RegisterPage() {
   const GOOGLE_LOGIN_URL = `${PUBLIC_API_BASE}/auth/google/login`;
@@ -19,6 +20,9 @@ export default function RegisterPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitted, setSubmitted] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+  const [returnTo, setReturnTo] = useState<string | null>(null);
+  useEffect(() => { setReturnTo(materialsAuthReturn(window.location.search)); }, []);
+  const loginHref = returnTo ? `/login?next=${encodeURIComponent(returnTo)}` : "/login";
 
   function update<K extends keyof typeof form>(k: K, v: string) {
     setForm((f) => ({ ...f, [k]: v }));
@@ -57,6 +61,7 @@ export default function RegisterPage() {
         <p className="mt-6 text-sm text-slate-500">
           The link expires in 24 hours.
         </p>
+        <p className="mt-4 text-sm text-slate-600">After verifying your email, <Link href={loginHref} className="underline">sign in{returnTo ? " to view dataset downloads" : " to continue"}</Link>.</p>
       </main>
     );
   }
@@ -78,6 +83,7 @@ export default function RegisterPage() {
       <div className="mt-6">
         <a
           href={GOOGLE_LOGIN_URL}
+          onClick={() => rememberMaterialsAuthReturn(materialsAuthReturn(window.location.search))}
           className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 px-4 py-2.5 transition-colors hover:bg-slate-50"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
@@ -159,7 +165,7 @@ export default function RegisterPage() {
 
         <p className="text-center text-sm text-slate-600">
           Already have an account?{" "}
-          <Link href="/login" className="text-slate-900 underline">
+          <Link href={loginHref} className="text-slate-900 underline">
             Sign in
           </Link>
         </p>

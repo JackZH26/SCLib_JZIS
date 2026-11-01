@@ -9,6 +9,7 @@ from sqlalchemy import text
 from models.materials_vnext import AdmittedTcPage, AdmittedTcResult, TcEvidenceLocation
 from models.ml_foundation import ProductionAdmissionResponse
 from services.materials_admission_scope import CURRENT_ADMISSION_WHERE
+from services.materials_display_policy import PUBLIC_TC_DISPLAY_WHERE
 from services.materials_context_sql import COMPOSITION_IDS, PROTOCOL_ID
 from services.materials_display import display_projection
 from services.materials_family import FAMILIES, FAMILY_SQL, current_family
@@ -23,7 +24,7 @@ FROM = f'''FROM material_claims c
     JOIN papers p ON p.id=c.paper_id
     JOIN works w ON w.id=c.work_id'''
 
-BASE_WHERE = CURRENT_ADMISSION_WHERE
+BASE_WHERE = f'({CURRENT_ADMISSION_WHERE}) AND ({PUBLIC_TC_DISPLAY_WHERE})'
 
 
 async def admitted_tc_page(db, *, query=None, material_id=None, family=None, pressure=None, criterion=None, limit=50, offset=0):

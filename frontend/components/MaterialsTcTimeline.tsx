@@ -6,6 +6,7 @@ import { FormulaDisplay } from "@/components/FormulaDisplay";
 import { LatexText } from "@/components/LatexText";
 import { getMaterialsTimeline } from "@/lib/api";
 import { tcCriteria } from "@/lib/materials-vnext";
+import { tcDisplayExclusion } from "@/lib/tc-display-policy";
 import { timelineDate, timelineFamilies, timelinePressure, timelineTc, timelineValue, type NerTimelineData, type NerTimelinePoint } from "@/lib/materials-timeline";
 import "./materials-timeline.css";
 
@@ -52,12 +53,11 @@ export function MaterialsTcTimeline({ compact=false, initialData }: { compact?: 
     return()=>{document.removeEventListener("keydown",key);document.removeEventListener("pointerdown",outside);};
   },[dismiss]);
   const height=compact?355:470, left=60, right=16, top=24, bottom=55;
-  const dated=useMemo(()=>data?.points.filter(p=>Number.isFinite(timelineDate(p)))??[],[data]);
+  const dated=useMemo(()=>data?.points.filter(p=>!tcDisplayExclusion(p)&&Number.isFinite(timelineDate(p)))??[],[data]);
   const years=useMemo(()=>Array.from(new Set(dated.map(p=>new Date(timelineDate(p)).getUTCFullYear()))).sort((a,b)=>a-b),[dated]);
   const activeYear=years.includes(year)?year:(years.at(-1)??year);
   const view=useMemo(()=>dated.filter(p=>(family===null||p.family===family)&&(mode==="all"||new Date(timelineDate(p)).getUTCFullYear()===activeYear)),[dated,family,mode,activeYear]);
-  const allMax=Math.max(1,...dated.flatMap(p=>[timelineValue(p),p.value_upper_kelvin??0]));
-  const ymax=range==="full"?Math.ceil(allMax*1.05/50)*50:Number(range);
+  const ymax=Number(range);
   const start=Date.UTC(mode==="month"?activeYear:(years[0]??1994),0,1);
   const end=Date.UTC(mode==="month"?activeYear+1:(years.at(-1)??2026)+1,0,1);
   const scaleX=(date:number)=>left+5+(date-start)/(end-start)*Math.max(1,width-left-right-10);
@@ -98,7 +98,7 @@ export function MaterialsTcTimeline({ compact=false, initialData }: { compact?: 
         <div className="ner-timeline-controls">
           <label>Time view<select value={mode} onChange={e=>{setMode(e.target.value);controlsChanged();}}><option value="all">All years</option><option value="month">By month</option></select></label>
           {mode==="month"&&<label>Year<select value={activeYear} onChange={e=>{setYear(Number(e.target.value));controlsChanged();}}>{years.map(y=><option key={y} value={y}>{y}</option>)}</select></label>}
-          <label>Tc range<select value={range} onChange={e=>{setRange(e.target.value);controlsChanged();}}><option value="300">0–300 K</option><option value="50">0–50 K</option><option value="full">Full range</option></select></label>
+          <label>Tc range<select value={range} onChange={e=>{setRange(e.target.value);controlsChanged();}}><option value="300">0–300 K</option><option value="50">0–50 K</option></select></label>
         </div>
       </div>
       <div ref={stage} className="ner-timeline-stage" onPointerMove={event=>{if(pinned||event.pointerType==="touch")return;const r=event.currentTarget.getBoundingClientRect();setSelected(near(event.clientX-r.left,event.clientY-r.top)?.point.id??null);}} onPointerLeave={()=>{if(!pinned)setSelected(null);}}
@@ -120,12 +120,11 @@ export function MaterialsTcTimeline({ compact=false, initialData }: { compact?: 
           <p>{new Intl.DateTimeFormat("en-GB",{month:"short",year:"numeric",...(current.point.date_precision==="day"?{day:"numeric" as const}:{}),timeZone:"UTC"}).format(timelineDate(current.point))} · {timelinePressure(current.point)}</p>
           <p>{tcCriteria[current.point.criterion]??current.point.criterion} · {current.point.paper_id.replace("arxiv:","arXiv ")}</p>
           {current.point.date_precision==="month"&&<p>Month precision · arXiv identifier</p>}
-          {pinned?<Link href={`/materials/${encodeURIComponent(current.point.material_id)}`} prefetch={false} className="site-text-link ner-timeline-material-link">View material data <span aria-hidden="true">↗</span></Link>:<p>Click the point to keep its link open.</p>}
+          {pinned&&<Link href={`/materials/${encodeURIComponent(current.point.material_id)}`} prefetch={false} className="site-text-link ner-timeline-material-link">View material data <span aria-hidden="true">↗</span></Link>}
           {pinned&&overlaps.length>1&&<div className="ner-timeline-overlaps"><span>{overlaps.findIndex(p=>p.point.id===selected)+1} / {overlaps.length} overlapping reports</span><button type="button" aria-label="Previous overlapping report" onClick={()=>setSelected(overlaps[(overlaps.findIndex(p=>p.point.id===selected)-1+overlaps.length)%overlaps.length].point.id)}>‹</button><button type="button" aria-label="Next overlapping report" onClick={()=>setSelected(overlaps[(overlaps.findIndex(p=>p.point.id===selected)+1)%overlaps.length].point.id)}>›</button></div>}
         </div>}
       </div>
       <div className="ner-timeline-foot"><span>{format(placed.length)} displayed{data.sampled?" · Sampled from "+format(data.plotted_results)+" plottable results":""}{family?" · "+(timelineFamilies[family]?.label??family):""}</span>
-        {view.some(p=>(p.value_upper_kelvin??timelineValue(p))>ymax)&&<button type="button" className="site-text-link" onClick={()=>{setRange("full");dismiss();}}>Higher reported values · Show full range</button>}
         <button type="button" className="site-text-link" onClick={read} disabled={!placed.length}>Read a point</button>
       </div>
       {!placed.length&&<p role="status">No reported results in this view. Choose another year, family or Tc range.</p>}

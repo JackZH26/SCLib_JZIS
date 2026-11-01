@@ -19,7 +19,7 @@ test("search separates scientific excerpt checks from mechanical citation valida
 });
 
 test("public API documentation describes hybrid retrieval and citation fields", async () => {
-  const docs = await readFile("app/docs/api/page.tsx", "utf8");
+  const docs = await readFile("components/discovery/ApiReferenceContent.tsx", "utf8");
 
   assert.match(docs, /citation_valid/);
   assert.match(docs, /citation_warnings/);

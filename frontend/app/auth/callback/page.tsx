@@ -4,6 +4,7 @@ import { Suspense, useEffect, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import { ApiError, me } from "@/lib/api";
 import { notifyAuthChange } from "@/lib/auth-session";
+import { consumeMaterialsAuthReturn } from "@/lib/materials-auth-return";
 
 function CallbackInner() {
   const router = useRouter();
@@ -31,7 +32,7 @@ function CallbackInner() {
     me()
       .then(() => {
         notifyAuthChange();
-        router.replace("/dashboard");
+        router.replace(consumeMaterialsAuthReturn() ?? "/dashboard");
       })
       .catch((err: unknown) => {
         setStatus("error");

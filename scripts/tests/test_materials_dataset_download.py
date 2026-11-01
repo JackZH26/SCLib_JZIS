@@ -40,15 +40,18 @@ def download(tmp_path, monkeypatch):
     app = FastAPI()
     app.include_router(route.router, prefix='/v1')
     app.dependency_overrides[route.get_db] = database
+    async def signed_in():
+        return SimpleNamespace(id='owned-fixture-member')
+    app.dependency_overrides[route.current_user_from_jwt] = signed_in
     with TestClient(app) as client:
         yield SimpleNamespace(client=client, root=tmp_path, folder=folder, snapshot=snapshot,
-            settings=settings, current=current, url=f'/v1/materials/dataset/{version}')
+            settings=settings, current=current, app=app, url=f'/v1/materials/dataset/{version}')
 
 
 def test_current_metadata_and_csv_are_downloadable_without_private_paths(download):
     meta = download.client.get('/v1/materials/dataset')
     assert meta.status_code == 200
-    assert meta.headers['cache-control'] == 'no-store'
+    assert meta.headers['cache-control'] == 'private, no-store'
     assert '/Users/' not in meta.text
     assert 'canonical_state' not in meta.json()
     for kind in FILES:
@@ -57,6 +60,16 @@ def test_current_metadata_and_csv_are_downloadable_without_private_paths(downloa
         assert response.content == (download.folder / FILES[kind]).read_bytes()
         assert response.headers['content-disposition'] == f'attachment; filename="{FILES[kind]}"'
         assert response.headers['x-dataset-version'] == 'a' * 64
+        assert response.headers['cache-control'] == 'private, no-store'
+
+
+def test_guest_cannot_read_manifest_or_bypass_sign_in_with_direct_file_urls(download, monkeypatch):
+    from routers import auth
+    monkeypatch.setattr(auth, 'get_settings', lambda: SimpleNamespace(environment='test', jwt_expiry_hours=24))
+    download.app.dependency_overrides.pop(route.current_user_from_jwt)
+    for url in ['/v1/materials/dataset', *(f'{download.url}/{kind}' for kind in FILES)]:
+        assert download.client.get(url).status_code == 401
+    download.current.assert_not_awaited()
 
 
 @pytest.mark.parametrize('rows', [0, 1, 2])

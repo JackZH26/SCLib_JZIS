@@ -1,0 +1,12 @@
+.discovery-stream { --discovery-jump-offset: 155px; min-width: 0; }
+.discovery-stream > .discovery-navigation { position: sticky; top: 72px; z-index: 30; flex-wrap: nowrap; overflow-x: auto; margin-bottom: 1.5rem; padding: .5rem 0; background: var(--background, #f7f5ef); }
+.discovery-stream > .discovery-navigation a { flex-shrink: 0; white-space: nowrap; }
+.discovery-stream > .discovery-navigation a[aria-current="location"] { background: var(--surface); color: var(--accent-deep); }
+.discovery-stream .discovery-intro { padding: .75rem 0 2rem; }
+.discovery-stream :is(header[id], section[id], details[id]) { scroll-margin-top: var(--discovery-jump-offset); }
+.discovery-segment { min-width: 0; border-top: 1px solid var(--border); padding-top: 1.75rem; }
+.discovery-segment + .discovery-segment { margin-top: 2.5rem; }
+.discovery-segment-heading { margin-bottom: 1.25rem; }
+.discovery-segment-heading > h2 { font-size: clamp(1.5rem, 2.5vw, 2rem); font-weight: 600; letter-spacing: -.035em; }
+.discovery-segment-heading > p { margin-top: .5rem; max-width: 78ch; color: var(--text-secondary); font-size: .9rem; line-height: 1.65; }
+.discovery-stream #discovery-api-details > div { max-width: 65rem; }

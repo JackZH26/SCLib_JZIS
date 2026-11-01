@@ -2,9 +2,10 @@
 
 import Link from "@/components/AppLink";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ApiError, login, friendlyErrorMessage, PUBLIC_API_BASE } from "@/lib/api";
 import { notifyAuthChange } from "@/lib/auth-session";
+import { consumeMaterialsAuthReturn, materialsAuthReturn, rememberMaterialsAuthReturn } from "@/lib/materials-auth-return";
 
 export default function LoginPage() {
   const GOOGLE_LOGIN_URL = `${PUBLIC_API_BASE}/auth/google/login`;
@@ -13,6 +14,8 @@ export default function LoginPage() {
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [returnTo, setReturnTo] = useState<string | null>(null);
+  useEffect(() => { setReturnTo(materialsAuthReturn(window.location.search)); }, []);
 
   async function onSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -21,7 +24,8 @@ export default function LoginPage() {
     try {
       await login(email, password);
       notifyAuthChange();
-      router.push("/dashboard");
+      consumeMaterialsAuthReturn();
+      router.push(materialsAuthReturn(window.location.search) ?? "/dashboard");
     } catch (err) {
       setError(
         err instanceof ApiError && (err.status === 401 || err.status === 403)
@@ -41,6 +45,7 @@ export default function LoginPage() {
       <div className="mt-6">
         <a
           href={GOOGLE_LOGIN_URL}
+          onClick={() => rememberMaterialsAuthReturn(materialsAuthReturn(window.location.search))}
           className="flex w-full items-center justify-center gap-3 rounded-md border border-slate-300 px-4 py-2.5 transition-colors hover:bg-slate-50"
         >
           <svg viewBox="0 0 24 24" className="h-5 w-5" xmlns="http://www.w3.org/2000/svg">
@@ -110,7 +115,7 @@ export default function LoginPage() {
 
         <p className="text-center text-sm text-slate-600">
           New here?{" "}
-          <Link href="/register" className="underline">
+          <Link href={returnTo ? `/register?next=${encodeURIComponent(returnTo)}` : "/register"} className="underline">
             Create an account
           </Link>
         </p>

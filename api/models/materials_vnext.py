@@ -4,6 +4,7 @@ from typing import Any, Literal
 from pydantic import BaseModel, Field
 
 from models.ml_foundation import ProductionAdmissionResponse
+from models.materials_display_policy import TcDisplayPolicy
 
 
 class TcEvidenceLocation(BaseModel):
@@ -47,6 +48,7 @@ class AdmittedTcResult(BaseModel):
 
 
 class AdmittedTcPage(BaseModel):
+    display_policy: TcDisplayPolicy = Field(default_factory=TcDisplayPolicy)
     items: list[AdmittedTcResult]
     total: int
     material_count: int

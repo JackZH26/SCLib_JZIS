@@ -18,6 +18,8 @@
  * If only the public URL is set (e.g. local dev), both fall back to
  * it so nothing breaks.
  */
+import { tcDisplayExclusion } from "./tc-display-policy";
+
 export const PUBLIC_API_BASE =
   process.env.NEXT_PUBLIC_API_BASE ?? "https://api.jzis.org/sclib/v1";
 const SERVER_BASE = process.env.API_BASE_SERVER ?? PUBLIC_API_BASE;
@@ -2043,7 +2045,10 @@ export interface MaterialListParams {
 export function listAdmittedTcResults(params: { q?: string; material_id?: string; family?: string; pressure?: string; criterion?: string; limit: number; offset: number }) {
   const query = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) if (value !== undefined && value !== "") query.set(key, String(value));
-  return request<import("./materials-vnext").AdmittedTcPage>(`/materials/results?${query}`, { cache: "no-store" });
+  return request<import("./materials-vnext").AdmittedTcPage>(`/materials/results?${query}`, { cache: "no-store" }).then(page => {
+    if (page.items.some(row => tcDisplayExclusion(row))) throw new Error("Reported results violate the public Tc display limit.");
+    return page;
+  });
 }
 
 export function getMaterialsDataset() {
