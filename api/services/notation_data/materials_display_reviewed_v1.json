@@ -1,0 +1,473 @@
+{
+  "version": "materials-display-reviewed/1",
+  "entries": [
+    {
+      "paper_id": "arxiv:1012.5525",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "b97439bfd36dbdc73214d8c54832afa80bdf2047b48d6710b62b18511a9e7c31",
+      "field": "paper_title",
+      "raw_sha256": "0fac8a62b9405ba6626a80640854db0e1785eadcf31c1f8289afb4295d21611b",
+      "text": "Superconductivity at 32 K in single crystal Rb$_{0.78}$Fe$_2$Se$_{1.78}$",
+      "evidence": {
+        "locator": "archive_member:RbFe2Se.tex",
+        "block_sha256": "80f540a26118cff753ab683a3dcce9317ac08e1dd24f5e048df4da8320be77f7",
+        "source_sha256": "186e29eef20c447eb394516232319771055439ca0efab4b103e8f4f951fa84d0",
+        "verification": "Verified balanced title argument in retained TeX.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:1102.3312",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "0e9f604273feac77e475b02919d41ebff7a81f3ae1c3f21b43feac23ecc9579a",
+      "field": "paper_title",
+      "raw_sha256": "23e9abf53baf86012033015f7bf4b1b47dc1a9e7503defba85f12b30cfd3370d",
+      "text": "Rearrangement of the antiferromagnetic ordering at high magnetic fields in SmFeAsO and SmFeAsO$_{0.9}$F$_{0.1}$ single crystals",
+      "evidence": {
+        "locator": "archive_member:Sm_1111_metamagnetism_revised.tex",
+        "block_sha256": "a97c5ac2a178727ac6429273e9dd0044ba5be9ecd1d7e4d7e8c21e8b3b273f0b",
+        "source_sha256": "9cc71700790419f48989f21f19113a6f603a796f5cd2ba0ed3f18b219e47ab66",
+        "verification": "Verified balanced title argument in retained TeX.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:1106.4256",
+      "source_versions": [
+        "v2"
+      ],
+      "bundle_sha256": "579c8d4dee8f2b1545d282ebfd0f8401b0d33b60ff0840219c093f48ad205eea",
+      "field": "paper_title",
+      "raw_sha256": "6c7c51752aca3a990847f5a701df803f8bfd1b8ffc5a80c742f3fbcd9e80d519",
+      "text": "Transport properties and asymmetric scattering in Ba$_{1-x}$K$_x$Fe$_2$As$_2$ single crystals compared to the electron doped counterparts Ba(Fe$_{1-x}$Co$_{x}$)$_{2}$As$_{2}$",
+      "evidence": {
+        "locator": "archive_member:BaK122Trans.tex",
+        "block_sha256": "1775a7d77b3123f30cbc11cc9183e18ad055aa759dcb81e5ea30e0c462825529",
+        "source_sha256": "3c9a6250d66e436522c2b1ee3667d5ca68589bded7cfa1d8db75fae3fd00a341",
+        "verification": "Verified balanced title argument in retained TeX.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:1908.07288",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "92719964ad47695c3807332424a71988370b062eb916b988caae4c59ebf09a1b",
+      "field": "paper_title",
+      "raw_sha256": "0f1362d97100b769e2cb75b5b44420cadcd5e54e3ab13ad04eb00e98f595c827",
+      "text": "Evolution of high field superconductivity and high critical current density in the as-cast V$_{1-x}$Zr$_x$ alloys",
+      "evidence": {
+        "locator": "archive_member:Super_V-Zr_JAP.tex",
+        "block_sha256": "718c673b0f5b801d1c4a8de4478786606a79201df200fbc00ec3a34274b1527d",
+        "source_sha256": "493bee906f9c739839d50e640e891afa65b76b678f91bc8f820054021153e599",
+        "verification": "Verified balanced title argument in retained TeX.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:cond-mat/0212009",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "740328942613ee7b9b991bf3b3862edc6c1249837ca3ef17a3cd9f0922067759",
+      "field": "paper_title",
+      "raw_sha256": "0650743982df0b400b6a15227d0ac079a3444375063ec2ee1285243d80df15b8",
+      "text": "The superconducting gap of {\\em in situ} $MgB_{2}$ thin films by microwave surface impedance measurements",
+      "evidence": {
+        "locator": "archive_member:mgb2-tf_Cond_Matt.tex",
+        "block_sha256": "f64ee05f3360dfa7f926bf6e1405c2732c4475723dd9e05f9dc37c8702c648ee",
+        "source_sha256": "73f84c5cb789dc0b6ff8204a6468b2cd90661f3694424315be1e7ac9aaf9dd74",
+        "verification": "Verified balanced title argument in retained TeX.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:1104.5340",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "88fa1543d01370964717e086f1a79c8f76008b37668564ecc174dd332e3af658",
+      "field": "paper_title",
+      "raw_sha256": "0f57de663a13bd46085f3beeb3898f23d1bb1b5859b02d2eb25aa37a390df432",
+      "text": "Collapse of the Fe-vacancy order and successive phase transitions in superconducting KxFe2-ySe2 (0.7 ≤ x ≤ 0.8, 0.2 ≤ y ≤ 0.3)",
+      "evidence": {
+        "locator": "pdf_page:1",
+        "block_sha256": "d09bfa95902e9a6ce3673bbc3963e98a9fb810db851ecb35a01870e1afa9bd53",
+        "source_sha256": "76aeb924612e04814d0633cf50cb84ec2143bbc7d12b67f658572603a76a3a7e",
+        "verification": "Title inequalities visually verified in rendered original PDF.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:1404.5456",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "b9f05c3739d023deeb62a2cfebe5f4d097064b749e2b8ebad1ce03dbc686a94a",
+      "field": "paper_title",
+      "raw_sha256": "273ebbc5cafa59d6cee00c7e46b942d93dfca8a285978701dffc5ca1c841a51d",
+      "text": "Superconductivity-induced Magnetic Modulation in a Ferromagnet Through an Insulator in $\\mathrm{La}_{2/3}\\mathrm{Ca}_{1/3}\\mathrm{MnO}_3/\\mathrm{SrTiO}_3/\\mathrm{YBa}_2\\mathrm{Cu}_3\\mathrm{O}_{7-\\delta}$ Hybrid Heterostructures",
+      "evidence": {
+        "locator": "pdf_page:1",
+        "block_sha256": "db593684ad3d6d34ab5758d465d940722a5eac4bf6b3c6da823db93cff7d8059",
+        "source_sha256": "61e587a6159fdc2d8723094294aa776bef735f342e8f8ec57ee9e2fde1dba505",
+        "verification": "Title stoichiometry and interface separators visually verified in rendered original PDF.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:2007.08693",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "b00006b49d2cd1110f9871c9ec59dc583b22729201647d13881895398843af8d",
+      "field": "paper_title",
+      "raw_sha256": "27989322b0841f1da5b1b15f8640cfa56237747a70fb5731363490cea6d73f16",
+      "text": "Large spin to charge conversion in topological superconductor $\\beta$-PdBi2 at room temperature",
+      "evidence": {
+        "locator": "pdf_page:1",
+        "block_sha256": "8798aacd548e893328bf56f4c9083402182fcba2a9473b0300be6602dfe59da1",
+        "source_sha256": "fd9780f9ebeb15308f8956e8e53e88e40553777930cfdad6eef1b485a644220d",
+        "verification": "Beta polytype in title visually verified in rendered original PDF.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:1206.1632",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "defa88ccfea2f42584aedccfedeaf25abeae6d39549cd36ed034abd612c36670",
+      "field": "measurement_context",
+      "raw_sha256": "d89c2070ba64af6237b7891270b0840ed2a34b2ce56004e338fc77cc57f20adc",
+      "text": "Au –Dy0.6Y0.4Rh3.85Ru0.15B4 contact",
+      "evidence": {
+        "locator": "pdf_page:3",
+        "block_sha256": "b5257c5759024ed9387b30169b199dc99dc7d9330c65e613b8dcb60f715d13c6",
+        "source_sha256": "1d9348314e882fa23c15e6aa5759a5c7e4fce39ffc0c179008d5b0fc99ba8e12",
+        "verification": "The rendered source shows a separator between the Au counter-electrode and Dy alloy; no composition or sample change.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:1402.6055",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "86834a3a1a6a03da26057e457a78cd69cd01f7ab82173ead07a9f42dc5ed2687",
+      "field": "measurement_context",
+      "raw_sha256": "2bfb61ab1355a5a8972fc9d695fcb79329adb46774821b1797edd8d2f10825a5",
+      "text": "The raw transport data consisting of $\\widetilde{R}_2(T)$  and $R_3(T)$ is shown in figures 3a and 3b.   Above the TC \nof NbN, the wiring lines shown in figure 1b are resistive",
+      "evidence": {
+        "locator": "pdf_page:6",
+        "block_sha256": "c5c1e5f2ad524130f13c41da94d628c4968c3af47bbc677778226aa54609ebff",
+        "source_sha256": "a188fea745ca83f4c62157f985e7cc896a03f9d7071040b2f8108d62b77b1899",
+        "verification": "Both resistance expressions visually verified in first sentence of rendered original PDF.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:1402.6055",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "86834a3a1a6a03da26057e457a78cd69cd01f7ab82173ead07a9f42dc5ed2687",
+      "field": "measurement_context",
+      "raw_sha256": "a623b543d73e34328eefcaaf8c2760a59e7d88de36324bbf337396a6c1fc1a2c",
+      "text": "The raw transport data consisting of $\\widetilde{R}_2(T)$  and $R_3(T)$ is shown in figures 3a and 3b.",
+      "evidence": {
+        "locator": "pdf_page:6",
+        "block_sha256": "c5c1e5f2ad524130f13c41da94d628c4968c3af47bbc677778226aa54609ebff",
+        "source_sha256": "a188fea745ca83f4c62157f985e7cc896a03f9d7071040b2f8108d62b77b1899",
+        "verification": "Both resistance expressions visually verified in first sentence of rendered original PDF.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:2412.06569",
+      "source_versions": [
+        "v2"
+      ],
+      "bundle_sha256": "3f2ee75197040a8a6aeef9c49160c1124ce0b6884a8cb39f270a529a114bc7fb",
+      "field": "formula",
+      "raw_sha256": "cd4f982f19e192b38359223f52eeca5fb7a14c6112da897111056ab39a698216",
+      "text": "YBa$_2$Cu$_3$O$_{7-\\delta}$",
+      "evidence": {
+        "locator": "pdf_page:3",
+        "block_sha256": "22e962dddd4b5c59db47f3034ca759d2985b18b8fe5ac17a90f5fb404ea7d1f0",
+        "source_sha256": "20c310c8ecb23a7727d56470dc2ff1b329a16f099218abefb8447a7804634e5e",
+        "verification": "YBa2Cu3O7-delta and the film identity visually verified in rendered original PDF. Delta is retained, not evaluated.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:2412.06569",
+      "source_versions": [
+        "v2"
+      ],
+      "bundle_sha256": "3f2ee75197040a8a6aeef9c49160c1124ce0b6884a8cb39f270a529a114bc7fb",
+      "field": "composition:0",
+      "raw_sha256": "cd4f982f19e192b38359223f52eeca5fb7a14c6112da897111056ab39a698216",
+      "text": "YBa$_2$Cu$_3$O$_{7-\\delta}$",
+      "evidence": {
+        "locator": "pdf_page:3",
+        "block_sha256": "22e962dddd4b5c59db47f3034ca759d2985b18b8fe5ac17a90f5fb404ea7d1f0",
+        "source_sha256": "20c310c8ecb23a7727d56470dc2ff1b329a16f099218abefb8447a7804634e5e",
+        "verification": "YBa2Cu3O7-delta and the film identity visually verified in rendered original PDF. Delta is retained, not evaluated.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:2412.06569",
+      "source_versions": [
+        "v2"
+      ],
+      "bundle_sha256": "3f2ee75197040a8a6aeef9c49160c1124ce0b6884a8cb39f270a529a114bc7fb",
+      "field": "measurement_context",
+      "raw_sha256": "b1b674aa41669755354b0d865988b9106298c9ddbfd6680898c827ab89d33693",
+      "text": "The YBa$_2$Cu$_3$O$_{7-\\delta}$ (δ ≈ 0.1) thin ﬁlm was deposited on a MgO substrate using magnetron \nsputtering",
+      "evidence": {
+        "locator": "pdf_page:3",
+        "block_sha256": "22e962dddd4b5c59db47f3034ca759d2985b18b8fe5ac17a90f5fb404ea7d1f0",
+        "source_sha256": "20c310c8ecb23a7727d56470dc2ff1b329a16f099218abefb8447a7804634e5e",
+        "verification": "Formula and sputtering word visually verified against rendered original PDF.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:1908.07288",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "92719964ad47695c3807332424a71988370b062eb916b988caae4c59ebf09a1b",
+      "field": "sample_label",
+      "raw_sha256": "ac3648cdea77a4d6833d357f5265d2db1ca96db76d19206381acc8ab98821e2b",
+      "text": "x = 0.05; the $\\beta$-V phase has a composition V$_{0.98}$Zr$_{0.02}$.",
+      "evidence": {
+        "locator": "archive_member:Super_V-Zr_JAP.tex",
+        "block_sha256": "718c673b0f5b801d1c4a8de4478786606a79201df200fbc00ec3a34274b1527d",
+        "source_sha256": "493bee906f9c739839d50e640e891afa65b76b678f91bc8f820054021153e599",
+        "verification": "Original prose explicitly writes V$_{0.98}$Zr$_{0.02}$ for the x=0.05 alloy; only a missing brace is restored.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:cond-mat/9912493",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "2e14e3e6fb149048cbe7a348a0df71caebf4f8aa6dd2da4e64071068e357b799",
+      "field": "sample_label",
+      "raw_sha256": "191f22ac750b8c8623fd77af114fe1c5c52f54fe0029379caf7219255609b05a",
+      "text": "sample II$a$; $x = 0.086$; $^{16}$O",
+      "evidence": {
+        "locator": "archive_member:HoferPRL.tex",
+        "block_sha256": "176d143d0e06e5075c4828cef9a1599bf6efc865d2d207a868f2b12724540b45",
+        "source_sha256": "12f0aa8a3e20a13a5b4a1e4fc0851ec594e8eaa32a92eb44353a95636cd47038",
+        "verification": "Preamble explicitly sets \\setcounter{one}{1} and \\setcounter{two}{2}; the source contains no later changes to either counter.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:cond-mat/9912493",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "2e14e3e6fb149048cbe7a348a0df71caebf4f8aa6dd2da4e64071068e357b799",
+      "field": "sample_label",
+      "raw_sha256": "e4cd94446dc3faa0540273410154991e81739c76ee47ba50fb77a3b463c6b7eb",
+      "text": "sample I$b$; $x = 0.080$; $^{18}$O",
+      "evidence": {
+        "locator": "archive_member:HoferPRL.tex",
+        "block_sha256": "176d143d0e06e5075c4828cef9a1599bf6efc865d2d207a868f2b12724540b45",
+        "source_sha256": "12f0aa8a3e20a13a5b4a1e4fc0851ec594e8eaa32a92eb44353a95636cd47038",
+        "verification": "Preamble explicitly sets \\setcounter{one}{1} and \\setcounter{two}{2}; the source contains no later changes to either counter.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:cond-mat/9912493",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "2e14e3e6fb149048cbe7a348a0df71caebf4f8aa6dd2da4e64071068e357b799",
+      "field": "sample_label",
+      "raw_sha256": "a1fbabba99d101b6307d925b0706cda38037ae1d1251bfb63c4c86f8afe13323",
+      "text": "sample II$b$; $x = 0.086$; $^{16}$O",
+      "evidence": {
+        "locator": "archive_member:HoferPRL.tex",
+        "block_sha256": "176d143d0e06e5075c4828cef9a1599bf6efc865d2d207a868f2b12724540b45",
+        "source_sha256": "12f0aa8a3e20a13a5b4a1e4fc0851ec594e8eaa32a92eb44353a95636cd47038",
+        "verification": "Preamble explicitly sets \\setcounter{one}{1} and \\setcounter{two}{2}; the source contains no later changes to either counter.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:cond-mat/9912493",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "2e14e3e6fb149048cbe7a348a0df71caebf4f8aa6dd2da4e64071068e357b799",
+      "field": "sample_label",
+      "raw_sha256": "17d72691c84cd7a78a64e8a6330f553f8e1839bc2ec60bda2cf5f5825507706c",
+      "text": "sample II$b$; $x = 0.086$; $^{18}$O",
+      "evidence": {
+        "locator": "archive_member:HoferPRL.tex",
+        "block_sha256": "176d143d0e06e5075c4828cef9a1599bf6efc865d2d207a868f2b12724540b45",
+        "source_sha256": "12f0aa8a3e20a13a5b4a1e4fc0851ec594e8eaa32a92eb44353a95636cd47038",
+        "verification": "Preamble explicitly sets \\setcounter{one}{1} and \\setcounter{two}{2}; the source contains no later changes to either counter.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:cond-mat/9912493",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "2e14e3e6fb149048cbe7a348a0df71caebf4f8aa6dd2da4e64071068e357b799",
+      "field": "sample_label",
+      "raw_sha256": "8434e79594e2e6a103d5f606bf666eb980299bb6cd5dbd68a339ff6b8ac685a2",
+      "text": "sample I$a$; $x = 0.080$; $^{16}$O",
+      "evidence": {
+        "locator": "archive_member:HoferPRL.tex",
+        "block_sha256": "176d143d0e06e5075c4828cef9a1599bf6efc865d2d207a868f2b12724540b45",
+        "source_sha256": "12f0aa8a3e20a13a5b4a1e4fc0851ec594e8eaa32a92eb44353a95636cd47038",
+        "verification": "Preamble explicitly sets \\setcounter{one}{1} and \\setcounter{two}{2}; the source contains no later changes to either counter.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:cond-mat/9912493",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "2e14e3e6fb149048cbe7a348a0df71caebf4f8aa6dd2da4e64071068e357b799",
+      "field": "sample_label",
+      "raw_sha256": "ecc343e1f1b513da50635f6691b621c4e1407a201dd16552d25088bf97dda6b4",
+      "text": "sample II$a$; $x = 0.086$; $^{18}$O",
+      "evidence": {
+        "locator": "archive_member:HoferPRL.tex",
+        "block_sha256": "176d143d0e06e5075c4828cef9a1599bf6efc865d2d207a868f2b12724540b45",
+        "source_sha256": "12f0aa8a3e20a13a5b4a1e4fc0851ec594e8eaa32a92eb44353a95636cd47038",
+        "verification": "Preamble explicitly sets \\setcounter{one}{1} and \\setcounter{two}{2}; the source contains no later changes to either counter.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:cond-mat/9912493",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "2e14e3e6fb149048cbe7a348a0df71caebf4f8aa6dd2da4e64071068e357b799",
+      "field": "sample_label",
+      "raw_sha256": "1b835ff9adc8d6b8403103a3afe812acdb1befbf922eb1efd3b4d252895d2ef3",
+      "text": "sample I$a$; $x = 0.080$; $^{18}$O",
+      "evidence": {
+        "locator": "archive_member:HoferPRL.tex",
+        "block_sha256": "176d143d0e06e5075c4828cef9a1599bf6efc865d2d207a868f2b12724540b45",
+        "source_sha256": "12f0aa8a3e20a13a5b4a1e4fc0851ec594e8eaa32a92eb44353a95636cd47038",
+        "verification": "Preamble explicitly sets \\setcounter{one}{1} and \\setcounter{two}{2}; the source contains no later changes to either counter.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:cond-mat/9912493",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "2e14e3e6fb149048cbe7a348a0df71caebf4f8aa6dd2da4e64071068e357b799",
+      "field": "sample_label",
+      "raw_sha256": "4375c240e33f014cb57c9ea4cf0aaddfa6c77abb7cf1e24df9ebdb9359122dd5",
+      "text": "sample I$b$; $x = 0.080$; $^{16}$O",
+      "evidence": {
+        "locator": "archive_member:HoferPRL.tex",
+        "block_sha256": "176d143d0e06e5075c4828cef9a1599bf6efc865d2d207a868f2b12724540b45",
+        "source_sha256": "12f0aa8a3e20a13a5b4a1e4fc0851ec594e8eaa32a92eb44353a95636cd47038",
+        "verification": "Preamble explicitly sets \\setcounter{one}{1} and \\setcounter{two}{2}; the source contains no later changes to either counter.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:1210.0072",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "7c2ad17b83f140a4a9f8857e18e9b644890f874d2070db858dcae41d484ce07f",
+      "field": "formula",
+      "raw_sha256": "2eba1001f306e87e14cd82a6de180a7ca41eebcd5ae38682514794941d7e93d1",
+      "text": "(Li0.88□0.12)Nb3.0(O0.13N0.87)4",
+      "evidence": {
+        "locator": "pdf_page:1",
+        "block_sha256": "f818f093b8b3aa43d535b5aee8760dba4f4f0fe2ab8584865fa9cc2b1b3528e1",
+        "source_sha256": "5581589f39a2f9958b0c66dbcb0ff64db9e04b04f0562a6c1c5e6afe762ce616",
+        "verification": "Vacancy square between Li0.88 and occupancy 0.12 visually verified in the original abstract; no element is inferred.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:1210.0072",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "7c2ad17b83f140a4a9f8857e18e9b644890f874d2070db858dcae41d484ce07f",
+      "field": "composition:0",
+      "raw_sha256": "2eba1001f306e87e14cd82a6de180a7ca41eebcd5ae38682514794941d7e93d1",
+      "text": "(Li0.88□0.12)Nb3.0(O0.13N0.87)4",
+      "evidence": {
+        "locator": "pdf_page:1",
+        "block_sha256": "f818f093b8b3aa43d535b5aee8760dba4f4f0fe2ab8584865fa9cc2b1b3528e1",
+        "source_sha256": "5581589f39a2f9958b0c66dbcb0ff64db9e04b04f0562a6c1c5e6afe762ce616",
+        "verification": "Vacancy square between Li0.88 and occupancy 0.12 visually verified in the original abstract; no element is inferred.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:0907.4227",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "9f79427a729989d4d3cc8d9c91aeb7957451302080fa52fcf562e8cb362afa4e",
+      "field": "method_raw",
+      "raw_sha256": "db1bbea82af7a72c2287a2a95159b24765112d319b32747a9ceacb78af4ec2b6",
+      "text": "resistivity (ρ-T, Fig. 2a)",
+      "evidence": {
+        "locator": "pdf_page:4",
+        "block_sha256": "26e1127d126396a041b22ffa9a18c69437dd90ab3eec061180ab8b263443e72b",
+        "source_sha256": "f0de9e345d111d132a2cb405d45c4d564094fe823a96e6a1f58d48a07fd5ff93",
+        "verification": "The resistivity rho symbol in Figure 2a description was visually verified; form feed was a PDF extraction artifact.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    }
+  ]
+}

@@ -17,6 +17,8 @@ class AdmittedTcResult(BaseModel):
     id: str
     material_id: str
     formula: str
+    # Source-bound presentation only; the original fields remain unchanged.
+    display: dict[str, str] = Field(default_factory=dict)
     family: str = 'unclassified'
     compositions: list[dict[str, str]]
     sample_label: str | None

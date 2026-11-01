@@ -36,7 +36,8 @@ Further host assignments require source review and a new classification version.
 ## Formula audit and correction policy
 
 1. Render supported TeX in material names and all scientific free text, with
-   trusted HTML/URL commands disabled. Keep unknown macros as escaped source text.
+   trusted HTML/URL commands disabled. Resolve paper macros from the pinned source;
+   unresolved expressions receive an English review label and retain the source link.
 2. Preserve variable stoichiometry, isotope notation, phase prefixes, interfaces
    and sample distinctions. Do not replace x or oxygen delta with guessed values.
 3. Distinguish lexical limitations from chemistry errors. A paper-defined L or M
@@ -68,3 +69,39 @@ variable formula. Rendering, not chemical substitution, fixes the reported issue
 - Review the queue incrementally by recurrent source pattern, prioritizing frequent
   custom macros, descriptive prefixes and ambiguous sample compositions. Promote
   only evidence-backed corrections; unresolved cases do not block this release.
+
+## Source-bound display repair (2026-11-01)
+
+The API keeps every original field and adds a sparse `display` object. Apply an
+entry only when assertion ID, material ID, paper, source revisions, evidence-bundle
+SHA-256 and the original field hash all match. Source TeX is parsed offline as a
+bounded literal-macro subset, never executed. Conflicting definitions, recursion,
+unsupported defaults and external-file commands fail closed. PDF Symbol glyphs
+are decoded only after checking the actual source font (including embedded font
+names); other glyph corrections require a recorded source-page review.
+
+The checked-in registries contain short derived strings and their definition,
+font or source-review provenance. `scripts/build_materials_display.py` rebuilds
+them from the public read model, immutable dataset and retained source cache.
+It preserves parameters, vacancies, oxygen delta, isotope/phase notation and
+all numerical observations. This projection is not a new composition measurement
+or a replacement for the original evidence or immutable CSV snapshot.
+
+`frontend/scripts/audit-materials-display.mjs` runs the actual display renderer
+across every nonempty formula, composition, quantity, sample, substrate, method,
+criterion, condition and title. It reports unresolved expressions and visible
+commands, private glyphs and control characters separately. Require zero visible
+leaks and no unexplained formula failures before release. Review any fallback;
+a passing fallback scan alone is not a scientific accuracy assessment. Source
+fixtures include PCCO, BaFe1.8Co0.2As2, PDF oxygen delta, vacancy notation, clipped
+math delimiters, subscripts outside math, units, and prohibited commands.
+
+After this audit, `scripts/build_materials_display_families.py` derives compact
+search/family annotations from resolved formula text. Migration 0106 checks the
+original formula hash and each assertion's pinned source before applying them,
+retains previous semantics for rollback, and preserves unrelated keys. It adds
+no columns and changes no claim, pressure, Tc, admission or sample identity.
+PCCO is consequently displayed as Pr1.85Ce0.15CuO4 and browsable under Cuprates;
+search also includes the source-resolved formula. Unresolved chemistry stays
+Unclassified. Rebuild and rerun this audit for each new NER release; do not copy
+macro definitions between papers or treat review-queue entries as applied fixes.

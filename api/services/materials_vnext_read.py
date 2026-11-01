@@ -10,6 +10,7 @@ from models.materials_vnext import AdmittedTcPage, AdmittedTcResult, TcEvidenceL
 from models.ml_foundation import ProductionAdmissionResponse
 from services.materials_admission_scope import CURRENT_ADMISSION_WHERE
 from services.materials_context_sql import COMPOSITION_IDS, PROTOCOL_ID
+from services.materials_display import display_projection
 from services.materials_family import FAMILIES, FAMILY_SQL, current_family
 
 
@@ -31,7 +32,10 @@ async def admitted_tc_page(db, *, query=None, material_id=None, family=None, pre
         params['material_id']=material_id;clauses.append('c.material_id=:material_id')
     if query:
         params['query']='%'+query.replace('\\','\\\\').replace('%',r'\%').replace('_',r'\_')+'%'
-        clauses.append('(m.formula ILIKE :query OR c.paper_id ILIKE :query OR EXISTS '
+        clauses.append('(m.formula ILIKE :query OR c.paper_id ILIKE :query OR '
+            "(m.material_semantics->'source_notation'->>'version'='materials-source-display/1' "
+            "AND m.material_semantics->'source_notation'->>'formula_sha256'=encode(sha256(convert_to(m.formula,'UTF8')),'hex') "
+            "AND m.material_semantics->'source_notation'->>'text' ILIKE :query) OR EXISTS "
             "(SELECT 1 FROM sample_compositions sc WHERE sc.sample_id=rs.id "
             f"AND sc.id = ANY({COMPOSITION_IDS}) "
             'AND sc.formula_raw ILIKE :query))')
@@ -53,11 +57,14 @@ async def admitted_tc_page(db, *, query=None, material_id=None, family=None, pre
          FROM sample_compositions sc WHERE sc.sample_id=rs.id
            AND sc.id = ANY({COMPOSITION_IDS})) AS compositions
         '''+FROM+where+' ORDER BY c.paper_id,c.id LIMIT :limit OFFSET :offset'),params)).mappings().all()
-    evidence=defaultdict(list);versions=defaultdict(set)
+    evidence=defaultdict(list);versions=defaultdict(set);source_pins=defaultdict(set)
     if rows:
         links=(await db.execute(text("SELECT event_id::text,locator FROM event_evidence WHERE event_id=ANY(:ids) AND link_type='source' ORDER BY id"),dict(ids=[UUID(r['event_id']) for r in rows]))).mappings()
         for link in links:
-            locator=link['locator'];label=locator.get('original_locator','Original source')
+            locator=link['locator']
+            pin=locator.get('representation_input',{}).get('sha256')
+            if pin:source_pins[link['event_id']].add(pin)
+            label=locator.get('original_locator','Original source')
             # Return source coordinates and hashes, never local cache paths.
             if not isinstance(label,str) or label.startswith(('/', 'file:')):label='Original source'
             page=re.search(r'(?:^|:)pdf_page:([1-9]\d*)(?=:|$)',label)
@@ -81,7 +88,7 @@ async def admitted_tc_page(db, *, query=None, material_id=None, family=None, pre
         source_url='https://arxiv.org/pdf/'+quote(aid,safe='/')+version
         context=row['composition_context']
         definition=metadata.get('result_semantics',{}).get('definition',{})
-        items.append(AdmittedTcResult(id=row['id'],material_id=row['material_id'],formula=row['formula'],
+        item=AdmittedTcResult(id=row['id'],material_id=row['material_id'],formula=row['formula'],
             family=current_family(row['formula'],row['family'],row['material_semantics']),
             compositions=row['compositions'] or [],sample_label=row['sample_label'],
             sample_form=context.get('form_raw') or context.get('target_kind'),substrate=context.get('substrate_raw'),
@@ -93,5 +100,7 @@ async def admitted_tc_page(db, *, query=None, material_id=None, family=None, pre
             measurement_context=row['details_raw'],pressure_regime=pressure_context['regime'],
             pressure_gpa=row['pressure_gpa'],pressure_raw=pressure_raw,paper_id=row['paper_id'],
             paper_title=row['title'],source_url=source_url,source_versions=source_versions,
-            evidence=evidence[row['event_id']],validity_status=row['validity_status'],review=review))
+            evidence=evidence[row['event_id']],validity_status=row['validity_status'],review=review)
+        item.display=display_projection(item.model_dump(),source_pins[row['event_id']])
+        items.append(item)
     return AdmittedTcPage(items=items,**counts,limit=limit,offset=offset)

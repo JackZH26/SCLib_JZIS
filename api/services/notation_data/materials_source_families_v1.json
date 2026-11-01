@@ -1,0 +1,1877 @@
+{
+  "version": "materials-source-display/1",
+  "materials": [
+    {
+      "id": "source:036bf849-2ed0-5386-9aaa-0b5765dfe036",
+      "paper_id": "arxiv:2405.07388",
+      "claims": [
+        "8c86dba4-ba96-50fc-ab47-1272569fb027",
+        "fed1f231-3f4b-5426-b54f-7996979e9025"
+      ],
+      "source_sha256": "91d8fff8c9269755a29d16c0d0ff18cc32846a205a858428490fb11130d4ad34",
+      "formula_sha256": "a816c56eccb51d1b21ccb573830d2b4c4f327aed775757f3562c5c6ef08ee92f",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "elemental",
+        "rule": "single_element",
+        "formula_sha256": "a816c56eccb51d1b21ccb573830d2b4c4f327aed775757f3562c5c6ef08ee92f",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "d9a680206f2cb7d82e3a3b3a3e8b9a6ba8f9921e626be26ce134cb545e82ec95"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "a816c56eccb51d1b21ccb573830d2b4c4f327aed775757f3562c5c6ef08ee92f",
+        "text": "α-Ta",
+        "source_bundle_sha256": "91d8fff8c9269755a29d16c0d0ff18cc32846a205a858428490fb11130d4ad34"
+      }
+    },
+    {
+      "id": "source:0ac85055-0ec6-5d80-8cf4-04776b0be4ff",
+      "paper_id": "arxiv:cond-mat/0307059",
+      "claims": [
+        "704e5667-ff9b-53e6-8cb1-326c3fbbaf1e"
+      ],
+      "source_sha256": "4cf1362ee0df9e36d3b1a4a59a791cfae4a7ea18171df78ed6f5f315a34368f2",
+      "formula_sha256": "f78669b013d19777904fbd4d84b5df221e7f6b07189142d7cb7f994825613420",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "intermetallic",
+        "rule": "metal_or_metalloid_compound",
+        "formula_sha256": "f78669b013d19777904fbd4d84b5df221e7f6b07189142d7cb7f994825613420",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "6393edc6a713e159bdfdb48b5206db95dfa20468010d66af10425caebf26ced2"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "f78669b013d19777904fbd4d84b5df221e7f6b07189142d7cb7f994825613420",
+        "text": "Pr(Os1−xRux)4Sb12",
+        "source_bundle_sha256": "4cf1362ee0df9e36d3b1a4a59a791cfae4a7ea18171df78ed6f5f315a34368f2"
+      }
+    },
+    {
+      "id": "source:0bf8058b-48ef-5757-8a74-79bc9df0b241",
+      "paper_id": "arxiv:1506.00070",
+      "claims": [
+        "57c14ed7-b8b4-5984-b2fa-afbe80abbf9e"
+      ],
+      "source_sha256": "7e9a7b5eaf71f3a3141bca32f4bef584b708337b4deabb9c07ee5be4cd9cf157",
+      "formula_sha256": "b497cf19f094ae3f1d9bd66e9cba80a96270126f0e3af8ae2a6c82d22dd8f198",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "b497cf19f094ae3f1d9bd66e9cba80a96270126f0e3af8ae2a6c82d22dd8f198",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "008b41dff1014539f7999b9d5094e60cd85587bcc97187f432c75a72e2239976"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "b497cf19f094ae3f1d9bd66e9cba80a96270126f0e3af8ae2a6c82d22dd8f198",
+        "text": "Bi2Sr2−xLaxCuO6+δ",
+        "source_bundle_sha256": "7e9a7b5eaf71f3a3141bca32f4bef584b708337b4deabb9c07ee5be4cd9cf157"
+      }
+    },
+    {
+      "id": "source:0d69c08b-5130-510f-9d9d-a062a95f4f77",
+      "paper_id": "arxiv:1207.5070",
+      "claims": [
+        "fad5dc7d-178e-5a3d-8890-646c7dd84d46"
+      ],
+      "source_sha256": "a512afcf67f41bcbcbc6a01eb6ccfe55efab43241536dc92c3e527614aad4fd8",
+      "formula_sha256": "bd614bb57fd825d5ad138ff6384b3e1bf94dbad85051c3333ecf461c388a9c14",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "bd614bb57fd825d5ad138ff6384b3e1bf94dbad85051c3333ecf461c388a9c14",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "d7963a00b8712c04a29cc236327b255d7c963ebe9606febc31acf3f07a248c6b"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "bd614bb57fd825d5ad138ff6384b3e1bf94dbad85051c3333ecf461c388a9c14",
+        "text": "Bi2Sr2CaCuO8+δ",
+        "source_bundle_sha256": "a512afcf67f41bcbcbc6a01eb6ccfe55efab43241536dc92c3e527614aad4fd8"
+      }
+    },
+    {
+      "id": "source:12c6aef0-3bc8-509d-8d14-023e024d9ac7",
+      "paper_id": "arxiv:2508.07547",
+      "claims": [
+        "25996aaf-8b31-5bd5-8a3e-e8efb51ae4d1",
+        "62707162-f242-51d3-89dd-97ddf4652758",
+        "8b581101-84a0-5877-8f4d-b49e425b4169"
+      ],
+      "source_sha256": "07aaa443c4178b826ac7b9daa0adf63a736830741f21075ddfd4a6d50f59a406",
+      "formula_sha256": "424b72aa1bcbb8ed8c501e3152ac517b9489136a40a89f431f95a538384b1093",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "chalcogenide",
+        "rule": "composition_group",
+        "formula_sha256": "424b72aa1bcbb8ed8c501e3152ac517b9489136a40a89f431f95a538384b1093",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "2c9261d3f11da29fcb2875ec9ab0e59f171dd42bc209ac51952ad72c319bc4af"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "424b72aa1bcbb8ed8c501e3152ac517b9489136a40a89f431f95a538384b1093",
+        "text": "PdTe2",
+        "source_bundle_sha256": "07aaa443c4178b826ac7b9daa0adf63a736830741f21075ddfd4a6d50f59a406"
+      }
+    },
+    {
+      "id": "source:18ce5491-0543-5b4c-b14d-e1199cc49358",
+      "paper_id": "arxiv:2405.04689",
+      "claims": [
+        "067d4a9b-35d6-5622-a7fe-f0591593060c",
+        "5975b166-65f3-59c1-967d-fdad6f4f102c",
+        "62645bb1-705d-564d-8165-8fb4560b8950",
+        "7fd3db2f-d348-5ce7-9457-5c92c66cbe03",
+        "807efc90-bdff-5a49-9300-ea09115bf5f9",
+        "82ccc71b-7218-569b-a856-16ecc4652a26",
+        "a5d25c38-6b94-5ac9-82dd-ef5a1c33836c",
+        "ffb81890-109b-535d-aff9-69bec675fd6f"
+      ],
+      "source_sha256": "6e9d2e48dea2d006c9477ae14adda9fb922428ea007dfd15474a5fa1a1f62f10",
+      "formula_sha256": "aa915768fb0140378d8b9d08944dee3162ac431fbece851b712a5c762af60f57",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "aa915768fb0140378d8b9d08944dee3162ac431fbece851b712a5c762af60f57",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "e82004e1d85ef950dbbda21227fc693e71f56bb5ae40eae2065b7417579df322"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "aa915768fb0140378d8b9d08944dee3162ac431fbece851b712a5c762af60f57",
+        "text": "Bi1.6Pb0.4Sr2Ca2(Cu1−xLix)3O10+δ",
+        "source_bundle_sha256": "6e9d2e48dea2d006c9477ae14adda9fb922428ea007dfd15474a5fa1a1f62f10"
+      }
+    },
+    {
+      "id": "source:18d7de0d-d8eb-59ea-8bf6-5c68ab7e16d2",
+      "paper_id": "arxiv:cond-mat/0408490",
+      "claims": [
+        "877ecc6c-3ee0-504c-b33c-1f83dd30616e"
+      ],
+      "source_sha256": "5ad40048cb8844a3432988927c5fe1711eb423f1b4bf8a234b5ace35ce778cc5",
+      "formula_sha256": "c4ebd6786907820670bd0ab0919099901db3954526e01897a96bb64d5884d861",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "c4ebd6786907820670bd0ab0919099901db3954526e01897a96bb64d5884d861",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "e2e923a004881ff957223df86c5f7a01a256e5248da5253d5c38833d1dcb9ad8"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "c4ebd6786907820670bd0ab0919099901db3954526e01897a96bb64d5884d861",
+        "text": "Pr 2- xCexCuO4-δ",
+        "source_bundle_sha256": "5ad40048cb8844a3432988927c5fe1711eb423f1b4bf8a234b5ace35ce778cc5"
+      }
+    },
+    {
+      "id": "source:1973338d-9e15-5009-b84e-1c1a84413469",
+      "paper_id": "arxiv:1905.07083",
+      "claims": [
+        "0e069c8d-e709-5842-ad2e-f099037d9c44",
+        "0fa6e834-595e-5ccf-a78f-275c3e5c8601"
+      ],
+      "source_sha256": "8910f03c348b2a63f4acc2f06b164c2c24ea35bc1e40de358dec7f3953130b91",
+      "formula_sha256": "5768fbba98f9aab35efd51500557fd352cfe79cdd3c4c75da2ef67871b73985d",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "5768fbba98f9aab35efd51500557fd352cfe79cdd3c4c75da2ef67871b73985d",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "fad6e93d5438b73aa0d3ec0cf94fbbe3efaa7a5e320b6b4f7c2d49728616be43"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "5768fbba98f9aab35efd51500557fd352cfe79cdd3c4c75da2ef67871b73985d",
+        "text": "Bi2Sr2CaCu2O8+δ",
+        "source_bundle_sha256": "8910f03c348b2a63f4acc2f06b164c2c24ea35bc1e40de358dec7f3953130b91"
+      }
+    },
+    {
+      "id": "source:19f91b32-10b0-5457-97f2-5c6aff95bf8f",
+      "paper_id": "arxiv:cond-mat/0402392",
+      "claims": [
+        "13ea132c-2320-5f82-a42d-a35fcbf75bd7",
+        "23cf03ba-c9df-5d9b-9390-8b1ea989ce3e"
+      ],
+      "source_sha256": "85446fadccca9b47aef6c1acfe33ec8313f1ee44e4e90aca6c8a8008550392c1",
+      "formula_sha256": "cd10cfb322e00cd2f9281ff071ec3697a2d9f948adab64a87b189da3817605af",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "unclassified",
+        "rule": "unresolved_formula",
+        "formula_sha256": "cd10cfb322e00cd2f9281ff071ec3697a2d9f948adab64a87b189da3817605af",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "unresolved",
+        "resolved_formula_sha256": "2d551ea35bea87a485ec931cfab1e674ddd74cd5e1498195fa358ed49129dccc"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "cd10cfb322e00cd2f9281ff071ec3697a2d9f948adab64a87b189da3817605af",
+        "text": "α–U",
+        "source_bundle_sha256": "85446fadccca9b47aef6c1acfe33ec8313f1ee44e4e90aca6c8a8008550392c1"
+      }
+    },
+    {
+      "id": "source:1abfc273-e259-5be0-9242-3d22fce2fb13",
+      "paper_id": "arxiv:0808.2580",
+      "claims": [
+        "ccbba375-7dd8-5232-80c7-56f6d6ea971c"
+      ],
+      "source_sha256": "8da81b513f07bd82af85ff5033e322bf0aecc13ec73907d133f0ad8a435a08aa",
+      "formula_sha256": "3a6a1ad09d5caf8a37f2a4cbd892e147583b101877b6a01d529d6a2c1cf8dc2d",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "heavy_fermion",
+        "rule": "documented_heavy_fermion_host",
+        "formula_sha256": "3a6a1ad09d5caf8a37f2a4cbd892e147583b101877b6a01d529d6a2c1cf8dc2d",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "6dcd4d8fbdcec24ba90827e36e0466f2140029e1a51f6559cddaa872904124a0"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "3a6a1ad09d5caf8a37f2a4cbd892e147583b101877b6a01d529d6a2c1cf8dc2d",
+        "text": "CePt3Si",
+        "source_bundle_sha256": "8da81b513f07bd82af85ff5033e322bf0aecc13ec73907d133f0ad8a435a08aa"
+      }
+    },
+    {
+      "id": "source:2526539b-15ac-51fe-b381-310c98fa40f4",
+      "paper_id": "arxiv:cond-mat/0407265",
+      "claims": [
+        "25a8f2a3-f0a1-5e19-8549-8e9269004f7b"
+      ],
+      "source_sha256": "150cf951f3b027e993f42e24c0db4e20a45614d3eebc51fa5d627a7ad2b83048",
+      "formula_sha256": "3f851efbed431bdd19c0ea1087a15106bf8a24d1aaccb74684e02518546f8099",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "mgb2",
+        "rule": "mgb2_host",
+        "formula_sha256": "3f851efbed431bdd19c0ea1087a15106bf8a24d1aaccb74684e02518546f8099",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "596d8b0892f2e262440790f430ead6cb1811367d73953901689cf98176994651"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "3f851efbed431bdd19c0ea1087a15106bf8a24d1aaccb74684e02518546f8099",
+        "text": "Mg(B1−xCx)2",
+        "source_bundle_sha256": "150cf951f3b027e993f42e24c0db4e20a45614d3eebc51fa5d627a7ad2b83048"
+      }
+    },
+    {
+      "id": "source:2589f26e-bf96-58c4-93ee-c38fbfd9d5d1",
+      "paper_id": "arxiv:cond-mat/0702106",
+      "claims": [
+        "6e2f2043-e258-59ff-80fc-d3669270dc1a",
+        "f1df2564-3c07-5d88-af45-e7708de8fdb0"
+      ],
+      "source_sha256": "ad5125d2629d0cb19bf4dfe7a3aec6642098ffcc63d4756458948cb0b8655dbd",
+      "formula_sha256": "4a06a9b597ae8cde3982536c96d07fa5120c71051e2fce95ae39d850c99908d8",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "unclassified",
+        "rule": "unresolved_formula",
+        "formula_sha256": "4a06a9b597ae8cde3982536c96d07fa5120c71051e2fce95ae39d850c99908d8",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "unresolved",
+        "resolved_formula_sha256": "e93082efb8a8c8cb29d90a9d7b2831dd94c309b9b69c1f4cf47a96458c376694"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "4a06a9b597ae8cde3982536c96d07fa5120c71051e2fce95ae39d850c99908d8",
+        "text": "a-Mo2.7Ge",
+        "source_bundle_sha256": "ad5125d2629d0cb19bf4dfe7a3aec6642098ffcc63d4756458948cb0b8655dbd"
+      }
+    },
+    {
+      "id": "source:2c3ac2d7-68c4-52e4-94cf-14203280a65e",
+      "paper_id": "arxiv:1009.1572",
+      "claims": [
+        "7551eb33-7467-5b8d-9094-7b6dfdfc44a0"
+      ],
+      "source_sha256": "f48803a812c1a99c8a363e5860cf9f37785afa07493e2986455edcf1aee18832",
+      "formula_sha256": "4cec045389f1fe7ffc0b96b2a8ca378d1d5976cc1291bb6de23da23c1e6d9603",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "4cec045389f1fe7ffc0b96b2a8ca378d1d5976cc1291bb6de23da23c1e6d9603",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "9c1b7e02c29d12cd6fc040d20110eff6253e732d334475176166272896cdc586"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "4cec045389f1fe7ffc0b96b2a8ca378d1d5976cc1291bb6de23da23c1e6d9603",
+        "text": "BaFe1.8Co0.2As2",
+        "source_bundle_sha256": "f48803a812c1a99c8a363e5860cf9f37785afa07493e2986455edcf1aee18832"
+      }
+    },
+    {
+      "id": "source:428e3771-766f-5bcd-848b-567b9d0b5fd4",
+      "paper_id": "arxiv:1902.05232",
+      "claims": [
+        "307a1054-8d22-590e-a55e-010601a2c58a"
+      ],
+      "source_sha256": "bdd971b4c87026333417f85a13e8977f63f69750ae36de34d0a16fe108bfdbb8",
+      "formula_sha256": "867fdd80b7acfad2d90096e0fe962edf11f92bbf06f648334bde33d5c4749dc2",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "867fdd80b7acfad2d90096e0fe962edf11f92bbf06f648334bde33d5c4749dc2",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "56898556785e8e5336c5e2410829acdde3ccae8d2ebca3be7e794ac3b43bd1f5"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "867fdd80b7acfad2d90096e0fe962edf11f92bbf06f648334bde33d5c4749dc2",
+        "text": "HgBa2Ca2Cu3O8+δ",
+        "source_bundle_sha256": "bdd971b4c87026333417f85a13e8977f63f69750ae36de34d0a16fe108bfdbb8"
+      }
+    },
+    {
+      "id": "source:4fc739f7-348a-5621-a93d-7cb88b7e2bb7",
+      "paper_id": "arxiv:cond-mat/9611179",
+      "claims": [
+        "5dfa0858-59e8-5544-a831-642c94e590d8"
+      ],
+      "source_sha256": "bb323cd6f2886d2602a125e77374e36106070030549b6e588026acca30d4957d",
+      "formula_sha256": "e5ba904ab955e46fa084198cc1a6f66095e007d612d39680113eadc01d7595ca",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "e5ba904ab955e46fa084198cc1a6f66095e007d612d39680113eadc01d7595ca",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "dd68b78cbc29d17c5d9c3fbd2104783d5ef39e969da5f7b2ed74dbe923ba7cd7"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "e5ba904ab955e46fa084198cc1a6f66095e007d612d39680113eadc01d7595ca",
+        "text": "La1.86Sr0.14CuO4",
+        "source_bundle_sha256": "bb323cd6f2886d2602a125e77374e36106070030549b6e588026acca30d4957d"
+      }
+    },
+    {
+      "id": "source:571ffb32-7468-5b7f-bbce-b557e04dfc86",
+      "paper_id": "arxiv:cond-mat/9908033",
+      "claims": [
+        "68da0e1d-5a0b-5f75-a5ab-ce75411026e5"
+      ],
+      "source_sha256": "8c72955cc0b6d349cb36716f7358aad289cdaa73099f6a1dc7e6229721ccee3f",
+      "formula_sha256": "a974b1d92c802e9e6f7036c2e2e16f0bd4d86688f199461a4f81084773d3c067",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "a974b1d92c802e9e6f7036c2e2e16f0bd4d86688f199461a4f81084773d3c067",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "c950483fc0657e3cb40fc6fba535fe693d5983b61dc8dc09beb3aa6af3d276b7"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "a974b1d92c802e9e6f7036c2e2e16f0bd4d86688f199461a4f81084773d3c067",
+        "text": "YBa2Cu3O7",
+        "source_bundle_sha256": "8c72955cc0b6d349cb36716f7358aad289cdaa73099f6a1dc7e6229721ccee3f"
+      }
+    },
+    {
+      "id": "source:5f3af734-15d8-5436-86f4-19ef247dbbbc",
+      "paper_id": "arxiv:1009.1572",
+      "claims": [
+        "0e033620-f87a-5353-a312-7952bd1ad95a"
+      ],
+      "source_sha256": "f48803a812c1a99c8a363e5860cf9f37785afa07493e2986455edcf1aee18832",
+      "formula_sha256": "e4baf302fa6571e205841a362871c90ca29237fc354a42147223ace16ee5bfbf",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "e4baf302fa6571e205841a362871c90ca29237fc354a42147223ace16ee5bfbf",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "9c1b7e02c29d12cd6fc040d20110eff6253e732d334475176166272896cdc586"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "e4baf302fa6571e205841a362871c90ca29237fc354a42147223ace16ee5bfbf",
+        "text": "BaFe1.8Co0.2As2",
+        "source_bundle_sha256": "f48803a812c1a99c8a363e5860cf9f37785afa07493e2986455edcf1aee18832"
+      }
+    },
+    {
+      "id": "source:5f4eb276-8b60-56b4-94fd-07d859f6cfc8",
+      "paper_id": "arxiv:1508.05213",
+      "claims": [
+        "5c3a47ee-98e0-57a0-acd7-6c50cf949973",
+        "ad3f5f77-7770-5c1c-b800-37c78401c27b",
+        "b75e7bca-64fb-5e48-bf33-263ccc277dce"
+      ],
+      "source_sha256": "5746ee5e98bbac349355123ddf3277e497e37aca67709de47934578a5c2044e3",
+      "formula_sha256": "104d892fdc27c7d6773d5c9e0b8dd775ce327a5cdec359836f3326c98999980a",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "104d892fdc27c7d6773d5c9e0b8dd775ce327a5cdec359836f3326c98999980a",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "0c8df7c250d30c1b45e0ad4f21286f37620ad8dd1964a2222565f20dd601de2e"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "104d892fdc27c7d6773d5c9e0b8dd775ce327a5cdec359836f3326c98999980a",
+        "text": "β-FexSe",
+        "source_bundle_sha256": "5746ee5e98bbac349355123ddf3277e497e37aca67709de47934578a5c2044e3"
+      }
+    },
+    {
+      "id": "source:60ff579a-46c8-5023-8c6f-d3f248968f04",
+      "paper_id": "arxiv:cond-mat/0106521",
+      "claims": [
+        "f9c3d072-dd1b-5c49-abaa-5abfd977f77c"
+      ],
+      "source_sha256": "30d387ef9464c6e409d7ae8ad6a433a275be0b9fe6d104790fc5774ee2f5d29e",
+      "formula_sha256": "ee2a7abce7865be582ee5b9b46ca348d77180ad27f1e9279ea4af371aabe4b3f",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "oxide",
+        "rule": "composition_group",
+        "formula_sha256": "ee2a7abce7865be582ee5b9b46ca348d77180ad27f1e9279ea4af371aabe4b3f",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "5973607e24bad35b6d7429e1e22431aae7f4a39a6d42b37abbd1e1a51b46fc46"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "ee2a7abce7865be582ee5b9b46ca348d77180ad27f1e9279ea4af371aabe4b3f",
+        "text": "Cd2Re2O7",
+        "source_bundle_sha256": "30d387ef9464c6e409d7ae8ad6a433a275be0b9fe6d104790fc5774ee2f5d29e"
+      }
+    },
+    {
+      "id": "source:6111781e-19bf-5133-89be-49b87b80704c",
+      "paper_id": "arxiv:2509.11557",
+      "claims": [
+        "d25ddcd5-59dd-56c5-b9df-f986bf1fe598",
+        "dcd35e73-5e35-5c99-a858-ecb3b62950ee"
+      ],
+      "source_sha256": "b8c5714ccca5dfbfc60043de1438af8245d8df2dd1ed01081abb7d5feeaa3dda",
+      "formula_sha256": "064063278e5825f4946728709b262f27d1fd83165426762a253bd850cc4fc03c",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "nickelate",
+        "rule": "nickel_oxide_host",
+        "formula_sha256": "064063278e5825f4946728709b262f27d1fd83165426762a253bd850cc4fc03c",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "4d85426e8a40452f0876b6c56fd718ca80151faf4288cae7bc5119c00f0d61be"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "064063278e5825f4946728709b262f27d1fd83165426762a253bd850cc4fc03c",
+        "text": "La3Ni2O7-δ",
+        "source_bundle_sha256": "b8c5714ccca5dfbfc60043de1438af8245d8df2dd1ed01081abb7d5feeaa3dda"
+      }
+    },
+    {
+      "id": "source:63dced6d-ca40-5a8a-82e1-a8c765a2035d",
+      "paper_id": "arxiv:0710.2801",
+      "claims": [
+        "935b7699-046f-5b8d-aa18-189a928de6cd",
+        "a204907e-0a30-5645-b408-48268130ca1d"
+      ],
+      "source_sha256": "a2d641b82d48930c913f77241de42c1e480c859450a0013128b674bf4bee20ee",
+      "formula_sha256": "e37af7bc893196927b0f167b91c56a77cec92332edfbb13355f409f033d0e76b",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "mgb2",
+        "rule": "mgb2_host",
+        "formula_sha256": "e37af7bc893196927b0f167b91c56a77cec92332edfbb13355f409f033d0e76b",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "cdf1a986ee765791e26cba5b9917dfa9ecad80cfd990b1039afd0accd7f6a99e"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "e37af7bc893196927b0f167b91c56a77cec92332edfbb13355f409f033d0e76b",
+        "text": "MgB2",
+        "source_bundle_sha256": "a2d641b82d48930c913f77241de42c1e480c859450a0013128b674bf4bee20ee"
+      }
+    },
+    {
+      "id": "source:668f3292-25a6-53b1-a594-a6a05e07dcc1",
+      "paper_id": "arxiv:0809.3582",
+      "claims": [
+        "b13e9b11-285c-5038-9da9-3cb6c3f8e131"
+      ],
+      "source_sha256": "95951d3a9d173257fdeb46a3321428e0ec418ed9a4ded077bd7a351b5f3edd6e",
+      "formula_sha256": "29851cb7cd54c25a697753804cfdc0e5c166018fa43dffdb80389c09d9e6a664",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "29851cb7cd54c25a697753804cfdc0e5c166018fa43dffdb80389c09d9e6a664",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "6255372ad4c279899e790f27567f0e60bc0b580c1d05dce4ed0b2e93ec793c4b"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "29851cb7cd54c25a697753804cfdc0e5c166018fa43dffdb80389c09d9e6a664",
+        "text": "DyFeAsO1-δ",
+        "source_bundle_sha256": "95951d3a9d173257fdeb46a3321428e0ec418ed9a4ded077bd7a351b5f3edd6e"
+      }
+    },
+    {
+      "id": "source:6ca57c47-c082-5ea9-8c80-4d080d9aa31f",
+      "paper_id": "arxiv:2202.08878",
+      "claims": [
+        "78befc4c-aa75-5e05-a3c2-998ec9c890d5",
+        "f8b4782a-0e6f-577d-982c-2a0781cfd3bf"
+      ],
+      "source_sha256": "93c3e221d4d55cfffe169d032588c580bedd3610eef93a0322cc856131c8b209",
+      "formula_sha256": "97d4022e5ab120c7c4a0524326ce456c291a3ef1ad873204dc535b1a3e494d95",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "heavy_fermion",
+        "rule": "documented_heavy_fermion_host",
+        "formula_sha256": "97d4022e5ab120c7c4a0524326ce456c291a3ef1ad873204dc535b1a3e494d95",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "f31992dd8f6e5bd777d190cc2263269ecde0d1caf9203a1efa60429566212658"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "97d4022e5ab120c7c4a0524326ce456c291a3ef1ad873204dc535b1a3e494d95",
+        "text": "UPt3",
+        "source_bundle_sha256": "93c3e221d4d55cfffe169d032588c580bedd3610eef93a0322cc856131c8b209"
+      }
+    },
+    {
+      "id": "source:70ac0625-378d-57f7-b456-0c2ed43653ad",
+      "paper_id": "arxiv:0811.2621",
+      "claims": [
+        "b4a3e2ed-eef3-5106-9ea2-1646462b308c",
+        "db84aedc-2a14-5f86-aca8-5b647af59c66"
+      ],
+      "source_sha256": "044adba2796632d692a5970c8588d73611265223730b197ef80997ad83c03edd",
+      "formula_sha256": "b00271df14520ba9e9ef2aff5145c7018137a55417b4c61537e9869ab6776947",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "b00271df14520ba9e9ef2aff5145c7018137a55417b4c61537e9869ab6776947",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "72a3b1e942cad9d3f73ae8acb441125b2b3d36e1ec81460f8892719adf179b56"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "b00271df14520ba9e9ef2aff5145c7018137a55417b4c61537e9869ab6776947",
+        "text": "Ba(Fe0.9Co0.1)2As2",
+        "source_bundle_sha256": "044adba2796632d692a5970c8588d73611265223730b197ef80997ad83c03edd"
+      }
+    },
+    {
+      "id": "source:774a2b14-118d-58f8-9c31-fa59fc96a23c",
+      "paper_id": "arxiv:2104.12068",
+      "claims": [
+        "325a4cd7-e45f-5c6c-838d-e1bd41501736",
+        "f38e33a0-995b-53ea-89bd-74a3f99d0343"
+      ],
+      "source_sha256": "cc425cd9ef0dda8121082dc157b64298b80b4caa29a1b6a4825940f50c63350b",
+      "formula_sha256": "209567ba4027a39c9930eede54dd16258de477460f2dc85060b4ae25c722d5a1",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "209567ba4027a39c9930eede54dd16258de477460f2dc85060b4ae25c722d5a1",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "678d47b66eb5d90e213ce5c57275a45f7a4cc2081b59beb9228168b1ed47e997"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "209567ba4027a39c9930eede54dd16258de477460f2dc85060b4ae25c722d5a1",
+        "text": "Fe1-δSe",
+        "source_bundle_sha256": "cc425cd9ef0dda8121082dc157b64298b80b4caa29a1b6a4825940f50c63350b"
+      }
+    },
+    {
+      "id": "source:77608064-5940-5bb1-a801-eace5b14cdff",
+      "paper_id": "arxiv:cond-mat/0503429",
+      "claims": [
+        "d12c54a4-2525-55ad-96b0-27a617591f12"
+      ],
+      "source_sha256": "67b53e367e9437e20048ef642a0366686904c50a2b875e11a06dcf367b617441",
+      "formula_sha256": "8301bb819439f98915997fe0b0ea8b25950ef5de6ec09fa75ba5f6fcba310df2",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "8301bb819439f98915997fe0b0ea8b25950ef5de6ec09fa75ba5f6fcba310df2",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "5fda2355498f58187a5216e40cd6f3e96eb8cd67f7b9b8d858d6ea7e28185448"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "8301bb819439f98915997fe0b0ea8b25950ef5de6ec09fa75ba5f6fcba310df2",
+        "text": "Nd1.85Ce0.15CuO4−y",
+        "source_bundle_sha256": "67b53e367e9437e20048ef642a0366686904c50a2b875e11a06dcf367b617441"
+      }
+    },
+    {
+      "id": "source:77b9ad29-47e3-5f79-a0fe-e1c45a512ffc",
+      "paper_id": "arxiv:2401.15224",
+      "claims": [
+        "9e18dffd-6f4e-539c-9870-4854e429a429",
+        "e25124be-d360-519f-88e6-5e0822eabb3b",
+        "f58dbb02-c203-5c5f-b295-e4f6ed858250",
+        "f60b5602-ba2e-5f5c-b744-8289eb1feaa4"
+      ],
+      "source_sha256": "92c55fedf7d310a8653fc7a278a1a607f2d41633dee38d30091e82483ac79a15",
+      "formula_sha256": "799486731c4201966f660a4214df0ae05beb3b6220bcd327365773b2abe98f58",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "799486731c4201966f660a4214df0ae05beb3b6220bcd327365773b2abe98f58",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "56898556785e8e5336c5e2410829acdde3ccae8d2ebca3be7e794ac3b43bd1f5"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "799486731c4201966f660a4214df0ae05beb3b6220bcd327365773b2abe98f58",
+        "text": "HgBa2Ca2Cu3O8+δ",
+        "source_bundle_sha256": "92c55fedf7d310a8653fc7a278a1a607f2d41633dee38d30091e82483ac79a15"
+      }
+    },
+    {
+      "id": "source:78cb0fde-158d-55fb-8731-b95551114c85",
+      "paper_id": "arxiv:cond-mat/0307059",
+      "claims": [
+        "2b9618cc-602f-5e48-a3d7-ada0d392a139"
+      ],
+      "source_sha256": "4cf1362ee0df9e36d3b1a4a59a791cfae4a7ea18171df78ed6f5f315a34368f2",
+      "formula_sha256": "349441c2d2e626e93d767ae88d46d9f35a70bc6d5a5e4c8c4ea67f2f928b9bde",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "intermetallic",
+        "rule": "metal_or_metalloid_compound",
+        "formula_sha256": "349441c2d2e626e93d767ae88d46d9f35a70bc6d5a5e4c8c4ea67f2f928b9bde",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "a0745ae5e0adf76e182d849b95f03b1a07d1e20a2948f6f36dfb75b1d76cea6a"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "349441c2d2e626e93d767ae88d46d9f35a70bc6d5a5e4c8c4ea67f2f928b9bde",
+        "text": "PrRu4Sb12",
+        "source_bundle_sha256": "4cf1362ee0df9e36d3b1a4a59a791cfae4a7ea18171df78ed6f5f315a34368f2"
+      }
+    },
+    {
+      "id": "source:7a1f08aa-d27d-5090-a8db-ebe3ec517f33",
+      "paper_id": "arxiv:0812.4907",
+      "claims": [
+        "945eb1b9-5020-5deb-aa05-cc044e57ab33",
+        "bfdda237-422f-59f9-833a-1ee85d456e8f",
+        "f75ddc41-57d7-5cf8-a79e-2cf8601a5430"
+      ],
+      "source_sha256": "f95847659d9efc5dc48f70c8c9e10ab416278988faba53f40982ef497afcf464",
+      "formula_sha256": "b367f47c6751996f51bbb3749715d8a43506706da72b7d13bc9710444e7a3295",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "b367f47c6751996f51bbb3749715d8a43506706da72b7d13bc9710444e7a3295",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "a39a3ebc7b126afbba4cc0f3ea202c33c183e941b7a6337f3c73800205433b78"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "b367f47c6751996f51bbb3749715d8a43506706da72b7d13bc9710444e7a3295",
+        "text": "TbFeAsO1-δ",
+        "source_bundle_sha256": "f95847659d9efc5dc48f70c8c9e10ab416278988faba53f40982ef497afcf464"
+      }
+    },
+    {
+      "id": "source:7c8e5fd8-18e6-5118-a38c-1ff18fda6d4c",
+      "paper_id": "arxiv:0809.3582",
+      "claims": [
+        "748e2c09-5aa8-5ac7-9fa6-71b5f7f012ea"
+      ],
+      "source_sha256": "95951d3a9d173257fdeb46a3321428e0ec418ed9a4ded077bd7a351b5f3edd6e",
+      "formula_sha256": "b367f47c6751996f51bbb3749715d8a43506706da72b7d13bc9710444e7a3295",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "b367f47c6751996f51bbb3749715d8a43506706da72b7d13bc9710444e7a3295",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "a39a3ebc7b126afbba4cc0f3ea202c33c183e941b7a6337f3c73800205433b78"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "b367f47c6751996f51bbb3749715d8a43506706da72b7d13bc9710444e7a3295",
+        "text": "TbFeAsO1-δ",
+        "source_bundle_sha256": "95951d3a9d173257fdeb46a3321428e0ec418ed9a4ded077bd7a351b5f3edd6e"
+      }
+    },
+    {
+      "id": "source:7d486c12-8891-50fc-aac6-080cdb809e7b",
+      "paper_id": "arxiv:1102.1933",
+      "claims": [
+        "79738dd1-ae1c-586a-813f-c4d2f88a0207",
+        "c061d83f-f6b8-5266-99ce-b48dafe99377"
+      ],
+      "source_sha256": "f2344dbc4c0459b29cb7a677a7d6d46f2645c801b5ccec8902e0210e9a66384b",
+      "formula_sha256": "d8006deb02620aa13179c2eecd958c3390d39f6dcb854deb891c6ac61d6c867e",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "d8006deb02620aa13179c2eecd958c3390d39f6dcb854deb891c6ac61d6c867e",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "872bca51a375aa2cddfced8cb6d3ff8df6d2962e1c91cfb24dd1811c2a451812"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "d8006deb02620aa13179c2eecd958c3390d39f6dcb854deb891c6ac61d6c867e",
+        "text": "Ba1−xKxFe2As2",
+        "source_bundle_sha256": "f2344dbc4c0459b29cb7a677a7d6d46f2645c801b5ccec8902e0210e9a66384b"
+      }
+    },
+    {
+      "id": "source:7f62a922-9b8d-5641-a449-26c0d352a2d2",
+      "paper_id": "arxiv:1907.09287",
+      "claims": [
+        "81c5ce5f-2766-55f7-a948-3aa3367b34cd",
+        "b3605a74-2f08-54dc-9c19-87158394a049"
+      ],
+      "source_sha256": "0e0af089611d1ad694e7eb1ddbc5070b2d1146e038653ff3b75295384761b947",
+      "formula_sha256": "da595ebb7b7d6b6498f80496d2785b017be2d1b69d970c80f531357952f33894",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "pnictide",
+        "rule": "composition_group",
+        "formula_sha256": "da595ebb7b7d6b6498f80496d2785b017be2d1b69d970c80f531357952f33894",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "e73bdf61a20324496a52623814cd6753641214071f8a9bfcaf4647b5cb1ff7b4"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "da595ebb7b7d6b6498f80496d2785b017be2d1b69d970c80f531357952f33894",
+        "text": "Na 1+xSn2−xAs2",
+        "source_bundle_sha256": "0e0af089611d1ad694e7eb1ddbc5070b2d1146e038653ff3b75295384761b947"
+      }
+    },
+    {
+      "id": "source:813f4554-c787-5853-9e3e-97b626280331",
+      "paper_id": "arxiv:1505.07231",
+      "claims": [
+        "1bbe7340-f383-553c-a063-4be141acaa65"
+      ],
+      "source_sha256": "b16937429dc9c889332f33fb12bcc1cd9a683d832c3625cec3f25174ff5cbc21",
+      "formula_sha256": "faceccf3c7efc43e9262a3fdb998e80aac7d73c36875dc9e22a9634709c303d1",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "intermetallic",
+        "rule": "metal_or_metalloid_compound",
+        "formula_sha256": "faceccf3c7efc43e9262a3fdb998e80aac7d73c36875dc9e22a9634709c303d1",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "766a009aca30ae8383da25f09a8f6a4d2f27ecb066227ab1fc03dc5bfa513491"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "faceccf3c7efc43e9262a3fdb998e80aac7d73c36875dc9e22a9634709c303d1",
+        "text": "β-PdBi2",
+        "source_bundle_sha256": "b16937429dc9c889332f33fb12bcc1cd9a683d832c3625cec3f25174ff5cbc21"
+      }
+    },
+    {
+      "id": "source:88992124-2071-5d41-9395-caf35f6a1a15",
+      "paper_id": "arxiv:1805.07847",
+      "claims": [
+        "bbf8513e-520d-5c58-8968-1044cd26c407"
+      ],
+      "source_sha256": "f64b3c9cb7ac20a447bb3776c3dfc28274fb472ea3c974a46f18ff5f8fcc7eff",
+      "formula_sha256": "d9716f60ec368c0bdb5f148fdb0c1cc1aab2b2b537629e945aa5810ac808c3e7",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "pnictide",
+        "rule": "composition_group",
+        "formula_sha256": "d9716f60ec368c0bdb5f148fdb0c1cc1aab2b2b537629e945aa5810ac808c3e7",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "d7eba371ea72b639cd912180906e4507f5d8dd4ddeffe8f13e4cd677600150c1"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "d9716f60ec368c0bdb5f148fdb0c1cc1aab2b2b537629e945aa5810ac808c3e7",
+        "text": "Na1−xSn2P2",
+        "source_bundle_sha256": "f64b3c9cb7ac20a447bb3776c3dfc28274fb472ea3c974a46f18ff5f8fcc7eff"
+      }
+    },
+    {
+      "id": "source:8b3ead85-bff3-51dc-8bb6-6553fbcdb64c",
+      "paper_id": "arxiv:cond-mat/0608029",
+      "claims": [
+        "a2d03a86-25a8-5a26-a7a0-1f70cbfd8d18"
+      ],
+      "source_sha256": "044c9578bd28a56e3e5e645e4a03862f11c1d85a3697280a91e8d30d2a87eb62",
+      "formula_sha256": "6d0c269d3909c7ae0667c1e2dd9865019285eb7161e7214650a6e3a902116d20",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "boride",
+        "rule": "composition_group",
+        "formula_sha256": "6d0c269d3909c7ae0667c1e2dd9865019285eb7161e7214650a6e3a902116d20",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "90bdf30f0c9e651a7b840bde7dc8350c3321af56cc73cecf8cfaa036cfe376fe"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "6d0c269d3909c7ae0667c1e2dd9865019285eb7161e7214650a6e3a902116d20",
+        "text": "Mg1−xAlxB2",
+        "source_bundle_sha256": "044c9578bd28a56e3e5e645e4a03862f11c1d85a3697280a91e8d30d2a87eb62"
+      }
+    },
+    {
+      "id": "source:8c9a3c24-90e9-52b9-8567-0c3535dcbb3e",
+      "paper_id": "arxiv:cond-mat/0503429",
+      "claims": [
+        "93da14b7-f0b1-5379-8e65-be656c1815fe"
+      ],
+      "source_sha256": "67b53e367e9437e20048ef642a0366686904c50a2b875e11a06dcf367b617441",
+      "formula_sha256": "3bbcf9d17a304b0555898bbf1b81ecb79d1018db056555ac2b55cac123473052",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "3bbcf9d17a304b0555898bbf1b81ecb79d1018db056555ac2b55cac123473052",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "4f6092d6306f87d05a182ba7587b3cf29216e1236f3adec80ed51bb07f320064"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "3bbcf9d17a304b0555898bbf1b81ecb79d1018db056555ac2b55cac123473052",
+        "text": "Nd1.835Ce0.165CuO4−y",
+        "source_bundle_sha256": "67b53e367e9437e20048ef642a0366686904c50a2b875e11a06dcf367b617441"
+      }
+    },
+    {
+      "id": "source:8d3d0405-ef4e-5582-9881-985d6e727fb9",
+      "paper_id": "arxiv:cond-mat/0307059",
+      "claims": [
+        "9678a7f6-e05a-5d21-91e7-37df770ecba4"
+      ],
+      "source_sha256": "4cf1362ee0df9e36d3b1a4a59a791cfae4a7ea18171df78ed6f5f315a34368f2",
+      "formula_sha256": "fecbe9928c57efb3f968ee078d34a92f09833e3e76d364635e3e5a47e8e3d095",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "heavy_fermion",
+        "rule": "documented_heavy_fermion_host",
+        "formula_sha256": "fecbe9928c57efb3f968ee078d34a92f09833e3e76d364635e3e5a47e8e3d095",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "7b5e7d86d28aff26e5cf3f5234f8eed7488b77abd6726ccb8eaee2ee1a6180f1"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "fecbe9928c57efb3f968ee078d34a92f09833e3e76d364635e3e5a47e8e3d095",
+        "text": "PrOs4Sb12",
+        "source_bundle_sha256": "4cf1362ee0df9e36d3b1a4a59a791cfae4a7ea18171df78ed6f5f315a34368f2"
+      }
+    },
+    {
+      "id": "source:8f467ec7-2296-5e15-8298-f47349aa4514",
+      "paper_id": "arxiv:2209.06198",
+      "claims": [
+        "43dc1185-c0d3-5051-8aaa-c0d76e841ddd"
+      ],
+      "source_sha256": "6cb78806ba8b74ffe48775946387b7fadd4cf82460c73853765bc31bfd97cec0",
+      "formula_sha256": "10feeffe1940a088820d845f98354c36de44ef47dcef55f29dae70c1c77c0c73",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "10feeffe1940a088820d845f98354c36de44ef47dcef55f29dae70c1c77c0c73",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "ba5954cce7b5aa88be3e4824d27737f88017d93ce8cc9f20b39686528221fc18"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "10feeffe1940a088820d845f98354c36de44ef47dcef55f29dae70c1c77c0c73",
+        "text": "YBa2Cu3O7-δ",
+        "source_bundle_sha256": "6cb78806ba8b74ffe48775946387b7fadd4cf82460c73853765bc31bfd97cec0"
+      }
+    },
+    {
+      "id": "source:8fc70f5e-2a40-5d2b-81ae-b5e261b58e75",
+      "paper_id": "arxiv:1501.01841",
+      "claims": [
+        "43e13130-5163-51cb-a967-62d6404b9de9",
+        "ba32a98c-9795-5ab5-9766-81554e97c03d"
+      ],
+      "source_sha256": "6ca9a1052e6c68ddc4c5568862661c3c737c5560bbbd024a04f821d207997e4d",
+      "formula_sha256": "29841a07eab1924eed672e259a5a15a8fcd0702afe464cb0f17356c12bc0858f",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "29841a07eab1924eed672e259a5a15a8fcd0702afe464cb0f17356c12bc0858f",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "545d1eafaa4d0e553f5bc8dfaa11f203e308756dcab56bb66e539a4c40bdb620"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "29841a07eab1924eed672e259a5a15a8fcd0702afe464cb0f17356c12bc0858f",
+        "text": "Y0.95Ca0.05Ba2Cu3O7-δ",
+        "source_bundle_sha256": "6ca9a1052e6c68ddc4c5568862661c3c737c5560bbbd024a04f821d207997e4d"
+      }
+    },
+    {
+      "id": "source:938095d3-f0cc-56a3-a40f-e2d685527e03",
+      "paper_id": "arxiv:1210.0072",
+      "claims": [
+        "7d243754-57a7-55d3-b6e4-44e15cdc9f84"
+      ],
+      "source_sha256": "7c2ad17b83f140a4a9f8857e18e9b644890f874d2070db858dcae41d484ce07f",
+      "formula_sha256": "2eba1001f306e87e14cd82a6de180a7ca41eebcd5ae38682514794941d7e93d1",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "unclassified",
+        "rule": "unresolved_formula",
+        "formula_sha256": "2eba1001f306e87e14cd82a6de180a7ca41eebcd5ae38682514794941d7e93d1",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "unresolved",
+        "resolved_formula_sha256": "1a757fb471f8749d43c71171dc8d2da01137662daf82b37b030df8f3ceb826f3"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "2eba1001f306e87e14cd82a6de180a7ca41eebcd5ae38682514794941d7e93d1",
+        "text": "(Li0.88□0.12)Nb3.0(O0.13N0.87)4",
+        "source_bundle_sha256": "7c2ad17b83f140a4a9f8857e18e9b644890f874d2070db858dcae41d484ce07f"
+      }
+    },
+    {
+      "id": "source:93dd9211-2f76-5b04-92a4-5f5a1a6a30de",
+      "paper_id": "arxiv:1107.0697",
+      "claims": [
+        "52284090-d38f-55b5-8d72-73b9d0831b48"
+      ],
+      "source_sha256": "585afab7a080b2ffdc2fe92e3512257db308b684da8fc675de0b9c722e584e60",
+      "formula_sha256": "bd8345a7da09334a4b7fe2c4005aa8a8f3894b37d1672daa816348586e6fc35d",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "bd8345a7da09334a4b7fe2c4005aa8a8f3894b37d1672daa816348586e6fc35d",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "7edb966db3bb88d8e186ad513598983cf4f2ca557ef3e857ed27605ea77e73e9"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "bd8345a7da09334a4b7fe2c4005aa8a8f3894b37d1672daa816348586e6fc35d",
+        "text": "YBa2Cu3O7−δ",
+        "source_bundle_sha256": "585afab7a080b2ffdc2fe92e3512257db308b684da8fc675de0b9c722e584e60"
+      }
+    },
+    {
+      "id": "source:93dfab54-f961-5e53-885a-735b8e5a6cd8",
+      "paper_id": "arxiv:cond-mat/0510329",
+      "claims": [
+        "a10765df-99b6-54bb-9098-1ce1fc7ef8ce"
+      ],
+      "source_sha256": "130386f8c71525616c355a9ed510975e7168cd2a7cd539f62a1d21fb0690bf1c",
+      "formula_sha256": "c7f8af48365b565bdd30e36b54c2a86a82b2712011e81a2827f80f65081e2363",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "boride",
+        "rule": "composition_group",
+        "formula_sha256": "c7f8af48365b565bdd30e36b54c2a86a82b2712011e81a2827f80f65081e2363",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "91827ecb96cdd78ac4ee477083e38b5ab4a44143f6370b727f2d053559aaf726"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "c7f8af48365b565bdd30e36b54c2a86a82b2712011e81a2827f80f65081e2363",
+        "text": "Mg1−xMnxB2",
+        "source_bundle_sha256": "130386f8c71525616c355a9ed510975e7168cd2a7cd539f62a1d21fb0690bf1c"
+      }
+    },
+    {
+      "id": "source:9593054f-f334-528e-9cd2-8e3628726714",
+      "paper_id": "arxiv:0901.0293",
+      "claims": [
+        "ba0a9269-6a37-59a1-834a-296fa2eab27b"
+      ],
+      "source_sha256": "24070d80a12cee9c0d96b832ca44eb42dc30b0db91d31f3291ba131efb3cb480",
+      "formula_sha256": "ba6fd29a0c345f523ae918c1a1b05ee62b4c388c78bd462e1af81cbe58d64417",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "carbon",
+        "rule": "graphite_intercalate",
+        "formula_sha256": "ba6fd29a0c345f523ae918c1a1b05ee62b4c388c78bd462e1af81cbe58d64417",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "f80ccdf0c07b2229d2a67ecaccec8cdaf939dadb49ea4e9ab3dfe667edf2193b"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "ba6fd29a0c345f523ae918c1a1b05ee62b4c388c78bd462e1af81cbe58d64417",
+        "text": "CaC6",
+        "source_bundle_sha256": "24070d80a12cee9c0d96b832ca44eb42dc30b0db91d31f3291ba131efb3cb480"
+      }
+    },
+    {
+      "id": "source:9675fefd-f7b5-52f7-ae44-e0c555f231b3",
+      "paper_id": "arxiv:2204.09094",
+      "claims": [
+        "88b74864-c26c-5d4a-8f60-fe28e6ed2734"
+      ],
+      "source_sha256": "fb8946ac4a5db3ceb93f83723f150d43553dca1010f9bf78567dab3ebe0bd655",
+      "formula_sha256": "843f35e1bbf9683d9540fa7f29e6d8fc95b158dbc73eabed374899458ef17f71",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "unclassified",
+        "rule": "unresolved_interface",
+        "formula_sha256": "843f35e1bbf9683d9540fa7f29e6d8fc95b158dbc73eabed374899458ef17f71",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "unresolved",
+        "resolved_formula_sha256": "9172ae2d9ea4f559ae142662546330329d9196a05a7a05999c1a5bbd3cb00488"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "843f35e1bbf9683d9540fa7f29e6d8fc95b158dbc73eabed374899458ef17f71",
+        "text": "AlOx/KTaO3 (111)",
+        "source_bundle_sha256": "fb8946ac4a5db3ceb93f83723f150d43553dca1010f9bf78567dab3ebe0bd655"
+      }
+    },
+    {
+      "id": "source:967b3b54-1d82-518f-b608-98232bdbeef9",
+      "paper_id": "arxiv:0809.3582",
+      "claims": [
+        "2250fe21-3b97-53f8-9e59-665cfdd1effe"
+      ],
+      "source_sha256": "95951d3a9d173257fdeb46a3321428e0ec418ed9a4ded077bd7a351b5f3edd6e",
+      "formula_sha256": "bf5b677b9256f1774c1948a1a550ef2a66185c7d01fd183530342ac84b46bdb0",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "bf5b677b9256f1774c1948a1a550ef2a66185c7d01fd183530342ac84b46bdb0",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "e6caabb449ec8176636d929055a681cb1818e1f2ac7c4adc27ed7ef4f28a6fd9"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "bf5b677b9256f1774c1948a1a550ef2a66185c7d01fd183530342ac84b46bdb0",
+        "text": "HoFeAsO1-δ",
+        "source_bundle_sha256": "95951d3a9d173257fdeb46a3321428e0ec418ed9a4ded077bd7a351b5f3edd6e"
+      }
+    },
+    {
+      "id": "source:9afca436-97ee-532c-8a67-a2af4395d983",
+      "paper_id": "arxiv:0809.3582",
+      "claims": [
+        "af68c2b4-4449-5e49-b77a-36ef921822ce"
+      ],
+      "source_sha256": "95951d3a9d173257fdeb46a3321428e0ec418ed9a4ded077bd7a351b5f3edd6e",
+      "formula_sha256": "eb1604af7a712826ffb16d2f5ed2b8c019ea4dd99e41f5bb26a054ed7b58118d",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "eb1604af7a712826ffb16d2f5ed2b8c019ea4dd99e41f5bb26a054ed7b58118d",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "3a64d286c3db9063103b6dfd3df967a7c822f05c4afc9b4a7a6cad5ba77fc5c3"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "eb1604af7a712826ffb16d2f5ed2b8c019ea4dd99e41f5bb26a054ed7b58118d",
+        "text": "YFeAsO1-δ",
+        "source_bundle_sha256": "95951d3a9d173257fdeb46a3321428e0ec418ed9a4ded077bd7a351b5f3edd6e"
+      }
+    },
+    {
+      "id": "source:9cbe2285-8b8d-5800-96d4-53b6aa9ec0af",
+      "paper_id": "arxiv:cond-mat/0106518",
+      "claims": [
+        "6523bf69-9c1b-54ec-a05b-e6b66aa0b5a8"
+      ],
+      "source_sha256": "9226aca34daabf49cc391aa233f330b7f156d752cceda78a9643f869cabf74fa",
+      "formula_sha256": "c34a54b6fd066cb30a033ccab9d92dbaaa86acf09e685ac6f7c0324ae129a25b",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "mgb2",
+        "rule": "mgb2_host",
+        "formula_sha256": "c34a54b6fd066cb30a033ccab9d92dbaaa86acf09e685ac6f7c0324ae129a25b",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "cdf1a986ee765791e26cba5b9917dfa9ecad80cfd990b1039afd0accd7f6a99e"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "c34a54b6fd066cb30a033ccab9d92dbaaa86acf09e685ac6f7c0324ae129a25b",
+        "text": "MgB2",
+        "source_bundle_sha256": "9226aca34daabf49cc391aa233f330b7f156d752cceda78a9643f869cabf74fa"
+      }
+    },
+    {
+      "id": "source:9ff49064-3ea9-5bf1-a443-0ae0d9412e5f",
+      "paper_id": "arxiv:2402.14051",
+      "claims": [
+        "4b5839bc-4dc2-521e-8599-a4475e655e5f",
+        "e0baf4dd-d928-55cd-9f2f-3d7d3b335616"
+      ],
+      "source_sha256": "0c4aaba707d9dfafde06f707904e323f5d948059fca979eb37f97119945dd6a8",
+      "formula_sha256": "7dc3e78b6f752bbd2b99aa9d56cdbca987fcf1640eb1d554929a21a93d769249",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "heterostructure",
+        "rule": "explicit_interface",
+        "formula_sha256": "7dc3e78b6f752bbd2b99aa9d56cdbca987fcf1640eb1d554929a21a93d769249",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "interface",
+        "resolved_formula_sha256": "2b6bad34244071a878ee3323f9b08dfb443476fa3de08b9b08ed3ec92468f3a3"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "7dc3e78b6f752bbd2b99aa9d56cdbca987fcf1640eb1d554929a21a93d769249",
+        "text": "Al2O3 / LaAlO3/ SrTiO3",
+        "source_bundle_sha256": "0c4aaba707d9dfafde06f707904e323f5d948059fca979eb37f97119945dd6a8"
+      }
+    },
+    {
+      "id": "source:a211fd4a-d7a9-5993-8b86-91e744a66dbe",
+      "paper_id": "arxiv:1106.0047",
+      "claims": [
+        "c7a79651-d437-517e-a321-d4c058f3f621"
+      ],
+      "source_sha256": "7b847dc8b02d7aa06665229f0b1d3dc48189883841e16c42701be4f1438358ca",
+      "formula_sha256": "64a0ab17aed57ea85144a0b7672bd1987a27744d6027d331b4f11d7cb27d112e",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "64a0ab17aed57ea85144a0b7672bd1987a27744d6027d331b4f11d7cb27d112e",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "acc9a979c1458a7fb83c109074887657b79e606cfea9f2a05f5e29416bd93730"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "64a0ab17aed57ea85144a0b7672bd1987a27744d6027d331b4f11d7cb27d112e",
+        "text": "PrFeAsO1−xFx",
+        "source_bundle_sha256": "7b847dc8b02d7aa06665229f0b1d3dc48189883841e16c42701be4f1438358ca"
+      }
+    },
+    {
+      "id": "source:ab7e5864-9596-5ea8-954b-948759379766",
+      "paper_id": "arxiv:1510.00107",
+      "claims": [
+        "fc6c6487-0cf2-5a94-9756-a9f6748347fb"
+      ],
+      "source_sha256": "cb8c2f9a83c77bcf20405adaa33d361cf253564d3cb17ad647d3f6eec35ba675",
+      "formula_sha256": "f84ae8eda7b61ef2716c882a8ea70549824bd2c03a4e24e4701c6cdedee8ba59",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "intermetallic",
+        "rule": "metal_or_metalloid_compound",
+        "formula_sha256": "f84ae8eda7b61ef2716c882a8ea70549824bd2c03a4e24e4701c6cdedee8ba59",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "9fdec12d0dd23f2e48813baef0546eacddf4c1b895d8c5e5a20b314c98b4b42d"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "f84ae8eda7b61ef2716c882a8ea70549824bd2c03a4e24e4701c6cdedee8ba59",
+        "text": "CeRu2",
+        "source_bundle_sha256": "cb8c2f9a83c77bcf20405adaa33d361cf253564d3cb17ad647d3f6eec35ba675"
+      }
+    },
+    {
+      "id": "source:ac602f91-0426-5c78-b71c-16d1f2d1a63d",
+      "paper_id": "arxiv:2412.06569",
+      "claims": [
+        "cdeee6ed-1655-5734-82c7-55fa5ca50b16"
+      ],
+      "source_sha256": "3f2ee75197040a8a6aeef9c49160c1124ce0b6884a8cb39f270a529a114bc7fb",
+      "formula_sha256": "cd4f982f19e192b38359223f52eeca5fb7a14c6112da897111056ab39a698216",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "cd4f982f19e192b38359223f52eeca5fb7a14c6112da897111056ab39a698216",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "7edb966db3bb88d8e186ad513598983cf4f2ca557ef3e857ed27605ea77e73e9"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "cd4f982f19e192b38359223f52eeca5fb7a14c6112da897111056ab39a698216",
+        "text": "YBa2Cu3O7−δ",
+        "source_bundle_sha256": "3f2ee75197040a8a6aeef9c49160c1124ce0b6884a8cb39f270a529a114bc7fb"
+      }
+    },
+    {
+      "id": "source:adf6da5d-efa6-5a5b-b0f7-5abaa4b9cb2a",
+      "paper_id": "arxiv:1903.00594",
+      "claims": [
+        "1b242ff6-dda3-587d-980c-a8ee33177dcc",
+        "1e915be5-1f84-55c7-a1b6-3ba4383d0830",
+        "acdafcdc-ab43-5220-b8ae-1ee5b49ad301"
+      ],
+      "source_sha256": "258f6e60bc023c6fe2ec852d85063d6095026578d4bb917c51d5adc66d19c654",
+      "formula_sha256": "e7f63995e294bb7d3accc5c53f290d50a4f4171fcf1a28ccedd66e3fe57a674d",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "e7f63995e294bb7d3accc5c53f290d50a4f4171fcf1a28ccedd66e3fe57a674d",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "4973a463fc7774ff567aae7274193367fabcf4796567195135ecc75108880627"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "e7f63995e294bb7d3accc5c53f290d50a4f4171fcf1a28ccedd66e3fe57a674d",
+        "text": "Bi 2Sr2CaCu2O8+δ",
+        "source_bundle_sha256": "258f6e60bc023c6fe2ec852d85063d6095026578d4bb917c51d5adc66d19c654"
+      }
+    },
+    {
+      "id": "source:ae386095-0af1-5a12-a645-d5d1bda1b6a5",
+      "paper_id": "arxiv:1501.06034",
+      "claims": [
+        "20e253b9-61e3-5856-8b7c-1c6e47a70b9a",
+        "4b001dea-bb42-551a-a9e9-d6ab22aec8b7",
+        "96b1720b-2231-5250-9457-d4f69b058bd0",
+        "e84023d4-e06b-5e84-b603-0f75f25ed2e2"
+      ],
+      "source_sha256": "83b20c5d1702f9a82dff12b232bc1cb5c1671fb244afb38f3ce32e44a22ffaaf",
+      "formula_sha256": "61c9fd40b57928a0cb8322122b6e764e358078589d5208ff9518f055d9c3e34e",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "unclassified",
+        "rule": "unresolved_formula",
+        "formula_sha256": "61c9fd40b57928a0cb8322122b6e764e358078589d5208ff9518f055d9c3e34e",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "unresolved",
+        "resolved_formula_sha256": "0df97d49963da2120be089ae2e71c925948474c6af9bf54dfeabe6751480d996"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "61c9fd40b57928a0cb8322122b6e764e358078589d5208ff9518f055d9c3e34e",
+        "text": "[Ca24Al28O64]4+(4e−)",
+        "source_bundle_sha256": "83b20c5d1702f9a82dff12b232bc1cb5c1671fb244afb38f3ce32e44a22ffaaf"
+      }
+    },
+    {
+      "id": "source:b67000d1-54f8-52f2-9c27-5dab2ab0c65f",
+      "paper_id": "arxiv:1506.00070",
+      "claims": [
+        "3ad1671e-e578-50ea-95ba-92bf19fa838a"
+      ],
+      "source_sha256": "7e9a7b5eaf71f3a3141bca32f4bef584b708337b4deabb9c07ee5be4cd9cf157",
+      "formula_sha256": "62d15d354a0d351cfaa52ea13d9050fc0896cc7d619aea4d756deb75a2fd6f1b",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "62d15d354a0d351cfaa52ea13d9050fc0896cc7d619aea4d756deb75a2fd6f1b",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "fad6e93d5438b73aa0d3ec0cf94fbbe3efaa7a5e320b6b4f7c2d49728616be43"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "62d15d354a0d351cfaa52ea13d9050fc0896cc7d619aea4d756deb75a2fd6f1b",
+        "text": "Bi2Sr2CaCu2O8+δ",
+        "source_bundle_sha256": "7e9a7b5eaf71f3a3141bca32f4bef584b708337b4deabb9c07ee5be4cd9cf157"
+      }
+    },
+    {
+      "id": "source:bcb6ea2f-b393-5534-9c99-cc2d213d037e",
+      "paper_id": "arxiv:2301.10306",
+      "claims": [
+        "cdbf497e-f1fa-5696-8a99-f91b8b95448c",
+        "fdffca60-3d88-5e22-9791-86152ca44189"
+      ],
+      "source_sha256": "3e538d2d57be71a4df27d2574f75b6fc472c5fc180f2b77ea1060152100e7f06",
+      "formula_sha256": "a816c56eccb51d1b21ccb573830d2b4c4f327aed775757f3562c5c6ef08ee92f",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "elemental",
+        "rule": "single_element",
+        "formula_sha256": "a816c56eccb51d1b21ccb573830d2b4c4f327aed775757f3562c5c6ef08ee92f",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "d9a680206f2cb7d82e3a3b3a3e8b9a6ba8f9921e626be26ce134cb545e82ec95"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "a816c56eccb51d1b21ccb573830d2b4c4f327aed775757f3562c5c6ef08ee92f",
+        "text": "α-Ta",
+        "source_bundle_sha256": "3e538d2d57be71a4df27d2574f75b6fc472c5fc180f2b77ea1060152100e7f06"
+      }
+    },
+    {
+      "id": "source:bda8b320-bc3d-56ec-96ff-52497a8ce304",
+      "paper_id": "arxiv:2001.09241",
+      "claims": [
+        "7290e528-94bb-5ae2-bbed-c29273f15a27"
+      ],
+      "source_sha256": "08b082c9f48a3bd2a649ebf691cfd30b574a2ea009cb5a26be71103b4f16be5d",
+      "formula_sha256": "dd31023a59e5179d327848889343bfaa7f8948c7423a74bda1e16f8dbcf9f7bd",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "dd31023a59e5179d327848889343bfaa7f8948c7423a74bda1e16f8dbcf9f7bd",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "81e219a37502076ee874fd6c30646c0a8dc02a61589d5b6426e5b31c67d3aba3"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "dd31023a59e5179d327848889343bfaa7f8948c7423a74bda1e16f8dbcf9f7bd",
+        "text": "Sr1−yCayFe2(As1−xPx)2",
+        "source_bundle_sha256": "08b082c9f48a3bd2a649ebf691cfd30b574a2ea009cb5a26be71103b4f16be5d"
+      }
+    },
+    {
+      "id": "source:c26cf305-d853-54f3-9031-dbe9c4256443",
+      "paper_id": "arxiv:1608.07510",
+      "claims": [
+        "e7880541-0a63-5783-a9f7-51e5c2d17a30"
+      ],
+      "source_sha256": "6846089da241e3d940bd644045d7b9adc04d97897a08d5d89c81996c2048a115",
+      "formula_sha256": "607ea5d72ae778cb7684760d85e33e82515ab14ae9d0c741c42007b95d4996d8",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "607ea5d72ae778cb7684760d85e33e82515ab14ae9d0c741c42007b95d4996d8",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "1e65206df57d73baf6858488b857028ed410d5cab90b0c11681fa926ff6b2bd6"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "607ea5d72ae778cb7684760d85e33e82515ab14ae9d0c741c42007b95d4996d8",
+        "text": "BaFe2(As1−xPx)2",
+        "source_bundle_sha256": "6846089da241e3d940bd644045d7b9adc04d97897a08d5d89c81996c2048a115"
+      }
+    },
+    {
+      "id": "source:c4d1298a-a632-5fe8-bdac-0928d4497fba",
+      "paper_id": "arxiv:0706.0214",
+      "claims": [
+        "6a5b0037-1d2f-56a6-9c92-352a6c8b8606",
+        "787e6497-429e-512a-95d1-93841ebee5a9"
+      ],
+      "source_sha256": "152bb2809e106bf187504b1c1b9f45ffc59622686ae9ee551b7122d282953489",
+      "formula_sha256": "5768fbba98f9aab35efd51500557fd352cfe79cdd3c4c75da2ef67871b73985d",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "5768fbba98f9aab35efd51500557fd352cfe79cdd3c4c75da2ef67871b73985d",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "fad6e93d5438b73aa0d3ec0cf94fbbe3efaa7a5e320b6b4f7c2d49728616be43"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "5768fbba98f9aab35efd51500557fd352cfe79cdd3c4c75da2ef67871b73985d",
+        "text": "Bi2Sr2CaCu2O8+δ",
+        "source_bundle_sha256": "152bb2809e106bf187504b1c1b9f45ffc59622686ae9ee551b7122d282953489"
+      }
+    },
+    {
+      "id": "source:c99e3919-e3e2-5717-8bf6-9c86708766ce",
+      "paper_id": "arxiv:cond-mat/0201538",
+      "claims": [
+        "d4c222cd-c9e3-5118-aafd-7a1ac2739316"
+      ],
+      "source_sha256": "b502eeb842391db94ba4ce7dd5da63d4575212c55ca8e3389f33bb2b7e38f0a9",
+      "formula_sha256": "2a519eb638cadcd6a63078c196d75b4a3487b245566290c9b0d6c1edb6cbfb68",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "2a519eb638cadcd6a63078c196d75b4a3487b245566290c9b0d6c1edb6cbfb68",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "3d3df107960dddd12012ad60a1f2dc8ce8f9c5d91a57ad9abc5d42e705fc7182"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "2a519eb638cadcd6a63078c196d75b4a3487b245566290c9b0d6c1edb6cbfb68",
+        "text": "Nd2−xCexCuO4",
+        "source_bundle_sha256": "b502eeb842391db94ba4ce7dd5da63d4575212c55ca8e3389f33bb2b7e38f0a9"
+      }
+    },
+    {
+      "id": "source:cd430cac-1f2b-5095-bae6-4971854ed84e",
+      "paper_id": "arxiv:1401.6222",
+      "claims": [
+        "ff7d4332-f1d4-56d7-9392-c00e9074baf4"
+      ],
+      "source_sha256": "77d3d2dc7b18d0b960815c7844267783370d076936380c6ad3aa8431166299fe",
+      "formula_sha256": "10feeffe1940a088820d845f98354c36de44ef47dcef55f29dae70c1c77c0c73",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "10feeffe1940a088820d845f98354c36de44ef47dcef55f29dae70c1c77c0c73",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "ba5954cce7b5aa88be3e4824d27737f88017d93ce8cc9f20b39686528221fc18"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "10feeffe1940a088820d845f98354c36de44ef47dcef55f29dae70c1c77c0c73",
+        "text": "YBa2Cu3O7-δ",
+        "source_bundle_sha256": "77d3d2dc7b18d0b960815c7844267783370d076936380c6ad3aa8431166299fe"
+      }
+    },
+    {
+      "id": "source:cf384cca-b834-5c4e-90b7-31190dae6749",
+      "paper_id": "arxiv:1905.11554",
+      "claims": [
+        "3303b5f7-6330-5284-92ab-98637432657a"
+      ],
+      "source_sha256": "77597e1f1d02795a987f45356c2917a01eac808d364d50918e23120212ebe6c4",
+      "formula_sha256": "d52133aad4015d66eebd446061d18c2d100eaacd6fad54594523494a73d416b3",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "d52133aad4015d66eebd446061d18c2d100eaacd6fad54594523494a73d416b3",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "8f11b90b698221d2bb417defffa683d8f9bab4331e014cb6bd434147aa05e5e1"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "d52133aad4015d66eebd446061d18c2d100eaacd6fad54594523494a73d416b3",
+        "text": "Eu(Fe1−xRhx)2As2",
+        "source_bundle_sha256": "77597e1f1d02795a987f45356c2917a01eac808d364d50918e23120212ebe6c4"
+      }
+    },
+    {
+      "id": "source:d14e9e49-a6e0-5cfc-bd12-5f92f74e1773",
+      "paper_id": "arxiv:1302.6138",
+      "claims": [
+        "5ddcc7aa-e99d-5c81-8a2a-2f35d4a70481"
+      ],
+      "source_sha256": "e9535bef3391c436008ee3beb6070858e50272824ebd7838001dd433aa65765d",
+      "formula_sha256": "5768fbba98f9aab35efd51500557fd352cfe79cdd3c4c75da2ef67871b73985d",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "5768fbba98f9aab35efd51500557fd352cfe79cdd3c4c75da2ef67871b73985d",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "fad6e93d5438b73aa0d3ec0cf94fbbe3efaa7a5e320b6b4f7c2d49728616be43"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "5768fbba98f9aab35efd51500557fd352cfe79cdd3c4c75da2ef67871b73985d",
+        "text": "Bi2Sr2CaCu2O8+δ",
+        "source_bundle_sha256": "e9535bef3391c436008ee3beb6070858e50272824ebd7838001dd433aa65765d"
+      }
+    },
+    {
+      "id": "source:d4653803-30d0-555f-bfa9-dab69229a518",
+      "paper_id": "arxiv:0911.2975",
+      "claims": [
+        "1e57c1d5-94e9-5922-abf4-f02047c56213"
+      ],
+      "source_sha256": "4a0ee775a914a770b115fbda105822c3e34ed4fb1e5badb4c1deabdc9f4844a6",
+      "formula_sha256": "6b2cea9d0680ea97e66cb2a74d687b3618659c30dae916d11d2c688be97613be",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "iron_based",
+        "rule": "iron_pnictide_or_chalcogenide",
+        "formula_sha256": "6b2cea9d0680ea97e66cb2a74d687b3618659c30dae916d11d2c688be97613be",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "73a4c31a2865056f6197b1cdcccf80a9c8617536a4d7f2d463390e1bd20bed16"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "6b2cea9d0680ea97e66cb2a74d687b3618659c30dae916d11d2c688be97613be",
+        "text": "LaFeAsO 1-δ",
+        "source_bundle_sha256": "4a0ee775a914a770b115fbda105822c3e34ed4fb1e5badb4c1deabdc9f4844a6"
+      }
+    },
+    {
+      "id": "source:d5859e2f-a525-5adb-b92f-5552187a9810",
+      "paper_id": "arxiv:1603.02540",
+      "claims": [
+        "27e17a54-8e52-5047-ad6c-fa599ae33f0a",
+        "5fe510f9-e802-568b-8ca1-21a737df498c",
+        "dac26aa2-4f37-533b-9cbe-18b8fdccbcb8"
+      ],
+      "source_sha256": "e7b2864c0d9ff1ab0ce392e27ba60389c536ef5f7ff70eab95040b2c22bcf23b",
+      "formula_sha256": "50df7b95d5cfaefe12f014db9f6c7102f547d4d6f804ccf74a9c7773754ffbef",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "intermetallic",
+        "rule": "metal_or_metalloid_compound",
+        "formula_sha256": "50df7b95d5cfaefe12f014db9f6c7102f547d4d6f804ccf74a9c7773754ffbef",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "283fe75dccd3f85efc83a1fac8d84f0cd0134050328f0283bcd2fc8bb239bee4"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "50df7b95d5cfaefe12f014db9f6c7102f547d4d6f804ccf74a9c7773754ffbef",
+        "text": "β-Bi2Pd",
+        "source_bundle_sha256": "e7b2864c0d9ff1ab0ce392e27ba60389c536ef5f7ff70eab95040b2c22bcf23b"
+      }
+    },
+    {
+      "id": "source:d6ab55e2-8399-5735-a5c0-786d851990e5",
+      "paper_id": "arxiv:2103.06094",
+      "claims": [
+        "a510f504-b3fa-5bf1-905b-8714ed880aa0"
+      ],
+      "source_sha256": "9d54a8a19c07f821ebe57b5258903c656a14cdf83b6adb1f0783d519a0c2169c",
+      "formula_sha256": "75abb758e39eebfdebaf80428e32ad48df458de9e32970fd992d3496d8c24c0d",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "75abb758e39eebfdebaf80428e32ad48df458de9e32970fd992d3496d8c24c0d",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "f247dd8b513f0add56e1eb947f6a440433fcb37fb701a22afc2b2b79e221a44c"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "75abb758e39eebfdebaf80428e32ad48df458de9e32970fd992d3496d8c24c0d",
+        "text": "Bi2Sr2Ca2Cu3O10+δ",
+        "source_bundle_sha256": "9d54a8a19c07f821ebe57b5258903c656a14cdf83b6adb1f0783d519a0c2169c"
+      }
+    },
+    {
+      "id": "source:d7190eeb-b95e-5570-b8be-4904c9594fab",
+      "paper_id": "arxiv:1809.06944",
+      "claims": [
+        "8d46431c-00bf-55e2-9dde-c734ee2b114d"
+      ],
+      "source_sha256": "361133f62393082a36fe557e6539a1ce54aac867d8e749bd9fa098353a6b16e0",
+      "formula_sha256": "3afe989ccd6da28970b851da7dd8d9b1fa01ee65ebd765f76debc3108d002953",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "3afe989ccd6da28970b851da7dd8d9b1fa01ee65ebd765f76debc3108d002953",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "fad6e93d5438b73aa0d3ec0cf94fbbe3efaa7a5e320b6b4f7c2d49728616be43"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "3afe989ccd6da28970b851da7dd8d9b1fa01ee65ebd765f76debc3108d002953",
+        "text": "Bi2Sr2CaCu2O8+δ",
+        "source_bundle_sha256": "361133f62393082a36fe557e6539a1ce54aac867d8e749bd9fa098353a6b16e0"
+      }
+    },
+    {
+      "id": "source:d89e8864-7245-5779-a963-d4a656d3eb27",
+      "paper_id": "arxiv:0704.0453",
+      "claims": [
+        "4e16efcf-ec72-54a0-88a0-bde61ebfbdbd"
+      ],
+      "source_sha256": "3d9b1edcffa47aa1b4930443f546853a54f8386752cf01e40f9ae869f1d72485",
+      "formula_sha256": "9d8cd72db4c19d803b5e053add820987bc71a410b35e3033fffa9e9d7d678eb2",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "9d8cd72db4c19d803b5e053add820987bc71a410b35e3033fffa9e9d7d678eb2",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "exact",
+        "resolved_formula_sha256": "58c3c88aad12d5407eee226f18ab43d1269e49cd2d30dc6f1ce541c19b3ecab4"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "9d8cd72db4c19d803b5e053add820987bc71a410b35e3033fffa9e9d7d678eb2",
+        "text": "Pr1.85Ce0.15CuO4",
+        "source_bundle_sha256": "3d9b1edcffa47aa1b4930443f546853a54f8386752cf01e40f9ae869f1d72485"
+      }
+    },
+    {
+      "id": "source:def52806-229d-5bea-9005-832fd917ffc8",
+      "paper_id": "arxiv:0909.3963",
+      "claims": [
+        "3349dd4e-ebc3-5340-8576-b992c158528e",
+        "5d270917-054c-56c2-aaaa-c783626073b1",
+        "9bf5bf56-aee3-5ecb-94a2-4fbad93ebab2"
+      ],
+      "source_sha256": "2b694c1e780030511312bb93d11c31f4f8d5dcf347108b50b42c309e5be9490e",
+      "formula_sha256": "9e38749116e121fdc03971cf280c39cd2b7ebe0cf8aa307660a9b2a110528757",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "9e38749116e121fdc03971cf280c39cd2b7ebe0cf8aa307660a9b2a110528757",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "be6d2701f9360a2df68e4fe46e69e0db95f526aa0af6bc47e96a53e2f2135953"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "9e38749116e121fdc03971cf280c39cd2b7ebe0cf8aa307660a9b2a110528757",
+        "text": "La2−xSrxCuO4",
+        "source_bundle_sha256": "2b694c1e780030511312bb93d11c31f4f8d5dcf347108b50b42c309e5be9490e"
+      }
+    },
+    {
+      "id": "source:e3b49242-394d-516c-b27c-85ea73294b08",
+      "paper_id": "arxiv:1907.06211",
+      "claims": [
+        "df392042-3473-503e-9b27-6bd8526af633"
+      ],
+      "source_sha256": "82ae2862ac54c785e7d2eed3e513d209559438c8cae96e471217aab9b7040d31",
+      "formula_sha256": "75eea26ea791236875a7c616e6c31a01b295c10e14d7e8abf0e32250d23fc658",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "unclassified",
+        "rule": "unresolved_formula",
+        "formula_sha256": "75eea26ea791236875a7c616e6c31a01b295c10e14d7e8abf0e32250d23fc658",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "unresolved",
+        "resolved_formula_sha256": "3b8e600fee7c41cbc5f5cb9fe06947d60f66da8b36215542339fa8faabf92130"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "75eea26ea791236875a7c616e6c31a01b295c10e14d7e8abf0e32250d23fc658",
+        "text": "T′-La1.8-xEu0.2SrxCuO4",
+        "source_bundle_sha256": "82ae2862ac54c785e7d2eed3e513d209559438c8cae96e471217aab9b7040d31"
+      }
+    },
+    {
+      "id": "source:e518c537-9d7e-5c05-bce9-50371fcf7d9c",
+      "paper_id": "arxiv:1708.03840",
+      "claims": [
+        "eadae1c6-433a-5f71-afb4-0d4c90645bc1"
+      ],
+      "source_sha256": "de63ee4a197c1d43dee11c684f925d31ad4a8b4ac01d7886fa1f02a1c5af7e2a",
+      "formula_sha256": "45ffc1d5f6ad41c28d9b26d1c4b4cfd385ee309979075fa20915be4e7e16fce7",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "bis2_layered",
+        "rule": "bismuth_dichalcogenide_host",
+        "formula_sha256": "45ffc1d5f6ad41c28d9b26d1c4b4cfd385ee309979075fa20915be4e7e16fce7",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "408f935cecf275bac022679271035c0634924687120eeb09bba9c3edcbd122c5"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "45ffc1d5f6ad41c28d9b26d1c4b4cfd385ee309979075fa20915be4e7e16fce7",
+        "text": "Eu0.5Ce0.5FBiS2−xSex",
+        "source_bundle_sha256": "de63ee4a197c1d43dee11c684f925d31ad4a8b4ac01d7886fa1f02a1c5af7e2a"
+      }
+    },
+    {
+      "id": "source:e86c9113-c8db-5196-9bad-6220c3a4e165",
+      "paper_id": "arxiv:2405.04689",
+      "claims": [
+        "891627fe-f0f8-5bad-97f7-a121a04ca90e"
+      ],
+      "source_sha256": "6e9d2e48dea2d006c9477ae14adda9fb922428ea007dfd15474a5fa1a1f62f10",
+      "formula_sha256": "7bb96afe0a8f7a948c814ff25d6bacbbb1e946c76214373deb96310fa73c2fe4",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "7bb96afe0a8f7a948c814ff25d6bacbbb1e946c76214373deb96310fa73c2fe4",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "e82004e1d85ef950dbbda21227fc693e71f56bb5ae40eae2065b7417579df322"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "7bb96afe0a8f7a948c814ff25d6bacbbb1e946c76214373deb96310fa73c2fe4",
+        "text": "Bi1.6Pb0.4Sr2Ca2(Cu1−xLix)3O10+δ",
+        "source_bundle_sha256": "6e9d2e48dea2d006c9477ae14adda9fb922428ea007dfd15474a5fa1a1f62f10"
+      }
+    },
+    {
+      "id": "source:ef0d2d05-a702-5f66-90e4-4c3466b1b482",
+      "paper_id": "arxiv:2210.02124",
+      "claims": [
+        "1f290f5c-e66c-51c5-b53b-89d8400cafbe",
+        "782c482d-b9ce-55b7-9167-ca1653bcd85a",
+        "9665fdea-0002-5753-930a-3fd73429728b",
+        "b7b72fff-17c0-532c-9e3c-2a827f25cd16",
+        "f34b5941-041d-5f7f-b40f-ca3d4e265655",
+        "fd11f6d5-bc5a-5273-8a6f-c0d0fa200c99"
+      ],
+      "source_sha256": "0e969c2a0338ec1d5d91f6b5a710cc4b333ad5407be2e652de41a334d361684c",
+      "formula_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "61156a9fdd074a2f46a63413954771e32fd3520e169a164f9d4ef5e4f19beaca"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
+        "text": "Bi2Sr2CuCa2O8+δ",
+        "source_bundle_sha256": "0e969c2a0338ec1d5d91f6b5a710cc4b333ad5407be2e652de41a334d361684c"
+      }
+    },
+    {
+      "id": "source:f4ab67e3-e4ee-5929-8cf6-d28072d99dc9",
+      "paper_id": "arxiv:1201.3713",
+      "claims": [
+        "24bf3fd0-779b-5ff1-8294-5f882b0a3a4a",
+        "f70380c8-ae62-5afd-bbcb-f9030f27d240"
+      ],
+      "source_sha256": "8a76f9a33df2e9d8c9b557169041425f6c766816b9cb41acbf1f219ec5dadf51",
+      "formula_sha256": "a2e1de64951bb57cd3f99843e025920d12119969c86f2482fcd64a4a3b239e69",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "a2e1de64951bb57cd3f99843e025920d12119969c86f2482fcd64a4a3b239e69",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "269b10a6b958c3fecfe65bf6bd4b6431c81fdca41d815576fc4fde32cf7f280e"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "a2e1de64951bb57cd3f99843e025920d12119969c86f2482fcd64a4a3b239e69",
+        "text": "Y(Ba1-xSrx)2Cu3O7-δ",
+        "source_bundle_sha256": "8a76f9a33df2e9d8c9b557169041425f6c766816b9cb41acbf1f219ec5dadf51"
+      }
+    },
+    {
+      "id": "source:fa06d35c-e971-5017-a7c5-a51f03bdb90f",
+      "paper_id": "arxiv:cond-mat/0510329",
+      "claims": [
+        "9b1b58fd-3af0-5415-84e9-2db962da12e3"
+      ],
+      "source_sha256": "130386f8c71525616c355a9ed510975e7168cd2a7cd539f62a1d21fb0690bf1c",
+      "formula_sha256": "f164d1ad4aa1c1a19992d92d8961a67a419f223a9e8251a84928a78ce4f5041f",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "boride",
+        "rule": "composition_group",
+        "formula_sha256": "f164d1ad4aa1c1a19992d92d8961a67a419f223a9e8251a84928a78ce4f5041f",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "91827ecb96cdd78ac4ee477083e38b5ab4a44143f6370b727f2d053559aaf726"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "f164d1ad4aa1c1a19992d92d8961a67a419f223a9e8251a84928a78ce4f5041f",
+        "text": "Mg1−xMnxB2",
+        "source_bundle_sha256": "130386f8c71525616c355a9ed510975e7168cd2a7cd539f62a1d21fb0690bf1c"
+      }
+    },
+    {
+      "id": "source:fd87a10a-dbb5-59fc-8678-dc21897d4e67",
+      "paper_id": "arxiv:1902.05232",
+      "claims": [
+        "072b9c45-7cfb-55c2-8a80-5cc58abace32",
+        "e99714fb-c6be-5fa6-a855-9db7abf3154a"
+      ],
+      "source_sha256": "bdd971b4c87026333417f85a13e8977f63f69750ae36de34d0a16fe108bfdbb8",
+      "formula_sha256": "d14fafe0feed4674b2fee8b7e7e76dfd171470887cf79a6d487506eb2c3f51d9",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "cuprate",
+        "rule": "copper_oxide_host",
+        "formula_sha256": "d14fafe0feed4674b2fee8b7e7e76dfd171470887cf79a6d487506eb2c3f51d9",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "25004616fca465bb4e6f4f7eaf261a8f915d76d6b129ef933257df4adf0655af"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "d14fafe0feed4674b2fee8b7e7e76dfd171470887cf79a6d487506eb2c3f51d9",
+        "text": "HgBa2CuO4+δ",
+        "source_bundle_sha256": "bdd971b4c87026333417f85a13e8977f63f69750ae36de34d0a16fe108bfdbb8"
+      }
+    },
+    {
+      "id": "source:feed0dec-754b-5520-9a72-a5acc0f5f459",
+      "paper_id": "arxiv:1709.00892",
+      "claims": [
+        "524c4a32-2593-5f25-b53a-ebb5d7aab804",
+        "830f4b26-57b1-5021-923e-d725d73004ce"
+      ],
+      "source_sha256": "561cae58290fe31aaa69ba224ec23541eac63bde76972906dd71c6f4542aa016",
+      "formula_sha256": "4b9787b9733d51b69cb693d1a2c5479607a00cfe950213d5d6271bfd57bdf306",
+      "family_classification": {
+        "version": "materials-family/1",
+        "family": "oxide",
+        "rule": "composition_group",
+        "formula_sha256": "4b9787b9733d51b69cb693d1a2c5479607a00cfe950213d5d6271bfd57bdf306",
+        "basis": "source_resolved_reported_formula",
+        "formula_status": "variable",
+        "resolved_formula_sha256": "2e0567913a6a9900a8534c6244a211d9549201b7506c55b9d2d1185dbac200d9"
+      },
+      "source_notation": {
+        "version": "materials-source-display/1",
+        "formula_sha256": "4b9787b9733d51b69cb693d1a2c5479607a00cfe950213d5d6271bfd57bdf306",
+        "text": "La1−xCexOBiSSe",
+        "source_bundle_sha256": "561cae58290fe31aaa69ba224ec23541eac63bde76972906dd71c6f4542aa016"
+      }
+    }
+  ]
+}
