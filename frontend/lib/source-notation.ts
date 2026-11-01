@@ -156,8 +156,26 @@ export function renderSourceNotation(text: string, math = false): { html: string
 
 /** Spoken labels contain rendered notation, never TeX commands or MathML source. */
 export function sourceNotationLabel(html: string): string {
-  return html.replace(/<span class="katex-mathml">[\s\S]*?<\/math><\/span>/g, "")
-    .replace(/<[^>]*>/g, "").replace(/&(?:amp|lt|gt|quot|#39|nbsp|thinsp);/g,
+  // Read generated markup as text, rather than trying to sanitize HTML with a
+  // tag-removal regex. This returns plain text for React labels/search only;
+  // its result must never be used as HTML. Ignore the duplicate MathML branch.
+  const parts: string[]=[]; let p=0, hiddenSpans=0;
+  while (p<html.length) {
+    if (html[p]==="<") {
+      const end=html.indexOf(">",p+1);
+      if (end<0) { if (!hiddenSpans) parts.push(html.slice(p));break; }
+      const tag=html.slice(p,end+1);
+      if (hiddenSpans) {
+        if (/^<span(?:\s|>)/.test(tag)) hiddenSpans++;
+        else if (tag==="</span>") hiddenSpans--;
+      } else if (tag==='<span class="katex-mathml">') hiddenSpans=1;
+      p=end+1;
+    } else {
+      let end=html.indexOf("<",p);if (end<0) end=html.length;
+      if (!hiddenSpans) parts.push(html.slice(p,end));p=end;
+    }
+  }
+  return parts.join("").replace(/&(?:amp|lt|gt|quot|#39|nbsp|thinsp);/g,
       s => ({ "&amp;": "&", "&lt;": "<", "&gt;": ">", "&quot;": '\"', "&#39;": "'", "&nbsp;": " ", "&thinsp;": " " })[s]!)
     .replace(/[\u200b\u200c\u200d]/g, "").trim();
 }

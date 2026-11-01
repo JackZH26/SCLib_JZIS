@@ -41,3 +41,13 @@ it("escapes literal HTML and preserves uncertainty / inequality in quantities", 
   expect(r.unresolved).toBe(false);
   expect(sourceNotationLabel(r.html)).toContain("≤24±0.5K");
 });
+
+it("keeps HTML-like source text inert when deriving an accessible plain-text label", () => {
+  const raw='<scr<script>ipt>alert(1)</scr</script>ipt><img src=x onerror=attack()>';
+  const rendered=renderSourceNotation(raw);
+  const label=sourceNotationLabel(rendered.html);
+  expect(label).toBe(raw);
+  const { container }=render(<span aria-label={label} dangerouslySetInnerHTML={{__html:rendered.html}} />);
+  expect(container.querySelector('script,img')).toBeNull();
+  expect(container.textContent).toBe(raw);
+});
