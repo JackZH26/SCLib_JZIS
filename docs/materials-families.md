@@ -115,3 +115,11 @@ review note next to the material. Do not silently infer or swap their occupancie
 For plain-text formulas, retain polytype prefixes such as 1T-, 2H-, 4Hb- and
 6R on the baseline, including their source prime/separator. Only the following
 composition digits receive chemical subscripts; a phase number is not an atom count.
+
+Evidence titles can retain TeX scripts after losing their math delimiters. Render
+these scripts in prose as well as in formula labels, while keeping ordinary sample
+and file identifiers literal. The display audit also checks visible script syntax
+and uses the same plain-chemistry renderer as the page. Hydrate/adduct coefficients
+after a multiplication dot stay on the baseline (for example, Na0.3CoO2·1.3H2O).
+Malformed title corrections remain source-pinned display entries; no title or
+composition in the original record is replaced.

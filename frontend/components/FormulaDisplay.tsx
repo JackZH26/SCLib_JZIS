@@ -1,9 +1,12 @@
+import { parseFormula } from "@/lib/chemical-formula";
+export { formulaToHtml } from "@/lib/chemical-formula";
+
 /**
  * Renders a chemical formula with proper subscript formatting.
  *
  * Splits the formula string on digit sequences (including decimals)
  * and wraps them in <sub> tags, so "YBa2Cu3O7-δ" becomes
- * Y<sub>Ba2</sub>Cu<sub>3</sub>O<sub>7</sub>-δ visually.
+ * YBa<sub>2</sub>Cu<sub>3</sub>O<sub>7</sub>-δ visually.
  *
  * Handles:
  *   - Simple formulas: H2S → H₂S
@@ -13,44 +16,6 @@
  *   - Parenthetical: Ba(Fe0.92Co0.08)2As2
  *   - Interface slash: LaAlO3/SrTiO3 (both sides get subscripts)
  */
-
-/**
- * Parse a formula string into an array of { text, sub } segments.
- * `sub: true` means the segment should be rendered as <sub>.
- */
-function parseFormula(formula: string): { text: string; sub: boolean }[] {
-  // Polytype labels are part of the phase name, not stoichiometry. Preserve
-  // their exact prefix (including prime and separator) on the text baseline.
-  const prefix=formula.match(/^(\d+(?:Hb?|T['′]?|R|C)(?:\s*[-−–]\s*|\s+))/)?.[0] ?? "";
-  // Match digit sequences (with optional decimal point and trailing digits).
-  // E.g. "2", "0.15", "10", "6.95"
-  const parts = formula.slice(prefix.length).split(/(\d+\.?\d*)/);
-  const result: { text: string; sub: boolean }[] = prefix ? [{ text: prefix, sub: false }] : [];
-
-  for (const part of parts) {
-    if (!part) continue;
-    if (/^\d+\.?\d*$/.test(part)) {
-      result.push({ text: part, sub: true });
-    } else {
-      result.push({ text: part, sub: false });
-    }
-  }
-
-  return result;
-}
-
-/**
- * Same subscript rule as <FormulaDisplay>, but returns a plain HTML
- * string instead of JSX — for non-React renderers (e.g. Plotly's
- * hovertemplate, which accepts a limited HTML subset incl. <sub>).
- */
-export function formulaToHtml(formula: string): string {
-  const escape = (text: string) => text.replace(/[&<>"']/g, character => ({ "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;", "'": "&#39;" })[character]!);
-  return parseFormula(formula)
-    .map((seg) => (seg.sub ? `<sub>${escape(seg.text)}</sub>` : escape(seg.text)))
-    .join("");
-}
-
 export function FormulaDisplay({
   formula,
   className,

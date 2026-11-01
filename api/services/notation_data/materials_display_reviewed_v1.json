@@ -506,6 +506,78 @@
         "independent_domain_review": false
       },
       "note": "Source stoichiometry requires review: the original formula reports CuCa2; its Cu/Ca subscripts need confirmation."
+    },
+    {
+      "paper_id": "arxiv:0710.1372",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "9e9d86019ba528e14e11d52daa75726585fec5d7a1e0477a2d4982ee56b71dc1",
+      "field": "paper_title",
+      "raw_sha256": "256c1621d55f0b9d7c57548f3a7a6cd93cadbae93dd62b9496ab5145dcf1866b",
+      "text": "The average kinetic energy density of Cooper pairs above $T_c$ in YBa$_2$Cu$_3$O$_{7-x}$, Bi$_2$Sr$_2$CaCu$_2$O$_{8+\\delta}$, and Nb",
+      "evidence": {
+        "locator": "pdf_page:1",
+        "block_sha256": "8c935c88daedf33a29ccf8488d3b928373fb8ef2489a9edfeb09825b5b7a9b19",
+        "source_sha256": "1fb7febbd0d5cae9b03e50f28de66beb6167be379a95bcf0752b00d38c1a1c86",
+        "verification": "Title notation visually verified on the first page of the retained original PDF.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:1007.1603",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "8831a7feeb5b20903121aaa07d0d22fbffe8739aafc4cf5709cdba963312d390",
+      "field": "paper_title",
+      "raw_sha256": "b50707174fc8639c7711a336facae2b832d53332f544c2f879c0a1120d73b8cd",
+      "text": "Muon-Spin-Relaxation Study of the Cu-Spin Dynamics in Electron-Doped High-$T_{\\mathrm{c}}$ Superconductor Pr$_{0.86}$LaCe$_{0.14}$Cu$_{1-y}$Zn$_y$O$_4$",
+      "evidence": {
+        "locator": "archive_member:Risdi-PLCCO-latest.tex",
+        "block_sha256": "e30cdc7a83cf32778aefa0c046b0a506bda75ef4cf2eb13f4b9a7c2e10fa6320",
+        "source_sha256": "530c4ce765831807ca07cbbf5ff6330fbc90e188696d81b0236959990e7b9e7f",
+        "verification": "Verified balanced title in retained TeX.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:cond-mat/0507641",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "e41006cd86d57e6fe5c7d242eb7a33d1a6d8c0d029a2e2cd99ac9697e0977b5e",
+      "field": "paper_title",
+      "raw_sha256": "7308768973779845b24bceccf710ba4f24805e0b34b30c0a1b895a02382b2da1",
+      "text": "Impurity controlled Superconductivity/Spin Density Wave interplay in the organic superconductor : (TMTSF)$_2$ClO$_4$",
+      "evidence": {
+        "locator": "pdf_page:1",
+        "block_sha256": "6b6a71426ff69151e57285de712e8a722d0d9b4179e5b3f0343eb62c94b4f3ba",
+        "source_sha256": "92aa1c7cf1dc72b0394fe1be255be69c99e4545b5aef8d301a74dc22b2ed393b",
+        "verification": "Title notation visually verified on the first page of the retained original PDF.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
+    },
+    {
+      "paper_id": "arxiv:cond-mat/0601288",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "3687d5e82f46e39849d5ab38185c0a78338414254001e7bb734a8847be69ac72",
+      "field": "paper_title",
+      "raw_sha256": "9cd2bd1715d601d0bacae8af0a1501c95bbcd1bb09e2078e1165138fd3a7cf5d",
+      "text": "Evidence for non-conventional pairing in Na$_x$CoO$_2$·yH$_2$O",
+      "evidence": {
+        "locator": "pdf_page:1",
+        "block_sha256": "ea5e85aa08335666d97b51663d8e83399e8d4855fa49cf9ca2480143d33192ed",
+        "source_sha256": "b1638aa731319e450779b23df0b9188c7982330fdf4de590ecc2d0f8ec3156b1",
+        "verification": "Title notation visually verified on the first page of the retained original PDF.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      }
     }
   ]
 }

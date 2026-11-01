@@ -105,7 +105,7 @@ function prose(s: string, depth = 0): string {
       }
       if (["ref", "eqref", "figref", "cite", "citep", "citet", "onlinecite"].includes(name)) {
         const [body,end] = argument(s,p); p=end;
-        html += escape((name.includes("cite") ? "reference" : "source label") + " [" + body + "]"); continue;
+        html += '<span class="source-reference-label">' + escape((name.includes("cite") ? "reference" : "source label") + " [" + body + "]") + "</span>"; continue;
       }
       if (name === "hspace" || name === "vspace") {
         const [,end]=argument(s,p);p=end;html+=" ";continue;
@@ -139,7 +139,11 @@ function prose(s: string, depth = 0): string {
 export function renderSourceNotation(text: string, math = false): { html: string; unresolved: boolean } {
   try {
     if (text.length > 32768 || /[\uE000-\uF8FF\uFFFD\x00-\x08\x0b\x0c\x0e-\x1f\x7f]/.test(text)) throw new Error("Unresolved source glyph");
-    const hasTeX = /[\\$]/.test(text) || (math && /[_^]/.test(text));
+    // arXiv metadata often retains scripts while dropping math delimiters.
+    // Recognize explicit grouped scripts and chemical/probe tokens in prose,
+    // without treating ordinary sample/file identifiers as mathematical text.
+    const proseScript = /[_^]\{[^{}]+\}|(?:[A-Z][a-z]?|[\u0391-\u03c9])[_^](?:[0-9a-z]|\\[A-Za-z])/.test(text);
+    const hasTeX = /[\\$]/.test(text) || (math && /[_^]/.test(text)) || proseScript;
     if (!hasTeX) return { html: escape(text), unresolved: false };
     // Undelimited formula expressions are a single math run; prose preserves
     // normal word spacing and renders only its embedded scientific notation.

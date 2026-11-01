@@ -25,6 +25,23 @@ it("renders prose, escaped percentages, units and nested text math", () => {
 });
 
 it.each([
+  ["Properties of La_{3}Pd_{4}Ge_{4} with U_{3}Ni_{4}Si_{4}-type structure", "Properties of La3Pd4Ge4 with U3Ni4Si4-type structure"],
+  ["Superconductivity in MgB_2 above T_c", "Superconductivity in MgB2 above Tc"],
+  ["Upper critical field of Na_{x}(H_{3}O)_{z}CoO_{2}\\cdot yH_{2}O", "Upper critical field of Nax(H3O)zCoO2⋅ yH2O"],
+])("renders scripts in undelimited evidence prose: %s", (raw, label) => {
+  const r=renderSourceNotation(raw);
+  expect(r.unresolved).toBe(false);
+  expect(sourceNotationLabel(r.html)).toBe(label);
+  expect(r.html).toContain("msupsub");
+});
+
+it("keeps ordinary sample and file identifiers literal", () => {
+  for (const raw of ["sample_A", "sample_01", "archive_member:paper_v1.tex"]) {
+    expect(renderSourceNotation(raw)).toEqual({html:raw,unresolved:false});
+  }
+});
+
+it.each([
   "\\macroNotDefined{1.85}", "\uf064", "\u007f",
   "\\href{javascript:alert(1)}{link}", "\\htmlClass{unsafe}{x}",
   "\\input{/etc/passwd}",

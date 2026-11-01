@@ -3,6 +3,7 @@
 import fs from "node:fs";
 import { JSDOM } from "jsdom";
 import { renderSourceNotation, sourceNotationLabel } from "../lib/source-notation.ts";
+import { formulaToHtml } from "../lib/chemical-formula.ts";
 
 const [input, output] = process.argv.slice(2);
 if (!input || !output) throw new Error("Usage: node scripts/audit-materials-display.mjs projected-page.json report.json");
@@ -20,15 +21,19 @@ for (const row of page.items) {
   for (const [key,value] of Object.entries(values)) {
     if (typeof value !== "string" || !value) continue;
     fields++;
-    const math=key==="formula" || key==="quantity_raw" || key.startsWith("composition:");
-    const ck=JSON.stringify([value,math]);
+    const chemical=key==="formula" || key.startsWith("composition:");
+    const math=chemical || key==="quantity_raw";
+    const ck=JSON.stringify([value,math,chemical]);
     let check=cache.get(ck);
     if (!check) {
-      const rendered=renderSourceNotation(value,math);
+      const rendered=chemical && !/[$\\_^\uE000-\uF8FF\uFFFD]/.test(value)
+        ? {html:formulaToHtml(value),unresolved:false} : renderSourceNotation(value,math);
       holder.innerHTML=rendered.html;
-      holder.querySelectorAll(".katex-mathml,annotation").forEach(n=>n.remove());
-      const visible=sourceNotationLabel(rendered.html);
-      check={unresolved:rendered.unresolved,visible,leak:/\\[A-Za-z]|[\uE000-\uF8FF\uFFFD\x00-\x08\x0b\x0c\x0e-\x1f\x7f]|\$/.test(visible)};
+      // Literal citation/figure IDs may contain underscores. They are explicit
+      // reference labels, not unrendered chemistry, and stay visible in the UI.
+      holder.querySelectorAll(".katex-mathml,annotation,.source-reference-label").forEach(n=>n.remove());
+      const visible=sourceNotationLabel(holder.innerHTML);
+      check={unresolved:rendered.unresolved,visible,leak:/\\[A-Za-z]|[_^]\{|(?:[A-Z][a-z]?|[\u0391-\u03c9])[_^][0-9a-z]|[\uE000-\uF8FF\uFFFD\x00-\x08\x0b\x0c\x0e-\x1f\x7f]|\$/.test(visible)};
       cache.set(ck,check);
     }
     const item={id:row.id,paper_id:row.paper_id,field:key,text:value};
