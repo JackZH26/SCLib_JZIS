@@ -7,6 +7,7 @@ guarded migration runner verifies the actual Alembic upgrade to head.
 from __future__ import annotations
 
 import asyncio
+import logging
 
 import pytest
 from sqlalchemy import text
@@ -93,6 +94,7 @@ async def test_session_lock_serializes_manual_alembic_and_api_admission(schema_e
             await check_application_schema(schema_engine)
         with pytest.raises(SchemaLifecycleError, match="Another schema operation"):
             await asyncio.to_thread(command.upgrade, alembic_config(), "head")
+        assert not logging.getLogger("routers.admin").disabled
     # NullPool physically closes the owner, releasing the session lock.
     assert (await check_application_schema(schema_engine))["status"] == "compatible"
 
