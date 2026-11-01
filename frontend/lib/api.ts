@@ -2029,7 +2029,7 @@ export interface MaterialListParams {
   only_aps?: boolean;
 }
 
-export function listAdmittedTcResults(params: { q?: string; material_id?: string; pressure?: string; criterion?: string; limit: number; offset: number }) {
+export function listAdmittedTcResults(params: { q?: string; material_id?: string; family?: string; pressure?: string; criterion?: string; limit: number; offset: number }) {
   const query = new URLSearchParams();
   for (const [key, value] of Object.entries(params)) if (value !== undefined && value !== "") query.set(key, String(value));
   return request<import("./materials-vnext").AdmittedTcPage>(`/materials/results?${query}`, { cache: "no-store" });

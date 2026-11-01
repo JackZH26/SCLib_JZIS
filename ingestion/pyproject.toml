@@ -26,7 +26,7 @@ dependencies = [
 
 [project.optional-dependencies]
 materials-ner = [
-    "pypdf>=6.21,<7",
+    "pypdf>=6.21.4,<7",
     "pydantic>=2.13,<3",
     "fonttools>=4.60,<5",
     "jsonschema>=4.26,<5",  # verify retained NER parent receipts during admission

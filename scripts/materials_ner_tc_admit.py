@@ -21,6 +21,7 @@ from materials_ner_canonical_bridge import _put, require
 from materials_ner_production90 import read_pin
 from models.db import Base
 from services.material_enrichment import normalize_formula
+from services.materials_family import classify_material_family
 from services.source_registry import _json, provenance_sha256 as digest
 
 
@@ -130,9 +131,21 @@ async def identities(db,packet,projection,selection,audit,snapshot,excluded_resu
         if r['result_id'] in excluded_result_ids:continue
         s=r['graph']['samples'][0];formula=s['formula_raw'];require(formula is not None,'source_formula_required')
         mid='source:'+uid(work,formula,'material')
+        material_table=Base.metadata.tables['materials']
+        prior_row=(await db.execute(sa.select(material_table.c.material_semantics,material_table.c.family).where(material_table.c.id==mid))).mappings().one_or_none()
+        prior=prior_row['material_semantics'] if prior_row else None
+        semantics=dict(prior or {})
+        identity=dict(identity_resolution='source_scoped',source_work_id=work,
+            formula_normalization='formatting_only',cross_paper_composition_equivalence='unresolved')
+        require(not prior or all(prior.get(k)==v for k,v in identity.items()),'material_identity_conflict')
+        semantics.update(identity)
         await _put(db,'materials',dict(id=mid,formula=formula,formula_normalized=normalize_formula(formula),
-            total_papers=1,status='active_research',records=[],material_semantics=dict(identity_resolution='source_scoped',
-                source_work_id=work,formula_normalization='formatting_only',cross_paper_composition_equivalence='unresolved')))
+            total_papers=1,status='active_research',records=[],material_semantics=semantics))
+        classification=classify_material_family(formula)
+        semantics['family_classification']=classification
+        if not prior_row or prior_row['family']!=classification['family'] or prior.get('family_classification')!=classification:
+            await db.execute(material_table.update().where(material_table.c.id==mid).values(
+                family=classification['family'],material_semantics=semantics))
         samples[s['id']]=await anchor(db,'materials',mid)
     return dict(purpose='pending_candidates',paper=await anchor(db,'papers',work),work=await anchor(db,'works',wid),
         snapshot=await anchor(db,'source_snapshots',snapshot['id']),samples=samples)

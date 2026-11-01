@@ -1,5 +1,5 @@
 export type AdmittedTcResult = {
-  id: string; material_id: string; formula: string;
+  id: string; material_id: string; formula: string; family?: string;
   compositions: { formula: string; basis: string }[];
   sample_label: string | null; sample_form: string | null; substrate: string | null;
   value_kelvin: number | null; value_lower_kelvin: number | null; value_upper_kelvin: number | null;

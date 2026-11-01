@@ -117,8 +117,8 @@ async def transfer(manifest_pin, fixture_pin, verification_pin, database_url, ou
         async with engine.connect() as db:
             identity = (await db.execute(text('SELECT current_database(),current_user'))).one()
             require(tuple(identity) == (expected_database, expected_user), 'transfer_destination_identity_mismatch')
-            require((await db.execute(text('SELECT version_num FROM alembic_version'))).scalar_one() ==
-                '0104_materials_device_context', 'transfer_destination_schema_mismatch')
+            require((await db.execute(text('SELECT version_num FROM alembic_version'))).scalar_one() in
+                {'0104_materials_device_context', '0105_materials_family'}, 'transfer_destination_schema_mismatch')
         for number, group in enumerate(manifest['admission_groups']):
             selection, audit = read_pin(group['selection']), read_pin(group['audit'])
             route = group['admission_route']
