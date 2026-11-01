@@ -9,6 +9,8 @@ it.each([
   ["6R TaS2", ["2"]],
   ["1T′-MoTe2", ["2"]],
   ["Ba(Fe0.92Co0.08)2As2", ["0.92", "0.08", "2", "2"]],
+  ["Na0.3CoO2·1.3H2O", ["0.3", "2", "2"]],
+  ["Na 0.35CoO2⋅ 1.3D2O", ["0.35", "2", "2"]],
 ])("keeps the phase label in %s separate from composition subscripts", (formula, expected) => {
   const { container }=render(<FormulaDisplay formula={formula as string} />);
   expect(Array.from(container.querySelectorAll("sub"),n=>n.textContent)).toEqual(expected);

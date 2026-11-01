@@ -229,6 +229,32 @@
       "font_mappings": [],
       "reviewed_sources": []
     },
+    "0cc30754-d968-5d69-b375-b58fd6f5e3ac": {
+      "paper_id": "arxiv:0710.1372",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "9e9d86019ba528e14e11d52daa75726585fec5d7a1e0477a2d4982ee56b71dc1",
+      "material_id": "source:a3145e36-037d-5335-a9cf-cbde58658edb",
+      "fields": {
+        "paper_title": {
+          "raw_sha256": "256c1621d55f0b9d7c57548f3a7a6cd93cadbae93dd62b9496ab5145dcf1866b",
+          "text": "The average kinetic energy density of Cooper pairs above $T_c$ in YBa$_2$Cu$_3$O$_{7-x}$, Bi$_2$Sr$_2$CaCu$_2$O$_{8+\\delta}$, and Nb"
+        }
+      },
+      "definitions": [],
+      "font_mappings": [],
+      "reviewed_sources": [
+        {
+          "locator": "pdf_page:1",
+          "block_sha256": "8c935c88daedf33a29ccf8488d3b928373fb8ef2489a9edfeb09825b5b7a9b19",
+          "source_sha256": "1fb7febbd0d5cae9b03e50f28de66beb6167be379a95bcf0752b00d38c1a1c86",
+          "verification": "Title notation visually verified on the first page of the retained original PDF.",
+          "reviewer_kind": "model",
+          "independent_domain_review": false
+        }
+      ]
+    },
     "935b7699-046f-5b8d-aa18-189a928de6cd": {
       "paper_id": "arxiv:0710.2801",
       "source_versions": [
@@ -1890,6 +1916,58 @@
       ],
       "font_mappings": [],
       "reviewed_sources": []
+    },
+    "6d62eca6-db33-5a3b-8404-45fa645c9631": {
+      "paper_id": "arxiv:1007.1603",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "8831a7feeb5b20903121aaa07d0d22fbffe8739aafc4cf5709cdba963312d390",
+      "material_id": "source:b55c7b3c-10bf-58ba-a14b-a8599300e286",
+      "fields": {
+        "paper_title": {
+          "raw_sha256": "b50707174fc8639c7711a336facae2b832d53332f544c2f879c0a1120d73b8cd",
+          "text": "Muon-Spin-Relaxation Study of the Cu-Spin Dynamics in Electron-Doped High-$T_{\\mathrm{c}}$ Superconductor Pr$_{0.86}$LaCe$_{0.14}$Cu$_{1-y}$Zn$_y$O$_4$"
+        }
+      },
+      "definitions": [],
+      "font_mappings": [],
+      "reviewed_sources": [
+        {
+          "locator": "archive_member:Risdi-PLCCO-latest.tex",
+          "block_sha256": "e30cdc7a83cf32778aefa0c046b0a506bda75ef4cf2eb13f4b9a7c2e10fa6320",
+          "source_sha256": "530c4ce765831807ca07cbbf5ff6330fbc90e188696d81b0236959990e7b9e7f",
+          "verification": "Verified balanced title in retained TeX.",
+          "reviewer_kind": "model",
+          "independent_domain_review": false
+        }
+      ]
+    },
+    "fdb72b65-5542-5336-89fa-6a149c8116f8": {
+      "paper_id": "arxiv:1007.1603",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "8831a7feeb5b20903121aaa07d0d22fbffe8739aafc4cf5709cdba963312d390",
+      "material_id": "source:b55c7b3c-10bf-58ba-a14b-a8599300e286",
+      "fields": {
+        "paper_title": {
+          "raw_sha256": "b50707174fc8639c7711a336facae2b832d53332f544c2f879c0a1120d73b8cd",
+          "text": "Muon-Spin-Relaxation Study of the Cu-Spin Dynamics in Electron-Doped High-$T_{\\mathrm{c}}$ Superconductor Pr$_{0.86}$LaCe$_{0.14}$Cu$_{1-y}$Zn$_y$O$_4$"
+        }
+      },
+      "definitions": [],
+      "font_mappings": [],
+      "reviewed_sources": [
+        {
+          "locator": "archive_member:Risdi-PLCCO-latest.tex",
+          "block_sha256": "e30cdc7a83cf32778aefa0c046b0a506bda75ef4cf2eb13f4b9a7c2e10fa6320",
+          "source_sha256": "530c4ce765831807ca07cbbf5ff6330fbc90e188696d81b0236959990e7b9e7f",
+          "verification": "Verified balanced title in retained TeX.",
+          "reviewer_kind": "model",
+          "independent_domain_review": false
+        }
+      ]
     },
     "053db1be-88d0-5ce9-8535-683007873b63": {
       "paper_id": "arxiv:1008.0895",
@@ -5304,16 +5382,16 @@
       "definitions": [],
       "font_mappings": [
         {
-          "character": "U+F020",
+          "character": "U+F057",
           "font": "SymbolMT",
-          "display": " ",
+          "display": "Ω",
           "page": 3,
           "source_sha256": "906677d983239cd008a06f0cdbbdccebcbb10fcf55df1cd72ddad6294b43ffc5"
         },
         {
-          "character": "U+F057",
+          "character": "U+F020",
           "font": "SymbolMT",
-          "display": "Ω",
+          "display": " ",
           "page": 3,
           "source_sha256": "906677d983239cd008a06f0cdbbdccebcbb10fcf55df1cd72ddad6294b43ffc5"
         }
@@ -10287,13 +10365,6 @@
           "source_sha256": "6416c8f444483bec9947e3f2a58fa1c4821e7d192e80b2edecebe0f115ac18af"
         },
         {
-          "character": "U+F072",
-          "font": "Symbol",
-          "display": "ρ",
-          "page": 4,
-          "source_sha256": "6416c8f444483bec9947e3f2a58fa1c4821e7d192e80b2edecebe0f115ac18af"
-        },
-        {
           "character": "U+F0AE",
           "font": "Symbol",
           "display": "→",
@@ -10304,13 +10375,20 @@
           "character": "U+F072",
           "font": "Symbol",
           "display": "ρ",
+          "page": 4,
+          "source_sha256": "6416c8f444483bec9947e3f2a58fa1c4821e7d192e80b2edecebe0f115ac18af"
+        },
+        {
+          "character": "U+F0AE",
+          "font": "Symbol",
+          "display": "→",
           "page": 5,
           "source_sha256": "6416c8f444483bec9947e3f2a58fa1c4821e7d192e80b2edecebe0f115ac18af"
         },
         {
-          "character": "U+F0AE",
+          "character": "U+F072",
           "font": "Symbol",
-          "display": "→",
+          "display": "ρ",
           "page": 5,
           "source_sha256": "6416c8f444483bec9947e3f2a58fa1c4821e7d192e80b2edecebe0f115ac18af"
         },
@@ -16731,6 +16809,32 @@
       "font_mappings": [],
       "reviewed_sources": []
     },
+    "7e5569ce-8136-5784-8d79-559dd5c8d1a5": {
+      "paper_id": "arxiv:cond-mat/0507641",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "e41006cd86d57e6fe5c7d242eb7a33d1a6d8c0d029a2e2cd99ac9697e0977b5e",
+      "material_id": "source:ff3ac08b-409b-56c6-8bc1-29bb7e7a2e83",
+      "fields": {
+        "paper_title": {
+          "raw_sha256": "7308768973779845b24bceccf710ba4f24805e0b34b30c0a1b895a02382b2da1",
+          "text": "Impurity controlled Superconductivity/Spin Density Wave interplay in the organic superconductor : (TMTSF)$_2$ClO$_4$"
+        }
+      },
+      "definitions": [],
+      "font_mappings": [],
+      "reviewed_sources": [
+        {
+          "locator": "pdf_page:1",
+          "block_sha256": "6b6a71426ff69151e57285de712e8a722d0d9b4179e5b3f0343eb62c94b4f3ba",
+          "source_sha256": "92aa1c7cf1dc72b0394fe1be255be69c99e4545b5aef8d301a74dc22b2ed393b",
+          "verification": "Title notation visually verified on the first page of the retained original PDF.",
+          "reviewer_kind": "model",
+          "independent_domain_review": false
+        }
+      ]
+    },
     "9b1b58fd-3af0-5415-84e9-2db962da12e3": {
       "paper_id": "arxiv:cond-mat/0510329",
       "source_versions": [
@@ -16796,6 +16900,32 @@
       ],
       "font_mappings": [],
       "reviewed_sources": []
+    },
+    "42c15848-48dc-57a8-94c7-17f296477ab2": {
+      "paper_id": "arxiv:cond-mat/0601288",
+      "source_versions": [
+        "v1"
+      ],
+      "bundle_sha256": "3687d5e82f46e39849d5ab38185c0a78338414254001e7bb734a8847be69ac72",
+      "material_id": "source:ba616564-b9ab-56e8-849e-0e938a5a8bb2",
+      "fields": {
+        "paper_title": {
+          "raw_sha256": "9cd2bd1715d601d0bacae8af0a1501c95bbcd1bb09e2078e1165138fd3a7cf5d",
+          "text": "Evidence for non-conventional pairing in Na$_x$CoO$_2$·yH$_2$O"
+        }
+      },
+      "definitions": [],
+      "font_mappings": [],
+      "reviewed_sources": [
+        {
+          "locator": "pdf_page:1",
+          "block_sha256": "ea5e85aa08335666d97b51663d8e83399e8d4855fa49cf9ca2480143d33192ed",
+          "source_sha256": "b1638aa731319e450779b23df0b9188c7982330fdf4de590ecc2d0f8ec3156b1",
+          "verification": "Title notation visually verified on the first page of the retained original PDF.",
+          "reviewer_kind": "model",
+          "independent_domain_review": false
+        }
+      ]
     },
     "a2d03a86-25a8-5a26-a7a0-1f70cbfd8d18": {
       "paper_id": "arxiv:cond-mat/0608029",
