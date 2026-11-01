@@ -14,9 +14,9 @@ const reported = (text: string | null) => text && !["unresolved", "unspecified",
 function ReportedFormula({ formula }: { formula: string }) {
   if (/[$\\_^\uE000-\uF8FF\uFFFD]/.test(formula)) {
     const rendered=renderSourceNotation(formula,true);
-    return <span role="math" aria-label={sourceNotationLabel(rendered.html)} dangerouslySetInnerHTML={{ __html: rendered.html }} />;
+    return <span className="materials-formula" role="math" aria-label={sourceNotationLabel(rendered.html)} dangerouslySetInnerHTML={{ __html: rendered.html }} />;
   }
-  return <FormulaDisplay formula={formula} />;
+  return <FormulaDisplay formula={formula} className="materials-formula" />;
 }
 
 export function MaterialsVNextResults({ data }: { data: AdmittedTcPage }) {

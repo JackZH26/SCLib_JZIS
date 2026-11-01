@@ -137,6 +137,13 @@
 .materials-vnext-pagination span { font-variant-numeric: tabular-nums; white-space: nowrap; }
 .materials-vnext-table .reported-math { display: inline-block; max-width: 100%; overflow-x: auto; vertical-align: middle; }
 .materials-vnext-table .katex { font-size: 1em; }
+/* Formula typography is independent of whether the paper used plain text or
+   TeX. Keep KaTeX's script layout, but use the same upright site font/weight.
+   Scope this to chemical labels; mathematical prose retains its own notation. */
+.materials-formula { font-family: inherit; font-size: 1em; font-style: normal; font-weight: 600; }
+.materials-formula .katex { font-family: inherit; font-size: 1em; font-weight: inherit; }
+.materials-formula .katex-html span { font-family: inherit; font-style: normal; font-weight: inherit; }
+.materials-formula sub, .materials-formula sup { font-size: .7em; }
 @media (max-width: 800px) { .materials-vnext-filters { grid-template-columns: 1fr 1fr; } .materials-vnext-filters > label:first-child { grid-column: 1 / -1; } }
 .materials-full-result-context { margin-top: 1rem; }
 @media (max-width: 639px) { .materials-core-evidence { gap: .65rem 1rem; } }
