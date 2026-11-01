@@ -2,6 +2,7 @@
 
 from datetime import datetime, timezone
 import json
+from pathlib import Path
 import subprocess
 import urllib.request
 
@@ -232,6 +233,60 @@ def current(full=False):
             "full_module_coverage": full,
         },
     }
+
+
+@pytest.mark.parametrize('failure', [False, True])
+def test_whole_database_inventory_uses_separate_owned_services_and_real_outcomes(tmp_path, monkeypatch, failure):
+    value=sample_plan()
+    isolated='tests/test_research_restore_worker.py'
+    value['batches'][0]=['tests/test_0.py',isolated]
+    monkeypatch.setattr(scope,'verify_plan',lambda *args:None)
+    monkeypatch.setattr(scope,'capture_provenance',lambda root:{'source_dirty':False})
+    monkeypatch.setattr(scope,'source_unchanged',lambda *args:None)
+    output=tmp_path/'isolated';calls=[]
+    def run(command,**kwargs):
+        assert command[1].endswith('scripts/run_disposable_tests.py')
+        selected=[arg for arg in command if arg.startswith('tests/')]
+        calls.append(selected)
+        report=Path(next(arg.split('=',1)[1] for arg in command if arg.startswith('--junitxml=')))
+        outcome='<failure message="real reported failure"/>' if failure else ''
+        body=''.join(f'<testcase classname="{Path(m).with_suffix("").as_posix().replace("/",".")}" name="works">{outcome}</testcase>' for m in selected)
+        report.write_text('<testsuites><testsuite>'+body+'</testsuite></testsuites>')
+        return subprocess.CompletedProcess(command,1 if failure else 0)
+    monkeypatch.setattr(scope.subprocess,'run',run)
+    assert scope.run_batch(value,0,output,'docker')==(1 if failure else 0)
+    report=json.loads((output/'result.json').read_text())
+    assert calls==([[isolated]] if failure else [[isolated],['tests/test_0.py']])
+    assert report['status']==('failed' if failure else 'passed')
+    if failure:
+        assert report['service_runs'][0]['counts']['failed']==1
+        assert not (output/'junit.xml').exists()
+    else:
+        assert scope.counts(output/'junit.xml',value['batches'][0])['passed']==2
+
+
+@pytest.mark.parametrize('corrupt', [False, True])
+def test_aggregate_checks_isolated_raw_junit_as_well_as_merged_report(tmp_path, monkeypatch, corrupt):
+    value=receipts(tmp_path,monkeypatch)
+    isolated='tests/test_research_restore_worker.py'
+    group=['tests/test_0.py',isolated];value['batches'][0]=group
+    value['selected']=value['inventory']=sorted([*value['selected'],isolated])
+    folder=tmp_path/'0';report=json.loads((folder/'result.json').read_text())
+    report['modules']=group;report['service_runs']=[];suites=[]
+    for i,part in enumerate(scope.service_groups(group)):
+        classname=Path(part[0]).with_suffix('').as_posix().replace('/','.')
+        suite=f'<testsuite><testcase classname="{classname}" name="works"/></testsuite>'
+        name=f'junit-service-{i}.xml';(folder/name).write_text('<testsuites>'+suite+'</testsuites>')
+        report['service_runs'].append(dict(modules=part,junit=name,exit_code=0,counts=scope.counts(folder/name,part)))
+        suites.append(suite)
+    (folder/'junit.xml').write_text('<testsuites>'+''.join(suites)+'</testsuites>')
+    report['counts']=scope.counts(folder/'junit.xml',group)
+    (folder/'result.json').write_text(json.dumps(report))
+    if corrupt:
+        (folder/'junit-service-0.xml').write_text('<testsuites/>')
+        with pytest.raises(ValueError):scope.aggregate(value,tmp_path)
+    else:
+        assert scope.aggregate(value,tmp_path)['counts']['passed']==9
 
 
 def full_run(**changes):

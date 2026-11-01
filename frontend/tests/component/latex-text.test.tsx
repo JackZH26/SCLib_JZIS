@@ -10,15 +10,16 @@ it.each([String.raw`$T_{\rm c}$`, String.raw`\(C_p(T)\)`, String.raw`\[\mu_0H\]`
   expect(container.querySelector('.katex-html')!.textContent).not.toMatch(/\\|\$|_/);
   expect(container.querySelector('math')).not.toBeNull();
 });
-it("preserves unknown paper macros and escapes untrusted markup", () => {
+it("flags unresolved source notation and escapes untrusted markup", () => {
   const source = String.raw`$\unknown{FeSe}$ <img src=x onerror=alert(1)>`;
   const { container } = render(<LatexText>{source}</LatexText>);
-  expect(container.textContent).toBe(source);
+  expect(container.textContent).toBe("Source notation requires review");
+  expect(container.querySelector("[data-notation-unresolved]")).not.toBeNull();
   expect(container.querySelector("img")).toBeNull();
   expect(container.querySelector(".katex-error")).toBeNull();
 });
 it("does not trust TeX hyperlinks or render ordinary prose as math", () => {
   const { container } = render(<LatexText>{String.raw`Cost \$5; $\href{javascript:alert(1)}{click}$`}</LatexText>);
   expect(container.querySelector("a")).toBeNull();
-  expect(container.textContent).toContain(String.raw`Cost \$5;`);
+  expect(container.textContent).toBe("Source notation requires review");
 });

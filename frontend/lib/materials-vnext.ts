@@ -1,5 +1,6 @@
 export type AdmittedTcResult = {
   id: string; material_id: string; formula: string; family?: string;
+  display?: Record<string, string>;
   compositions: { formula: string; basis: string }[];
   sample_label: string | null; sample_form: string | null; substrate: string | null;
   value_kelvin: number | null; value_lower_kelvin: number | null; value_upper_kelvin: number | null;
@@ -46,4 +47,22 @@ export function admittedPressureLabel(row: AdmittedTcResult): string {
   if (row.pressure_gpa !== null) return `${row.pressure_gpa} GPa`;
   if (row.pressure_raw) return row.pressure_raw;
   return row.pressure_regime === "nonambient" ? "Nonambient pressure; value unavailable" : "Pressure not reported";
+}
+
+/** Apply only presentation strings supplied by the source-bound API reader. */
+export function materialDisplay(row: AdmittedTcResult): AdmittedTcResult {
+  const d = row.display ?? {};
+  const text = (key: string, raw: string | null | undefined) => d[key] ?? raw;
+  return { ...row, formula: d.formula ?? row.formula,
+    sample_label: text("sample_label", row.sample_label) ?? null,
+    sample_form: text("sample_form", row.sample_form) ?? null,
+    substrate: text("substrate", row.substrate) ?? null,
+    method_raw: text("method_raw", row.method_raw) ?? null,
+    criterion_raw: text("criterion_raw", row.criterion_raw) ?? null,
+    measurement_context: text("measurement_context", row.measurement_context) ?? null,
+    pressure_raw: text("pressure_raw", row.pressure_raw) ?? null,
+    paper_title: d.paper_title ?? row.paper_title,
+    quantity: { ...row.quantity, raw: d.quantity_raw ?? row.quantity.raw },
+    compositions: row.compositions.map((c, i) => ({ ...c, formula: d[`composition:${i}`] ?? c.formula })),
+  };
 }

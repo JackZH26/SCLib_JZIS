@@ -14,6 +14,7 @@ import re
 import subprocess
 import sys
 import time
+import xml.etree.ElementTree as ET
 from pathlib import Path
 
 from scripts.schema_rehearsal_report import capture_provenance, source_unchanged
@@ -26,6 +27,16 @@ from scripts.tests.run_api_regression import (
 )
 
 ROOT = Path(__file__).resolve().parents[1]
+
+# These tests inventory the entire public database, so unrelated modules'
+# committed fixtures must not share their owned service lifetime.
+WHOLE_DATABASE_MODULES = frozenset({"tests/test_research_restore_worker.py"})
+
+
+def service_groups(selected):
+    isolated = [[m] for m in selected if m in WHOLE_DATABASE_MODULES]
+    ordinary = [m for m in selected if m not in WHOLE_DATABASE_MODULES]
+    return isolated + ([ordinary] if ordinary else [])
 
 
 def digest(value):
@@ -159,17 +170,29 @@ def run_batch(
                 "--redis-bin",
                 str(redis_bin),
             ]
-        command += [
-            "--",
-            "-q",
-            "--tb=short",
-            "--durations=10",
-            f"--junitxml={output / 'junit.xml'}",
-            *report["modules"],
-        ]
-        result = subprocess.run(command, cwd=root, env=child_environment(), check=False)
-        report["exit_code"] = result.returncode
-        report["counts"] = counts(output / "junit.xml", report["modules"])
+        groups=service_groups(report["modules"])
+        report["service_runs"]=[]
+        for number,group in enumerate(groups):
+            name="junit.xml" if len(groups)==1 else f"junit-service-{number}.xml"
+            result=subprocess.run(command + ["--", "-q", "--tb=short", "--durations=10",
+                f"--junitxml={output/name}", *group], cwd=root, env=child_environment(), check=False)
+            entry=dict(modules=group,junit=name,exit_code=result.returncode)
+            report["service_runs"].append(entry)
+            entry["counts"]=counts(output/name,group)
+            if result.returncode or entry["counts"]["failed"] or entry["counts"]["errors"]:
+                break  # Never start another service after failed cleanup/tests.
+        complete=len(report["service_runs"])==len(groups)
+        report["exit_code"]=0 if complete and all(r["exit_code"]==0 for r in report["service_runs"]) else 1
+        if complete:
+            if len(groups)>1:
+                # Each input was bounded and independently checked by counts().
+                # Preserve real testcase outcomes; never synthesize passing cases.
+                merged=ET.Element("testsuites")
+                for run in report["service_runs"]:
+                    merged.extend(ET.parse(output/run["junit"]).getroot())
+                with (output/'junit.xml').open('xb') as handle:
+                    ET.ElementTree(merged).write(handle,encoding='utf-8',xml_declaration=True)
+            report["counts"]=counts(output/'junit.xml',report["modules"])
         source_unchanged(before, capture_provenance(root))
         if (
             runtime_inventory.capture(
@@ -180,7 +203,7 @@ def run_batch(
             raise ValueError("test_runtime_changed")
         verify_plan(value, root)
         if (
-            result.returncode == 0
+            complete and report["exit_code"] == 0
             and report["counts"]["failed"] == report["counts"]["errors"] == 0
         ):
             report["status"] = "passed"
@@ -222,6 +245,17 @@ def aggregate(value, directory, root=ROOT):
         actual = counts(path.parent / "junit.xml", item["modules"])
         if actual != item["counts"] or actual["failed"] or actual["errors"]:
             raise ValueError("invalid_actual_junit")
+        groups=service_groups(item['modules'])
+        if len(groups)>1:
+            runs=item.get('service_runs',[])
+            if [r['modules'] for r in runs]!=groups:
+                raise ValueError('missing_isolated_service_evidence')
+            for number,run in enumerate(runs):
+                if run['junit']!=f'junit-service-{number}.xml' or run['exit_code']!=0:
+                    raise ValueError('invalid_isolated_service_evidence')
+                checked=counts(path.parent/run['junit'],groups[number])
+                if checked!=run['counts'] or checked['failed'] or checked['errors']:
+                    raise ValueError('failed_isolated_service_evidence')
         runtime_inventory.validate(item["runtime"])
         if results and item["runtime"] != results[0]["runtime"]:
             raise ValueError("batch_runtime_mismatch")

@@ -21,6 +21,17 @@ const page = (items = [result()]): AdmittedTcPage => ({ items, total: items.leng
 beforeEach(() => { vi.resetAllMocks(); vi.mocked(getMaterialsDataset).mockRejectedValue(new Error("not prepared")); });
 afterEach(() => { cleanup(); vi.unstubAllEnvs(); });
 
+it("shows source-bound composition concerns alongside the unchanged observation", () => {
+  const row=result({ formula: "Bi2Sr2CaCuO8", value_kelvin: 74, display: {
+    formula: "Bi$_2$Sr$_2$CaCuO$_8$", formula_note: "Source stoichiometry requires review: the paper omits the Cu subscript.",
+  }});
+  const before=JSON.stringify(row);
+  render(<MaterialsVNextResults data={page([row])} />);
+  expect(screen.getByText(/Source stoichiometry requires review/)).toBeVisible();
+  expect(screen.getByText("74 K")).toBeInTheDocument();
+  expect(JSON.stringify(row)).toBe(before);
+});
+
 it("retains equal Tc results with different samples and criteria, with English evidence and pressure labels", () => {
   render(<MaterialsVNextResults data={page([result(), result({ id: "claim-2", sample_label: "S2", criterion: "zero_resistance" })])} />);
   expect(screen.getAllByRole("row")).toHaveLength(3);
@@ -38,14 +49,14 @@ it("retains equal Tc results with different samples and criteria, with English e
 });
 
 it.each([
-  ["KNi$_2$S$_2$", 2],
-  ["PrFeAsO$_{0.60}$F$_{0.12}$", 2],
-  ["Bi$_2$Sr$_2$CuO$_{6+\\delta}$", 3],
-])("renders reported TeX subscripts for %s while preserving the raw composition", (formula, subscripts) => {
+  ["KNi$_2$S$_2$", 2, "KNi2S2"],
+  ["PrFeAsO$_{0.60}$F$_{0.12}$", 2, "PrFeAsO0.60F0.12"],
+  ["Bi$_2$Sr$_2$CuO$_{6+\\delta}$", 3, "Bi2Sr2CuO6+δ"],
+])("renders reported TeX subscripts for %s while preserving the raw composition", (formula, subscripts, accessibleLabel) => {
   const data = page([result({ formula, compositions: [{ formula, basis: "unresolved" }] })]);
   const { container } = render(<MaterialsVNextResults data={data} />);
   const materialLink = container.querySelector('a[href="/materials/source%3Asample"]')!;
-  expect(materialLink).toHaveAccessibleName(formula);
+  expect(materialLink).toHaveAccessibleName(accessibleLabel);
   for (const math of materialLink.querySelectorAll('.katex-html')) expect(math.textContent).not.toMatch(/[$_\\]/);
   expect(materialLink.querySelectorAll(".msupsub")).toHaveLength(subscripts);
   expect(materialLink.querySelector(".katex-error")).toBeNull();
