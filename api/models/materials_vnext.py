@@ -17,6 +17,7 @@ class AdmittedTcResult(BaseModel):
     id: str
     material_id: str
     formula: str
+    family: str = 'unclassified'
     compositions: list[dict[str, str]]
     sample_label: str | None
     sample_form: str | None

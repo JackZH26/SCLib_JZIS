@@ -1,4 +1,4 @@
-import { cleanup, render, screen } from "@testing-library/react";
+import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { MaterialsVNext, MaterialsVNextResults } from "@/components/MaterialsVNext";
 import MaterialDetailPage from "@/app/materials/[id]/page";
@@ -46,19 +46,19 @@ it.each([
   const { container } = render(<MaterialsVNextResults data={data} />);
   const materialLink = container.querySelector('a[href="/materials/source%3Asample"]')!;
   expect(materialLink).toHaveAccessibleName(formula);
-  expect(materialLink).not.toHaveTextContent(/[$_\\]/);
+  for (const math of materialLink.querySelectorAll('.katex-html')) expect(math.textContent).not.toMatch(/[$_\\]/);
   expect(materialLink.querySelectorAll(".msupsub")).toHaveLength(subscripts);
   expect(materialLink.querySelector(".katex-error")).toBeNull();
-  expect(screen.getByText(formula, { selector: "code" })).toBeInTheDocument();
+  expect(container.querySelectorAll('span[role="math"]')).toHaveLength(2);
   expect(data.items[0].formula).toBe(formula);
   expect(document.body).toHaveTextContent("Reported composition:");
 });
 
 it("uses the reported formula renderer in the material heading", async () => {
   vi.mocked(listAdmittedTcResults).mockResolvedValue(page([result({ formula: "KNi$_2$S$_2$" })]));
-  render(await MaterialsVNext({ searchParams: {}, materialId: "source:sample" }));
+  await act(async () => { render(await MaterialsVNext({ searchParams: {}, materialId: "source:sample" })); });
   const heading = screen.getByRole("heading", { level: 1 });
-  expect(heading).not.toHaveTextContent(/[$_]/);
+  for (const math of heading.querySelectorAll('.katex-html')) expect(math.textContent).not.toMatch(/[$_]/);
   expect(heading.querySelectorAll(".msupsub")).toHaveLength(2);
 });
 
@@ -99,7 +99,7 @@ it("explains individual admission in English without claiming the original batch
     admission_route: "individual_source_check", batch_qualified: false,
     independent_expert_review: false, complete_paper: false,
   } })]));
-  render(await MaterialsVNext({ searchParams: {} }));
+  await act(async () => { render(await MaterialsVNext({ searchParams: {} })); });
   expect(document.body).toHaveTextContent("or an individual check against the original paper");
   expect(screen.getByText("Model source checked")).toBeInTheDocument();
   expect(screen.queryByText("Batch sample passed")).not.toBeInTheDocument();
@@ -107,36 +107,48 @@ it("explains individual admission in English without claiming the original batch
 });
 
 it.each([{ pressure: "ambient" }, { criterion: "made_up" }, { page: "-1" }, { page: "abc" }, { q: ["FeSe", "MgB2"] }, { ambient_sc: "true" }])("rejects invalid filters before fetching: %j", async searchParams => {
-  render(await MaterialsVNext({ searchParams }));
+  await act(async () => { render(await MaterialsVNext({ searchParams })); });
   expect(screen.getByRole("alert")).toHaveTextContent("Invalid filters");
   expect(listAdmittedTcResults).not.toHaveBeenCalled();
 });
 
 it("passes valid filters to the canonical reader and preserves a preview base path", async () => {
   vi.stubEnv("NEXT_PUBLIC_BASE_PATH", "/preview");
-  vi.mocked(listAdmittedTcResults).mockResolvedValue(page());
-  render(await MaterialsVNext({ searchParams: { q: "FeSe", pressure: "unknown", criterion: "onset", page: "2" } }));
+  vi.mocked(listAdmittedTcResults).mockResolvedValue({ ...page(), total: 151, offset: 100 });
+  await act(async () => { render(await MaterialsVNext({ searchParams: { q: "FeSe", pressure: "unknown", criterion: "onset", page: "2" } })); });
   expect(listAdmittedTcResults).toHaveBeenCalledWith({ q: "FeSe", pressure: "unknown", criterion: "onset", offset: 100, limit: 50 });
   expect(screen.getByRole("button", { name: "Apply filters" }).closest("form")).toHaveAttribute("action", "/preview/materials");
   expect(screen.getByRole("link", { name: "Previous" })).toHaveAttribute("href", "/materials?page=1&q=FeSe&pressure=unknown&criterion=onset");
 });
 
+it("handles the last page and an expired page number without impossible page totals", async () => {
+  vi.mocked(listAdmittedTcResults).mockResolvedValue({ ...page(), total: 51, offset: 50 });
+  await act(async () => { render(await MaterialsVNext({ searchParams: { page: "1" } })); });
+  expect(screen.getByLabelText("Page 2 of 2")).toBeInTheDocument();
+  expect(screen.queryByRole("link", { name: "Next", exact: true })).toBeNull();
+  cleanup();
+  vi.mocked(listAdmittedTcResults).mockResolvedValue({ ...page([]), total: 51, offset: 100 });
+  await act(async () => { render(await MaterialsVNext({ searchParams: { page: "2", family: "cuprate" } })); });
+  expect(screen.getByRole("link", { name: "Return to first page" })).toHaveAttribute("href", "/materials?page=0&family=cuprate");
+  expect(document.body).not.toHaveTextContent("Page 3 / 2");
+});
+
 it("renders an English empty state and a separate load failure", async () => {
   vi.mocked(listAdmittedTcResults).mockResolvedValue(page([]));
-  render(await MaterialsVNext({ searchParams: {} }));
+  await act(async () => { render(await MaterialsVNext({ searchParams: {} })); });
   expect(screen.getByRole("status")).toHaveTextContent("No reported results match these filters");
   cleanup();
   vi.mocked(listAdmittedTcResults).mockRejectedValue(new Error("unavailable"));
-  render(await MaterialsVNext({ searchParams: {} }));
+  await act(async () => { render(await MaterialsVNext({ searchParams: {} })); });
   expect(screen.getByRole("alert")).toHaveTextContent("Reported results could not be loaded");
 });
 
 it("resets form values with URL filters after a client-side Clear navigation", async () => {
   vi.mocked(listAdmittedTcResults).mockResolvedValue(page());
-  const view = render(await MaterialsVNext({ searchParams: { pressure: "nonambient", q: "FeSe" } }));
+  const view = await act(async () => render(await MaterialsVNext({ searchParams: { pressure: "nonambient", q: "FeSe" } })));
   expect(screen.getByRole("textbox")).toHaveValue("FeSe");
   expect(screen.getByDisplayValue("Reported nonambient")).toHaveValue("nonambient");
-  view.rerender(await MaterialsVNext({ searchParams: {} }));
+  await act(async () => { view.rerender(await MaterialsVNext({ searchParams: {} })); });
   expect(screen.getByRole("textbox")).toHaveValue("");
   expect(screen.getByDisplayValue("All pressures")).toHaveValue("");
 });
@@ -144,7 +156,7 @@ it("resets form values with URL filters after a client-side Clear navigation", a
 it("opens the real material detail route with canonical results and keeps filtering within that material", async () => {
   vi.stubEnv("MATERIALS_VNEXT_ENABLED", "true");
   vi.mocked(listAdmittedTcResults).mockResolvedValue({ ...page(), total: 60 });
-  render(await MaterialDetailPage({ params: Promise.resolve({ id: "source%3Asample" }), searchParams: Promise.resolve({ criterion: "onset" }) }));
+  await act(async () => { render(await MaterialDetailPage({ params: Promise.resolve({ id: "source%3Asample" }), searchParams: Promise.resolve({ criterion: "onset" }) })); });
   expect(getMaterial).not.toHaveBeenCalled();
   expect(listAdmittedTcResults).toHaveBeenCalledWith({ material_id: "source:sample", q: "", pressure: "", criterion: "onset", offset: 0, limit: 50 });
   expect(screen.getByRole("heading", { level: 1 })).toHaveTextContent("FeSe");
@@ -163,9 +175,10 @@ it("offers versioned full dataset downloads with English scope and training guid
     training_policy: "Primary experimental scalar Tc; no midpoint is imputed.",
     grouping_policy: "Use the supplied split; unseen-composition performance is not established.",
   });
-  render(await MaterialsVNext({ searchParams: { q: "FeSe" } }));
+  await act(async () => { render(await MaterialsVNext({ searchParams: { q: "FeSe" } })); });
+  fireEvent.click(screen.getByRole("button", { name: "Show dataset downloads" }));
   for (const [label, kind] of [["Results CSV", "results"], ["Evidence CSV", "evidence"], ["Training CSV", "training"]]) {
-    expect(screen.getByRole("link", { name: label })).toHaveAttribute("href", `${PUBLIC_API_BASE}/materials/dataset/${"a".repeat(64)}/${kind}`);
+    expect(await screen.findByRole("link", { name: label })).toHaveAttribute("href", `${PUBLIC_API_BASE}/materials/dataset/${"a".repeat(64)}/${kind}`);
   }
   expect(document.body).toHaveTextContent("1,739 results from 850 papers");
   expect(document.body).toHaveTextContent("Page filters do not change these downloads");
@@ -176,8 +189,48 @@ it("offers versioned full dataset downloads with English scope and training guid
 
 it("keeps result browsing available while a stale download snapshot is being refreshed", async () => {
   vi.mocked(listAdmittedTcResults).mockResolvedValue(page());
-  render(await MaterialsVNext({ searchParams: {} }));
-  expect(document.body).toHaveTextContent("Downloads will be available after the latest dataset update is prepared");
+  await act(async () => { render(await MaterialsVNext({ searchParams: {} })); });
+  fireEvent.click(screen.getByRole("button", { name: "Show dataset downloads" }));
+  expect(await screen.findByText("Downloads will be available after the latest dataset update is prepared.")).toBeInTheDocument();
   expect(screen.queryByRole("link", { name: "Training CSV" })).not.toBeInTheDocument();
   expect(screen.getByRole("link", { name: "FeSe" })).toBeInTheDocument();
+});
+
+it("renders the source Bi-2212 notation and math across sample, method and criterion fields", () => {
+  const formula = String.raw`\mathrm{Bi_{2-x}Pb_xSr_2CaCu_2O_{8+ \delta }}`;
+  const { container } = render(<MaterialsVNextResults data={page([result({ formula, family: "cuprate",
+    compositions: [{ formula, basis: "unresolved" }],
+    sample_label: String.raw`sample 2; overd. ($\mathrm{O_2}$); x = 0.27`,
+    criterion_raw: String.raw`an idealized jump at $T_{\rm c}$`,
+    method_raw: String.raw`specific heat $C_{p}(T)$`,
+    substrate: String.raw`$\mathrm{SrTiO_3}$`,
+  })])} />);
+  for (const math of container.querySelectorAll('.katex-html')) expect(math.textContent).not.toMatch(/\\mathrm|\\delta|\$|\\rm/);
+  expect(container.querySelectorAll('math').length).toBeGreaterThanOrEqual(6);
+  expect(container.querySelectorAll(".katex").length).toBeGreaterThanOrEqual(6);
+  expect(screen.getByText("Cuprates")).toBeInTheDocument();
+  expect(container.textContent).toContain("x = 0.27");
+});
+
+it("keeps family filtering, totals and pagination consistent", async () => {
+  vi.mocked(listAdmittedTcResults).mockResolvedValue({ ...page(), total: 13282 });
+  await act(async () => { render(await MaterialsVNext({ searchParams: { family: "cuprate", page: "1", pressure: "unknown" } })); });
+  expect(screen.getByLabelText("Material family")).toHaveValue("cuprate");
+  expect(screen.getByLabelText("Page 2 of 266")).toHaveTextContent("Page 2 / 266");
+  expect(listAdmittedTcResults).toHaveBeenCalledWith(expect.objectContaining({ family: "cuprate", offset: 50 }));
+  expect(screen.getByRole("link", { name: "Next", exact: true })).toHaveAttribute("href", "/materials?page=2&pressure=unknown&family=cuprate");
+  expect(document.body.textContent).not.toMatch(/[\u4e00-\u9fff]/);
+});
+
+it("renders results without waiting for download verification", async () => {
+  let finish!: (value: null) => void;
+  vi.mocked(getMaterialsDataset).mockReturnValue(new Promise(resolve => { finish = resolve; }));
+  vi.mocked(listAdmittedTcResults).mockResolvedValue(page());
+  await act(async () => { render(await MaterialsVNext({ searchParams: {} })); });
+  expect(screen.getByRole("link", { name: "FeSe" })).toBeInTheDocument();
+  expect(getMaterialsDataset).not.toHaveBeenCalled();
+  fireEvent.click(screen.getByRole("button", { name: "Show dataset downloads" }));
+  expect(screen.getByText("Loading downloads…")).toBeInTheDocument();
+  await act(async () => { finish(null); });
+  expect(await screen.findByText("Downloads will be available after the latest dataset update is prepared.")).toBeInTheDocument();
 });

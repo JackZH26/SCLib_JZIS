@@ -1,0 +1,28 @@
+// Controlled labels mirror api/services/materials_family.py; tested for parity.
+export const materialFamilies: Record<string, string> = {
+  "cuprate": "Cuprates",
+  "iron_based": "Iron pnictides & chalcogenides",
+  "nickelate": "Nickelate oxides",
+  "hydride": "Hydrides",
+  "mgb2": "MgB2 family",
+  "heavy_fermion": "Heavy-fermion hosts",
+  "kagome": "Kagome hosts",
+  "organic": "Organic & molecular materials",
+  "fulleride": "Fullerides",
+  "borocarbide": "Borocarbides",
+  "ruthenate": "Ruthenate oxides",
+  "bismuthate": "Bismuthate oxides",
+  "bis2_layered": "BiS2 / BiSe2 layered hosts",
+  "oxide": "Other oxides",
+  "boride": "Other borides",
+  "carbide": "Other carbides",
+  "nitride": "Nitrides",
+  "carbon": "Carbon materials & intercalates",
+  "chalcogenide": "Other chalcogenides",
+  "pnictide": "Other pnictides",
+  "elemental": "Elemental materials",
+  "intermetallic": "Intermetallics & alloys",
+  "heterostructure": "Heterostructures",
+  "other_compound": "Other compounds",
+  "unclassified": "Unclassified"
+};

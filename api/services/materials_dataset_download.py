@@ -7,6 +7,7 @@ import re
 from sqlalchemy import text
 
 from services.materials_admission_scope import CURRENT_ADMISSION_WHERE
+from services.materials_context_sql import COMPOSITION_IDS, PROTOCOL_ID
 
 FILES = {kind: f'materials_{kind}.csv' for kind in ('results', 'evidence', 'training')}
 VERSION_RE = re.compile(r'[0-9a-f]{64}')
@@ -17,15 +18,12 @@ async def canonical_download_state(db):
     # Database-local paths stay inside this fingerprint and never reach clients.
     # Keep composition lookup on its UUID index. Only canonical lowercase UUID
     # strings matched the former id::text comparison; ignore other spellings.
-    rows = (await db.execute(text('''SELECT c.id::text AS id,
+    rows = (await db.execute(text(f'''SELECT c.id::text AS id,
         md5(jsonb_build_object('claim',to_jsonb(c),'event',to_jsonb(ev),
             'state',to_jsonb(s),'sample',to_jsonb(rs),'protocol',to_jsonb(rp),
             'paper_status',p.status,'publication_status',w.publication_status,
             'compositions',(SELECT jsonb_agg(to_jsonb(sc) ORDER BY sc.id)
-                FROM sample_compositions sc WHERE sc.id = ANY(ARRAY(
-                SELECT CASE WHEN cid ~ '^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$'
-                    THEN cid::uuid END
-                FROM jsonb_array_elements_text(ev.context->'materials_context'->'composition_ids') AS ids(cid)))),
+                FROM sample_compositions sc WHERE sc.id = ANY({COMPOSITION_IDS})),
             'source_occurrences',(SELECT jsonb_agg(jsonb_build_object('occurrence',to_jsonb(o),
                 'revision',to_jsonb(r)) ORDER BY o.id) FROM claim_source_occurrences o
                 JOIN source_revisions r ON r.id=o.source_revision_id WHERE o.claim_id=c.id),
@@ -33,7 +31,7 @@ async def canonical_download_state(db):
                 WHERE e.event_id=ev.id AND e.link_type='source'))::text) AS revision
         FROM material_claims c JOIN research_events ev ON ev.id=c.event_id
         JOIN material_states s ON s.id=ev.state_id JOIN research_samples rs ON rs.id=s.sample_id
-        JOIN research_protocols rp ON rp.id::text=ev.context->'materials_context'->>'protocol_id'
+        JOIN research_protocols rp ON rp.id=({PROTOCOL_ID})
         JOIN papers p ON p.id=c.paper_id JOIN works w ON w.id=c.work_id
         WHERE ''' + CURRENT_ADMISSION_WHERE + ' ORDER BY c.id'))).mappings().all()
     payload = '\n'.join(f"{row['id']}:{row['revision']}" for row in rows)

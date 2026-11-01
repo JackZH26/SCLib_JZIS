@@ -9,6 +9,7 @@ from config import get_settings
 from models import get_db
 from models.materials_vnext import AdmittedTcPage
 from services.materials_vnext_read import admitted_tc_page
+from services.materials_family import FAMILIES
 from services.materials_dataset_download import (
     DownloadUnavailable, FILES, assert_current, canonical_download_state,
     public_snapshot, read_csv, read_snapshot,
@@ -21,12 +22,14 @@ router=APIRouter(tags=['materials'])
 async def material_results(response:Response,db:AsyncSession=Depends(get_db),
     q:str|None=Query(None,max_length=200),
     material_id:str|None=Query(None,min_length=1,max_length=200),
+    family:str|None=Query(None,max_length=50),
     pressure:Literal['explicit_ambient','nonambient','unknown']|None=None,
     criterion:Literal['onset','midpoint','zero_resistance','diamagnetic_onset','heat_capacity_anomaly','unspecified']|None=None,
     limit:int=Query(50,ge=1,le=200),offset:int=Query(0,ge=0)):
     if not get_settings().materials_vnext_enabled:raise HTTPException(404,'Materials dataset unavailable')
+    if family and family not in FAMILIES:raise HTTPException(422,'Unknown material family')
     response.headers['Cache-Control']='no-store'
-    return await admitted_tc_page(db,query=q,material_id=material_id,pressure=pressure,criterion=criterion,limit=limit,offset=offset)
+    return await admitted_tc_page(db,query=q,material_id=material_id,family=family,pressure=pressure,criterion=criterion,limit=limit,offset=offset)
 
 
 async def current_download(db, version=None):
