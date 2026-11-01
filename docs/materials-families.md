@@ -123,3 +123,7 @@ and uses the same plain-chemistry renderer as the page. Hydrate/adduct coefficie
 after a multiplication dot stay on the baseline (for example, Na0.3CoO2·1.3H2O).
 Malformed title corrections remain source-pinned display entries; no title or
 composition in the original record is replaced.
+
+The material detail browser title uses the same source-bound formula projection
+and converts rendered notation to plain text. Unresolved notation uses the generic
+Material results title; raw paper macros must not appear in metadata.

@@ -1,7 +1,7 @@
 import { act, cleanup, fireEvent, render, screen } from "@testing-library/react";
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { MaterialsVNext, MaterialsVNextResults } from "@/components/MaterialsVNext";
-import MaterialDetailPage from "@/app/materials/[id]/page";
+import MaterialDetailPage, { generateMetadata } from "@/app/materials/[id]/page";
 import { getMaterial, getMaterialsDataset, listAdmittedTcResults, PUBLIC_API_BASE } from "@/lib/api";
 import { admittedTcLabel, type AdmittedTcPage, type AdmittedTcResult } from "@/lib/materials-vnext";
 
@@ -20,6 +20,22 @@ const result = (overrides: Partial<AdmittedTcResult> = {}): AdmittedTcResult => 
 const page = (items = [result()]): AdmittedTcPage => ({ items, total: items.length, paper_count: 1, material_count: 1, limit: 50, offset: 0, dataset: "materials-production90/1", count_scope: "Matching reported results" });
 beforeEach(() => { vi.resetAllMocks(); vi.mocked(getMaterialsDataset).mockRejectedValue(new Error("not prepared")); });
 afterEach(() => { cleanup(); vi.unstubAllEnvs(); });
+
+it.each([
+  ["FeSe", undefined, "FeSe reported superconducting transitions"],
+  ["\\pccox{1.85}{0.15}\\xspace", "Pr$_{1.85}$Ce$_{0.15}$CuO$_4$", "Pr1.85Ce0.15CuO4 reported superconducting transitions"],
+  ["Mg$_{10}$Ir$_{19}$B$_{16}$", undefined, "Mg10Ir19B16 reported superconducting transitions"],
+  ["\\unknownMaterialMacro", undefined, "Material results"],
+])("uses resolved plain notation in the real metadata route: %s", async (formula, displayFormula, title) => {
+  vi.stubEnv("MATERIALS_VNEXT_ENABLED", "true");
+  const row=result({ formula: formula!, display: displayFormula ? { formula: displayFormula } : undefined });
+  const before=JSON.stringify(row);
+  vi.mocked(listAdmittedTcResults).mockResolvedValue(page([row]));
+  const metadata=await generateMetadata({ params: Promise.resolve({ id: "source%3Asample" }) });
+  expect(metadata.title).toBe(title);
+  expect(JSON.stringify(row)).toBe(before);
+  expect(getMaterial).not.toHaveBeenCalled();
+});
 
 it("shows source-bound composition concerns alongside the unchanged observation", () => {
   const row=result({ formula: "Bi2Sr2CaCuO8", value_kelvin: 74, display: {
