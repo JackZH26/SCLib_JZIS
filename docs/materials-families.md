@@ -111,3 +111,7 @@ experimental paragraph labels its sample Bi2212 but omits Cu's subscript in the
 formula; 2210.02124v2 explicitly defines and reports CuCa2. These seven results
 retain the literal source compositions and show a source-bound stoichiometry
 review note next to the material. Do not silently infer or swap their occupancies.
+
+For plain-text formulas, retain polytype prefixes such as 1T-, 2H-, 4Hb- and
+6R on the baseline, including their source prime/separator. Only the following
+composition digits receive chemical subscripts; a phase number is not an atom count.

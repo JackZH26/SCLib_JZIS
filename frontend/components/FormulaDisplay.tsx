@@ -19,10 +19,13 @@
  * `sub: true` means the segment should be rendered as <sub>.
  */
 function parseFormula(formula: string): { text: string; sub: boolean }[] {
+  // Polytype labels are part of the phase name, not stoichiometry. Preserve
+  // their exact prefix (including prime and separator) on the text baseline.
+  const prefix=formula.match(/^(\d+(?:Hb?|T['′]?|R|C)(?:\s*[-−–]\s*|\s+))/)?.[0] ?? "";
   // Match digit sequences (with optional decimal point and trailing digits).
   // E.g. "2", "0.15", "10", "6.95"
-  const parts = formula.split(/(\d+\.?\d*)/);
-  const result: { text: string; sub: boolean }[] = [];
+  const parts = formula.slice(prefix.length).split(/(\d+\.?\d*)/);
+  const result: { text: string; sub: boolean }[] = prefix ? [{ text: prefix, sub: false }] : [];
 
   for (const part of parts) {
     if (!part) continue;
