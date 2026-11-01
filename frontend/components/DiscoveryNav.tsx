@@ -5,7 +5,6 @@ import { usePathname } from "next/navigation";
 
 export const discoveryLinks = [
   { href: "/discovery", label: "Overview" },
-  { href: "/timeline", label: "TcTimeline" },
   { href: "/discovery/candidates", label: "Candidates" },
   { href: "/docs/data", label: "Data & methodology" },
   { href: "/docs/api", label: "API reference" },

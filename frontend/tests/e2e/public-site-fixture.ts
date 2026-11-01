@@ -16,6 +16,17 @@ export async function restrictToLocalOrigin(context: BrowserContext, origin: str
           "cache-control": "no-store", "x-sclib-test-response": "synthetic-anonymous" },
         body: JSON.stringify({ detail: "Not authenticated" }) });
     }
+    else if (url.origin === "https://api.jzis.org"
+      && url.pathname === "/sclib/v1/materials/timeline"
+      && url.searchParams.size === 1
+      && ["2000", "5000", "20000"].includes(url.searchParams.get("max_points") ?? "")
+      && route.request().method() === "GET") {
+      // Exercise public recovery without forwarding a NER request to production.
+      await route.fulfill({ status: 503, contentType: "application/json",
+        headers: { "access-control-allow-origin": origin, "cache-control": "no-store",
+          "x-sclib-test-response": "synthetic-timeline-unavailable" },
+        body: JSON.stringify({ detail: "Timeline unavailable in the offline public-page test" }) });
+    }
     else {
       blocked.push(url.href);
       await route.abort("blockedbyclient");

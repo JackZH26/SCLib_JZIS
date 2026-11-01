@@ -1,4 +1,5 @@
 import { HomeResearch } from "@/components/HomeResearch";
+import { HomeTcTimeline } from "@/components/HomeTcTimeline";
 import "./scwiki/scwiki.css";
 import type { Metadata } from "next";
 import Link from "@/components/AppLink";
@@ -85,6 +86,8 @@ export default async function Landing() {
           ))}
         </div>
       </section>
+
+      <HomeTcTimeline />
 
       <section aria-labelledby="sources-heading" className="mt-14 grid gap-8 border-t border-sage-border pt-10 sm:mt-20 sm:pt-12 lg:grid-cols-[1.15fr_1fr] lg:gap-16">
         <div>

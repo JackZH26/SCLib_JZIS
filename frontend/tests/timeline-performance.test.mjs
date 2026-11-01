@@ -41,10 +41,10 @@ test("timeline uses a WebGPU-only backend and retains bounded SVG compatibility"
   assert.match(gpu, /renderer.dispose/);
 });
 
-test("timeline names reported results and keeps unsampled summaries separate", () => {
-  assert.match(page, /Reported Tc Timeline/);
-  assert.match(page, /Observed only/);
-  assert.match(page, /Reviewed-only mode is unavailable/);
+test("current Timeline reads the new NER dataset while legacy summaries remain explicit", () => {
+  assert.match(page, /TcTimeline/);
+  assert.match(page, /MaterialsTcTimeline/);
+  assert.doesNotMatch(page, /DiscoveryNav|Timeline3D|WebGPU|Plotly/);
   assert.doesNotMatch(page, /Displaying a representative sample|Only experimental|Superconductivity discovery timeline/);
   assert.match(chart, /full_filtered_unsampled/);
   assert.match(chart, /not inferred from the display sample/);
@@ -58,8 +58,10 @@ test("all material-family navigation uses an English elemental label", () => {
 });
 
 test("timeline page requests a bounded compact payload", () => {
-  assert.match(page, /maxPoints:\s*expanded\s*\?\s*10000\s*:\s*2000/);
-  assert.match(page, /compact:\s*true/);
+  const current = readFileSync(new URL("../components/MaterialsTcTimeline.tsx", import.meta.url), "utf8");
+  assert.match(current, /getMaterialsTimeline\(compact\?2000:20000/);
+  assert.match(current, /getContext\("2d"\)/);
+  assert.doesNotMatch(current, /Timeline3D|WebGPU|Plotly/);
   const timelineFetch = api.slice(api.indexOf("export function getTimeline("), api.indexOf("export interface DiscoveryFilterRule"));
   assert.match(timelineFetch, /cache:\s*["']no-store["']/);
   assert.doesNotMatch(timelineFetch, /force-cache|revalidate/);
