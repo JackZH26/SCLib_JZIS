@@ -468,6 +468,44 @@
         "reviewer_kind": "model",
         "independent_domain_review": false
       }
+    },
+    {
+      "paper_id": "arxiv:1207.5070",
+      "source_versions": [
+        "v3"
+      ],
+      "bundle_sha256": "a512afcf67f41bcbcbc6a01eb6ccfe55efab43241536dc92c3e527614aad4fd8",
+      "field": "formula",
+      "raw_sha256": "bd614bb57fd825d5ad138ff6384b3e1bf94dbad85051c3333ecf461c388a9c14",
+      "text": "Bi$_2$Sr$_2$CaCuO$_{8+\\delta}$",
+      "evidence": {
+        "locator": "archive_member:paper22.2.tex",
+        "block_sha256": "9cdccb14f09d1b90921629df93d933ed33c930f0af1ce9974a6e9d45314c0713",
+        "source_sha256": "6f927f49a6c9fe9ce812fb00018c6033cf9d30c6bdd167db97fd445377699306",
+        "verification": "The experimental paragraph labels this sample Bi2212 but literally reports CaCuO, with no Cu subscript. Preserve its literal composition and flag the internal inconsistency.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      },
+      "note": "Source stoichiometry requires review: the paper calls this Bi-2212 but omits the Cu subscript in its formula."
+    },
+    {
+      "paper_id": "arxiv:2210.02124",
+      "source_versions": [
+        "v2"
+      ],
+      "bundle_sha256": "0e969c2a0338ec1d5d91f6b5a710cc4b333ad5407be2e652de41a334d361684c",
+      "field": "formula",
+      "raw_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
+      "text": "$\\mathrm{Bi}_{2}\\mathrm{Sr}_{2}\\mathrm{CuCa}_{2}\\mathrm{O}_{8+\\delta}$",
+      "evidence": {
+        "locator": "archive_member:template.tex",
+        "block_sha256": "de87d4f9e02776c1309755de287311db38e077faa6fffe082a647a8fef3cac63",
+        "source_sha256": "f090df2847432f848b61baf81602543e69cd2cf137509f87ef6809e05fb3dc15",
+        "verification": "The retained \\biscco definition and original abstract both literally report Bi2Sr2CuCa2O8+delta. Preserve that source expression; the Cu/Ca stoichiometry is questionable and is not silently swapped.",
+        "reviewer_kind": "model",
+        "independent_domain_review": false
+      },
+      "note": "Source stoichiometry requires review: the original formula reports CuCa2; its Cu/Ca subscripts need confirmation."
     }
   ]
 }

@@ -14,6 +14,7 @@ let fields=0, changed=0;
 for (const row of page.items) {
   const values = Object.fromEntries(["formula","sample_label","sample_form","substrate","criterion_raw","method_raw","measurement_context","pressure_raw","paper_title"].map(k=>[k,row.display?.[k] ?? row[k]]));
   values.quantity_raw=row.display?.quantity_raw ?? row.quantity?.raw;
+  values.formula_note=row.display?.formula_note;
   row.compositions.forEach((c,i)=>values["composition:"+i]=row.display?.["composition:"+i] ?? c.formula);
   changed+=Object.keys(row.display ?? {}).length;
   for (const [key,value] of Object.entries(values)) {

@@ -21,6 +21,17 @@ const page = (items = [result()]): AdmittedTcPage => ({ items, total: items.leng
 beforeEach(() => { vi.resetAllMocks(); vi.mocked(getMaterialsDataset).mockRejectedValue(new Error("not prepared")); });
 afterEach(() => { cleanup(); vi.unstubAllEnvs(); });
 
+it("shows source-bound composition concerns alongside the unchanged observation", () => {
+  const row=result({ formula: "Bi2Sr2CaCuO8", value_kelvin: 74, display: {
+    formula: "Bi$_2$Sr$_2$CaCuO$_8$", formula_note: "Source stoichiometry requires review: the paper omits the Cu subscript.",
+  }});
+  const before=JSON.stringify(row);
+  render(<MaterialsVNextResults data={page([row])} />);
+  expect(screen.getByText(/Source stoichiometry requires review/)).toBeVisible();
+  expect(screen.getByText("74 K")).toBeInTheDocument();
+  expect(JSON.stringify(row)).toBe(before);
+});
+
 it("retains equal Tc results with different samples and criteria, with English evidence and pressure labels", () => {
   render(<MaterialsVNextResults data={page([result(), result({ id: "claim-2", sample_label: "S2", criterion: "zero_resistance" })])} />);
   expect(screen.getAllByRole("row")).toHaveLength(3);

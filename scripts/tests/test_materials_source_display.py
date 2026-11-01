@@ -83,3 +83,16 @@ def test_compiled_registry_has_provenance_and_no_local_paths():
             assert len(value['raw_sha256'])==64 and value['text']
         for ref in item['font_mappings']:
             assert ref['display'] and ref['font'] in {'Symbol','SymbolMT','SymbolMT,Italic'}
+
+
+def test_source_formula_concerns_are_visible_and_bound_to_original_literal():
+    claim='fad5dc7d-178e-5a3d-8890-646c7dd84d46'
+    a=registry()['records'][claim]
+    row=dict(id=claim,paper_id=a['paper_id'],material_id=a['material_id'],
+             source_versions=a['source_versions'],formula=r'Bi$_2$Sr$_2$CaCuO$_{8+\d}$')
+    assert sha256(row['formula'])==a['fields']['formula']['raw_sha256']
+    display=display_projection(row,{a['bundle_sha256']})
+    assert 'omits the Cu subscript' in display['formula_note']
+    assert 'CaCuO' in display['formula']  # no inferred Cu2 substitution
+    row['formula']='Bi2Sr2CaCu2O8'
+    assert 'formula_note' not in display_projection(row,{a['bundle_sha256']})

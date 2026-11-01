@@ -33,4 +33,6 @@ def display_projection(row, source_pins):
             raw = row.get(key)
         if isinstance(raw,str) and sha256(raw) == value['raw_sha256']:
             result[key] = value['text']
+            if key == 'formula' and value.get('note'):
+                result['formula_note'] = value['note']
     return result

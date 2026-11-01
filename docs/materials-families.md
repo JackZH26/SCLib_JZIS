@@ -105,3 +105,9 @@ PCCO is consequently displayed as Pr1.85Ce0.15CuO4 and browsable under Cuprates;
 search also includes the source-resolved formula. Unresolved chemistry stays
 Unclassified. Rebuild and rerun this audit for each new NER release; do not copy
 macro definitions between papers or treat review-queue entries as applied fixes.
+
+Source fidelity does not establish chemical correctness. In 1207.5070v3 the
+experimental paragraph labels its sample Bi2212 but omits Cu's subscript in the
+formula; 2210.02124v2 explicitly defines and reports CuCa2. These seven results
+retain the literal source compositions and show a source-bound stoichiometry
+review note next to the material. Do not silently infer or swap their occupancies.

@@ -171,6 +171,8 @@ def main():
                 if not any(b['sha256']==proof['block_sha256'] and b['locator']==proof['locator'] for b in bundle['blocks']):
                     raise ValueError('Reviewed correction source mismatch')
                 changed[key]=dict(raw_sha256=sha256(raw),text=correction['text'])
+                if key == 'formula' and correction.get('note'):
+                    changed[key]['note']=correction['note']
                 manual_refs.append(proof)
         if changed:
             refs=[r for r in font_refs if chr(int(r['character'][2:],16)) in mapping and any(chr(int(r['character'][2:],16)) in fields[k] for k in changed)]

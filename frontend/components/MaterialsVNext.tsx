@@ -27,6 +27,7 @@ export function MaterialsVNextResults({ data }: { data: AdmittedTcPage }) {
       <tbody>{data.items.map(source => { const row = materialDisplay(source); return <tr key={row.id}>
         <td><Link className="site-text-link" href={`/materials/${encodeURIComponent(row.material_id)}`}><strong><ReportedFormula formula={row.formula} /></strong></Link>
           <p className="materials-vnext-family">{materialFamilies[row.family ?? "unclassified"] ?? "Unclassified"}</p>
+          {row.display?.formula_note && <p className="materials-vnext-secondary"><LatexText>{row.display.formula_note}</LatexText></p>}
           {row.sample_label && <p className="materials-vnext-secondary"><LatexText>{row.sample_label}</LatexText></p>}
           {reported(row.sample_form) && <p className="materials-vnext-secondary"><LatexText>{row.sample_form!}</LatexText></p>}
           {row.substrate && <p className="materials-vnext-secondary">Substrate: <LatexText>{row.substrate}</LatexText></p>}

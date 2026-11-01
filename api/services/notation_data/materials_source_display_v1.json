@@ -3128,7 +3128,8 @@
       "fields": {
         "formula": {
           "raw_sha256": "bd614bb57fd825d5ad138ff6384b3e1bf94dbad85051c3333ecf461c388a9c14",
-          "text": "Bi$_2$Sr$_2$CaCuO$_{8+\\delta }$"
+          "text": "Bi$_2$Sr$_2$CaCuO$_{8+\\delta}$",
+          "note": "Source stoichiometry requires review: the paper calls this Bi-2212 but omits the Cu subscript in its formula."
         },
         "composition:0": {
           "raw_sha256": "bd614bb57fd825d5ad138ff6384b3e1bf94dbad85051c3333ecf461c388a9c14",
@@ -3144,7 +3145,16 @@
         }
       ],
       "font_mappings": [],
-      "reviewed_sources": []
+      "reviewed_sources": [
+        {
+          "locator": "archive_member:paper22.2.tex",
+          "block_sha256": "9cdccb14f09d1b90921629df93d933ed33c930f0af1ce9974a6e9d45314c0713",
+          "source_sha256": "6f927f49a6c9fe9ce812fb00018c6033cf9d30c6bdd167db97fd445377699306",
+          "verification": "The experimental paragraph labels this sample Bi2212 but literally reports CaCuO, with no Cu subscript. Preserve its literal composition and flag the internal inconsistency.",
+          "reviewer_kind": "model",
+          "independent_domain_review": false
+        }
+      ]
     },
     "b422a98a-4462-52bc-b0af-73eb97611a89": {
       "paper_id": "arxiv:1209.1650",
@@ -12731,7 +12741,8 @@
       "fields": {
         "formula": {
           "raw_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
-          "text": "$\\text {Bi}_{2}\\text {Sr}_{2}\\text {CuCa}_{2}\\text {O}_{8+\\delta }$"
+          "text": "$\\mathrm{Bi}_{2}\\mathrm{Sr}_{2}\\mathrm{CuCa}_{2}\\mathrm{O}_{8+\\delta}$",
+          "note": "Source stoichiometry requires review: the original formula reports CuCa2; its Cu/Ca subscripts need confirmation."
         },
         "composition:0": {
           "raw_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
@@ -12747,7 +12758,16 @@
         }
       ],
       "font_mappings": [],
-      "reviewed_sources": []
+      "reviewed_sources": [
+        {
+          "locator": "archive_member:template.tex",
+          "block_sha256": "de87d4f9e02776c1309755de287311db38e077faa6fffe082a647a8fef3cac63",
+          "source_sha256": "f090df2847432f848b61baf81602543e69cd2cf137509f87ef6809e05fb3dc15",
+          "verification": "The retained \\biscco definition and original abstract both literally report Bi2Sr2CuCa2O8+delta. Preserve that source expression; the Cu/Ca stoichiometry is questionable and is not silently swapped.",
+          "reviewer_kind": "model",
+          "independent_domain_review": false
+        }
+      ]
     },
     "782c482d-b9ce-55b7-9167-ca1653bcd85a": {
       "paper_id": "arxiv:2210.02124",
@@ -12759,7 +12779,8 @@
       "fields": {
         "formula": {
           "raw_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
-          "text": "$\\text {Bi}_{2}\\text {Sr}_{2}\\text {CuCa}_{2}\\text {O}_{8+\\delta }$"
+          "text": "$\\mathrm{Bi}_{2}\\mathrm{Sr}_{2}\\mathrm{CuCa}_{2}\\mathrm{O}_{8+\\delta}$",
+          "note": "Source stoichiometry requires review: the original formula reports CuCa2; its Cu/Ca subscripts need confirmation."
         },
         "composition:0": {
           "raw_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
@@ -12775,7 +12796,16 @@
         }
       ],
       "font_mappings": [],
-      "reviewed_sources": []
+      "reviewed_sources": [
+        {
+          "locator": "archive_member:template.tex",
+          "block_sha256": "de87d4f9e02776c1309755de287311db38e077faa6fffe082a647a8fef3cac63",
+          "source_sha256": "f090df2847432f848b61baf81602543e69cd2cf137509f87ef6809e05fb3dc15",
+          "verification": "The retained \\biscco definition and original abstract both literally report Bi2Sr2CuCa2O8+delta. Preserve that source expression; the Cu/Ca stoichiometry is questionable and is not silently swapped.",
+          "reviewer_kind": "model",
+          "independent_domain_review": false
+        }
+      ]
     },
     "9665fdea-0002-5753-930a-3fd73429728b": {
       "paper_id": "arxiv:2210.02124",
@@ -12787,7 +12817,8 @@
       "fields": {
         "formula": {
           "raw_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
-          "text": "$\\text {Bi}_{2}\\text {Sr}_{2}\\text {CuCa}_{2}\\text {O}_{8+\\delta }$"
+          "text": "$\\mathrm{Bi}_{2}\\mathrm{Sr}_{2}\\mathrm{CuCa}_{2}\\mathrm{O}_{8+\\delta}$",
+          "note": "Source stoichiometry requires review: the original formula reports CuCa2; its Cu/Ca subscripts need confirmation."
         },
         "composition:0": {
           "raw_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
@@ -12803,7 +12834,16 @@
         }
       ],
       "font_mappings": [],
-      "reviewed_sources": []
+      "reviewed_sources": [
+        {
+          "locator": "archive_member:template.tex",
+          "block_sha256": "de87d4f9e02776c1309755de287311db38e077faa6fffe082a647a8fef3cac63",
+          "source_sha256": "f090df2847432f848b61baf81602543e69cd2cf137509f87ef6809e05fb3dc15",
+          "verification": "The retained \\biscco definition and original abstract both literally report Bi2Sr2CuCa2O8+delta. Preserve that source expression; the Cu/Ca stoichiometry is questionable and is not silently swapped.",
+          "reviewer_kind": "model",
+          "independent_domain_review": false
+        }
+      ]
     },
     "b7b72fff-17c0-532c-9e3c-2a827f25cd16": {
       "paper_id": "arxiv:2210.02124",
@@ -12815,7 +12855,8 @@
       "fields": {
         "formula": {
           "raw_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
-          "text": "$\\text {Bi}_{2}\\text {Sr}_{2}\\text {CuCa}_{2}\\text {O}_{8+\\delta }$"
+          "text": "$\\mathrm{Bi}_{2}\\mathrm{Sr}_{2}\\mathrm{CuCa}_{2}\\mathrm{O}_{8+\\delta}$",
+          "note": "Source stoichiometry requires review: the original formula reports CuCa2; its Cu/Ca subscripts need confirmation."
         },
         "composition:0": {
           "raw_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
@@ -12831,7 +12872,16 @@
         }
       ],
       "font_mappings": [],
-      "reviewed_sources": []
+      "reviewed_sources": [
+        {
+          "locator": "archive_member:template.tex",
+          "block_sha256": "de87d4f9e02776c1309755de287311db38e077faa6fffe082a647a8fef3cac63",
+          "source_sha256": "f090df2847432f848b61baf81602543e69cd2cf137509f87ef6809e05fb3dc15",
+          "verification": "The retained \\biscco definition and original abstract both literally report Bi2Sr2CuCa2O8+delta. Preserve that source expression; the Cu/Ca stoichiometry is questionable and is not silently swapped.",
+          "reviewer_kind": "model",
+          "independent_domain_review": false
+        }
+      ]
     },
     "f34b5941-041d-5f7f-b40f-ca3d4e265655": {
       "paper_id": "arxiv:2210.02124",
@@ -12843,7 +12893,8 @@
       "fields": {
         "formula": {
           "raw_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
-          "text": "$\\text {Bi}_{2}\\text {Sr}_{2}\\text {CuCa}_{2}\\text {O}_{8+\\delta }$"
+          "text": "$\\mathrm{Bi}_{2}\\mathrm{Sr}_{2}\\mathrm{CuCa}_{2}\\mathrm{O}_{8+\\delta}$",
+          "note": "Source stoichiometry requires review: the original formula reports CuCa2; its Cu/Ca subscripts need confirmation."
         },
         "composition:0": {
           "raw_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
@@ -12859,7 +12910,16 @@
         }
       ],
       "font_mappings": [],
-      "reviewed_sources": []
+      "reviewed_sources": [
+        {
+          "locator": "archive_member:template.tex",
+          "block_sha256": "de87d4f9e02776c1309755de287311db38e077faa6fffe082a647a8fef3cac63",
+          "source_sha256": "f090df2847432f848b61baf81602543e69cd2cf137509f87ef6809e05fb3dc15",
+          "verification": "The retained \\biscco definition and original abstract both literally report Bi2Sr2CuCa2O8+delta. Preserve that source expression; the Cu/Ca stoichiometry is questionable and is not silently swapped.",
+          "reviewer_kind": "model",
+          "independent_domain_review": false
+        }
+      ]
     },
     "fd11f6d5-bc5a-5273-8a6f-c0d0fa200c99": {
       "paper_id": "arxiv:2210.02124",
@@ -12871,7 +12931,8 @@
       "fields": {
         "formula": {
           "raw_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
-          "text": "$\\text {Bi}_{2}\\text {Sr}_{2}\\text {CuCa}_{2}\\text {O}_{8+\\delta }$"
+          "text": "$\\mathrm{Bi}_{2}\\mathrm{Sr}_{2}\\mathrm{CuCa}_{2}\\mathrm{O}_{8+\\delta}$",
+          "note": "Source stoichiometry requires review: the original formula reports CuCa2; its Cu/Ca subscripts need confirmation."
         },
         "composition:0": {
           "raw_sha256": "b757e60ced7b6086951fc9d24b3fd8c49737008a872be57a9814b2824dd58e48",
@@ -12887,7 +12948,16 @@
         }
       ],
       "font_mappings": [],
-      "reviewed_sources": []
+      "reviewed_sources": [
+        {
+          "locator": "archive_member:template.tex",
+          "block_sha256": "de87d4f9e02776c1309755de287311db38e077faa6fffe082a647a8fef3cac63",
+          "source_sha256": "f090df2847432f848b61baf81602543e69cd2cf137509f87ef6809e05fb3dc15",
+          "verification": "The retained \\biscco definition and original abstract both literally report Bi2Sr2CuCa2O8+delta. Preserve that source expression; the Cu/Ca stoichiometry is questionable and is not silently swapped.",
+          "reviewer_kind": "model",
+          "independent_domain_review": false
+        }
+      ]
     },
     "57a06854-7bb3-5712-8261-a8a283debe26": {
       "paper_id": "arxiv:2210.11688",
