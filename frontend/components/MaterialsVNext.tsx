@@ -7,6 +7,7 @@ import { FormulaDisplay } from "@/components/FormulaDisplay";
 import { renderSourceNotation, sourceNotationLabel } from "@/lib/source-notation";
 import { LatexText } from "@/components/LatexText";
 import { materialFamilies } from "@/lib/material-families";
+import { tcDisplayExclusion } from "@/lib/tc-display-policy";
 
 const reported = (text: string | null) => text && !["unresolved", "unspecified", "unknown"].includes(text);
 
@@ -20,11 +21,12 @@ function ReportedFormula({ formula }: { formula: string }) {
 }
 
 export function MaterialsVNextResults({ data }: { data: AdmittedTcPage }) {
-  if (!data.items.length) return <p className="materials-empty" role="status">No reported results match these filters.</p>;
+  const visibleItems = data.items.filter(row => !tcDisplayExclusion(row));
+  if (!visibleItems.length) return <p className="materials-empty" role="status">No reported results match these filters.</p>;
   return <div className="materials-table-scroll" role="region" aria-label="Reported superconducting transition results" tabIndex={0}>
     <table className="materials-table materials-vnext-table">
       <thead><tr><th scope="col">Material &amp; sample</th><th scope="col">Tc</th><th scope="col">Criterion &amp; method</th><th scope="col">Measurement conditions</th><th scope="col">Source &amp; review</th></tr></thead>
-      <tbody>{data.items.map(source => { const row = materialDisplay(source); return <tr key={row.id}>
+      <tbody>{visibleItems.map(source => { const row = materialDisplay(source); return <tr key={row.id}>
         <td><Link className="site-text-link" href={`/materials/${encodeURIComponent(row.material_id)}`}><strong><ReportedFormula formula={row.formula} /></strong></Link>
           <p className="materials-vnext-family">{materialFamilies[row.family ?? "unclassified"] ?? "Unclassified"}</p>
           {row.display?.formula_note && <p className="materials-vnext-secondary"><LatexText>{row.display.formula_note}</LatexText></p>}
@@ -86,7 +88,7 @@ export async function MaterialsVNext({ searchParams, materialId }: { searchParam
       <label className="materials-field"><span>Tc criterion</span><select name="criterion" defaultValue={criterion}><option value="">All criteria</option>{Object.entries(tcCriteria).map(([value, label]) => <option key={value} value={value}>{label}</option>)}</select></label>
       <div className="materials-filter-actions"><button className="btn-primary" type="submit">Apply filters</button><Link className="materials-clear" href={route}>Clear</Link></div>
     </form><details className="materials-family-guide"><summary>About material families</summary><p>Families group reported compositions and established material hosts for browsing. They do not determine pairing mechanisms, crystal structures, or sample stoichiometry. Unresolved notation is marked Unclassified.</p></details></section>
-    {data ? <><p className="materials-vnext-note"><strong>{data.total.toLocaleString("en-US")}</strong> reported {data.total === 1 ? "result" : "results"} from <strong>{data.paper_count.toLocaleString("en-US")}</strong> {data.paper_count === 1 ? "paper" : "papers"} · {data.material_count.toLocaleString("en-US")} material {data.material_count === 1 ? "entry" : "entries"}, counted separately by paper. Each row retains its own sample, criterion and conditions.</p>
+    {data ? <><p className="materials-vnext-note"><strong>{data.total.toLocaleString("en-US")}</strong> reported {data.total === 1 ? "result" : "results"} from <strong>{data.paper_count.toLocaleString("en-US")}</strong> {data.paper_count === 1 ? "paper" : "papers"} · {data.material_count.toLocaleString("en-US")} material {data.material_count === 1 ? "entry" : "entries"}, counted separately by paper. Public display: Tc ≤ 300 K. Each row retains its own sample, criterion and conditions.</p>
       {totalPages > 0 && page >= totalPages ? <p className="materials-empty">This page is outside the available results.</p> : <MaterialsVNextResults data={data} />}
       {totalPages > 0 && <nav className="materials-vnext-pagination" aria-label="Results pagination">{page >= totalPages ? <Link href={href(0)}>Return to first page</Link> : <>{page > 0 && <Link href={href(page - 1)}>Previous</Link>}<span aria-label={`Page ${page + 1} of ${totalPages}`}>Page {(page + 1).toLocaleString("en-US")} / {totalPages.toLocaleString("en-US")}</span>{data.offset + data.items.length < data.total && <Link href={href(page + 1)}>Next</Link>}</>}</nav>}
     </> : <p role="alert" className="materials-error">{invalid ? "Invalid filters. Choose a supported family, pressure and criterion, or clear the filters." : "Reported results could not be loaded. Reload the page to try again."}</p>}

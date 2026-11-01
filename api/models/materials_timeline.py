@@ -1,7 +1,8 @@
 """Current source assertions, with explicit paper-date precision."""
 from typing import Literal
 
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
+from models.materials_display_policy import TcDisplayPolicy
 
 
 class MaterialsTimelinePoint(BaseModel):
@@ -24,6 +25,7 @@ class MaterialsTimelinePoint(BaseModel):
 
 
 class MaterialsTimeline(BaseModel):
+    display_policy: TcDisplayPolicy = Field(default_factory=TcDisplayPolicy)
     dataset: Literal['materials-production90/1'] = 'materials-production90/1'
     date_policy: Literal['paper-submission-or-identifier-month/1'] = 'paper-submission-or-identifier-month/1'
     points: list[MaterialsTimelinePoint]

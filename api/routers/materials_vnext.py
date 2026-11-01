@@ -12,6 +12,7 @@ from models.materials_vnext import AdmittedTcPage
 from models.materials_timeline import MaterialsTimeline
 from services.materials_vnext_read import admitted_tc_page
 from services.materials_family import FAMILIES
+from routers.auth import current_user_from_jwt
 from services.materials_dataset_download import (
     DownloadUnavailable, FILES, assert_current, canonical_download_state,
     public_snapshot, read_csv, read_snapshot,
@@ -62,14 +63,15 @@ async def current_download(db, version=None):
         raise HTTPException(error.status, str(error), headers={'Cache-Control': 'no-store'}) from error
 
 
-@router.get('/materials/dataset')
+@router.get('/materials/dataset', dependencies=[Depends(current_user_from_jwt)])
 async def material_dataset(response: Response, db: AsyncSession = Depends(get_db)):
     _, snapshot = await current_download(db)
-    response.headers['Cache-Control'] = 'no-store'
+    response.headers['Cache-Control'] = 'private, no-store'
+    response.headers['Vary'] = 'Cookie, Authorization'
     return public_snapshot(snapshot)
 
 
-@router.get('/materials/dataset/{version}/{kind}')
+@router.get('/materials/dataset/{version}/{kind}', dependencies=[Depends(current_user_from_jwt)])
 async def material_dataset_file(version: str, kind: Literal['results', 'evidence', 'training'],
     db: AsyncSession = Depends(get_db)):
     folder, snapshot = await current_download(db, version)
@@ -77,6 +79,6 @@ async def material_dataset_file(version: str, kind: Literal['results', 'evidence
         content = await run_in_threadpool(read_csv, folder, snapshot, kind)
     except DownloadUnavailable as error:
         raise HTTPException(error.status, str(error), headers={'Cache-Control': 'no-store'}) from error
-    return Response(content, media_type='text/csv', headers={'Cache-Control': 'no-store',
+    return Response(content, media_type='text/csv', headers={'Cache-Control': 'private, no-store', 'Vary': 'Cookie, Authorization',
         'Content-Disposition': f'attachment; filename="{FILES[kind]}"',
         'X-Dataset-Version': snapshot['version']})

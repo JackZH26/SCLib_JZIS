@@ -1,3 +1,5 @@
+import type { TcDisplayPolicy } from "./tc-display-policy";
+
 export type NerTimelinePoint = {
   id: string; material_id: string; paper_id: string; formula: string; family: string;
   date: string; date_basis: "paper_submission" | "arxiv_identifier_month"; date_precision: "day" | "month";
@@ -7,6 +9,7 @@ export type NerTimelinePoint = {
   pressure_regime: "explicit_ambient" | "nonambient" | "unknown";
 };
 export type NerTimelineData = {
+  display_policy?: TcDisplayPolicy;
   dataset: "materials-production90/1"; points: NerTimelinePoint[];
   total_results: number; total_materials: number; total_papers: number;
   plotted_results: number; omitted_without_date: number; omitted_invalid_quantity: number;

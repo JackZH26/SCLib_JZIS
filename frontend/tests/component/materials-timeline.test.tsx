@@ -73,6 +73,19 @@ describe("new NER Tc timeline",()=>{
     expect(screen.getByRole("combobox",{name:"Year"})).toHaveValue("2019");
     expect(screen.queryByRole("dialog")).not.toBeInTheDocument();
   });
+  it("excludes above-ceiling assertions from selection and offers no bypass range",()=>{
+    render(<MaterialsTcTimeline initialData={response([
+      point({id:"above",formula:"Excluded",value_kelvin:850}),point(),
+      point({id:"interval",formula:"Excluded range",value_kelvin:null,value_relation:"interval",value_lower_kelvin:290,value_upper_kelvin:310}),
+    ])}/>);
+    expect(screen.queryByRole("option",{name:"Full range"})).not.toBeInTheDocument();
+    fireEvent.click(screen.getByRole("button",{name:"Read a point"}));
+    expect(screen.getByRole("dialog")).toHaveTextContent("210 K");
+    fireEvent.keyDown(screen.getByRole("img",{name:/Two-dimensional/}),{key:"ArrowRight"});
+    expect(screen.getByRole("dialog")).toHaveTextContent("210 K");
+    expect(screen.queryByText(/Excluded/)).not.toBeInTheDocument();
+    expect(screen.getByText("1 displayed")).toBeVisible();
+  });
   it("offers recovery after a data failure, without substituting legacy results",async()=>{
     api.read.mockRejectedValueOnce(new Error("offline")).mockResolvedValueOnce(response());
     render(<MaterialsTcTimeline/>);

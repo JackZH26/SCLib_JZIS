@@ -1,38 +1,45 @@
 import type { Metadata } from "next";
-import Link from "@/components/AppLink";
 import { DiscoveryNav } from "@/components/DiscoveryNav";
-import { LegacyDiscoveryLinks } from "@/components/LegacyDiscoveryLinks";
+import { DiscoveryDisclosure } from "@/components/DiscoveryDisclosure";
+import { DiscoveryCandidatesContent } from "@/components/discovery/DiscoveryCandidatesContent";
+import { DataMethodologyContent } from "@/components/discovery/DataMethodologyContent";
+import { ApiReferenceContent } from "@/components/discovery/ApiReferenceContent";
 import { absoluteUrl } from "@/lib/seo";
+import "./discovery-stream.css";
 
+export const dynamic = "force-dynamic";
 export const metadata: Metadata = {
   title: "Discovery",
-  description: "Explore reported transition temperatures, candidate materials, data methodology and the SCLib API.",
+  description: "Browse candidate hypotheses, data methodology and the SCLib API in one place.",
   alternates: { canonical: absoluteUrl("/discovery") },
 };
-const modules = [
-  { number: "01", title: "TcTimeline", href: "/timeline", tag: "Reported transition temperatures",
-    description: "Explore reported Tc across time, material families and pressure conditions. Inspect individual results and their original sources." },
-  { number: "02", title: "Candidates", href: "/discovery/candidates", tag: "Hypotheses and research assessments",
-    description: "Review source-computed candidates, proposed modifications and research priorities. Keep predictions separate from experimental observations." },
-  { number: "03", title: "Data & methodology", href: "/docs/data", tag: "Scope, provenance and limitations",
-    description: "Understand data coverage, source attribution, measurement conditions and the boundaries of automated extraction." },
-  { number: "04", title: "API reference", href: "/docs/api", tag: "Programmatic access",
-    description: "Query literature and material records. Read request parameters, response formats, versioning and access conditions." },
-];
-export default function DiscoveryPage() {
-  return <main className="discovery-overview">
-    <LegacyDiscoveryLinks /><DiscoveryNav />
-    <header className="discovery-intro"><p className="section-kicker">Superconductivity research</p>
+
+export default function DiscoveryPage({ searchParams = Promise.resolve({}) }: {
+  searchParams?: Promise<{ preview?: string }>;
+}) {
+  return <main className="discovery-stream">
+    <DiscoveryNav />
+    <header id="overview" className="discovery-intro"><p className="section-kicker">Superconductivity research</p>
       <h1 className="page-title">Discovery</h1>
-      <p className="page-description">Tools for exploring reported properties,<br className="hidden sm:block" /> evaluating hypotheses, and accessing research data.</p>
+      <p className="page-description">Candidate hypotheses, their evidence, and access to research data.</p>
     </header>
-    <div className="discovery-module-grid">{modules.map(module => <Link href={module.href} key={module.href} className="discovery-module">
-      <div className="module-index"><span>{module.number}</span><span aria-hidden>↗</span></div>
-      <div><p className="section-kicker">{module.tag}</p><h2>{module.title}</h2><p>{module.description}</p></div>
-    </Link>)}</div>
-    <section className="discovery-method-note"><h2>Interpret results in context.</h2>
-      <p>Reported values depend on the sample, measurement criterion and conditions. Candidate assessments guide research; they are not probabilities of superconductivity or confirmed discoveries.</p>
-      <Link href="/scwiki" className="site-text-link">Read the superconductivity reference →</Link>
+    <section id="candidates" className="discovery-segment" aria-labelledby="candidates-heading">
+      <header className="discovery-segment-heading"><h2 id="candidates-heading">Candidates</h2>
+        <p>Source-computed hypotheses and research assessments. These are not probabilities of superconductivity or confirmed discoveries.</p>
+      </header>
+      <DiscoveryCandidatesContent searchParams={searchParams} />
+    </section>
+    <section id="data-methodology" className="discovery-segment" aria-labelledby="data-methodology-heading">
+      <header className="discovery-segment-heading"><h2 id="data-methodology-heading">Data &amp; methodology</h2>
+        <p>Coverage, source attribution, display policies and scientific limitations.</p>
+      </header>
+      <DiscoveryDisclosure id="discovery-data-details" summary="Read data and methodology"><DataMethodologyContent embedded /></DiscoveryDisclosure>
+    </section>
+    <section id="api-reference" className="discovery-segment" aria-labelledby="api-reference-heading">
+      <header className="discovery-segment-heading"><h2 id="api-reference-heading">API reference</h2>
+        <p>Authentication, endpoints, request formats and response examples.</p>
+      </header>
+      <DiscoveryDisclosure id="discovery-api-details" summary="Read API reference"><ApiReferenceContent embedded /></DiscoveryDisclosure>
     </section>
   </main>;
 }

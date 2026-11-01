@@ -27,6 +27,16 @@ export async function restrictToLocalOrigin(context: BrowserContext, origin: str
           "x-sclib-test-response": "synthetic-timeline-unavailable" },
         body: JSON.stringify({ detail: "Timeline unavailable in the offline public-page test" }) });
     }
+    else if (["https://api.jzis.org/sclib/v1/discovery/rps/releases",
+      "https://api.jzis.org/sclib/v1/discovery/scientific"].includes(url.href)
+      && route.request().method() === "GET") {
+      // The unified Discovery page mounts the existing public research panels.
+      // Keep their unavailable state explicit and never contact production.
+      await route.fulfill({ status: 503, contentType: "application/json",
+        headers: { "access-control-allow-origin": origin, "access-control-allow-credentials": "true",
+          "cache-control": "no-store", "x-sclib-test-response": "synthetic-discovery-unavailable" },
+        body: JSON.stringify({ detail: "Research API unavailable in the offline public-page test" }) });
+    }
     else {
       blocked.push(url.href);
       await route.abort("blockedbyclient");

@@ -11,7 +11,7 @@ test("classification filter UI explicitly separates source reports, qualified fa
 });
 
 test("public API documents material summary classification scope and nonindependent count basis", async () => {
-  const docs = await readFile("app/docs/api/page.tsx", "utf8");
+  const docs = await readFile("components/discovery/ApiReferenceContent.tsx", "utf8");
   for (const term of ["material_reported_summary_not_joint_state", "has_competing_order", "material-semantics/1.0.0", "support.count_basis", "support.legacy_total_papers", "parent rollups", "independent works or replications"]) assert.ok(docs.includes(term), term);
   assert.match(docs, /Unknown or missing values never mean false/);
 });

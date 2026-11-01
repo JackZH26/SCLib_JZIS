@@ -1,3 +1,5 @@
+import type { TcDisplayPolicy } from "./tc-display-policy";
+
 export type AdmittedTcResult = {
   id: string; material_id: string; formula: string; family?: string;
   display?: Record<string, string>;
@@ -17,6 +19,7 @@ export type AdmittedTcResult = {
 };
 
 export type AdmittedTcPage = {
+  display_policy?: TcDisplayPolicy;
   items: AdmittedTcResult[]; total: number; material_count: number; paper_count: number;
   limit: number; offset: number; dataset: string; count_scope: string;
 };

@@ -18,9 +18,8 @@ export const metadata: Metadata = {
 };
 
 const researchRoutes = [
-  { href: "/materials", title: "Materials", description: "Compare reported properties, pressure conditions and the literature behind each record.", detail: "Properties & source records" },
-  { href: "/timeline", title: "Reported Tc Timeline", description: "Explore transition temperatures over time and return to the original reports.", detail: "Reports through time" },
-  { href: "/discovery", title: "Discovery", description: "Review research priorities and historical candidate leads with their evidence and limitations.", detail: "Priorities & candidate leads" },
+  { href: "/materials", title: "Materials", description: "Reported properties, measurement conditions and original sources." },
+  { href: "/discovery", title: "Discovery", description: "Candidate hypotheses, research evidence and data access." },
 ];
 const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
 
@@ -71,17 +70,14 @@ export default async function Landing() {
 
       <section aria-labelledby="explore-heading" className="mt-14 sm:mt-20">
         <h2 id="explore-heading" className="text-3xl font-semibold tracking-tight">Explore the research</h2>
-        <div className="mt-6 grid gap-3 lg:grid-cols-[1.15fr_1fr]">
+        <div className="mt-5 grid gap-3 sm:grid-cols-2">
           {researchRoutes.map((item, index) => (
-            <Link key={item.href} href={item.href} className={`research-entry group flex flex-col justify-between rounded-xl border border-sage-border p-6 sm:p-7 ${index === 0 ? "bg-sage-surface lg:row-span-2 lg:min-h-[310px]" : "bg-white"}`}>
+            <Link key={item.href} href={item.href} className={`research-entry group rounded-xl border border-sage-border px-5 py-4 ${index === 0 ? "bg-sage-surface" : "bg-white"}`}>
               <div className="flex items-start justify-between gap-5">
-                <h3 className={`${index === 0 ? "text-2xl sm:text-3xl" : "text-xl"} font-semibold group-hover:text-accent-deep`}>{item.title}</h3>
-                <span aria-hidden="true" className="entry-arrow shrink-0 text-2xl text-accent">↗</span>
+                <h3 className="text-xl font-semibold group-hover:text-accent-deep">{item.title}</h3>
+                <span aria-hidden="true" className="entry-arrow shrink-0 text-xl text-accent">↗</span>
               </div>
-              <div className={index === 0 ? "mt-8" : "mt-3"}>
-                {index === 0 && <p className="mb-2 text-sm font-semibold text-accent-deep">{item.detail}</p>}
-                <p className="max-w-md text-sm leading-relaxed text-sage-muted">{item.description}</p>
-              </div>
+              <p className="mt-2 text-sm leading-relaxed text-sage-muted">{item.description}</p>
             </Link>
           ))}
         </div>

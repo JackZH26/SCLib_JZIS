@@ -2,10 +2,10 @@ import { act, cleanup, fireEvent, render, screen } from "@testing-library/react"
 import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import { MaterialsVNext, MaterialsVNextResults } from "@/components/MaterialsVNext";
 import MaterialDetailPage, { generateMetadata } from "@/app/materials/[id]/page";
-import { getMaterial, getMaterialsDataset, listAdmittedTcResults, PUBLIC_API_BASE } from "@/lib/api";
+import { getMaterial, getMaterialsDataset, listAdmittedTcResults, me, PUBLIC_API_BASE } from "@/lib/api";
 import { admittedTcLabel, type AdmittedTcPage, type AdmittedTcResult } from "@/lib/materials-vnext";
 
-vi.mock("@/lib/api", async importOriginal => ({ ...await importOriginal<typeof import("@/lib/api")>(), listAdmittedTcResults: vi.fn(), getMaterial: vi.fn(), getMaterialsDataset: vi.fn() }));
+vi.mock("@/lib/api", async importOriginal => ({ ...await importOriginal<typeof import("@/lib/api")>(), listAdmittedTcResults: vi.fn(), getMaterial: vi.fn(), getMaterialsDataset: vi.fn(), me: vi.fn() }));
 const result = (overrides: Partial<AdmittedTcResult> = {}): AdmittedTcResult => ({
   id: "claim-1", material_id: "source:sample", formula: "FeSe", compositions: [{ formula: "FeSe", basis: "nominal" }],
   sample_label: "S1", sample_form: "thin film", substrate: "SrTiO3", value_kelvin: 23,
@@ -18,7 +18,7 @@ const result = (overrides: Partial<AdmittedTcResult> = {}): AdmittedTcResult => 
   ...overrides,
 });
 const page = (items = [result()]): AdmittedTcPage => ({ items, total: items.length, paper_count: 1, material_count: 1, limit: 50, offset: 0, dataset: "materials-production90/1", count_scope: "Matching reported results" });
-beforeEach(() => { vi.resetAllMocks(); vi.mocked(getMaterialsDataset).mockRejectedValue(new Error("not prepared")); });
+beforeEach(() => { vi.resetAllMocks(); vi.mocked(me).mockResolvedValue({ id: "owned-member" } as Awaited<ReturnType<typeof me>>); vi.mocked(getMaterialsDataset).mockRejectedValue(new Error("not prepared")); });
 afterEach(() => { cleanup(); vi.unstubAllEnvs(); });
 
 it.each([
@@ -218,7 +218,7 @@ it("keeps result browsing available while a stale download snapshot is being ref
   vi.mocked(listAdmittedTcResults).mockResolvedValue(page());
   await act(async () => { render(await MaterialsVNext({ searchParams: {} })); });
   fireEvent.click(screen.getByRole("button", { name: "Show dataset downloads" }));
-  expect(await screen.findByText("Downloads will be available after the latest dataset update is prepared.")).toBeInTheDocument();
+  expect(await screen.findByRole("alert")).toHaveTextContent("Dataset downloads could not be loaded");
   expect(screen.queryByRole("link", { name: "Training CSV" })).not.toBeInTheDocument();
   expect(screen.getByRole("link", { name: "FeSe" })).toBeInTheDocument();
 });
