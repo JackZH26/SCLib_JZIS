@@ -1,0 +1,44 @@
+.ner-timeline { min-width:0; color:var(--text); }
+.ner-timeline-toolbar,.ner-timeline-foot { display:flex; justify-content:space-between; align-items:center; gap:1rem; flex-wrap:wrap; }
+.ner-timeline-toolbar { margin:1.25rem 0 1rem; }
+.ner-timeline-toolbar p { font-size:.85rem; color:var(--text-secondary); }
+.ner-timeline-controls { display:flex; gap:.8rem; flex-wrap:wrap; }
+.ner-timeline-controls label { display:flex; gap:.35rem; flex-direction:column; font-size:.75rem; color:var(--text-secondary); }
+.ner-timeline-controls select { border:1px solid var(--border); background:var(--card); border-radius:7px; padding:.4rem .55rem; color:var(--text); font:inherit; min-height:36px; }
+.ner-timeline-stage { position:relative; min-width:0; background:var(--card); border-radius:10px; }
+.ner-timeline-stage canvas { display:block; width:100%; touch-action:pan-y; border-radius:10px; }
+.ner-timeline-axes { position:absolute; top:0; left:0; pointer-events:none; max-width:100%; }
+.ner-timeline-axes text { fill:var(--text-secondary); font-size:11px; font-family:inherit; }
+.ner-timeline-grid { stroke:var(--border); stroke-width:.65; }
+.ner-timeline-axis { stroke:var(--text-tertiary); stroke-width:.7; }
+.ner-timeline-tip { position:absolute; z-index:5; width:244px; padding:.8rem .9rem; background:var(--card); border:1px solid var(--border); border-top:3px solid; border-radius:8px; font-size:.75rem; }
+.ner-timeline-tip-head { display:flex; gap:.55rem; align-items:center; justify-content:space-between; color:var(--text-secondary); font-size:.7rem; margin-bottom:.6rem; }
+.ner-timeline-tip-head button { font-size:1.3rem; line-height:1; padding:.2rem; }
+.ner-timeline-tip-main { display:flex; align-items:baseline; justify-content:space-between; gap:.8rem; }
+.ner-timeline-tip-main strong { font-size:.95rem; overflow-wrap:anywhere; min-width:0; }
+.ner-timeline-tip-main>span { font-size:1.15rem; white-space:nowrap; }
+.ner-timeline-tip p { margin-top:.45rem; color:var(--text-secondary); overflow-wrap:anywhere; }
+.ner-timeline-tip .katex { font-size:1em; }
+.ner-timeline-material-link { display:flex; justify-content:space-between; margin-top:.7rem; padding-top:.6rem; border-top:1px solid var(--border); font-weight:600; }
+.ner-timeline-overlaps { display:flex; gap:.5rem; align-items:center; margin-top:.5rem; color:var(--text-secondary); font-size:.7rem; }
+.ner-timeline-overlaps button { font-size:1.3rem; min-width:24px; }
+.ner-timeline-foot { margin:.7rem 0 1rem; font-size:.75rem; color:var(--text-secondary); }
+.ner-timeline-legend { border-top:1px solid var(--border); border-bottom:1px solid var(--border); padding:.85rem 0; }
+.ner-timeline-legend summary { cursor:pointer; font-size:.85rem; font-weight:600; }
+.ner-timeline-legend summary>span { float:right; color:var(--text-secondary); font-size:.75rem; font-weight:400; }
+.ner-timeline-family-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(145px,1fr)); gap:.6rem 1rem; margin-top:1rem; }
+.ner-timeline-family-grid button { display:flex; align-items:center; gap:.5rem; text-align:left; font-size:.75rem; min-height:28px; }
+.ner-timeline-family-grid button[aria-pressed=false] { opacity:.35; }
+.ner-timeline-family-mark { display:inline-block; flex:none; width:16px; text-align:center; font-size:1rem; }
+.ner-timeline-note { color:var(--text-secondary); font-size:.75rem; margin-top:1rem; max-width:85ch; }
+.ner-timeline-loading { min-height:350px; display:flex; flex-direction:column; gap:.7rem; align-items:center; justify-content:center; color:var(--text-secondary); font-size:.9rem; }
+@media(max-width:600px) {
+  .ner-timeline-toolbar { align-items:flex-start; }
+  .ner-timeline-controls { width:100%; gap:.65rem; }
+  .ner-timeline-controls select { min-height:40px; font-size:16px; max-width:145px; }
+  .ner-timeline-tip { position:relative; width:100%; top:auto!important; left:auto!important; margin-top:.6rem; }
+  .ner-timeline-family-grid { grid-template-columns:repeat(2,minmax(0,1fr)); gap:.35rem .8rem; }
+  .ner-timeline-family-grid button { min-height:44px; }
+  .ner-timeline-tip-head button,.ner-timeline-overlaps button { min-width:36px; min-height:36px; }
+  .ner-timeline-foot { align-items:flex-start; }
+}

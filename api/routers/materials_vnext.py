@@ -1,5 +1,6 @@
 """Canonical Materials read path, enabled locally until the corpus release."""
 from typing import Literal
+from enum import IntEnum
 
 from fastapi import APIRouter, Depends, HTTPException, Query, Response
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -8,6 +9,7 @@ from starlette.concurrency import run_in_threadpool
 from config import get_settings
 from models import get_db
 from models.materials_vnext import AdmittedTcPage
+from models.materials_timeline import MaterialsTimeline
 from services.materials_vnext_read import admitted_tc_page
 from services.materials_family import FAMILIES
 from services.materials_dataset_download import (
@@ -16,6 +18,22 @@ from services.materials_dataset_download import (
 )
 
 router=APIRouter(tags=['materials'])
+
+
+class MaterialsTimelineBudget(IntEnum):
+    COMPACT = 2000
+    MEDIUM = 5000
+    FULL = 20000
+
+
+@router.get('/materials/timeline', response_model=MaterialsTimeline)
+async def material_timeline(response: Response, db: AsyncSession = Depends(get_db),
+    max_points: MaterialsTimelineBudget = MaterialsTimelineBudget.FULL):
+    from services.materials_timeline import materials_timeline
+    if not get_settings().materials_vnext_enabled:
+        raise HTTPException(404, 'Materials dataset unavailable')
+    response.headers['Cache-Control'] = 'private, no-store'
+    return await materials_timeline(db, max_points=max_points)
 
 
 @router.get('/materials/results',response_model=AdmittedTcPage)

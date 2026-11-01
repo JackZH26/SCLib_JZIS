@@ -1,17 +1,17 @@
 import { expect, test } from "./public-site-fixture";
 
-test("an unavailable timeline keeps filters and offers a document retry without crashing", async ({ page }) => {
-  // The owned production test server uses an unreachable inert API, never the live service.
-  const query = "family=iron_based&experimental_only=true&only_aps=true&display=expanded";
-  await page.goto(`/timeline?${query}`);
-  await expect(page.getByRole("heading", { name: "Reported Tc Timeline", exact: true })).toBeVisible();
-  await expect(page.getByRole("main").getByRole("alert")).toContainText("Timeline data could not be loaded completely");
-  await expect(page.getByText("No eligible reported Tc results match this filter.")).toHaveCount(0);
-  const retry = page.getByRole("link", { name: "Retry timeline", exact: true });
-  await expect(retry).toHaveAttribute("href", `/timeline?${query}`);
+test("an unavailable NER timeline offers recovery without legacy substitution or a page crash", async ({ page }) => {
+  await page.goto("/timeline");
+  await expect(page.getByRole("heading", { name: "TcTimeline", exact: true })).toBeVisible();
+  await expect(page.getByRole("main").getByRole("alert")).toContainText("TcTimeline could not be loaded");
+  await page.getByRole("button", { name: "Open navigation", exact: true }).click();
+  await expect(page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link", { name: "TcTimeline", exact: true })).toHaveAttribute("aria-current", "page");
+  await expect(page.getByRole("navigation", { name: "Mobile navigation" }).getByRole("link", { name: "Discovery", exact: true })).not.toHaveAttribute("aria-current", "page");
+  await page.getByRole("button", { name: "Close navigation", exact: true }).click();
+  const retry=page.getByRole("button",{name:"Try again",exact:true});
+  await expect(retry).toBeVisible();
   await retry.click();
-  await expect(page).toHaveURL(new RegExp("/timeline\\?" + query + "$"));
   await expect(page.getByRole("main").getByRole("alert")).toBeVisible();
-  await expect(page.getByRole("link", { name: "Up to 10,000 results" })).toHaveAttribute("aria-pressed", "true");
+  await expect(page.getByRole("navigation",{name:"Discovery"})).toHaveCount(0);
   await expect(page.getByText(/Application error:/)).toHaveCount(0);
 });

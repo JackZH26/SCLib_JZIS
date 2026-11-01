@@ -20,7 +20,7 @@ import { onAuthChange } from "@/lib/auth-session";
 import { me, type User, ApiError } from "@/lib/api";
 
 function activeNav(pathname: string, href: string) {
-  if (href === "/discovery") return pathname.startsWith("/discovery") || pathname === "/timeline" || pathname === "/docs/data" || pathname === "/docs/api";
+  if (href === "/discovery") return pathname.startsWith("/discovery") || pathname === "/docs/data" || pathname === "/docs/api";
   return href === "/" ? pathname === "/" : pathname === href || pathname.startsWith(href + "/");
 }
 
@@ -28,6 +28,7 @@ const NAV = [
   { href: "/", label: "Home" },
   { href: "/scwiki", label: "SCWiki" },
   { href: "/materials", label: "Materials" },
+  { href: "/timeline", label: "TcTimeline" },
   { href: "/discovery", label: "Discovery" },
   { href: "/about", label: "About JZIS" },
 ];

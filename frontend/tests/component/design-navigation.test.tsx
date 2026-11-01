@@ -7,10 +7,10 @@ import { Brand } from "@/components/Brand";
 vi.mock("next/navigation", () => ({ usePathname: () => "/timeline" }));
 
 describe("SCLib research navigation", () => {
-  it("groups all four research modules and marks the selected tool", () => {
+  it("keeps Discovery tools separate from the independent Timeline", () => {
     render(<DiscoveryNav />);
     expect(screen.getByRole("navigation", { name: "Discovery" })).toBeVisible();
-    expect(screen.getByRole("link", { name: "TcTimeline" })).toHaveAttribute("aria-current", "page");
+    expect(screen.queryByRole("link", { name: "TcTimeline" })).not.toBeInTheDocument();
     expect(screen.getByRole("link", { name: "Candidates" })).toHaveAttribute("href", "/discovery/candidates");
     expect(screen.getByRole("link", { name: "Data & methodology" })).toHaveAttribute("href", "/docs/data");
     expect(screen.getByRole("link", { name: "API reference" })).toHaveAttribute("href", "/docs/api");

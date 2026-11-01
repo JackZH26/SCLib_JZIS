@@ -25,6 +25,17 @@ const SERVER_BASE = process.env.API_BASE_SERVER ?? PUBLIC_API_BASE;
 export const API_BASE =
   typeof window === "undefined" ? SERVER_BASE : PUBLIC_API_BASE;
 
+export function getMaterialsTimeline(maxPoints: 2000 | 5000 | 20000 = 20000, signal?: AbortSignal) {
+  return request<import("./materials-timeline").NerTimelineData>(`/materials/timeline?max_points=${maxPoints}`, {
+    cache: "no-store", credentials: "omit", signal, responseByteLimit: 12 * 1024 * 1024,
+  }).then(data => {
+    if (!data || data.dataset !== "materials-production90/1" || !Array.isArray(data.points)) {
+      throw new ApiError(0, null, "Reported Tc data is incomplete. Please try again.");
+    }
+    return data;
+  });
+}
+
 export class ApiError extends Error {
   constructor(
     public status: number,

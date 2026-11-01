@@ -1,205 +1,23 @@
-import { DiscoveryNav } from "@/components/DiscoveryNav";
-/**
- * /timeline — Tc-vs-year Plotly scatter for the whole corpus or a
- * single family.  Server component does the fetch; the chart itself
- * is a client component (plotly touches `window`).
- *
- * Family slugs MUST match the strings written into Material.family
- * by the aggregator / classify_family() in nims.py. The previous
- * revision used "iron" as the slug while the DB stores "iron_based",
- * so the Iron-based filter button produced zero points. Fixed here.
- */
 import type { Metadata } from "next";
-import { getTimeline } from "@/lib/api";
-import { TcTimeline } from "@/components/TcTimeline";
-import Link from "@/components/AppLink";
-import { FAMILY_OPTIONS } from "@/lib/families";
+import { MaterialsTcTimeline } from "@/components/MaterialsTcTimeline";
 import { absoluteUrl } from "@/lib/seo";
 
 export const dynamic = "force-dynamic";
-
 export const metadata: Metadata = {
-  title: "Reported Tc Timeline",
-  description:
-    "Explore reported superconducting transition temperatures with result identity, source-date basis, provenance, and explicit display-sampling limits.",
+  title: "TcTimeline",
+  description: "Explore source-reported superconducting transition temperatures by paper submission date and material family.",
   alternates: { canonical: absoluteUrl("/timeline") },
   openGraph: { url: absoluteUrl("/timeline") },
 };
 
-const FAMILIES = [{ slug: "", label: "All" }, ...FAMILY_OPTIONS];
-
-function FilterToggleLink({
-  href,
-  active,
-  label,
-}: {
-  href: string;
-  active: boolean;
-  label: string;
-}) {
-  return (
-    <Link
-      href={href}
-      aria-pressed={active}
-      className={
-        "inline-flex items-center gap-2 rounded-md border px-3 py-1.5 " +
-        "text-sm transition-colors " +
-        (active
-          ? "border-[color:var(--accent)] bg-[color:var(--accent)] text-white hover:bg-[color:var(--accent-deep)]"
-          : "border-slate-300 bg-white text-slate-700 hover:bg-slate-100")
-      }
-    >
-      <span
-        aria-hidden
-        className={
-          "flex h-4 w-4 items-center justify-center rounded-sm border " +
-          (active
-            ? "border-white bg-white text-[color:var(--accent)]"
-            : "border-slate-400 bg-white text-transparent")
-        }
-      >
-        <svg
-          viewBox="0 0 16 16"
-          width="12"
-          height="12"
-          className={active ? "" : "invisible"}
-        >
-          <path
-            d="M3 8l3 3 7-7"
-            fill="none"
-            stroke="currentColor"
-            strokeWidth="2.5"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          />
-        </svg>
-      </span>
-      {label}
-    </Link>
-  );
-}
-
-export default async function TimelinePage({
-  searchParams,
-}: {
-  searchParams: Promise<{
-    family?: string;
-    experimental_only?: string;
-    only_aps?: string;
-    display?: string;
-  }>;
-}) {
-  const query = await searchParams;
-  const current = query.family ?? "";
-  // Booleans on URL: anything other than the literal string "true"
-  // is treated as off, so back-button / shared links don't end up in
-  // a half-checked state when query strings are sloppy.
-  const experimentalOnly = query.experimental_only === "true";
-  const onlyAps = query.only_aps === "true";
-  // Full-data acceptance produced a ~20 MB page at 10,000 points. Start with
-  // a bounded display sample; the backend still computes full coverage and
-  // unsampled extrema. Expanded rendering is an explicit user choice.
-  const expanded = query.display === "expanded";
-  const data = await getTimeline({
-    family: current || undefined,
-    experimentalOnly,
-    onlyAps,
-    maxPoints: expanded ? 10000 : 2000,
-    compact: true,
-  }).catch(() => null);
-
-  // Build hrefs that round-trip the *other* filter so toggling one
-  // never silently resets the others.
-  const buildHref = (
-    nextFamily: string,
-    nextExperimentalOnly: boolean,
-    nextOnlyAps: boolean,
-    nextExpanded = expanded,
-  ): string => {
-    const qs = new URLSearchParams();
-    if (nextFamily) qs.set("family", nextFamily);
-    if (nextExperimentalOnly) qs.set("experimental_only", "true");
-    if (nextOnlyAps) qs.set("only_aps", "true");
-    if (nextExpanded) qs.set("display", "expanded");
-    const s = qs.toString();
-    return s ? `/timeline?${s}` : "/timeline";
-  };
-
-  return (
-    <main className="space-y-6">
-      <DiscoveryNav />
-      <div>
-        <h1 className="text-3xl font-bold tracking-tight">Reported Tc Timeline</h1>
-        <p className="mt-1 text-sm text-slate-600">
-          Reported transition temperature versus year, with the date basis,
-          result origin, sample state, pressure, and source retained for each
-          result. Marker colours identify families; symbols identify origins.
-          This is neither a discovery-history chronology nor a world-record
-          leaderboard. Legacy reports are not independently confirmed results.
-        </p>
-        <p className="mt-2 text-xs text-amber-900">Reviewed-only mode is unavailable until accepted result-level reviews exist. “Observed only” selects a reported result origin, not experimental confirmation or scientific approval.</p>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-2">
-        {FAMILIES.map((f) => {
-          const active = f.slug === current;
-          return (
-            <Link
-              key={f.slug}
-              href={buildHref(f.slug, experimentalOnly, onlyAps)}
-              className={
-                active
-                  ? "rounded-md bg-slate-900 px-3 py-1.5 text-sm text-white"
-                  : "rounded-md border border-slate-300 bg-white px-3 py-1.5 text-sm hover:bg-slate-100"
-              }
-            >
-              {f.label}
-            </Link>
-          );
-        })}
-
-        {/*
-          Filter toggles. Clicking flips URL flags and
-          Next re-renders the server component with the filtered set
-          (the API drops excluded points before responding, so coverage
-          counts also shrink to match). Rendered as checkbox-shaped
-          Links so the filter row stays SSR-friendly with no client
-          state.
-        */}
-        <div className="ml-auto flex flex-wrap items-center gap-2">
-          <FilterToggleLink
-            href={buildHref(current, !experimentalOnly, onlyAps)}
-            active={experimentalOnly}
-            label="Observed only"
-          />
-          <FilterToggleLink
-            href={buildHref(current, experimentalOnly, !onlyAps)}
-            active={onlyAps}
-            label="APS sources only"
-          />
-        </div>
-      </div>
-
-      <div className="flex flex-wrap items-center gap-2 text-sm" aria-label="Timeline display size">
-        <span>Display sample:</span>
-        <FilterToggleLink href={buildHref(current, experimentalOnly, onlyAps, false)} active={!expanded} label="Up to 2,000 results" />
-        <FilterToggleLink href={buildHref(current, experimentalOnly, onlyAps, true)} active={expanded} label="Up to 10,000 results" />
-        <p className="w-full text-xs text-slate-600">The larger display takes longer to load. Coverage counts and reported record summaries use the full eligible selection in both views; sampling limits are shown below.</p>
-      </div>
-
-      {data == null ? (
-        <div role="alert" className="rounded-lg border border-red-200 bg-red-50 p-4 text-sm text-red-800">
-          <p>Timeline data could not be loaded completely. Please retry.</p>
-          <a className="mt-2 inline-block font-semibold underline underline-offset-4"
-            href={`${process.env.NEXT_PUBLIC_BASE_PATH || ""}${buildHref(current, experimentalOnly, onlyAps)}`}>
-            Retry timeline
-          </a>
-        </div>
-      ) : (
-        <>
-          <TcTimeline points={data.points} coverage={data.coverage} sampling={data.sampling} recordSummary={data.record_summary} />
-        </>
-      )}
-    </main>
-  );
+export default function TimelinePage() {
+  return <main className="space-y-6">
+    <header className="product-page-intro">
+      <h1 className="text-3xl font-bold tracking-tight">TcTimeline</h1>
+      <p className="mt-3 max-w-3xl text-sm text-sage-muted">Reported superconducting transitions through time. Colours and point shapes identify material families; dates follow the source papers. Click a point to keep its details open and visit its material data.</p>
+    </header>
+    <section aria-label="Reported Tc timeline" className="rounded-xl border border-sage-border bg-white p-4 sm:p-6">
+      <MaterialsTcTimeline />
+    </section>
+  </main>;
 }
