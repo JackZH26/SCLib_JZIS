@@ -19,6 +19,8 @@ import { notFound } from "next/navigation";
 import { cache } from "react";
 import { getMaterial, getMaterialHydrideParameters, listAdmittedTcResults } from "@/lib/api";
 import { MaterialsVNext } from "@/components/MaterialsVNext";
+import { materialDisplay } from "@/lib/materials-vnext";
+import { renderSourceNotation, sourceNotationLabel } from "@/lib/source-notation";
 import type { MaterialsSearchParams } from "@/lib/materials-browser";
 import "../materials.css";
 import type { HydrideTcParameterRecord } from "@/lib/api";
@@ -73,7 +75,9 @@ export async function generateMetadata({
   const id = decodeURIComponent(encodedId);
   if (process.env.MATERIALS_VNEXT_ENABLED === "true") {
     const data = await listAdmittedTcResults({ material_id: id, limit: 1, offset: 0 }).catch(() => null);
-    return { title: data?.items[0] ? `${data.items[0].formula} reported superconducting transitions` : "Material results",
+    const rendered = data?.items[0] ? renderSourceNotation(materialDisplay(data.items[0]).formula, true) : null;
+    const label = rendered && !rendered.unresolved ? sourceNotationLabel(rendered.html) : null;
+    return { title: label ? `${label} reported superconducting transitions` : "Material results",
       description: "Reported transition temperatures with sample conditions, original sources, and extraction review status.",
       alternates: { canonical: absoluteUrl(`/materials/${encodeURIComponent(id)}`) },
       robots: data?.total ? undefined : { index: false, follow: false } };
