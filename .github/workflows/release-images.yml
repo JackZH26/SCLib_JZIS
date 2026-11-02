@@ -94,7 +94,18 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        component: [frontend, api, ingestion]
+        include:
+          - component: frontend
+            context: ./frontend
+          - component: api
+            context: ./api
+          - component: ingestion
+            context: ./ingestion
+          # Publish a signed recovery image. Deploy intentionally continues to
+          # switch only the three application components; PG needs its drill
+          # and the explicit maintenance-window operation first.
+          - component: postgres
+            context: ./ops/postgres
     env:
       TARGET_SHA: ${{ github.event.workflow_run.head_sha }}
     steps:
@@ -135,7 +146,7 @@ jobs:
         id: build
         uses: docker/build-push-action@53b7df96c91f9c12dcc8a07bcb9ccacbed38856a # v7.3.0
         with:
-          context: ./${{ matrix.component }}
+          context: ${{ matrix.context }}
           push: true
           platforms: linux/amd64
           tags: ${{ steps.metadata.outputs.tags }}
