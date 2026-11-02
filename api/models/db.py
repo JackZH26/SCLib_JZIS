@@ -1902,3 +1902,7 @@ _register_materials_device_descriptors(Base.metadata)
 from models.retrieval_native_v2 import register as _register_retrieval_native_v2
 
 _register_retrieval_native_v2(Base.metadata)
+
+from models.retrieval_content_v2 import register as _register_retrieval_content_v2
+
+_register_retrieval_content_v2(Base.metadata)
