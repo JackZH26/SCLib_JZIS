@@ -1,5 +1,6 @@
 /** Closed wire consistency for server-verified Result–passage bridge metadata. */
 import type { AskResponse, MixedEvidenceAssociation, ScientificMixedEvidence } from "@/lib/api";
+import { knownRetrievalRead } from "@/lib/retrieval-read";
 import { knownEvidenceProvenance } from "@/lib/evidence-provenance";
 import { knownInputBudget, knownPackingInventory, knownPackingSummary } from "@/lib/evidence-packing";
 import { knownSourceVisibility } from "@/lib/material-visibility";
@@ -28,7 +29,7 @@ function association(input: unknown, version: string): input is MixedEvidenceAss
   const bridge = ["bridge_revision_id", "bridge_record_sha256", "claim_identity_sha256", "sample_identity_sha256", "source_locator_sha256"];
   if (!keys(input, version === "scientific-mixed-evidence/1.0.0" ? shared : [...shared, ...bridge])
     || !uuid(input.parent_result_revision_id) || !hash(input.result_source_snapshot_sha256) || !integer(input.source_index, 1)
-    || typeof input.source_vector_id !== "string" || !/^ig62_[0-9a-f]{32}_[0-9a-f]{64}$/.test(input.source_vector_id)
+    || typeof input.source_vector_id !== "string" || !(version === "scientific-mixed-evidence/2.0.0" ? /^(?:ig62_[0-9a-f]{32}_|rv2_)[0-9a-f]{64}$/ : /^ig62_[0-9a-f]{32}_[0-9a-f]{64}$/).test(input.source_vector_id)
     || !uuid(input.source_evidence_revision_id) || !hash(input.source_evidence_record_sha256) || !hash(input.source_content_sha256)
     || !choice(input.catalogue_relation, ["same_snapshot", "not_same_snapshot"])) return false;
   if (version === "scientific-mixed-evidence/1.0.0") {
@@ -48,7 +49,7 @@ export function knownScientificMixedResponse(response: unknown, rawQuery: string
   if (mixed === undefined) return notRequested;
   if (!keys(mixed, ["version", "status", "result_count", "source_count", "max_selected_inputs", "associations", "reason_codes",
     "scientific_acceptance", "independent_support_count"])
-    || !choice(mixed.version, ["scientific-mixed-evidence/1.0.0", "scientific-mixed-evidence/1.1.0"])
+    || !choice(mixed.version, ["scientific-mixed-evidence/1.0.0", "scientific-mixed-evidence/1.1.0", "scientific-mixed-evidence/2.0.0"])
     || !choice(mixed.status, ["not_requested", "completed", "unavailable"])
     || !integer(mixed.result_count) || !integer(mixed.source_count) || !integer(mixed.max_selected_inputs)
     || !Array.isArray(mixed.associations) || mixed.associations.length > 100
@@ -57,6 +58,8 @@ export function knownScientificMixedResponse(response: unknown, rawQuery: string
     || mixed.reason_codes.some(reason => typeof reason !== "string" || !reasons.includes(reason))
     || new Set(mixed.reason_codes).size !== mixed.reason_codes.length
     || mixed.scientific_acceptance !== false || mixed.independent_support_count !== null) return null;
+  const read = knownRetrievalRead(response.retrieval_generation);
+  if (mixed.version === "scientific-mixed-evidence/2.0.0" && read?.mode !== "content_snapshot") return null;
   if (mixed.status === "not_requested") return mixed.result_count === 0 && mixed.source_count === 0 && mixed.max_selected_inputs === 0
     && mixed.associations.length === 0 && mixed.reason_codes.length === 0 ? mixed as unknown as ScientificMixedEvidence : null;
 
@@ -85,11 +88,12 @@ export function knownScientificMixedResponse(response: unknown, rawQuery: string
       || mixed.associations.some(item => item.status === "not_established"))
     || mixed.reason_codes.includes("no_matching_extraction") !== (results.length === 0)
     || mixed.reason_codes.includes("no_original_context") !== (sources.length === 0)) return null;
+  if (read?.mode === "content_snapshot" && mixed.version !== "scientific-mixed-evidence/2.0.0") return null;
   const packing = knownPackingInventory(sources);
   if (!packing) return null;
-  // Completed result validation above already requires a closed generation pin.
-  const pin = response.retrieval_generation as NonNullable<AskResponse["retrieval_generation"]>;
-  const vectorPattern = new RegExp(`^ig62_${pin.generation_id!.replaceAll("-", "") }_[0-9a-f]{64}$`);
+  if (!read || read.mode === "legacy_lexical_only") return null;
+  const vectorPattern = read.version === "index-read/2.0.0" ? /^(?:ig62_[0-9a-f]{32}_|rv2_)[0-9a-f]{64}$/
+    : new RegExp(`^ig62_${read.generation_id!.replaceAll("-", "") }_[0-9a-f]{64}$`);
   const originalVectors = new Set<string>();
   for (const [index, source] of sources.entries()) {
     const evidence = knownEvidenceProvenance(source.evidence_provenance);
