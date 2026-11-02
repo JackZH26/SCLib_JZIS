@@ -1918,3 +1918,7 @@ _register_retrieval_activation_v2(Base.metadata)
 from models.retrieval_navigation_v2 import register as _register_retrieval_navigation_v2
 
 _register_retrieval_navigation_v2(Base.metadata)
+
+from models.retrieval_keysets_v2 import register as _register_retrieval_keysets_v2
+
+_register_retrieval_keysets_v2(Base.metadata)

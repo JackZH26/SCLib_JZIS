@@ -10,6 +10,12 @@ starting. Use the exact tracked API source and locked dependencies. Never run
 pytest against the restored database. Run tests only through the disposable
 test runner.
 
+Revision 0112 adds matching `(generation_id, vector_id COLLATE "C")` and
+`(content_id, vector_id COLLATE "C")` indexes. The retained source can use a
+non-C default locale; its original primary key alone cannot satisfy canonical
+pagination without a repeated whole-generation scan and sort. These are
+rebuildable indexes and do not rewrite retained rows or original functions.
+
 The CLI accepts no database URL argument. Its environment must identify
 `sclib_restore_drill` in a non-production environment. It also requires the
 owned restore marker, exact immutable source generation/hash/count,
@@ -45,7 +51,7 @@ acceptance rows, change the active pointer, route public traffic or retire the
 current Google deployment through this procedure. Those actions still require
 the separate relevance, complete-service, recovery, load and observation gates.
 
-Validation for the initial implementation: 47 checks passed on freshly owned
+Validation for the initial implementation: 48 checks passed on freshly owned
 native PostgreSQL/vector services, covering preview safety, identity rejection,
 COPY replay, unchanged v1 data, sealing and complete vector validation. The
 host-scale graph is exercised separately on the owned full restore.

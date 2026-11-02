@@ -94,3 +94,13 @@ async def test_graph_requires_host_budget_and_changed_artifact_cannot_resume_cop
     with pytest.raises(operator.CorpusOperatorError,match='artifact binding'):
         await operator.execute(replace(source,phase='copy-vectors',apply=True,image_digest='sha256:'+'c'*64))
     assert await state(db_session)==before
+
+
+async def test_canonical_keysets_have_valid_matching_collation_indexes(db_session):
+    from models.retrieval_keysets_v2 import INDEXES
+    for name,relation,parent in INDEXES:
+        row=(await db_session.execute(sa.text("SELECT i.indisvalid,i.indisready,pg_get_indexdef(i.indexrelid),"
+            "c.collname FROM pg_index i JOIN pg_collation c ON c.oid=i.indcollation[1] "
+            "WHERE i.indexrelid=to_regclass(:name)"),{'name':name})).one()
+        assert row[0] is True and row[1] is True and row[3]=='C'
+        assert relation in row[2] and parent in row[2] and 'vector_id COLLATE "C"' in row[2]
