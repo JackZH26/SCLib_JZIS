@@ -113,6 +113,13 @@ async def create_projection(db, *, build_id, dry_run=True):
         await db.execute(sa.text(f"CREATE TABLE {spec.table} (vector_id text PRIMARY KEY,paper_id text NOT NULL,"
             "year integer,content_sha256 text NOT NULL,vector_sha256 text NOT NULL,"
             "chunk_revision_sha256 text NOT NULL,embedding vector(768) NOT NULL)"))
+        # The vector alone exceeds the default TOAST target. Protect all
+        # bounded candidate fields too, or PostgreSQL externalizes their small
+        # IDs/hashes while trying to shrink the row. Set before binary COPY.
+        columns = ('vector_id', 'paper_id', 'content_sha256', 'vector_sha256',
+                   'chunk_revision_sha256', 'embedding')
+        await db.execute(sa.text(f"ALTER TABLE {spec.table} " + ','.join(
+            f'ALTER COLUMN {name} SET STORAGE PLAIN' for name in columns)))
         await db.execute(sa.text(f"CREATE INDEX year_b_{identifier.hex} ON {spec.table}(year)"))
         for name, events in (("retrieval_projection_write_v2", "INSERT OR UPDATE OR DELETE"),
                              ("retrieval_projection_truncate_v2", "TRUNCATE")):

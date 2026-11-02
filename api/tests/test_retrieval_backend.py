@@ -78,6 +78,17 @@ async def test_copy_preview_full_bit_readback_and_exact_resume(db_session):
     actual = await db_session.scalar(sa.text(f"SELECT bool_and(substring(vector_send(p.embedding) FROM 5)=m.vector_bytes) "
         f"FROM {table} p JOIN index_generation_members m ON m.vector_id=p.vector_id"))
     assert actual is True
+    physical = (await db_session.execute(sa.text(f"SELECT pg_column_size(embedding),"
+        f"octet_length(vector_send(embedding))+4 FROM {table}"))).one()
+    # EXTENDED compresses this repetitive synthetic vector. Inspect the actual
+    # stored datum and the unchanged binary readback, not just column metadata.
+    assert tuple(physical) == (3080, 3080)
+    assert await db_session.scalar(sa.text("SELECT attstorage::text FROM pg_attribute "
+        "WHERE attrelid=to_regclass(:name) AND attname='embedding'"), {'name': table}) == 'p'
+    assert await db_session.scalar(sa.text("SELECT bool_and(attstorage::text='p') FROM pg_attribute "
+        "WHERE attrelid=to_regclass(:name) AND attnum>0 AND NOT attisdropped"), {'name': table}) is True
+    assert await db_session.scalar(sa.text("SELECT CASE WHEN reltoastrelid=0 THEN 0 "
+        "ELSE pg_relation_size(reltoastrelid) END FROM pg_class WHERE oid=to_regclass(:name)"), {'name': table}) == 0
     after = await state(db_session)
     replay = await service.copy_partition(db_session, build_id=identifier, partition_id=0, dry_run=False)
     assert replay["replayed"] and await state(db_session) == after
