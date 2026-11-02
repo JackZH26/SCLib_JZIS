@@ -88,6 +88,21 @@ async def test_real_empty_filtered_cohort_is_successful_exact_empty(projection):
     assert result.strategy == "exact_filtered" and result.exhaustive and result.neighbors == ()
 
 
+async def test_equal_distance_ties_follow_canonical_ids_in_exact_and_graph_paths(projection):
+    engine, spec = projection
+    ids = ['a_0', 'A_0', 'a-0', 'a00', 'Z9']
+    async with engine.begin() as db:
+        await db.execute(sa.text(f'INSERT INTO {spec.table} VALUES '
+            '(:id,:paper,1999,:content,:vector,:revision,CAST(:embedding AS vector(768)))'),
+            [{'id': identifier, 'paper': 'synthetic-' + identifier, 'content': 'a' * 64,
+              'vector': 'b' * 64, 'revision': f'{9000+i:064x}', 'embedding': str(vector())}
+             for i, identifier in enumerate(ids)])
+    exact = await PgvectorQueries(engine).query(spec, vector(), top_k=5, year_min=1999, year_max=1999)
+    assert [row.vector_id for row in exact.neighbors] == sorted(ids)
+    graph = await PgvectorQueries(engine).query(spec, vector(), top_k=6)
+    assert [row.vector_id for row in graph.neighbors] == sorted([*ids, 'v000'])
+
+
 async def test_local_settings_do_not_leak_to_next_transaction(projection):
     from sqlalchemy.ext.asyncio import create_async_engine
 

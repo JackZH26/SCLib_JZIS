@@ -190,7 +190,7 @@ class PgvectorQueries:
                         sql = (f"WITH cohort AS MATERIALIZED (SELECT {_COLUMNS},year,embedding "
                                f"FROM {projection.table} WHERE {predicate}) "
                                f"SELECT {_COLUMNS},year,{distance} AS distance FROM cohort "
-                               f"ORDER BY {distance},vector_id LIMIT :limit")
+                               f'ORDER BY {distance},vector_id COLLATE "C" LIMIT :limit')
                     else:
                         await connection.execute(sa.text("SET LOCAL enable_seqscan=off"))
                         await connection.execute(sa.text("SET LOCAL enable_bitmapscan=off"))
