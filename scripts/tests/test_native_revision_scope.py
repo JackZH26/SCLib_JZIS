@@ -33,7 +33,9 @@ def test_only_explicit_empty_later_namespaces_can_be_omitted():
 @pytest.mark.parametrize("table", ["retrieval_input_receipts_v2", "retrieval_native_revisions_v2",
     "retrieval_publications_v2", "retrieval_publication_members_v2", "retrieval_publication_seals_v2",
     "retrieval_contents_v2", "retrieval_content_changes_v2", "retrieval_content_members_v2",
-    "retrieval_content_partitions_v2", "retrieval_content_seals_v2"])
+    "retrieval_content_partitions_v2", "retrieval_content_seals_v2",
+    "retrieval_backend_builds_v2", "retrieval_backend_fences_v2",
+    "retrieval_projection_seals_v2", "retrieval_backend_validations_v2"])
 def test_populated_native_history_cannot_be_projected_away(table):
     with pytest.raises(AssertionError, match="Retained native retrieval"):
         pre_materials_context_tables(Connection([table]), ["papers", table])

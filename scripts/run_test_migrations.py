@@ -2970,6 +2970,8 @@ def main() -> None:
         native_empty_receipt = native_empty(capability, engine, config)
         from migration_retrieval_content import empty_roundtrip as content_empty
         content_empty_receipt = content_empty(capability, engine, config)
+        from migration_retrieval_backend import empty_roundtrip as backend_empty
+        backend_empty_receipt = backend_empty(capability, engine, config)
         from migration_discovery_calculations import empty_roundtrip as calculation_empty
         calculation_empty(capability, engine, config)
         from migration_discovery_condition_batches import empty_roundtrip as condition_batch_empty
@@ -3263,6 +3265,14 @@ def main() -> None:
             "version": "retrieval-content-schema-rehearsal/2.0.0", "synthetic": True,
             "production": False, "deployment_approved": False, "scientific_acceptance": False,
             **content_empty_receipt, **content_capture_receipt, **content_retention_receipt,
+        }, sort_keys=True))
+        from migration_retrieval_backend import populated_backend as backend_populated, retained_history as backend_retained
+        backend_capture_receipt = asyncio.run(backend_populated(capability))
+        backend_retention_receipt = backend_retained(capability, engine, config, backend_capture_receipt)
+        print("BACKEND_SCHEMA_RECEIPT " + json.dumps({
+            "version": "retrieval-backend-schema-rehearsal/2.0.0", "synthetic": True,
+            "production": False, "deployment_approved": False, "scientific_acceptance": False,
+            **backend_empty_receipt, **backend_capture_receipt, **backend_retention_receipt,
         }, sort_keys=True))
         if recorder is not None:
             with engine.connect() as connection:
