@@ -27,7 +27,7 @@ jobs:
         run: |
           docker build --tag sclib-pgvector-ci --file ops/postgres/Dockerfile ops/postgres
           docker pull redis:7-alpine
-          api/.venv/bin/python scripts/prepare_tokenizer.py
+          api/.venv/bin/python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
       - name: Scan the actual candidate image before runtime acceptance
         uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
         with:
