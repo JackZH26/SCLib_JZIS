@@ -66,3 +66,11 @@ def test_equal_dimension_does_not_permit_another_embedding_space(key, value):
 def test_formatter_rejects_a_public_or_caller_mapping_as_internal_v2_authority():
     with pytest.raises(ValueError, match='database-resolved'):
         retrieval_read_metadata(private_pin().metadata())
+
+
+@pytest.mark.parametrize('key', ['version', 'mode'])
+def test_v2_wire_input_must_explicitly_declare_its_version_and_mode(key):
+    body = retrieval_read_metadata(private_pin()).model_dump(mode='json')
+    body.pop(key)
+    with pytest.raises(ValidationError):
+        TypeAdapter(RetrievalReadMetadata).validate_python(body, strict=True)

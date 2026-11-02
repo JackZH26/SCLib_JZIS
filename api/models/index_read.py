@@ -65,8 +65,8 @@ class ContentReadMetadata(BaseModel):
     """V2 content/backend identity, with no invented provider generation."""
 
     model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
-    version: Literal["index-read/2.0.0"] = "index-read/2.0.0"
-    mode: Literal["content_snapshot"] = "content_snapshot"
+    version: Literal["index-read/2.0.0"]
+    mode: Literal["content_snapshot"]
     content_id: str
     build_id: str
     activation_event_id: str
@@ -96,7 +96,8 @@ def retrieval_read_metadata(pin=None) -> RetrievalReadMetadata:
     from services.retrieval_activation import RetrievalPinV2
 
     if type(pin) is RetrievalPinV2:
-        return ContentReadMetadata(content_id=pin.content_id, build_id=pin.build_id,
+        return ContentReadMetadata(version="index-read/2.0.0", mode="content_snapshot",
+            content_id=pin.content_id, build_id=pin.build_id,
             activation_event_id=pin.activation_event_id, manifest_sha256=pin.manifest_sha256,
             policy_artifact_sha256=pin.policy_artifact_sha256, profile=json.loads(pin.profile_json))
     if pin is not None and (type(pin) is not dict or "version" in pin):
