@@ -192,8 +192,26 @@ async def test_expiry_denies_before_loading_bytes_and_sweeper_retains_audit(db_s
     observed = await service.outcome(db_session, actor_user_id=args["actor_user_id"], **lookup(values))
     assert observed["input_state"] == "expired" and observed["record_sha256"] == first["record_sha256"]
     await write_snapshot(db_session)
+    # Audit fixtures intentionally retain history across modules. A prior
+    # expiry test may have left another expired input, which this global
+    # administrator sweeper must purge too. Verify the exact eligible batch
+    # rather than assuming that the database contains only our own receipt.
+    eligible = set((await db_session.execute(sa.text(
+        "SELECT s.id FROM ml_use_submissions s JOIN ml_use_private_inputs i ON i.submission_id=s.id "
+        "WHERE s.expires_at<=clock_timestamp() ORDER BY s.expires_at,s.id LIMIT 20"
+    ))).scalars())
+    assert UUID(first["submission_id"]) in eligible and len(eligible) < 20
+    before = await state(db_session)
     cleanup = await service.purge_expired(db_session, actor_user_id=args["actor_user_id"])
-    assert cleanup["purged_count"] == 1
+    assert cleanup["purged_count"] == len(eligible)
+    after = await state(db_session)
+    assert after[TABLES[0]] == before[TABLES[0]]
+    assert {UUID(row["submission_id"]) for row in before[TABLES[1]]} - {
+        UUID(row["submission_id"]) for row in after[TABLES[1]]} == eligible
+    previous_purges = {row["submission_id"] for row in before[TABLES[2]]}
+    new_purges = [row for row in after[TABLES[2]] if row["submission_id"] not in previous_purges]
+    assert {UUID(row["submission_id"]) for row in new_purges} == eligible
+    assert all(row["reason"] == "retention_expired" for row in new_purges)
     await db_session.commit()
     assert (await service.purge_expired(db_session, actor_user_id=args["actor_user_id"]))["purged_count"] == 0
 

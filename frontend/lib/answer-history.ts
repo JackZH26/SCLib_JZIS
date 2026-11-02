@@ -189,6 +189,9 @@ function storedResponse(value: unknown, rawQuery: string): value is StoredAskRes
     || !generation(value.retrieval_generation)) return false;
   const query = value.scientific_query === null ? null : knownScientificQuery(value.scientific_query, rawQuery);
   const lookup = knownScientificLookup(value.scientific_lookup);
+  // The V1 receipt decoder stays closed even as live response unions grow.
+  if (lookup?.scope !== "declared_generation_derived_extractions" || !row(value.scientific_mixed)
+    || !choice(value.scientific_mixed.version, ["scientific-mixed-evidence/1.0.0", "scientific-mixed-evidence/1.1.0"])) return false;
   if (value.scientific_query !== null && !query || !lookup || !Array.isArray(value.scientific_results)) return false;
   if (query ? knownScientificResults(value.scientific_results, lookup, value.retrieval_generation, query) === null
     : lookup.status !== "not_requested" || value.scientific_results.length !== 0) return false;

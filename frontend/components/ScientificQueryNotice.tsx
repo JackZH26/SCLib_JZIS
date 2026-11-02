@@ -90,7 +90,10 @@ export function ScientificQueryNotice({ query: input, lookup: lookupInput, resul
                     <div><dt className="inline font-medium">Result reference: </dt><dd className="inline">{result.result_id}</dd></div>
                     <div><dt className="inline font-medium">Machine extraction revision: </dt><dd className="inline">{binding.parent_result_revision_id}</dd></div>
                     <div><dt className="inline font-medium">Evidence revision: </dt><dd className="inline">{binding.evidence_revision_id}</dd></div>
-                    <div><dt className="inline font-medium">Generation / activation: </dt><dd className="inline">{binding.generation_id} / {binding.activation_event_id}</dd></div>
+                    {"content_id" in binding ? <>
+                      <div><dt className="inline font-medium">Content / backend build / activation: </dt><dd className="inline">{binding.content_id} / {binding.build_id} / {binding.activation_event_id}</dd></div>
+                      <div><dt className="inline font-medium">{binding.origin_kind === "native_v2" ? "Native revision: " : "Retained origin generation: "}</dt><dd className="inline">{binding.native_revision_id ?? binding.origin_generation_id}</dd></div>
+                    </> : <div><dt className="inline font-medium">Generation / activation: </dt><dd className="inline">{binding.generation_id} / {binding.activation_event_id}</dd></div>}
                   </dl>
                 </details>
               </article>)}
