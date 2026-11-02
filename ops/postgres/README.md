@@ -16,8 +16,10 @@ The Test workflow builds this image and runs actual binary float32 roundtrip,
 cosine/HNSW filtering and invalid-input checks in fresh owned services. The
 Release images workflow publishes and signs the PostgreSQL digest after the
 existing Test and Security gates. This does not switch production PostgreSQL.
-Set `POSTGRES_IMAGE` to a verified signed digest only in the later, rehearsed
-maintenance operation. Never use the original image after vector types exist.
+Set `POSTGRES_IMAGE` to a verified signed digest and `POSTGRES_SHM_SIZE=5g` only
+in the later, rehearsed maintenance operation. The Compose default remains the
+original 64 MiB shared-memory limit until that explicit switch. Never use the
+original image after vector types exist.
 
 The ordinary test runner still defaults to its original PostgreSQL image.
 An opt-in test accepts only a preinstalled immutable local image ID, creates new
@@ -54,6 +56,9 @@ The PostgreSQL binary protocol preserves each float32 byte. Completed imports
 can resume; conflicting replay is refused. Full verification enumerates both
 the projection and declared members and compares PostgreSQL binary readback.
 HNSW construction requires full verification and additional measured headroom.
+The parallel 4 GiB construction also requires at least 5 GiB of `/dev/shm`;
+the tool refuses smaller containers before DDL. This is a virtual tmpfs size,
+not permission to exceed the container's independently measured RAM budget.
 The fixed rehearsal schema is isolated from application content; no command
 updates original records, pointers, source permissions or deployment settings.
 

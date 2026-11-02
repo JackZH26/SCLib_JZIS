@@ -62,3 +62,13 @@ def test_admits_only_exact_owned_restored_source(target):
     args, _, _, calls = target
     assert Rehearsal(args).identifier == CID
     assert len(calls) == 1
+
+
+def test_parallel_build_refuses_small_shared_memory_before_any_ddl(target, monkeypatch):
+    args, container, _, calls = target
+    container["HostConfig"]["ShmSize"] = 1024**3
+    run = Rehearsal(args)
+    monkeypatch.setattr(run, "verify", lambda: pytest.fail("Build admission must run before SQL"))
+    with pytest.raises(RuntimeError, match="5 GiB shared memory"):
+        run.build()
+    assert len(calls) == 1  # The constructor's read-only source identity check.

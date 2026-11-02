@@ -48,6 +48,7 @@ class Rehearsal:
                 or self.receipt["target"]["volume"] not in volumes
                 or not c["State"]["Running"]):
             raise ValueError("Refusing a non-owned or network-connected database")
+        self.shm_bytes = c["HostConfig"].get("ShmSize", 0)
         v = json.loads(subprocess.check_output(["docker", "volume", "inspect", self.receipt["target"]["volume"]]))[0]
         if (v.get("Labels", {}).get("org.jzis.sclib.purpose") != PURPOSE
                 or v["Labels"].get("org.jzis.sclib.run") != labels.get("org.jzis.sclib.run")):
@@ -166,12 +167,17 @@ class Rehearsal:
         self.event("full_readback_verified", **value)
 
     def build(self):
+        # pgvector reserves the graph in dynamic shared memory when parallel
+        # workers are enabled. Container RAM alone does not enlarge /dev/shm.
+        if self.shm_bytes < 5 * 1024**3:
+            raise RuntimeError("Parallel 4 GiB construction requires at least 5 GiB shared memory")
         self.verify()
         free = self.budget()
         if free < 218:
             raise RuntimeError("Insufficient measured headroom for HNSW construction")
         started = time.monotonic()
-        self.event("hnsw_started", free_gib=free, m=16, ef_construction=64, maintenance_work_mem="4GB")
+        self.event("hnsw_started", free_gib=free, m=16, ef_construction=64,
+                   maintenance_work_mem="4GB", parallel_workers=1, shm_bytes=self.shm_bytes)
         self.sql(f"SET maintenance_work_mem='4GB'; SET max_parallel_maintenance_workers=1; "
                  f"CREATE INDEX IF NOT EXISTS vectors_hnsw ON {TABLE} USING hnsw "
                  "(embedding vector_cosine_ops) WITH(m=16,ef_construction=64)")
