@@ -1345,6 +1345,27 @@ export interface RetrievalGeneration {
   manifest_sha256: string | null;
 }
 
+/** Content identity is distinct from a retained provider generation. */
+export interface ContentRetrieval {
+  version: "index-read/2.0.0";
+  mode: "content_snapshot";
+  content_id: string;
+  build_id: string;
+  activation_event_id: string;
+  manifest_sha256: string;
+  policy_artifact_sha256: string;
+  profile: {
+    version: "sclib-index-profile/1.0.0";
+    provider: "google-vertex-ai";
+    model: "text-embedding-005";
+    output_dimensionality: 768;
+    document_task: "RETRIEVAL_DOCUMENT";
+    query_task: "RETRIEVAL_QUERY";
+  };
+}
+
+export type RetrievalReadIdentity = RetrievalGeneration | ContentRetrieval;
+
 export interface ScientificQuerySpan { raw_text: string; start: number; end: number }
 export interface FormulaQueryNormalization {
   version: "formula-query/1.0.0";
