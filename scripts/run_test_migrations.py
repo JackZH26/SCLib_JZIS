@@ -2966,6 +2966,8 @@ def main() -> None:
                     'source_revisions_immutable_row', 'source_revisions_immutable_truncate',
                     'source_captures_immutable_row', 'source_captures_immutable_truncate',
                     'claim_source_occurrences_immutable_row', 'claim_source_occurrences_immutable_truncate')""")).scalar_one() == 6
+        from migration_retrieval_native import empty_roundtrip as native_empty
+        native_empty_receipt = native_empty(capability, engine, config)
         from migration_discovery_calculations import empty_roundtrip as calculation_empty
         calculation_empty(capability, engine, config)
         from migration_discovery_condition_batches import empty_roundtrip as condition_batch_empty
@@ -3243,6 +3245,15 @@ def main() -> None:
         corpus_retained(capability, engine, config)
         from migration_source_expressions import empty_roundtrip as source_expression_empty
         source_expression_empty(capability, engine, config)
+        from migration_retrieval_native import populated_capture as native_populated, retained_history as native_retained
+        native_capture_receipt = asyncio.run(native_populated(capability))
+        native_retention_receipt = native_retained(capability, engine, config)
+        import json
+        print("NATIVE_SCHEMA_RECEIPT " + json.dumps({
+            "version": "retrieval-native-schema-rehearsal/2.0.0", "synthetic": True,
+            "production": False, "deployment_approved": False, "scientific_acceptance": False,
+            **native_empty_receipt, **native_capture_receipt, **native_retention_receipt,
+        }, sort_keys=True))
         if recorder is not None:
             with engine.connect() as connection:
                 verify_postgres_identity(connection, capability)
