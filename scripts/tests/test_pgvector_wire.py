@@ -3,7 +3,7 @@ import struct
 
 import pytest
 
-from scripts.pgvector_wire import MAGIC, decode_copy, projection_copy
+from scripts.pgvector_wire import MAGIC, decode_copy, projection_copy,content_projection_copy
 
 
 def frame(rows):
@@ -11,8 +11,8 @@ def frame(rows):
     for row in rows:
         payload.extend(struct.pack("!h", len(row)))
         for value in row:
-            payload.extend(struct.pack("!i", len(value)))
-            payload.extend(value)
+            payload.extend(struct.pack("!i", -1 if value is None else len(value)))
+            if value is not None:payload.extend(value)
     return bytes(payload + struct.pack("!h", -1))
 
 
@@ -85,3 +85,31 @@ def test_rejects_invalid_source_or_inventory(mutation):
 def test_rejects_truncated_or_extended_copy_frames(payload):
     with pytest.raises(ValueError):
         decode_copy(payload, fields=7)
+
+
+@pytest.mark.parametrize('year',[None,1,1986,2026,9999])
+def test_content_copy_retains_exact_year_and_original_vector_bytes(year):
+    row=source();encoded=None if year is None else struct.pack('!i',year)
+    payload,inventory=content_projection_copy(frame([row+[encoded]]))
+    (result,)=decode_copy(payload,fields=7,nullable_fields=(6,))
+    assert result[-1]==encoded and result[:5]==row[:5]
+    assert result[5]==struct.pack('!hh',768,0)+row[5]
+    old_payload,old_inventory=projection_copy(frame([row]))
+    assert inventory==old_inventory and decode_copy(old_payload,fields=6)[0]==result[:-1]
+
+
+@pytest.mark.parametrize('year',[struct.pack('!i',0),struct.pack('!i',-1),struct.pack('!i',10000),b'1',b'\0'*8])
+def test_content_copy_rejects_invalid_year_instead_of_reinterpreting_as_unknown(year):
+    with pytest.raises(ValueError,match='year'):content_projection_copy(frame([source()+[year]]))
+
+
+@pytest.mark.parametrize('index',range(7))
+def test_only_the_declared_year_can_be_null(index):
+    row=source()+[None];row[index]=None
+    with pytest.raises(ValueError):content_projection_copy(frame([row]))
+
+
+def test_api_and_owned_host_converters_ship_identical_contract_bytes():
+    from pathlib import Path
+    root=Path(__file__).resolve().parents[2]
+    assert (root/'scripts/pgvector_wire.py').read_bytes()==(root/'api/services/pgvector_wire.py').read_bytes()
