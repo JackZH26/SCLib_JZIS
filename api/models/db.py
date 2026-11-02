@@ -1898,3 +1898,11 @@ _register_materials_properties_v3(Base.metadata)
 from models.materials_device_descriptors_v3 import register as _register_materials_device_descriptors
 
 _register_materials_device_descriptors(Base.metadata)
+
+from models.retrieval_native_v2 import register as _register_retrieval_native_v2
+
+_register_retrieval_native_v2(Base.metadata)
+
+from models.retrieval_content_v2 import register as _register_retrieval_content_v2
+
+_register_retrieval_content_v2(Base.metadata)
