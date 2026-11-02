@@ -1,0 +1,7 @@
+# Include only in the separately rehearsed database maintenance operation.
+# Keeping these fields out of the ordinary Compose model preserves the running
+# PostgreSQL config hash, even when Docker's current default is also 64 MiB.
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE:?set verified signed PostgreSQL pgvector image digest}
+    shm_size: ${POSTGRES_SHM_SIZE:?set rehearsed PostgreSQL shared-memory budget}

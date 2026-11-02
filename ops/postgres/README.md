@@ -16,10 +16,17 @@ The Test workflow builds this image and runs actual binary float32 roundtrip,
 cosine/HNSW filtering and invalid-input checks in fresh owned services. The
 Release images workflow publishes and signs the PostgreSQL digest after the
 existing Test and Security gates. This does not switch production PostgreSQL.
-Set `POSTGRES_IMAGE` to a verified signed digest and `POSTGRES_SHM_SIZE=5g` only
-in the later, rehearsed maintenance operation. The Compose default remains the
-original 64 MiB shared-memory limit until that explicit switch. Never use the
-original image after vector types exist.
+Set `POSTGRES_IMAGE` to a verified signed digest and `POSTGRES_SHM_SIZE` to the
+rehearsed budget, then explicitly include `-f docker-compose.pgvector.yml` only
+in the later database maintenance operation. Both variables are required by
+that file. A 4 GiB parallel construction needs at least `5g` of shared memory;
+larger construction budgets need their separately measured shared-memory size.
+The ordinary Compose model remains identical to the existing database service.
+Adding an explicit 64 MiB default to that model would change its config hash
+and recreate PostgreSQL during an ordinary application release. Never use the
+original image after vector types exist. After the eventual database switch,
+all deployment/recovery entrypoints must deliberately include the override;
+that deployment integration is a P6 prerequisite, not enabled by this PR.
 
 The ordinary test runner still defaults to its original PostgreSQL image.
 An opt-in test accepts only a preinstalled immutable local image ID, creates new

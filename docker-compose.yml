@@ -107,13 +107,7 @@ services:
         condition: service_healthy
 
   postgres:
-    # Set an approved immutable pgvector image only after the restore rehearsal.
-    # Merely merging the image build does not switch the production database.
-    image: ${POSTGRES_IMAGE:-postgres:16-alpine}
-    # Opt in together with the rehearsed database-image switch. A parallel
-    # 4 GiB HNSW graph needs at least 5 GiB of /dev/shm; the existing database
-    # keeps Docker's original 64 MiB setting until that maintenance operation.
-    shm_size: ${POSTGRES_SHM_SIZE:-64m}
+    image: postgres:16-alpine
     container_name: sclib-postgres
     restart: unless-stopped
     environment:
