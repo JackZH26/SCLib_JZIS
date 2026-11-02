@@ -168,9 +168,16 @@ class DisposableServices:
             docker_json(["image", "inspect", "redis:7-alpine"])
             env_file = self.root / "postgres.env"
             private_write(env_file, "POSTGRES_PASSWORD=" + secrets.token_hex(24) + "\n")
+            # The pinned Alpine image runs as postgres (UID/GID 70). A tmpfs
+            # otherwise starts root-owned, unlike the base image's named-volume
+            # directory. Keep the fresh test cluster private and writable by
+            # that user without granting root to the database container.
+            pg_tmpfs = "/var/lib/postgresql/data:rw,nosuid,size=512m"
+            if self.postgres_image != "postgres:16-alpine":
+                pg_tmpfs += ",uid=70,gid=70,mode=0700"
             self._docker_start("postgres", [
                 "--publish", "127.0.0.1::5432", "--env-file", str(env_file),
-                "--tmpfs", "/var/lib/postgresql/data:rw,nosuid,size=512m", self.postgres_image,
+                "--tmpfs", pg_tmpfs, self.postgres_image,
             ])
             private_write(redis_config, self.redis_configuration("0.0.0.0", 6379))
             # The only bind mount is this run's generated private configuration.
