@@ -101,6 +101,17 @@ async def test_insufficient_buffer_budget_refuses_preparation(db_session,monkeyp
     assert not await ready.ready(pin)
 
 
+async def test_graph_only_fit_cannot_admit_failed_six_gib_corpus_profile(db_session,monkeypatch):
+    pin,ready=await setup(db_session)
+    witness=ready._witness
+    async def corpus(db,pin):
+        row=await witness(db,pin)
+        return replace(row,member_count=1183943,shared_buffer_bytes=6*1024**3)
+    monkeypatch.setattr(ready,'_witness',corpus)
+    with pytest.raises(ProjectionNotReady,match='16-GiB shared-buffer floor'):await ready.prepare(pin)
+    assert not await ready.ready(pin)
+
+
 async def test_read_only_reader_can_prepare_without_DDL_or_superuser(db_session):
     pin,_=await setup(db_session)
     await db_session.execute(sa.text('GRANT SELECT ON ALL TABLES IN SCHEMA public TO sclib_retrieval_reader'))

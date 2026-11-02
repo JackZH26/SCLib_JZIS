@@ -14,7 +14,7 @@ import sqlalchemy as sa
 from models.db import Base
 from models.retrieval_backend_v2 import POLICY, POLICY_SHA256, TABLE_ORDER, authority_sql
 from services.pgvector_query import ProjectionSpec
-from services.pgvector_wire import MAX_BYTES, projection_copy
+from services.pgvector_wire import MAX_BYTES, content_projection_copy
 
 
 class RetrievalBackendError(ValueError):
@@ -177,18 +177,15 @@ async def copy_partition(db, *, build_id, partition_id, dry_run=True):
                 raise RetrievalBackendError("Source COPY byte budget exhausted")
             payload.extend(data)
         source = authority_sql() + " AND m.partition_id=$2"
-        query = ("SELECT vector_id,paper_id,content_sha256,vector_sha256,chunk_revision_sha256,vector_bytes,intact "
+        query = ("SELECT vector_id,paper_id,content_sha256,vector_sha256,chunk_revision_sha256,vector_bytes,intact,year "
                  f'FROM ({source}) source ORDER BY vector_id COLLATE "C"')
         await driver.copy_from_query(query, build["content_id"], partition_id, output=collect, format="binary", timeout=30)
-        converted, inventory = projection_copy(bytes(payload))
+        converted, inventory = content_projection_copy(bytes(payload))
         if len(inventory) != part["member_count"]:
             raise RetrievalBackendError("Source COPY did not enumerate the complete partition")
         await driver.copy_to_table("b_" + identifier.hex, schema_name="retrieval_projection",
-            columns=("vector_id", "paper_id", "content_sha256", "vector_sha256", "chunk_revision_sha256", "embedding"),
+            columns=("vector_id", "paper_id", "content_sha256", "vector_sha256", "chunk_revision_sha256", "embedding", "year"),
             source=memoryview(converted), format="binary", timeout=30)
-        source = authority_sql().replace("$1", ":content") + " AND m.partition_id=:partition"
-        await db.execute(sa.text(f"UPDATE {spec.table} p SET year=a.year FROM ({source}) a WHERE p.vector_id=a.vector_id"),
-                         {"content": build["content_id"], "partition": partition_id})
         after = await _partition_observation(db, spec, build["content_id"], partition_id)
         if after["present_count"] != part["member_count"] or after["mismatches"]:
             raise RetrievalBackendError("Actual binary projection readback did not match its source partition")

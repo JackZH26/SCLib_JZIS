@@ -10,6 +10,7 @@ from __future__ import annotations
 import asyncio
 import time
 from dataclasses import dataclass
+from uuid import UUID
 
 import sqlalchemy as sa
 
@@ -34,6 +35,7 @@ class ProjectionWitness:
     primary_key_bytes: int
     shared_buffer_bytes: int
     block_size: int
+    member_count: int
 
 
 class ProjectionReadiness:
@@ -51,12 +53,13 @@ class ProjectionReadiness:
             pg_relation_filenode(k.oid) AS primary_key_filenode,pg_relation_size(t.oid) AS table_bytes,
             pg_relation_size(g.oid) AS graph_bytes,pg_relation_size(k.oid) AS primary_key_bytes,
             pg_size_bytes(current_setting('shared_buffers')) AS shared_buffer_bytes,
-            current_setting('block_size')::integer AS block_size
+            current_setting('block_size')::integer AS block_size,b.expected_member_count AS member_count
           FROM pg_class t JOIN pg_index gi ON gi.indrelid=t.oid
           JOIN pg_class g ON g.oid=gi.indexrelid JOIN pg_am am ON am.oid=g.relam AND am.amname='hnsw'
           JOIN pg_index ki ON ki.indrelid=t.oid AND ki.indisprimary JOIN pg_class k ON k.oid=ki.indexrelid
+          JOIN retrieval_backend_builds_v2 b ON b.id=:build
           WHERE t.oid=to_regclass(:table) AND gi.indisvalid AND gi.indisready
-        """),{'table':pin.projection.table})).mappings().one()
+        """),{'table':pin.projection.table,'build':UUID(pin.build_id)})).mappings().one()
         values={key:int(value) for key,value in row.items() if key!='started'}
         if any(value<=0 for value in values.values()):raise ProjectionNotReady('Nonempty exact physical projection required')
         return ProjectionWitness(pin,row['started'].isoformat(),**values)
@@ -91,6 +94,13 @@ class ProjectionReadiness:
             started=time.monotonic()
             async def warm(db):
                 before=await self._witness(db,pin)
+                # The measured retained corpus's TOAST/backup working set also
+                # competes for buffers. Fitting the graph alone allowed a 6-GiB
+                # profile that lost all graph pages and failed 24/240 queries.
+                # Larger-than-smoke builds require the measured 16-GiB floor;
+                # this still does not replace exact-build performance gates.
+                if before.member_count>1000 and before.shared_buffer_bytes<16*1024**3:
+                    raise ProjectionNotReady('Corpus preparation requires the measured 16-GiB shared-buffer floor')
                 if before.graph_bytes*5>before.shared_buffer_bytes*4:
                     raise ProjectionNotReady('The sealed graph exceeds its reserved shared-buffer budget')
                 if not await db.scalar(sa.text("SELECT to_regprocedure('public.pg_prewarm(regclass,text,text,bigint,bigint)') IS NOT NULL")):

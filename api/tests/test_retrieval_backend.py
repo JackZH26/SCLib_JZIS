@@ -109,6 +109,25 @@ async def test_sealed_projection_validates_actual_complete_inventory(db_session)
     assert await state(db_session) == after
 
 
+@pytest.mark.parametrize('year',[None,2024])
+async def test_initial_binary_copy_preserves_actual_nullable_filtering_year(db_session,monkeypatch,year):
+    from datetime import date
+    from models.db import Chunk,Paper
+    from tests import test_embedding_receipts
+    seed=test_embedding_receipts.seed
+    async def dated(db):
+        chunk,candidate=await seed(db)
+        paper=await db.scalar(sa.select(Chunk.paper_id).where(Chunk.id==chunk))
+        await db.execute(sa.update(Chunk).where(Chunk.id==chunk).values(year=year))
+        await db.execute(sa.update(Paper).where(Paper.id==paper).values(date_submitted=date(year,1,1) if year else None))
+        return chunk,candidate
+    monkeypatch.setattr(test_embedding_receipts,'seed',dated)
+    values,_,spec=await prepared_backend(db_session)
+    assert await db_session.scalar(sa.text(f'SELECT year FROM {spec.table}'))==year
+    receipt=await service.validate_projection(db_session,build_id=values['build_id'],validation_id=str(uuid4()),dry_run=False)
+    assert receipt['mismatch_count']==receipt['missing_count']==receipt['extra_count']==0
+
+
 @pytest.mark.parametrize("operation", ["UPDATE", "DELETE", "TRUNCATE", "INSERT"])
 async def test_seal_blocks_all_statements_before_any_row_changes(db_session, operation):
     values, _, spec = await prepared_backend(db_session)
