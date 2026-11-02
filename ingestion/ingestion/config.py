@@ -29,7 +29,7 @@ class IngestionSettings(BaseSettings):
     gcs_bucket: str = "sclib-jzis"
     google_application_credentials: str | None = None
     vertex_ai_index_endpoint: str = ""
-    vertex_ai_deployed_index_id: str = "sclib_papers_v1"
+    vertex_ai_deployed_index_id: str = ""
 
     # --- AI models ----------------------------------------------------------
     embedding_model: str = "text-embedding-005"

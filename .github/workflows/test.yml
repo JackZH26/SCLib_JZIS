@@ -10,6 +10,42 @@ permissions:
   contents: read
 
 jobs:
+  pgvector-runtime:
+    name: PostgreSQL 16.13 and pgvector runtime
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Install the locked API test runtime
+        run: |
+          python -m pip install --disable-pip-version-check uv==0.11.16
+          uv sync --project api --locked --extra dev --python 3.11
+      - name: Build the frozen PostgreSQL image and prepare owned service inputs
+        run: |
+          docker build --tag sclib-pgvector-ci --file ops/postgres/Dockerfile ops/postgres
+          docker pull redis:7-alpine
+      - name: Test the extension in fresh capability-verified services
+        run: |
+          image_id="$(docker image inspect sclib-pgvector-ci --format '{{.Id}}')"
+          api/.venv/bin/python scripts/run_disposable_tests.py --backend docker \
+            --postgres-image "$image_id" --pgvector --suite api \
+            -- -q tests/test_pgvector_runtime.py
+      - name: Rehearse the complete schema on the pgvector image independently
+        run: |
+          image_id="$(docker image inspect sclib-pgvector-ci --format '{{.Id}}')"
+          api/.venv/bin/python scripts/run_disposable_tests.py --backend docker \
+            --postgres-image "$image_id" --pgvector --suite migrations \
+            --report "$RUNNER_TEMP/pgvector-schema-rehearsal.json"
+      - name: Retain actual owned schema evidence
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pgvector-schema-rehearsal-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pgvector-schema-rehearsal.json
+          if-no-files-found: error
+
   api-tests:
     name: API (pytest)
     runs-on: ubuntu-latest

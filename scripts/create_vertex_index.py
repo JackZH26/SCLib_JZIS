@@ -130,7 +130,12 @@ def main() -> int:
     parser.add_argument("--region", default="us-central1")
     parser.add_argument("--skip-deploy", action="store_true",
                         help="Create index+endpoint but do not deploy (debug)")
+    parser.add_argument("--allow-retired-resource-recovery", action="store_true",
+                        help="Explicit emergency recovery only: recreates a retired, billable resource")
     args = parser.parse_args()
+    if not args.allow_retired_resource_recovery:
+        parser.error("sclib_papers_v1 was retired. This historical tool is disabled by default; "
+                     "use --allow-retired-resource-recovery only for an approved recovery.")
 
     logging.basicConfig(
         level=logging.INFO,
@@ -151,7 +156,7 @@ def main() -> int:
     print("=" * 70)
     print(f"VERTEX_AI_INDEX_ENDPOINT={endpoint.resource_name}")
     print(f"VERTEX_AI_DEPLOYED_INDEX_ID={DEPLOYED_INDEX_ID}")
-    print(f"GCS_BUCKET=sclib-jzis")
+    print("GCS_BUCKET=sclib-jzis")
     print("=" * 70)
     return 0
 

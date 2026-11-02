@@ -107,7 +107,9 @@ services:
         condition: service_healthy
 
   postgres:
-    image: postgres:16-alpine
+    # Set an approved immutable pgvector image only after the restore rehearsal.
+    # Merely merging the image build does not switch the production database.
+    image: ${POSTGRES_IMAGE:-postgres:16-alpine}
     container_name: sclib-postgres
     restart: unless-stopped
     environment:

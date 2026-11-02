@@ -92,8 +92,15 @@ def assert_empty(connection):
 def public_objects(connection):
     from sqlalchemy import text
 
-    functions = dict(connection.execute(text("""SELECT p.oid::regprocedure::text,pg_get_functiondef(p.oid)
+    # pgvector adds public aggregates (avg/sum). pg_get_functiondef rejects
+    # aggregate OIDs; keep their full pg_proc/pg_aggregate catalog definitions
+    # in the same inventory rather than silently excluding them from parity.
+    functions = dict(connection.execute(text("""SELECT p.oid::regprocedure::text,
+        CASE WHEN p.prokind='a' THEN
+          (to_jsonb(p)||jsonb_build_object('aggregate',to_jsonb(a)))::text
+        ELSE pg_get_functiondef(p.oid) END
         FROM pg_proc p JOIN pg_namespace n ON n.oid=p.pronamespace
+        LEFT JOIN pg_aggregate a ON a.aggfnoid=p.oid
         WHERE n.nspname='public' ORDER BY p.oid::regprocedure::text""")).all())
     triggers = tuple(connection.execute(text("""SELECT c.relname,t.tgname,pg_get_triggerdef(t.oid)
         FROM pg_trigger t JOIN pg_class c ON c.oid=t.tgrelid

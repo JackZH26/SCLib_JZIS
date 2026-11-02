@@ -9,6 +9,7 @@ from __future__ import annotations
 import argparse
 import json
 import os
+import re
 import secrets
 import shutil
 import socket
@@ -74,9 +75,18 @@ def unused_port() -> int:
 
 class DisposableServices:
     def __init__(self, root: Path, backend: str, postgres_bin: Path | None,
-                 redis_bin: Path | None):
+                 redis_bin: Path | None, postgres_image: str | None = None,
+                 pgvector: bool = False):
         self.root, self.backend = root, backend
         self.postgres_bin, self.redis_bin = postgres_bin, redis_bin
+        # A custom image is an immutable, already-installed local image, never
+        # a container/volume/DSN to attach. Service ownership checks still apply.
+        if postgres_image is not None and not re.fullmatch(r"sha256:[0-9a-f]{64}", postgres_image):
+            raise RuntimeError("A custom PostgreSQL image requires its immutable local image ID.")
+        if postgres_image is not None and backend != "docker":
+            raise RuntimeError("Custom PostgreSQL images require the Docker backend.")
+        self.postgres_image = postgres_image or "postgres:16-alpine"
+        self.pgvector = pgvector
         self.env = child_environment()
         self.run_id = secrets.token_hex(16)
         self.name = "test_" + self.run_id[:16]
@@ -154,13 +164,13 @@ class DisposableServices:
                                redis_port)
         else:
             # docker_json verifies the default context is a local Unix socket.
-            docker_json(["image", "inspect", "postgres:16-alpine"])
+            docker_json(["image", "inspect", self.postgres_image])
             docker_json(["image", "inspect", "redis:7-alpine"])
             env_file = self.root / "postgres.env"
             private_write(env_file, "POSTGRES_PASSWORD=" + secrets.token_hex(24) + "\n")
             self._docker_start("postgres", [
                 "--publish", "127.0.0.1::5432", "--env-file", str(env_file),
-                "--tmpfs", "/var/lib/postgresql/data:rw,nosuid,size=512m", "postgres:16-alpine",
+                "--tmpfs", "/var/lib/postgresql/data:rw,nosuid,size=512m", self.postgres_image,
             ])
             private_write(redis_config, self.redis_configuration("0.0.0.0", 6379))
             # The only bind mount is this run's generated private configuration.
@@ -206,6 +216,7 @@ class DisposableServices:
             "GCP_PROJECT": "sclib-disposable-tests", "GCS_BUCKET": "sclib-disposable-tests",
             "VERTEX_AI_INDEX_ENDPOINT": "", "GEMINI_API_KEY": "", "GOOGLE_API_KEY": "",
             "RESEND_API_KEY": "", "INTERNAL_API_KEY": "", "GOOGLE_CLIENT_SECRET": "",
+            "SCLIB_PGVECTOR_RUNTIME_TEST": "1" if self.pgvector else "0",
         }
         self.setup_stage = "capability-verification"
         validate_test_environment(env)
@@ -261,6 +272,7 @@ class DisposableServices:
             "REVOKE CONNECT ON DATABASE postgres FROM PUBLIC;\n"
         ))
         run_quiet(self.pg_command(self.name), env=self.env, input=(
+            ("CREATE EXTENSION vector;\n" if self.pgvector else "") +
             "CREATE SCHEMA sclib_test_guard;\n"
             "CREATE TABLE sclib_test_guard.run_identity "
             "(run_id text PRIMARY KEY, expires_at timestamptz NOT NULL);\n"
@@ -310,6 +322,9 @@ def _main(destination_holder) -> int:
     parser.add_argument("--suite", choices=("api", "migrations"), required=True)
     parser.add_argument("--postgres-bin", type=Path)
     parser.add_argument("--redis-bin", type=Path)
+    parser.add_argument("--postgres-image", help="Preinstalled immutable Docker image ID (sha256:...).")
+    parser.add_argument("--pgvector", action="store_true",
+                        help="Install vector in this invocation's fresh, verified database only.")
     parser.add_argument("--report", type=Path, help="New JSON receipt destination; migrations only.")
     parser.add_argument("pytest_args", nargs=argparse.REMAINDER)
     args = parser.parse_args()
@@ -327,7 +342,8 @@ def _main(destination_holder) -> int:
     with tempfile.TemporaryDirectory(prefix="sclib-tests-") as temporary:
         root = Path(temporary).resolve()
         os.chmod(root, 0o700)
-        services = DisposableServices(root, args.backend, args.postgres_bin, args.redis_bin)
+        services = DisposableServices(root, args.backend, args.postgres_bin, args.redis_bin,
+                                      args.postgres_image, args.pgvector)
         report_document = None
         try:
             env = services.start()

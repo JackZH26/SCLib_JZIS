@@ -102,7 +102,8 @@ class Settings(BaseSettings):
     gcs_bucket: str = "sclib-jzis"
     google_application_credentials: str = "/credentials/gcp-api.json"
     vertex_ai_index_endpoint: str = ""
-    vertex_ai_deployed_index_id: str = "sclib_papers_v1"
+    # Retired deployments must never be selected by an implicit default.
+    vertex_ai_deployed_index_id: str = ""
     retrieval_logical_index: str = Field(default="sclib-main", pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
 
     # === AI models ===

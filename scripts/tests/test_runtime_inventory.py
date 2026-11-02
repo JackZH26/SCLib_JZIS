@@ -116,7 +116,7 @@ class RuntimeInventoryTests(unittest.TestCase):
         self.assertIn("pnpm install --frozen-lockfile", workflow)
         ingestion = workflow.split("\n  ingestion-tests:", 1)[1].split("\n  frontend-build:", 1)[0]
         self.assertIn("uv sync --locked --extra dev --python 3.11 --extra materials-ner", ingestion)
-        self.assertEqual(len([line for line in workflow.splitlines() if line.startswith("  ") and not line.startswith("   ") and line.endswith(":") and line.strip() not in {"pull_request:", "push:"}]), 7)
+        self.assertEqual(len([line for line in workflow.splitlines() if line.startswith("  ") and not line.startswith("   ") and line.endswith(":") and line.strip() not in {"pull_request:", "push:"}]), 8)
 
     def test_database_test_jobs_only_use_guarded_runner(self):
         workflow = (ROOT / ".github/workflows/test.yml").read_text()
