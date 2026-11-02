@@ -286,7 +286,7 @@ class DisposableServices:
             "REVOKE CONNECT ON DATABASE postgres FROM PUBLIC;\n" + builder
         ))
         run_quiet(self.pg_command(self.name), env=self.env, input=(
-            ("CREATE EXTENSION vector;\n" if self.pgvector else "") +
+            ("CREATE EXTENSION vector;\nCREATE EXTENSION pg_prewarm;\n" if self.pgvector else "") +
             "CREATE SCHEMA sclib_test_guard;\n"
             "CREATE TABLE sclib_test_guard.run_identity "
             "(run_id text PRIMARY KEY, expires_at timestamptz NOT NULL);\n"

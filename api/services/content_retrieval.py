@@ -18,6 +18,7 @@ from models.scientific_query import ScientificQueryInterpretation
 from services import provider_resilience,query_embedding,retrieval,retrieval_members,retrieval_navigation
 from services.pgvector_query import PgvectorQueries,QueryBudget
 from services.retrieval_activation import RetrievalPinV2,assert_current_backend,load_active_backend
+from services.retrieval_readiness import ProjectionReadiness
 
 
 class ContentRetrievalUnavailable(ValueError):pass
@@ -42,8 +43,13 @@ class ContentRetriever:
         self._sessions=session_factory
         self._transport=transport
         self._embedding_workers=query_embedding.QueryEmbeddingWorkers()
+        self._readiness=ProjectionReadiness(session_factory)
 
     async def close(self):await self._embedding_workers.close()
+
+    async def prepare(self,pin):
+        self._pin(pin)
+        return await self._readiness.prepare(pin)
 
     def _pin(self,pin):
         if (type(pin) is not RetrievalPinV2 or pin.policy_artifact_sha256!=POLICY_SHA256
@@ -89,6 +95,8 @@ class ContentRetriever:
         task=None
         try:
             async with asyncio.timeout(15):
+                if not await self._readiness.ready(pin):
+                    raise ContentRetrievalUnavailable('Explicit projection preparation is required before querying')
                 # Do not schedule any provider call for a forged/stale identity.
                 async def current(db):await assert_current_backend(db,pin)
                 await self._read(current)

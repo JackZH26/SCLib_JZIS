@@ -35,6 +35,7 @@ async def reader(db_session,tmp_path,monkeypatch):
     monkeypatch.setattr(index_vector_adapter,'_transport',forbidden)
     engine=create_async_engine(get_engine().url,pool_size=4,max_overflow=0,pool_timeout=.5)
     instance=service.ContentRetriever(get_session_factory(),PgvectorQueries(engine))
+    await instance.prepare(pin)
     try:yield instance,pin,ids,calls
     finally:
         await instance.close()
