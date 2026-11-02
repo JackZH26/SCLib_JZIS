@@ -1,5 +1,9 @@
 # Exact fingerprints for reviewed non-secret documentation and synthetic data.
 # Do not replace these with path, commit, or rule-wide ignores.
+# Reviewed 2026-11-02 from scheduled scan 41446319956: this historical
+# forensic-document line contains two labelled SHA-256 digests (implementation
+# and tokenizer receipt). "Tokenizer receipt hash" is not an API credential.
+35919294b89b3b229a2f0704958ec82190966292:docs/pilot/materials-ner-mgb2-forensics-2026-10-13.md:generic-api-key:27
 # Reviewed 2026-10-06: README's literal scl_YOUR_KEY was a documentation
 # placeholder, not a credential. The current example uses SCLIB_API_KEY.
 f7cc41465ec17948652556111a7030c0cb8e7c95:README.md:curl-auth-header:221
