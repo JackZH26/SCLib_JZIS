@@ -490,8 +490,22 @@ class SecurityWorkflowTests(unittest.TestCase):
                     "cf3e7ed06ee09d908dcb254a1f2e8aaba4080597:"
                     "frontend/lib/discovery-research-cycle.ts:generic-api-key:382"
                 ),
+                # Two labelled integrity digests, verified against immutable bytes below.
+                (
+                    "35919294b89b3b229a2f0704958ec82190966292:"
+                    "docs/pilot/materials-ner-mgb2-forensics-2026-10-13.md:generic-api-key:27"
+                ),
             } | REVIEWED_FIXTURE_FINGERPRINTS | REVIEWED_SOURCE_DIGEST_FINGERPRINTS | REVIEWED_PRESSURE_TABLE_DIGEST_FINGERPRINTS | REVIEWED_AB2H24_DIGEST_FINGERPRINTS | REVIEWED_LAH10_DIGEST_FINGERPRINTS,
         )
+
+    def test_historical_ner_tokenizer_digest_exception_replays_exact_bytes(self) -> None:
+        commit = "35919294b89b3b229a2f0704958ec82190966292"
+        path = "docs/pilot/materials-ner-mgb2-forensics-2026-10-13.md"
+        raw = subprocess.check_output(["git", "show", f"{commit}:{path}"], cwd=ROOT, timeout=10)
+        self.assertEqual(hashlib.sha256(raw).hexdigest(),
+                         "89b0d41b6c9a0893e11e02b5c68e73b027b3d44ae05c185004ac8aac8a2a55e8")
+        self.assertRegex(raw.decode().splitlines()[26],
+                         r"^Implementation hash: `[a-f0-9]{64}`\. Tokenizer receipt hash: `[a-f0-9]{64}`\.$")
 
     def test_original_delivery_request_id_exceptions_replay_historical_bytes(self) -> None:
         triage = json.loads((ROOT / "docs/reviews/2026-10-05/calculation-returns/historical-request-id-triage.json").read_text())
