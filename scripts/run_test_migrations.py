@@ -2979,7 +2979,8 @@ def main() -> None:
         from migration_content_answer_history import empty_roundtrip as content_history_empty
         content_history_empty_receipt = content_history_empty(capability, engine, config)
         from migration_bounded_validation import empty_roundtrip as bounded_validation_empty
-        print('BOUNDED_VALIDATION_SCHEMA_RECEIPT ' + json.dumps(bounded_validation_empty(capability, engine, config), sort_keys=True))
+        from json import dumps as bounded_validation_json
+        print('BOUNDED_VALIDATION_SCHEMA_RECEIPT ' + bounded_validation_json(bounded_validation_empty(capability, engine, config), sort_keys=True))
         from migration_discovery_calculations import empty_roundtrip as calculation_empty
         calculation_empty(capability, engine, config)
         from migration_discovery_condition_batches import empty_roundtrip as condition_batch_empty
