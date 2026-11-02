@@ -17,7 +17,8 @@ from models.retrieval_policy_v3 import POLICY_SHA256
 from models.scientific_query import ScientificQueryInterpretation
 from services import provider_resilience,query_embedding,retrieval,retrieval_members,retrieval_navigation
 from services.pgvector_query import PgvectorQueries,QueryBudget
-from services.retrieval_activation import RetrievalPinV2,assert_current_backend,load_active_backend
+from services.retrieval_activation import RetrievalPinV2,load_active_backend
+from services.retrieval_candidate import current_read_pin
 from services.retrieval_readiness import ProjectionReadiness
 
 
@@ -103,7 +104,7 @@ class ContentRetriever:
                 if not await self._readiness.ready(pin):
                     raise ContentRetrievalUnavailable('Explicit projection preparation is required before querying')
                 # Do not schedule any provider call for a forged/stale identity.
-                async def current(db):await assert_current_backend(db,pin)
+                async def current(db):await current_read_pin(db,pin)
                 await self._read(current)
                 task=asyncio.create_task(self._semantic(pin,query,top_k=min(top_k*(4 if purpose=='ask' else 3),80 if purpose=='ask' else 100),
                     year_min=year_min,year_max=year_max))
@@ -122,7 +123,7 @@ class ContentRetriever:
                     rankings=retrieval.fuse_rankings(semantic,lexical,limit=candidate_limit)
                     chunks=await retrieval_members.hydrate(db,pin,[row.chunk_id for row in rankings])
                     ranked=retrieval.rerank_candidates(query,rankings,chunks)
-                    await assert_current_backend(db,pin)
+                    await current_read_pin(db,pin)
                     return HybridCandidates(pin,tuple(ranked),chunks)
                 return await self._read(hydrate)
         except Exception:

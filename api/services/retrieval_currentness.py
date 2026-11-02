@@ -187,11 +187,14 @@ async def _check_snapshot(db, pins, evidence_resolver, *, backend_pin=None):
         else:
             from services.retrieval_activation import RetrievalPinV2, load_active_backend
             from services import retrieval_members
-            if type(backend_pin) is not RetrievalPinV2:
+            from services.retrieval_candidate import EngineeringCandidatePin,load_candidate,is_read_pin
+            if not is_read_pin(backend_pin):
                 raise CurrentnessUnavailable("an exact v2 backend pin is required")
             # Resolve again in this NEW read-only snapshot. A private object
             # from an earlier request phase cannot authorize its own currency.
-            active = await load_active_backend(db, logical_index=backend_pin.logical_index)
+            active = (await load_candidate(db,build_id=backend_pin.build_id,validation_id=backend_pin.validation_id,
+                expected_database=backend_pin.database_name) if type(backend_pin) is EngineeringCandidatePin else
+                await load_active_backend(db, logical_index=backend_pin.logical_index))
             if (active != backend_pin or active is None
                     or index_retrieval.pin_sha256(active.metadata()) not in generation_hashes):
                 return CurrentnessCheck("changed", "retrieval_generation_changed", snapshot_at)

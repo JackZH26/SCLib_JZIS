@@ -11,7 +11,8 @@ from models.db import Paper
 from models.search import SimilarPaper
 from services import index_retrieval,retrieval_currentness,retrieval_groups,retrieval_members
 from services.pgvector_query import CandidateBatch,SqlNeighbor
-from services.retrieval_activation import RetrievalPinV2,assert_current_backend
+from services.retrieval_activation import RetrievalPinV2
+from services.retrieval_candidate import current_read_pin
 from services.source_lifecycle import resolve_paper_lifecycle
 from services.source_visibility import source_visibility,project_source_occurrences
 
@@ -130,7 +131,7 @@ async def similar(reader,pin,paper_id,*,top_k):
                                 ('paper_id','content_sha256','vector_sha256','chunk_revision_sha256')):
                             raise ContentSimilarityUnavailable('Similar payload/source binding mismatch')
                     selected.update(await capture(db,pin,list(chunks.values())))
-                await assert_current_backend(db,pin)
+                await current_read_pin(db,pin)
                 return selected
             async with asyncio.timeout(5):selected=await reader._read(targets)
             accumulated={};attributions={};contributors={}
@@ -148,7 +149,7 @@ async def similar(reader,pin,paper_id,*,top_k):
             if len(final_pins)>1020 or len({value.chunk_id for value in final_pins})!=len(final_pins):
                 raise ContentSimilarityUnavailable('Complete unique Similar final selection required')
             async def final(db):
-                await assert_current_backend(db,pin)
+                await current_read_pin(db,pin)
                 for offset in range(0,len(final_pins),BATCH):
                     async def resolve(session,chunks):return await retrieval_members.resolve_evidence(session,pin,chunks)
                     checked=await retrieval_currentness._check_snapshot(db,final_pins[offset:offset+BATCH],resolve,backend_pin=pin)

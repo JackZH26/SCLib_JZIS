@@ -14,7 +14,8 @@ from uuid import UUID
 
 import sqlalchemy as sa
 
-from services.retrieval_activation import RetrievalPinV2,assert_current_backend
+from services.retrieval_activation import RetrievalPinV2
+from services.retrieval_candidate import is_read_pin,current_read_pin
 
 
 class ProjectionNotReady(ValueError):pass
@@ -45,8 +46,8 @@ class ProjectionReadiness:
         self._prepared=None
 
     async def _witness(self,db,pin):
-        if type(pin) is not RetrievalPinV2:raise ProjectionNotReady('An exact internal v2 pin is required')
-        await assert_current_backend(db,pin)
+        if not is_read_pin(pin):raise ProjectionNotReady('An exact internal v2 pin is required')
+        await current_read_pin(db,pin)
         row=(await db.execute(sa.text("""
           SELECT pg_postmaster_start_time() AS started,t.oid AS table_oid,g.oid AS graph_oid,k.oid AS primary_key_oid,
             pg_relation_filenode(t.oid) AS table_filenode,pg_relation_filenode(g.oid) AS graph_filenode,
@@ -74,7 +75,7 @@ class ProjectionReadiness:
 
     async def ready(self,pin):
         prepared=self._prepared
-        if prepared is None or type(pin) is not RetrievalPinV2 or prepared.pin!=pin:return False
+        if prepared is None or not is_read_pin(pin) or prepared.pin!=pin:return False
         try:
             async with asyncio.timeout(3):
                 observed=await self._read(lambda db:self._witness(db,pin))
@@ -119,7 +120,8 @@ class ProjectionReadiness:
             if after!=before:raise ProjectionNotReady('Authority, server boot or physical projection changed during preparation')
             self._prepared=after
             return {'version':'projection-readiness/1.0.0','build_id':pin.build_id,
-                'content_id':pin.content_id,'activation_event_id':pin.activation_event_id,
+                'content_id':pin.content_id,**({'activation_event_id':pin.activation_event_id}
+                    if type(pin) is RetrievalPinV2 else {'engineering_candidate':pin.metadata()}),
                 'postmaster_started_at':after.postmaster_started_at,'phases':phases,
                 'shared_buffer_bytes':after.shared_buffer_bytes,'graph_bytes':after.graph_bytes,
                 'seconds':time.monotonic()-started,'query_warmups':0,

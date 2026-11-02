@@ -7,7 +7,8 @@ from models.db import Base
 from models.retrieval_navigation_v2 import TABLE,VERSION,FORMULA_VERSION
 from services.index_corpus import formula_terms,is_corpus
 from services.retrieval import LexicalHit
-from services.retrieval_activation import RetrievalPinV2,assert_current_backend
+from services.retrieval_activation import RetrievalPinV2
+from services.retrieval_candidate import is_read_pin,current_read_pin
 from services.retrieval_backend import _phase
 
 
@@ -39,7 +40,7 @@ async def ensure_native_navigation(db, *, native_revision_id, dry_run=True):
 
 
 def _request(pin,limit,year_min,year_max):
-    if type(pin) is not RetrievalPinV2 or type(limit) is not int or not 1<=limit<=300:
+    if not is_read_pin(pin) or type(limit) is not int or not 1<=limit<=300:
         raise RetrievalNavigationError('An exact content pin and bounded candidate limit are required')
     if any(year is not None and (type(year) is not int or not 1<=year<=9999) for year in (year_min,year_max)):
         raise RetrievalNavigationError('Exact year bounds are required')
@@ -53,7 +54,7 @@ async def lexical_search(db,pin,query,*,limit,year_min=None,year_max=None,exclud
     if type(query) is not str or not 2<=len(query)<=2000 or not query.strip() or type(exclude_retracted) is not bool:
         raise RetrievalNavigationError('A bounded original query and explicit source filter are required')
     params.update(query=query,exclude_retracted=exclude_retracted)
-    await assert_current_backend(db,pin)
+    await current_read_pin(db,pin)
     year="AND (CAST(:year_min AS integer) IS NULL OR n.year>=:year_min) AND (CAST(:year_max AS integer) IS NULL OR n.year<=:year_max)"
     rows=(await db.execute(sa.text(f"""
       WITH candidates AS (
@@ -91,7 +92,7 @@ async def formula_search(db,pin,wanted,*,limit,year_min=None,year_max=None):
     params=_request(pin,limit,year_min,year_max)
     if type(wanted) is not set or not 1<=len(wanted)<=32 or any(type(term) is not str or not 1<=len(term)<=200 for term in wanted):
         raise RetrievalNavigationError('Bounded normalized formula terms are required')
-    await assert_current_backend(db,pin);params['wanted']=sorted(wanted)
+    await current_read_pin(db,pin);params['wanted']=sorted(wanted)
     rows=(await db.execute(sa.text(f"""
       WITH selected AS MATERIALIZED (
         SELECT n.*, (SELECT count(*) FROM unnest(n.terms) t WHERE t=ANY(CAST(:wanted AS text[]))) AS matches

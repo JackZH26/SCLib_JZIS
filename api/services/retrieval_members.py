@@ -15,7 +15,8 @@ from models.db import Paper
 from services import index_retrieval
 from services.index_generations import vector_id_for
 from services.pgvector_query import CandidateBatch
-from services.retrieval_activation import RetrievalPinV2, assert_current_backend
+from services.retrieval_activation import RetrievalPinV2
+from services.retrieval_candidate import is_read_pin,current_read_pin
 from services.retrieval_backend import _phase
 
 MAX_MEMBERS = 1000
@@ -65,10 +66,10 @@ async def load_members(db, pin, identifiers):
     Private archive paths/locators are never selected. Unknown members are an
     integrity error here, rather than a successful empty vector result.
     """
-    if type(pin) is not RetrievalPinV2:
+    if not is_read_pin(pin):
         raise RetrievalMemberError('An authoritative versioned v2 pin is required')
     ids = _ids(identifiers)
-    await assert_current_backend(db, pin)
+    await current_read_pin(db, pin)
     if not ids:
         return []
     source = _source_sql()
@@ -123,7 +124,7 @@ async def load_members(db, pin, identifiers):
 
 
 async def verified_hits(db, pin, batch):
-    if type(pin) is not RetrievalPinV2 or type(batch) is not CandidateBatch or batch.projection != pin.projection:
+    if not is_read_pin(pin) or type(batch) is not CandidateBatch or batch.projection != pin.projection:
         raise RetrievalMemberError('Candidate batch does not match the request backend pin')
     ids = _ids([item.vector_id for item in batch.neighbors])
     members = {row['vector_id']: row for row in await load_members(db, pin, ids)}
@@ -144,8 +145,8 @@ async def load_text_bindings(db,pin,identifiers):
 
     This is candidate verification, not source permission or publication.
     """
-    if type(pin) is not RetrievalPinV2:raise RetrievalMemberError('An exact v2 read pin is required')
-    ids=_ids(identifiers);await assert_current_backend(db,pin)
+    if not is_read_pin(pin):raise RetrievalMemberError('An exact v2 read pin is required')
+    ids=_ids(identifiers);await current_read_pin(db,pin)
     if not ids:return {}
     source=_source_sql();params={'content':UUID(pin.content_id),'ids':ids}
     async with _phase(db,True,{'bytea_output':'hex'}):
@@ -200,10 +201,10 @@ async def hydrate(db, pin, identifiers):
 
 
 async def resolve_evidence(db, pin, chunks):
-    if type(pin) is not RetrievalPinV2 or any(type(row) is not index_retrieval.GenerationChunk
+    if not is_read_pin(pin) or any(type(row) is not index_retrieval.GenerationChunk
             or row.generation_pin != pin.metadata() or row.member.get('content_id') != pin.content_id for row in chunks):
         raise RetrievalMemberError('Mixed content/backend evidence is inadmissible')
-    await assert_current_backend(db, pin)
+    await current_read_pin(db, pin)
     # Existing retained policy preserves missing parents, historical warnings,
     # source lifecycle and past restrictions. Native input observation grants
     # no new root, independent evidence or scientific support.
@@ -211,11 +212,11 @@ async def resolve_evidence(db, pin, chunks):
 
 
 async def paper_member_ids(db, pin, paper_id, *, limit=20):
-    if type(pin) is not RetrievalPinV2 or type(paper_id) is not str or not 1 <= len(paper_id) <= 100:
+    if not is_read_pin(pin) or type(paper_id) is not str or not 1 <= len(paper_id) <= 100:
         raise RetrievalMemberError('An exact current content and source paper are required')
     if type(limit) is not int or not 1 <= limit <= 20:
         raise RetrievalMemberError('Bounded source vector selection required')
-    await assert_current_backend(db, pin)
+    await current_read_pin(db, pin)
     return list((await db.execute(sa.text('SELECT vector_id FROM retrieval_content_members_v2 '
         'WHERE content_id=:content AND paper_id=:paper ORDER BY vector_id COLLATE "C" LIMIT :limit'),
         {'content': UUID(pin.content_id), 'paper': paper_id, 'limit': limit})).scalars())
