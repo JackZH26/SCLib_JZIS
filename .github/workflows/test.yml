@@ -32,7 +32,7 @@ jobs:
           image_id="$(docker image inspect sclib-pgvector-ci --format '{{.Id}}')"
           api/.venv/bin/python scripts/run_disposable_tests.py --backend docker \
             --postgres-image "$image_id" --pgvector --suite api \
-            -- -q tests/test_pgvector_runtime.py
+            -- -q tests/test_pgvector_runtime.py tests/test_pgvector_query.py
       - name: Rehearse the complete schema on the pgvector image independently
         run: |
           image_id="$(docker image inspect sclib-pgvector-ci --format '{{.Id}}')"
