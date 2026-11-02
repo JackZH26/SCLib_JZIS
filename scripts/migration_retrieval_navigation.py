@@ -30,7 +30,7 @@ async def populated(capability):
                 await (await db.connection()).run_sync(verify_postgres_identity,capability)
                 if not await db.scalar(text("SELECT EXISTS(SELECT 1 FROM pg_extension WHERE extname='vector' AND extversion='0.8.7')")):
                     return {'actual_pgvector_runtime':False,'populated_checks':'not_run_without_owned_pgvector'}
-                pin,ids,_=await active_content(db,Path(folder))
+                pin,ids,_=await active_content(db,Path(folder),policy_version='v2')
                 assert {row.chunk_id for row in await retrieval_navigation.lexical_search(db,pin,'Synthetic',limit=30)}==set(ids)
                 assert await retrieval_members.load_text_bindings(db,pin,ids)
                 await db.commit()

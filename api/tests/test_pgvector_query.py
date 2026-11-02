@@ -5,6 +5,7 @@ import math
 import os
 import time
 import asyncio
+import json
 from uuid import uuid4
 
 import pytest
@@ -77,7 +78,7 @@ async def test_rare_year_filter_is_exact_and_excludes_source_revisions(projectio
 
 async def test_large_filtered_cohort_uses_graph_without_cross_year_results(projection):
     engine, spec = projection
-    result = await PgvectorQueries(engine, QueryBudget(exact_cohort_limit=10)).query(
+    result = await PgvectorQueries(engine, QueryBudget(year_exact_cohort_limit=10)).query(
         spec, vector(), top_k=20, year_max=2001)
     assert result.strategy == "hnsw" and result.exhaustive is False
     assert [item.vector_id for item in result.neighbors] == [f"v{i:03}" for i in range(12, 32)]
@@ -87,6 +88,42 @@ async def test_real_empty_filtered_cohort_is_successful_exact_empty(projection):
     engine, spec = projection
     result = await PgvectorQueries(engine).query(spec, vector(), top_k=20, year_min=2027)
     assert result.strategy == "exact_filtered" and result.exhaustive and result.neighbors == ()
+
+
+async def test_expanded_year_exact_path_scores_all_rows_without_ann_ordering(projection):
+    engine,spec=projection
+    async with engine.begin() as db:
+        await db.execute(sa.text(f"INSERT INTO {spec.table} SELECT 'expanded_'||lpad(n::text,5,'0'),'synthetic-expanded',2026,"
+            "repeat('a',64),repeat('b',64),lpad((n+10000)::text,64,'0'),CAST(:vector AS vector(768)) FROM generate_series(1,1200) n"),
+            {'vector':str(vector())})
+    captured=[]
+    def capture(conn,cursor,statement,parameters,context,many):
+        if 'ORDER BY (embedding <=>' in statement:captured.append((statement,parameters))
+    sa.event.listen(engine.sync_engine,'before_cursor_execute',capture)
+    try:result=await PgvectorQueries(engine).query(spec,vector(),top_k=20,year_min=2026)
+    finally:sa.event.remove(engine.sync_engine,'before_cursor_execute',capture)
+    assert result.exhaustive and result.strategy=='exact_filtered'
+    assert [row.vector_id for row in result.neighbors]==[f'expanded_{i:05}' for i in range(1,21)]
+    assert len(captured)==1
+    async with engine.connect() as db:
+        plan=(await db.exec_driver_sql('EXPLAIN (FORMAT JSON) '+captured[0][0],captured[0][1])).scalar_one()
+        if isinstance(plan,str):plan=json.loads(plan)
+        graph_names=set((await db.execute(sa.text('SELECT c.relname FROM pg_index i JOIN pg_class c ON c.oid=i.indexrelid '
+            "JOIN pg_am a ON a.oid=c.relam WHERE i.indrelid=to_regclass(:name) AND a.amname='hnsw'"),{'name':spec.table})).scalars())
+    names=[]
+    def inspect(node):
+        if 'Index Name' in node:names.append(node['Index Name'])
+        for child in node.get('Plans',[]):inspect(child)
+    inspect(plan[0]['Plan'])
+    assert graph_names and not graph_names.intersection(names)
+
+
+async def test_source_only_exclusions_keep_the_small_exact_count_budget(projection):
+    engine,spec=projection
+    result=await PgvectorQueries(engine,QueryBudget(exact_cohort_limit=10)).query(spec,vector(),top_k=20,
+        excluded_revisions=[f'{3001:064x}'])
+    assert result.strategy=='hnsw' and not result.exhaustive
+    assert all(row.chunk_revision_sha256!=f'{3001:064x}' for row in result.neighbors)
 
 
 async def test_equal_distance_ties_follow_canonical_ids_in_exact_and_graph_paths(projection):

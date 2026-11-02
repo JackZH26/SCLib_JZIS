@@ -23,8 +23,8 @@ pytestmark = [pytest.mark.asyncio, pytest.mark.skipif(
     os.environ.get('SCLIB_PGVECTOR_RUNTIME_TEST') != '1', reason='Requires fresh owned vector runner')]
 
 
-async def active_content(db, tmp_path=None):
-    first = await prepared_build(db)
+async def active_content(db, tmp_path=None,*,policy_version='v3'):
+    first = await prepared_build(db,policy_version=policy_version)
     event = await activation_service.activate_backend(db, **activation(first, await accepted(db, first)), dry_run=False)
     if tmp_path is not None:
         _, _, publication_result = await publication(db, tmp_path)
@@ -33,7 +33,7 @@ async def active_content(db, tmp_path=None):
         refs = await content_service.source_reference_page(db, content_id=plan['content_id'])
         await content_service.append_content_partition(db, content_id=plan['content_id'], partition_id=0, references=refs, dry_run=False)
         await content_service.seal_content(db, content_id=plan['content_id'], dry_run=False)
-        second = await prepared_build(db, content_id=plan['content_id'], logical_index=first['logical_index'])
+        second = await prepared_build(db, content_id=plan['content_id'], logical_index=first['logical_index'],policy_version=policy_version)
         await activation_service.activate_backend(db, **activation(second, await accepted(db, second),
             predecessor=event['activation_event_id'], old=False), dry_run=False)
     pin = await activation_service.load_active_backend(db, logical_index=first['logical_index'])

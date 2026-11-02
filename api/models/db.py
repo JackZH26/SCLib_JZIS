@@ -1931,3 +1931,7 @@ _register_content_answer_storage_v2(Base.metadata)
 from models.retrieval_bounded_validation_v3 import register as _register_bounded_projection_validation
 
 _register_bounded_projection_validation(Base.metadata)
+
+from models.retrieval_policy_v3 import register as _register_retrieval_policy_v3
+
+_register_retrieval_policy_v3(Base.metadata)

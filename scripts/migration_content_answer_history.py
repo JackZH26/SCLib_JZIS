@@ -35,7 +35,7 @@ async def populated(capability):
                 await (await db.connection()).run_sync(verify_postgres_identity,capability)
                 if not await db.scalar(sa.text("SELECT EXISTS(SELECT 1 FROM pg_extension WHERE extname='vector' AND extversion='0.8.7')")):
                     return {'actual_pgvector_runtime':False,'populated_checks':'not_run_without_owned_pgvector'}
-                pin,_,_=await active_content(db,Path(folder));await db.commit()
+                pin,_,_=await active_content(db,Path(folder),policy_version='v2');await db.commit()
                 request=AskRequest(question='Unresolved synthetic history question',language='en')
                 response=AskResponse(answer='No evidence selected for this synthetic question.',sources=[],
                     tokens_used=None,query_time_ms=1,retrieval_generation=retrieval_read_metadata(pin),

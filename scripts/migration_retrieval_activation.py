@@ -59,7 +59,7 @@ async def populated_activation(capability):
             await connection.run_sync(verify_postgres_identity, capability)
             if not await db.scalar(text("SELECT EXISTS(SELECT 1 FROM pg_extension WHERE extname='vector' AND extversion='0.8.7')")):
                 return {'actual_pgvector_runtime': False, 'activation_checks': 'not_run_without_owned_pgvector_runtime'}
-            first = await prepared_build(db)
+            first = await prepared_build(db,policy_version='v2')
             async def original_rows():
                 return {name: (await db.execute(text(f'SELECT to_jsonb(t)::text FROM public.{name} t ORDER BY to_jsonb(t)::text'))).scalars().all()
                     for name in ('papers', 'users', 'index_generations', 'index_generation_members', 'index_activation_events', 'index_active_pointer')}
@@ -68,7 +68,7 @@ async def populated_activation(capability):
             e1 = await activation.activate_backend(db, **event_args(first, a1), dry_run=False)
             p1 = await activation.load_active_backend(db, logical_index=first['logical_index'])
             assert await original_rows() == before
-            second = await prepared_build(db, content_id=first['content_id'], logical_index=first['logical_index'])
+            second = await prepared_build(db, content_id=first['content_id'], logical_index=first['logical_index'],policy_version='v2')
             # The second local graph is a distinct physical candidate, not a
             # relabelled provider generation or whole-database replacement.
             # Compare unchanged user/source/v1 history after both were staged.

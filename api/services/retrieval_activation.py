@@ -14,7 +14,7 @@ import sqlalchemy as sa
 
 from models.db import Base
 from models.retrieval_activation_v2 import GATES, TABLE_ORDER
-from models.retrieval_backend_v2 import POLICY, POLICY_SHA256
+from models.retrieval_policy_v3 import SUPPORTED_POLICIES
 from services.pgvector_query import ProjectionSpec
 from services.retrieval_backend import RetrievalBackendError, _existing, _phase
 
@@ -136,8 +136,9 @@ async def load_active_backend(db, *, logical_index='sclib-main'):
         a.c.build_id == b.c.id, a.c.content_id == c.c.id, v.c.build_id == b.c.id,
         v.c.outcome == 'validated', e.c.manifest_sha256 == s.c.manifest_sha256,
         b.c.content_manifest_sha256 == s.c.manifest_sha256, a.c.manifest_sha256 == s.c.manifest_sha256,
-        b.c.expected_member_count == s.c.member_count, b.c.policy_artifact_sha256 == POLICY_SHA256,
-        b.c.policy == POLICY, a.c.policy_artifact_sha256 == b.c.policy_artifact_sha256,
+        b.c.expected_member_count == s.c.member_count,
+        sa.or_(*(sa.and_(b.c.policy==policy,b.c.policy_artifact_sha256==digest) for policy,digest in SUPPORTED_POLICIES)),
+        a.c.policy_artifact_sha256 == b.c.policy_artifact_sha256,
         a.c.image_digest == b.c.image_digest, b.c.profile == c.c.profile,
         e.c.build_record_sha256 == b.c.record_sha256, e.c.validation_record_sha256 == v.c.record_sha256,
         e.c.acceptance_record_sha256 == a.c.record_sha256,

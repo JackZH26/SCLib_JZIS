@@ -2981,6 +2981,8 @@ def main() -> None:
         from migration_bounded_validation import empty_roundtrip as bounded_validation_empty
         from json import dumps as bounded_validation_json
         print('BOUNDED_VALIDATION_SCHEMA_RECEIPT ' + bounded_validation_json(bounded_validation_empty(capability, engine, config), sort_keys=True))
+        from migration_retrieval_policy import empty_roundtrip as query_policy_empty
+        query_policy_empty_receipt=query_policy_empty(capability,engine,config)
         from migration_discovery_calculations import empty_roundtrip as calculation_empty
         calculation_empty(capability, engine, config)
         from migration_discovery_condition_batches import empty_roundtrip as condition_batch_empty
@@ -3307,6 +3309,10 @@ def main() -> None:
             "production":False,"deployment_approved":False,"scientific_acceptance":False,
             **content_history_empty_receipt,**content_history_capture,**content_history_retention,
         },sort_keys=True))
+        from migration_retrieval_policy import populated as query_policy_populated,retained as query_policy_retained
+        query_policy_capture=asyncio.run(query_policy_populated(capability))
+        query_policy_retention=query_policy_retained(capability,engine,config,query_policy_capture)
+        print('QUERY_POLICY_SCHEMA_RECEIPT '+json.dumps({**query_policy_empty_receipt,**query_policy_capture,**query_policy_retention},sort_keys=True))
         if recorder is not None:
             with engine.connect() as connection:
                 verify_postgres_identity(connection, capability)

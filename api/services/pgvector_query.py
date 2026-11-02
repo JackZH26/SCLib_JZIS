@@ -59,13 +59,14 @@ class QueryBudget:
     total_seconds: float = 3.0
     statement_ms: int = 2000
     exact_cohort_limit: int = 1000
+    year_exact_cohort_limit: int = 200000
     ef_search: int = 1000
     candidate_pool: int = 1024
     max_scan_tuples: int = 20000
 
     def __post_init__(self):
         bounds = ((self.concurrency, 1, 8), (self.statement_ms, 1, 5000),
-                  (self.exact_cohort_limit, 1, 5000), (self.ef_search, 40, 1000),
+                  (self.exact_cohort_limit, 1, 5000), (self.year_exact_cohort_limit, 1, 200000), (self.ef_search, 40, 1000),
                   (self.max_scan_tuples, 1000, 50000), (self.candidate_pool, 101, 4096))
         if (any(type(value) is not int or not low <= value <= high for value, low, high in bounds)
                 or type(self.total_seconds) not in {int, float}
@@ -217,19 +218,23 @@ class PgvectorQueries:
                                                  {"key": key, "value": value})
                     filtered = year_min is not None or year_max is not None or bool(excluded_revisions)
                     cohort = None
+                    # Year filtering has a measured exact path. Source-only
+                    # exclusions keep their small count ceiling; Similar must
+                    # not count 200k members for every stored source vector.
+                    exact_limit=(self.budget.year_exact_cohort_limit if year_min is not None or year_max is not None
+                        else self.budget.exact_cohort_limit)
                     if filtered:
                         cohort = await connection.scalar(sa.text(
                             f"SELECT count(*) FROM (SELECT 1 FROM {projection.table} WHERE {predicate} "
                             "LIMIT :cohort_limit) cohort"),
-                            {**params, "cohort_limit": self.budget.exact_cohort_limit + 1})
-                    exhaustive = cohort is not None and cohort <= self.budget.exact_cohort_limit
+                            {**params, "cohort_limit": exact_limit + 1})
+                    exhaustive = cohort is not None and cohort <= exact_limit
                     if exhaustive:
-                        # The materialization prevents an ANN index scan from
-                        # being substituted for the small-cohort exact sort.
-                        sql = (f"WITH cohort AS MATERIALIZED (SELECT {_COLUMNS},year,embedding "
-                               f"FROM {projection.table} WHERE {predicate}) "
-                               f"SELECT {_COLUMNS},year,{distance} AS distance FROM cohort "
-                               f'ORDER BY {distance},vector_id COLLATE "C" LIMIT :limit')
+                        # The non-indexable distance expression forces complete
+                        # exact scoring. Keep only result fields in the sort,
+                        # rather than materializing every 3-KiB vector.
+                        sql = (f"SELECT {_COLUMNS},year,{distance} AS distance FROM {projection.table} "
+                               f'WHERE {predicate} ORDER BY ({distance})+0,vector_id COLLATE "C" LIMIT :limit')
                     else:
                         await connection.execute(sa.text("SET LOCAL enable_seqscan=off"))
                         await connection.execute(sa.text("SET LOCAL enable_bitmapscan=off"))

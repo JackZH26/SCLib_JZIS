@@ -12,7 +12,8 @@ from uuid import UUID
 import sqlalchemy as sa
 
 from models.db import Base
-from models.retrieval_backend_v2 import POLICY, POLICY_SHA256, TABLE_ORDER, authority_sql
+from models.retrieval_backend_v2 import TABLE_ORDER, authority_sql
+from models.retrieval_policy_v3 import POLICY,POLICY_SHA256,SUPPORTED_POLICIES
 from services.pgvector_query import ProjectionSpec
 from services.pgvector_wire import MAX_BYTES, content_projection_copy
 
@@ -86,15 +87,18 @@ async def _fence(db, identifier):
     await db.execute(sa.text("SELECT public.sclib_retrieval_build_fence_v2(:id)"), {"id": identifier})
 
 
-async def stage_build(db, *, build_id, content_id, image_digest, implementation_revision, dry_run=True):
+async def stage_build(db, *, build_id, content_id, image_digest, implementation_revision, dry_run=True,policy_version='v3'):
     """Record declared artifact identity; external signature proof is separate."""
     if (type(image_digest) is not str or not re.fullmatch(r"sha256:[a-f0-9]{64}", image_digest)
             or type(implementation_revision) is not str or not re.fullmatch(r"[a-f0-9]{40}", implementation_revision)):
         raise RetrievalBackendError("Explicit immutable image and implementation identities are required")
     identifier = UUID(str(build_id))
+    if type(policy_version) is not str or policy_version not in {'v2','v3'}:
+        raise RetrievalBackendError('An explicit supported query policy is required')
+    policy,policy_sha=SUPPORTED_POLICIES[0 if policy_version=='v2' else 1]
     async with _phase(db, dry_run) as operation:
         row, operation["changed"] = await _put(db, TABLE_ORDER[0], {"id": identifier}, {
-            "content_id": UUID(str(content_id)), "policy": POLICY, "policy_artifact_sha256": POLICY_SHA256,
+            "content_id": UUID(str(content_id)), "policy": policy, "policy_artifact_sha256": policy_sha,
             "image_digest": image_digest, "implementation_revision": implementation_revision})
     return {"build_id": str(identifier), "content_id": str(row["content_id"]),
             "record_sha256": row["record_sha256"], "expected_member_count": row["expected_member_count"],

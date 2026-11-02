@@ -69,7 +69,7 @@ async def populated_backend(capability):
             before = await legacy_rows()
             identifier, validation = str(uuid4()), str(uuid4())
             await backend.stage_build(db, build_id=identifier, content_id=content["content_id"],
-                image_digest="sha256:" + "a" * 64, implementation_revision="b" * 40, dry_run=False)
+                image_digest="sha256:" + "a" * 64, implementation_revision="b" * 40, dry_run=False,policy_version='v2')
             await backend.create_projection(db, build_id=identifier, dry_run=False)
             await backend.copy_partition(db, build_id=identifier, partition_id=0, dry_run=False)
             await backend.build_small_projection_graph(db, build_id=identifier, dry_run=False)

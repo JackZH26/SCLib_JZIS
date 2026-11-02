@@ -22,7 +22,7 @@ pytestmark = [pytest.mark.asyncio, pytest.mark.skipif(
     os.environ.get('SCLIB_PGVECTOR_RUNTIME_TEST') != '1', reason='Requires fresh owned vector runner')]
 
 
-async def prepared_build(db, *, content_id=None, logical_index=None):
+async def prepared_build(db, *, content_id=None, logical_index=None,policy_version='v3'):
     old = None
     if content_id is None:
         logical = logical_index or 'synthetic-' + uuid4().hex
@@ -38,7 +38,7 @@ async def prepared_build(db, *, content_id=None, logical_index=None):
         await content_service.seal_content(db, content_id=content_id, dry_run=False)
     identifier = str(uuid4())
     await backend.stage_build(db, build_id=identifier, content_id=content_id,
-        image_digest='sha256:' + 'a' * 64, implementation_revision='b' * 40, dry_run=False)
+        image_digest='sha256:' + 'a' * 64, implementation_revision='b' * 40, dry_run=False,policy_version=policy_version)
     await backend.create_projection(db, build_id=identifier, dry_run=False)
     await backend.copy_partition(db, build_id=identifier, partition_id=0, dry_run=False)
     await backend.build_small_projection_graph(db, build_id=identifier, dry_run=False)
