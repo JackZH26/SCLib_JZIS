@@ -34,6 +34,7 @@ async def projection():
     engine = get_engine()
     spec = ProjectionSpec(str(uuid4()), str(uuid4()), "a" * 64)
     async with engine.begin() as db:
+        await db.execute(sa.text("CREATE SCHEMA IF NOT EXISTS retrieval_projection"))
         await db.execute(sa.text(f"CREATE TABLE {spec.table} (vector_id text PRIMARY KEY,paper_id text,"
                                  "year integer,content_sha256 text,vector_sha256 text,"
                                  "chunk_revision_sha256 text,embedding vector(768))"))
@@ -88,14 +89,26 @@ async def test_real_empty_filtered_cohort_is_successful_exact_empty(projection):
 
 
 async def test_local_settings_do_not_leak_to_next_transaction(projection):
+    from sqlalchemy.ext.asyncio import create_async_engine
+
     engine, spec = projection
-    async with engine.connect() as db:
-        before = {key: await db.scalar(sa.text("SELECT current_setting(:key)"), {"key": key})
-                  for key in ("statement_timeout", "work_mem", "transaction_read_only")}
-    await PgvectorQueries(engine).query(spec, vector(), top_k=5)
-    async with engine.connect() as db:
-        after = {key: await db.scalar(sa.text("SELECT current_setting(:key)"), {"key": key}) for key in before}
-    assert before == after
+    # The application test engine can use NullPool. Pin one actual owned DB
+    # connection so a reset check cannot pass merely by replacing the session.
+    dedicated = create_async_engine(engine.url, pool_size=1, max_overflow=0)
+    try:
+        async with dedicated.connect() as db:
+            await db.execute(sa.text("SELECT vector_dims(CAST(:v AS vector(768)))"), {"v": str(vector())})
+            original_pid = await db.scalar(sa.text("SELECT pg_backend_pid()"))
+            before = {key: await db.scalar(sa.text("SELECT current_setting(:key)"), {"key": key})
+                      for key in ("statement_timeout", "work_mem", "transaction_read_only",
+                                  "hnsw.iterative_scan", "hnsw.ef_search")}
+        await PgvectorQueries(dedicated).query(spec, vector(), top_k=5)
+        async with dedicated.connect() as db:
+            assert await db.scalar(sa.text("SELECT pg_backend_pid()")) == original_pid
+            after = {key: await db.scalar(sa.text("SELECT current_setting(:key)"), {"key": key}) for key in before}
+        assert before == after
+    finally:
+        await dedicated.dispose()
 
 
 async def test_locked_projection_times_out_and_connection_recovers(projection):
@@ -172,6 +185,7 @@ async def test_projection_does_not_accept_sql_object_names():
 @pytest.mark.parametrize("budget", [
     {"concurrency": True}, {"concurrency": 9}, {"statement_ms": 6000},
     {"total_seconds": float("inf")}, {"total_seconds": 1.0, "statement_ms": 2000},
+    {"candidate_pool": True}, {"candidate_pool": 4097}, {"candidate_pool": 1000},
 ])
 async def test_unbounded_resource_settings_are_rejected(budget):
     with pytest.raises(PgvectorQueryError):

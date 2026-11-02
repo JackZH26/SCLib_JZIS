@@ -50,7 +50,7 @@ class ProjectionSpec:
     @property
     def table(self):
         # A user/config-supplied SQL object name never crosses this boundary.
-        return "public.retrieval_vectors_" + UUID(self.build_id).hex
+        return "retrieval_projection.b_" + UUID(self.build_id).hex
 
 
 @dataclass(frozen=True, slots=True)
@@ -59,17 +59,19 @@ class QueryBudget:
     total_seconds: float = 3.0
     statement_ms: int = 2000
     exact_cohort_limit: int = 1000
-    ef_search: int = 100
+    ef_search: int = 1000
+    candidate_pool: int = 1024
     max_scan_tuples: int = 20000
 
     def __post_init__(self):
         bounds = ((self.concurrency, 1, 8), (self.statement_ms, 1, 5000),
                   (self.exact_cohort_limit, 1, 5000), (self.ef_search, 40, 1000),
-                  (self.max_scan_tuples, 1000, 50000))
+                  (self.max_scan_tuples, 1000, 50000), (self.candidate_pool, 101, 4096))
         if (any(type(value) is not int or not low <= value <= high for value, low, high in bounds)
                 or type(self.total_seconds) not in {int, float}
                 or not math.isfinite(self.total_seconds) or not 0 < self.total_seconds <= 10
-                or self.statement_ms > self.total_seconds * 1000):
+                or self.statement_ms > self.total_seconds * 1000
+                or self.candidate_pool <= self.ef_search):
             raise PgvectorQueryError("Invalid pgvector query budget")
 
 
@@ -155,6 +157,7 @@ class PgvectorQueries:
         if type(projection) is not ProjectionSpec:
             raise PgvectorQueryError("An explicit projection identity is required")
         params = _request(vector, top_k, year_min, year_max, excluded_revisions)
+        params["candidate_pool"] = self.budget.candidate_pool
         # SQL structure comes only from closed code and canonical UUIDs. All
         # query values, including the exclusion array, remain bind parameters.
         predicate = ("(CAST(:year_min AS integer) IS NULL OR year>=:year_min) AND "
@@ -167,7 +170,7 @@ class PgvectorQueries:
                     await connection.execute(sa.text("SET TRANSACTION READ ONLY"))
                     settings = {"statement_timeout": str(self.budget.statement_ms), "lock_timeout": "250ms",
                                 "work_mem": "8MB", "hnsw.ef_search": str(self.budget.ef_search),
-                                "hnsw.iterative_scan": "strict_order",
+                                "hnsw.iterative_scan": "relaxed_order",
                                 "hnsw.max_scan_tuples": str(self.budget.max_scan_tuples),
                                 "hnsw.scan_mem_multiplier": "1"}
                     for key, value in settings.items():
@@ -191,8 +194,15 @@ class PgvectorQueries:
                     else:
                         await connection.execute(sa.text("SET LOCAL enable_seqscan=off"))
                         await connection.execute(sa.text("SET LOCAL enable_bitmapscan=off"))
-                        sql = (f"SELECT {_COLUMNS},year,{distance} AS distance FROM {projection.table} "
-                               f"WHERE {predicate} ORDER BY {distance} LIMIT :limit")
+                        # Iteration can discover closer candidates after its
+                        # initial frontier. Admit those candidates, then sort
+                        # the bounded materialized pool by actual distance.
+                        # Strict iteration discarded such late discoveries in
+                        # the retained full-corpus English outlier evaluation.
+                        sql = (f"WITH candidates AS MATERIALIZED (SELECT {_COLUMNS},year,{distance} AS distance "
+                               f"FROM {projection.table} WHERE {predicate} ORDER BY {distance} LIMIT :candidate_pool) "
+                               f"SELECT {_COLUMNS},year,distance FROM candidates "
+                               'ORDER BY distance,vector_id COLLATE "C" LIMIT :limit')
                     rows = (await connection.execute(sa.text(sql), params)).mappings().all()
                     neighbors = _neighbors(rows, top_k, year_min, year_max, set(excluded_revisions))
                     if cohort is not None and len(neighbors) < min(top_k, cohort):
