@@ -2972,6 +2972,8 @@ def main() -> None:
         content_empty_receipt = content_empty(capability, engine, config)
         from migration_retrieval_backend import empty_roundtrip as backend_empty
         backend_empty_receipt = backend_empty(capability, engine, config)
+        from migration_retrieval_activation import empty_roundtrip as activation_empty
+        activation_empty_receipt = activation_empty(capability, engine, config)
         from migration_discovery_calculations import empty_roundtrip as calculation_empty
         calculation_empty(capability, engine, config)
         from migration_discovery_condition_batches import empty_roundtrip as condition_batch_empty
@@ -3273,6 +3275,14 @@ def main() -> None:
             "version": "retrieval-backend-schema-rehearsal/2.0.0", "synthetic": True,
             "production": False, "deployment_approved": False, "scientific_acceptance": False,
             **backend_empty_receipt, **backend_capture_receipt, **backend_retention_receipt,
+        }, sort_keys=True))
+        from migration_retrieval_activation import populated_activation as activation_populated, retained_history as activation_retained
+        activation_capture_receipt = asyncio.run(activation_populated(capability))
+        activation_retention_receipt = activation_retained(capability, engine, config, activation_capture_receipt)
+        print("ACTIVATION_SCHEMA_RECEIPT " + json.dumps({
+            "version": "retrieval-activation-schema-rehearsal/2.0.0", "synthetic": True,
+            "production": False, "deployment_approved": False, "scientific_acceptance": False,
+            **activation_empty_receipt, **activation_capture_receipt, **activation_retention_receipt,
         }, sort_keys=True))
         if recorder is not None:
             with engine.connect() as connection:

@@ -58,8 +58,10 @@ must be coordinated at the later rehearsed maintenance/cutover stage.
 The 0108 component now implements independent content references, bounded native
 paper publications, partition manifests and complete-source seals; see
 [content v2](PGVECTOR_CONTENT_V2.md). None is installed in production. The 0109 component implements private builder/seal/full readback authority;
-see [backend v2](PGVECTOR_BACKEND_V2.md). Activation and the operational
-publication queue remain separate work.
+see [backend v2](PGVECTOR_BACKEND_V2.md). The 0110 component implements short
+activation/CAS, operator artifact references and local rollback; see
+[activation v2](PGVECTOR_ACTIVATION_V2.md). The operational publication queue,
+actual reviewed artifacts and public reader integration remain separate work.
 
 - A content version materializes immutable member references. The first import
   references the complete sealed v1 generation. Later versions reference
@@ -101,10 +103,10 @@ publication queue remain separate work.
   corpus after v2 takes authority. A local previous build is the immediate
   rollback; user writes are not restored from an old whole-database backup.
 
-The operational publication queue, full-scale content import, activation/CAS
-and local rollback still need to be implemented or exercised. The backend
-registry/projection validation component remains uninstalled in production. The bounded paper/content seals do not grant backend
-activation authority.
+The operational publication queue, full-scale content import and real
+activation/rollback acceptance still need to be implemented or exercised. The
+backend and activation components remain uninstalled in production. The
+bounded paper/content seals do not grant backend activation authority.
 
 ## Remaining: readers and historical compatibility
 

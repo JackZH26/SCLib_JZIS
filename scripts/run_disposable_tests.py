@@ -277,7 +277,8 @@ class DisposableServices:
         # was created by this runner; no attach/production path exists.
         builder = ("CREATE ROLE sclib_retrieval_builder NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE;\n"
                    "CREATE ROLE sclib_retrieval_reader NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE;\n"
-                   f"GRANT sclib_retrieval_builder,sclib_retrieval_reader TO {self.name};\n") if self.pgvector else ""
+                   "CREATE ROLE sclib_retrieval_publisher NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE;\n"
+                   f"GRANT sclib_retrieval_builder,sclib_retrieval_reader,sclib_retrieval_publisher TO {self.name};\n") if self.pgvector else ""
         run_quiet(self.pg_command(), env=self.env, input=(
             f"CREATE ROLE {self.name} LOGIN PASSWORD '{self.pg_password}' "
             "NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;\n"
