@@ -3,7 +3,9 @@
 This image extends the exact production PostgreSQL 16.13 Alpine image with
 pgvector 0.8.7. The base digest, upstream source commit and archive SHA-256 are
 frozen in the Dockerfile. Portable compilation avoids host-specific CPU flags.
-The final stage contains the extension, not the compiler or download tools.
+The final stage contains the extension, not the compiler or download tools,
+and runs as the base image's `postgres` user. Verify volume ownership before
+the maintenance operation; do not repair an unknown volume with broad chmod.
 
 ```sh
 docker build --tag sclib-pgvector:16.13-0.8.7 --file ops/postgres/Dockerfile ops/postgres

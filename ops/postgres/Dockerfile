@@ -22,3 +22,7 @@ LABEL org.opencontainers.image.title="SCLib PostgreSQL 16.13 with pgvector 0.8.7
       org.jzis.sclib.postgres.version="16.13" \
       org.jzis.sclib.pgvector.version="0.8.7" \
       org.jzis.sclib.pgvector.source="f37c13f68b57d2c3472b2214fbcff699d6d34876"
+
+# The frozen base owns PGDATA and its socket directory as postgres. Existing
+# production volumes must retain that ownership; do not broaden permissions.
+USER postgres
