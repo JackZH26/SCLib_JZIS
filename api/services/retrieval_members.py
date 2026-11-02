@@ -139,6 +139,38 @@ async def verified_hits(db, pin, batch):
     return result
 
 
+async def load_text_bindings(db,pin,identifiers):
+    """Exact bounded retained text without transferring unneeded vector bytes.
+
+    This is candidate verification, not source permission or publication.
+    """
+    if type(pin) is not RetrievalPinV2:raise RetrievalMemberError('An exact v2 read pin is required')
+    ids=_ids(identifiers);await assert_current_backend(db,pin)
+    if not ids:return {}
+    source=_source_sql();params={'content':UUID(pin.content_id),'ids':ids}
+    async with _phase(db,True,{'bytea_output':'hex'}):
+        size=sa.text("SELECT count(*),coalesce(sum(octet_length(origin->'snapshot_json'->>'text')+"
+            "octet_length(reference::text)),0) FROM ("+source+") bounded").bindparams(sa.bindparam('ids',expanding=True))
+        count,length=(await db.execute(size,params)).one()
+        if count!=len(ids) or length>MAX_BYTES:raise RetrievalMemberError('Retained text inventory unavailable or oversized')
+        query=sa.text("SELECT reference,origin->'snapshot_json'->>'text' AS text,"
+            "origin->>'paper_id' AS paper_id,origin->>'vector_id' AS vector_id,"
+            "origin->>'content_sha256' AS content_sha256,origin->>'record_sha256' AS record_sha256,intact "
+            "FROM ("+source+") originals").bindparams(sa.bindparam('ids',expanding=True))
+        rows=(await db.execute(query,params)).mappings().all()
+    result={}
+    for row in rows:
+        ref=row['reference'];text=row['text']
+        if (row['intact'] is not True or type(text) is not str or ref['vector_id'] not in ids
+                or ref['content_id']!=pin.content_id or ref['origin_record_sha256']!=row['record_sha256']
+                or any(ref[key]!=row[key] for key in ('paper_id','vector_id','content_sha256'))
+                or hashlib.sha256(text.encode()).hexdigest()!=ref['content_sha256']):
+            raise RetrievalMemberError('Retained text/origin binding mismatch')
+        result[ref['vector_id']]=text
+    if set(result)!=set(ids):raise RetrievalMemberError('Complete retained text inventory required')
+    return result
+
+
 async def hydrate(db, pin, identifiers):
     members = await load_members(db, pin, identifiers)
     paper_ids = {row['paper_id'] for row in members}

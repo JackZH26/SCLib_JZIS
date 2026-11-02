@@ -2974,6 +2974,8 @@ def main() -> None:
         backend_empty_receipt = backend_empty(capability, engine, config)
         from migration_retrieval_activation import empty_roundtrip as activation_empty
         activation_empty_receipt = activation_empty(capability, engine, config)
+        from migration_retrieval_navigation import empty_roundtrip as navigation_empty
+        navigation_empty_receipt = navigation_empty(capability, engine, config)
         from migration_discovery_calculations import empty_roundtrip as calculation_empty
         calculation_empty(capability, engine, config)
         from migration_discovery_condition_batches import empty_roundtrip as condition_batch_empty
@@ -3284,6 +3286,14 @@ def main() -> None:
             "production": False, "deployment_approved": False, "scientific_acceptance": False,
             **activation_empty_receipt, **activation_capture_receipt, **activation_retention_receipt,
         }, sort_keys=True))
+        from migration_retrieval_navigation import populated as navigation_populated, retained_active_navigation
+        navigation_capture = asyncio.run(navigation_populated(capability))
+        navigation_retention = retained_active_navigation(capability, engine, config, navigation_capture)
+        print("NAVIGATION_SCHEMA_RECEIPT " + json.dumps({
+            "version":"retrieval-navigation-schema-rehearsal/2.0.0","synthetic":True,
+            "production":False,"deployment_approved":False,"scientific_acceptance":False,
+            **navigation_empty_receipt,**navigation_capture,**navigation_retention,
+        },sort_keys=True))
         if recorder is not None:
             with engine.connect() as connection:
                 verify_postgres_identity(connection, capability)

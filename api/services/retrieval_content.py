@@ -87,6 +87,8 @@ async def seal_native_publication(db, *, paper_id, native_revision_ids, dry_run=
             "paper_id": paper_id, "expected_member_count": len(identifiers), "profile": PROFILE})
         for revision in identifiers:
             await _put(db, TABLE_ORDER[1], {"publication_id": identifier, "native_revision_id": revision}, {})
+            from services.retrieval_navigation import ensure_native_navigation
+            await ensure_native_navigation(db, native_revision_id=revision, dry_run=False)
         sealed = await _put(db, TABLE_ORDER[2], {"publication_id": identifier}, {})
     return {"publication_id": str(identifier), "manifest_sha256": sealed["manifest_sha256"],
             "record_sha256": sealed["record_sha256"], "member_count": sealed["member_count"],
