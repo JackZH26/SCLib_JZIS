@@ -161,6 +161,8 @@ async def execute(request,*,session_factory=None,progress=None):
             elif request.phase=='graph':result=await graph(db,request,content);await db.commit()
             elif request.phase=='seal-projection':result=await retrieval_backend.seal_projection(db,build_id=request.build_id,dry_run=False);await db.commit()
             else:
+                await db.execute(sa.text("SELECT set_config('application_name',:name,true)"),
+                    {'name':'sclib_corpus_validate_'+request.build_id.replace('-','')})
                 result=await retrieval_backend.validate_projection(db,build_id=request.build_id,validation_id=request.validation_id,dry_run=False)
                 await db.commit()
         return {**base,'status':'phase_completed','result':result,'seconds':time.monotonic()-started}
