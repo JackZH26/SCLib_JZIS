@@ -130,6 +130,15 @@ async def test_malformed_stored_bindings_reject_the_whole_batch(projection):
         await PgvectorQueries(engine).query(spec, vector(), top_k=5)
 
 
+async def test_missing_build_fails_without_exposing_sql_or_reusing_another_build(projection):
+    engine, existing = projection
+    missing = ProjectionSpec(str(uuid4()), existing.content_version_id, existing.manifest_sha256)
+    with pytest.raises(PgvectorUnavailable) as error:
+        await PgvectorQueries(engine).query(missing, vector(), top_k=5)
+    assert missing.table not in str(error.value) and "SELECT" not in str(error.value)
+    assert len((await PgvectorQueries(engine).query(existing, vector(), top_k=5)).neighbors) == 5
+
+
 @pytest.mark.parametrize("values", [[0.0] * 768, [float("nan")] + [1.0] * 767, [1.0] * 767])
 async def test_invalid_vectors_cannot_acquire_a_connection(values):
     class NoConnections:
