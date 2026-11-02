@@ -27,7 +27,7 @@ jobs:
         run: |
           docker build --tag sclib-pgvector-ci --file ops/postgres/Dockerfile ops/postgres
           docker pull redis:7-alpine
-          api/.venv/bin/python scripts/prepare_tokenizer.py
+          api/.venv/bin/python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
       - name: Test the extension in fresh capability-verified services
         run: |
           image_id="$(docker image inspect sclib-pgvector-ci --format '{{.Id}}')"
