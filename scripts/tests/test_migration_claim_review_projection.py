@@ -32,3 +32,16 @@ def test_new_or_malformed_history_is_not_hidden(row):
 def test_other_tables_never_lose_a_claim_field():
     rows=[{"claim_id":"scientific-label","id":"one"}]
     assert pre_claim_review_rows("ml_examples",rows)==rows
+
+
+def test_historical_answer_comparison_preserves_every_old_field_and_hash():
+    row={'id':'old-answer','answer':'literal old answer','record_sha256':'original-receipt-hash'}
+    assert pre_claim_review_rows('ask_history',[row])==pre_claim_review_rows('ask_history',[
+        {**row,'content_evidence_receipt_version':None}])
+    assert pre_claim_review_rows('ask_history',[row])!=pre_claim_review_rows('ask_history',[
+        {**row,'answer':'changed','content_evidence_receipt_version':None}])
+
+
+def test_retained_v2_marker_cannot_be_hidden_by_historical_projection():
+    with pytest.raises(AssertionError,match='Retained content history'):
+        pre_claim_review_rows('ask_history',[{'id':'v2','content_evidence_receipt_version':'ask-answer-evidence/2.0.0'}])

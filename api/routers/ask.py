@@ -632,8 +632,11 @@ async def _persist_history(db, request, user_id, body, response, captured):
         return response.model_copy(update={"history": disposition})
     if user_id is None:
         return response.model_copy(update={"history": HistorySaveDisposition(reason_code="guest_request")})
+    from services import content_answer_evidence, content_answer_history
+    from models.content_answer_storage_v2 import TABLE as CONTENT_TABLE, VERSION as CONTENT_VERSION
+    content = type(captured) is content_answer_evidence.CapturedContentAnswerInputs
     try:
-        prepared = answer_evidence.finish_capture(captured, response)
+        prepared = (content_answer_evidence if content else answer_evidence).finish_capture(captured, response)
     except Exception:
         return response.model_copy(update={"history": HistorySaveDisposition(
             status="not_saved", reason_code="capture_unavailable")})
@@ -649,19 +652,22 @@ async def _persist_history(db, request, user_id, body, response, captured):
                 if not await _history_actor(request, session, user_id):
                     return response.model_copy(update={"history": HistorySaveDisposition(
                         status="not_saved", reason_code="session_no_longer_authorized")})
-                fields = await answer_evidence.receipt_fields(session, prepared)
-                fields = {**fields,
-                    "generation_id": UUID(fields["generation_id"]) if fields["generation_id"] else None,
-                    "activation_event_id": UUID(fields["activation_event_id"]) if fields["activation_event_id"] else None}
+                fields = await (content_answer_history if content else answer_evidence).receipt_fields(session, prepared)
+                if not content:
+                    fields = {**fields,
+                        "generation_id": UUID(fields["generation_id"]) if fields["generation_id"] else None,
+                        "activation_event_id": UUID(fields["activation_event_id"]) if fields["activation_event_id"] else None}
                 session.add(AskHistory(id=history_id, user_id=user_id,
                     question=body.question, answer=response.answer,
                     sources=[source.model_dump(mode="json") for source in response.sources],
                     tokens_used=response.tokens_used, latency_ms=response.query_time_ms, language=body.language,
-                    evidence_receipt_version="ask-answer-evidence/1.0.0"))
+                    **({"content_evidence_receipt_version": CONTENT_VERSION} if content
+                       else {"evidence_receipt_version": "ask-answer-evidence/1.0.0"})))
                 await session.flush()
-                stored = (await session.execute(insert(Base.metadata.tables["answer_evidence_receipts"])
+                table = Base.metadata.tables[CONTENT_TABLE if content else "answer_evidence_receipts"]
+                stored = (await session.execute(insert(table)
                     .values(history_id=history_id, **fields).returning(
-                        Base.metadata.tables["answer_evidence_receipts"].c.record_sha256))).scalar_one()
+                        table.c.record_sha256))).scalar_one()
                 # Deferred parent/receipt completeness is checked by this real
                 # outer commit. A flush or savepoint is not successful saving.
                 commit_started = True

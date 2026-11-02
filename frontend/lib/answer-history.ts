@@ -1,5 +1,6 @@
 /** Historical receipt consistency is not scientific review or current source permission. */
-import type { AskHistoryEntry, AskRequest, AskResponse, AskSource } from "@/lib/api";
+import type { AskHistoryEntry, AskRequest, AskResponse, AskSource, ContentRetrieval } from "@/lib/api";
+import { knownRetrievalRead } from "@/lib/retrieval-read";
 import { knownEvidenceProvenance } from "@/lib/evidence-provenance";
 import { knownInputBudget, knownPackingSummary } from "@/lib/evidence-packing";
 import { knownScientificQuery, knownScientificLookup, knownScientificResults } from "@/lib/scientific-query";
@@ -92,14 +93,32 @@ export interface AnswerEvidenceReceipt {
   response: StoredAskResponse;
   bindings: AnswerEvidenceBindings;
 }
+export interface ContentAnswerEvidenceItem extends Omit<AnswerEvidenceItem, "member_record_sha256" | "selection_generation_pin_sha256"> {
+  content_member_record_sha256: string;
+  origin_kind: "legacy_v1" | "native_v2";
+  origin_generation_id: string | null;
+  native_revision_id: string | null;
+  origin_record_sha256: string;
+  selection_content_pin_sha256: string;
+}
+export interface ContentAnswerEvidenceReceipt extends Omit<AnswerEvidenceReceipt, "version" | "bindings"> {
+  version: "ask-answer-evidence/2.0.0";
+  bindings: {
+    version: "ask-answer-evidence/2.0.0";
+    mode: "content_bound" | "no_selected_evidence";
+    logical_index: string;
+    read: ContentRetrieval;
+    items: ContentAnswerEvidenceItem[];
+  };
+}
 export interface HistoryDetail {
   version: "ask-history-detail/1.0.0";
   entry: AskHistoryEntry;
   result_current_evidence: Record<string, unknown>;
   evidence: {
     status: "verified" | "legacy_unpinned" | "unavailable";
-    binding_scope: "generation_members" | "legacy_snapshot" | "no_selected_evidence" | null;
-    receipt: AnswerEvidenceReceipt | null;
+    binding_scope: "generation_members" | "content_members" | "legacy_snapshot" | "no_selected_evidence" | null;
+    receipt: AnswerEvidenceReceipt | ContentAnswerEvidenceReceipt | null;
     historical_integrity_verified: boolean;
     scientific_acceptance: false;
     ml_training_approved: false;
@@ -176,7 +195,7 @@ function claim(value: unknown): boolean {
       keys(item, ["source_index", "paper_id", "excerpt"]) && integer(item.source_index, 1) && text(item.paper_id, 100, 1) && text(item.excerpt, 100000))
     && (row(value.quantities) || Array.isArray(value.quantities) && value.quantities.every(row));
 }
-function storedResponse(value: unknown, rawQuery: string): value is StoredAskResponse {
+function storedResponse(value: unknown, rawQuery: string, content = false): value is StoredAskResponse {
   if (!keys(value, RESPONSE_FIELDS) || !text(value.answer, 1024 * 1024) || !Array.isArray(value.sources)
     || value.sources.length > 20 || !value.sources.every(source) || value.sources.some((item, index) => item.index !== index + 1)
     || value.tokens_used !== null && !integer(value.tokens_used) || !integer(value.query_time_ms)
@@ -186,12 +205,14 @@ function storedResponse(value: unknown, rawQuery: string): value is StoredAskRes
     || !choice(value.answer_mode, ["synthesis", "limited_synthesis", "extractive_fallback", "abstention"])
     || !choice(value.assessment_scope, ["generated_draft", "none"]) || !row(value.support_coverage)
     || !Array.isArray(value.claim_assessments) || value.claim_assessments.length > 100 || !value.claim_assessments.every(claim)
-    || !generation(value.retrieval_generation)) return false;
+    || (content ? knownRetrievalRead(value.retrieval_generation)?.version !== "index-read/2.0.0" : !generation(value.retrieval_generation))) return false;
   const query = value.scientific_query === null ? null : knownScientificQuery(value.scientific_query, rawQuery);
   const lookup = knownScientificLookup(value.scientific_lookup);
   // The V1 receipt decoder stays closed even as live response unions grow.
-  if (lookup?.scope !== "declared_generation_derived_extractions" || !row(value.scientific_mixed)
-    || !choice(value.scientific_mixed.version, ["scientific-mixed-evidence/1.0.0", "scientific-mixed-evidence/1.1.0"])) return false;
+  if (lookup?.scope !== (content ? "declared_content_derived_extractions" : "declared_generation_derived_extractions") || !row(value.scientific_mixed)
+    || !choice(value.scientific_mixed.version, content ? ["scientific-mixed-evidence/2.0.0",
+      ...(value.scientific_mixed.status === "not_requested" ? ["scientific-mixed-evidence/1.0.0", "scientific-mixed-evidence/1.1.0"] : [])]
+      : ["scientific-mixed-evidence/1.0.0", "scientific-mixed-evidence/1.1.0"])) return false;
   if (value.scientific_query !== null && !query || !lookup || !Array.isArray(value.scientific_results)) return false;
   if (query ? knownScientificResults(value.scientific_results, lookup, value.retrieval_generation, query) === null
     : lookup.status !== "not_requested" || value.scientific_results.length !== 0) return false;
@@ -257,6 +278,59 @@ export function knownAnswerReceipt(value: unknown): AnswerEvidenceReceipt | null
   return value as unknown as AnswerEvidenceReceipt;
 }
 
+/** V2 is a separate closed decoder; the existing v1 decoder still rejects it. */
+export function knownContentAnswerReceipt(value: unknown): ContentAnswerEvidenceReceipt | null {
+  if (!boundedJson(value, 1024 * 1024) || !keys(value, ["version", "history_id", "record_sha256", "request_sha256", "response_sha256", "bindings_sha256", "request", "response", "bindings"])
+    || value.version !== "ask-answer-evidence/2.0.0" || !uuid(value.history_id)
+    || ![value.record_sha256, value.request_sha256, value.response_sha256, value.bindings_sha256].every(hash)
+    || !keys(value.request, ["question", "max_sources", "language"]) || !text(value.request.question, 2000, 3)
+    || !value.request.question.trim() || !integer(value.request.max_sources, 1, 20)
+    || !choice(value.request.language, ["auto", "en", "zh"]) || !storedResponse(value.response, value.request.question, true)) return null;
+  const b = value.bindings, response = value.response;
+  if (!keys(b, ["version", "mode", "logical_index", "read", "items"]) || b.version !== value.version
+    || !text(b.logical_index, 160, 1) || !/^[A-Za-z0-9._-]+$/.test(b.logical_index)
+    || knownRetrievalRead(b.read)?.version !== "index-read/2.0.0" || !equal(b.read, response.retrieval_generation)
+    || !Array.isArray(b.items) || b.items.length > value.request.max_sources
+    || b.mode !== (b.items.length ? "content_bound" : "no_selected_evidence")) return null;
+  const fields = [...ITEM_FIELDS.filter(key => !["member_record_sha256", "selection_generation_pin_sha256"].includes(key)),
+    "content_member_record_sha256", "origin_kind", "origin_generation_id", "native_revision_id", "origin_record_sha256", "selection_content_pin_sha256"];
+  const items: ContentAnswerEvidenceItem[] = [];
+  for (const item of b.items) {
+    if (!keys(item, fields) || !choice(item.kind, ["source", "scientific_result"]) || !integer(item.position, 1, 20)
+      || !text(item.paper_id, 100, 1) || !text(item.chunk_id, 120, 1) || item.has_evidence_pin !== true
+      || !["content_sha256", "content_member_record_sha256", "origin_record_sha256", "chunk_revision_sha256", "vector_sha256",
+        "source_snapshot_sha256", "evidence_record_sha256", "selection_input_sha256", "selection_content_pin_sha256", "selection_grouping_sha256"].every(key => hash(item[key]))
+      || !uuid(item.evidence_revision_id) || !nullableUuid(item.parent_result_revision_id) || !nullableHash(item.parent_result_sha256)
+      || (item.parent_result_revision_id === null) !== (item.parent_result_sha256 === null)
+      || item.kind === "scientific_result" && item.parent_result_revision_id === null) return null;
+    if (item.origin_kind === "legacy_v1") {
+      if (!uuid(item.origin_generation_id) || item.native_revision_id !== null
+        || item.chunk_id !== `ig62_${item.origin_generation_id.replaceAll("-", "")}_${item.chunk_revision_sha256}`) return null;
+    } else if (item.origin_kind !== "native_v2" || !uuid(item.native_revision_id) || item.origin_generation_id !== null
+      || item.chunk_id !== `rv2_${item.chunk_revision_sha256}`) return null;
+    items.push(item as unknown as ContentAnswerEvidenceItem);
+  }
+  const sources = items.filter(item => item.kind === "source"), results = items.filter(item => item.kind === "scientific_result");
+  if (new Set(items.map(item => item.chunk_id)).size !== items.length || !equal(items, [...sources, ...results])
+    || [sources, results].some(rows => rows.some((item, index) => item.position !== index + 1))
+    || sources.length !== response.sources.length || results.length !== response.scientific_results!.length) return null;
+  const evidenceFields = ["content_sha256", "evidence_revision_id", "evidence_record_sha256", "parent_result_revision_id", "parent_result_sha256"] as const;
+  for (const [index, item] of sources.entries()) {
+    const source = response.sources[index], packing = source.packing_info, evidence = source.evidence_provenance;
+    if (source.index !== item.position || source.paper_id !== item.paper_id || !packing || packing.chunk_id !== item.chunk_id
+      || packing.position !== item.position || packing.source_snapshot_sha256 !== item.source_snapshot_sha256
+      || !evidence || evidenceFields.some(key => evidence[key] !== item[key])) return null;
+  }
+  for (const [index, item] of results.entries()) {
+    const binding = response.scientific_results![index].binding;
+    if (!("version" in binding) || binding.version !== "scientific-result-binding/2.0.0" || binding.vector_id !== item.chunk_id
+      || evidenceFields.some(key => binding[key] !== item[key])
+      || ["paper_id", "content_member_record_sha256", "origin_kind", "origin_generation_id", "native_revision_id", "origin_record_sha256",
+        "chunk_revision_sha256", "vector_sha256"].some(key => (binding as unknown as Row)[key] !== (item as unknown as Row)[key])) return null;
+  }
+  return value as unknown as ContentAnswerEvidenceReceipt;
+}
+
 export function knownHistoryDetail(value: unknown, expectedId: string): HistoryDetail | null {
   if (!uuid(expectedId) || !boundedJson(value, 3 * 1024 * 1024) || !keys(value, ["version", "entry", "evidence", "result_current_evidence"])
     || value.version !== "ask-history-detail/1.0.0" || !row(value.result_current_evidence)) return null;
@@ -270,10 +344,12 @@ export function knownHistoryDetail(value: unknown, expectedId: string): HistoryD
     || [evidence.scientific_acceptance, evidence.ml_training_approved, evidence.public_release_authorized, evidence.currentness_revalidated].some(flag => flag !== false)) return null;
   const summary = knownHistorySummary(entry.receipt)!;
   if (evidence.status === "verified") {
-    const receipt = knownAnswerReceipt(evidence.receipt);
+    const receipt = row(evidence.receipt) && evidence.receipt.version === "ask-answer-evidence/2.0.0"
+      ? knownContentAnswerReceipt(evidence.receipt) : knownAnswerReceipt(evidence.receipt);
     if (!receipt || receipt.history_id !== entry.id || receipt.record_sha256 !== summary.receipt_sha256
       || summary.status !== "recorded" || evidence.historical_integrity_verified !== true || !equal(evidence.reason_codes, [])
-      || evidence.binding_scope !== ({ generation_bound: "generation_members", snapshot_only: "legacy_snapshot", no_selected_evidence: "no_selected_evidence" }[receipt.bindings.mode])
+      || evidence.binding_scope !== (receipt.version === "ask-answer-evidence/2.0.0" ? (receipt.bindings.items.length ? "content_members" : "no_selected_evidence")
+        : { generation_bound: "generation_members", snapshot_only: "legacy_snapshot", no_selected_evidence: "no_selected_evidence" }[receipt.bindings.mode])
       || receipt.request.question !== entry.question || receipt.request.language !== entry.language
       || receipt.response.answer !== entry.answer || receipt.response.tokens_used !== entry.tokens_used
       || receipt.response.query_time_ms !== entry.latency_ms || !equal(receipt.response.sources, entry.sources)) return null;

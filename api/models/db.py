@@ -238,6 +238,7 @@ class AskHistory(Base):
     language: Mapped[str | None] = mapped_column(String(10), nullable=True)
     # NULL is deliberately retained for pre-0068 snapshots; never backfilled.
     evidence_receipt_version: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    content_evidence_receipt_version: Mapped[str | None] = mapped_column(String(50), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         _TZDT, server_default=func.now(), nullable=False
     )
@@ -1922,3 +1923,7 @@ _register_retrieval_navigation_v2(Base.metadata)
 from models.retrieval_keysets_v2 import register as _register_retrieval_keysets_v2
 
 _register_retrieval_keysets_v2(Base.metadata)
+
+from models.content_answer_storage_v2 import register as _register_content_answer_storage_v2
+
+_register_content_answer_storage_v2(Base.metadata)

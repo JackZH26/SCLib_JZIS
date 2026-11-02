@@ -2,7 +2,7 @@ import { act, cleanup, fireEvent, render, screen, waitFor, within } from "@testi
 import { afterEach, describe, expect, it, vi } from "vitest";
 
 import { HistorySaveNotice } from "@/components/HistorySaveNotice";
-import { knownAnswerReceipt, knownHistoryDetail, knownHistorySave, knownHistorySummary } from "@/lib/answer-history";
+import { knownAnswerReceipt, knownContentAnswerReceipt, knownHistoryDetail, knownHistorySave, knownHistorySummary } from "@/lib/answer-history";
 import type { HistorySaveDisposition } from "@/lib/answer-history";
 import { ScientificMixedNotice } from "@/components/ScientificMixedNotice";
 import { mixedResponse } from "../fixtures/scientific-mixed";
@@ -14,6 +14,7 @@ import actualStructured from "../fixtures/answer-history-http-structured.json";
 import actualMixed from "../fixtures/answer-history-http-mixed.json";
 import actualClarification from "../fixtures/answer-history-http-clarification.json";
 import actualLegacy from "../fixtures/answer-history-http-legacy.json";
+import actualContent from "../fixtures/content-answer-history-http.json";
 
 vi.mock("@/lib/api", async importOriginal => ({ ...await importOriginal<typeof import("@/lib/api")>(), historyDetail: vi.fn() }));
 
@@ -245,6 +246,36 @@ describe("complete saved response and exact receipt display bindings", () => {
     const many = historyDetailFixture();
     (many.entry.current_evidence as any).many = Array(100001).fill(null);
     expect(knownHistoryDetail(many, historyId)).toBeNull();
+  });
+});
+
+describe("content-bound saved history", () => {
+  it("renders the actual guarded v2 SQL and HTTP receipt while the v1 decoder stays closed", () => {
+    expect(knownAnswerReceipt(actualContent.evidence.receipt)).toBeNull();
+    expect(knownContentAnswerReceipt(actualContent.evidence.receipt)).not.toBeNull();
+    const checked = knownHistoryDetail(actualContent, actualContent.entry.id);
+    expect(checked).not.toBeNull();
+    render(<HistoryReceiptContent detail={checked!} />);
+    expect(screen.getByText("Exact retained content members")).toBeInTheDocument();
+    expect(screen.getByText("Recorded content")).toBeInTheDocument();
+    expect(screen.getByText("Recorded build")).toBeInTheDocument();
+    expect(screen.queryByText("Recorded generation")).not.toBeInTheDocument();
+    expect(screen.getByRole("region", { name: "Saved question" })).toHaveTextContent(actualContent.entry.question);
+  });
+
+  it.each([
+    ["read identity", (v: typeof actualContent) => { v.evidence.receipt.bindings.read.build_id = id; }],
+    ["wrong version", (v: typeof actualContent) => { v.evidence.receipt.version = "ask-answer-evidence/1.0.0"; }],
+    ["missing native identity", (v: typeof actualContent) => { v.evidence.receipt.bindings.items[1].native_revision_id = null; }],
+    ["invented native generation", (v: typeof actualContent) => { v.evidence.receipt.bindings.items[1].origin_generation_id = id; }],
+    ["original record mismatch", (v: typeof actualContent) => { v.evidence.receipt.bindings.items[0].origin_record_sha256 = sha; }],
+    ["missing inventory", (v: typeof actualContent) => { v.evidence.receipt.bindings.items.pop(); }],
+    ["duplicate inventory", (v: typeof actualContent) => { v.evidence.receipt.bindings.items.push(v.evidence.receipt.bindings.items[0]); }],
+    ["generation scope", (v: typeof actualContent) => { v.evidence.binding_scope = "generation_members"; }],
+    ["changed output", (v: typeof actualContent) => { v.evidence.receipt.response.answer = "Changed response"; }],
+  ] as const)("rejects %s", (_name, mutate) => {
+    const value = structuredClone(actualContent); mutate(value);
+    expect(knownHistoryDetail(value, value.entry.id)).toBeNull();
   });
 });
 

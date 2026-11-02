@@ -16,7 +16,7 @@ def pre_materials_context_tables(connection, names):
         "retrieval_backend_builds_v2", "retrieval_backend_fences_v2",
         "retrieval_projection_seals_v2", "retrieval_backend_validations_v2",
         "retrieval_acceptances_v2", "retrieval_activation_events_v2", "retrieval_active_pointer_v2",
-        "retrieval_native_navigation_v2"}
+        "retrieval_native_navigation_v2", "content_answer_evidence_receipts_v2"}
     for name in native.intersection(names):
         assert not connection.execute(text(f"SELECT EXISTS(SELECT 1 FROM public.{name})")).scalar_one(), \
             "Retained native retrieval cannot enter a pre-0107 comparison"
@@ -28,12 +28,22 @@ def pre_materials_context_tables(connection, names):
 
 
 def pre_claim_review_rows(name, rows):
-    """Compare legacy rows across 0095's *absent vs NULL* additive column.
+    """Compare old rows across absent versus NULL additive marker columns.
 
     Use only for a historical boundary which predates claim review. Never
-    erase a populated claim target or relax any legacy value/hash comparison.
+    erase a populated claim target or content receipt marker, or relax any
+    legacy value/hash comparison. Later namespaces must independently be empty.
     Current-head and refused-downgrade full snapshots keep every column.
     """
+    if name == 'ask_history':
+        result=[]
+        for row in rows:
+            if 'content_evidence_receipt_version' in row:
+                assert row['content_evidence_receipt_version'] is None, 'Retained content history cannot enter a pre-0113 comparison'
+                row={key:value for key,value in row.items() if key!='content_evidence_receipt_version'}
+            result.append(row)
+        import json
+        return sorted(result,key=lambda row:json.dumps(row,sort_keys=True))
     if name not in {"scientific_result_subjects", "scientific_result_decisions"}:
         return rows
     result = []

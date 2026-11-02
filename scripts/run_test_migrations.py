@@ -2976,6 +2976,8 @@ def main() -> None:
         activation_empty_receipt = activation_empty(capability, engine, config)
         from migration_retrieval_navigation import empty_roundtrip as navigation_empty
         navigation_empty_receipt = navigation_empty(capability, engine, config)
+        from migration_content_answer_history import empty_roundtrip as content_history_empty
+        content_history_empty_receipt = content_history_empty(capability, engine, config)
         from migration_discovery_calculations import empty_roundtrip as calculation_empty
         calculation_empty(capability, engine, config)
         from migration_discovery_condition_batches import empty_roundtrip as condition_batch_empty
@@ -3293,6 +3295,14 @@ def main() -> None:
             "version":"retrieval-navigation-schema-rehearsal/2.0.0","synthetic":True,
             "production":False,"deployment_approved":False,"scientific_acceptance":False,
             **navigation_empty_receipt,**navigation_capture,**navigation_retention,
+        },sort_keys=True))
+        from migration_content_answer_history import populated as content_history_populated, retained as content_history_retained
+        content_history_capture = asyncio.run(content_history_populated(capability))
+        content_history_retention = content_history_retained(capability, engine, config, content_history_capture)
+        print("CONTENT_HISTORY_SCHEMA_RECEIPT " + json.dumps({
+            "version":"content-answer-history-schema-rehearsal/2.0.0","synthetic":True,
+            "production":False,"deployment_approved":False,"scientific_acceptance":False,
+            **content_history_empty_receipt,**content_history_capture,**content_history_retention,
         },sort_keys=True))
         if recorder is not None:
             with engine.connect() as connection:
