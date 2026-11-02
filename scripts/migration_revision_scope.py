@@ -9,7 +9,10 @@ def pre_materials_context_tables(connection, names):
     row, hash or field is projected away; populated history fails immediately.
     """
     from sqlalchemy import text
-    native = {"retrieval_input_receipts_v2", "retrieval_native_revisions_v2"}
+    native = {"retrieval_input_receipts_v2", "retrieval_native_revisions_v2",
+        "retrieval_publications_v2", "retrieval_publication_members_v2", "retrieval_publication_seals_v2",
+        "retrieval_contents_v2", "retrieval_content_changes_v2", "retrieval_content_members_v2",
+        "retrieval_content_partitions_v2", "retrieval_content_seals_v2"}
     for name in native.intersection(names):
         assert not connection.execute(text(f"SELECT EXISTS(SELECT 1 FROM public.{name})")).scalar_one(), \
             "Retained native retrieval cannot enter a pre-0107 comparison"

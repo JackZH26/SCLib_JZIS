@@ -53,17 +53,19 @@ Do not release this migration by itself while an old exact-head standby can
 restart against it. API, migration, ingestion and standby images/configuration
 must be coordinated at the later rehearsed maintenance/cutover stage.
 
-## Remaining: independent content and backend registry
+## Content membership and remaining backend registry
 
-The following are implementation decisions for the next component, not objects
-already installed in production:
+The 0108 component now implements independent content references, bounded native
+paper publications, partition manifests and complete-source seals; see
+[content v2](PGVECTOR_CONTENT_V2.md). None is installed in production. Backend
+build/validation, activation and operational publication queue work remain.
 
 - A content version materializes immutable member references. The first import
   references the complete sealed v1 generation. Later versions reference
   retained v1 members and captured native revisions, retaining their different
   provenance and missing-parent status. Original text is not copied for a
   legacy reference.
-- Planned bounded partitions contain at most 1,000 members. A partition seal
+- Bounded partitions contain at most 1,000 members. A partition seal
   hashes ordered member ID, paper ID, revision/content/vector hashes and origin
   binding. The root hashes ordered partition ID, count and manifest. Separators
   cannot occur in identities. Immutable source bindings are checked before
@@ -98,8 +100,10 @@ already installed in production:
   corpus after v2 takes authority. A local previous build is the immediate
   rollback; user writes are not restored from an old whole-database backup.
 
-The concrete registry migration, publication queue, full importer/publisher,
-activation/CAS and local rollback are still to be implemented and exercised.
+The operational publication queue, full-scale content import, backend registry,
+projection validation, activation/CAS and local rollback still need to be
+implemented or exercised. The bounded paper/content seals do not grant backend
+activation authority.
 
 ## Remaining: readers and historical compatibility
 
@@ -145,15 +149,18 @@ mapped to two vectors. Google documents `text-embedding-005` as an English/code
 model. This is consistent with the observation; it does not prove relevant
 Chinese retrieval. [Official model documentation](https://docs.cloud.google.com/gemini-enterprise-agent-platform/models/embeddings/get-text-embeddings)
 
-Keep the original failed probe and its exact references. Additional independent
-query vectors must extend the set rather than dilute/erase the failure. Before
-end-to-end evaluation, prototype a versioned Chinese-to-English candidate-query
-normalization using the existing document space. Original queries, formulas,
-conditions and deterministic scientific filters remain authoritative; generated
-text is untrusted and cannot add scientific constraints or permissions. Freeze
-normalizer/profile/output hashes and evaluate actual normalized production
-queries separately from the retained raw diagnostic probe. Do not mix embedding
-models merely because they both have 768 dimensions.
+Keep the original failed probe and its exact references. The user subsequently
+limited acceptance to English on 2026-11-02. Chinese normalization/evaluation
+has stopped and is excluded from migration acceptance. Its earlier diagnostic
+artifacts remain unchanged. Do not mix embedding models merely because they
+both have 768 dimensions.
+
+The English-only set has been frozen separately: 160 unchanged original
+English/formula queries and 80 supplemental English queries. No Chinese query
+contributes to its metrics. On the original 160 English inputs, m32/ef200 with
+ef_search=1000 achieved mean recall@20 0.99875, minimum 0.95. Full 240-input
+evaluation is pending. This neither grants human relevance labels nor proves
+filtered, full-service or production quality.
 
 Google currently schedules `text-embedding-005` retirement for 2027-04-01.
 Record a separate embedding-space migration before that date; changing the
