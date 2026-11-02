@@ -10,10 +10,11 @@ import hashlib
 import json
 from dataclasses import asdict, dataclass, field
 
-from models.scientific_mixed import MixedEvidenceAssociation, ScientificMixedEvidence
+from models.scientific_mixed import MixedEvidenceAssociation, ScientificMixedEvidence,ContentMixedEvidenceAssociation,ContentScientificMixedEvidence
 from services import index_retrieval, retrieval_currentness
 from services import scientific_result_passage
 from services.scientific_query_lookup import ScientificLookupInputs, result_query
+from services.content_scientific_lookup import ContentScientificInputs
 
 
 def is_mixed_request(interpretation):
@@ -66,10 +67,10 @@ def freeze_original(source, selection_pin):
 
 
 def combined_pins(inputs, original_pins, *, max_selected_inputs):
-    if type(inputs) is not ScientificLookupInputs or type(max_selected_inputs) is not int or not 1 <= max_selected_inputs <= 20:
+    if type(inputs) not in {ScientificLookupInputs,ContentScientificInputs} or type(max_selected_inputs) is not int or not 1 <= max_selected_inputs <= 20:
         raise ValueError("Validated mixed lookup inputs and a bounded shared limit are required")
     result = tuple(inputs.selection_pins) + tuple(original_pins)
-    expected_generation = index_retrieval.pin_sha256(inputs.generation_pin)
+    expected_generation = index_retrieval.pin_sha256(inputs.backend_pin.metadata() if type(inputs) is ContentScientificInputs else inputs.generation_pin)
     if (len(result) > max_selected_inputs or len({pin.chunk_id for pin in result}) != len(result)
             or any(type(pin) is not retrieval_currentness.SelectionPin or not pin.has_evidence_pin
                    or pin.grouping_sha256 is None or pin.generation_pin_sha256 != expected_generation for pin in result)):
@@ -79,8 +80,10 @@ def combined_pins(inputs, original_pins, *, max_selected_inputs):
 
 async def resolve_mixed_associations(db, inputs, sources, *, max_selected_inputs):
     """Explain every pair; only a current exact reviewer record can establish one."""
-    if type(inputs) is not ScientificLookupInputs or inputs.outcome.status.status != "completed":
+    if type(inputs) not in {ScientificLookupInputs,ContentScientificInputs} or inputs.outcome.status.status != "completed":
         raise ValueError("Completed prepared result lookup is required")
+    content = type(inputs) is ContentScientificInputs
+    association_type = ContentMixedEvidenceAssociation if content else MixedEvidenceAssociation
     outcome = inputs.outcome
     parents = {parent.parent_result_revision_id: parent for parent in inputs.parents}
     if len(parents) != len(outcome.results) or len(outcome.results) + len(sources) > max_selected_inputs:
@@ -102,7 +105,7 @@ async def resolve_mixed_associations(db, inputs, sources, *, max_selected_inputs
     for parent, source, evidence, packing in candidates:
         same = parent.paper_id == source.paper_id and parent.source_snapshot_sha256 == packing.source_snapshot_sha256
         link = links.get((parent.parent_result_revision_id, evidence["evidence_revision_id"]))
-        associations.append(MixedEvidenceAssociation(parent_result_revision_id=parent.parent_result_revision_id,
+        associations.append(association_type(parent_result_revision_id=parent.parent_result_revision_id,
             result_source_snapshot_sha256=parent.source_snapshot_sha256, source_index=source.index,
             source_vector_id=packing.chunk_id, source_evidence_revision_id=evidence["evidence_revision_id"],
             source_evidence_record_sha256=evidence["evidence_record_sha256"], source_content_sha256=evidence["content_sha256"],
@@ -119,7 +122,8 @@ async def resolve_mixed_associations(db, inputs, sources, *, max_selected_inputs
         reasons.append("no_original_context")
     if len(outcome.results) == max_selected_inputs:
         reasons.append("combined_source_limit")
-    return ScientificMixedEvidence(status="completed", result_count=len(outcome.results), source_count=len(sources),
+    report_type = ContentScientificMixedEvidence if content else ScientificMixedEvidence
+    return report_type(**({'version':'scientific-mixed-evidence/2.0.0'} if content else {}),status="completed", result_count=len(outcome.results), source_count=len(sources),
         max_selected_inputs=max_selected_inputs, associations=associations, reason_codes=reasons)
 
 

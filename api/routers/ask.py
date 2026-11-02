@@ -28,10 +28,10 @@ from models import get_db
 from models.db import ApiKey, AskHistory, Base, User, get_engine
 from models.evidence_packing import EvidencePackingSummary, PackingCandidate
 from models.history_receipts import HistorySaveDisposition
-from models.index_read import generation_read_metadata
+from models.index_read import retrieval_read_metadata
 from models.rag_input_budget import RagInputBudgetReport
 from models.scientific_lookup import ScientificLookupStatus
-from models.scientific_mixed import ScientificMixedEvidence
+from models.scientific_mixed import ScientificMixedEvidence, ContentScientificMixedEvidence
 from models.search import AskRequest, AskResponse, AskSource
 from routers.deps import Identity, require_identity
 from services import (
@@ -77,6 +77,16 @@ async def ask(
     identity: Identity = Depends(require_identity),  # noqa: B008
     db: AsyncSession = Depends(get_db),  # noqa: B008
 ) -> AskResponse:
+    from services.content_runtime import selected_reader
+    return await _ask(body, request, identity, db, reader=selected_reader(request))
+
+
+async def _ask(body, request, identity, db, *, reader=None):
+    from services.content_retrieval import ContentRetriever
+    if reader is not None and type(reader) is not ContentRetriever:
+        raise ValueError('An exact internal content reader is required')
+    content = reader is not None
+    pin = None
     t0 = time.perf_counter()
     # The catalogue read transaction is closed before provider generation.
     # Retain primitives, not an ORM User that rollback would expire.
@@ -88,6 +98,10 @@ async def ask(
     interpretation = interpret_scientific_query(body.question)
     mixed_inputs = None
     original_limit = body.max_sources
+    if content:
+        await db.rollback()
+        try: pin = await reader.pin(logical_index=get_settings().retrieval_logical_index)
+        except Exception: raise HTTPException(503, 'Retrieval content is unavailable') from None
     if interpretation.status == "clarification_required":
         answer = ("Please clarify the unresolved scientific conditions before a numerical lookup or synthesis. "
                   + " ".join(interpretation.clarification_questions))
@@ -96,20 +110,21 @@ async def ask(
         response = AskResponse(answer=answer, sources=[], tokens_used=0,
             query_time_ms=latency_ms,
             citation_indices_valid=True, scientific_query=interpretation,
-            scientific_lookup=ScientificLookupStatus(status="clarification_required", reason_codes=["unresolved_query_constraints"]),
+            scientific_lookup=ScientificLookupStatus(status="clarification_required", scope=_lookup_scope(pin), reason_codes=["unresolved_query_constraints"]),
+            retrieval_generation=retrieval_read_metadata(pin),
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining)
-        return await finish(response, _capture_inputs(body, None))
+        return await finish(response, _capture_inputs(body, pin))
 
     try:
         async with asyncio.timeout(10):
-            pin = await index_retrieval.load_pin(db)
+            if not content: pin = await index_retrieval.load_pin(db)
     except Exception:
         raise HTTPException(503, "Retrieval generation is unavailable") from None
     if scientific_mixed.is_mixed_request(interpretation):
         try:
             async with asyncio.timeout(15):
-                prepared = await prepare_scientific_lookup(db, pin, interpretation,
+                prepared = await _prepare_lookup(db, pin, interpretation,
                     limit=max(1, body.max_sources // 2))
                 mixed_inputs = prepared.consume()
             if mixed_inputs.outcome.status.status != "completed":
@@ -129,7 +144,7 @@ async def ask(
         captured = None
         try:
             async with asyncio.timeout(15):
-                prepared = await prepare_scientific_lookup(db, pin, interpretation, limit=body.max_sources)
+                prepared = await _prepare_lookup(db, pin, interpretation, limit=body.max_sources)
                 numeric_inputs = prepared.consume()
                 outcome = numeric_inputs.outcome
                 captured = _capture_inputs(body, pin, scientific_inputs=numeric_inputs)
@@ -137,14 +152,14 @@ async def ask(
                     await db.rollback()
                     if numeric_inputs.selection_pins:
                         currentness = await retrieval_currentness.check_selected_sources(
-                            numeric_inputs.selection_pins, evidence_resolver=index_retrieval.resolve_evidence)
+                            numeric_inputs.selection_pins, evidence_resolver=_resolve_evidence, backend_pin=pin if content else None)
                         if currentness.status != "unchanged":
-                            outcome = unavailable(currentness.reason_code or "scientific_lookup_currentness_unavailable")
+                            outcome = _unavailable_for(pin, currentness.reason_code or "scientific_lookup_currentness_unavailable")
                     if outcome.status.status == "completed":
-                        await index_retrieval.require_current_pin(db, numeric_inputs.generation_pin)
+                        await _require_pin(db, pin)
         except Exception:
             await db.rollback()
-            outcome = unavailable("scientific_lookup_unavailable")
+            outcome = _unavailable_for(pin, "scientific_lookup_unavailable")
         answer = lookup_answer(outcome)
         latency_ms = int((time.perf_counter() - t0) * 1000)
         _observe_lookup_interaction()
@@ -153,52 +168,65 @@ async def ask(
             support_warnings=["structured_extractions_not_scientific_validation"],
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
-            retrieval_generation=generation_read_metadata(pin), scientific_query=interpretation,
+            retrieval_generation=retrieval_read_metadata(pin), scientific_query=interpretation,
             scientific_lookup=outcome.status, scientific_results=outcome.results)
         return await finish(response, captured or _capture_inputs(body, pin))
     settings = get_settings()
-    vector_hits = []
-    if pin is not None:
-        # The pin and history actor are detached primitives. Provider latency
-        # must not retain the connection used by identity and pin lookup.
+    if content:
         await db.rollback()
         try:
-            neighbors = await provider_resilience.run_blocking(
-                "vector_search", lambda: index_vector_adapter.query(pin, body.question,
-                    top_k=min(body.max_sources * 4, 80)),
-                timeout_seconds=settings.vector_search_timeout_seconds,
-                max_attempts=settings.provider_max_attempts,
-                failure_threshold=settings.provider_circuit_failure_threshold,
-                cooldown_seconds=settings.provider_circuit_cooldown_seconds,
-            )
-            async with asyncio.timeout(10):
-                vector_hits = await index_retrieval.verified_vector_hits(db, pin, neighbors)
+            selected = await reader.hybrid(pin, body.question, interpretation, top_k=body.max_sources, purpose='ask')
+            if selected.pin != pin: raise ValueError('Mixed content identity')
+            candidates = list(selected.rankings)
         except Exception:
-            log.warning("Ask semantic retrieval unavailable; using generation-scoped lexical fallback")
+            if mixed_inputs is not None:
+                return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
+                    reason='mixed_context_unavailable', finish=finish)
+            raise HTTPException(503, 'Complete content-pinned retrieval is unavailable') from None
+    else:
+        settings = get_settings()
+        vector_hits = []
+        if pin is not None:
+            # The pin and history actor are detached primitives. Provider latency
+            # must not retain the connection used by identity and pin lookup.
             await db.rollback()
+            try:
+                neighbors = await provider_resilience.run_blocking(
+                    "vector_search", lambda: index_vector_adapter.query(pin, body.question,
+                        top_k=min(body.max_sources * 4, 80)),
+                    timeout_seconds=settings.vector_search_timeout_seconds,
+                    max_attempts=settings.provider_max_attempts,
+                    failure_threshold=settings.provider_circuit_failure_threshold,
+                    cooldown_seconds=settings.provider_circuit_cooldown_seconds,
+                )
+                async with asyncio.timeout(10):
+                    vector_hits = await index_retrieval.verified_vector_hits(db, pin, neighbors)
+            except Exception:
+                log.warning("Ask semantic retrieval unavailable; using generation-scoped lexical fallback")
+                await db.rollback()
 
-    candidate_limit = min(body.max_sources * 5, 100)
-    try:
-        async with asyncio.timeout(15):
-            lexical_hits = await retrieval.lexical_search(
-                db,
-                interpretation.normalized_query,
-                limit=candidate_limit,
-                generation_id=pin["generation_id"] if pin is not None else None,
-            )
-            formula_hits = await retrieval.formula_lexical_search(db, interpretation, pin, limit=candidate_limit)
-        lexical_hits = retrieval.combine_lexical_hits(formula_hits, lexical_hits, limit=candidate_limit)
-    except Exception:
-        if mixed_inputs is not None:
-            await db.rollback()
-            return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
-                reason="mixed_context_unavailable", finish=finish)
-        raise HTTPException(503, "Lexical/formula-aware retrieval is unavailable") from None
-    candidates = retrieval.fuse_rankings(
-        vector_hits,
-        lexical_hits,
-        limit=candidate_limit,
-    )
+        candidate_limit = min(body.max_sources * 5, 100)
+        try:
+            async with asyncio.timeout(15):
+                lexical_hits = await retrieval.lexical_search(
+                    db,
+                    interpretation.normalized_query,
+                    limit=candidate_limit,
+                    generation_id=pin["generation_id"] if pin is not None else None,
+                )
+                formula_hits = await retrieval.formula_lexical_search(db, interpretation, pin, limit=candidate_limit)
+            lexical_hits = retrieval.combine_lexical_hits(formula_hits, lexical_hits, limit=candidate_limit)
+        except Exception:
+            if mixed_inputs is not None:
+                await db.rollback()
+                return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
+                    reason="mixed_context_unavailable", finish=finish)
+            raise HTTPException(503, "Lexical/formula-aware retrieval is unavailable") from None
+        candidates = retrieval.fuse_rankings(
+            vector_hits,
+            lexical_hits,
+            limit=candidate_limit,
+        )
     if not candidates:
         if mixed_inputs is not None:
             return await _mixed_response(db, body, identity, history_user_id, interpretation, pin, t0,
@@ -206,7 +234,7 @@ async def ask(
         if pin is not None:
             try:
                 async with asyncio.timeout(10):
-                    await index_retrieval.require_current_pin(db, pin)
+                    await _require_pin(db, pin)
             except Exception:
                 raise HTTPException(503, "Retrieval generation changed; please ask again") from None
         latency_ms = int((time.perf_counter() - t0) * 1000)
@@ -224,7 +252,8 @@ async def ask(
             **result.quality_fields(),
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
-            retrieval_generation=generation_read_metadata(pin),
+            retrieval_generation=retrieval_read_metadata(pin),
+            **_lookup_defaults(pin),
             scientific_query=interpretation,
         )
         return await finish(response, _capture_inputs(body, pin))
@@ -236,7 +265,7 @@ async def ask(
     chunk_ids = [candidate.chunk_id for candidate in candidates]
     try:
         async with asyncio.timeout(10):
-            chunk_by_id = await index_retrieval.hydrate(db, pin, chunk_ids)
+            chunk_by_id = await _hydrate_pin(db, pin, chunk_ids)
     except Exception:
         if mixed_inputs is not None:
             await db.rollback()
@@ -250,7 +279,7 @@ async def ask(
             candidates = await complementary_retrieval.expand_candidates(db, pin, candidates, chunk_by_id)
             # Rehydrate the whole bounded inventory, not one unchecked extra
             # set whose combined byte count could exceed the hydration budget.
-            chunk_by_id = await index_retrieval.hydrate(db, pin, [item.chunk_id for item in candidates])
+            chunk_by_id = await _hydrate_pin(db, pin, [item.chunk_id for item in candidates])
             rows = list(chunk_by_id.values())
             groups = [chunk.materials_mentioned for chunk in rows]
             if any(type(group) is not list for group in groups) or sum(map(len, groups)) > 5000:
@@ -376,7 +405,7 @@ async def ask(
     if not rag_inputs and not pin_unavailable and pin is not None:
         try:
             async with asyncio.timeout(10):
-                await index_retrieval.require_current_pin(db, pin)
+                await _require_pin(db, pin)
         except Exception:
             pin_unavailable = True
             evidence_failure_reason = "retrieval_generation_changed"
@@ -440,7 +469,8 @@ async def ask(
 
     # A seal only checks in-memory consistency. Re-read selected catalogue
     # inputs in a new bounded snapshot before accepting that provisional seal.
-    currentness = (await retrieval_currentness.check_selected_sources(selected_pins, evidence_resolver=_resolve_evidence)
+    currentness = (await retrieval_currentness.check_selected_sources(selected_pins, evidence_resolver=_resolve_evidence,
+                   backend_pin=pin if content else None)
                    if rag_inputs else None)
     if pin_unavailable or currentness is not None and currentness.status != "unchanged":
         reason = (currentness.reason_code if currentness is not None
@@ -489,10 +519,54 @@ async def ask(
         **result.quality_fields(),
         guest_remaining=identity.guest_remaining,
         remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
-        retrieval_generation=generation_read_metadata(pin),
+        retrieval_generation=retrieval_read_metadata(pin),
+        **_lookup_defaults(pin),
         scientific_query=interpretation,
     )
     return await finish(response, captured or _capture_inputs(body, pin))
+
+
+def _is_content(pin):
+    from services.retrieval_activation import RetrievalPinV2
+    return type(pin) is RetrievalPinV2
+
+
+def _lookup_scope(pin):
+    return 'declared_content_derived_extractions' if _is_content(pin) else 'declared_generation_derived_extractions'
+
+
+def _lookup_defaults(pin):
+    return {'scientific_lookup': ScientificLookupStatus(scope=_lookup_scope(pin))} if _is_content(pin) else {}
+
+
+def _unavailable_for(pin, reason):
+    outcome = unavailable(reason)
+    if _is_content(pin):
+        from services.scientific_query_lookup import LookupResult
+        return LookupResult([], ScientificLookupStatus.model_validate({**outcome.status.model_dump(mode='json'),
+            'scope': _lookup_scope(pin)}, strict=True))
+    return outcome
+
+
+async def _require_pin(db, pin):
+    if _is_content(pin):
+        from services.retrieval_activation import assert_current_backend
+        return await assert_current_backend(db, pin)
+    return await index_retrieval.require_current_pin(db, pin)
+
+
+async def _hydrate_pin(db, pin, ids):
+    if _is_content(pin):
+        from services.retrieval_members import hydrate
+        return await hydrate(db, pin, ids)
+    return await index_retrieval.hydrate(db, pin, ids)
+
+
+async def _prepare_lookup(db, pin, interpretation, **kwargs):
+    if _is_content(pin):
+        from services.content_scientific_lookup import prepare_content_scientific_lookup
+        return await prepare_content_scientific_lookup(db, pin, interpretation, **kwargs)
+    return await prepare_scientific_lookup(db, pin, interpretation, **kwargs)
 
 
 async def _resolve_evidence(db, chunks):
@@ -511,6 +585,8 @@ async def _mixed_response(db, body, identity, history_user_id, interpretation, p
     """Publish both current inventories together, or withdraw both without a draft."""
     await db.rollback()
     report = None
+    report_type = ContentScientificMixedEvidence if _is_content(pin) else ScientificMixedEvidence
+    report_version = {'version':'scientific-mixed-evidence/2.0.0'} if _is_content(pin) else {}
     sources = []
     if reason is None:
         try:
@@ -529,14 +605,14 @@ async def _mixed_response(db, body, identity, history_user_id, interpretation, p
                         max_selected_inputs=body.max_sources)
 
                 check = await retrieval_currentness.check_selected_sources(pins, evidence_resolver=_resolve_evidence,
-                    snapshot_resolver=resolve_links)
+                    snapshot_resolver=resolve_links, backend_pin=pin if _is_content(pin) else None)
                 if check.status != "unchanged":
                     reason = check.reason_code or "mixed_currentness_unavailable"
                 else:
                     report = check.details
             else:
                 async with asyncio.timeout(10):
-                    await index_retrieval.require_current_pin(db, pin)
+                    await _require_pin(db, pin)
                 report = await scientific_mixed.resolve_mixed_associations(db, inputs, sources,
                     max_selected_inputs=body.max_sources)
         except Exception:
@@ -545,13 +621,13 @@ async def _mixed_response(db, body, identity, history_user_id, interpretation, p
         # Reason values from lower-level boundaries stay inside the public
         # closed inventory; neither raw errors nor prior inputs are returned.
         try:
-            report = ScientificMixedEvidence(status="unavailable", max_selected_inputs=body.max_sources,
+            report = report_type(**report_version, status="unavailable", max_selected_inputs=body.max_sources,
                 reason_codes=[reason])
         except ValueError:
-            report = ScientificMixedEvidence(status="unavailable", max_selected_inputs=body.max_sources,
+            report = report_type(**report_version, status="unavailable", max_selected_inputs=body.max_sources,
                 reason_codes=["mixed_currentness_unavailable"])
         sources = []
-        outcome = unavailable("mixed_retrieval_withheld")
+        outcome = _unavailable_for(pin, "mixed_retrieval_withheld")
         packing = EvidencePackingSummary(status="withheld", reason_codes=["selected_context_withheld"])
     else:
         outcome = inputs.outcome
@@ -565,7 +641,7 @@ async def _mixed_response(db, body, identity, history_user_id, interpretation, p
         support_warnings=["numerical_explanation_not_established", "structured_extractions_not_scientific_validation"]
             if report.status == "completed" else list(report.reason_codes),
         evidence_packing=packing or EvidencePackingSummary(),
-        retrieval_generation=generation_read_metadata(pin), guest_remaining=identity.guest_remaining,
+        retrieval_generation=retrieval_read_metadata(pin), guest_remaining=identity.guest_remaining,
         remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining)
     if captured is None:
         captured = _capture_inputs(body, pin, scientific_inputs=inputs if reason is None and not sources else None)
@@ -590,6 +666,10 @@ def _currentness_abstention(reason: str, tokens_used: int | None, *, input_budge
 def _capture_inputs(body, pin, *, sources=(), chunks=(), selection_pins=(), scientific_inputs=None):
     """Detach admitted input references before ORM rollback or provider work."""
     try:
+        if _is_content(pin):
+            from services import content_answer_evidence
+            return content_answer_evidence.capture_inputs(request=body, backend_pin=pin,
+                sources=sources, chunks=chunks, selection_pins=selection_pins, scientific_inputs=scientific_inputs)
         return answer_evidence.capture_inputs(request=body, generation_pin=pin,
             sources=sources, chunks=chunks, selection_pins=selection_pins,
             scientific_inputs=scientific_inputs)

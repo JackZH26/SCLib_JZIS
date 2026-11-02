@@ -1,6 +1,7 @@
 import { expect, test, type Page } from "@playwright/test";
 import capturedMixed from "../fixtures/answer-history-http-mixed.json";
 import capturedLegacy from "../fixtures/answer-history-http-legacy.json";
+import capturedContent from "../fixtures/content-answer-history-http.json";
 
 const historyId = capturedMixed.entry.id;
 
@@ -18,14 +19,14 @@ async function syntheticOnly(page: Page, baseURL: string) {
       country: null, age: null, research_area: null, purpose: null, bio: null, orcid: null,
       created_at: "2026-09-01T00:00:00Z", is_active: true, is_admin: false, is_reviewer: false,
       auth_provider: "local", avatar_url: null, scopes: [] });
-    if ([historyId, capturedLegacy.entry.id].some(id => url.pathname === `/__synthetic_api/v1/history/${id}`)) {
+    if ([historyId, capturedLegacy.entry.id, capturedContent.entry.id].some(id => url.pathname === `/__synthetic_api/v1/history/${id}`)) {
       state.calls++;
       state.readModes.push(state.mode);
       expect(route.request().method()).toBe("GET");
       expect(route.request().headers()["x-api-key"]).toBeUndefined();
       if (state.mode === "denied") return fulfill({ detail: "PRIVATE_DIAGNOSTIC_NOT_FOR_DISPLAY" }, 403);
       if (state.mode === "missing") return fulfill({ detail: "PRIVATE_DIAGNOSTIC_NOT_FOR_DISPLAY" }, 404);
-      return fulfill(state.mode === "legacy" ? capturedLegacy : capturedMixed);
+      return fulfill(state.mode === "legacy" ? capturedLegacy : state.mode === "content" ? capturedContent : capturedMixed);
     }
     state.unexpectedApi.push(url.pathname); return fulfill({ detail: "No synthetic fixture" }, 503);
   });
@@ -42,9 +43,17 @@ for (const viewport of [{ name: "desktop", width: 1440, height: 1000 }, { name: 
     await expect(page.getByRole("heading", { name: "Historical receipt integrity checked" })).toBeVisible();
     await expect(page.getByRole("region", { name: "Structured extraction records" })).toContainText("39 K");
     await expect(page.getByRole("region", { name: "Original explanation candidates" })).toContainText("specimen U");
-    await page.getByText("Recorded identity and generation pins", { exact: true }).click();
+    await page.getByText("Recorded identity and retrieval pins", { exact: true }).click();
     await expect(page.getByText("Recorded activation event", { exact: true })).toBeVisible();
     await page.screenshot({ path: testInfo.outputPath(`receipt-${viewport.name}.png`), fullPage: true });
+    expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
+    state.mode = "content"; await page.goto(`/dashboard/history/${capturedContent.entry.id}`);
+    await expect(page.getByRole("heading", { name: "Historical receipt integrity checked" })).toBeVisible();
+    await page.getByText("Recorded identity and retrieval pins", { exact: true }).click();
+    await expect(page.getByText("Recorded content", { exact: true })).toBeVisible();
+    await expect(page.getByText("Recorded build", { exact: true })).toBeVisible();
+    await expect(page.getByText("Recorded generation", { exact: true })).toHaveCount(0);
+    await page.screenshot({ path: testInfo.outputPath(`receipt-content-${viewport.name}.png`), fullPage: true });
     expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewport.width);
     state.mode = "legacy"; await page.goto(`/dashboard/history/${capturedLegacy.entry.id}`);
     await expect(page.getByRole("heading", { name: "Legacy unpinned history" })).toBeVisible();
@@ -55,7 +64,7 @@ for (const viewport of [{ name: "desktop", width: 1440, height: 1000 }, { name: 
     const callsBeforeRetry = state.calls;
     // Strict Mode starts two reads per mount, but an aborted read may never
     // reach the network interceptor. Each completed page must have one or two.
-    for (const mode of ["mixed", "legacy", "denied"]) {
+    for (const mode of ["mixed", "content", "legacy", "denied"]) {
       const count = state.readModes.filter(value => value === mode).length;
       expect(count).toBeGreaterThanOrEqual(1); expect(count).toBeLessThanOrEqual(2);
     }

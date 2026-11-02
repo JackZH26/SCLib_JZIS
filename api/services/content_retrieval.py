@@ -51,6 +51,10 @@ class ContentRetriever:
         self._pin(pin)
         return await self._readiness.prepare(pin)
 
+    async def similar(self,pin,paper_id,*,top_k=10):
+        from services.content_similarity import similar
+        return await similar(self,pin,paper_id,top_k=top_k)
+
     def _pin(self,pin):
         if (type(pin) is not RetrievalPinV2 or pin.policy_artifact_sha256!=POLICY_SHA256
                 or self._transport.budget!=QueryBudget()):
@@ -82,16 +86,17 @@ class ContentRetriever:
                 async_executor=self._embedding_workers.run)
         return await self._transport.query(pin.projection,vector,top_k=top_k,year_min=year_min,year_max=year_max)
 
-    async def hybrid(self,pin,query,interpretation,*,top_k,year_min=None,year_max=None,exclude_retracted=True):
+    async def hybrid(self,pin,query,interpretation,*,top_k,year_min=None,year_max=None,exclude_retracted=True,purpose='search'):
         self._pin(pin)
         if (type(top_k) is not int or not 1<=top_k<=100 or type(query) is not str
                 or not 2<=len(query)<=2000 or type(interpretation) is not ScientificQueryInterpretation or interpretation.raw_query!=query
-                or interpretation.status!='resolved' or type(exclude_retracted) is not bool):
+                or interpretation.status!='resolved' or type(exclude_retracted) is not bool
+                or type(purpose) is not str or purpose not in {'search','ask'}):
             raise ContentRetrievalUnavailable('A resolved original query and bounded request are required')
         if (any(year is not None and (type(year) is not int or not 1<=year<=9999) for year in (year_min,year_max))
                 or year_min is not None and year_max is not None and year_min>year_max):
             raise ContentRetrievalUnavailable('Exact ordered year bounds are required')
-        candidate_limit=min(top_k*5,300)
+        candidate_limit=min(top_k*5,100 if purpose=='ask' else 300)
         task=None
         try:
             async with asyncio.timeout(15):
@@ -100,7 +105,7 @@ class ContentRetriever:
                 # Do not schedule any provider call for a forged/stale identity.
                 async def current(db):await assert_current_backend(db,pin)
                 await self._read(current)
-                task=asyncio.create_task(self._semantic(pin,query,top_k=min(top_k*3,100),
+                task=asyncio.create_task(self._semantic(pin,query,top_k=min(top_k*(4 if purpose=='ask' else 3),80 if purpose=='ask' else 100),
                     year_min=year_min,year_max=year_max))
                 async def navigation(db):
                     text=await retrieval_navigation.lexical_search(db,pin,interpretation.normalized_query,

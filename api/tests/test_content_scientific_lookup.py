@@ -29,11 +29,16 @@ async def content(db_session,tmp_path,monkeypatch,request):
     from tests import test_embedding_receipts
     from tests.test_rag_evidence import seed
     options=getattr(request,'param',{})
+    seeded_count=0
     value=record(tc=options.get('tc','39 K'),pressure=options.get('pressure','ambient'),raw_extraction={
         'tc_kelvin':options.get('tc','39 K'),'source_context':'Synthetic full private context',
         'custom_payload':{'preserve':['all','raw','fields']}})
     async def selected_seed(db):
-        identifier,candidate=await seed(db,record=value,text='Synthetic MgB2 superconductivity exact retained fixture. Tc 39 K.')
+        nonlocal seeded_count
+        seeded_count+=1
+        text='Synthetic MgB2 superconductivity exact retained fixture. Tc 39 K.'
+        if options.get('distinct'):text+=' Synthetic input '+str(seeded_count)+'.'
+        identifier,candidate=await seed(db,record=value,text=text)
         if options.get('original'):
             candidate={'version':'rag-evidence/1.0.0','chunk_kind':'original_passage',
                 'rendering_version':'sclib-section-chunker/2.0.0'}

@@ -59,15 +59,34 @@ async def expand_candidates(db, pin, candidates, chunk_by_id):
             break
     if not groups:
         return list(candidates)
-    member = Base.metadata.tables["index_generation_members"]
-    evidence = Base.metadata.tables["rag_evidence_revisions"]
-    projection = sa.select(member.c.vector_id, member.c.paper_id, member.c.source_snapshot_sha256,
-        member.c.snapshot_json["section"].astext.label("section"),
-        member.c.snapshot_json["has_table"].label("has_table")).join(
-            evidence, evidence.c.id == member.c.evidence_revision_id).where(
-        member.c.generation_id == UUID(str(pin["generation_id"])),
-        sa.tuple_(member.c.paper_id, member.c.source_snapshot_sha256).in_(groups),
-        evidence.c.chunk_kind == "original_passage")
+    from services.retrieval_activation import RetrievalPinV2, assert_current_backend
+    if type(pin) is RetrievalPinV2:
+        await assert_current_backend(db, pin)
+        member = Base.metadata.tables['retrieval_content_members_v2']
+        old = Base.metadata.tables['index_generation_members']
+        native = Base.metadata.tables['retrieval_native_revisions_v2']
+        evidence = Base.metadata.tables['rag_evidence_revisions']
+        snapshot = sa.func.coalesce(old.c.snapshot_json, native.c.snapshot_json)
+        source_snapshot = sa.func.coalesce(old.c.source_snapshot_sha256, native.c.source_snapshot_sha256)
+        joined = member.outerjoin(old, sa.and_(member.c.origin_kind == 'legacy_v1',
+            old.c.generation_id == member.c.origin_generation_id, old.c.vector_id == member.c.vector_id)).outerjoin(
+            native, sa.and_(member.c.origin_kind == 'native_v2', native.c.id == member.c.native_revision_id,
+                native.c.vector_id == member.c.vector_id)).join(evidence,
+            evidence.c.id == sa.func.coalesce(old.c.evidence_revision_id, native.c.evidence_revision_id))
+        projection = sa.select(member.c.vector_id, member.c.paper_id, source_snapshot.label('source_snapshot_sha256'),
+            snapshot.op('->>')('section').label('section'), snapshot.op('->')('has_table').label('has_table')).select_from(joined).where(
+            member.c.content_id == UUID(pin.content_id), sa.tuple_(member.c.paper_id, source_snapshot).in_(groups),
+            evidence.c.chunk_kind == 'original_passage')
+    else:
+        member = Base.metadata.tables["index_generation_members"]
+        evidence = Base.metadata.tables["rag_evidence_revisions"]
+        projection = sa.select(member.c.vector_id, member.c.paper_id, member.c.source_snapshot_sha256,
+            member.c.snapshot_json["section"].astext.label("section"),
+            member.c.snapshot_json["has_table"].label("has_table")).join(
+                evidence, evidence.c.id == member.c.evidence_revision_id).where(
+            member.c.generation_id == UUID(str(pin["generation_id"])),
+            sa.tuple_(member.c.paper_id, member.c.source_snapshot_sha256).in_(groups),
+            evidence.c.chunk_kind == "original_passage")
     metadata = projection.subquery()
     count, size = (await db.execute(sa.select(sa.func.count(), sa.func.coalesce(sa.func.sum(
         sa.func.octet_length(sa.cast(sa.func.to_jsonb(metadata.table_valued()), sa.Text))), 0)))).one()

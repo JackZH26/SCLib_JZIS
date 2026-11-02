@@ -192,7 +192,7 @@ def statements():
       RAISE EXCEPTION 'content_answer_invalid_bounded_json' USING ERRCODE='23514';
     END $$
     """,'CREATE TRIGGER cae113_parent BEFORE INSERT OR UPDATE ON public.ask_history FOR EACH ROW EXECUTE FUNCTION public.sclib_content_answer_parent_v2()',
-    'CREATE CONSTRAINT TRIGGER cae113_complete AFTER INSERT ON public.ask_history DEFERRABLE INITIALLY DEFERRED FOR EACH ROW EXECUTE FUNCTION public.sclib_content_answer_complete_v2()',
+    'CREATE CONSTRAINT TRIGGER cae113_complete AFTER INSERT ON public.ask_history DEFERRABLE INITIALLY DEFERRED FOR EACH ROW WHEN (NEW.content_evidence_receipt_version IS NOT NULL) EXECUTE FUNCTION public.sclib_content_answer_complete_v2()',
     f'CREATE TRIGGER cae113_insert BEFORE INSERT ON public.{TABLE} FOR EACH ROW EXECUTE FUNCTION public.sclib_content_answer_insert_v2()',
     f'CREATE TRIGGER cae113_immutable BEFORE UPDATE OR DELETE ON public.{TABLE} FOR EACH ROW EXECUTE FUNCTION public.sclib_answer_evidence_immutable_v1()',
     f'CREATE TRIGGER cae113_truncate BEFORE TRUNCATE ON public.{TABLE} FOR EACH STATEMENT EXECUTE FUNCTION public.sclib_answer_evidence_immutable_v1()']
