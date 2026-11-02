@@ -27,6 +27,24 @@ jobs:
         run: |
           docker build --tag sclib-pgvector-ci --file ops/postgres/Dockerfile ops/postgres
           docker pull redis:7-alpine
+      - name: Scan the actual candidate image before runtime acceptance
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          version: v0.70.0
+          image-ref: sclib-pgvector-ci
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          format: json
+          output: ${{ runner.temp }}/pgvector-image-vulnerabilities.json
+          exit-code: "1"
+      - name: Retain actual image vulnerability results
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: pgvector-image-vulnerabilities-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/pgvector-image-vulnerabilities.json
+          if-no-files-found: warn
       - name: Test the extension in fresh capability-verified services
         run: |
           image_id="$(docker image inspect sclib-pgvector-ci --format '{{.Id}}')"
