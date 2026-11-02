@@ -7,6 +7,21 @@ The final stage contains the extension, not the compiler or download tools,
 and runs as the base image's `postgres` user. Verify volume ownership before
 the maintenance operation; do not repair an unknown volume with broad chmod.
 
+The frozen parent contained fixable high/critical findings, so release
+41449833128 was blocked before signing/deployment. The derived base now applies
+Alpine vendor package updates within the parent's configured branch, checks
+that PostgreSQL remains 16.13 and postgres remains UID/GID 70, and removes
+`gosu`. That Go-based root privilege-drop helper is unused by this image's
+nonroot startup. Starting the database as root is unsupported; initialize and
+restore only explicitly owned postgres-writable volumes. Ordinary application
+deployment still does not replace the production database image.
+
+Runtime package versions are resolved at build time. The final immutable
+digest, complete SBOM, vulnerability scan and signed release evidence must be
+retained; a frozen parent/source alone is not a bit-reproducible package lock.
+Repeat owned startup/schema/extension and restored-data checks on the final
+patched digest before database maintenance.
+
 ```sh
 docker build --tag sclib-pgvector:16.13-0.8.7 --file ops/postgres/Dockerfile ops/postgres
 docker image inspect sclib-pgvector:16.13-0.8.7 --format '{{.Id}}'
