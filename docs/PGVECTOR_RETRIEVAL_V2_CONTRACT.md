@@ -57,8 +57,9 @@ must be coordinated at the later rehearsed maintenance/cutover stage.
 
 The 0108 component now implements independent content references, bounded native
 paper publications, partition manifests and complete-source seals; see
-[content v2](PGVECTOR_CONTENT_V2.md). None is installed in production. Backend
-build/validation, activation and operational publication queue work remain.
+[content v2](PGVECTOR_CONTENT_V2.md). None is installed in production. The 0109 component implements private builder/seal/full readback authority;
+see [backend v2](PGVECTOR_BACKEND_V2.md). Activation and the operational
+publication queue remain separate work.
 
 - A content version materializes immutable member references. The first import
   references the complete sealed v1 generation. Later versions reference
@@ -100,9 +101,9 @@ build/validation, activation and operational publication queue work remain.
   corpus after v2 takes authority. A local previous build is the immediate
   rollback; user writes are not restored from an old whole-database backup.
 
-The operational publication queue, full-scale content import, backend registry,
-projection validation, activation/CAS and local rollback still need to be
-implemented or exercised. The bounded paper/content seals do not grant backend
+The operational publication queue, full-scale content import, activation/CAS
+and local rollback still need to be implemented or exercised. The backend
+registry/projection validation component remains uninstalled in production. The bounded paper/content seals do not grant backend
 activation authority.
 
 ## Remaining: readers and historical compatibility
@@ -141,8 +142,8 @@ stable days preceding current Google retirement.
 The initial fixed 200-input full SQL comparison is retained unchanged. For
 `m=16, ef_construction=64`, mean recall@20 was 0.734 / 0.90625 / 0.91825 at
 `ef_search=100 / 400 / 1000`; none met 0.95. Boundary-tolerant recall gave the
-same result, so ties do not explain the gap. A denser isolated build is being
-measured. These are not production-quality acceptance results.
+same result, so ties do not explain the gap. The denser isolated build and bounded relaxed candidate policy are recorded
+separately. These failed settings remain diagnostic evidence.
 
 There are only 162 distinct provider vectors: the 40 different Chinese inputs
 mapped to two vectors. Google documents `text-embedding-005` as an English/code
@@ -158,9 +159,11 @@ both have 768 dimensions.
 The English-only set has been frozen separately: 160 unchanged original
 English/formula queries and 80 supplemental English queries. No Chinese query
 contributes to its metrics. On the original 160 English inputs, m32/ef200 with
-ef_search=1000 achieved mean recall@20 0.99875, minimum 0.95. Full 240-input
-evaluation is pending. This neither grants human relevance labels nor proves
-filtered, full-service or production quality.
+ef_search=1000 achieved mean recall@20 0.99875, minimum 0.95. All 240 English inputs with the frozen relaxed/materialized 1,024-candidate
+policy achieved mean recall@20 0.99895833, minimum 0.95, zero failed query. A
+repeat on the patched restored image gave the same result. See the
+[query policy](PGVECTOR_QUERY_POLICY_V2.md). These measurements grant no human
+relevance labels and do not prove filtered, full-service or production quality.
 
 Google currently schedules `text-embedding-005` retirement for 2027-04-01.
 Record a separate embedding-space migration before that date; changing the
