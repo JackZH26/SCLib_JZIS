@@ -149,6 +149,15 @@ def validate_response(value):
     expected = set(AskResponse.model_fields) - EXCLUDED_RESPONSE_FIELDS
     if type(value) is not dict or set(value) != expected:
         raise ValueError("answer_evidence_response_fields")
+    # This is the retained V1 decoder. Widening the live response union must
+    # never widen an already hashed historical wire contract implicitly.
+    read, lookup, mixed = (value[key] for key in ("retrieval_generation", "scientific_lookup", "scientific_mixed"))
+    if (any(type(item) is not dict for item in (read, lookup, mixed))
+            or read.get("version") != "index-read/1.0.0"
+            or lookup.get("scope") != "declared_generation_derived_extractions"
+            or mixed.get("version") not in {
+                "scientific-mixed-evidence/1.0.0", "scientific-mixed-evidence/1.1.0"}):
+        raise ValueError("answer_evidence_v1_response_version")
     result = AskResponse.model_validate(value, strict=True).model_dump(mode="json", exclude=EXCLUDED_RESPONSE_FIELDS)
     # Equality of the canonical round trip catches ignored nested extra fields
     # and coercions in legacy DTOs, while retaining their declared metadata.

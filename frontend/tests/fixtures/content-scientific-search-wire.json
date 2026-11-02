@@ -1,0 +1,169 @@
+{
+  "retrieval_generation": {
+    "version": "index-read/2.0.0",
+    "mode": "content_snapshot",
+    "content_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+    "build_id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+    "activation_event_id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+    "manifest_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+    "policy_artifact_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+    "profile": {
+      "version": "sclib-index-profile/1.0.0",
+      "provider": "google-vertex-ai",
+      "model": "text-embedding-005",
+      "output_dimensionality": 768,
+      "document_task": "RETRIEVAL_DOCUMENT",
+      "query_task": "RETRIEVAL_QUERY"
+    }
+  },
+  "scientific_query": {
+    "version": "scientific-query/1.0.0",
+    "raw_query": "Tc > 20 K for MgB₂",
+    "normalized_query": "Tc > 20 K for MgB2",
+    "language": "en",
+    "intent": "numerical",
+    "status": "resolved",
+    "requested_fields": [
+      "tc_kelvin"
+    ],
+    "formulas": [
+      {
+        "raw_text": "MgB₂",
+        "start": 14,
+        "end": 18,
+        "normalization": {
+          "version": "formula-query/1.0.0",
+          "raw_formula": "MgB₂",
+          "normalized_formula": "MgB2",
+          "status": "normalized",
+          "reason_codes": []
+        }
+      }
+    ],
+    "constraints": [
+      {
+        "raw_text": "Tc > 20 K",
+        "start": 0,
+        "end": 9,
+        "field": "tc_kelvin",
+        "relation": "gt",
+        "value": null,
+        "lower": 20.0,
+        "upper": null,
+        "unit": "K",
+        "unit_basis": "explicit"
+      }
+    ],
+    "evidence_constraints": [],
+    "unresolved_clauses": [],
+    "clarification_questions": [],
+    "scientific_acceptance": false
+  },
+  "scientific_lookup": {
+    "status": "completed",
+    "reason_codes": [],
+    "returned_count": 1,
+    "has_more": false,
+    "scope": "declared_content_derived_extractions",
+    "scientific_acceptance": false
+  },
+  "scientific_results": [
+    {
+      "result": {
+        "version": "scientific-query-result/1.0.0",
+        "result_id": "legacy-result:5aa675bf7a64a815131b95e72b03e4603b5e06e7962b5febe450d8e5d46d0077",
+        "record_index": 0,
+        "formula": "MgB2",
+        "family": null,
+        "tc": {
+          "status": "parsed",
+          "relation": "exact",
+          "value": 39.0,
+          "lower": null,
+          "upper": null,
+          "uncertainty": null,
+          "approximate": false,
+          "unit": "K",
+          "unit_basis": "explicit",
+          "uncertainty_interpretation": null
+        },
+        "pressure": {
+          "status": "parsed",
+          "relation": "exact",
+          "value": 0.0,
+          "lower": null,
+          "upper": null,
+          "uncertainty": null,
+          "approximate": false,
+          "unit": "GPa",
+          "unit_basis": "explicit_ambient_reference",
+          "uncertainty_interpretation": null,
+          "pressure_state": "explicit_ambient"
+        },
+        "minimum_temperature": {
+          "status": "unreported",
+          "relation": "unreported",
+          "value": null,
+          "lower": null,
+          "upper": null,
+          "uncertainty": null,
+          "approximate": false,
+          "unit": "K",
+          "unit_basis": "unreported",
+          "uncertainty_interpretation": null
+        },
+        "result_classification": {
+          "knowledge_origin": "Observed",
+          "classification_status": "resolved",
+          "source_role": "primary"
+        },
+        "outcome_state": "positive_reported",
+        "reported_context": {
+          "tc_criterion": null,
+          "sample_label": null,
+          "sample_form": null,
+          "structure_phase": null,
+          "measurement_method": "resistivity"
+        },
+        "warning_codes": [
+          "machine_extraction_not_scientific_approval",
+          "same_record_not_resolved_sample_identity",
+          "sample_label_unreported_or_unresolved",
+          "structure_phase_unreported_or_unresolved",
+          "tc_criterion_unreported_or_unresolved"
+        ],
+        "scientific_acceptance": false,
+        "ml_training_eligible": false,
+        "detection_adequacy_verified": false
+      },
+      "binding": {
+        "version": "scientific-result-binding/2.0.0",
+        "paper_id": "synthetic:wire-MgB2",
+        "vector_id": "rv2_ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "content_id": "aaaaaaaa-aaaa-4aaa-8aaa-aaaaaaaaaaaa",
+        "build_id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "activation_event_id": "bbbbbbbb-bbbb-4bbb-8bbb-bbbbbbbbbbbb",
+        "manifest_sha256": "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa",
+        "policy_artifact_sha256": "bbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbbb",
+        "content_member_record_sha256": "4444444444444444444444444444444444444444444444444444444444444444",
+        "origin_kind": "native_v2",
+        "origin_generation_id": null,
+        "native_revision_id": "dddddddd-dddd-4ddd-8ddd-dddddddddddd",
+        "origin_record_sha256": "5555555555555555555555555555555555555555555555555555555555555555",
+        "chunk_revision_sha256": "ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",
+        "vector_sha256": "6666666666666666666666666666666666666666666666666666666666666666",
+        "content_sha256": "1111111111111111111111111111111111111111111111111111111111111111",
+        "evidence_revision_id": "cccccccc-cccc-4ccc-8ccc-cccccccccccc",
+        "evidence_record_sha256": "2222222222222222222222222222222222222222222222222222222222222222",
+        "parent_result_revision_id": "eeeeeeee-eeee-4eee-8eee-eeeeeeeeeeee",
+        "parent_result_sha256": "3333333333333333333333333333333333333333333333333333333333333333",
+        "association_scope": "derived_extraction_not_original_support"
+      }
+    }
+  ],
+  "total": 0,
+  "results": [],
+  "query_time_ms": 1,
+  "guest_remaining": null,
+  "remaining": null
+}

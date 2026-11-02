@@ -1126,7 +1126,7 @@ export interface SearchMatch {
 }
 
 export interface SearchResponse {
-  retrieval_generation?: RetrievalGeneration | null;
+  retrieval_generation?: RetrievalReadIdentity | null;
   scientific_query?: ScientificQueryInterpretation | null;
   scientific_results?: BoundScientificQueryResult[];
   scientific_lookup?: ScientificLookup;
@@ -1194,7 +1194,7 @@ export interface AskResponse {
   scientific_mixed?: ScientificMixedEvidence;
   evidence_packing?: EvidencePackingSummary;
   input_budget?: RagInputBudgetReport;
-  retrieval_generation?: RetrievalGeneration | null;
+  retrieval_generation?: RetrievalReadIdentity | null;
   scientific_query?: ScientificQueryInterpretation | null;
   scientific_results?: BoundScientificQueryResult[];
   scientific_lookup?: ScientificLookup;
@@ -1244,7 +1244,7 @@ export interface MixedEvidenceAssociation {
 
 /** Separate retrieval inventories, never a numerical explanation or experiment link. */
 export interface ScientificMixedEvidence {
-  version: "scientific-mixed-evidence/1.0.0" | "scientific-mixed-evidence/1.1.0";
+  version: "scientific-mixed-evidence/1.0.0" | "scientific-mixed-evidence/1.1.0" | "scientific-mixed-evidence/2.0.0";
   status: "not_requested" | "completed" | "unavailable";
   result_count: number;
   source_count: number;
@@ -1438,26 +1438,40 @@ export interface ScientificQueryResult {
 }
 export interface BoundScientificQueryResult {
   result: ScientificQueryResult;
-  binding: {
-    paper_id: string;
-    vector_id: string;
-    generation_id: string;
-    activation_event_id: string;
-    manifest_sha256: string;
-    content_sha256: string;
-    evidence_revision_id: string;
-    evidence_record_sha256: string;
-    parent_result_revision_id: string;
-    parent_result_sha256: string;
-    association_scope: "derived_extraction_not_original_support";
-  };
+  binding: LegacyScientificResultBinding | ContentScientificResultBinding;
+}
+export interface LegacyScientificResultBinding {
+  paper_id: string;
+  vector_id: string;
+  generation_id: string;
+  activation_event_id: string;
+  manifest_sha256: string;
+  content_sha256: string;
+  evidence_revision_id: string;
+  evidence_record_sha256: string;
+  parent_result_revision_id: string;
+  parent_result_sha256: string;
+  association_scope: "derived_extraction_not_original_support";
+}
+export interface ContentScientificResultBinding extends Omit<LegacyScientificResultBinding, "generation_id"> {
+  version: "scientific-result-binding/2.0.0";
+  content_id: string;
+  build_id: string;
+  policy_artifact_sha256: string;
+  content_member_record_sha256: string;
+  origin_kind: "legacy_v1" | "native_v2";
+  origin_generation_id: string | null;
+  native_revision_id: string | null;
+  origin_record_sha256: string;
+  chunk_revision_sha256: string;
+  vector_sha256: string;
 }
 export interface ScientificLookup {
   status: "not_requested" | "completed" | "unavailable" | "clarification_required";
   reason_codes: string[];
   returned_count: number;
   has_more: boolean;
-  scope: "declared_generation_derived_extractions";
+  scope: "declared_generation_derived_extractions" | "declared_content_derived_extractions";
   scientific_acceptance: false;
 }
 
@@ -2166,6 +2180,7 @@ export interface SimilarPaper {
 }
 
 export interface SimilarResponse {
+  retrieval_generation?: RetrievalReadIdentity | null;
   source_paper_id: string;
   results: SimilarPaper[];
 }
