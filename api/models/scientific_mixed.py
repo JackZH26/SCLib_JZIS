@@ -1,6 +1,7 @@
 """Closed mixed retrieval reporting; catalogue proximity is not an experiment link."""
 from __future__ import annotations
 
+import re
 from typing import Literal
 from uuid import UUID
 
@@ -132,8 +133,20 @@ class ScientificMixedEvidence(_Closed):
         return self
 
 
+class ContentMixedEvidenceAssociation(MixedEvidenceAssociation):
+    source_vector_id: str = Field(pattern=r"^(ig62_[0-9a-f]{32}_|rv2_)[0-9a-f]{64}$")
+
+
+class ContentScientificMixedEvidence(ScientificMixedEvidence):
+    version: Literal["scientific-mixed-evidence/2.0.0"]
+    associations: list[ContentMixedEvidenceAssociation] = Field(default_factory=list, max_length=100)
+
+
 def validate_mixed_response(response):
     mixed = response.scientific_mixed
+    content = response.retrieval_generation.mode == "content_snapshot"
+    if type(mixed) is ContentScientificMixedEvidence and not content:
+        raise ValueError("Content mixed evidence requires a content/backend read identity")
     if mixed.status == "not_requested":
         return response
     query = response.scientific_query
@@ -149,8 +162,10 @@ def validate_mixed_response(response):
         if response.sources or response.scientific_results or response.scientific_lookup.status != "unavailable":
             raise ValueError("Unavailable mixed responses withdraw both original and numerical inventories")
         return response
-    if response.scientific_lookup.status != "completed" or response.retrieval_generation.mode != "generation_snapshot":
+    if response.scientific_lookup.status != "completed" or response.retrieval_generation.mode not in {"generation_snapshot", "content_snapshot"}:
         raise ValueError("Completed mixed retrieval requires completed version-pinned numerical lookup")
+    if content and type(mixed) is not ContentScientificMixedEvidence:
+        raise ValueError("Content mixed retrieval requires the explicit v2 contract")
     rows, sources = response.scientific_results, response.sources
     if len(rows) != mixed.result_count or len(sources) != mixed.source_count:
         raise ValueError("Mixed inventory counts must match the public rows and passages")
@@ -160,13 +175,15 @@ def validate_mixed_response(response):
     by_index = {source.index: source for source in sources}
     if len(by_parent) != len(rows):
         raise ValueError("Repeated parents are not distinct numerical results")
-    prefix = "ig62_" + UUID(response.retrieval_generation.generation_id).hex + "_"
+    prefix = None if content else "ig62_" + UUID(response.retrieval_generation.generation_id).hex + "_"
     vectors = []
     for source in sources:
         evidence = source.evidence_provenance
+        identifier = source.packing_info.chunk_id if source.packing_info is not None else ""
+        identity_valid = bool(re.fullmatch(r"(?:ig62_[0-9a-f]{32}_|rv2_)[0-9a-f]{64}", identifier)) if content else identifier.startswith(prefix)
         if (evidence.get("chunk_kind") != "original_passage" or evidence.get("permission_status") == "restricted"
                 or evidence.get("currentness") == "stale" or source.packing_info is None
-                or not source.packing_info.chunk_id.startswith(prefix)):
+                or not identity_valid):
             raise ValueError("Mixed explanations require individually pinned non-held original candidates")
         vectors.append(source.packing_info.chunk_id)
     if len(set(vectors)) != len(vectors) or set(vectors) & {row.binding.vector_id for row in rows}:

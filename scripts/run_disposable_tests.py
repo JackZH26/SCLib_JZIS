@@ -272,14 +272,21 @@ class DisposableServices:
 
     def bootstrap_postgres(self) -> None:
         # All identifiers/passwords are generated hex; no user SQL is accepted.
+        # The isolated vector suite needs a builder capability without changing
+        # its generated owner's NOSUPERUSER/NOCREATEROLE contract. This cluster
+        # was created by this runner; no attach/production path exists.
+        builder = ("CREATE ROLE sclib_retrieval_builder NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE;\n"
+                   "CREATE ROLE sclib_retrieval_reader NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE;\n"
+                   "CREATE ROLE sclib_retrieval_publisher NOLOGIN NOSUPERUSER NOCREATEDB NOCREATEROLE;\n"
+                   f"GRANT sclib_retrieval_builder,sclib_retrieval_reader,sclib_retrieval_publisher TO {self.name};\n") if self.pgvector else ""
         run_quiet(self.pg_command(), env=self.env, input=(
             f"CREATE ROLE {self.name} LOGIN PASSWORD '{self.pg_password}' "
             "NOSUPERUSER NOCREATEDB NOCREATEROLE NOREPLICATION NOBYPASSRLS;\n"
             f"CREATE DATABASE {self.name} OWNER {self.name};\n"
-            "REVOKE CONNECT ON DATABASE postgres FROM PUBLIC;\n"
+            "REVOKE CONNECT ON DATABASE postgres FROM PUBLIC;\n" + builder
         ))
         run_quiet(self.pg_command(self.name), env=self.env, input=(
-            ("CREATE EXTENSION vector;\n" if self.pgvector else "") +
+            ("CREATE EXTENSION vector;\nCREATE EXTENSION pg_prewarm;\n" if self.pgvector else "") +
             "CREATE SCHEMA sclib_test_guard;\n"
             "CREATE TABLE sclib_test_guard.run_identity "
             "(run_id text PRIMARY KEY, expires_at timestamptz NOT NULL);\n"
