@@ -1,0 +1,19 @@
+{
+  "file": "pending-review-materials-v6.zip",
+  "bytes": 278471,
+  "sha256": "4c0b0771ef9856907a751ed5b28e87a28c58c794bb2bc01dd5f57d589f8d0894",
+  "file_count": 44,
+  "preserved_v5_member_count": 34,
+  "preserved_v5_member_bytes_identical": true,
+  "new_source_metadata_companions": 8,
+  "material_candidate_rows_per_role": 8,
+  "material_review_questions_indexed": 30,
+  "material_navigation_locators_indexed": 30,
+  "retrieval_gap_cases_with_fulltext_candidates": 4,
+  "preserved_question_drafts": 72,
+  "contains_original_fulltexts": false,
+  "contains_extracted_passages": false,
+  "contains_page_images": false,
+  "human_reviewed": false,
+  "scientific_acceptance": false
+}

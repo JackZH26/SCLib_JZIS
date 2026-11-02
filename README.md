@@ -28,8 +28,8 @@ validated experiments or complete coverage of superconductivity research.
 | Retained literature chunks | **1,117,982**; not a count of verified active vector-index members |
 | Data version | **`v2026.09.03`** |
 | Latest paper ingest | 3 September 2026, 10:30 UTC |
-| Statistics refreshed | 9 October 2026, 07:00 UTC |
-| Deployed software checked | [`67b790e`](https://github.com/JackZH26/SCLib_JZIS/commit/67b790e30f136bacc0408b86d3be13bfbf2ee6f4) |
+| Statistics refreshed | 9 October 2026, 09:00 UTC |
+| Deployed software checked | [`7efe186`](https://github.com/JackZH26/SCLib_JZIS/commit/7efe1866d610ad227fef9be9f59000173c09d248), rechecked at 09:52–09:53 UTC |
 | Public API version | **`v1`**, at `https://api.jzis.org/sclib/v1` |
 
 Statistics refresh, literature ingest, source-reference updates and software

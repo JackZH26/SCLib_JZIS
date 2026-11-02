@@ -1,0 +1,287 @@
+{
+  "schema_version": "sclib-retrieval-source-navigation/1.0.0",
+  "recorded_at": "2026-10-09T11:43:48.485955+00:00",
+  "input_pins": [
+    {
+      "file": "retrieval-gap-acquisition-v3.json",
+      "bytes": 29003,
+      "sha256": "b9dd3290b79ee9d5d5be2acd1f5550707081ed708cdcb965bb7966099fb08ec5"
+    }
+  ],
+  "scope": "Source-review navigation for three already retained gap-case originals; companions to existing prompts, not additional evaluation questions or answers.",
+  "counts": {
+    "source_cases": 3,
+    "source_review_questions": 12,
+    "navigation_locators": 15,
+    "existing_prompt_ids_referenced": 6,
+    "new_retrieval_prompts": 0
+  },
+  "cases": [
+    {
+      "case_id": "gap-nickelate-pr-film",
+      "existing_draft_question_ids": [
+        "gap-nickelate-pr-film-1",
+        "gap-nickelate-pr-film-2"
+      ],
+      "source_revision": "2006.13369v1",
+      "source_pdf_sha256": "d59c0fec91b4c2472f2c41cb37d38c7f899a31b95fc0569d0707822fff76905a",
+      "source_pdf_pages": 19,
+      "AI_inspection_scope": "Relevant extracted text on pages 2-13 and listed figures read for navigation; remaining references and complete scientific entailment are not adjudicated.",
+      "questions": [
+        "Keep Pr parent, Sr-doped infinite-layer film, precursor perovskite and SrTiO3 substrate/cap as separate sample/state fields; do not join a Nd result cited in the introduction as a direct Pr measurement.",
+        "Bind each transition to the same film and criterion; onset, zero resistance, patterned-device current and mutual-inductance traces require distinct method context.",
+        "Record substrate orientation, epitaxial strain, thickness, cap and reduction history; synthesis pressures are not superconductivity measurement pressures.",
+        "Audit the preprint/journal version and cited Nd roots before grouping experiments or accepting a mechanism interpretation; the current review questions do not establish a gold answer."
+      ],
+      "navigation": [
+        {
+          "PDF_page": 2,
+          "char_start": 1790,
+          "char_end": 1799,
+          "page_text_sha256": "4fdbfa5d379eaf2a3ae60c410cf331d706879973987adb176d3a095e7c1b8e52",
+          "span_text_sha256": "771f5d14b9a27a31fd451e9ab4ae194d0c30143d7b8a70b4d6296525e4473289",
+          "purpose": "cited Nd result versus this Pr study",
+          "scientific_entailment_reviewed": false
+        },
+        {
+          "PDF_page": 4,
+          "char_start": 1209,
+          "char_end": 1223,
+          "page_text_sha256": "c1e807ed5077f5da1a87c29b6295e1a99f3a94ced7b5d1b49117174be8521d82",
+          "span_text_sha256": "79a1d395adc3cdeaa1f7b730a5639f25496a22698d983c3b111918a517b03976",
+          "purpose": "substrate and growth protocol",
+          "scientific_entailment_reviewed": false
+        },
+        {
+          "PDF_page": 5,
+          "char_start": 299,
+          "char_end": 314,
+          "page_text_sha256": "2f9a6960d4ccc382b827fedd20688e6ff64fa100a0f1a4f62a5867bc3938b637",
+          "span_text_sha256": "761c76c5872915e2d2df1b9c206005567bab0bebf2e3180d702de8f0f7532a75",
+          "purpose": "cap/reduction variants",
+          "scientific_entailment_reviewed": false
+        },
+        {
+          "PDF_page": 7,
+          "char_start": 1930,
+          "char_end": 1957,
+          "page_text_sha256": "76da9e997cdf0da918fbd5107baa770d4ad25709446500e318bca251abb2705d",
+          "span_text_sha256": "3f70a81037594e6c0d36d23129576d4e6a02020d489414aa538fb9d76fd0c4fa",
+          "purpose": "onset and zero-resistance criteria",
+          "scientific_entailment_reviewed": false
+        },
+        {
+          "PDF_page": 12,
+          "char_start": 263,
+          "char_end": 267,
+          "page_text_sha256": "4f9d8bc41956370d1e89aec6958ff9cbdb1e425a6399485ae43ade787f96506d",
+          "span_text_sha256": "222b0bd51fcef7e65c2e62db2ed65457013bab56be6fafeb19ee11d453153c80",
+          "purpose": "sample/film-resolved figure caption",
+          "scientific_entailment_reviewed": false
+        }
+      ],
+      "visual_page_pins": [
+        {
+          "PDF_page": 12,
+          "PNG_sha256": "860f6cc693e146fa8cdb172dbbfe202cf24bf60b9c810f05b94e2c95c038657d"
+        },
+        {
+          "PDF_page": 13,
+          "PNG_sha256": "b7c4f89f38434f00081fa2fee3a256dda093f02fe29a52890a0ca695d87e4a0a"
+        }
+      ],
+      "gold_answer": null,
+      "human_reviewers": [],
+      "scientific_support_label": null,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "split": "unassigned",
+      "provider_execution": "not_run",
+      "scientific_acceptance": false
+    },
+    {
+      "case_id": "gap-heavy-fermion-cecoin5",
+      "existing_draft_question_ids": [
+        "gap-heavy-fermion-cecoin5-1",
+        "gap-heavy-fermion-cecoin5-2"
+      ],
+      "source_revision": "cond-mat/0103168v1",
+      "source_pdf_sha256": "047f3ec8f44410d83fe9a0735c6c1a241e8f85b7eeec43ee2a7e13e99ce65011",
+      "source_pdf_pages": 16,
+      "AI_inspection_scope": "Relevant extracted text on pages 2-5, 8-10 and 12 plus listed figures inspected for navigation only; full scientific or cited-root acceptance remains pending.",
+      "questions": [
+        "Separate direct CeCoIn5 resistivity, susceptibility and heat-capacity observations from CeIn3 layers and pressure-induced results cited elsewhere; structural analogy is not material Result identity.",
+        "Keep magnetic-field magnitude, orientation and cooling protocol attached to the specific method and figure; zero-resistance, shielding and thermodynamic signatures must not be merged without support.",
+        "Record the measured CeCoIn5 single crystal and preparation context separately from CeIrIn5 and CeRhIn5 comparisons, inferred mass enhancement and proposed pairing explanations.",
+        "Locate and independently obtain the cited original CeIn3 experiment before accepting its pressure or transition label; the reference list provides navigation rather than verified source-root binding."
+      ],
+      "navigation": [
+        {
+          "PDF_page": 3,
+          "char_start": 574,
+          "char_end": 592,
+          "page_text_sha256": "fc9a85900f81370095200433d904f133e805e8a699652cba2a2a379d7f7f8723",
+          "span_text_sha256": "634bcb948575070859096f5a1579aa53365d8bf58b86f9b3e4cf516afe5b823a",
+          "purpose": "structural analogy and cited CeIn3",
+          "scientific_entailment_reviewed": false
+        },
+        {
+          "PDF_page": 4,
+          "char_start": 1100,
+          "char_end": 1115,
+          "page_text_sha256": "71a8e5c24234ee6f4f8f8198576060f851f01691af0523f31a897bbf7efb99c0",
+          "span_text_sha256": "575465d3c7c2e71d5781374831434743c48a6a72503f894eada3e3a0a6394b50",
+          "purpose": "direct transition methods",
+          "scientific_entailment_reviewed": false
+        },
+        {
+          "PDF_page": 5,
+          "char_start": 803,
+          "char_end": 828,
+          "page_text_sha256": "4614389a645d2e695158541371839b69332ff1bd795460c50aa647dd689f9ed7",
+          "span_text_sha256": "f98efb4d226063822a5e7373a540e4a73d5b2388a3667b9e60c2747d9fe0e8db",
+          "purpose": "field direction and trace comparison",
+          "scientific_entailment_reviewed": false
+        },
+        {
+          "PDF_page": 10,
+          "char_start": 159,
+          "char_end": 165,
+          "page_text_sha256": "3357211de0ccb973a881a0c410e0a377e80b6787e7bb3e95b4cfb863b173c9ab",
+          "span_text_sha256": "2b7d3a76ef1ca4b053a708f850c05695177f6a7dde4e281ab8b5e00f841ea0c0",
+          "purpose": "cited reference 3 identity candidate",
+          "scientific_entailment_reviewed": false
+        },
+        {
+          "PDF_page": 12,
+          "char_start": 257,
+          "char_end": 274,
+          "page_text_sha256": "8a86449e8d27d7c0c7e5d84b66d51290bdf6ecb8b2f12b242bdf7b52eaca374e",
+          "span_text_sha256": "36b58ed073848cb64bc258489fe1cb68a62c597bcaee93a44fbc9b4319ef09cc",
+          "purpose": "Figure 1 susceptibility protocol",
+          "scientific_entailment_reviewed": false
+        }
+      ],
+      "visual_page_pins": [
+        {
+          "PDF_page": 12,
+          "PNG_sha256": "924e8ff23a380a124005f7f3d0bdd9001e458712f2fea264f53b42d9b168004c"
+        },
+        {
+          "PDF_page": 13,
+          "PNG_sha256": "7e27666ac1e063271ecf68952595ce7a45e10edea80f9e7013e5f167572c30e1"
+        },
+        {
+          "PDF_page": 14,
+          "PNG_sha256": "48770d3aaee5defaf6b01faead525cc349516186cfdd536b1f0535bb7056c144"
+        }
+      ],
+      "gold_answer": null,
+      "human_reviewers": [],
+      "scientific_support_label": null,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "split": "unassigned",
+      "provider_execution": "not_run",
+      "scientific_acceptance": false
+    },
+    {
+      "case_id": "gap-interface-lao-sto",
+      "existing_draft_question_ids": [
+        "gap-interface-lao-sto-1",
+        "gap-interface-lao-sto-2"
+      ],
+      "source_revision": "0807.0585v1",
+      "source_pdf_sha256": "89a38597610eef90de0d0ff337de5f9032c2999e3880f7826831e809f7ce6757",
+      "source_pdf_pages": 11,
+      "AI_inspection_scope": "Relevant extracted text on pages 2-6 and 8-11 plus listed figures inspected for navigation only; no accepted state/criterion or original-root decision.",
+      "questions": [
+        "Bind the superconducting temperature to the actual interface/device, gate voltage and carrier state; no bulk LaAlO3 or SrTiO3 label follows from the interface phase diagram.",
+        "Preserve the voltage sweep preparation and trapped-charge history; distinguish the experimental zero-voltage state from the as-grown state before combining data.",
+        "Separate BKT-fit critical temperature, transport transition and normal-state resistance; preserve criterion, uncertainty and device/trace linkage rather than extracting a shared scalar maximum.",
+        "Keep growth/oxygen/annealing conditions distinct from measurement pressure and carrier-density calibration; audit the original interface report cited as reference 5 independently."
+      ],
+      "navigation": [
+        {
+          "PDF_page": 3,
+          "char_start": 1970,
+          "char_end": 1991,
+          "page_text_sha256": "d13715da441a6e2c730e1ab4ac1ba3f8b859e05dded2a4439ec952987139d7e0",
+          "span_text_sha256": "7792923716c4f5ea934b713a093e8d8c136d8528a71564af01ee5ae229ddede6",
+          "purpose": "history-dependent device state",
+          "scientific_entailment_reviewed": false
+        },
+        {
+          "PDF_page": 5,
+          "char_start": 694,
+          "char_end": 713,
+          "page_text_sha256": "e261ce65f9e3f419da0cccd99f964ca443d9e027a373f8d3d7b081b9b9b5fabe",
+          "span_text_sha256": "7241c85c362eab6545884eefb038816be3ac963a7b26c5a8614b59b22b3d7f2c",
+          "purpose": "BKT criterion",
+          "scientific_entailment_reviewed": false
+        },
+        {
+          "PDF_page": 6,
+          "char_start": 132,
+          "char_end": 139,
+          "page_text_sha256": "03424fab78b0ca236bdd6527b2ba056dfdc81a004590847315ba5594e40e73c5",
+          "span_text_sha256": "e9696c0968851abbe942965e970272080eae0d4f4a43d0340f781a20549fe3e1",
+          "purpose": "device gate-resolved phase diagram",
+          "scientific_entailment_reviewed": false
+        },
+        {
+          "PDF_page": 8,
+          "char_start": 1392,
+          "char_end": 1402,
+          "page_text_sha256": "3e76528b2e5d1d8b702cee23a4f57905e0bdae7e834c3841f45eb0c81bf685c9",
+          "span_text_sha256": "6a7f0805cb61ead280eaf83e0f0a86432582e142d5c0741604707d99889d8c93",
+          "purpose": "growth and sample methods",
+          "scientific_entailment_reviewed": false
+        },
+        {
+          "PDF_page": 10,
+          "char_start": 2080,
+          "char_end": 2088,
+          "page_text_sha256": "fd36ee6f77a4bc9133f0cb6b1ea20613a3d3de87bb0ef17371b8f8dfac240550",
+          "span_text_sha256": "b5af0d46c3e331d45a12e2070ea3ef726e1ee9f5acaa82c2dd2957d719a102b7",
+          "purpose": "zero-voltage versus as-grown note",
+          "scientific_entailment_reviewed": false
+        }
+      ],
+      "visual_page_pins": [
+        {
+          "PDF_page": 5,
+          "PNG_sha256": "75539951304e267a8fafc3a400d06ae8b8ec41fcf29a8006eb4c006942531e69"
+        },
+        {
+          "PDF_page": 6,
+          "PNG_sha256": "087603b2d9ee553e3ae5235ad6fb14cb0bb0f3cd5b4bd10522f0b5ac48e52ece"
+        }
+      ],
+      "gold_answer": null,
+      "human_reviewers": [],
+      "scientific_support_label": null,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "split": "unassigned",
+      "provider_execution": "not_run",
+      "scientific_acceptance": false
+    }
+  ],
+  "unchanged_retrieval_boundaries": {
+    "draft_questions": 72,
+    "provisional_pointer_components": 26,
+    "gold_questions": 0,
+    "validated_independent_experiments": 0,
+    "split_frozen": false,
+    "provider_runs": 0
+  },
+  "poppler_read_warning": {
+    "case_id": "gap-heavy-fermion-cecoin5",
+    "message": "Syntax Error: Can't get Fields array",
+    "scope": "Renderer returned exit 0 and displayed pages; warning retained, no original PDF bytes modified."
+  },
+  "database_writes": 0,
+  "scientific_acceptance": false,
+  "ml_training_approved": false
+}
