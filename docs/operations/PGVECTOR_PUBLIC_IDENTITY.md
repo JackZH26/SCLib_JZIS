@@ -20,3 +20,12 @@ start the seven-day observation period.
 Validation uses fresh owned disposable API test services plus browser parser
 regressions and TypeScript checking. Full-corpus timeout acceptance remains
 separate from structural protocol validation.
+
+`PgvectorQueries.query_many` adds the Similar transport boundary: one to twenty
+source vectors, one outer request deadline, the same process-wide SQL semaphore,
+ordered all-or-nothing results, and cancellation/await of all unfinished sibling
+queries. Queue and pool waits consume the outer budget. Invalid complete input
+is rejected before any SQL starts. Real owned-database checks cover twenty-vector
+filter/exclusion semantics, queue exhaustion, table-lock contention, recovery of
+connections/permits, and caller cancellation. This transport does not yet wire
+the public Similar route or claim full-corpus batch latency acceptance.

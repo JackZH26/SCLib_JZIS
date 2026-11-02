@@ -152,6 +152,45 @@ class PgvectorQueries:
             raise PgvectorQueryError("An exact query budget is required")
         self._slots = asyncio.Semaphore(self.budget.concurrency)
 
+    async def query_many(self, projection, vectors, *, top_k, year_min=None, year_max=None,
+                         excluded_revisions=()):
+        """One bounded Similar request, all-or-nothing and in source order.
+
+        The outer deadline includes every task's queue/pool wait. Individual
+        calls still share this coordinator's process-wide SQL semaphore; a
+        batch cannot create twenty independent pools or twenty SQL slots.
+        Cancel and await siblings before returning an error. Never publish a
+        partial successful batch after one source vector fails.
+        """
+        if type(projection) is not ProjectionSpec:
+            raise PgvectorQueryError("An explicit projection identity is required")
+        if type(vectors) not in {list, tuple} or not 1 <= len(vectors) <= 20:
+            raise PgvectorQueryError("A bounded nonempty source vector inventory is required")
+        # Detach and validate the entire inventory before scheduling any SQL.
+        # An invalid final item must not execute a valid prefix of the batch.
+        checked = []
+        for vector in vectors:
+            _request(vector, top_k, year_min, year_max, excluded_revisions)
+            checked.append(tuple(validate_vector(vector)))
+        excluded = tuple(excluded_revisions)
+        tasks = []
+        try:
+            async with asyncio.timeout(self.budget.total_seconds):
+                tasks = [asyncio.create_task(self.query(projection, vector, top_k=top_k,
+                    year_min=year_min, year_max=year_max, excluded_revisions=excluded))
+                    for vector in checked]
+                return tuple(await asyncio.gather(*tasks))
+        except PgvectorQueryError:
+            raise
+        except Exception:
+            raise PgvectorUnavailable("pgvector source batch unavailable") from None
+        finally:
+            for task in tasks:
+                if not task.done():
+                    task.cancel()
+            if tasks:
+                await asyncio.gather(*tasks, return_exceptions=True)
+
     async def query(self, projection, vector, *, top_k, year_min=None, year_max=None,
                     excluded_revisions=()):
         if type(projection) is not ProjectionSpec:

@@ -4,6 +4,7 @@ from __future__ import annotations
 import math
 import os
 import time
+import asyncio
 from uuid import uuid4
 
 import pytest
@@ -156,6 +157,68 @@ async def test_malformed_stored_bindings_reject_the_whole_batch(projection):
         await db.execute(sa.text(f"UPDATE {spec.table} SET content_sha256='invalid' WHERE vector_id='v000'"))
     with pytest.raises(PgvectorQueryError, match="incompatible"):
         await PgvectorQueries(engine).query(spec, vector(), top_k=5)
+
+
+async def test_twenty_source_vectors_preserve_order_filters_and_exclusions(projection):
+    engine, spec = projection
+    transport = PgvectorQueries(engine, QueryBudget(concurrency=2))
+    batches = await transport.query_many(spec, [vector(i / 100) for i in range(20)],
+        top_k=5, year_max=2001, excluded_revisions=[f'{3012:064x}'])
+    assert len(batches) == 20 and all(batch.projection == spec for batch in batches)
+    assert all(batch.exhaustive and len(batch.neighbors) == 5 for batch in batches)
+    assert all('v012' not in {item.vector_id for item in batch.neighbors} for batch in batches)
+    assert batches[0].neighbors[0].vector_id == 'v013'
+    assert batches[19].neighbors[0].vector_id == 'v019'
+
+
+async def test_batch_queue_wait_has_one_deadline_and_leaves_no_waiters(projection):
+    engine, spec = projection
+    transport = PgvectorQueries(engine, QueryBudget(concurrency=1, total_seconds=0.1, statement_ms=50))
+    await transport._slots.acquire()
+    started = time.monotonic()
+    try:
+        with pytest.raises(PgvectorUnavailable, match='batch unavailable'):
+            await transport.query_many(spec, [vector()] * 20, top_k=5)
+        assert time.monotonic() - started < 0.8
+    finally:
+        transport._slots.release()
+    # A cancelled batch must not consume the next request's only SQL permit.
+    assert len((await transport.query(spec, vector(), top_k=5)).neighbors) == 5
+
+
+async def test_locked_batch_cancels_siblings_and_recovers_real_connections(projection):
+    engine, spec = projection
+    transport = PgvectorQueries(engine, QueryBudget(concurrency=2, total_seconds=0.4, statement_ms=300))
+    async with engine.begin() as locker:
+        await locker.execute(sa.text(f'LOCK TABLE {spec.table} IN ACCESS EXCLUSIVE MODE'))
+        started = time.monotonic()
+        with pytest.raises(PgvectorUnavailable, match='batch unavailable'):
+            await transport.query_many(spec, [vector()] * 20, top_k=5)
+        assert time.monotonic() - started < 1.5
+    result = await transport.query_many(spec, [vector(), vector(0.01)], top_k=5)
+    assert [batch.neighbors[0].vector_id for batch in result] == ['v000', 'v001']
+
+
+async def test_caller_cancellation_does_not_leave_batch_sql_slots(projection):
+    engine, spec = projection
+    transport = PgvectorQueries(engine, QueryBudget(concurrency=1))
+    await transport._slots.acquire()
+    task = asyncio.create_task(transport.query_many(spec, [vector()] * 20, top_k=5))
+    await asyncio.sleep(0)
+    task.cancel()
+    try:
+        with pytest.raises(asyncio.CancelledError):
+            await task
+    finally:
+        transport._slots.release()
+    assert len((await transport.query(spec, vector(), top_k=5)).neighbors) == 5
+
+
+@pytest.mark.parametrize('vectors', [[], [vector()] * 21, [vector(), [0.0] * 768]])
+async def test_invalid_complete_source_inventory_is_rejected(projection, vectors):
+    engine, spec = projection
+    with pytest.raises(PgvectorQueryError):
+        await PgvectorQueries(engine).query_many(spec, vectors, top_k=5)
 
 
 async def test_missing_build_fails_without_exposing_sql_or_reusing_another_build(projection):
