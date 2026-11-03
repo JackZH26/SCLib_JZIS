@@ -27,7 +27,7 @@ async def populated(capability):
             if not await db.scalar(sa.text("SELECT EXISTS(SELECT 1 FROM pg_extension WHERE extname='vector' AND extversion='0.8.7')")):
                 return {'actual_pgvector_runtime':False,'populated_checks':'not_run_without_owned_vector'}
             with tempfile.TemporaryDirectory(prefix='sclib-synthetic-queue-input-') as tmp:
-                _,_,_,_,result=await queued(db,Path(tmp))
+                _,_,_,_,result=await queued(db,Path(tmp),policy_version='v2')
                 leased=await claim(db,result)
                 finished=await queue.record_result(db,claim_id=leased['claim_id'],outcome='retry',error_code='operator_retry',dry_run=False)
                 before=(await db.execute(sa.text('SELECT epoch FROM retrieval_publication_job_fences_v2 WHERE job_id=CAST(:id AS uuid)'),{'id':leased['job_id']})).scalar_one()

@@ -18,8 +18,8 @@ pytestmark=[pytest.mark.asyncio,pytest.mark.skipif(os.environ.get('SCLIB_PGVECTO
     reason='Requires fresh owned PostgreSQL/vector services')]
 
 
-async def queued(db,tmp_path):
-    base=await prepared_build(db)
+async def queued(db,tmp_path,*,policy_version='v4'):
+    base=await prepared_build(db,policy_version=policy_version)
     arguments,items,chunk=await native_inputs(db,tmp_path)
     result=await service.capture_and_enqueue(db,logical_index=base['logical_index'],input_arguments=arguments,items=items,dry_run=False)
     return base,arguments,items,chunk,result

@@ -23,7 +23,7 @@ async def public_reader(ask_reader,monkeypatch):
     from main import app
     reader,pin,ids,calls=ask_reader
     monkeypatch.setattr(get_settings(),'retrieval_backend','pgvector')
-    monkeypatch.setattr(app.state,'content_reader',reader,raising=False)
+    monkeypatch.setitem(app.state._state,'content_reader',reader)
     def forbidden(*args,**kwargs):raise AssertionError('Public v2 routes cannot use Google ANN')
     monkeypatch.setattr(index_vector_adapter,'query',forbidden)
     monkeypatch.setattr(index_vector_adapter,'query_members',forbidden)
@@ -64,7 +64,7 @@ async def test_readiness_rechecks_actual_boot_and_projection_without_warming_on_
 
 async def test_pgvector_mode_without_initialized_reader_cannot_fall_back(public_reader,client,monkeypatch):
     from main import app
-    monkeypatch.setattr(app.state,'content_reader',None)
+    monkeypatch.setitem(app.state._state,'content_reader',None)
     for path,body in [('/v1/search',{'query':'synthetic'}),('/v1/ask',{'question':'synthetic'})]:
         response=await client.post(path,json=body)
         assert response.status_code==503
