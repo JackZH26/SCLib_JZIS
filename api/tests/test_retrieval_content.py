@@ -68,6 +68,15 @@ async def test_complete_new_paper_batch_reuses_base_and_has_no_provider_resource
     plan = await service.stage_native_content(db_session, base_content_id=base["content_id"], publication_ids=[event["publication_id"]], dry_run=False)
     page = await service.source_reference_page(db_session, content_id=plan["content_id"])
     assert {row["origin_kind"] for row in page} == {"legacy_v1", "native_v2"}
+    # A bounded branch merge must retain the same complete universe across
+    # cursors on both sides of the legacy/native boundary.
+    paged = []
+    cursor = ""
+    while part := await service.source_reference_page(db_session, content_id=plan["content_id"], after=cursor, limit=1):
+        assert len(part) == 1
+        paged.extend(part)
+        cursor = part[-1]["vector_id"]
+    assert paged == page
     await service.append_content_partition(db_session, content_id=plan["content_id"], partition_id=0, references=page, dry_run=False)
     seal = await service.seal_content(db_session, content_id=plan["content_id"], dry_run=False)
     assert seal["member_count"] == 2 and not seal["active_pointer_changed"]

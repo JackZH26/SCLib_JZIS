@@ -69,3 +69,35 @@ readback separate. A native batch is bound to its actual sealed content rather
 than claiming that native revisions belong to a provider generation. Current
 claim/publication admission is checked before each phase and again before its
 commit. No acceptance, active pointer or completed queue result is created.
+
+## Source pages and planner statistics
+
+Native source enumeration applies the same C-collation cursor/order/limit to
+each legacy/native branch before the final bounded merge. A branch contributes
+at most the global page limit, so complete references, paper replacement and
+pagination are unchanged. The actual1.18m-member comparison matched every
+reference field at seven cursors, including the native boundary and empty tail.
+This avoids sorting the full sealed base again for every1000-row page.
+
+The separately privileged host operator must refresh planner statistics after
+the first committed partition of a new large content version, then periodically
+during a large build and after complete materialization:
+
+```sql
+ANALYZE public.retrieval_content_members_v2;
+```
+
+Run this through the maintenance role in the exact verified target database;
+do not grant the publisher/API a migration role solely for ANALYZE. The host
+must retain the target identity, last committed partition, timing and before/
+after data/function checks. In a physical restore, runtime statistics may be
+reset even though retained source data is complete. A new content UUID can be
+absent from the old distribution until automatic analyze reaches its threshold.
+
+The actual owned checkpoint exposed an incorrect paper-index scan discarding
+all47000 child members for each INSERT partition check. A derived-statistics
+refresh kept every guard and function unchanged and reduced the same guarded
+1000-row rollback exercise from38.16s to1.42s. Changing executemany to a single
+VALUES statement or disabling JIT did not resolve that cause and was not
+adopted. Statistics maintenance supplements the existing resource/lease guards;
+it neither establishes scientific acceptance nor permits skipping a member.

@@ -161,13 +161,19 @@ async def source_reference_page(db, *, content_id, after="", limit=1000):
           AND vector_id COLLATE "C">:after ORDER BY vector_id COLLATE "C" LIMIT :limit"""
         parameters = {"source": source["source_generation_id"], "after": after, "limit": limit}
     else:
+        # Each disjoint branch can contribute at most `limit` of the global
+        # first `limit` rows. Keep its keyset/order/limit inside the UNION so a
+        # native update does not rescan and sort the whole sealed base per page.
         sql = """SELECT vector_id,origin_kind,origin_generation_id,native_revision_id FROM (
-          SELECT base.vector_id,base.origin_kind,base.origin_generation_id,base.native_revision_id
+          (SELECT base.vector_id,base.origin_kind,base.origin_generation_id,base.native_revision_id
           FROM retrieval_content_members_v2 base WHERE base.content_id=:source AND NOT EXISTS(
             SELECT 1 FROM retrieval_content_changes_v2 change WHERE change.content_id=:content AND change.paper_id=base.paper_id)
-          UNION ALL SELECT m.vector_id,'native_v2',NULL::uuid,m.native_revision_id
+            AND base.vector_id COLLATE "C">:after
+            ORDER BY base.vector_id COLLATE "C" LIMIT :limit)
+          UNION ALL (SELECT m.vector_id,'native_v2',NULL::uuid,m.native_revision_id
           FROM retrieval_content_changes_v2 change JOIN retrieval_publication_members_v2 m USING(publication_id)
-          WHERE change.content_id=:content) universe WHERE vector_id COLLATE "C">:after
+          WHERE change.content_id=:content AND m.vector_id COLLATE "C">:after
+          ORDER BY m.vector_id COLLATE "C" LIMIT :limit)) universe
           ORDER BY vector_id COLLATE "C" LIMIT :limit"""
         parameters = {"source": source["base_content_id"], "content": identifier, "after": after, "limit": limit}
     return [dict(row) for row in (await db.execute(sa.text(sql), parameters)).mappings()]
