@@ -129,7 +129,7 @@ async def test_private_http_marks_results_and_has_no_public_or_history_routes(ca
         health=await client.get('/health');assert health.status_code==200 and health.json()['ready']
         similar=await client.post('/candidate/similar',json={'paper_id':source})
         assert similar.status_code==200 and len(similar.json()['results'])==1
-        assert similar.json()['scope']=='owned_restore_not_activated'
+        assert similar.json()['scope']=='owned_restore_not_activated' and similar.json()['source_vector_count']==1
         hybrid=await client.post('/candidate/hybrid',json={'query':'synthetic','top_k':2})
         assert hybrid.status_code==200 and len(hybrid.json()['rankings'])==2
         assert 'activation_event_id' not in hybrid.json()['candidate']

@@ -47,7 +47,7 @@ def create_private_app(reader,pin):
     async def similar(request:SimilarRequest):
         try:
             result=await reader.similar(pin,request.paper_id,top_k=request.top_k)
-            return {**envelope(),'source_paper_id':request.paper_id,
+            return {**envelope(),'source_paper_id':request.paper_id,'source_vector_count':result.source_vector_count,
                 'results':[row.model_dump(mode='json') for row in result.results]}
         except Exception:raise HTTPException(503,'Complete engineering similarity unavailable') from None
 

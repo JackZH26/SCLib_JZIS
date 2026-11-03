@@ -28,6 +28,7 @@ class SimilarOutcome:
     pin: RetrievalPinV2
     source_paper_id: str
     results: tuple[SimilarPaper,...]
+    source_vector_count: int
 
 
 @dataclass(frozen=True,slots=True)
@@ -157,6 +158,6 @@ async def similar(reader,pin,paper_id,*,top_k):
             async with asyncio.timeout(10):await reader._read(final)
             results=tuple(SimilarPaper(**json.loads(attributions[identifier]),similarity=round(1.0-distance,6))
                 for identifier,distance in scores)
-            return SimilarOutcome(pin,paper_id,results)
+            return SimilarOutcome(pin,paper_id,results,len(members))
     except Exception:
         raise ContentSimilarityUnavailable('Complete content-pinned similarity unavailable') from None
