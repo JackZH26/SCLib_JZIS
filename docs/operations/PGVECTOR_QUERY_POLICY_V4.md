@@ -60,3 +60,13 @@ while avoiding repeated parsing of each text vector for candidate distances.
 The actual20-source profile visited the same HNSW index/pages, with execution
 falling from1736ms to249ms for that diagnostic case. This observation is not
 a substitute for the affected HTTP load gate.
+
+## Serving process budget
+
+Run two independent single-process API instances behind the retrieval upstream,
+with two dedicated ANN connections per instance and zero pool overflow. This
+keeps at most four active ANN SQL statements across the serving pair. Each
+instance retains the same bounded coordinator, queue/pool deadline and SQL
+limits. Keep metrics on separate scrape targets so counters are not mixed
+between processes. Ordinary API pools remain separate from ANN. Background
+graph processes use two CPU cores and low scheduling priority.

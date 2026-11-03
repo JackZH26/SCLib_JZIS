@@ -31,7 +31,7 @@ async def check_ready(request):
 async def managed_reader(*,source_engine=None,session_factory=None):
     """No schema/grant/provider setup. Failure closes only the owned ANN pool."""
     source_engine=source_engine or get_engine()
-    ann=create_async_engine(source_engine.url,pool_size=4,max_overflow=0,pool_timeout=.5,pool_pre_ping=True)
+    ann=create_async_engine(source_engine.url,pool_size=2,max_overflow=0,pool_timeout=.5,pool_pre_ping=True)
     from services.metrics import instrument_sqlalchemy
     instrument_sqlalchemy(ann)
     reader=ContentRetriever(session_factory or get_session_factory(),PgvectorQueries(ann))
