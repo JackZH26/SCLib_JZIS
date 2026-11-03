@@ -45,3 +45,13 @@ distribution, error/latency receipts and primary resource guard. Human relevance
 Ask/Similar expert review, native queue/republication, actual recovery and signed
 release remain required. Neither a successful private request nor preparation
 starts the seven-day production observation window or permits Google retirement.
+
+The initial real-corpus HTTP trial also exposed overhead in the engineering
+authority loader: nine SQL round trips per repeated source check. The loader
+now uses one target-database check and one closed joined snapshot for the
+actual build, validation, content seal, marker, v1 predecessor, absence of a v2
+activation and physical guards. Every record digest and predecessor comparison
+remains mandatory. No authority is cached and no public reader is changed.
+Missing marker relations fail closed. A migrated source CAS invalidates the old
+candidate, and disposable tests verify both that invalidation and the two-query
+budget. Real HTTP resource/performance acceptance must still be remeasured.

@@ -169,3 +169,29 @@ async def test_missing_actual_validation_marker_and_disabled_physical_guard_refu
     await db_session.execute(sa.text('ALTER TABLE '+pin.projection.table+' DISABLE TRIGGER retrieval_projection_write_v2'))
     with pytest.raises(service.CandidateUnavailable,match='physical'):await service.current_read_pin(db_session,pin)
     await db_session.rollback()
+
+
+async def test_complete_fresh_candidate_authority_uses_two_database_roundtrips(candidate,db_session):
+    _,pin,_,_=candidate;statements=[]
+    def capture(connection,cursor,statement,parameters,context,executemany):statements.append(statement)
+    bound=db_session.get_bind()
+    sa.event.listen(bound,'before_cursor_execute',capture)
+    try:
+        observed=await service.current_read_pin(db_session,pin)
+        assert observed==pin
+    finally:sa.event.remove(bound,'before_cursor_execute',capture)
+    assert len(statements)==2
+
+
+async def test_v1_source_cas_cannot_inherit_prior_candidate_authority(candidate,db_session):
+    import json
+    from services.index_generations import record_validation,activate_generation
+    from tests.test_index_generations import staged,observation
+    _,pin,_,_=candidate
+    generation,_=await staged(db_session,logical_index=pin.logical_index)
+    validated=await record_validation(db_session,generation_id=generation['generation_id'],
+        observation=await observation(db_session,generation),dry_run=False)
+    await activate_generation(db_session,generation_id=generation['generation_id'],validation_id=validated['validation_id'],
+        expected_event_id=json.loads(pin.baseline_json)['activation_event_id'],idempotency_key=uuid4().hex,dry_run=False)
+    await db_session.commit()
+    with pytest.raises(service.CandidateUnavailable,match='marker'):await service.current_read_pin(db_session,pin)
