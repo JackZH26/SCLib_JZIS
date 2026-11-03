@@ -228,9 +228,12 @@ class PgvectorQueries:
                                 "hnsw.iterative_scan": "relaxed_order",
                                 "hnsw.max_scan_tuples": str(self.budget.max_scan_tuples),
                                 "hnsw.scan_mem_multiplier": "1"}
-                    for key, value in settings.items():
-                        await connection.execute(sa.text("SELECT set_config(:key,:value,true)"),
-                                                 {"key": key, "value": value})
+                    # Keep all transaction-local limits, but establish them in
+                    # one round trip before any cohort or distance query.
+                    setup = ",".join(f"set_config('{key}',:setting_{index},true)"
+                                     for index, key in enumerate(settings))
+                    await connection.execute(sa.text("SELECT " + setup),
+                        {f"setting_{index}": value for index, value in enumerate(settings.values())})
                     filtered = year_min is not None or year_max is not None or bool(excluded_revisions)
                     cohort = None
                     # Year filtering has a measured exact path. Source-only
@@ -251,8 +254,8 @@ class PgvectorQueries:
                         sql = (f"SELECT {_COLUMNS},year,{distance} AS distance FROM {projection.table} "
                                f'WHERE {predicate} ORDER BY ({distance})+0,vector_id COLLATE "C" LIMIT :limit')
                     else:
-                        await connection.execute(sa.text("SET LOCAL enable_seqscan=off"))
-                        await connection.execute(sa.text("SET LOCAL enable_bitmapscan=off"))
+                        await connection.execute(sa.text("SELECT set_config('enable_seqscan','off',true),"
+                                                         "set_config('enable_bitmapscan','off',true)"))
                         # Iteration can discover closer candidates after its
                         # initial frontier. Admit those candidates, then sort
                         # the bounded materialized pool by actual distance.
