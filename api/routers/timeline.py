@@ -280,7 +280,7 @@ async def timeline(
             db=db,
         )
     else:
-        data = _timeline_response(
+        data = await _timeline_response_cooperative(
             family=family,
             points=projected.points,
             max_points=max_points,
@@ -292,7 +292,33 @@ async def timeline(
     return _http_response(request, payload, cache_status="BYPASS-GOVERNANCE")
 
 
-def _timeline_response(
+def _timeline_response(**arguments) -> TimelineResponse:
+    """Pure synchronous callers drive the same exact response computation."""
+    steps = _timeline_response_steps(**arguments)
+    try:
+        while True:
+            next(steps)
+    except StopIteration as finished:
+        return finished.value
+    finally:
+        steps.close()
+
+
+async def _timeline_response_cooperative(**arguments) -> TimelineResponse:
+    """Yield between digest batches; never return or cache a partial result."""
+    steps = _timeline_response_steps(**arguments)
+    try:
+        while True:
+            try:
+                next(steps)
+            except StopIteration as finished:
+                return finished.value
+            await asyncio.sleep(0)
+    finally:
+        steps.close()
+
+
+def _timeline_response_steps(
     *,
     family: str | None,
     points: list[TimelinePoint],
@@ -300,12 +326,13 @@ def _timeline_response(
     offset: int = 0,
     limit: int | None = None,
     data_updated_at: datetime | None = None,
-) -> TimelineResponse:
+):
     original_count = len(points)
     points = finite_points(points)
     total_points = len(points)
     summary = summarize_timeline(points)
     summary["invalid_projected_points_omitted"] = original_count - total_points
+    yield
     available_points, sampling = sample_timeline(points, max_points)
     end = offset + limit if limit is not None else None
     returned_points = available_points[offset:end]
@@ -334,7 +361,9 @@ def _timeline_response(
     # Bind the dataset version to the complete current point set, before paging,
     # including every attached governance revision. This is not a release ID.
     digest = hashlib.sha256()
-    for point in points:
+    for number, point in enumerate(points):
+        if number % 32 == 0:
+            yield
         digest.update(json.dumps(point.model_dump(mode="json"), sort_keys=True, separators=(",", ":")).encode())
         digest.update(b"\n")
     current_digest = digest.hexdigest()[:20]
@@ -435,7 +464,7 @@ async def _build_timeline_fallback(
             ))
 
     points.sort(key=lambda point: (point.year, -point.tc_kelvin))
-    return _timeline_response(
+    return await _timeline_response_cooperative(
         family=family,
         points=points,
         max_points=max_points,

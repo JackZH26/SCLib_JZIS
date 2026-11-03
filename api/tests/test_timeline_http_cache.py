@@ -1,8 +1,10 @@
 """Timeline cache keys and HTTP conditional response behavior."""
 from __future__ import annotations
 
+import asyncio
 from datetime import UTC, datetime
 
+import pytest
 from starlette.requests import Request
 
 from models.search import TimelineCoverage, TimelinePoint, TimelineResponse
@@ -11,6 +13,7 @@ from routers.timeline import (
     _http_response,
     _serialize_timeline,
     _timeline_response,
+    _timeline_response_cooperative,
     _weak_etag,
 )
 from services.timeline_sampling import sample_timeline
@@ -195,3 +198,30 @@ def test_timeline_pagination_is_stable_after_optional_sampling():
     assert page.coverage.total_points == 10
     assert page.coverage.available_points == 10
     assert page.coverage.returned_points == 4
+
+
+@pytest.mark.parametrize("budget", [None, 40])
+async def test_cooperative_response_preserves_full_digest_paging_and_bytes(budget):
+    points = [_point(index) for index in range(96)]
+    arguments = dict(family=None, points=points, max_points=budget, offset=3, limit=4,
+        data_updated_at=datetime(2026, 7, 13, 12, tzinfo=UTC))
+    expected = _timeline_response(**arguments)
+    ticks = []
+    stopped = asyncio.Event()
+
+    async def heartbeat():
+        while not stopped.is_set():
+            ticks.append(True)
+            await asyncio.sleep(0)
+
+    task = asyncio.create_task(heartbeat())
+    try:
+        actual = await _timeline_response_cooperative(**arguments)
+    finally:
+        stopped.set()
+        await task
+    assert len(ticks) > 1
+    assert actual.coverage.total_points == 96 and actual.coverage.returned_points == 4
+    assert actual.data_version == expected.data_version
+    for compact in (False, True):
+        assert _serialize_timeline(actual, compact=compact) == _serialize_timeline(expected, compact=compact)

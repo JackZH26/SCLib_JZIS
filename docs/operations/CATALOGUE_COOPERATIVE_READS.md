@@ -11,6 +11,10 @@ limit, source lifecycle decision, anomaly filter, result order and final
 catalogue/source epoch fence. There is no cross-request policy memo, evidence
 substitution or early cut-off. Cancellation can interrupt an unfinished CPU
 scan; no partial result is returned or published to the response cache.
+Timeline also fetches ORM rows in128-row pages and yields between32-point
+digest batches. Synchronous internal callers drive the same response builder
+to completion; HTTP callers drive it cooperatively. The full point set still
+determines the digest before any response is published.
 
 The isolated actual-corpus comparison checks response body SHA256, full count
 and Timeline coverage/data version against the original cold and warm outputs.
