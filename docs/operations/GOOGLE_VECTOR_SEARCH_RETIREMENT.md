@@ -148,3 +148,17 @@ Google 说明取消部署可能约需 30 分钟，后台清理还可能需要时
 每个阶段分别交付 `PRECHECK.json`、脱敏资源配置、依赖扫描结果、完整查询及更新监控、操作 request/operation ID、完成后 GET 结果、全站检查、恢复资料引用和 billing 复核。
 
 报告将以下状态分开记录：未执行、运行中、未知结果、控制面已完成、业务已验证、费用待到账、费用已核验。只有目标部署实际缺失且业务验证完成，才标记技术下架完成；费用核验单独关闭。
+
+### 协调维护期间的自动部署
+
+在首次 pgvector 数据库/应用联合切换前，将仓库 Actions 变量
+`SCLIB_DEPLOY_MODE` 设为 `coordinated`。这只暂停普通 Deploy to VPS2
+任务，Test、Security 和签名镜像 Release images 继续运行；工程执行者继续
+依据本运行方案完成维护切换，无需再等待人工评审。切换、兼容回退与公开验收
+完成后，恢复该变量为 `standard`，后续普通部署沿用现有发布链。
+
+协调维护执行者同时将已校验的 PostgreSQL 镜像摘要和实测资源预算写入
+`/etc/sclib/pgvector.env`，由普通部署显式叠加 `docker-compose.pgvector.yml`
+继续使用。该文件只保存镜像和资源配置，不保存密钥；Compose 读取文件，
+不得将其作为 shell 脚本 source。材料配置与 pgvector 配置在基础 `.env`
+之后依次加载，避免后续应用发布意外恢复旧数据库镜像或资源设置。
