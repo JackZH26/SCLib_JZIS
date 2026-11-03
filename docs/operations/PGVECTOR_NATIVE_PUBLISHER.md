@@ -47,3 +47,7 @@ it does not mark the queue job published or grant quality acceptance. Provider
 preparation and batch graph construction are separate workers. No existing
 ingestion schedule is resumed by this package. Actual-paper end-to-end replay,
 signed deployment and the full worker/acceptance cycle remain release gates.
+
+The accompanying [batch worker](PGVECTOR_NATIVE_BATCH.md) supplies bounded
+selection, expiring claims, durable content/vector preparation and actual
+activation observation. Full-corpus host budgeting remains a separate guard.

@@ -101,7 +101,7 @@ jobs:
           image_id="$(docker image inspect sclib-pgvector-ci --format '{{.Id}}')"
           publisher/.venv/bin/python scripts/run_disposable_tests.py --backend docker \
             --postgres-image "$image_id" --pgvector --suite api \
-            -- -q tests/test_native_publisher.py
+            -- -q tests/test_native_publisher.py tests/test_native_batch.py
       - name: Retain actual owned schema evidence
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:

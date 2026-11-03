@@ -10,6 +10,7 @@ dev = ["pytest>=8.3", "pytest-asyncio>=0.24"]
 
 [project.scripts]
 sclib-publish-native = "native_publisher.cli:main"
+sclib-stage-native-batch = "native_publisher.batch_cli:main"
 
 [build-system]
 requires = ["hatchling"]

@@ -7,10 +7,11 @@ import sys
 
 import ingestion.index.indexer as indexer
 import native_publisher.producer as producer
+import native_publisher.batch as batch
 import services.retrieval_native as native
 from services.schema_lifecycle import expected_heads
 
-modules = {"bridge": producer, "source_writer": indexer, "native_contract": native}
+modules = {"bridge": producer, "batch_worker": batch, "source_writer": indexer, "native_contract": native}
 assert all(Path(module.__file__).resolve().is_relative_to(Path(sys.prefix).resolve())
     for module in modules.values()), "Refusing repository imports"
 assert expected_heads() == ("0116_publication_queue_v2",)
