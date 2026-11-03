@@ -1,7 +1,7 @@
 """Content-pinned Similar, with bounded batches and a fresh final snapshot."""
 from __future__ import annotations
 
-import asyncio,json,math,struct
+import asyncio,json,logging,math,struct,time
 from dataclasses import dataclass
 from uuid import UUID
 
@@ -15,9 +15,21 @@ from services.retrieval_activation import RetrievalPinV2
 from services.retrieval_candidate import current_read_pin
 from services.source_lifecycle import resolve_paper_lifecycle
 from services.source_visibility import source_visibility,project_source_occurrences
+from services.request_context import current_request_id
 
 MAX_CANDIDATES=1000
 BATCH=20
+log=logging.getLogger('sclib.retrieval.similar')
+
+
+def _failure_types(error):
+    """Keep suppressed causes useful without logging exception text or SQL."""
+    result=[];seen=set()
+    while error is not None and id(error) not in seen and len(result)<6:
+        seen.add(id(error))
+        result.append(type(error).__name__[:96])
+        error=error.__cause__ if error.__cause__ is not None else error.__context__
+    return ','.join(result)
 
 
 class ContentSimilarityUnavailable(ValueError):pass
@@ -77,6 +89,7 @@ async def similar(reader,pin,paper_id,*,top_k):
     reader._pin(pin)
     if type(paper_id) is not str or not 1<=len(paper_id)<=100 or type(top_k) is not int or not 1<=top_k<=50:
         raise ContentSimilarityUnavailable('Exact bounded similarity request required')
+    started=time.monotonic();stage='readiness';stage_started=started
     try:
         async with asyncio.timeout(20):
             if not await reader._readiness.ready(pin):
@@ -96,15 +109,18 @@ async def similar(reader,pin,paper_id,*,top_k):
                 if any(member['chunk_revision_sha256'] not in rows for member in members):
                     raise ContentSimilarityUnavailable('Source exclusion inventory mismatch')
                 return members,selected,tuple(rows)
+            stage='source';stage_started=time.monotonic()
             async with asyncio.timeout(3):members,sources,excluded=await reader._read(source)
             batches=();per_source=0
             if members:
                 vectors=[tuple(struct.unpack('!768f',member['vector_bytes'])) for member in members]
                 per_source=min(top_k+5,MAX_CANDIDATES//len(members))
+                stage='ann';stage_started=time.monotonic()
                 batches=await reader._transport.query_many(pin.projection,vectors,
                     top_k=per_source,excluded_revisions=excluded)
                 if type(batches) is not tuple or len(batches)!=len(members):
                     raise ContentSimilarityUnavailable('Complete ordered Similar batches required')
+            stage='verify_candidates';stage_started=time.monotonic()
             unique={}
             for batch in batches:
                 if (type(batch) is not CandidateBatch or batch.projection!=pin.projection
@@ -143,7 +159,9 @@ async def similar(reader,pin,paper_id,*,top_k):
                         selected.update(await capture(db,pin,values[offset:offset+BATCH]))
                 await current_read_pin(db,pin)
                 return selected
+            stage='targets';stage_started=time.monotonic()
             async with asyncio.timeout(5):selected=await reader._read(targets)
+            stage='score_results';stage_started=time.monotonic()
             accumulated={};attributions={};contributors={}
             for batch in batches:
                 for hit in batch.neighbors:
@@ -164,9 +182,14 @@ async def similar(reader,pin,paper_id,*,top_k):
                     async def resolve(session,chunks):return await retrieval_members.resolve_evidence(session,pin,chunks)
                     checked=await retrieval_currentness._check_snapshot(db,final_pins[offset:offset+BATCH],resolve,backend_pin=pin)
                     if checked.status!='unchanged':raise ContentSimilarityUnavailable('Similarity selected source changed')
+            stage='final';stage_started=time.monotonic()
             async with asyncio.timeout(10):await reader._read(final)
+            stage='serialize_results';stage_started=time.monotonic()
             results=tuple(SimilarPaper(**json.loads(attributions[identifier]),similarity=round(1.0-distance,6))
                 for identifier,distance in scores)
             return SimilarOutcome(pin,paper_id,results,len(members))
-    except Exception:
+    except Exception as error:
+        log.warning('similar unavailable request_id=%s stage=%s stage_seconds=%.3f total_seconds=%.3f error_types=%s',
+            current_request_id() or 'none',stage,time.monotonic()-stage_started,time.monotonic()-started,
+            _failure_types(error))
         raise ContentSimilarityUnavailable('Complete content-pinned similarity unavailable') from None
