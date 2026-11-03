@@ -30,6 +30,7 @@ class HybridCandidates:
     pin: RetrievalPinV2
     rankings: tuple[retrieval.RankedCandidate,...]
     chunks: dict
+    lexical_strategy: str = 'hybrid'
 
 
 class ContentRetriever:
@@ -109,13 +110,15 @@ class ContentRetriever:
                 task=asyncio.create_task(self._semantic(pin,query,top_k=min(top_k*(4 if purpose=='ask' else 3),80 if purpose=='ask' else 100),
                     year_min=year_min,year_max=year_max))
                 async def navigation(db):
-                    text=await retrieval_navigation.lexical_search(db,pin,interpretation.normalized_query,
+                    decision=await retrieval_navigation.bounded_lexical_search(db,pin,interpretation.normalized_query,
                         limit=candidate_limit,year_min=year_min,year_max=year_max,exclude_retracted=exclude_retracted)
                     wanted={item.normalization.normalized_formula for item in interpretation.formulas}
                     formula=await retrieval_navigation.formula_search(db,pin,wanted,limit=candidate_limit,
                         year_min=year_min,year_max=year_max) if wanted and None not in wanted else []
-                    return retrieval.combine_lexical_hits(formula,text,limit=candidate_limit)
-                lexical=await self._read(navigation)
+                    return retrieval.combine_lexical_hits(formula,decision.hits,limit=candidate_limit),decision.strategy
+                lexical,lexical_strategy=await self._read(navigation)
+                from services.metrics import CONTENT_NAVIGATION_STRATEGY
+                CONTENT_NAVIGATION_STRATEGY.labels(strategy=lexical_strategy).inc()
                 # The navigation connection is returned before any provider wait.
                 batch=await task
                 async def hydrate(db):
@@ -124,7 +127,7 @@ class ContentRetriever:
                     chunks=await retrieval_members.hydrate(db,pin,[row.chunk_id for row in rankings])
                     ranked=retrieval.rerank_candidates(query,rankings,chunks)
                     await current_read_pin(db,pin)
-                    return HybridCandidates(pin,tuple(ranked),chunks)
+                    return HybridCandidates(pin,tuple(ranked),chunks,lexical_strategy)
                 return await self._read(hydrate)
         except Exception:
             # No partial lexical result silently replaces a failed semantic read.
