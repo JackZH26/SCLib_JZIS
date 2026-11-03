@@ -105,12 +105,12 @@ async def execute(args):
             progress = lambda value: print(json.dumps(value), flush=True)
             if args.phase == "content":
                 return await materialize_content(plan, session_factory=factory, progress=progress)
-            if args.phase in {"projection", "copy-vectors", "small-graph", "small-validate"}:
+            if args.phase in {"projection", "copy-vectors", "small-graph", "small-validate", "graph", "seal-projection", "validate"}:
                 if not all((args.build_id, args.image_digest, args.implementation_revision)):
                     raise NativeBatchError("Explicit immutable build/image/revision required")
                 return await prepare_projection(plan, phase=args.phase, session_factory=factory, progress=progress,
                     build_id=args.build_id, image_digest=args.image_digest, implementation_revision=args.implementation_revision,
-                    validation_id=args.validation_id)
+                    validation_id=args.validation_id,host_graph_budget=args.host_graph_budget)
             if args.phase == "finish":
                 if not args.activation_event_id:
                     raise NativeBatchError("Actual activation event required")
@@ -127,7 +127,7 @@ async def execute(args):
 def main():
     parser = argparse.ArgumentParser(description=__doc__, allow_abbrev=False)
     parser.add_argument("--phase", choices=["select", "claim", "supersede", "content", "projection", "copy-vectors",
-        "small-graph", "small-validate", "finish", "retry"], default="select")
+        "small-graph", "small-validate", "graph", "seal-projection", "validate", "finish", "retry"], default="select")
     for name in ("logical-index", "base-content-id", "worker-id", "batch-id", "plan-out", "plan", "build-id",
                  "image-digest", "implementation-revision", "validation-id", "activation-event-id"):
         parser.add_argument("--" + name)
@@ -137,6 +137,7 @@ def main():
     parser.add_argument("--error-code", choices=["transient_io", "build_failed", "validation_failed", "source_changed", "operator_retry"],
         default="operator_retry")
     parser.add_argument("--apply", action="store_true")
+    parser.add_argument("--host-graph-budget", action="store_true")
     try:
         print(json.dumps(asyncio.run(execute(parser.parse_args()))), flush=True)
     except Exception as error:

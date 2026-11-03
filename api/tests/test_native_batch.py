@@ -128,7 +128,8 @@ async def test_finish_observes_only_real_complete_active_batch(bridge, db_sessio
     assert await state(db_session) == retained
 
 
-async def test_projection_worker_copies_real_bytes_and_never_activates(bridge, db_session, tmp_path):
+@pytest.mark.parametrize("host", [False, True])
+async def test_projection_worker_copies_real_bytes_and_never_activates(bridge, db_session, tmp_path, host):
     base = await prepared_build(db_session)
     await db_session.commit()
     _, job = await enqueue(db_session, tmp_path, base["logical_index"])
@@ -138,11 +139,18 @@ async def test_projection_worker_copies_real_bytes_and_never_activates(bridge, d
     # These are explicitly synthetic artifact declarations, not signature proof.
     arguments = dict(build_id=str(uuid4()), image_digest="sha256:" + "d" * 64,
         implementation_revision="e" * 40, session_factory=get_session_factory())
-    for phase in ("projection", "copy-vectors", "small-graph"):
+    phases = ("projection", "copy-vectors", "graph", "seal-projection") if host else ("projection", "copy-vectors", "small-graph")
+    if host:
+        before = await state(db_session)
+        with pytest.raises(batch.NativeBatchError, match="host graph budget"):
+            await batch.prepare_projection(plan, phase="graph", **arguments)
+        assert await state(db_session) == before
+        arguments['host_graph_budget'] = True
+    for phase in phases:
         first = await batch.prepare_projection(plan, phase=phase, **arguments)
         again = await batch.prepare_projection(plan, phase=phase, **arguments)
         assert first["activation_performed"] is again["quality_acceptance_created"] is False
-    validated = await batch.prepare_projection(plan, phase="small-validate", validation_id=str(uuid4()), **arguments)
+    validated = await batch.prepare_projection(plan, phase="validate" if host else "small-validate", validation_id=str(uuid4()), **arguments)
     assert validated["result"]["outcome"] == "validated"
     assert validated["result"]["source_member_count"] == validated["result"]["projection_member_count"] == 2
     assert validated["result"]["missing_count"] == validated["result"]["extra_count"] == validated["result"]["mismatch_count"] == 0

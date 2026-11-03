@@ -91,25 +91,9 @@ async def _build(db,request,content):
 
 async def graph(db,request,content):
     if not request.host_graph_budget:raise CorpusOperatorError('Separately guarded host graph budget required')
-    build,spec=await _build(db,request,content)
-    async with retrieval_backend._phase(db,False,{'maintenance_work_mem':'6GB',
-            'max_parallel_maintenance_workers':'5','statement_timeout':'0','lock_timeout':'5s',
-            'application_name':'sclib_corpus_graph_'+UUID(request.build_id).hex}) as operation:
-        await retrieval_backend._fence(db,UUID(request.build_id))
-        sealed=await retrieval_backend._existing(db,'retrieval_projection_seals_v2',{'build_id':UUID(request.build_id)})
-        if sealed is not None:return {'graph':'sealed_no_rebuild','build_id':request.build_id}
-        name='hnsw_b_'+UUID(request.build_id).hex
-        exists=await db.scalar(sa.text('SELECT to_regclass(:name) IS NOT NULL'),{'name':'retrieval_projection.'+name})
-        if exists:return {'graph':'existing_unsealed_requires_seal_validation','build_id':request.build_id}
-        count=await db.scalar(sa.text(f'SELECT count(*) FROM {spec.table}'))
-        toast=await db.scalar(sa.text('SELECT CASE WHEN reltoastrelid=0 THEN 0 ELSE pg_relation_size(reltoastrelid) END '
-            'FROM pg_class WHERE oid=to_regclass(:name)'),{'name':spec.table})
-        if count!=request.expected_members or toast!=0:raise CorpusOperatorError('Complete inline projection required before graph')
-        await db.execute(sa.text(f'CREATE INDEX {name} ON {spec.table} USING hnsw '
-            '(embedding vector_cosine_ops) WITH(m=32,ef_construction=200)'))
-        await db.execute(sa.text(f'ANALYZE {spec.table}'))
-        operation['changed']=True
-    return {'graph':'constructed_not_accepted','build_id':request.build_id,'members':count}
+    await _build(db,request,content)
+    return await retrieval_backend.build_corpus_projection_graph(db,build_id=request.build_id,
+        expected_members=request.expected_members,host_graph_budget=request.host_graph_budget)
 
 
 async def execute(request,*,session_factory=None,progress=None):

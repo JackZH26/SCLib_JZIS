@@ -229,6 +229,48 @@ async def seal_projection(db, *, build_id, dry_run=True):
             "table_oid": row["table_oid"], "index_oid": row["index_oid"], "dry_run": dry_run, "committed": False}
 
 
+async def build_corpus_projection_graph(db, *, build_id, expected_members, host_graph_budget=False):
+    """Shared builder primitive; the caller separately enforces host budgets.
+
+    No source generation is invented for native content. The exact immutable
+    build/content count is checked before DDL. Graph, seal, validation and
+    quality/activation remain distinct phases with fresh caller admission.
+    """
+    if host_graph_budget is not True or type(host_graph_budget) is not bool:
+        raise RetrievalBackendError('Separately guarded host graph budget required')
+    if type(expected_members) is not int or not 1 <= expected_members <= 5000000:
+        raise RetrievalBackendError('A bounded complete content member count is required')
+    identifier = UUID(str(build_id))
+    build, spec = await _build(db, identifier)
+    if build['expected_member_count'] != expected_members:
+        raise RetrievalBackendError('Exact immutable graph/content count required')
+    async with _phase(db, False, {'maintenance_work_mem': '6GB',
+            'max_parallel_maintenance_workers': '5', 'statement_timeout': '0', 'lock_timeout': '5s',
+            'application_name': 'sclib_corpus_graph_' + identifier.hex}) as operation:
+        await _fence(db, identifier)
+        sealed = await _existing(db, 'retrieval_projection_seals_v2', {'build_id': identifier})
+        if sealed is not None:
+            present = await db.scalar(sa.text('SELECT to_regclass(:table)::oid=:table_oid AND EXISTS('
+                'SELECT 1 FROM pg_index WHERE indexrelid=:index_oid AND indrelid=:table_oid AND indisvalid AND indisready)'),
+                {'table': spec.table, 'table_oid': sealed['table_oid'], 'index_oid': sealed['index_oid']})
+            if present is not True:
+                raise RetrievalBackendError('Sealed graph physical identity changed')
+            return {'graph': 'sealed_no_rebuild', 'build_id': str(identifier)}
+        name = 'hnsw_b_' + identifier.hex
+        if await db.scalar(sa.text('SELECT to_regclass(:name) IS NOT NULL'), {'name': 'retrieval_projection.' + name}):
+            return {'graph': 'existing_unsealed_requires_seal_validation', 'build_id': str(identifier)}
+        count = await db.scalar(sa.text(f'SELECT count(*) FROM {spec.table}'))
+        toast = await db.scalar(sa.text('SELECT CASE WHEN reltoastrelid=0 THEN 0 ELSE pg_relation_size(reltoastrelid) END '
+            'FROM pg_class WHERE oid=to_regclass(:name)'), {'name': spec.table})
+        if count != expected_members or toast != 0:
+            raise RetrievalBackendError('Complete inline projection required before graph')
+        await db.execute(sa.text(f'CREATE INDEX {name} ON {spec.table} USING hnsw '
+            '(embedding vector_cosine_ops) WITH(m=32,ef_construction=200)'))
+        await db.execute(sa.text(f'ANALYZE {spec.table}'))
+        operation['changed'] = True
+    return {'graph': 'constructed_not_accepted', 'build_id': str(identifier), 'members': count}
+
+
 async def validate_projection(db, *, build_id, validation_id, dry_run=True):
     identifier = UUID(str(build_id))
     async with _phase(db, dry_run) as operation:

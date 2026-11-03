@@ -53,3 +53,19 @@ The actual provider preparation/replay, full-corpus host worker integration,
 quality/full-site/load/recovery gates and signed production rollout are still
 required. This command installs no schedule and resumes no existing ingestion.
 It does not download content, call a model/Google ANN, or delete original inputs.
+
+## Guarded full corpus graph phases
+
+The host runner can now select `graph`, `seal-projection`, and `validate` with
+`--host-graph-budget`. These phases are closed by default. The host operator
+must check the exact database/container and immutable image, source/volume
+ownership, disk/RAM/CPU reservation and primary health for the complete phase.
+The flag is a host attestation, not an automatic resource measurement.
+
+The graph primitive is shared with the legacy-corpus operator: it requires the
+complete inline projection count, uses m=32/ef_construction=200 and the measured
+6GiB maintenance/five-worker budget, and keeps graph, physical seal and complete
+readback separate. A native batch is bound to its actual sealed content rather
+than claiming that native revisions belong to a provider generation. Current
+claim/publication admission is checked before each phase and again before its
+commit. No acceptance, active pointer or completed queue result is created.

@@ -205,14 +205,19 @@ async def materialize_content(plan, *, session_factory, progress=None):
 
 
 async def prepare_projection(plan, *, build_id, image_digest, implementation_revision,
-                             session_factory, phase="projection", validation_id=None, progress=None):
-    """Prepare/copy any bounded corpus; graph/validation here are small-only.
+                             session_factory, phase="projection", validation_id=None, progress=None,
+                             host_graph_budget=False):
+    """Prepare/copy any bounded corpus; long graph work needs a host guard.
 
-    A real corpus graph and readback must use the separately health/resource
-    guarded host runner. This command never promotes a build or attests quality.
+    Corpus graph/seal/readback phases require the separately health/resource
+    guarded host runner to opt in explicitly. This command never promotes a
+    build or attests quality. Each long phase checks the current lease again
+    before commit; superseded or expired work cannot report completion.
     """
-    if phase not in {"projection", "copy-vectors", "small-graph", "small-validate"}:
+    if phase not in {"projection", "copy-vectors", "small-graph", "small-validate", "graph", "seal-projection", "validate"}:
         raise NativeBatchError("Explicit batch projection phase required")
+    if type(host_graph_budget) is not bool or phase in {"graph", "seal-projection", "validate"} and not host_graph_budget:
+        raise NativeBatchError("Separately guarded host graph budget required for corpus phases")
     async with session_factory() as db:
         target = await verify_plan(db, plan)
         build = await backend.stage_build(db, build_id=build_id, content_id=plan.content_id,
@@ -244,6 +249,18 @@ async def prepare_projection(plan, *, build_id, image_digest, implementation_rev
                 if total != target["expected_member_count"]:
                     raise NativeBatchError("Complete projection copy required")
                 result = {"members": total, "partitions": len(parts)}
+            elif phase in {"graph", "seal-projection", "validate"}:
+                if phase == "graph":
+                    result = await backend.build_corpus_projection_graph(db,build_id=build_id,
+                        expected_members=target['expected_member_count'],host_graph_budget=host_graph_budget)
+                elif phase == "seal-projection":
+                    result = await backend.seal_projection(db,build_id=build_id,dry_run=False)
+                else:
+                    if validation_id is None:
+                        raise NativeBatchError("Explicit validation identity required")
+                    result = await backend.validate_projection(db,build_id=build_id,validation_id=validation_id,dry_run=False)
+                await verify_plan(db,plan)
+                await db.commit()
             else:
                 if target["expected_member_count"] > 1000:
                     raise NativeBatchError("Corpus graph/readback requires the separately guarded host runner")
