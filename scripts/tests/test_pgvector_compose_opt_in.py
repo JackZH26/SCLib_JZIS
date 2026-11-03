@@ -17,6 +17,11 @@ def test_default_postgres_service_matches_the_approved_production_baseline():
 def test_maintenance_override_requires_explicit_image_and_memory_inputs():
     override = yaml.safe_load((ROOT / "docker-compose.pgvector.yml").read_text())["services"]
     assert set(override) == {"postgres"}
-    assert set(override["postgres"]) == {"image", "shm_size"}
+    assert set(override["postgres"]) == {"image", "shm_size", "mem_limit", "memswap_limit", "command"}
     assert override["postgres"]["image"].startswith("${POSTGRES_IMAGE:?")
     assert override["postgres"]["shm_size"].startswith("${POSTGRES_SHM_SIZE:?")
+    assert override['postgres']['mem_limit'].startswith('${POSTGRES_MEMORY_LIMIT:?')
+    assert override['postgres']['memswap_limit']==override['postgres']['mem_limit']
+    assert override['postgres']['command']==['postgres','-c',
+        'shared_buffers=${POSTGRES_SHARED_BUFFERS:?set measured PostgreSQL shared-buffer budget}',
+        '-c','max_wal_size=1GB']

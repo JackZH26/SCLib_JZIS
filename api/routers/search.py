@@ -15,17 +15,18 @@ import logging
 import time
 from datetime import date as _date
 
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.exc import SQLAlchemyError
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from config import get_settings
 from models import get_db
-from models.index_read import generation_read_metadata
+from models.index_read import generation_read_metadata, retrieval_read_metadata
 from models.scientific_lookup import ScientificLookupStatus
 from models.search import SearchMatch, SearchRequest, SearchResponse
 from routers.deps import Identity, require_identity
-from services import index_retrieval, index_vector_adapter, provider_resilience, retrieval
+from services import index_retrieval, index_vector_adapter, provider_resilience, retrieval, retrieval_members
+from services.retrieval_activation import RetrievalPinV2, assert_current_backend
 from services.anomaly_review import eligible_for_property
 from services.scientific_filters import ResultFilters, matching_result_references
 from services.scientific_query import interpret_scientific_query
@@ -46,9 +47,16 @@ router = APIRouter(tags=["search"])
 @router.post("/search", response_model=SearchResponse)
 async def search(
     body: SearchRequest,
+    request: Request,
     identity: Identity = Depends(require_identity),  # noqa: B008
     db: AsyncSession = Depends(get_db),  # noqa: B008
 ) -> SearchResponse:
+    from services.content_runtime import selected_reader
+    content = selected_reader(request)
+    if content is not None:
+        from services.content_search import search as content_search
+        await db.rollback()
+        return await content_search(content, body, identity)
     t0 = time.perf_counter()
     interpretation = interpret_scientific_query(body.query)
     f = body.filters
@@ -166,6 +174,19 @@ async def search(
             scientific_query=interpretation,
         )
 
+    return await _present_search(body, identity, db, t0, pin, interpretation, scientific_filters, candidates)
+
+
+async def _present_search(body, identity, db, t0, pin, interpretation, scientific_filters, candidates, *, candidate_context=None):
+    """Shared retained attribution and live governance, with explicit backend adapters."""
+    f = body.filters
+    from services.retrieval_candidate import EngineeringCandidatePin,is_read_pin,current_read_pin
+    from services.candidate_context import CandidateContext,search_response
+    if type(pin) is EngineeringCandidatePin:
+        if type(candidate_context) is not CandidateContext:raise ValueError('Explicit private presenter context required')
+        candidate_context.require_pin(pin)
+    elif candidate_context is not None:raise ValueError('Public presenter rejects a private context')
+    content = is_read_pin(pin)
     # Hydrate exact generation members (or explicit legacy lexical rows),
     # retaining a defensive cap on the SQL identity inventory.
     MAX_IN_CLAUSE = 300
@@ -174,7 +195,8 @@ async def search(
 
     try:
         async with asyncio.timeout(10):
-            chunk_by_id = await index_retrieval.hydrate(db, pin, chunk_ids)
+            chunk_by_id = await (retrieval_members.hydrate(db, pin, chunk_ids) if content
+                else index_retrieval.hydrate(db, pin, chunk_ids))
     except Exception:
         raise HTTPException(503, "Retrieval generation is unavailable") from None
     rows = list(chunk_by_id.values())
@@ -187,7 +209,8 @@ async def search(
 
     try:
         async with asyncio.timeout(10):
-            evidence_by_chunk = await index_retrieval.resolve_evidence(db, rows)
+            evidence_by_chunk = await (retrieval_members.resolve_evidence(db, pin, rows) if content
+                else index_retrieval.resolve_evidence(db, rows))
             if set(evidence_by_chunk) != set(chunk_by_id):
                 raise ValueError("Evidence inventory mismatch")
             evidence_by_chunk = {key: validate_evidence_descriptor(value) for key, value in evidence_by_chunk.items()}
@@ -286,16 +309,16 @@ async def search(
     if pin is not None:
         try:
             async with asyncio.timeout(10):
-                await index_retrieval.require_current_pin(db, pin)
+                await ((current_read_pin(db,pin) if type(pin) is EngineeringCandidatePin else assert_current_backend(db,pin)) if content else index_retrieval.require_current_pin(db, pin))
         except Exception:
             raise HTTPException(503, "Retrieval generation changed; please search again") from None
-    return SearchResponse(
+    return search_response(pin,
         total=len(matches),
         results=matches,
         query_time_ms=int((time.perf_counter() - t0) * 1000),
         guest_remaining=identity.guest_remaining,
         remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
-        retrieval_generation=generation_read_metadata(pin),
+        **({"scientific_lookup": ScientificLookupStatus(scope="declared_content_derived_extractions")} if content else {}),
         scientific_query=interpretation,
     )
 

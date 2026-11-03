@@ -1,0 +1,489 @@
+{
+  "version": "ask-history-detail/1.0.0",
+  "entry": {
+    "id": "1172d12a-7a38-4970-a9f9-b72dc1f40457",
+    "question": "What is the Tc of MgB2?",
+    "answer": "Synthetic reported extraction records, not independent scientific support.",
+    "sources": [],
+    "current_evidence": {
+      "version": "ask-history-current-evidence/1.0.0",
+      "scope": "current_paper_metadata_not_saved_excerpt",
+      "metadata_snapshot_at": "2026-11-02T19:30:58.544397+00:00",
+      "saved_answer_revalidated": false,
+      "scientific_acceptance": false,
+      "ml_training_eligibility_established": false,
+      "sources": [],
+      "warning_codes": [
+        "historical_answer_requires_new_claim_review"
+      ]
+    },
+    "receipt": {
+      "version": "ask-history-receipt-summary/1.0.0",
+      "status": "recorded",
+      "receipt_sha256": "238ca82248f63450299730fabece5b2273cdd87476e3c296b813090e2a959ca6"
+    },
+    "tokens_used": 0,
+    "latency_ms": 1,
+    "language": "auto",
+    "created_at": "2026-11-02T19:30:58.203048Z"
+  },
+  "evidence": {
+    "status": "verified",
+    "binding_scope": "content_members",
+    "receipt": {
+      "version": "ask-answer-evidence/2.0.0",
+      "history_id": "1172d12a-7a38-4970-a9f9-b72dc1f40457",
+      "record_sha256": "238ca82248f63450299730fabece5b2273cdd87476e3c296b813090e2a959ca6",
+      "request_sha256": "e27fbc7b5533a1799d87158457c37549cba8520908776e27d442434524242a09",
+      "response_sha256": "f22e515bc456f506a7266282946f9dcf2f71cb07b337c162579c5f1a22a872ac",
+      "bindings_sha256": "4d2928485aaa52c4bb4460f9d09fd2fff168b779f38e60e38a6de0f0d9e8a62d",
+      "request": {
+        "question": "What is the Tc of MgB2?",
+        "max_sources": 10,
+        "language": "auto"
+      },
+      "response": {
+        "scientific_mixed": {
+          "version": "scientific-mixed-evidence/1.1.0",
+          "status": "not_requested",
+          "result_count": 0,
+          "source_count": 0,
+          "max_selected_inputs": 0,
+          "associations": [],
+          "reason_codes": [],
+          "scientific_acceptance": false,
+          "independent_support_count": null
+        },
+        "evidence_packing": {
+          "version": "evidence-packing/1.0.0",
+          "status": "not_requested",
+          "candidate_count": 0,
+          "selected_count": 0,
+          "source_group_count": 0,
+          "diversity_group_count": 0,
+          "payload_bytes": null,
+          "byte_budget": null,
+          "byte_count_method": "utf8-full-payload/1",
+          "max_chunks": 20,
+          "max_per_source": 3,
+          "max_per_work": 3,
+          "reason_counts": {},
+          "reason_codes": [],
+          "independent_support_count": null,
+          "independence_status": "independence_not_established",
+          "scientific_acceptance": false
+        },
+        "input_budget": {
+          "status": "not_requested",
+          "model": null,
+          "profile": "sclib-gemini-text-rag/1.0.0",
+          "request_sha256": null,
+          "payload_bytes": null,
+          "byte_limit": 262144,
+          "input_tokens": null,
+          "max_input_tokens": null,
+          "count_method": "provider_count_tokens",
+          "generation_started": null,
+          "scientific_acceptance": false
+        },
+        "retrieval_generation": {
+          "version": "index-read/2.0.0",
+          "mode": "content_snapshot",
+          "content_id": "f086c687-6924-5150-9a9f-4bc72f194d85",
+          "build_id": "db09ccd9-900e-4c5c-a2d8-e655c47c9e79",
+          "activation_event_id": "78da6021-423d-4864-8992-b2340d6760c8",
+          "manifest_sha256": "7895b08b6c50d06af130a26e3923a90421386bbddf6bef75f46fe038ad83ab72",
+          "policy_artifact_sha256": "54125fcefefcd65e04898504ced5c8a2a7e5f8915c2553435e13d8e486a018f6",
+          "profile": {
+            "version": "sclib-index-profile/1.0.0",
+            "provider": "google-vertex-ai",
+            "model": "text-embedding-005",
+            "output_dimensionality": 768,
+            "document_task": "RETRIEVAL_DOCUMENT",
+            "query_task": "RETRIEVAL_QUERY"
+          }
+        },
+        "scientific_query": {
+          "version": "scientific-query/1.0.0",
+          "raw_query": "What is the Tc of MgB2?",
+          "normalized_query": "What is the Tc of MgB2?",
+          "language": "en",
+          "intent": "numerical",
+          "status": "resolved",
+          "requested_fields": [
+            "tc_kelvin"
+          ],
+          "formulas": [
+            {
+              "raw_text": "MgB2",
+              "start": 18,
+              "end": 22,
+              "normalization": {
+                "version": "formula-query/1.0.0",
+                "raw_formula": "MgB2",
+                "normalized_formula": "MgB2",
+                "status": "normalized",
+                "reason_codes": []
+              }
+            }
+          ],
+          "constraints": [],
+          "evidence_constraints": [],
+          "unresolved_clauses": [],
+          "clarification_questions": [],
+          "scientific_acceptance": false
+        },
+        "scientific_lookup": {
+          "status": "completed",
+          "reason_codes": [
+            "derived_extractions_not_independent_scientific_support"
+          ],
+          "returned_count": 2,
+          "has_more": false,
+          "scope": "declared_content_derived_extractions",
+          "scientific_acceptance": false
+        },
+        "scientific_results": [
+          {
+            "result": {
+              "version": "scientific-query-result/1.0.0",
+              "result_id": "legacy-result:261cf9c85780f6b1007091fca6e2a56da40de446e8a6b624545df013e213cfd2",
+              "record_index": 0,
+              "formula": "MgB2",
+              "family": null,
+              "tc": {
+                "status": "parsed",
+                "relation": "exact",
+                "value": 39.0,
+                "lower": null,
+                "upper": null,
+                "uncertainty": null,
+                "approximate": false,
+                "unit": "K",
+                "unit_basis": "explicit",
+                "uncertainty_interpretation": null
+              },
+              "pressure": {
+                "status": "parsed",
+                "relation": "exact",
+                "value": 0.0,
+                "lower": null,
+                "upper": null,
+                "uncertainty": null,
+                "approximate": false,
+                "unit": "GPa",
+                "unit_basis": "explicit_ambient_reference",
+                "uncertainty_interpretation": null,
+                "pressure_state": "explicit_ambient"
+              },
+              "minimum_temperature": {
+                "status": "unreported",
+                "relation": "unreported",
+                "value": null,
+                "lower": null,
+                "upper": null,
+                "uncertainty": null,
+                "approximate": false,
+                "unit": "K",
+                "unit_basis": "unreported",
+                "uncertainty_interpretation": null
+              },
+              "result_classification": {
+                "knowledge_origin": "Observed",
+                "classification_status": "resolved",
+                "source_role": "primary"
+              },
+              "outcome_state": "unspecified",
+              "reported_context": {
+                "tc_criterion": null,
+                "sample_label": null,
+                "sample_form": null,
+                "structure_phase": null,
+                "measurement_method": "resistance"
+              },
+              "warning_codes": [
+                "machine_extraction_not_scientific_approval",
+                "same_record_not_resolved_sample_identity",
+                "sample_label_unreported_or_unresolved",
+                "structure_phase_unreported_or_unresolved",
+                "tc_criterion_unreported_or_unresolved"
+              ],
+              "scientific_acceptance": false,
+              "ml_training_eligible": false,
+              "detection_adequacy_verified": false
+            },
+            "binding": {
+              "version": "scientific-result-binding/2.0.0",
+              "paper_id": "rag-evidence:dddfa78d17d548f5bd349db5fd3fafca",
+              "vector_id": "ig62_d4372c507d554f81ad7c55302e5023c0_1aeae7aaf0bb911e6ba0a326eb5e3dfa8f140cf0d9c00d536f1345116b341e10",
+              "content_id": "f086c687-6924-5150-9a9f-4bc72f194d85",
+              "build_id": "db09ccd9-900e-4c5c-a2d8-e655c47c9e79",
+              "activation_event_id": "78da6021-423d-4864-8992-b2340d6760c8",
+              "manifest_sha256": "7895b08b6c50d06af130a26e3923a90421386bbddf6bef75f46fe038ad83ab72",
+              "policy_artifact_sha256": "54125fcefefcd65e04898504ced5c8a2a7e5f8915c2553435e13d8e486a018f6",
+              "content_member_record_sha256": "a1d7be69c4910d5d9029d5781e68c3e7372f58a5aef752d0138535a5ea3882e7",
+              "origin_kind": "legacy_v1",
+              "origin_generation_id": "d4372c50-7d55-4f81-ad7c-55302e5023c0",
+              "native_revision_id": null,
+              "origin_record_sha256": "a280264aa8987e2e6d6c9aa6dfb1d410c8a8e10b04f52c2619fb0b28f5a2ab16",
+              "chunk_revision_sha256": "1aeae7aaf0bb911e6ba0a326eb5e3dfa8f140cf0d9c00d536f1345116b341e10",
+              "vector_sha256": "ac12dd673130e39d5de36b47160d99734c3a581ccca7716c71e1487a27c3e16f",
+              "content_sha256": "9d060c179bc9fc3cf8f0d487d04179f69772bc8b989c99246ed6f06d40e64591",
+              "evidence_revision_id": "37e56f04-07a3-52da-8b6e-a0c802f8f8d1",
+              "evidence_record_sha256": "6df2e536910c2c81b56e72b803e1f690ed1e0c5cf3d37320152ddd66af735f04",
+              "parent_result_revision_id": "9894679a-99ce-578f-a4e0-1f73f3e4942b",
+              "parent_result_sha256": "80dfcec577879055251e6b7d66171e427b76423e67311a2660fab9e188ee8e0d",
+              "association_scope": "derived_extraction_not_original_support"
+            }
+          },
+          {
+            "result": {
+              "version": "scientific-query-result/1.0.0",
+              "result_id": "legacy-result:4a3df57a99e52871f8dcfdc3b842052f5bbde17ecda9510b6aee0dfec6c809f1",
+              "record_index": 0,
+              "formula": "MgB2",
+              "family": null,
+              "tc": {
+                "status": "parsed",
+                "relation": "exact",
+                "value": 39.0,
+                "lower": null,
+                "upper": null,
+                "uncertainty": null,
+                "approximate": false,
+                "unit": "K",
+                "unit_basis": "explicit",
+                "uncertainty_interpretation": null
+              },
+              "pressure": {
+                "status": "parsed",
+                "relation": "exact",
+                "value": 0.0,
+                "lower": null,
+                "upper": null,
+                "uncertainty": null,
+                "approximate": false,
+                "unit": "GPa",
+                "unit_basis": "explicit_ambient_reference",
+                "uncertainty_interpretation": null,
+                "pressure_state": "explicit_ambient"
+              },
+              "minimum_temperature": {
+                "status": "unreported",
+                "relation": "unreported",
+                "value": null,
+                "lower": null,
+                "upper": null,
+                "uncertainty": null,
+                "approximate": false,
+                "unit": "K",
+                "unit_basis": "unreported",
+                "uncertainty_interpretation": null
+              },
+              "result_classification": {
+                "knowledge_origin": "Observed",
+                "classification_status": "resolved",
+                "source_role": "primary"
+              },
+              "outcome_state": "unspecified",
+              "reported_context": {
+                "tc_criterion": null,
+                "sample_label": null,
+                "sample_form": null,
+                "structure_phase": null,
+                "measurement_method": "resistance"
+              },
+              "warning_codes": [
+                "machine_extraction_not_scientific_approval",
+                "same_record_not_resolved_sample_identity",
+                "sample_label_unreported_or_unresolved",
+                "structure_phase_unreported_or_unresolved",
+                "tc_criterion_unreported_or_unresolved"
+              ],
+              "scientific_acceptance": false,
+              "ml_training_eligible": false,
+              "detection_adequacy_verified": false
+            },
+            "binding": {
+              "version": "scientific-result-binding/2.0.0",
+              "paper_id": "rag-evidence:c02e3c55a7d14a7a95bf85a5da20e3d2",
+              "vector_id": "rv2_507e4779f33e57b71207f0f2cc8f94ebf6bf8b79b4f7f8d452ad100aadcc1ca0",
+              "content_id": "f086c687-6924-5150-9a9f-4bc72f194d85",
+              "build_id": "db09ccd9-900e-4c5c-a2d8-e655c47c9e79",
+              "activation_event_id": "78da6021-423d-4864-8992-b2340d6760c8",
+              "manifest_sha256": "7895b08b6c50d06af130a26e3923a90421386bbddf6bef75f46fe038ad83ab72",
+              "policy_artifact_sha256": "54125fcefefcd65e04898504ced5c8a2a7e5f8915c2553435e13d8e486a018f6",
+              "content_member_record_sha256": "f9c04f571130bcac7afdf7a12a26870922776fcbc7f07123a18c0dd5d31c0d5b",
+              "origin_kind": "native_v2",
+              "origin_generation_id": null,
+              "native_revision_id": "5b3f62c5-7bb6-591c-8bf8-430b294bcfd3",
+              "origin_record_sha256": "d1c064164a01178e1588d3ca5db2d752f6e83df5bacf7b5240563b556595d5b1",
+              "chunk_revision_sha256": "507e4779f33e57b71207f0f2cc8f94ebf6bf8b79b4f7f8d452ad100aadcc1ca0",
+              "vector_sha256": "ac12dd673130e39d5de36b47160d99734c3a581ccca7716c71e1487a27c3e16f",
+              "content_sha256": "9d060c179bc9fc3cf8f0d487d04179f69772bc8b989c99246ed6f06d40e64591",
+              "evidence_revision_id": "e0c778a1-4729-586c-a1ac-b6a707d054ae",
+              "evidence_record_sha256": "ad9fc56628aabe5a279f3d5a49e344d6df4eb6240de685abc7b15d53ff60afe3",
+              "parent_result_revision_id": "0dcdadb7-a312-5fc3-8baa-f0aeb9ade8be",
+              "parent_result_sha256": "13b91156314607cfe5a67b9968c7c12886472d29cd463f45f5a38493e39aba12",
+              "association_scope": "derived_extraction_not_original_support"
+            }
+          }
+        ],
+        "answer": "Synthetic reported extraction records, not independent scientific support.",
+        "sources": [],
+        "tokens_used": 0,
+        "query_time_ms": 1,
+        "citation_valid": true,
+        "citation_warnings": [],
+        "support_policy_version": "scientific-claim-support/1.0.0",
+        "citation_indices_valid": false,
+        "lexical_support_checked": false,
+        "scientific_support_status": "not_checked",
+        "claim_assessments": [],
+        "support_warnings": [],
+        "support_coverage": {},
+        "answer_mode": "abstention",
+        "assessment_scope": "none"
+      },
+      "bindings": {
+        "version": "ask-answer-evidence/2.0.0",
+        "mode": "content_bound",
+        "logical_index": "synthetic-475e00dea835455783c757015c462444",
+        "read": {
+          "version": "index-read/2.0.0",
+          "mode": "content_snapshot",
+          "content_id": "f086c687-6924-5150-9a9f-4bc72f194d85",
+          "build_id": "db09ccd9-900e-4c5c-a2d8-e655c47c9e79",
+          "activation_event_id": "78da6021-423d-4864-8992-b2340d6760c8",
+          "manifest_sha256": "7895b08b6c50d06af130a26e3923a90421386bbddf6bef75f46fe038ad83ab72",
+          "policy_artifact_sha256": "54125fcefefcd65e04898504ced5c8a2a7e5f8915c2553435e13d8e486a018f6",
+          "profile": {
+            "version": "sclib-index-profile/1.0.0",
+            "provider": "google-vertex-ai",
+            "model": "text-embedding-005",
+            "output_dimensionality": 768,
+            "document_task": "RETRIEVAL_DOCUMENT",
+            "query_task": "RETRIEVAL_QUERY"
+          }
+        },
+        "items": [
+          {
+            "kind": "scientific_result",
+            "position": 1,
+            "paper_id": "rag-evidence:dddfa78d17d548f5bd349db5fd3fafca",
+            "chunk_id": "ig62_d4372c507d554f81ad7c55302e5023c0_1aeae7aaf0bb911e6ba0a326eb5e3dfa8f140cf0d9c00d536f1345116b341e10",
+            "content_sha256": "9d060c179bc9fc3cf8f0d487d04179f69772bc8b989c99246ed6f06d40e64591",
+            "content_member_record_sha256": "a1d7be69c4910d5d9029d5781e68c3e7372f58a5aef752d0138535a5ea3882e7",
+            "origin_kind": "legacy_v1",
+            "origin_generation_id": "d4372c50-7d55-4f81-ad7c-55302e5023c0",
+            "native_revision_id": null,
+            "origin_record_sha256": "a280264aa8987e2e6d6c9aa6dfb1d410c8a8e10b04f52c2619fb0b28f5a2ab16",
+            "chunk_revision_sha256": "1aeae7aaf0bb911e6ba0a326eb5e3dfa8f140cf0d9c00d536f1345116b341e10",
+            "vector_sha256": "ac12dd673130e39d5de36b47160d99734c3a581ccca7716c71e1487a27c3e16f",
+            "source_snapshot_sha256": "a090dd0e784e0a31d3040f4681f846429441d5f3afb31a4bd383664f201df9e9",
+            "evidence_revision_id": "37e56f04-07a3-52da-8b6e-a0c802f8f8d1",
+            "evidence_record_sha256": "6df2e536910c2c81b56e72b803e1f690ed1e0c5cf3d37320152ddd66af735f04",
+            "parent_result_revision_id": "9894679a-99ce-578f-a4e0-1f73f3e4942b",
+            "parent_result_sha256": "80dfcec577879055251e6b7d66171e427b76423e67311a2660fab9e188ee8e0d",
+            "selection_input_sha256": "c5e9583adbb2c74e15b0d80c7f2f707972b87e9b466420e7954903229092554c",
+            "selection_content_pin_sha256": "660edb61993f34b6f272096c3eb1e481c17616625bc01da739fdbde1ceebf20f",
+            "selection_grouping_sha256": "0bf9bd034b467c3fbd21f2628fa9cea36552853fa906c2172ecc04215dd51d59",
+            "has_evidence_pin": true
+          },
+          {
+            "kind": "scientific_result",
+            "position": 2,
+            "paper_id": "rag-evidence:c02e3c55a7d14a7a95bf85a5da20e3d2",
+            "chunk_id": "rv2_507e4779f33e57b71207f0f2cc8f94ebf6bf8b79b4f7f8d452ad100aadcc1ca0",
+            "content_sha256": "9d060c179bc9fc3cf8f0d487d04179f69772bc8b989c99246ed6f06d40e64591",
+            "content_member_record_sha256": "f9c04f571130bcac7afdf7a12a26870922776fcbc7f07123a18c0dd5d31c0d5b",
+            "origin_kind": "native_v2",
+            "origin_generation_id": null,
+            "native_revision_id": "5b3f62c5-7bb6-591c-8bf8-430b294bcfd3",
+            "origin_record_sha256": "d1c064164a01178e1588d3ca5db2d752f6e83df5bacf7b5240563b556595d5b1",
+            "chunk_revision_sha256": "507e4779f33e57b71207f0f2cc8f94ebf6bf8b79b4f7f8d452ad100aadcc1ca0",
+            "vector_sha256": "ac12dd673130e39d5de36b47160d99734c3a581ccca7716c71e1487a27c3e16f",
+            "source_snapshot_sha256": "aad307395e0c16b3622f07eba239ce745f1fd596a76f2768b83d6c2f403bc570",
+            "evidence_revision_id": "e0c778a1-4729-586c-a1ac-b6a707d054ae",
+            "evidence_record_sha256": "ad9fc56628aabe5a279f3d5a49e344d6df4eb6240de685abc7b15d53ff60afe3",
+            "parent_result_revision_id": "0dcdadb7-a312-5fc3-8baa-f0aeb9ade8be",
+            "parent_result_sha256": "13b91156314607cfe5a67b9968c7c12886472d29cd463f45f5a38493e39aba12",
+            "selection_input_sha256": "482749bf972cb6eef7d091342f99a41c792580c0d14db2fc3f4545e24479461a",
+            "selection_content_pin_sha256": "660edb61993f34b6f272096c3eb1e481c17616625bc01da739fdbde1ceebf20f",
+            "selection_grouping_sha256": "0ca24a6217ed74f61e02692f83d3a3f6c4a5b01c9bf63f16eaf6335e858d7ce0",
+            "has_evidence_pin": true
+          }
+        ]
+      }
+    },
+    "historical_integrity_verified": true,
+    "scientific_acceptance": false,
+    "ml_training_approved": false,
+    "public_release_authorized": false,
+    "currentness_revalidated": false,
+    "reason_codes": []
+  },
+  "result_current_evidence": {
+    "version": "ask-history-current-evidence/1.0.0",
+    "scope": "current_paper_metadata_not_saved_excerpt",
+    "metadata_snapshot_at": "2026-11-02T19:30:58.544397+00:00",
+    "saved_answer_revalidated": false,
+    "scientific_acceptance": false,
+    "ml_training_eligibility_established": false,
+    "sources": [
+      {
+        "paper_id": "rag-evidence:dddfa78d17d548f5bd349db5fd3fafca",
+        "source_visibility": {
+          "version": "material-visibility/1.0.0",
+          "source_status": "active",
+          "bibliography_available": true,
+          "reported_claim_filter_eligible": true,
+          "scientific_acceptance": false,
+          "warning_codes": []
+        },
+        "metadata_status": "checked",
+        "occurrence_visibility_summary": {
+          "version": "material-visibility/1.0.0",
+          "total_occurrences": 1,
+          "returned_occurrences": 1,
+          "omitted_occurrences": 0,
+          "state_counts": {
+            "unknown": 1
+          },
+          "scientific_acceptance": false,
+          "warning_codes": []
+        },
+        "warning_codes": [],
+        "saved_source_position": 0
+      },
+      {
+        "paper_id": "rag-evidence:c02e3c55a7d14a7a95bf85a5da20e3d2",
+        "source_visibility": {
+          "version": "material-visibility/1.0.0",
+          "source_status": "active",
+          "bibliography_available": true,
+          "reported_claim_filter_eligible": true,
+          "scientific_acceptance": false,
+          "warning_codes": []
+        },
+        "metadata_status": "checked",
+        "occurrence_visibility_summary": {
+          "version": "material-visibility/1.0.0",
+          "total_occurrences": 1,
+          "returned_occurrences": 1,
+          "omitted_occurrences": 0,
+          "state_counts": {
+            "unknown": 1
+          },
+          "scientific_acceptance": false,
+          "warning_codes": []
+        },
+        "warning_codes": [],
+        "saved_source_position": 1
+      }
+    ],
+    "warning_codes": [
+      "historical_answer_requires_new_claim_review"
+    ]
+  }
+}

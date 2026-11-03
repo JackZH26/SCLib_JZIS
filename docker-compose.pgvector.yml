@@ -5,3 +5,11 @@ services:
   postgres:
     image: ${POSTGRES_IMAGE:?set verified signed PostgreSQL pgvector image digest}
     shm_size: ${POSTGRES_SHM_SIZE:?set rehearsed PostgreSQL shared-memory budget}
+    mem_limit: ${POSTGRES_MEMORY_LIMIT:?set rehearsed PostgreSQL process memory limit}
+    memswap_limit: ${POSTGRES_MEMORY_LIMIT:?set rehearsed PostgreSQL process memory limit}
+    command:
+      - postgres
+      - -c
+      - shared_buffers=${POSTGRES_SHARED_BUFFERS:?set measured PostgreSQL shared-buffer budget}
+      - -c
+      - max_wal_size=1GB

@@ -61,7 +61,7 @@ class HistoryEvidenceDetail(BaseModel):
     model_config = ConfigDict(extra="forbid", frozen=True, strict=True)
 
     status: Literal["verified", "legacy_unpinned", "unavailable"]
-    binding_scope: Literal["generation_members", "legacy_snapshot", "no_selected_evidence"] | None = None
+    binding_scope: Literal["generation_members", "content_members", "legacy_snapshot", "no_selected_evidence"] | None = None
     receipt: dict[str, Any] | None = None
     historical_integrity_verified: bool = False
     scientific_acceptance: Literal[False] = False

@@ -2966,6 +2966,27 @@ def main() -> None:
                     'source_revisions_immutable_row', 'source_revisions_immutable_truncate',
                     'source_captures_immutable_row', 'source_captures_immutable_truncate',
                     'claim_source_occurrences_immutable_row', 'claim_source_occurrences_immutable_truncate')""")).scalar_one() == 6
+        from migration_retrieval_native import empty_roundtrip as native_empty
+        native_empty_receipt = native_empty(capability, engine, config)
+        from migration_retrieval_content import empty_roundtrip as content_empty
+        content_empty_receipt = content_empty(capability, engine, config)
+        from migration_retrieval_backend import empty_roundtrip as backend_empty
+        backend_empty_receipt = backend_empty(capability, engine, config)
+        from migration_retrieval_activation import empty_roundtrip as activation_empty
+        activation_empty_receipt = activation_empty(capability, engine, config)
+        from migration_retrieval_navigation import empty_roundtrip as navigation_empty
+        navigation_empty_receipt = navigation_empty(capability, engine, config)
+        from migration_content_answer_history import empty_roundtrip as content_history_empty
+        content_history_empty_receipt = content_history_empty(capability, engine, config)
+        from migration_bounded_validation import empty_roundtrip as bounded_validation_empty
+        from json import dumps as bounded_validation_json
+        print('BOUNDED_VALIDATION_SCHEMA_RECEIPT ' + bounded_validation_json(bounded_validation_empty(capability, engine, config), sort_keys=True))
+        from migration_retrieval_publication_queue import empty_roundtrip as publication_queue_empty
+        publication_queue_empty_receipt=publication_queue_empty(capability,engine,config)
+        from migration_retrieval_policy_v4 import empty_roundtrip as query_policy_v4_empty
+        query_policy_v4_empty_receipt=query_policy_v4_empty(capability,engine,config)
+        from migration_retrieval_policy import empty_roundtrip as query_policy_empty
+        query_policy_empty_receipt=query_policy_empty(capability,engine,config)
         from migration_discovery_calculations import empty_roundtrip as calculation_empty
         calculation_empty(capability, engine, config)
         from migration_discovery_condition_batches import empty_roundtrip as condition_batch_empty
@@ -3243,6 +3264,67 @@ def main() -> None:
         corpus_retained(capability, engine, config)
         from migration_source_expressions import empty_roundtrip as source_expression_empty
         source_expression_empty(capability, engine, config)
+        from migration_retrieval_native import populated_capture as native_populated, retained_history as native_retained
+        native_capture_receipt = asyncio.run(native_populated(capability))
+        native_retention_receipt = native_retained(capability, engine, config)
+        import json
+        print("NATIVE_SCHEMA_RECEIPT " + json.dumps({
+            "version": "retrieval-native-schema-rehearsal/2.0.0", "synthetic": True,
+            "production": False, "deployment_approved": False, "scientific_acceptance": False,
+            **native_empty_receipt, **native_capture_receipt, **native_retention_receipt,
+        }, sort_keys=True))
+        from migration_retrieval_content import populated_content as content_populated, retained_history as content_retained
+        content_capture_receipt = asyncio.run(content_populated(capability))
+        content_retention_receipt = content_retained(capability, engine, config)
+        print("CONTENT_SCHEMA_RECEIPT " + json.dumps({
+            "version": "retrieval-content-schema-rehearsal/2.0.0", "synthetic": True,
+            "production": False, "deployment_approved": False, "scientific_acceptance": False,
+            **content_empty_receipt, **content_capture_receipt, **content_retention_receipt,
+        }, sort_keys=True))
+        from migration_retrieval_backend import populated_backend as backend_populated, retained_history as backend_retained
+        backend_capture_receipt = asyncio.run(backend_populated(capability))
+        backend_retention_receipt = backend_retained(capability, engine, config, backend_capture_receipt)
+        print("BACKEND_SCHEMA_RECEIPT " + json.dumps({
+            "version": "retrieval-backend-schema-rehearsal/2.0.0", "synthetic": True,
+            "production": False, "deployment_approved": False, "scientific_acceptance": False,
+            **backend_empty_receipt, **backend_capture_receipt, **backend_retention_receipt,
+        }, sort_keys=True))
+        from migration_retrieval_activation import populated_activation as activation_populated, retained_history as activation_retained
+        activation_capture_receipt = asyncio.run(activation_populated(capability))
+        activation_retention_receipt = activation_retained(capability, engine, config, activation_capture_receipt)
+        print("ACTIVATION_SCHEMA_RECEIPT " + json.dumps({
+            "version": "retrieval-activation-schema-rehearsal/2.0.0", "synthetic": True,
+            "production": False, "deployment_approved": False, "scientific_acceptance": False,
+            **activation_empty_receipt, **activation_capture_receipt, **activation_retention_receipt,
+        }, sort_keys=True))
+        from migration_retrieval_navigation import populated as navigation_populated, retained_active_navigation
+        navigation_capture = asyncio.run(navigation_populated(capability))
+        navigation_retention = retained_active_navigation(capability, engine, config, navigation_capture)
+        print("NAVIGATION_SCHEMA_RECEIPT " + json.dumps({
+            "version":"retrieval-navigation-schema-rehearsal/2.0.0","synthetic":True,
+            "production":False,"deployment_approved":False,"scientific_acceptance":False,
+            **navigation_empty_receipt,**navigation_capture,**navigation_retention,
+        },sort_keys=True))
+        from migration_content_answer_history import populated as content_history_populated, retained as content_history_retained
+        content_history_capture = asyncio.run(content_history_populated(capability))
+        content_history_retention = content_history_retained(capability, engine, config, content_history_capture)
+        print("CONTENT_HISTORY_SCHEMA_RECEIPT " + json.dumps({
+            "version":"content-answer-history-schema-rehearsal/2.0.0","synthetic":True,
+            "production":False,"deployment_approved":False,"scientific_acceptance":False,
+            **content_history_empty_receipt,**content_history_capture,**content_history_retention,
+        },sort_keys=True))
+        from migration_retrieval_policy import populated as query_policy_populated,retained as query_policy_retained
+        query_policy_capture=asyncio.run(query_policy_populated(capability))
+        query_policy_retention=query_policy_retained(capability,engine,config,query_policy_capture)
+        print('QUERY_POLICY_SCHEMA_RECEIPT '+json.dumps({**query_policy_empty_receipt,**query_policy_capture,**query_policy_retention},sort_keys=True))
+        from migration_retrieval_publication_queue import populated as publication_queue_populated,retained as publication_queue_retained
+        publication_queue_capture=asyncio.run(publication_queue_populated(capability))
+        publication_queue_retention=publication_queue_retained(capability,engine,config,publication_queue_capture)
+        print('PUBLICATION_QUEUE_SCHEMA_RECEIPT '+json.dumps({**publication_queue_empty_receipt,**publication_queue_capture,**publication_queue_retention},sort_keys=True))
+        from migration_retrieval_policy_v4 import populated as query_policy_v4_populated,retained as query_policy_v4_retained
+        query_policy_v4_capture=asyncio.run(query_policy_v4_populated(capability))
+        query_policy_v4_retention=query_policy_v4_retained(capability,engine,config,query_policy_v4_capture)
+        print('QUERY_POLICY_V4_SCHEMA_RECEIPT '+json.dumps({**query_policy_v4_empty_receipt,**query_policy_v4_capture,**query_policy_v4_retention},sort_keys=True))
         if recorder is not None:
             with engine.connect() as connection:
                 verify_postgres_identity(connection, capability)

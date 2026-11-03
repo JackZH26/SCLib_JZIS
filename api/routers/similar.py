@@ -6,7 +6,7 @@ import math
 import threading
 from collections import defaultdict
 
-from fastapi import APIRouter, Depends, HTTPException, Query, status
+from fastapi import APIRouter, Depends, HTTPException, Query, Request, status
 from sqlalchemy.ext.asyncio import AsyncSession
 
 from config import get_settings
@@ -24,12 +24,25 @@ _UNAVAILABLE = "Similarity search is temporarily unavailable. Please try again l
 @router.get("/similar/{paper_id:path}", response_model=SimilarResponse)
 async def similar_papers(
     paper_id: str,
+    request: Request,
     top_k: int = Query(10, ge=1, le=50),
     identity: Identity = Depends(peek_identity),  # noqa: ARG001
     db: AsyncSession = Depends(get_db),
 ) -> SimilarResponse:
     if await db.get(Paper, paper_id) is None:
         raise HTTPException(status.HTTP_404_NOT_FOUND, f"Paper {paper_id!r} not found")
+    from services.content_runtime import selected_reader
+    content = selected_reader(request)
+    if content is not None:
+        from models.index_read import retrieval_read_metadata
+        await db.rollback()
+        try:
+            result = await content.similar(await content.pin(logical_index=get_settings().retrieval_logical_index),
+                paper_id, top_k=top_k)
+            return SimilarResponse(source_paper_id=paper_id, results=list(result.results),
+                retrieval_generation=retrieval_read_metadata(result.pin))
+        except Exception:
+            raise HTTPException(503, _UNAVAILABLE) from None
     try:
         async with asyncio.timeout(10):
             pin = await index_retrieval.load_pin(db)

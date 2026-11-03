@@ -95,6 +95,38 @@ class RuntimeParityTests(unittest.TestCase):
         self.assertFalse(any("push" in cmd or "compose" in cmd for cmd, _, _ in self.calls))
         self.assertEqual(json.loads((self.root / "artifacts/parity-report.json").read_text()), report)
 
+    def publisher_inventory(self):
+        (self.root / "publisher").mkdir()
+        for name in ("uv.lock", "pyproject.toml", "Dockerfile"):
+            (self.root / "publisher" / name).write_text("synthetic " + name)
+        self.inventory.update(project_name="sclib-native-publisher",
+            packages={"sclib-native-publisher": "0.1.0", "sqlalchemy": "2.0.49"})
+        self.runtime = dict(self.inventory)
+        self.tests_path.write_text(json.dumps(self.inventory))
+
+    def test_publisher_builds_from_root_and_checks_both_dependency_source_trees(self):
+        self.publisher_inventory()
+        report = parity.check("publisher", self.tests_path, self.root / "artifacts")
+        self.assertTrue(report["matches"])
+        build = next(cmd for cmd, _, _ in self.calls if cmd[3:4] == ["build"])
+        self.assertEqual(build[-1], str(self.root))
+        self.assertEqual(build[build.index("--file") + 1], str(self.root / "publisher/Dockerfile"))
+        for command, _, _ in self.calls:
+            if command[:2] in (["git", "diff"], ["git", "ls-files"]):
+                self.assertIn("api", command)
+                self.assertIn("ingestion", command)
+
+    def test_publisher_refuses_a_changed_first_party_dependency_before_image_build(self):
+        self.publisher_inventory()
+        fake = self.fake_run
+        def changed(command, **kwargs):
+            if command[:2] == ["git", "diff"] and "ingestion" in command:
+                raise subprocess.CalledProcessError(1, command)
+            return fake(command, **kwargs)
+        with patch.object(parity, "run", side_effect=changed), self.assertRaises(subprocess.CalledProcessError):
+            parity.check("publisher", self.tests_path, self.root / "artifacts")
+        self.assertFalse(any("build" in command for command, _, _ in self.calls))
+
     def test_changed_runtime_dependency_is_a_failed_report(self):
         self.runtime["packages"] = {"sclib-api": "0.1.0", "sqlalchemy": "9.0"}
         report = parity.check("api", self.tests_path, self.root / "artifacts")

@@ -77,6 +77,13 @@ jobs:
           uv --quiet export --frozen --no-dev --no-emit-project \
             --format requirements-txt --output-file /tmp/ingestion-requirements.txt
           pip-audit --requirement /tmp/ingestion-requirements.txt --disable-pip
+      - name: Audit native publisher lock
+        working-directory: publisher
+        run: |
+          uv --quiet export --frozen --no-dev --no-emit-project \
+            --no-emit-package sclib-api --no-emit-package sclib-ingestion \
+            --format requirements-txt --output-file /tmp/publisher-requirements.txt
+          pip-audit --requirement /tmp/publisher-requirements.txt --disable-pip
       - uses: pnpm/action-setup@0ebf47130e4866e96fce0953f49152a61190b271 # v6.0.9
         with:
           version: 9.12.0

@@ -88,7 +88,35 @@ describe("Private raw-literal field workbench", () => {
     vi.mocked(sourceExpressionCommit).mockRejectedValueOnce(new ApiError(503, null, "unknown")); vi.mocked(sourceExpressionOutcome).mockRejectedValueOnce(new ApiError(404, null, "unavailable")).mockResolvedValueOnce(saved);
     fireEvent.click(screen.getByRole("button", { name: "Save pending operation" })); await screen.findByRole("region", { name: "Original save recovery" }); expect(screen.queryByLabelText("Material ID")).not.toBeInTheDocument(); fireEvent.click(screen.getByRole("button", { name: "Check original request" })); await screen.findByText(/original outcome remains unverified/); fireEvent.click(screen.getByRole("button", { name: "Check original request" })); await screen.findByRole("region", { name: "Original receipt confirmed" }); expect(screen.queryByRole("region", { name: "Verified original source" })).not.toBeInTheDocument(); expect(sourceExpressionCommit).toHaveBeenCalledOnce(); expect(vi.mocked(sourceExpressionOutcome).mock.calls[0].slice(0, 2)).toEqual([request.request_key, saved.request_sha256]);
   });
-  it("bounds an unresponsive save, retains original recovery and never guesses rollback", async () => { await mount(); await previewSource(); vi.useFakeTimers(); vi.mocked(sourceExpressionCommit).mockReturnValue(new Promise(() => {})); try { fireEvent.click(screen.getByRole("button", { name: "Save pending operation" })); await act(async () => { await vi.advanceTimersByTimeAsync(25001); }); expect(screen.getByRole("region", { name: "Original save recovery" })).toBeInTheDocument(); expect(sourceExpressionCommit).toHaveBeenCalledOnce(); expect(sourceExpressionOutcome).not.toHaveBeenCalled(); } finally { vi.useRealTimers(); } });
+  it("bounds an unresponsive save, retains original recovery and never guesses rollback", async () => {
+    await mount(); await previewSource();
+    const started = deferred<void>();
+    vi.useFakeTimers();
+    vi.mocked(sourceExpressionCommit).mockImplementation(() => {
+      started.resolve(undefined);
+      return new Promise(() => {});
+    });
+    try {
+      await act(async () => {
+        fireEvent.click(screen.getByRole("button", { name: "Save pending operation" }));
+        // Hashing the original recovery identity uses native WebCrypto. Its
+        // promise is independent of the fake clock, so wait for the real POST
+        // boundary before advancing the request's timeout.
+        await started.promise;
+      });
+      expect(sourceExpressionCommit).toHaveBeenCalledOnce();
+      const signal = vi.mocked(sourceExpressionCommit).mock.calls[0][2]!;
+      expect(signal.aborted).toBe(false);
+      expect(screen.getByRole("button", { name: "Check original request" })).toBeDisabled();
+      await act(async () => { await vi.advanceTimersByTimeAsync(25001); });
+      expect(screen.getByRole("region", { name: "Original save recovery" })).toBeInTheDocument();
+      expect(signal.aborted).toBe(true);
+      expect(screen.getByRole("button", { name: "Check original request" })).toBeEnabled();
+      expect(screen.getByText(/The save outcome is unknown/)).toBeInTheDocument();
+      expect(sourceExpressionCommit).toHaveBeenCalledOnce();
+      expect(sourceExpressionOutcome).not.toHaveBeenCalled();
+    } finally { vi.useRealTimers(); }
+  });
   it("recovers an unknown target save via field-case GET without repeating its POST", async () => { await mount(); await prepare(); fireEvent.click(screen.getByRole("button", { name: "Preview field target" })); await screen.findByRole("button", { name: "Save pending operation" }); const request = vi.mocked(materialFieldCasePreview).mock.calls[0][0], saved = await literalCaseReceipt(request, false); saved.replayed = true; vi.mocked(materialFieldCaseCommit).mockRejectedValueOnce(new ApiError(503, null, "unknown")); vi.mocked(materialFieldCaseOutcome).mockResolvedValueOnce(saved); fireEvent.click(screen.getByRole("button", { name: "Save pending operation" })); await screen.findByRole("region", { name: "Original save recovery" }); fireEvent.click(screen.getByRole("button", { name: "Check original request" })); await screen.findByRole("region", { name: "Original receipt confirmed" }); expect(screen.queryByRole("region", { name: "Verified original source" })).not.toBeInTheDocument(); expect(materialFieldCaseCommit).toHaveBeenCalledOnce(); expect(vi.mocked(materialFieldCaseOutcome).mock.calls[0].slice(0, 2)).toEqual([request.request_key, await expressionSha(expressionCanonical(request))]); });
   it("withholds a saved source after a late capture supersession before any association preview", async () => { await mount(); await saveSource(); vi.mocked(sourceLiteralExpressionDetail).mockImplementation(async () => { const revision = await literalRevision("gap_energy_source_value", sourceKey); revision.capture.latest_retained_capture_for_source = false; return revision; }); fireEvent.click(screen.getByRole("button", { name: "Load saved source expression" })); await screen.findByRole("button", { name: "Inspect source expression" }); fireEvent.click(screen.getByRole("button", { name: "Inspect source expression" })); await screen.findByText(/original source proof could not be verified/); expect(screen.queryByRole("button", { name: "Preview matching source proposal" })).not.toBeInTheDocument(); expect(materialFieldCasePreview).not.toHaveBeenCalled(); });
   it("does not resurrect an original fragment after material navigation", async () => { const late = deferred<unknown>(); vi.mocked(materialLiteralFieldPrepare).mockReturnValue(late.promise); const rendered = await mount(); await load(); const c = await literalContext(), report = await literalReport(); fireEvent.click(screen.getByRole("button", { name: "Prepare original source" })); const request = vi.mocked(materialLiteralFieldPrepare).mock.calls[0][0] as LiteralPrepareRequest; rendered.rerender(view("synthetic:next")); await act(async () => late.resolve(await literalPreparedResponse(request))); expect(screen.getByLabelText("Material ID")).toHaveValue("synthetic:next"); expect(screen.queryByRole("region", { name: "Verified original source" })).not.toBeInTheDocument(); void c; void report; });

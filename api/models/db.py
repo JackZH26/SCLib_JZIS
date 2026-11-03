@@ -238,6 +238,7 @@ class AskHistory(Base):
     language: Mapped[str | None] = mapped_column(String(10), nullable=True)
     # NULL is deliberately retained for pre-0068 snapshots; never backfilled.
     evidence_receipt_version: Mapped[str | None] = mapped_column(String(50), nullable=True)
+    content_evidence_receipt_version: Mapped[str | None] = mapped_column(String(50), nullable=True)
     created_at: Mapped[datetime] = mapped_column(
         _TZDT, server_default=func.now(), nullable=False
     )
@@ -1898,3 +1899,47 @@ _register_materials_properties_v3(Base.metadata)
 from models.materials_device_descriptors_v3 import register as _register_materials_device_descriptors
 
 _register_materials_device_descriptors(Base.metadata)
+
+from models.retrieval_native_v2 import register as _register_retrieval_native_v2
+
+_register_retrieval_native_v2(Base.metadata)
+
+from models.retrieval_content_v2 import register as _register_retrieval_content_v2
+
+_register_retrieval_content_v2(Base.metadata)
+
+from models.retrieval_backend_v2 import register as _register_retrieval_backend_v2
+
+_register_retrieval_backend_v2(Base.metadata)
+
+from models.retrieval_activation_v2 import register as _register_retrieval_activation_v2
+
+_register_retrieval_activation_v2(Base.metadata)
+
+from models.retrieval_navigation_v2 import register as _register_retrieval_navigation_v2
+
+_register_retrieval_navigation_v2(Base.metadata)
+
+from models.retrieval_keysets_v2 import register as _register_retrieval_keysets_v2
+
+_register_retrieval_keysets_v2(Base.metadata)
+
+from models.content_answer_storage_v2 import register as _register_content_answer_storage_v2
+
+_register_content_answer_storage_v2(Base.metadata)
+
+from models.retrieval_bounded_validation_v3 import register as _register_bounded_projection_validation
+
+_register_bounded_projection_validation(Base.metadata)
+
+from models.retrieval_policy_v3 import register as _register_retrieval_policy_v3
+
+_register_retrieval_policy_v3(Base.metadata)
+
+from models.retrieval_publication_queue_v2 import register as _register_retrieval_publication_queue_v2
+
+_register_retrieval_publication_queue_v2(Base.metadata)
+
+from models.retrieval_policy_v4 import register as _register_retrieval_policy_v4
+
+_register_retrieval_policy_v4(Base.metadata)

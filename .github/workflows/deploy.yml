@@ -22,11 +22,15 @@ concurrency:
 
 jobs:
   deploy:
+    # The coordinated database/application cutover is executed by its runbook.
+    # Signed images can be built first without an ordinary release racing it.
     if: >-
-      github.event_name == 'workflow_dispatch' || (
-        github.event.workflow_run.conclusion == 'success' &&
-        github.event.workflow_run.event == 'workflow_run' &&
-        github.event.workflow_run.head_branch == 'main'
+      vars.SCLIB_DEPLOY_MODE != 'coordinated' && (
+        github.event_name == 'workflow_dispatch' || (
+          github.event.workflow_run.conclusion == 'success' &&
+          github.event.workflow_run.event == 'workflow_run' &&
+          github.event.workflow_run.head_branch == 'main'
+        )
       )
     runs-on: ubuntu-latest
     # The verified 8.8 GB production backup alone took 27 minutes. Keep a
@@ -205,8 +209,15 @@ jobs:
             materials_env=/etc/sclib/materials-vnext.env
             if test -e "$materials_env"; then
               test -f "$materials_env" && test -s "$materials_env"
-              materials_options+=(--env-file "$DEPLOY_PATH/.env"
-                --env-file "$materials_env" -f docker-compose.materials-vnext.yml)
+              materials_options+=(--env-file "$materials_env" -f docker-compose.materials-vnext.yml)
+            fi
+            # Preserve the separately verified database image/resource model
+            # after its coordinated cutover; an app release cannot revert PG.
+            pgvector_options=()
+            pgvector_env=/etc/sclib/pgvector.env
+            if test -e "$pgvector_env"; then
+              test -f "$pgvector_env" && test -s "$pgvector_env"
+              pgvector_options+=(--env-file "$pgvector_env" -f docker-compose.pgvector.yml)
             fi
             cleanup_preflight
             trap - EXIT
@@ -232,9 +243,9 @@ jobs:
               docker pull "$image"
             done
 
-            compose=(docker compose --profile observability \
+            compose=(docker compose --env-file "$DEPLOY_PATH/.env" --profile observability \
               -f docker-compose.yml -f docker-compose.prod.yml \
-              "${alert_options[@]}" "${materials_options[@]}")
+              "${alert_options[@]}" "${materials_options[@]}" "${pgvector_options[@]}")
             "${compose[@]}" config --quiet
             "${compose[@]}" up -d --no-build --wait --wait-timeout 60 \
               postgres redis
