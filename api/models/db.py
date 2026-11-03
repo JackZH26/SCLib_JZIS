@@ -1935,3 +1935,7 @@ _register_bounded_projection_validation(Base.metadata)
 from models.retrieval_policy_v3 import register as _register_retrieval_policy_v3
 
 _register_retrieval_policy_v3(Base.metadata)
+
+from models.retrieval_publication_queue_v2 import register as _register_retrieval_publication_queue_v2
+
+_register_retrieval_publication_queue_v2(Base.metadata)
