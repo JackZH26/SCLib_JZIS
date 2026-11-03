@@ -16,7 +16,9 @@ def pre_materials_context_tables(connection, names):
         "retrieval_backend_builds_v2", "retrieval_backend_fences_v2",
         "retrieval_projection_seals_v2", "retrieval_backend_validations_v2",
         "retrieval_acceptances_v2", "retrieval_activation_events_v2", "retrieval_active_pointer_v2",
-        "retrieval_native_navigation_v2", "content_answer_evidence_receipts_v2"}
+        "retrieval_native_navigation_v2", "content_answer_evidence_receipts_v2",
+        "retrieval_publication_jobs_v2", "retrieval_publication_job_fences_v2",
+        "retrieval_publication_claims_v2", "retrieval_publication_results_v2"}
     for name in native.intersection(names):
         assert not connection.execute(text(f"SELECT EXISTS(SELECT 1 FROM public.{name})")).scalar_one(), \
             "Retained native retrieval cannot enter a pre-0107 comparison"

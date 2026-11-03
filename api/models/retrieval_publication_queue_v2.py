@@ -194,7 +194,7 @@ def register(metadata):
         col('error_code',sa.String(32),nullable=True),constraints=(sa.PrimaryKeyConstraint('claim_id'),sa.Index('idx_publication_queue_outcome_v2','job_id','outcome'),
             sa.CheckConstraint("(outcome='published' AND activation_event_id IS NOT NULL AND successor_job_id IS NULL AND error_code IS NULL) OR "
                 "(outcome='superseded' AND activation_event_id IS NULL AND successor_job_id IS NOT NULL AND error_code IS NULL) OR "
-                "(outcome='retry' AND activation_event_id IS NULL AND successor_job_id IS NULL AND error_code IN "
+                "(outcome='retry' AND activation_event_id IS NULL AND successor_job_id IS NULL AND error_code IS NOT NULL AND error_code IN "
                 "('transient_io','build_failed','validation_failed','source_changed','operator_retry'))",name='ck_publication_result_shape')))
     for sql in statements():sa.event.listen(metadata,'after_create',sa.DDL(sql.replace('%','%%')).execute_if(dialect='postgresql'))
     for sql in cleanup():sa.event.listen(metadata,'before_drop',sa.DDL(sql.replace('%','%%')).execute_if(dialect='postgresql'))

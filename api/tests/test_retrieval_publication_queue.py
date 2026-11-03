@@ -176,3 +176,38 @@ async def test_queue_roles_cannot_publish_or_cross_producer_worker_permissions(d
             await db_session.execute(sa.text("INSERT INTO retrieval_acceptances_v2(id,build_id,validation_id,evidence,attestation) VALUES(:id,:b,:v,'{}','queue-is-not-a-publisher')"),
                 {'id':uuid4(),'b':UUID(base['build_id']),'v':UUID(base['validation_id'])})
     await db_session.execute(sa.text('RESET ROLE'))
+
+
+async def test_retry_requires_a_closed_nonnull_error_category(db_session,tmp_path):
+    _,_,_,_,result=await queued(db_session,tmp_path);leased=await claim(db_session,result)
+    for code in [None,'unreviewed_category']:
+        before=await state(db_session)
+        with pytest.raises(DBAPIError):
+            await service.record_result(db_session,claim_id=leased['claim_id'],outcome='retry',error_code=code,dry_run=False)
+        assert await state(db_session)==before
+
+
+async def test_database_ignores_producer_supplied_sequence_order(db_session,tmp_path):
+    base,_,_,_,result=await queued(db_session,tmp_path)
+    other=await prepared_build(db_session)
+    identifier=uuid4()
+    await db_session.execute(sa.text('INSERT INTO retrieval_publication_jobs_v2(id,sequence_number,logical_index,publication_id) '
+        'OVERRIDING SYSTEM VALUE VALUES(:id,99999999,:logical,:publication)'),
+        {'id':identifier,'logical':other['logical_index'],'publication':UUID(result['publication']['publication_id'])})
+    row=await service._existing(db_session,'retrieval_publication_jobs_v2',{'id':identifier})
+    assert result['job']['sequence_number']<row['sequence_number']<99999999
+
+
+async def test_pending_claims_skip_another_workers_short_fence_lock(db_session,tmp_path):
+    base,_,_,_,first=await queued(db_session,tmp_path)
+    second_dir=tmp_path/'second';second_dir.mkdir()
+    arguments,items,_=await native_inputs(db_session,second_dir)
+    second=await service.capture_and_enqueue(db_session,logical_index=base['logical_index'],input_arguments=arguments,items=items,dry_run=False)
+    await db_session.commit()
+    async with get_session_factory()() as worker:
+        selected=await service.pending_jobs(db_session,logical_index=base['logical_index'],limit=1)
+        other=await service.pending_jobs(worker,logical_index=base['logical_index'],limit=1)
+        assert [str(row['id']) for row in selected]==[first['job']['job_id']]
+        assert [str(row['id']) for row in other]==[second['job']['job_id']]
+        await claim(worker,second);await worker.commit()
+        await claim(db_session,first);await db_session.commit()
