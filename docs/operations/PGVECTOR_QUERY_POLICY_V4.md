@@ -63,10 +63,12 @@ a substitute for the affected HTTP load gate.
 
 ## Serving process budget
 
-Run two independent single-process API instances behind the retrieval upstream,
-with two dedicated ANN connections per instance and zero pool overflow. This
-keeps at most four active ANN SQL statements across the serving pair. Each
+Run four independent single-process API instances behind the retrieval upstream,
+with one dedicated ANN connection per instance and zero pool overflow. This
+keeps at most four active ANN SQL statements across the serving group. Each
 instance retains the same bounded coordinator, queue/pool deadline and SQL
 limits. Keep metrics on separate scrape targets so counters are not mixed
 between processes. Ordinary API pools remain separate from ANN. Background
-graph processes use two CPU cores and low scheduling priority.
+graph and full-validation processes share two CPU cores and low scheduling
+priority. Connection acquisition remains inside the unchanged three-second
+transport deadline rather than imposing a separate half-second pool failure.

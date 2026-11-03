@@ -69,8 +69,9 @@ async def similar(reader,pin,paper_id,*,top_k):
     """No provider embedding, Google fallback, partial batch or history write.
 
     Preserve the old <=20 source-vector, per-source candidate and mean-distance
-    scoring behavior. Hydrate targets in batches so top_k=50 does not require a
-    single unbounded full-text/vector transfer. Recheck every contributing
+    scoring behavior. Hydrate the byte-bounded cohort together, falling back to
+    twenty-row pages when oversized. Retain twenty-source evidence checks and
+    never transfer an oversized full-text/vector inventory. Recheck every contributing
     winner and source in ONE new read-only snapshot before returning.
     """
     reader._pin(pin)
@@ -124,14 +125,22 @@ async def similar(reader,pin,paper_id,*,top_k):
             if len(unique)>MAX_CANDIDATES:raise ContentSimilarityUnavailable('Complete bounded Similar cohort required')
             async def targets(db):
                 selected={};identifiers=list(unique)
-                for offset in range(0,len(identifiers),BATCH):
-                    chunks=await retrieval_members.hydrate(db,pin,identifiers[offset:offset+BATCH])
+                async def pages():
+                    try:
+                        yield await retrieval_members.hydrate(db,pin,identifiers)
+                    except retrieval_members.RetrievalMemberBudgetExceeded:
+                        if len(identifiers)<=BATCH:raise
+                        for offset in range(0,len(identifiers),BATCH):
+                            yield await retrieval_members.hydrate(db,pin,identifiers[offset:offset+BATCH])
+                async for chunks in pages():
                     for identifier,chunk in chunks.items():
                         hit=unique[identifier]
                         if any(getattr(hit,key)!=chunk.member[key] for key in
                                 ('paper_id','content_sha256','vector_sha256','chunk_revision_sha256')):
                             raise ContentSimilarityUnavailable('Similar payload/source binding mismatch')
-                    selected.update(await capture(db,pin,list(chunks.values())))
+                    values=list(chunks.values())
+                    for offset in range(0,len(values),BATCH):
+                        selected.update(await capture(db,pin,values[offset:offset+BATCH]))
                 await current_read_pin(db,pin)
                 return selected
             async with asyncio.timeout(5):selected=await reader._read(targets)

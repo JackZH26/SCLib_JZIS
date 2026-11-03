@@ -70,14 +70,14 @@ async def test_pgvector_mode_without_initialized_reader_cannot_fall_back(public_
         assert response.status_code==503
 
 
-async def test_managed_runtime_owns_one_four_slot_pool_and_keeps_metadata_engine_open(ask_reader,monkeypatch):
+async def test_managed_runtime_owns_one_reserved_connection_and_keeps_metadata_engine_open(ask_reader,monkeypatch):
     _,pin,_,_=ask_reader;source=get_engine()
     original=type(source).dispose;closed=[]
     async def dispose(self,*args,**kwargs):
         closed.append(self);await original(self,*args,**kwargs)
     monkeypatch.setattr(type(source),'dispose',dispose)
     async with content_runtime.managed_reader(source_engine=source,session_factory=get_session_factory()) as reader:
-        assert reader._transport.engine is not source and reader._transport.engine.pool.size()==4
+        assert reader._transport.engine is not source and reader._transport.engine.pool.size()==1
         assert await reader.pin(logical_index=pin.logical_index)==pin
         assert await reader._readiness.ready(pin)
     assert source not in closed and len(closed)==1

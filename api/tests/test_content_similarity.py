@@ -156,3 +156,26 @@ async def test_twenty_real_source_vectors_share_one_batch_and_all_winners_get_fr
     assert query_calls==[(20,50,20)]
     assert captures==[20,20,5] and len(outcome.results)==25
     assert len(checks)==len(set(checks))==45 and all(row.paper_id!=source for row in outcome.results)
+
+
+async def test_oversized_complete_target_cohort_uses_bounded_pages_without_changing_results(many_sources,monkeypatch):
+    instance,pin,source=many_sources
+    expected=await instance.similar(pin,source,top_k=50)
+    async with get_session_factory()() as db:
+        rows=(await db.execute(sa.text(
+            "SELECT reference->>'paper_id',octet_length(reference::text)+octet_length(origin::text)+length(vector_hex)/2 AS bytes "
+            "FROM ("+retrieval_members._source_sql().replace('m.vector_id IN :ids','true')+") sizes"),
+            {'content':pin.content_id})).all()
+    source_bytes=sum(size for paper,size in rows if paper==source)
+    target_sizes=sorted((size for paper,size in rows if paper!=source),reverse=True)
+    limit=max(source_bytes,sum(target_sizes[:20]))
+    assert sum(target_sizes)>limit
+    monkeypatch.setattr(retrieval_members,'MAX_BYTES',limit)
+    observed=[];original=retrieval_members.hydrate
+    async def bounded(db,backend,identifiers):
+        try:return await original(db,backend,identifiers)
+        except retrieval_members.RetrievalMemberBudgetExceeded:
+            observed.append(len(identifiers));raise
+    monkeypatch.setattr(retrieval_members,'hydrate',bounded)
+    assert await instance.similar(pin,source,top_k=50)==expected
+    assert observed==[25]
