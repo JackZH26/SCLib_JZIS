@@ -10,6 +10,39 @@ permissions:
   contents: read
 
 jobs:
+  native-publisher-image:
+    name: Native publisher installed image
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - name: Build the explicitly locked bridge with both first-party packages
+        run: docker build --tag sclib-native-publisher-ci --build-arg GIT_SHA="$GITHUB_SHA" --file publisher/Dockerfile .
+      - name: Probe actual installed modules without network or source mounts
+        run: |
+          docker run --rm --network none --read-only --cap-drop ALL \
+            --security-opt no-new-privileges:true --tmpfs /tmp:rw,nosuid,noexec,size=16m \
+            --mount "type=bind,source=$PWD/scripts/probe_native_publisher_install.py,target=/probe.py,readonly" \
+            --entrypoint python sclib-native-publisher-ci -I /probe.py
+      - name: Scan the candidate publisher image
+        uses: aquasecurity/trivy-action@ed142fd0673e97e23eac54620cfb913e5ce36c25 # v0.36.0
+        with:
+          version: v0.70.0
+          image-ref: sclib-native-publisher-ci
+          scanners: vuln
+          severity: HIGH,CRITICAL
+          ignore-unfixed: true
+          format: json
+          output: ${{ runner.temp }}/native-publisher-vulnerabilities.json
+          exit-code: "1"
+      - name: Retain actual publisher image scan evidence
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: native-publisher-vulnerabilities-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/native-publisher-vulnerabilities.json
+          if-no-files-found: warn
+
   pgvector-runtime:
     name: PostgreSQL 16.13 and pgvector runtime
     runs-on: ubuntu-latest
@@ -58,6 +91,17 @@ jobs:
           api/.venv/bin/python scripts/run_disposable_tests.py --backend docker \
             --postgres-image "$image_id" --pgvector --suite migrations \
             --report "$RUNNER_TEMP/pgvector-schema-rehearsal.json"
+      - name: Install and probe the independently locked native publisher
+        run: |
+          uv sync --project publisher --locked --extra dev --no-editable --python 3.11
+          publisher/.venv/bin/python -I scripts/probe_native_publisher_install.py
+          publisher/.venv/bin/python -c "import tiktoken; tiktoken.get_encoding('cl100k_base')"
+      - name: Rehearse native source writes and atomic publication on fresh services
+        run: |
+          image_id="$(docker image inspect sclib-pgvector-ci --format '{{.Id}}')"
+          publisher/.venv/bin/python scripts/run_disposable_tests.py --backend docker \
+            --postgres-image "$image_id" --pgvector --suite api \
+            -- -q tests/test_native_publisher.py
       - name: Retain actual owned schema evidence
         uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
         with:

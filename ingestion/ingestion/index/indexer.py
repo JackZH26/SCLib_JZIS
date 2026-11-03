@@ -516,12 +516,36 @@ async def _persist_embedding_completions(session: AsyncSession, paper_id: str, c
         await _insert_evidence_revision(session, embedding_completion_receipts_table, values)
 
 
+async def _write_chunk_rows(session, paper_id, rows, *, preserve_existing_chunks):
+    """Native replay preserves existing creation timestamps and chunk identity.
+
+    Legacy callers retain their delete/insert behavior. A chunk owned by another
+    paper can never be silently moved by the native upsert.
+    """
+    if not preserve_existing_chunks:
+        if rows:
+            await session.execute(chunks_table.insert(), rows)
+        return
+    ids = [row["id"] for row in rows]
+    foreign = await session.scalar(select(chunks_table.c.id).where(
+        chunks_table.c.id.in_(ids), chunks_table.c.paper_id != paper_id).limit(1))
+    if foreign is not None:
+        raise ValueError("Native chunk identity already belongs to another paper")
+    await session.execute(chunks_table.delete().where(
+        chunks_table.c.paper_id == paper_id, chunks_table.c.id.not_in(ids)))
+    if rows:
+        statement = pg_insert(chunks_table)
+        await session.execute(statement.on_conflict_do_update(index_elements=[chunks_table.c.id],
+            set_={key: statement.excluded[key] for key in rows[0] if key != "id"}), rows)
+
+
 async def upsert_paper_with_chunks(
     parsed: ParsedPaper,
     chunks: list[Chunk],
     materials_extracted: list[dict[str, Any]],
     *,
     generation_stager=None,
+    preserve_existing_chunks: bool = False,
 ) -> None:
     """Upsert a paper row + replace its chunks atomically.
 
@@ -530,6 +554,8 @@ async def upsert_paper_with_chunks(
     and must not commit the caller-owned transaction. Default ingestion creates
     no generation and cannot activate an index implicitly.
     """
+    if type(preserve_existing_chunks) is not bool or preserve_existing_chunks and not callable(generation_stager):
+        raise ValueError("Identity-preserving native writes require an explicit transaction stager")
     meta = parsed.meta
     paper_values: dict[str, Any] = {
         "id": meta.paper_id,
@@ -584,14 +610,13 @@ async def upsert_paper_with_chunks(
             )
             await session.execute(stmt)
 
-            # Replace all chunks for this paper (simplest correct strategy
-            # on re-ingest). Delete then bulk insert.
-            await session.execute(
-                chunks_table.delete().where(chunks_table.c.paper_id == meta.paper_id)
-            )
+            # Legacy callers replace all rows; the explicit native publisher
+            # preserves existing chunk identity/timestamps for exact replay.
+            if not preserve_existing_chunks:
+                await session.execute(chunks_table.delete().where(chunks_table.c.paper_id == meta.paper_id))
             if chunks:
-                await session.execute(
-                    chunks_table.insert(),
+                await _write_chunk_rows(
+                    session, meta.paper_id,
                     [
                         {
                             "id": c.id,
@@ -609,8 +634,10 @@ async def upsert_paper_with_chunks(
                             "has_table": c.has_table,
                         }
                         for c in chunks
-                    ],
+                    ], preserve_existing_chunks=preserve_existing_chunks,
                 )
+            elif preserve_existing_chunks:
+                await _write_chunk_rows(session, meta.paper_id, [], preserve_existing_chunks=True)
             await _persist_chunk_evidence(session, meta.paper_id, chunks)
             await _persist_embedding_completions(session, meta.paper_id, chunks)
             if generation_stager is not None:
@@ -624,6 +651,7 @@ async def upsert_aps_paper_with_chunks(
     *,
     related_paper_id: str | None = None,
     generation_stager=None,
+    preserve_existing_chunks: bool = False,
 ) -> None:
     """Upsert an APS paper row + replace its chunks atomically.
 
@@ -640,6 +668,8 @@ async def upsert_aps_paper_with_chunks(
     transient and deleted. This function just writes whatever chunks it is
     given, exactly like the arXiv path.
     """
+    if type(preserve_existing_chunks) is not bool or preserve_existing_chunks and not callable(generation_stager):
+        raise ValueError("Identity-preserving native writes require an explicit transaction stager")
     paper_values: dict[str, Any] = {
         "id": meta.paper_id,                # "aps:10.1103/..."
         "source": "aps",
@@ -688,13 +718,12 @@ async def upsert_aps_paper_with_chunks(
             )
             await session.execute(stmt)
 
-            await session.execute(
-                chunks_table.delete().where(chunks_table.c.paper_id == meta.paper_id)
-            )
+            if not preserve_existing_chunks:
+                await session.execute(chunks_table.delete().where(chunks_table.c.paper_id == meta.paper_id))
             if chunks:
                 year = meta.date_published.year if meta.date_published else None
-                await session.execute(
-                    chunks_table.insert(),
+                await _write_chunk_rows(
+                    session, meta.paper_id,
                     [
                         {
                             "id": c.id,
@@ -712,8 +741,10 @@ async def upsert_aps_paper_with_chunks(
                             "has_table": c.has_table,
                         }
                         for c in chunks
-                    ],
+                    ], preserve_existing_chunks=preserve_existing_chunks,
                 )
+            elif preserve_existing_chunks:
+                await _write_chunk_rows(session, meta.paper_id, [], preserve_existing_chunks=True)
             await _persist_chunk_evidence(session, meta.paper_id, chunks)
             await _persist_embedding_completions(session, meta.paper_id, chunks)
             if generation_stager is not None:
