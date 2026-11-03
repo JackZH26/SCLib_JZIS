@@ -17,6 +17,7 @@ RUN uv sync --frozen --no-dev --no-editable \
       /usr/local/lib/python3.11/site-packages/pip* /usr/local/lib/python3.11/site-packages/setuptools* \
       /usr/local/lib/python3.11/site-packages/wheel* \
     && rm -f /usr/local/bin/pip* /bin/uv
+COPY publisher/uv.lock publisher/pyproject.toml /app/
 WORKDIR /tmp
 ARG GIT_SHA=dev
 ENV GIT_SHA=$GIT_SHA

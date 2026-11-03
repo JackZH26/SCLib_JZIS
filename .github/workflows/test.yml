@@ -16,6 +16,29 @@ jobs:
     timeout-minutes: 20
     steps:
       - uses: actions/checkout@9c091bb21b7c1c1d1991bb908d89e4e9dddfe3e0 # v7.0.0
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: "3.11"
+      - name: Capture the separately locked publisher test runtime
+        run: |
+          python -m pip install --disable-pip-version-check uv==0.11.16
+          uv sync --project publisher --locked --extra dev --no-editable --python 3.11
+          mkdir -p "$RUNNER_TEMP/publisher-runtime"
+          publisher/.venv/bin/python scripts/runtime_inventory.py \
+            --lock publisher/uv.lock --pyproject publisher/pyproject.toml --revision "$GITHUB_SHA" \
+            > "$RUNNER_TEMP/publisher-runtime/test-runtime.json"
+      - name: Compare the actual publisher image runtime with its locked test environment
+        run: |
+          publisher/.venv/bin/python scripts/run_runtime_parity.py --project publisher \
+            --tests "$RUNNER_TEMP/publisher-runtime/test-runtime.json" \
+            --output "$RUNNER_TEMP/publisher-runtime"
+      - name: Retain publisher test and candidate image inventories
+        if: ${{ always() }}
+        uses: actions/upload-artifact@043fb46d1a93c77aae656e7c1c64a875d1fc6a0a # v7.0.1
+        with:
+          name: publisher-test-runtime-inventory-attempt-${{ github.run_attempt }}
+          path: ${{ runner.temp }}/publisher-runtime/
+          if-no-files-found: error
       - name: Build the explicitly locked bridge with both first-party packages
         run: docker build --tag sclib-native-publisher-ci --build-arg GIT_SHA="$GITHUB_SHA" --file publisher/Dockerfile .
       - name: Probe actual installed modules without network or source mounts

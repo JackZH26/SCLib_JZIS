@@ -21,6 +21,8 @@ from runtime_inventory import compare, digest, loads
 
 ROOT = Path(__file__).resolve().parents[1]
 RUN_LABEL = "org.jzis.sclib.runtime-parity.run"
+PROJECT_NAMES = {"api": "sclib-api", "ingestion": "sclib-ingestion", "publisher": "sclib-native-publisher"}
+
 FAILURE_ERRORS = (ValueError, KeyError, TypeError, OSError, subprocess.SubprocessError)
 FAILURE_STAGES = frozenset({
     "inputs", "provenance", "docker_context", "build", "image_validation",
@@ -105,7 +107,7 @@ def failure_report(project: str, error: Exception) -> dict:
         )
     return {
         "schema": "sclib-runtime-parity-failure/v2", "matches": False,
-        "project": project if type(project) is str and project in {"api", "ingestion"} else "unknown",
+        "project": project if type(project) is str and project in PROJECT_NAMES else "unknown",
         "stage": stage, "cause": cause, "error_kind": error_kind,
         "subprocess_exit_code": exit_code, "observed_build_signals": signals,
     }
@@ -120,7 +122,7 @@ def run(command: list[str], *, stdin: str | None = None, timeout: int = 120) -> 
 
 
 def provenance(project: str, tests: dict) -> dict:
-    if project not in {"api", "ingestion"} or platform.system() != "Linux":
+    if project not in PROJECT_NAMES or platform.system() != "Linux":
         raise ValueError("parity requires an explicit project and Linux runner")
     if any(os.environ.get(name) for name in ("DOCKER_HOST", "DOCKER_CONTEXT", "DOCKER_CONFIG", "DOCKER_TLS_VERIFY", "DOCKER_CERT_PATH")):
         raise ValueError("custom Docker connection settings are not supported")
@@ -128,6 +130,8 @@ def provenance(project: str, tests: dict) -> dict:
     if not re.fullmatch(r"(?:[0-9a-f]{40}|[0-9a-f]{64})", revision):
         raise ValueError("invalid checkout revision")
     paths = [project, "scripts/runtime_inventory.py", "scripts/run_runtime_parity.py"]
+    if project == "publisher":
+        paths.extend(["api", "ingestion"])
     run(["git", "diff", "--quiet", "HEAD", "--", *paths])
     if run(["git", "ls-files", "--others", "--exclude-standard", "--", *paths]):
         raise ValueError("untracked build inputs are not revision-bound")
@@ -140,7 +144,7 @@ def provenance(project: str, tests: dict) -> dict:
     }
     if any(tests.get(key) != value for key, value in result.items() if key != "dockerfile_sha256"):
         raise ValueError("test inventory does not match checked-out inputs")
-    if (tests["project_name"] != f"sclib-{project}" or tests["system"] != "Linux"
+    if (tests["project_name"] != PROJECT_NAMES[project] or tests["system"] != "Linux"
             or tests["machine"] != "x86_64"):
         raise ValueError("test inventory has the wrong project or platform")
     with failure_stage("docker_context"):
@@ -203,9 +207,9 @@ def check(project: str, tests_path: Path, output: Path) -> dict:
                    "--platform", "linux/amd64", "--iidfile", str(iidfile)]
         for key, value in sorted(labels.items()):
             command.extend(["--label", f"{key}={value}"])
-        if project == "api":
+        if project in {"api", "publisher"}:
             command.extend(["--build-arg", f"GIT_SHA={expected['source_revision'][:7]}"])
-        command.extend(["--file", str(ROOT / project / "Dockerfile"), str(ROOT / project)])
+        command.extend(["--file", str(ROOT / project / "Dockerfile"), str(ROOT if project == "publisher" else ROOT / project)])
         with failure_stage("build"):
             run(command, timeout=1200)
         with failure_stage("image_validation"):
@@ -239,7 +243,7 @@ def check(project: str, tests_path: Path, output: Path) -> dict:
 
 def main() -> int:
     parser = argparse.ArgumentParser(description=__doc__)
-    parser.add_argument("--project", required=True, choices=("api", "ingestion"))
+    parser.add_argument("--project", required=True, choices=tuple(PROJECT_NAMES))
     parser.add_argument("--tests", required=True, type=Path)
     parser.add_argument("--output", required=True, type=Path)
     args = parser.parse_args()
