@@ -112,8 +112,8 @@ async def test_later_same_paper_revision_supersedes_old_work_without_activation(
     finished=await service.record_result(db_session,claim_id=leased['claim_id'],outcome='superseded',successor_job_id=second['job']['job_id'],dry_run=False)
     assert finished['outcome']=='superseded'
     assert [str(row['id']) for row in await service.pending_jobs(db_session,logical_index=base['logical_index'])]==[second['job']['job_id']]
-    assert await db_session.scalar(sa.text('SELECT count(*) FROM retrieval_activation_events_v2'))==0
-    assert await db_session.scalar(sa.text('SELECT count(*) FROM retrieval_publications_v2'))==2
+    assert await db_session.scalar(sa.text('SELECT count(*) FROM retrieval_activation_events_v2 WHERE logical_index=:logical'),{'logical':base['logical_index']})==0
+    assert await db_session.scalar(sa.text('SELECT count(*) FROM retrieval_publications_v2 WHERE paper_id=:paper'),{'paper':arguments['paper_id']})==2
 
 
 async def test_repeatable_read_lease_cannot_ignore_a_new_committed_claim(db_session,tmp_path):

@@ -4,7 +4,7 @@ from alembic import op
 from models.db import Base
 from models.retrieval_publication_queue_v2 import TABLE_ORDER,statements,cleanup
 
-revision='0116_retrieval_publication_queue_v2'
+revision='0116_publication_queue_v2'
 down_revision='0115_retrieval_policy_v3'
 branch_labels=None
 depends_on=None
