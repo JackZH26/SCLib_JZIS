@@ -60,6 +60,8 @@ from ingestion.embedding_receipt_contract import build_embedding_receipt_row
 from ingestion.models import Chunk, ParsedPaper
 from ingestion.rag_evidence_contract import build_revision_rows, canonical, validate_candidate
 
+from ingestion.config import require_legacy_publication
+
 log = logging.getLogger(__name__)
 
 # ---------------------------------------------------------------------------
@@ -774,6 +776,7 @@ def _index() -> Any:
     Streaming upserts happen directly on the index resource, not the
     endpoint.
     """
+    require_legacy_publication()
     settings = get_settings()
     if not settings.vertex_ai_index_endpoint:
         raise RuntimeError(
@@ -822,6 +825,7 @@ def upsert_chunks_to_vector_search(
     ``restricts`` map to filter-able namespaces so the API router can do
     ``material_family == nickelate`` at query time. Year is numeric.
     """
+    require_legacy_publication()
     if not chunks:
         return
     meta = parsed.meta
@@ -870,6 +874,7 @@ def upsert_aps_chunks_to_vector_search(
     COMPLIANCE: the ``chunks`` passed here are authorized-derived only
     (abstract + NER fact-sentences) — never APS full-text body.
     """
+    require_legacy_publication()
     if not chunks:
         return
     completed = _publication_inputs(meta.paper_id, chunks)

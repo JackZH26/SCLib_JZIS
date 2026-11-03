@@ -78,6 +78,8 @@ from ingestion.models import PaperMetadata, ParsedPaper
 from ingestion.parse.latex_parser import LatexParseError, parse_source_tarball
 from ingestion.source_capture import build_ingestion_capture
 
+from ingestion.config import require_legacy_publication
+
 log = logging.getLogger("ingestion.pipeline")
 
 
@@ -111,6 +113,7 @@ async def process_paper(
     caller can feed the failure pool. Exceptions escape normally —
     ``run()`` wraps this in a try/except at the top level.
     """
+    require_legacy_publication()
     if strategy == "skip_ner":
         skip_ner = True
     elif strategy == "skip_vs":
@@ -183,6 +186,7 @@ async def _finish(
     skip_geo: bool,
     result: dict[str, Any],
 ) -> dict[str, Any]:
+    require_legacy_publication()
     observation = result.setdefault("input_observation", new_input_observation())
     # Preserve the source observation and exact prepared NER document before a
     # downstream chunk/embed failure can discard the only capture timestamp.
@@ -311,6 +315,8 @@ async def run(
     arxiv_ids: list[str] | None = None,
 ) -> list[dict[str, Any]]:
 
+    if mode != "aggregate-materials":
+        require_legacy_publication()
     if mode == "retry":
         return await _run_retry(limit=limit)
 
@@ -450,6 +456,7 @@ async def run(
 async def _run_retry(*, limit: int | None) -> list[dict[str, Any]]:
     """Drain the failure pool. For each pending paper, try the next
     strategy in ``FAILURE_STRATEGIES``; mark dead after max_attempts."""
+    require_legacy_publication()
     settings = get_settings()
     pool = storage.load_failed_papers()
     pending = [fp for fp in pool.values() if fp.status == "pending"]

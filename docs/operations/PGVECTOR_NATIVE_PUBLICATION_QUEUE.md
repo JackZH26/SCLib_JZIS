@@ -47,3 +47,12 @@ adapter, worker/batch construction, source-retention configuration and actual
 new/corrected-paper replay. It remains paused. No import of API modules has been
 added to that separate package and no Google writer has been re-enabled.
 Synthetic transaction/recovery tests are not actual-paper or deployment evidence.
+
+The independently packaged ingestion settings now also read the explicit
+`RETRIEVAL_BACKEND` selection. In pgvector mode the legacy arXiv/APS entrypoints
+and both Google vector writers refuse work before download, NER, embedding,
+database persistence or transient-archive cleanup, including skip/dry-run
+options. Existing metadata-only material aggregation remains separate. This
+prevents an accidental resume from silently publishing to Google or entering
+the old APS forced-deletion flow. It does not implement the native adapter or
+authorize resuming ingestion.
