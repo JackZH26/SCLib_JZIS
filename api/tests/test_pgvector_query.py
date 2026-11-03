@@ -319,3 +319,27 @@ async def test_unfiltered_twenty_source_batch_matches_full_exact_reference(proje
             exact=(await db.execute(sa.text(f'SELECT vector_id,embedding <=> CAST(:query AS vector(768)) AS distance FROM {spec.table} ORDER BY (embedding <=> CAST(:query AS vector(768)))+0,vector_id COLLATE "C" LIMIT 5'),{'query':str(query)})).all()
             assert [row.vector_id for row in batch.neighbors]==[row.vector_id for row in exact]
             assert [row.distance for row in batch.neighbors]==pytest.approx([row.distance for row in exact],abs=1e-6)
+
+
+@pytest.mark.parametrize('source_batch',[False,True])
+async def test_independent_engine_shares_global_sql_limit_and_recovers_after_queue_timeout(projection,source_batch):
+    from sqlalchemy.ext.asyncio import create_async_engine
+    from services.pgvector_query import _SQL_SLOT_KEYS
+    engine,spec=projection
+    separate=create_async_engine(engine.url,pool_size=4,max_overflow=0)
+    transport=PgvectorQueries(separate,QueryBudget(total_seconds=.2,statement_ms=100))
+    async def query():
+        if source_batch:return await transport.query_many(spec,[vector()],top_k=5)
+        return await transport.query(spec,vector(),top_k=5)
+    try:
+        async with engine.connect() as owner,owner.begin():
+            for key in _SQL_SLOT_KEYS:
+                await owner.execute(sa.text('SELECT pg_advisory_xact_lock(:key)'),{'key':key})
+            began=time.monotonic()
+            with pytest.raises(PgvectorUnavailable):await query()
+            assert .15<=time.monotonic()-began<1
+            assert await owner.scalar(sa.text("SELECT count(*) FROM pg_locks WHERE pid=pg_backend_pid() AND locktype='advisory'"))==4
+        assert await query()
+        async with separate.connect() as db:
+            assert await db.scalar(sa.text("SELECT count(*) FROM pg_locks WHERE pid=pg_backend_pid() AND locktype='advisory'"))==0
+    finally:await separate.dispose()

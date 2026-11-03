@@ -9,6 +9,7 @@ No embedding RPC, Vertex fallback, mutable Chunk lookup or activation occurs her
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import math
 import re
 from dataclasses import dataclass
@@ -21,6 +22,8 @@ from services.embedding_contract import validate_vector
 _SHA = re.compile(r"[0-9a-f]{64}\Z")
 _IDENTIFIER = re.compile(r"[A-Za-z0-9_-]{1,200}\Z")
 _COLUMNS = "vector_id,paper_id,content_sha256,vector_sha256,chunk_revision_sha256"
+_SQL_SLOT_KEYS = tuple(int.from_bytes(hashlib.sha256(
+    f'sclib-pgvector-sql-slot/1:{number}'.encode()).digest()[:8], 'big', signed=True) for number in range(4))
 
 
 class PgvectorQueryError(ValueError):
@@ -157,6 +160,16 @@ class PgvectorQueries:
             raise PgvectorQueryError("An exact query budget is required")
         self._slots = asyncio.Semaphore(self.budget.concurrency)
 
+    async def _global_slot(self, connection):
+        # Transaction locks share the four SQL permits across independent API
+        # processes. Rollback, cancellation or disconnect releases a permit.
+        # Metadata connections and publishers do not acquire these keys.
+        while await connection.scalar(sa.text(
+            'SELECT slot_key FROM unnest(CAST(:keys AS bigint[])) AS slots(slot_key) '
+            'WHERE pg_catalog.pg_try_advisory_xact_lock(slot_key) LIMIT 1'),
+            {'keys': list(_SQL_SLOT_KEYS)}) is None:
+            await asyncio.sleep(.02)
+
     async def query_many(self, projection, vectors, *, top_k, year_min=None, year_max=None,
                          excluded_revisions=()):
         """One bounded Similar request, all-or-nothing and in source order.
@@ -190,6 +203,7 @@ class PgvectorQueries:
             async with asyncio.timeout(self.budget.total_seconds), self._slots:
                 async with self.engine.connect() as connection, connection.begin():
                     await connection.execute(sa.text("SET TRANSACTION READ ONLY"))
+                    await self._global_slot(connection)
                     await self._configure(connection, self.budget.source_ef_search)
                     filtered = year_min is not None or year_max is not None or bool(excluded)
                     cohort = None
@@ -275,6 +289,7 @@ class PgvectorQueries:
             async with asyncio.timeout(self.budget.total_seconds), self._slots:
                 async with self.engine.connect() as connection, connection.begin():
                     await connection.execute(sa.text("SET TRANSACTION READ ONLY"))
+                    await self._global_slot(connection)
                     await self._configure(connection, ef_search)
                     filtered = year_min is not None or year_max is not None or bool(excluded_revisions)
                     cohort = None

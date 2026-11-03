@@ -64,8 +64,10 @@ a substitute for the affected HTTP load gate.
 ## Serving process budget
 
 Run four independent single-process API instances behind the retrieval upstream,
-with one dedicated ANN connection per instance and zero pool overflow. This
-keeps at most four active ANN SQL statements across the serving group. Each
+with a separately reserved four-connection ANN pool per instance and zero
+overflow. Four database transaction advisory permits, in a closed query-only
+namespace, limit active ANN work across all instances to four statements.
+An instance can borrow an idle permit rather than queue behind its fixed share. Each
 instance retains the same bounded coordinator, queue/pool deadline and SQL
 limits. Keep metrics on separate scrape targets so counters are not mixed
 between processes. Ordinary API pools remain separate from ANN. Background
@@ -78,3 +80,9 @@ transaction. Leaving that scope, replacing/rolling back the transaction, or
 checking a different pin requires a new database authority resolution. Source
 rights and per-member integrity checks still run. The final selection always
 uses a new snapshot, including its first uncached authority check.
+
+Global permits are acquired nonblockingly within the original outer deadline.
+Only one successful transaction lock is retained; polling yields to the event
+loop. Commit, rollback, cancellation or a lost connection releases it at the
+database. Ordinary catalogue reads and publisher roles do not use this lock
+namespace. Candidate counts, source exclusions and SQL math are unchanged.
