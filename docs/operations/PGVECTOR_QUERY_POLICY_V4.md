@@ -37,3 +37,19 @@ prevents downgrade to0116, with prior rows/functions preserved on refusal.
 
 This document describes the implementation contract. It does not establish
 that any production cutover or performance/quality acceptance has completed.
+
+## Complete source-batch execution
+
+The source coordinator sends at most20 validated vectors in one correlated
+LATERAL statement. Each source has its own HNSW candidate frontier, pool257,
+EF256 and distance/ID ordering. Year bounds and revision exclusions apply
+inside every source scan; a bounded exact cohort is counted once against the
+sealed immutable projection. Source order and every neighbor binding remain
+validated before any complete batch is returned.
+
+The statement acquires one of the same four global SQL permits. Its two-second
+SQL deadline covers the entire source batch; queue and pool wait still share
+the three-second transport deadline. Settings are established together and
+remain transaction-local. This removes repeated connection/setup round trips
+without adding permits, extending a deadline or changing the V4 candidate
+policy. A statement or validation failure rejects the whole batch.
