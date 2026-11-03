@@ -9,6 +9,7 @@ No embedding RPC, Vertex fallback, mutable Chunk lookup or activation occurs her
 from __future__ import annotations
 
 import asyncio
+import hashlib
 import math
 import re
 from dataclasses import dataclass
@@ -21,6 +22,8 @@ from services.embedding_contract import validate_vector
 _SHA = re.compile(r"[0-9a-f]{64}\Z")
 _IDENTIFIER = re.compile(r"[A-Za-z0-9_-]{1,200}\Z")
 _COLUMNS = "vector_id,paper_id,content_sha256,vector_sha256,chunk_revision_sha256"
+_SQL_SLOT_KEYS = tuple(int.from_bytes(hashlib.sha256(
+    f'sclib-pgvector-sql-slot/1:{number}'.encode()).digest()[:8], 'big', signed=True) for number in range(4))
 
 
 class PgvectorQueryError(ValueError):
@@ -157,15 +160,24 @@ class PgvectorQueries:
             raise PgvectorQueryError("An exact query budget is required")
         self._slots = asyncio.Semaphore(self.budget.concurrency)
 
+    async def _global_slot(self, connection):
+        # Transaction locks share the four SQL permits across independent API
+        # processes. Rollback, cancellation or disconnect releases a permit.
+        # Metadata connections and publishers do not acquire these keys.
+        while await connection.scalar(sa.text(
+            'SELECT slot_key FROM unnest(CAST(:keys AS bigint[])) AS slots(slot_key) '
+            'WHERE pg_catalog.pg_try_advisory_xact_lock(slot_key) LIMIT 1'),
+            {'keys': list(_SQL_SLOT_KEYS)}) is None:
+            await asyncio.sleep(.02)
+
     async def query_many(self, projection, vectors, *, top_k, year_min=None, year_max=None,
                          excluded_revisions=()):
         """One bounded Similar request, all-or-nothing and in source order.
 
-        The outer deadline includes every task's queue/pool wait. Individual
-        calls still share this coordinator's process-wide SQL semaphore; a
-        batch cannot create twenty independent pools or twenty SQL slots.
-        Cancel and await siblings before returning an error. Never publish a
-        partial successful batch after one source vector fails.
+        The outer deadline includes queue/pool wait. Individual
+        source vectors share one statement and this coordinator's process-wide
+        SQL semaphore. The statement timeout covers the complete batch. Never
+        publish a partial successful inventory after one source vector fails.
         """
         if type(projection) is not ProjectionSpec:
             raise PgvectorQueryError("An explicit projection identity is required")
@@ -178,24 +190,78 @@ class PgvectorQueries:
             _request(vector, top_k, year_min, year_max, excluded_revisions)
             checked.append(tuple(validate_vector(vector)))
         excluded = tuple(excluded_revisions)
-        tasks = []
+        params = _request(checked[0], top_k, year_min, year_max, excluded)
+        params['queries'] = [_request(vector, top_k, year_min, year_max, excluded)['query'] for vector in checked]
+        params['candidate_pool'] = self.budget.source_candidate_pool
+        predicate = " AND ".join([
+            *(["year>=:year_min"] if year_min is not None else []),
+            *(["year<=:year_max"] if year_max is not None else []),
+            *(["NOT (chunk_revision_sha256=ANY(CAST(:excluded AS text[])))"] if excluded else []),
+        ]) or "true"
+        distance = "embedding <=> inputs.query"
         try:
-            async with asyncio.timeout(self.budget.total_seconds):
-                tasks = [asyncio.create_task(self._query(projection, vector, top_k=top_k,
-                    year_min=year_min, year_max=year_max, excluded_revisions=excluded,
-                    ef_search=self.budget.source_ef_search, candidate_pool=self.budget.source_candidate_pool))
-                    for vector in checked]
-                return tuple(await asyncio.gather(*tasks))
+            async with asyncio.timeout(self.budget.total_seconds), self._slots:
+                async with self.engine.connect() as connection, connection.begin():
+                    await connection.execute(sa.text("SET TRANSACTION READ ONLY"))
+                    await self._global_slot(connection)
+                    await self._configure(connection, self.budget.source_ef_search)
+                    filtered = year_min is not None or year_max is not None or bool(excluded)
+                    cohort = None
+                    if filtered:
+                        ceiling = (self.budget.year_exact_cohort_limit if year_min is not None or year_max is not None
+                                   else self.budget.exact_cohort_limit)
+                        cohort = await connection.scalar(sa.text(
+                            f"SELECT count(*) FROM (SELECT 1 FROM {projection.table} WHERE {predicate} "
+                            "LIMIT :cohort_limit) cohort"), {**params, 'cohort_limit': ceiling + 1})
+                    exhaustive = cohort is not None and cohort <= ceiling
+                    if exhaustive:
+                        per_source = (f"SELECT {_COLUMNS},year,{distance} AS distance FROM {projection.table} "
+                            f'WHERE {predicate} ORDER BY ({distance})+0,vector_id COLLATE "C" LIMIT :limit')
+                    else:
+                        await connection.execute(sa.text("SELECT set_config('enable_seqscan','off',true),"
+                                                         "set_config('enable_bitmapscan','off',true)"))
+                        per_source = (f"WITH candidates AS MATERIALIZED (SELECT {_COLUMNS},year,{distance} AS distance "
+                            f"FROM {projection.table} WHERE {predicate} ORDER BY {distance} LIMIT :candidate_pool) "
+                            f"SELECT {_COLUMNS},year,distance FROM candidates "
+                            'ORDER BY distance,vector_id COLLATE "C" LIMIT :limit')
+                    # Each correlated source retains its own candidate frontier
+                    # and exact distance ordering. One statement owns the same
+                    # shared SQL permit and deadline for the complete inventory.
+                    statement = ("WITH inputs AS MATERIALIZED (SELECT raw.query::vector(768) AS query,source_order "
+                        "FROM unnest(CAST(:queries AS text[])) WITH ORDINALITY AS raw(query,source_order)) "
+                        "SELECT inputs.source_order,neighbor.* FROM inputs "
+                        f"CROSS JOIN LATERAL ({per_source}) neighbor "
+                        'ORDER BY inputs.source_order,neighbor.distance,neighbor.vector_id COLLATE "C"')
+                    rows = (await connection.execute(sa.text(statement), params)).mappings().all()
+                    grouped = [[] for _ in checked]
+                    for row in rows:
+                        ordinal = row['source_order']
+                        if type(ordinal) is not int or not 1 <= ordinal <= len(checked):
+                            raise PgvectorQueryError('Source batch ordering is incompatible')
+                        grouped[ordinal - 1].append(row)
+                    batches = []
+                    for source in grouped:
+                        neighbors = _neighbors(source, top_k, year_min, year_max, set(excluded))
+                        if cohort is not None and len(neighbors) < min(top_k, cohort):
+                            raise PgvectorUnavailable('Filtered source candidate budget exhausted')
+                        batches.append(CandidateBatch(projection, neighbors,
+                            'exact_filtered' if exhaustive else 'hnsw', exhaustive))
+                    return tuple(batches)
         except PgvectorQueryError:
             raise
         except Exception:
             raise PgvectorUnavailable("pgvector source batch unavailable") from None
-        finally:
-            for task in tasks:
-                if not task.done():
-                    task.cancel()
-            if tasks:
-                await asyncio.gather(*tasks, return_exceptions=True)
+
+    async def _configure(self, connection, ef_search):
+        settings = {"statement_timeout": str(self.budget.statement_ms), "lock_timeout": "250ms",
+                    "work_mem": "8MB", "hnsw.ef_search": str(ef_search),
+                    "hnsw.iterative_scan": "relaxed_order",
+                    "hnsw.max_scan_tuples": str(self.budget.max_scan_tuples),
+                    "hnsw.scan_mem_multiplier": "1"}
+        setup = ",".join(f"set_config('{key}',:setting_{index},true)"
+                         for index, key in enumerate(settings))
+        await connection.execute(sa.text("SELECT " + setup),
+            {f"setting_{index}": value for index, value in enumerate(settings.values())})
 
     async def query(self, projection, vector, *, top_k, year_min=None, year_max=None,
                     excluded_revisions=()):
@@ -223,14 +289,8 @@ class PgvectorQueries:
             async with asyncio.timeout(self.budget.total_seconds), self._slots:
                 async with self.engine.connect() as connection, connection.begin():
                     await connection.execute(sa.text("SET TRANSACTION READ ONLY"))
-                    settings = {"statement_timeout": str(self.budget.statement_ms), "lock_timeout": "250ms",
-                                "work_mem": "8MB", "hnsw.ef_search": str(ef_search),
-                                "hnsw.iterative_scan": "relaxed_order",
-                                "hnsw.max_scan_tuples": str(self.budget.max_scan_tuples),
-                                "hnsw.scan_mem_multiplier": "1"}
-                    for key, value in settings.items():
-                        await connection.execute(sa.text("SELECT set_config(:key,:value,true)"),
-                                                 {"key": key, "value": value})
+                    await self._global_slot(connection)
+                    await self._configure(connection, ef_search)
                     filtered = year_min is not None or year_max is not None or bool(excluded_revisions)
                     cohort = None
                     # Year filtering has a measured exact path. Source-only
@@ -251,8 +311,8 @@ class PgvectorQueries:
                         sql = (f"SELECT {_COLUMNS},year,{distance} AS distance FROM {projection.table} "
                                f'WHERE {predicate} ORDER BY ({distance})+0,vector_id COLLATE "C" LIMIT :limit')
                     else:
-                        await connection.execute(sa.text("SET LOCAL enable_seqscan=off"))
-                        await connection.execute(sa.text("SET LOCAL enable_bitmapscan=off"))
+                        await connection.execute(sa.text("SELECT set_config('enable_seqscan','off',true),"
+                                                         "set_config('enable_bitmapscan','off',true)"))
                         # Iteration can discover closer candidates after its
                         # initial frontier. Admit those candidates, then sort
                         # the bounded materialized pool by actual distance.

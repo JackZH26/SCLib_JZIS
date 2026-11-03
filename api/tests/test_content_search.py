@@ -81,3 +81,45 @@ async def test_absent_authority_never_falls_back_to_another_backend(searcher,mon
     monkeypatch.setattr(get_settings(),'retrieval_logical_index','absent')
     with pytest.raises(HTTPException) as error:await service.search(instance,SearchRequest(query='synthetic'),guest())
     assert error.value.status_code==503 and calls==[]
+
+
+async def test_aps_snapshot_year_is_presented_without_inventing_submission_date(db_session, monkeypatch):
+    import struct
+    from sqlalchemy.ext.asyncio import create_async_engine
+    from models.db import Chunk, get_engine
+    from services import content_retrieval, retrieval_members
+    from services.pgvector_query import PgvectorQueries
+    from tests import test_embedding_receipts
+    from tests.test_retrieval_members import active_content
+
+    original_seed = test_embedding_receipts.seed
+    async def aps_seed(db):
+        chunk, candidate = await original_seed(db)
+        paper_id = await db.scalar(sa.select(Chunk.paper_id).where(Chunk.id == chunk))
+        await db.execute(sa.update(Paper).where(Paper.id == paper_id).values(source='aps', date_submitted=None))
+        await db.execute(sa.update(Chunk).where(Chunk.id == chunk).values(year=1996))
+        return chunk, candidate
+    monkeypatch.setattr(test_embedding_receipts, 'seed', aps_seed)
+    pin, ids, _ = await active_content(db_session)
+    members = await retrieval_members.load_members(db_session, pin, ids)
+    assert len(members) == 1 and members[0]['snapshot_json']['year'] == 1996
+    assert members[0]['paper_snapshot_json']['date_submitted'] is None
+    vector = list(struct.unpack('!768f', members[0]['vector_bytes']))
+    monkeypatch.setattr(content_retrieval.query_embedding, 'embed_query', lambda *a, **k: vector)
+    monkeypatch.setattr(get_settings(), 'retrieval_logical_index', pin.logical_index)
+    await db_session.commit()
+    engine = create_async_engine(get_engine().url, pool_size=4, max_overflow=0)
+    instance = ContentRetriever(get_session_factory(), PgvectorQueries(engine))
+    try:
+        await instance.prepare(pin)
+        result = await service.search(instance, SearchRequest(query='synthetic', top_k=2,
+            filters={'year_min': 1986, 'year_max': 2000}), guest())
+        assert len(result.results) == 1
+        assert result.results[0].year == 1996
+        assert result.results[0].date_submitted is None
+        async with get_session_factory()() as db:
+            assert await db.scalar(sa.select(Paper.date_submitted).where(
+                Paper.id == result.results[0].paper_id)) is None
+    finally:
+        await instance.close()
+        await engine.dispose()

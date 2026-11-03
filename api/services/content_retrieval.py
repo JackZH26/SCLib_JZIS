@@ -18,7 +18,7 @@ from models.scientific_query import ScientificQueryInterpretation
 from services import provider_resilience,query_embedding,retrieval,retrieval_members,retrieval_navigation
 from services.pgvector_query import PgvectorQueries,QueryBudget
 from services.retrieval_activation import RetrievalPinV2,load_active_backend
-from services.retrieval_candidate import current_read_pin
+from services.retrieval_candidate import current_read_pin,read_pin_snapshot
 from services.retrieval_readiness import ProjectionReadiness
 
 
@@ -66,7 +66,7 @@ class ContentRetriever:
             await db.execute(sa.text('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY'))
             await db.execute(sa.text("SET LOCAL statement_timeout='3000ms'"))
             await db.execute(sa.text("SET LOCAL lock_timeout='250ms'"))
-            return await operation(db)
+            with read_pin_snapshot(db):return await operation(db)
 
     async def pin(self,*,logical_index='sclib-main'):
         async def resolve(db):

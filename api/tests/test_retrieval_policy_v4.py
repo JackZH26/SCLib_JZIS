@@ -68,7 +68,7 @@ async def test_text_and_complete_source_batch_use_distinct_local_budgets_in_one_
     engine, spec = projection
     observed = []
     def capture(conn, cursor, statement, parameters, context, many):
-        if statement.startswith('WITH candidates AS MATERIALIZED'):
+        if statement.startswith(('WITH candidates AS MATERIALIZED', 'WITH inputs AS MATERIALIZED')):
             values = conn.exec_driver_sql("SELECT current_setting('hnsw.ef_search'),current_setting('statement_timeout')").one()
             observed.append(tuple(values))
     sa.event.listen(engine.sync_engine, 'before_cursor_execute', capture)
@@ -79,7 +79,7 @@ async def test_text_and_complete_source_batch_use_distinct_local_budgets_in_one_
     finally:
         sa.event.remove(engine.sync_engine, 'before_cursor_execute', capture)
     assert len(text_result.neighbors) == 5 and all(len(r.neighbors) == 5 for r in source_result)
-    assert observed == [('1000','2s'), ('256','2s'), ('256','2s')]
+    assert observed == [('1000','2s'), ('256','2s')]
     assert transport.budget == QueryBudget()
     assert POLICY['source_ef_search'] == transport.budget.source_ef_search
     assert POLICY['source_candidate_pool'] == transport.budget.source_candidate_pool

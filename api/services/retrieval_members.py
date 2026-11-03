@@ -27,6 +27,10 @@ class RetrievalMemberError(ValueError):
     """An exact bounded content/origin/evidence binding is unavailable."""
 
 
+class RetrievalMemberBudgetExceeded(RetrievalMemberError):
+    """A complete inventory needs smaller pages within the same snapshot."""
+
+
 def _ids(values):
     if (type(values) not in {list, tuple} or len(values) > MAX_MEMBERS
             or any(type(value) is not str or not 1 <= len(value) <= 120 for value in values)
@@ -81,8 +85,10 @@ async def load_members(db, pin, identifiers):
             'octet_length(origin::text) + length(vector_hex)/2),0) FROM (' + source + ') bounded').bindparams(
                 sa.bindparam('ids', expanding=True))
         count, size = (await db.execute(size_sql, params)).one()
-        if count != len(ids) or size > MAX_BYTES:
-            raise RetrievalMemberError('Retained member inventory unavailable or exceeds byte budget')
+        if count != len(ids):
+            raise RetrievalMemberError('Retained member inventory unavailable')
+        if size > MAX_BYTES:
+            raise RetrievalMemberBudgetExceeded('Retained member inventory exceeds byte budget')
         statement = sa.text(source).bindparams(sa.bindparam('ids', expanding=True))
         rows = (await db.execute(statement, params)).mappings().all()
     result = {}
@@ -179,8 +185,10 @@ async def hydrate(db, pin, identifiers):
         return {}
     sizes = (await db.execute(sa.select(Paper.id, sa.func.octet_length(sa.cast(
         sa.func.to_jsonb(Paper.__table__.table_valued()), sa.Text))).where(Paper.id.in_(paper_ids)))).all()
-    if {identifier for identifier, _ in sizes} != paper_ids or sum(size for _, size in sizes) > MAX_BYTES:
-        raise RetrievalMemberError('Current source overlay unavailable or oversized')
+    if {identifier for identifier, _ in sizes} != paper_ids:
+        raise RetrievalMemberError('Current source overlay unavailable')
+    if sum(size for _, size in sizes) > MAX_BYTES:
+        raise RetrievalMemberBudgetExceeded('Current source overlay oversized')
     papers = {row.id: row for row in (await db.execute(sa.select(Paper).where(Paper.id.in_(paper_ids))
         .execution_options(populate_existing=True))).scalars()}
     result = {}

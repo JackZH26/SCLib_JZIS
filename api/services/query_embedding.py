@@ -82,7 +82,10 @@ def embed_query(profile, query, *, timeout_seconds=5.0):
             auto_truncate=False,http_options=types.HttpOptions(timeout=max(1,int(timeout_seconds*1000)),
                 retry_options=types.HttpRetryOptions(attempts=1)))
         if getattr(config,'auto_truncate',None) is not False:raise ValueError
-        response=embedding_client().models.embed_content(model=checked.model,contents=[query],config=config)
+        # Concurrent cold cache misses can return an uncached SDK client.
+        # Keep its owner alive until the model call and validation complete.
+        client=embedding_client()
+        response=client.models.embed_content(model=checked.model,contents=[query],config=config)
         return validate_embedding_response([query],response,**arguments)[0][0]
     except Exception:
         raise QueryEmbeddingUnavailable('Query embedding unavailable or incompatible') from None

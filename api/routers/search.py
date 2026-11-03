@@ -277,7 +277,8 @@ async def _present_search(body, identity, db, t0, pin, interpretation, scientifi
                 arxiv_id=paper.arxiv_id,
                 title=paper.title,
                 authors=list(paper.authors or []),
-                year=(paper.date_submitted.year if paper.date_submitted else None),
+                year=(selected_year if type(selected_year) is int else
+                      paper.date_submitted.year if paper.date_submitted else None),
                 date_submitted=paper.date_submitted,
                 relevance_score=round(candidate.rerank_score, 6),
                 matched_chunk=chunk.text if text_available else "",

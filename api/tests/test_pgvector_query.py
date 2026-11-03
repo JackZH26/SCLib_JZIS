@@ -156,6 +156,7 @@ async def test_local_settings_do_not_leak_to_next_transaction(projection):
                       for key in ("statement_timeout", "work_mem", "transaction_read_only",
                                   "hnsw.iterative_scan", "hnsw.ef_search")}
         await PgvectorQueries(dedicated).query(spec, vector(), top_k=5)
+        await PgvectorQueries(dedicated).query_many(spec, [vector(), vector(0.01)], top_k=5)
         async with dedicated.connect() as db:
             assert await db.scalar(sa.text("SELECT pg_backend_pid()")) == original_pid
             after = {key: await db.scalar(sa.text("SELECT current_setting(:key)"), {"key": key}) for key in before}
@@ -223,7 +224,7 @@ async def test_batch_queue_wait_has_one_deadline_and_leaves_no_waiters(projectio
     assert len((await transport.query(spec, vector(), top_k=5)).neighbors) == 5
 
 
-async def test_locked_batch_cancels_siblings_and_recovers_real_connections(projection):
+async def test_locked_batch_cancels_statement_and_recovers_real_connections(projection):
     engine, spec = projection
     transport = PgvectorQueries(engine, QueryBudget(concurrency=2, total_seconds=0.4, statement_ms=300))
     async with engine.begin() as locker:
@@ -307,3 +308,38 @@ async def test_projection_does_not_accept_sql_object_names():
 async def test_unbounded_resource_settings_are_rejected(budget):
     with pytest.raises(PgvectorQueryError):
         QueryBudget(**budget)
+
+
+async def test_unfiltered_twenty_source_batch_matches_full_exact_reference(projection):
+    engine,spec=projection
+    vectors=[vector(i/100) for i in range(20)]
+    batches=await PgvectorQueries(engine).query_many(spec,vectors,top_k=5)
+    async with engine.connect() as db:
+        for query,batch in zip(vectors,batches,strict=True):
+            exact=(await db.execute(sa.text(f'SELECT vector_id,embedding <=> CAST(:query AS vector(768)) AS distance FROM {spec.table} ORDER BY (embedding <=> CAST(:query AS vector(768)))+0,vector_id COLLATE "C" LIMIT 5'),{'query':str(query)})).all()
+            assert [row.vector_id for row in batch.neighbors]==[row.vector_id for row in exact]
+            assert [row.distance for row in batch.neighbors]==pytest.approx([row.distance for row in exact],abs=1e-6)
+
+
+@pytest.mark.parametrize('source_batch',[False,True])
+async def test_independent_engine_shares_global_sql_limit_and_recovers_after_queue_timeout(projection,source_batch):
+    from sqlalchemy.ext.asyncio import create_async_engine
+    from services.pgvector_query import _SQL_SLOT_KEYS
+    engine,spec=projection
+    separate=create_async_engine(engine.url,pool_size=4,max_overflow=0)
+    transport=PgvectorQueries(separate,QueryBudget(total_seconds=.2,statement_ms=100))
+    async def query():
+        if source_batch:return await transport.query_many(spec,[vector()],top_k=5)
+        return await transport.query(spec,vector(),top_k=5)
+    try:
+        async with engine.connect() as owner,owner.begin():
+            for key in _SQL_SLOT_KEYS:
+                await owner.execute(sa.text('SELECT pg_advisory_xact_lock(:key)'),{'key':key})
+            began=time.monotonic()
+            with pytest.raises(PgvectorUnavailable):await query()
+            assert .15<=time.monotonic()-began<1
+            assert await owner.scalar(sa.text("SELECT count(*) FROM pg_locks WHERE pid=pg_backend_pid() AND locktype='advisory'"))==4
+        assert await query()
+        async with separate.connect() as db:
+            assert await db.scalar(sa.text("SELECT count(*) FROM pg_locks WHERE pid=pg_backend_pid() AND locktype='advisory'"))==0
+    finally:await separate.dispose()

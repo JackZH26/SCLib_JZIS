@@ -6,6 +6,7 @@ validation, physical seal and still-current v1 predecessor again. Production
 settings and databases without the independent rehearsal marker are refused.
 """
 from dataclasses import dataclass
+from contextlib import contextmanager
 import json
 from uuid import UUID
 
@@ -19,6 +20,22 @@ from services.retrieval_activation import RetrievalPinV2,assert_current_backend
 
 
 class CandidateUnavailable(ValueError):pass
+
+
+_READ_SNAPSHOT=object()
+
+
+@contextmanager
+def read_pin_snapshot(db):
+    """Reuse authority only inside the caller's established read-only RR snapshot."""
+    prior=db.info.get(_READ_SNAPSHOT)
+    state={'transaction':db.get_transaction(),'pin':None}
+    if state['transaction'] is None:raise CandidateUnavailable('An established read snapshot is required')
+    db.info[_READ_SNAPSHOT]=state
+    try:yield
+    finally:
+        if prior is None:db.info.pop(_READ_SNAPSHOT,None)
+        else:db.info[_READ_SNAPSHOT]=prior
 
 
 @dataclass(frozen=True,slots=True)
@@ -124,10 +141,15 @@ def is_read_pin(pin):return type(pin) in {RetrievalPinV2,EngineeringCandidatePin
 
 
 async def current_read_pin(db,pin):
+    if not is_read_pin(pin):raise CandidateUnavailable('A closed internal read authority is required')
+    state=db.info.get(_READ_SNAPSHOT)
+    same_snapshot=state is not None and state['transaction'] is db.get_transaction() and state['transaction'].is_active
+    if same_snapshot and state['pin']==pin:return pin
     if type(pin) is RetrievalPinV2:
         await assert_current_backend(db,pin)
     elif type(pin) is EngineeringCandidatePin:
         current=await load_candidate(db,build_id=pin.build_id,validation_id=pin.validation_id,expected_database=pin.database_name)
         if current!=pin:raise CandidateUnavailable('Engineering candidate or predecessor changed')
     else:raise CandidateUnavailable('A closed internal read authority is required')
+    if same_snapshot:state['pin']=pin
     return pin

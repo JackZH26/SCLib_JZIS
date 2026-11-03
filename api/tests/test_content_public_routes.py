@@ -70,7 +70,7 @@ async def test_pgvector_mode_without_initialized_reader_cannot_fall_back(public_
         assert response.status_code==503
 
 
-async def test_managed_runtime_owns_one_four_slot_pool_and_keeps_metadata_engine_open(ask_reader,monkeypatch):
+async def test_managed_runtime_owns_reserved_pool_and_keeps_metadata_engine_open(ask_reader,monkeypatch):
     _,pin,_,_=ask_reader;source=get_engine()
     original=type(source).dispose;closed=[]
     async def dispose(self,*args,**kwargs):
