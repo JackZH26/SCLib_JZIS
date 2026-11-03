@@ -28,7 +28,7 @@ pytestmark=[pytest.mark.asyncio,pytest.mark.skipif(os.environ.get('SCLIB_PGVECTO
     reason='Requires fresh owned PostgreSQL/vector services')]
 
 
-@pytest_asyncio.fixture
+@pytest_asyncio.fixture(loop_scope='function')
 async def candidate(db_session,tmp_path):
     first=await prepared_build(db_session)
     _,_,published=await publication(db_session,tmp_path)

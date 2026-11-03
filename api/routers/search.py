@@ -177,10 +177,16 @@ async def search(
     return await _present_search(body, identity, db, t0, pin, interpretation, scientific_filters, candidates)
 
 
-async def _present_search(body, identity, db, t0, pin, interpretation, scientific_filters, candidates):
+async def _present_search(body, identity, db, t0, pin, interpretation, scientific_filters, candidates, *, candidate_context=None):
     """Shared retained attribution and live governance, with explicit backend adapters."""
     f = body.filters
-    content = type(pin) is RetrievalPinV2
+    from services.retrieval_candidate import EngineeringCandidatePin,is_read_pin,current_read_pin
+    from services.candidate_context import CandidateContext,search_response
+    if type(pin) is EngineeringCandidatePin:
+        if type(candidate_context) is not CandidateContext:raise ValueError('Explicit private presenter context required')
+        candidate_context.require_pin(pin)
+    elif candidate_context is not None:raise ValueError('Public presenter rejects a private context')
+    content = is_read_pin(pin)
     # Hydrate exact generation members (or explicit legacy lexical rows),
     # retaining a defensive cap on the SQL identity inventory.
     MAX_IN_CLAUSE = 300
@@ -303,16 +309,15 @@ async def _present_search(body, identity, db, t0, pin, interpretation, scientifi
     if pin is not None:
         try:
             async with asyncio.timeout(10):
-                await (assert_current_backend(db, pin) if content else index_retrieval.require_current_pin(db, pin))
+                await ((current_read_pin(db,pin) if type(pin) is EngineeringCandidatePin else assert_current_backend(db,pin)) if content else index_retrieval.require_current_pin(db, pin))
         except Exception:
             raise HTTPException(503, "Retrieval generation changed; please search again") from None
-    return SearchResponse(
+    return search_response(pin,
         total=len(matches),
         results=matches,
         query_time_ms=int((time.perf_counter() - t0) * 1000),
         guest_remaining=identity.guest_remaining,
         remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
-        retrieval_generation=retrieval_read_metadata(pin),
         **({"scientific_lookup": ScientificLookupStatus(scope="declared_content_derived_extractions")} if content else {}),
         scientific_query=interpretation,
     )

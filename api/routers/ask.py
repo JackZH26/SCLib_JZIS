@@ -81,10 +81,16 @@ async def ask(
     return await _ask(body, request, identity, db, reader=selected_reader(request))
 
 
-async def _ask(body, request, identity, db, *, reader=None):
+async def _ask(body, request, identity, db, *, reader=None, candidate_context=None):
     from services.content_retrieval import ContentRetriever
-    if reader is not None and type(reader) is not ContentRetriever:
-        raise ValueError('An exact internal content reader is required')
+    from services.candidate_context import CandidateContext,EngineeringAskResponse
+    if candidate_context is None:
+        if reader is not None and type(reader) is not ContentRetriever:
+            raise ValueError('An exact internal content reader is required')
+    elif type(candidate_context) is CandidateContext:
+        candidate_context.require_reader(reader)
+        if identity.user is not None:raise ValueError('Private rehearsal cannot act as an authenticated user')
+    else:raise ValueError('Closed private candidate context required')
     content = reader is not None
     pin = None
     t0 = time.perf_counter()
@@ -93,6 +99,11 @@ async def _ask(body, request, identity, db, *, reader=None):
     history_user_id = identity.user.id if identity.user is not None else None
 
     async def finish(response, captured=None):
+        if candidate_context is not None:
+            candidate_context.require_pin(pin)
+            if type(response) is not EngineeringAskResponse:raise ValueError('Private response projection required')
+            await db.rollback()
+            return response.model_copy(update={'history':HistorySaveDisposition(reason_code='guest_request')})
         return await _persist_history(db, request, history_user_id, body, response, captured)
 
     interpretation = interpret_scientific_query(body.question)
@@ -102,16 +113,16 @@ async def _ask(body, request, identity, db, *, reader=None):
         await db.rollback()
         try: pin = await reader.pin(logical_index=get_settings().retrieval_logical_index)
         except Exception: raise HTTPException(503, 'Retrieval content is unavailable') from None
+        if candidate_context is not None:candidate_context.require_pin(pin)
     if interpretation.status == "clarification_required":
         answer = ("Please clarify the unresolved scientific conditions before a numerical lookup or synthesis. "
                   + " ".join(interpretation.clarification_questions))
         latency_ms = int((time.perf_counter() - t0) * 1000)
         _observe_lookup_interaction()
-        response = AskResponse(answer=answer, sources=[], tokens_used=0,
+        response = _ask_response(pin,answer=answer, sources=[], tokens_used=0,
             query_time_ms=latency_ms,
             citation_indices_valid=True, scientific_query=interpretation,
             scientific_lookup=ScientificLookupStatus(status="clarification_required", scope=_lookup_scope(pin), reason_codes=["unresolved_query_constraints"]),
-            retrieval_generation=retrieval_read_metadata(pin),
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining)
         return await finish(response, _capture_inputs(body, pin))
@@ -163,12 +174,12 @@ async def _ask(body, request, identity, db, *, reader=None):
         answer = lookup_answer(outcome)
         latency_ms = int((time.perf_counter() - t0) * 1000)
         _observe_lookup_interaction()
-        response = AskResponse(answer=answer, sources=[], tokens_used=0,
+        response = _ask_response(pin,answer=answer, sources=[], tokens_used=0,
             query_time_ms=latency_ms, citation_indices_valid=True,
             support_warnings=["structured_extractions_not_scientific_validation"],
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
-            retrieval_generation=retrieval_read_metadata(pin), scientific_query=interpretation,
+            scientific_query=interpretation,
             scientific_lookup=outcome.status, scientific_results=outcome.results)
         return await finish(response, captured or _capture_inputs(body, pin))
     settings = get_settings()
@@ -244,7 +255,7 @@ async def _ask(body, request, identity, db, *, reader=None):
             citation_indices_valid=result.citation_indices_valid,
             scientific_support_status=result.scientific_support_status, answer_mode=result.answer_mode,
         )
-        response = AskResponse(
+        response = _ask_response(pin,
             answer=result.answer,
             sources=[],
             tokens_used=0,
@@ -252,7 +263,6 @@ async def _ask(body, request, identity, db, *, reader=None):
             **result.quality_fields(),
             guest_remaining=identity.guest_remaining,
             remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
-            retrieval_generation=retrieval_read_metadata(pin),
             **_lookup_defaults(pin),
             scientific_query=interpretation,
         )
@@ -511,7 +521,7 @@ async def _ask(body, request, identity, db, *, reader=None):
     )
 
     latency_ms = int((time.perf_counter() - t0) * 1000)
-    response = AskResponse(
+    response = _ask_response(pin,
         answer=result.answer,
         sources=sources_out,
         tokens_used=result.tokens_used,
@@ -519,7 +529,6 @@ async def _ask(body, request, identity, db, *, reader=None):
         **result.quality_fields(),
         guest_remaining=identity.guest_remaining,
         remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
-        retrieval_generation=retrieval_read_metadata(pin),
         **_lookup_defaults(pin),
         scientific_query=interpretation,
     )
@@ -527,8 +536,8 @@ async def _ask(body, request, identity, db, *, reader=None):
 
 
 def _is_content(pin):
-    from services.retrieval_activation import RetrievalPinV2
-    return type(pin) is RetrievalPinV2
+    from services.retrieval_candidate import is_read_pin
+    return is_read_pin(pin)
 
 
 def _lookup_scope(pin):
@@ -550,8 +559,10 @@ def _unavailable_for(pin, reason):
 
 async def _require_pin(db, pin):
     if _is_content(pin):
+        from services.retrieval_candidate import EngineeringCandidatePin,current_read_pin
+        if type(pin) is EngineeringCandidatePin:return await current_read_pin(db,pin)
         from services.retrieval_activation import assert_current_backend
-        return await assert_current_backend(db, pin)
+        return await assert_current_backend(db,pin)
     return await index_retrieval.require_current_pin(db, pin)
 
 
@@ -635,13 +646,13 @@ async def _mixed_response(db, body, identity, history_user_id, interpretation, p
     latency_ms = int((time.perf_counter() - t0) * 1000)
     observe_rag(sources=len(sources), tokens=0, citation_valid=False, fallback=False,
         citation_indices_valid=True, scientific_support_status="not_checked", answer_mode="abstention")
-    response = AskResponse(answer=answer, sources=list(sources), tokens_used=0, query_time_ms=latency_ms,
+    response = _ask_response(pin,answer=answer, sources=list(sources), tokens_used=0, query_time_ms=latency_ms,
         citation_indices_valid=True, scientific_query=interpretation, scientific_lookup=outcome.status,
         scientific_results=outcome.results, scientific_mixed=report,
         support_warnings=["numerical_explanation_not_established", "structured_extractions_not_scientific_validation"]
             if report.status == "completed" else list(report.reason_codes),
         evidence_packing=packing or EvidencePackingSummary(),
-        retrieval_generation=retrieval_read_metadata(pin), guest_remaining=identity.guest_remaining,
+        guest_remaining=identity.guest_remaining,
         remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining)
     if captured is None:
         captured = _capture_inputs(body, pin, scientific_inputs=inputs if reason is None and not sources else None)
@@ -666,6 +677,10 @@ def _currentness_abstention(reason: str, tokens_used: int | None, *, input_budge
 def _capture_inputs(body, pin, *, sources=(), chunks=(), selection_pins=(), scientific_inputs=None):
     """Detach admitted input references before ORM rollback or provider work."""
     try:
+        from services.retrieval_candidate import EngineeringCandidatePin
+        if type(pin) is EngineeringCandidatePin:
+            # Private responses never mint a public saved-answer receipt.
+            return None
         if _is_content(pin):
             from services import content_answer_evidence
             return content_answer_evidence.capture_inputs(request=body, backend_pin=pin,
@@ -776,3 +791,8 @@ def _snippet(text: str, max_chars: int = 280) -> str:
     if len(text) <= max_chars:
         return text
     return text[: max_chars - 1].rstrip() + "…"
+
+
+def _ask_response(pin,**values):
+    from services.candidate_context import ask_response
+    return ask_response(pin,**values)

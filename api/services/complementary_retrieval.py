@@ -60,8 +60,9 @@ async def expand_candidates(db, pin, candidates, chunk_by_id):
     if not groups:
         return list(candidates)
     from services.retrieval_activation import RetrievalPinV2, assert_current_backend
-    if type(pin) is RetrievalPinV2:
-        await assert_current_backend(db, pin)
+    from services.retrieval_candidate import EngineeringCandidatePin,is_read_pin,current_read_pin
+    if is_read_pin(pin):
+        await (current_read_pin(db,pin) if type(pin) is EngineeringCandidatePin else assert_current_backend(db,pin))
         member = Base.metadata.tables['retrieval_content_members_v2']
         old = Base.metadata.tables['index_generation_members']
         native = Base.metadata.tables['retrieval_native_revisions_v2']

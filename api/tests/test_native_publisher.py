@@ -39,6 +39,7 @@ async def bridge(monkeypatch):
     # Complete migration rehearsals are separately executed by the runner.
     engine = get_engine()
     async with engine.begin() as connection:
+        version_table_existed = await connection.scalar(sa.text("SELECT to_regclass('public.alembic_version') IS NOT NULL"))
         await connection.execute(sa.text("CREATE TABLE IF NOT EXISTS alembic_version(version_num varchar(32) PRIMARY KEY)"))
         prior = (await connection.execute(sa.text("SELECT version_num FROM alembic_version"))).scalars().all()
         await connection.execute(sa.text("DELETE FROM alembic_version"))
@@ -55,6 +56,8 @@ async def bridge(monkeypatch):
         await connection.execute(sa.text("DELETE FROM alembic_version"))
         for value in prior:
             await connection.execute(sa.text("INSERT INTO alembic_version VALUES(:head)"), {"head": value})
+        if not version_table_existed:
+            await connection.execute(sa.text("DROP TABLE alembic_version"))
     await engine.dispose()
 
 

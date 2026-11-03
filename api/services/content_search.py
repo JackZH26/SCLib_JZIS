@@ -10,20 +10,26 @@ from models.scientific_lookup import ScientificLookupStatus
 from routers.deps import Identity
 from services import content_scientific_lookup,retrieval_currentness,retrieval_members
 from services.content_retrieval import ContentRetriever
+from services.retrieval_candidate import EngineeringCandidatePin,current_read_pin
 from services.retrieval_activation import assert_current_backend
+from services.candidate_context import CandidateContext,search_response
 from services.scientific_filters import ResultFilters
 from services.scientific_query import interpret_scientific_query
 from services.scientific_query_lookup import result_query
 
 
-async def search(reader,body,identity):
+async def _search(reader,body,identity,*,candidate_context=None):
     """Provider work uses no caller-owned DB session; presentation is fresh RR.
 
     The shared presenter preserves frozen bibliography, explicit material
     links, holds, restricted-text redaction, year predicates and date/Tc sorts.
     Only a complete immutable content/backend identity may label the response.
     """
-    if type(reader) is not ContentRetriever or type(body) is not SearchRequest or type(identity) is not Identity:
+    if candidate_context is None:
+        if type(reader) is not ContentRetriever:raise ValueError('Exact public content reader required')
+    elif type(candidate_context) is CandidateContext:candidate_context.require_reader(reader)
+    else:raise ValueError('Closed private candidate context required')
+    if type(body) is not SearchRequest or type(identity) is not Identity:
         raise ValueError('Exact internal Search orchestration inputs required')
     started=time.perf_counter();query=interpret_scientific_query(body.query);f=body.filters
     filters=ResultFilters(families=tuple(f.material_family or []),tc_min=f.tc_min,pressure_min=f.pressure_min,
@@ -31,10 +37,11 @@ async def search(reader,body,identity):
         origins=tuple(f.knowledge_origin or []),source_role=f.source_role,experimental_only=f.experimental_only)
     try:pin=await reader.pin(logical_index=get_settings().retrieval_logical_index)
     except Exception:raise HTTPException(503,'Retrieval content is unavailable') from None
+    if candidate_context is not None:candidate_context.require_pin(pin)
     def response(status,results=()):
-        return SearchResponse(total=0,results=[],query_time_ms=int((time.perf_counter()-started)*1000),
+        return search_response(pin,total=0,results=[],query_time_ms=int((time.perf_counter()-started)*1000),
             guest_remaining=identity.guest_remaining,remaining=identity.guest_remaining if identity.is_guest else identity.user_remaining,
-            retrieval_generation=retrieval_read_metadata(pin),scientific_query=query,scientific_lookup=status,
+            scientific_query=query,scientific_lookup=status,
             scientific_results=list(results))
     scope='declared_content_derived_extractions'
     if query.status=='clarification_required':
@@ -54,7 +61,7 @@ async def search(reader,body,identity):
                     if checked.status!='unchanged':
                         return response(ScientificLookupStatus(status='unavailable',scope=scope,
                             reason_codes=[checked.reason_code or 'scientific_lookup_currentness_unavailable']))
-                async def current(db):await assert_current_backend(db,pin)
+                async def current(db):await (current_read_pin(db,pin) if type(pin) is EngineeringCandidatePin else assert_current_backend(db,pin))
                 await reader._read(current)
                 return response(outcome.status,outcome.results)
         except Exception:
@@ -65,9 +72,19 @@ async def search(reader,body,identity):
         if selected.pin!=pin:raise ValueError('Search backend identity changed')
         from routers.search import _present_search
         async def present(db):
-            return await _present_search(body,identity,db,started,pin,query,filters,list(selected.rankings))
+            return await _present_search(body,identity,db,started,pin,query,filters,list(selected.rankings),
+                **({'candidate_context':candidate_context} if candidate_context is not None else {}))
         # Rehydrate sources and resolve current governance in one NEW snapshot
         # after all provider/ANN work. No old candidate object authorizes text.
         async with asyncio.timeout(10):return await reader._read(present)
     except Exception:
         raise HTTPException(503,'Complete content-pinned search is unavailable') from None
+
+
+async def search(reader,body,identity):
+    return await _search(reader,body,identity)
+
+
+async def search_candidate(reader,body,identity,context):
+    if type(context) is not CandidateContext:raise ValueError('Explicit private context required')
+    return await _search(reader,body,identity,candidate_context=context)

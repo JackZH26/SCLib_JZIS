@@ -55,3 +55,29 @@ remains mandatory. No authority is cached and no public reader is changed.
 Missing marker relations fail closed. A migrated source CAS invalidates the old
 candidate, and disposable tests verify both that invalidation and the two-query
 budget. Real HTTP resource/performance acceptance must still be remeasured.
+
+## Shared Search and Ask before serving
+
+The isolated application also exposes `/candidate/search` and `/candidate/ask`.
+They invoke the same presentation, packing, provider, citation and fresh-source
+checks as the public orchestrators, with an explicit closed `CandidateContext`.
+Public entrypoints still reject `CandidateRetriever`; the context is never a
+request field and the private app refuses a production environment. There is
+no quota consumption, authenticated-user operation or saved-answer insertion.
+
+Private responses use a separate engineering metadata version/scope and the
+actual content/build/validation/legacy-predecessor records. Their common
+`content_snapshot` mode describes the immutable data, while the distinct
+engineering version and `owned_restore_not_activated` scope explicitly deny
+serving authority. No activation ID is created. Public metadata serialization
+and saved-evidence contracts continue to reject this candidate identity.
+
+For the actual initial corpus, the operator must measure the complete derived
+parent inventory. A zero-parent numerical path may report its real empty
+inventory. Positive scientific parent bindings require the separate activated
+public contract; the engineering path reports unavailable rather than hiding
+positive data or inventing activation-bound result IDs. Public positive-parent
+behavior remains covered by its actual synthetic SQL tests. This narrow private
+scope must be retained in real-corpus reports and cannot be called public-route
+or scientific acceptance. Generated answers still carry the existing support,
+packing and currentness dispositions; a200 response alone is insufficient.

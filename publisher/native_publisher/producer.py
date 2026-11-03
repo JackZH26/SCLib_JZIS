@@ -32,7 +32,7 @@ class RetainedInput:
     parser_version: str
     chunker_version: str
     expected_bytes: int
-    provider_sha256: str
+    provider_sha256: str | None
 
 
 class _PreviewComplete(Exception):

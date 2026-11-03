@@ -12,6 +12,7 @@ from models.scientific_query import ScientificQueryInterpretation
 from services import index_retrieval,retrieval_currentness,retrieval_members
 from services.rag_evidence_contract import input_record_sha256
 from services.retrieval_activation import RetrievalPinV2,assert_current_backend
+from services.retrieval_candidate import EngineeringCandidatePin,is_read_pin,current_read_pin
 from services.retrieval_groups import resolve_grouping_bindings
 from services.scientific_query_lookup import MAX_RESULTS,MAX_RECORDS,MAX_PREPARED_BYTES,LookupResult,PreparedScientificParent,_json
 from services.scientific_query_results import select_record_results
@@ -23,14 +24,16 @@ SCOPE='declared_content_derived_extractions'
 
 @dataclass(frozen=True,slots=True)
 class ContentScientificInputs:
-    backend_pin: RetrievalPinV2
+    backend_pin: RetrievalPinV2 | EngineeringCandidatePin
     parents: tuple[PreparedScientificParent,...]
     _outcome_json: str=field(repr=False)
 
     def __post_init__(self):
-        if type(self.backend_pin) is not RetrievalPinV2 or type(self.parents) is not tuple or len(self.parents)>MAX_RESULTS:
+        if not is_read_pin(self.backend_pin) or type(self.parents) is not tuple or len(self.parents)>MAX_RESULTS:
             raise ValueError('Exact bounded v2 scientific inputs required')
         outcome=self.outcome
+        if type(self.backend_pin) is EngineeringCandidatePin and (self.parents or outcome.results):
+            raise ValueError('Private candidates cannot create activation-bound scientific result bindings')
         if (outcome.status.scope!=SCOPE or outcome.status.returned_count!=len(self.parents)
                 or len(outcome.results)!=len(self.parents) or outcome.status.status!='completed' and self.parents
                 or outcome.status.has_more and not self.parents
@@ -148,18 +151,20 @@ async def _keyword_ids(db,pin,interpretation,filters,ids):
 async def prepare_content_scientific_lookup(db,pin,interpretation,*,limit=20,filters=None,
         year_min=None,year_max=None,sort='relevance'):
     """Caller-owned preparation: no commit/rollback, provider or fresh check."""
-    if (type(pin) is not RetrievalPinV2 or type(interpretation) is not ScientificQueryInterpretation
+    if (not is_read_pin(pin) or type(interpretation) is not ScientificQueryInterpretation
             or db.new or db.dirty or db.deleted or type(limit) is not int or not 1<=limit<=MAX_RESULTS
             or sort not in {'relevance','date','tc'}
             or any(year is not None and (type(year) is not int or not 1<=year<=9999) for year in (year_min,year_max))
             or year_min is not None and year_max is not None and year_min>year_max):
         raise ValueError('Exact current content, interpretation, clean session and bounded request required')
-    await assert_current_backend(db,pin)
+    await (current_read_pin(db,pin) if type(pin) is EngineeringCandidatePin else assert_current_backend(db,pin))
     if interpretation.status!='resolved':
         return _prepared(pin,LookupResult([],_status(status='clarification_required',reason_codes=['unresolved_query_constraints'])))
     ids=await _derived_ids(db,pin)
     if not ids:
         return _prepared(pin,LookupResult([],_status(status='completed',reason_codes=['declared_content_no_extraction_parents'])))
+    if type(pin) is EngineeringCandidatePin:
+        raise ValueError('Positive scientific result bindings require the separately activated public contract')
     members=await retrieval_members.load_members(db,pin,ids)
     keywords=await _keyword_ids(db,pin,interpretation,filters,ids)
     evidence_ids=[UUID(row['evidence_revision_id']) for row in members]
@@ -240,7 +245,7 @@ async def prepare_content_scientific_lookup(db,pin,interpretation,*,limit=20,fil
     if filters is not None and filters.include_unknown_pressure and (filters.ambient_only
             or filters.pressure_min is not None or filters.pressure_max is not None):
         reasons.append('unknown_pressure_cannot_prove_requested_pressure')
-    await assert_current_backend(db,pin)
+    await (current_read_pin(db,pin) if type(pin) is EngineeringCandidatePin else assert_current_backend(db,pin))
     return _prepared(pin,LookupResult(results,_status(status='completed',returned_count=len(results),
         has_more=eligible>len(results),reason_codes=reasons)),prepared)
 
@@ -255,5 +260,5 @@ async def lookup_content_scientific_results(db,pin,interpretation,**kwargs):
         checked=await retrieval_currentness.check_selected_sources(inputs.selection_pins,backend_pin=pin,evidence_resolver=resolver)
         if checked.status!='unchanged':
             return LookupResult([],_status(status='unavailable',reason_codes=[checked.reason_code or 'scientific_lookup_currentness_unavailable']))
-    await assert_current_backend(db,pin)
+    await (current_read_pin(db,pin) if type(pin) is EngineeringCandidatePin else assert_current_backend(db,pin))
     return outcome
