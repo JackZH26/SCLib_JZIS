@@ -5,6 +5,7 @@ test bootstrap still requires the disposable PostgreSQL/Redis runner.
 """
 from __future__ import annotations
 
+import asyncio
 from datetime import UTC, datetime
 from types import SimpleNamespace
 
@@ -72,6 +73,31 @@ class _ReadSession:
             return _Result([self.materials[key] for key in identifiers if key in self.materials])
         assert entity is Paper
         return _Result([(key, self.sources[key]) for key in identifiers if key in self.sources])
+
+
+@pytest.mark.asyncio
+async def test_large_cpu_assessment_remains_cancellable_between_materials(monkeypatch):
+    import services.material_visibility_adapter as adapter
+    materials = [_material(f"cooperative-{number:03}") for number in range(96)]
+    reached = asyncio.Event()
+    assessed = 0
+    original = adapter.scoped_material_visibility
+
+    def assess(*args, **kwargs):
+        nonlocal assessed
+        assessed += 1
+        if assessed == 32:
+            reached.set()
+        return original(*args, **kwargs)
+
+    monkeypatch.setattr(adapter, "scoped_material_visibility", assess)
+    task = asyncio.create_task(prepare_material_views(_ReadSession(materials), materials))
+    await asyncio.wait_for(reached.wait(), 5)
+    task.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await task
+    assert 32 <= assessed < len(materials)
+    assert all(material.records == [] and material.needs_review is False for material in materials)
 
 
 def _views_by_id(views):

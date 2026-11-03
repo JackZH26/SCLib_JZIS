@@ -389,7 +389,9 @@ async def _build_timeline_fallback(
             data_updated_at = updated_at
 
     points: list[TimelinePoint] = []
-    for material in mats:
+    for number, material in enumerate(mats):
+        if number % 32 == 0:
+            await asyncio.sleep(0)
         for projected in extract_timeline_points(
             material.id,
             material.current_records(),

@@ -5,6 +5,7 @@ bounded parent ancestry to original material data before scientific projection.
 """
 from __future__ import annotations
 
+import asyncio
 import hashlib
 import json
 from copy import deepcopy
@@ -215,25 +216,25 @@ async def prepare_material_views(
             statuses.update(await resolve_paper_lifecycle(session, batch))
             MATERIAL_LIFECYCLE_IDS.labels("resolved").inc(len(batch))
     with material_list_stage("scope_policy_elapsed"):
-        own_sources = {
-            material.id: {
+        own_sources, fallback_sources = {}, {}
+        for number, material in enumerate(known.values()):
+            # A Timeline request can assess the complete catalogue at once.
+            # Preserve each assessment and final caller revision fence while
+            # letting health checks and other requests run between materials.
+            if number % 32 == 0:
+                await asyncio.sleep(0)
+            own_sources[material.id] = {
                 identifier: statuses.get(identifier)
                 for r in (material.records if isinstance(material.records, list) else [])
                 if (identifier := _scope_paper_id(r)) is not None
             }
-            for material in known.values()
-        }
-        # Preserve exactly the legacy nonempty-string source inventory for v1's
-        # malformed-metadata checks, without sending unrepresentable keys to SQL.
-        # Dropping an overlong key entirely would turn a hold into ordinary unknown.
-        fallback_sources = {
-            material.id: {
+            # Preserve exactly the legacy nonempty-string source inventory for
+            # malformed-metadata checks, without unrepresentable SQL keys.
+            fallback_sources[material.id] = {
                 record["paper_id"]: statuses.get(record["paper_id"])
                 for record in (material.records if isinstance(material.records, list) else [])
                 if isinstance(record, dict) and isinstance(record.get("paper_id"), str) and record["paper_id"]
             }
-            for material in known.values()
-        }
         resolved, scopes = {}, {}
 
         def assess(mid, *, parent=None, ancestry_error=None):
@@ -259,7 +260,12 @@ async def prepare_material_views(
                         assess(identity, parent=resolved.get(parent_id) if parent_id else None)
             return resolved[mid]
 
-        return [MaterialReadContext(m, resolve(m.id), own_sources[m.id], scopes[m.id]) for m in originals]
+        views = []
+        for number, material in enumerate(originals):
+            if number % 32 == 0:
+                await asyncio.sleep(0)
+            views.append(MaterialReadContext(material, resolve(material.id), own_sources[material.id], scopes[material.id]))
+        return views
 
 
 def _ancestry_chain(material_id, known):

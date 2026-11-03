@@ -473,7 +473,9 @@ async def list_materials(
             with material_list_stage("scope"):
                 views = await prepare_material_views(db, batch, lifecycle_memo=lifecycle_memo)
             with material_list_stage("selection"):
-                for material in views:
+                for number, material in enumerate(views):
+                    if number % 32 == 0:
+                        await asyncio.sleep(0)
                     if not visibility_allows_view(material.visibility, include_archive=include_pending):
                         continue
                     source_count = (material.visibility["source_scope"]["eligible_source_count"]
