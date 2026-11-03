@@ -7,6 +7,7 @@ from uuid import uuid4
 
 import pytest
 import pytest_asyncio
+import sqlalchemy as sa
 from sqlalchemy.ext.asyncio import create_async_engine,AsyncSession
 
 from models.db import get_engine,get_session_factory
@@ -125,6 +126,29 @@ async def test_activation_during_embedding_discards_every_old_candidate(reader,d
     monkeypatch.setattr(instance,'_semantic',switched)
     with pytest.raises(service.ContentRetrievalUnavailable):
         await instance.hybrid(pin,'synthetic',interpret_scientific_query('synthetic'),top_k=2)
+
+
+@pytest.mark.parametrize('restart_snapshot',[False,True])
+async def test_read_authority_reuse_never_survives_its_database_snapshot(reader,db_session,restart_snapshot):
+    from services.retrieval_candidate import current_read_pin
+    instance,pin,_,_=reader
+    later=await prepared_build(db_session,content_id=pin.content_id,logical_index=pin.logical_index)
+    approval=await accepted(db_session,later);await db_session.commit()
+    async def during(db):
+        await current_read_pin(db,pin)
+        async with AsyncSession(get_engine()) as writer:
+            await retrieval_activation.activate_backend(writer,**activation(later,approval,
+                predecessor=pin.activation_event_id,old=False),dry_run=False)
+            await writer.commit()
+        if restart_snapshot:
+            await db.rollback()
+            await db.execute(sa.text('SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY'))
+            with pytest.raises(ValueError):await current_read_pin(db,pin)
+        else:
+            assert await current_read_pin(db,pin)==pin
+    await instance._read(during)
+    async def fresh(db):await current_read_pin(db,pin)
+    with pytest.raises(ValueError):await instance._read(fresh)
 
 
 async def test_mutated_transport_policy_cannot_masquerade_as_sealed_policy(reader):

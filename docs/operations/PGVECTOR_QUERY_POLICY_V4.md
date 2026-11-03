@@ -72,3 +72,9 @@ between processes. Ordinary API pools remain separate from ANN. Background
 graph and full-validation processes share two CPU cores and low scheduling
 priority. Connection acquisition remains inside the unchanged three-second
 transport deadline rather than imposing a separate half-second pool failure.
+
+Authority reuse is limited to one established read-only REPEATABLE READ
+transaction. Leaving that scope, replacing/rolling back the transaction, or
+checking a different pin requires a new database authority resolution. Source
+rights and per-member integrity checks still run. The final selection always
+uses a new snapshot, including its first uncached authority check.
