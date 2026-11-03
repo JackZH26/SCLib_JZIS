@@ -73,6 +73,13 @@ PostgreSQL 仍是内容、证据、权限和检索成员清单的权威。pgvect
 
 首版使用 `vector(768)` 与 HNSW 余弦索引，保留 float32 原值，不引入量化或半精度。以完整精确检索样本作为 ANN 的质量参照。`m=16`、`ef_construction=64` 仅作为压测起点，最终参数随构建版本封存。pgvector 的过滤会影响 ANN 召回，需结合候选扩展、迭代扫描和小候选集精确计算验证，不能只保证 SQL 语法可执行。[pgvector 索引和过滤文档](https://github.com/pgvector/pgvector#filtering)
 
+词法导航先有界探测最多 5,001 条符合当前内容成员、年份和撤稿条件的命中。
+不超过 5,000 条时沿用完整词法排序；更宽泛的通用词使用语义候选，继续原有
+重排、内容版本、权限和证据校验，不用截断词法集合冒充全局词法 top-k。
+公式和定量条件继续使用既有受约束路径。语义检索仍必须成功，不能用该策略
+掩盖 ANN 或 embedding 失败；内部指标记录所选策略。ANN 的近似召回界限保留，
+不声称通用词获得了人工科学相关性认证。
+
 ## 数据版本和后端契约
 
 ### 保留既有历史
@@ -224,6 +231,19 @@ PostgreSQL 仍是内容、证据、权限和检索成员清单的权威。pgvect
 测试分层执行：SQL、扩展、迁移及 ANN 必须使用真实 PostgreSQL 16 与 pgvector；服务单元测试覆盖错误、版本和权限契约；更新后的实际 HTTP 捕获绑定本次源码；前端组件与真实浏览器覆盖旧链接、引用和下载。CI 固定 API/ingestion 依赖锁与镜像摘要；完整 schema 演练和适用测试通过后，不用无关重复运行代替缺失的生产证据。
 
 ## 灰度和回退
+
+生产检索池使用 `docker-compose.pgvector-api.yml` 的四个单进程 API，监听
+本机 8002–8005。ANN SQL 在数据库内共享四个事务级许可；连接池最多
+16 个连接不等于 16 条同时执行的 ANN SQL。只有运营配置
+`/etc/sclib/pgvector-api.env` 存在时，后续镜像发布才加载该池并逐个更新。
+该文件的 `SCLIB_MAIN_RETRIEVAL_BACKEND` 在灰度期间为 `google`，全量阶段
+改为 `pgvector`。数据库镜像维护仍由独立的 `/etc/sclib/pgvector.env` 控制。
+检索池关闭重复后台任务，沿用相同 API 镜像、运行账号、WIF、登录与配额；
+Prometheus 分别抓取四个进程并继续使用既有 SLO 规则。基线服务在全量阶段
+一并切换，当前 Google 部署按下列观察期保留。
+该覆盖同时将旧 ingestion 的后端选择设为 `pgvector`，使旧 Google 发布入口在
+任何写入前明确拒绝运行；暂停标记保持不动，恢复入库使用已验证的 Native
+producer/queue/builder/publisher 入口及各自独立账号。
 
 | 阶段 | 对外后端 | 观察与恢复 |
 | --- | --- | --- |

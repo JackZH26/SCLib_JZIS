@@ -55,6 +55,15 @@ async def test_database_pin_and_actual_hybrid_bind_native_legacy_and_same_identi
     assert {chunk.member['origin_kind'] for chunk in result.chunks.values()}=={'native_v2','legacy_v1'}
 
 
+async def test_broad_query_still_uses_complete_bound_semantics(reader,monkeypatch):
+    instance,pin,ids,calls=reader
+    monkeypatch.setattr(retrieval_navigation,'LEXICAL_MATCH_CAP',1)
+    result=await instance.hybrid(pin,'synthetic',interpret_scientific_query('synthetic'),top_k=2)
+    assert result.lexical_strategy=='semantic_broad_cohort' and result.pin==pin
+    assert set(result.chunks)==set(ids) and len(calls)==1
+    assert all(row.vector_score is not None and row.lexical_score is None for row in result.rankings)
+
+
 async def test_missing_or_forged_authority_does_not_start_embedding(reader):
     instance,pin,_,calls=reader
     with pytest.raises(service.ContentRetrievalUnavailable):await instance.pin(logical_index='absent-'+uuid4().hex)
@@ -76,8 +85,10 @@ async def test_closed_request_before_any_embedding(reader,fault):
     assert calls==[]
 
 
-async def test_semantic_failure_cannot_be_published_as_partial_lexical_success(reader,monkeypatch):
+@pytest.mark.parametrize('broad',[False,True])
+async def test_semantic_failure_cannot_be_published_as_partial_lexical_success(reader,monkeypatch,broad):
     instance,pin,_,_=reader
+    if broad:monkeypatch.setattr(retrieval_navigation,'LEXICAL_MATCH_CAP',1)
     def failed(*args,**kwargs):raise RuntimeError('secret provider request')
     monkeypatch.setattr(service.query_embedding,'embed_query',failed)
     with pytest.raises(service.ContentRetrievalUnavailable) as error:

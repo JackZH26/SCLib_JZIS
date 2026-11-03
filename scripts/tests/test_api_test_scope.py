@@ -196,6 +196,21 @@ def test_aggregate_requires_actual_complete_matching_receipts(
             scope.aggregate(value, tmp_path)
 
 
+def test_aggregate_retains_patch_versions_but_requires_same_python_minor(tmp_path, monkeypatch):
+    value = receipts(tmp_path, monkeypatch)
+    path = tmp_path / "0/result.json"
+    report = json.loads(path.read_text())
+    report["runtime"]["python_version"] = "3.11.99"
+    path.write_text(json.dumps(report))
+    result = scope.aggregate(value, tmp_path)
+    assert "3.11.99" in result["python_patch_versions"]
+    report["runtime"]["python_minor"] = "3.12"
+    report["runtime"]["python_version"] = "3.12.1"
+    path.write_text(json.dumps(report))
+    with pytest.raises(ValueError, match="batch_runtime_mismatch"):
+        scope.aggregate(value, tmp_path)
+
+
 def test_batch_always_uses_owned_runner_without_service_credentials(
     tmp_path, monkeypatch
 ):

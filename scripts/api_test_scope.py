@@ -257,7 +257,11 @@ def aggregate(value, directory, root=ROOT):
                 if checked!=run['counts'] or checked['failed'] or checked['errors']:
                     raise ValueError('failed_isolated_service_evidence')
         runtime_inventory.validate(item["runtime"])
-        if results and item["runtime"] != results[0]["runtime"]:
+        # Hosted runners can roll a CPython patch release between shards. Keep
+        # the same minor-version contract as runtime_inventory.compare while
+        # requiring exact packages, inputs, architecture and collector bytes.
+        identity = lambda runtime: {k: v for k, v in runtime.items() if k != "python_version"}
+        if results and identity(item["runtime"]) != identity(results[0]["runtime"]):
             raise ValueError("batch_runtime_mismatch")
         if item["runtime"]["source_revision"] != value["revision"]:
             raise ValueError("batch_runtime_revision_mismatch")
@@ -275,6 +279,7 @@ def aggregate(value, directory, root=ROOT):
         },
         "batches": sorted(results, key=lambda x: x["batch"]),
         "runtime": results[0]["runtime"],
+        "python_patch_versions": sorted({x["runtime"]["python_version"] for x in results}),
     }
 
 

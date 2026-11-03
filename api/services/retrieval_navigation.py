@@ -1,4 +1,5 @@
 """Content-pinned lexical navigation, never permission or scientific approval."""
+from dataclasses import dataclass
 from uuid import UUID
 
 import sqlalchemy as sa
@@ -13,6 +14,60 @@ from services.retrieval_backend import _phase
 
 
 class RetrievalNavigationError(ValueError):pass
+
+
+LEXICAL_MATCH_CAP=5000
+
+
+@dataclass(frozen=True,slots=True)
+class LexicalNavigation:
+    hits: tuple[LexicalHit,...]
+    strategy: str
+    eligible_rows_observed: int
+
+
+async def bounded_lexical_search(db,pin,query,*,limit,year_min=None,year_max=None,exclude_retracted=True):
+    """Use semantic navigation for a broad lexical cohort, never a partial rank.
+
+    Stop after cap+1 eligible rows without ranking or fetching their text. A
+    lateral primary-key membership lookup prevents a full content hash join.
+    The caller must still complete ANN and all current source checks; this is
+    a query strategy, not a lexical fallback after a failed semantic request.
+    """
+    params=_request(pin,limit,year_min,year_max)
+    if type(query) is not str or not 2<=len(query)<=2000 or not query.strip() or type(exclude_retracted) is not bool:
+        raise RetrievalNavigationError('A bounded original query and explicit source filter are required')
+    params.update(query=query,exclude_retracted=exclude_retracted,probe_limit=LEXICAL_MATCH_CAP+1)
+    await current_read_pin(db,pin)
+    year="AND (CAST(:year_min AS integer) IS NULL OR n.year>=:year_min) AND (CAST(:year_max AS integer) IS NULL OR n.year<=:year_max)"
+    observed=await db.scalar(sa.text(f"""
+      SELECT count(*) FROM (
+        (SELECT n.vector_id FROM index_generation_search n
+          JOIN LATERAL (SELECT 1 FROM retrieval_content_members_v2 m
+            WHERE m.content_id=:content AND m.vector_id=n.vector_id
+              AND m.origin_kind='legacy_v1' AND m.origin_generation_id=n.generation_id
+            LIMIT 1) member ON true
+          JOIN papers p ON p.id=n.paper_id
+          WHERE n.document @@ websearch_to_tsquery('english'::regconfig,:query)
+            AND (NOT :exclude_retracted OR p.status<>'retracted') {year}
+          LIMIT :probe_limit)
+        UNION ALL
+        (SELECT n.vector_id FROM {TABLE} n
+          JOIN retrieval_content_members_v2 m ON m.content_id=:content
+            AND m.origin_kind='native_v2' AND m.native_revision_id=n.native_revision_id
+            AND m.vector_id=n.vector_id AND m.origin_record_sha256=n.native_record_sha256
+          JOIN papers p ON p.id=m.paper_id
+          WHERE n.version=:version AND n.document @@ websearch_to_tsquery('english'::regconfig,:query)
+            AND (NOT :exclude_retracted OR p.status<>'retracted') {year}
+          LIMIT :probe_limit)
+        LIMIT :probe_limit
+      ) eligible
+    """),params)
+    if observed>LEXICAL_MATCH_CAP:
+        return LexicalNavigation((),'semantic_broad_cohort',int(observed))
+    hits=await lexical_search(db,pin,query,limit=limit,year_min=year_min,year_max=year_max,
+        exclude_retracted=exclude_retracted)
+    return LexicalNavigation(tuple(hits),'hybrid',int(observed))
 
 
 async def ensure_native_navigation(db, *, native_revision_id, dry_run=True):
@@ -77,12 +132,21 @@ async def lexical_search(db,pin,query,*,limit,year_min=None,year_max=None,exclud
       ), selected AS MATERIALIZED (
         SELECT * FROM candidates ORDER BY score DESC,vector_id COLLATE "C" LIMIT :limit
       )
-      SELECT s.vector_id,s.score,CASE WHEN s.native THEN
-        n.record_sha256=public.sclib_retrieval_record_hash_v2(to_jsonb(n)) ELSE true END AS intact
-      FROM selected s LEFT JOIN {TABLE} n ON s.native AND n.vector_id=s.vector_id
+      SELECT s.vector_id,s.score,s.native FROM selected s
       ORDER BY s.score DESC,s.vector_id COLLATE "C"
     """),params)).mappings().all()
-    if any(row['intact'] is not True for row in rows):raise RetrievalNavigationError('Selected lexical navigation integrity mismatch')
+    # Keep the corpus-wide ranking parallel-safe. The PL/pgSQL hash function
+    # otherwise disables parallelism for the entire lexical query, even when
+    # its CASE arm would only inspect a few selected native rows.
+    native_ids=[row['vector_id'] for row in rows if row['native']]
+    if native_ids:
+        checked=(await db.execute(sa.text(f"SELECT vector_id,"
+            "record_sha256=public.sclib_retrieval_record_hash_v2(to_jsonb(n)) AS intact "
+            f"FROM {TABLE} n WHERE vector_id=ANY(CAST(:ids AS text[]))"),
+            {'ids':native_ids})).mappings().all()
+        if ({row['vector_id'] for row in checked}!=set(native_ids)
+                or any(row['intact'] is not True for row in checked)):
+            raise RetrievalNavigationError('Selected lexical navigation integrity mismatch')
     return [LexicalHit(row['vector_id'],float(row['score'])) for row in rows]
 
 

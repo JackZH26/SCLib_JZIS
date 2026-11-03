@@ -53,6 +53,30 @@ async def test_native_and_small_legacy_keywords_formulas_and_unknown_years(db_se
     assert [hit.chunk_id for hit in await service.formula_search(db_session,pin,{'MgB2'},limit=30)]==sorted(ids)
 
 
+async def test_bounded_navigation_preserves_exact_small_cohort(db_session,tmp_path,english_sources):
+    pin,ids,_=await active_content(db_session,tmp_path)
+    expected=await service.lexical_search(db_session,pin,'superconductivity',limit=30)
+    result=await service.bounded_lexical_search(db_session,pin,'superconductivity',limit=30)
+    assert result.strategy=='hybrid' and result.eligible_rows_observed==len(ids)
+    assert list(result.hits)==expected
+
+
+async def test_broad_probe_stops_without_publishing_partial_lexical_rank(db_session,tmp_path,english_sources,monkeypatch):
+    pin,_,_=await active_content(db_session,tmp_path)
+    monkeypatch.setattr(service,'LEXICAL_MATCH_CAP',1)
+    async def forbidden(*args,**kwargs):raise AssertionError('A broad cohort must not enter full lexical ranking')
+    monkeypatch.setattr(service,'lexical_search',forbidden)
+    result=await service.bounded_lexical_search(db_session,pin,'superconductivity',limit=30)
+    assert result.strategy=='semantic_broad_cohort' and result.eligible_rows_observed==2 and result.hits==()
+
+
+async def test_probe_applies_year_eligibility_before_broad_decision(db_session,tmp_path,english_sources,monkeypatch):
+    pin,_,_=await active_content(db_session,tmp_path)
+    monkeypatch.setattr(service,'LEXICAL_MATCH_CAP',1)
+    result=await service.bounded_lexical_search(db_session,pin,'superconductivity',limit=30,year_min=2000)
+    assert result.strategy=='hybrid' and result.eligible_rows_observed==0 and result.hits==()
+
+
 async def test_native_navigation_replay_and_read_helpers_do_not_change_state_or_settings(db_session,tmp_path,english_sources):
     pin,ids,_=await active_content(db_session,tmp_path)
     rows=await retrieval_members.load_members(db_session,pin,ids)
@@ -157,6 +181,34 @@ async def test_untrusted_query_syntax_is_data_and_does_not_mutate_sources(db_ses
     before=await state(db_session)
     assert await service.lexical_search(db_session,pin,"'; DROP TABLE papers; -- unmatchedxyz",limit=30)==[]
     assert await state(db_session)==before
+
+
+@pytest.mark.parametrize('fault',['hash','removed_after_ranking'])
+async def test_selected_native_navigation_still_fails_closed(db_session,tmp_path,english_sources,monkeypatch,fault):
+    pin,ids,_=await active_content(db_session,tmp_path)
+    members=await retrieval_members.load_members(db_session,pin,ids)
+    native=next(row['vector_id'] for row in members if row['origin_kind']=='native_v2')
+    assert native
+    execute=db_session.execute
+
+    async def corrupt():
+        await execute(sa.text(f'ALTER TABLE {TABLE} DISABLE TRIGGER nav_v2_immutable'))
+        if fault=='hash':
+            await execute(sa.text(f"UPDATE {TABLE} SET record_sha256=repeat('0',64) WHERE vector_id=:id"),{'id':native})
+        else:
+            await execute(sa.text(f'DELETE FROM {TABLE} WHERE vector_id=:id'),{'id':native})
+        await execute(sa.text(f'ALTER TABLE {TABLE} ENABLE TRIGGER nav_v2_immutable'))
+
+    if fault=='hash':
+        await corrupt()
+    else:
+        async def after_ranking(statement,*args,**kwargs):
+            result=await execute(statement,*args,**kwargs)
+            if 'WITH candidates AS' in str(statement):await corrupt()
+            return result
+        monkeypatch.setattr(db_session,'execute',after_ranking)
+    with pytest.raises(service.RetrievalNavigationError,match='integrity mismatch'):
+        await service.lexical_search(db_session,pin,'superconductivity',limit=30)
 
 
 async def test_old_validation_does_not_bypass_missing_navigation_at_activation(db_session,tmp_path,english_sources):
