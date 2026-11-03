@@ -53,3 +53,10 @@ the three-second transport deadline. Settings are established together and
 remain transaction-local. This removes repeated connection/setup round trips
 without adding permits, extending a deadline or changing the V4 candidate
 policy. A statement or validation failure rejects the whole batch.
+
+Inputs are materialized as typed vector(768) values once per source before
+the correlated scans. This preserves the same canonical float32 conversion
+while avoiding repeated parsing of each text vector for candidate distances.
+The actual20-source profile visited the same HNSW index/pages, with execution
+falling from1736ms to249ms for that diagnostic case. This observation is not
+a substitute for the affected HTTP load gate.

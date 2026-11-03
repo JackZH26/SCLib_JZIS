@@ -185,7 +185,7 @@ class PgvectorQueries:
             *(["year<=:year_max"] if year_max is not None else []),
             *(["NOT (chunk_revision_sha256=ANY(CAST(:excluded AS text[])))"] if excluded else []),
         ]) or "true"
-        distance = "embedding <=> CAST(inputs.query AS vector(768))"
+        distance = "embedding <=> inputs.query"
         try:
             async with asyncio.timeout(self.budget.total_seconds), self._slots:
                 async with self.engine.connect() as connection, connection.begin():
@@ -213,8 +213,9 @@ class PgvectorQueries:
                     # Each correlated source retains its own candidate frontier
                     # and exact distance ordering. One statement owns the same
                     # shared SQL permit and deadline for the complete inventory.
-                    statement = ("SELECT inputs.source_order,neighbor.* FROM "
-                        "unnest(CAST(:queries AS text[])) WITH ORDINALITY AS inputs(query,source_order) "
+                    statement = ("WITH inputs AS MATERIALIZED (SELECT raw.query::vector(768) AS query,source_order "
+                        "FROM unnest(CAST(:queries AS text[])) WITH ORDINALITY AS raw(query,source_order)) "
+                        "SELECT inputs.source_order,neighbor.* FROM inputs "
                         f"CROSS JOIN LATERAL ({per_source}) neighbor "
                         'ORDER BY inputs.source_order,neighbor.distance,neighbor.vector_id COLLATE "C"')
                     rows = (await connection.execute(sa.text(statement), params)).mappings().all()
