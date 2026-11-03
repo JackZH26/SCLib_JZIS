@@ -241,6 +241,9 @@ PostgreSQL 仍是内容、证据、权限和检索成员清单的权威。pgvect
 检索池关闭重复后台任务，沿用相同 API 镜像、运行账号、WIF、登录与配额；
 Prometheus 分别抓取四个进程并继续使用既有 SLO 规则。基线服务在全量阶段
 一并切换，当前 Google 部署按下列观察期保留。
+该覆盖同时将旧 ingestion 的后端选择设为 `pgvector`，使旧 Google 发布入口在
+任何写入前明确拒绝运行；暂停标记保持不动，恢复入库使用已验证的 Native
+producer/queue/builder/publisher 入口及各自独立账号。
 
 | 阶段 | 对外后端 | 观察与恢复 |
 | --- | --- | --- |

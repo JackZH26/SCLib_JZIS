@@ -54,6 +54,9 @@ services:
   api:
     environment:
       RETRIEVAL_BACKEND: ${SCLIB_MAIN_RETRIEVAL_BACKEND:-google}
+  ingestion:
+    environment:
+      RETRIEVAL_BACKEND: pgvector
   api-pgvector-1:
     <<: *pgvector-api
     container_name: sclib-pgvector-api-1

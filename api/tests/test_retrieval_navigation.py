@@ -185,8 +185,9 @@ async def test_untrusted_query_syntax_is_data_and_does_not_mutate_sources(db_ses
 
 @pytest.mark.parametrize('fault',['hash','removed_after_ranking'])
 async def test_selected_native_navigation_still_fails_closed(db_session,tmp_path,english_sources,monkeypatch,fault):
-    pin,_,_=await active_content(db_session,tmp_path)
-    native=await db_session.scalar(sa.text(f'SELECT vector_id FROM {TABLE} LIMIT 1'))
+    pin,ids,_=await active_content(db_session,tmp_path)
+    members=await retrieval_members.load_members(db_session,pin,ids)
+    native=next(row['vector_id'] for row in members if row['origin_kind']=='native_v2')
     assert native
     execute=db_session.execute
 
