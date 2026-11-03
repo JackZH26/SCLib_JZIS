@@ -373,7 +373,17 @@ async def _build_timeline_fallback(
     if not include_pending:
         stmt = stmt.where(Material.needs_review.is_(False))
 
-    source_rows = (await db.execute(stmt)).scalars().all()
+    # Materializing the full ORM result in one event-loop turn also blocks
+    # unrelated health/API requests. Fetch bounded pages; the same final epoch
+    # check still rejects any source change during this longer read.
+    source_rows = []
+    stream = await db.stream_scalars(stmt.execution_options(yield_per=128))
+    try:
+        async for batch in stream.partitions(128):
+            source_rows.extend(batch)
+            await asyncio.sleep(0)
+    finally:
+        await stream.close()
     mats = [m for m in await prepare_material_views(db, source_rows)
             if visibility_allows_view(m.visibility, include_archive=include_pending)]
     data_updated_at = max(

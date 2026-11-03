@@ -92,7 +92,8 @@ async def test_large_cpu_assessment_remains_cancellable_between_materials(monkey
 
     monkeypatch.setattr(adapter, "scoped_material_visibility", assess)
     task = asyncio.create_task(prepare_material_views(_ReadSession(materials), materials))
-    await asyncio.wait_for(reached.wait(), 5)
+    async with asyncio.timeout(5):
+        await reached.wait()
     task.cancel()
     with pytest.raises(asyncio.CancelledError):
         await task

@@ -93,3 +93,34 @@ async def test_simultaneous_cold_reads_share_one_build(client, db_session, monke
     responses = await asyncio.gather(*(client.get("/v1/timeline", params={"family": family}) for _ in range(3)))
     assert all(response.status_code == 200 for response in responses)
     assert len(calls) == 1 and all(response.json() == responses[0].json() for response in responses)
+
+
+async def test_interrupted_catalogue_fetch_closes_its_real_sql_cursor(db_session, monkeypatch):
+    family = "timeline_cancel_" + uuid4().hex[:12]
+    await material_row(db_session, family=family, label="subject", tc=30, old_tc=30, source_count=1)
+    original = db_session.stream_scalars
+    closed = []
+
+    async def interrupted(statement):
+        assert statement.get_execution_options()["yield_per"] == 128
+        actual = await original(statement)
+
+        class Stream:
+            async def partitions(self, size):
+                assert size == 128
+                async for batch in actual.partitions(size):
+                    yield batch
+                    raise asyncio.CancelledError()
+
+            async def close(self):
+                await actual.close()
+                closed.append(True)
+
+        return Stream()
+
+    monkeypatch.setattr(db_session, "stream_scalars", interrupted)
+    with pytest.raises(asyncio.CancelledError):
+        await routes._build_timeline_fallback(family=family, include_pending=False,
+            experimental_only=False, only_aps=False, max_points=None, offset=0, limit=1, db=db_session)
+    assert closed == [True]
+    assert not routes._timeline_pages.entries
