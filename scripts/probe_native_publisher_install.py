@@ -14,7 +14,7 @@ from services.schema_lifecycle import expected_heads
 modules = {"bridge": producer, "batch_worker": batch, "source_writer": indexer, "native_contract": native}
 assert all(Path(module.__file__).resolve().is_relative_to(Path(sys.prefix).resolve())
     for module in modules.values()), "Refusing repository imports"
-assert expected_heads() == ("0116_publication_queue_v2",)
+assert expected_heads() == ("0117_retrieval_policy_v4",)
 assert callable(producer.publish_prepared) and callable(indexer.upsert_paper_with_chunks)
 print(json.dumps({"version": "native-publisher-installed-probe/1.0.0",
     "interpreter": sys.version.split()[0], "repository_imports": False,

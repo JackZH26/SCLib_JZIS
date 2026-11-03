@@ -24,6 +24,6 @@ ENV GIT_SHA=$GIT_SHA
 RUN groupadd --system --gid 1001 sclib \
     && useradd --system --uid 1001 --gid sclib --home /tmp sclib
 USER 1001:1001
-RUN --network=none python -I -c "from services.schema_lifecycle import expected_heads; assert expected_heads()==('0116_publication_queue_v2',); import tiktoken; tiktoken.get_encoding('cl100k_base')"
+RUN --network=none python -I -c "from services.schema_lifecycle import expected_heads; assert expected_heads()==('0117_retrieval_policy_v4',); import tiktoken; tiktoken.get_encoding('cl100k_base')"
 ENTRYPOINT ["/usr/bin/tini", "--", "sclib-publish-native"]
 CMD ["--help"]

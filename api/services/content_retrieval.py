@@ -13,7 +13,7 @@ from dataclasses import dataclass
 import sqlalchemy as sa
 
 from config import get_settings
-from models.retrieval_policy_v3 import POLICY_SHA256
+from models.retrieval_policy_v4 import POLICY_SHA256
 from models.scientific_query import ScientificQueryInterpretation
 from services import provider_resilience,query_embedding,retrieval,retrieval_members,retrieval_navigation
 from services.pgvector_query import PgvectorQueries,QueryBudget

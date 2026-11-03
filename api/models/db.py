@@ -1939,3 +1939,7 @@ _register_retrieval_policy_v3(Base.metadata)
 from models.retrieval_publication_queue_v2 import register as _register_retrieval_publication_queue_v2
 
 _register_retrieval_publication_queue_v2(Base.metadata)
+
+from models.retrieval_policy_v4 import register as _register_retrieval_policy_v4
+
+_register_retrieval_policy_v4(Base.metadata)

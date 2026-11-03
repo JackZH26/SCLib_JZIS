@@ -62,17 +62,21 @@ class QueryBudget:
     year_exact_cohort_limit: int = 200000
     ef_search: int = 1000
     candidate_pool: int = 1024
+    source_ef_search: int = 256
+    source_candidate_pool: int = 257
     max_scan_tuples: int = 20000
 
     def __post_init__(self):
         bounds = ((self.concurrency, 1, 8), (self.statement_ms, 1, 5000),
                   (self.exact_cohort_limit, 1, 5000), (self.year_exact_cohort_limit, 1, 200000), (self.ef_search, 40, 1000),
-                  (self.max_scan_tuples, 1000, 50000), (self.candidate_pool, 101, 4096))
+                  (self.max_scan_tuples, 1000, 50000), (self.candidate_pool, 101, 4096),
+                  (self.source_ef_search, 40, 1000), (self.source_candidate_pool, 101, 4096))
         if (any(type(value) is not int or not low <= value <= high for value, low, high in bounds)
                 or type(self.total_seconds) not in {int, float}
                 or not math.isfinite(self.total_seconds) or not 0 < self.total_seconds <= 10
                 or self.statement_ms > self.total_seconds * 1000
-                or self.candidate_pool <= self.ef_search):
+                or self.candidate_pool <= self.ef_search
+                or self.source_candidate_pool <= self.source_ef_search):
             raise PgvectorQueryError("Invalid pgvector query budget")
 
 
@@ -177,8 +181,9 @@ class PgvectorQueries:
         tasks = []
         try:
             async with asyncio.timeout(self.budget.total_seconds):
-                tasks = [asyncio.create_task(self.query(projection, vector, top_k=top_k,
-                    year_min=year_min, year_max=year_max, excluded_revisions=excluded))
+                tasks = [asyncio.create_task(self._query(projection, vector, top_k=top_k,
+                    year_min=year_min, year_max=year_max, excluded_revisions=excluded,
+                    ef_search=self.budget.source_ef_search, candidate_pool=self.budget.source_candidate_pool))
                     for vector in checked]
                 return tuple(await asyncio.gather(*tasks))
         except PgvectorQueryError:
@@ -194,22 +199,32 @@ class PgvectorQueries:
 
     async def query(self, projection, vector, *, top_k, year_min=None, year_max=None,
                     excluded_revisions=()):
+        return await self._query(projection, vector, top_k=top_k, year_min=year_min, year_max=year_max,
+            excluded_revisions=excluded_revisions, ef_search=self.budget.ef_search,
+            candidate_pool=self.budget.candidate_pool)
+
+    async def _query(self, projection, vector, *, top_k, year_min, year_max,
+                     excluded_revisions, ef_search, candidate_pool):
         if type(projection) is not ProjectionSpec:
             raise PgvectorQueryError("An explicit projection identity is required")
         params = _request(vector, top_k, year_min, year_max, excluded_revisions)
-        params["candidate_pool"] = self.budget.candidate_pool
+        params["candidate_pool"] = candidate_pool
         # SQL structure comes only from closed code and canonical UUIDs. All
         # query values, including the exclusion array, remain bind parameters.
-        predicate = ("(CAST(:year_min AS integer) IS NULL OR year>=:year_min) AND "
-                     "(CAST(:year_max AS integer) IS NULL OR year<=:year_max) AND "
-                     "NOT (chunk_revision_sha256=ANY(CAST(:excluded AS text[])))")
+        # Select only closed predicate shapes after input validation. Avoid
+        # nullable OR terms obscuring the year index in a generic prepared plan.
+        predicate = " AND ".join([
+            *(["year>=:year_min"] if year_min is not None else []),
+            *(["year<=:year_max"] if year_max is not None else []),
+            *(["NOT (chunk_revision_sha256=ANY(CAST(:excluded AS text[])))"] if excluded_revisions else []),
+        ]) or "true"
         distance = "embedding <=> CAST(:query AS vector(768))"
         try:
             async with asyncio.timeout(self.budget.total_seconds), self._slots:
                 async with self.engine.connect() as connection, connection.begin():
                     await connection.execute(sa.text("SET TRANSACTION READ ONLY"))
                     settings = {"statement_timeout": str(self.budget.statement_ms), "lock_timeout": "250ms",
-                                "work_mem": "8MB", "hnsw.ef_search": str(self.budget.ef_search),
+                                "work_mem": "8MB", "hnsw.ef_search": str(ef_search),
                                 "hnsw.iterative_scan": "relaxed_order",
                                 "hnsw.max_scan_tuples": str(self.budget.max_scan_tuples),
                                 "hnsw.scan_mem_multiplier": "1"}

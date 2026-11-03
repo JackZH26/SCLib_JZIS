@@ -5,7 +5,7 @@ from types import MappingProxyType
 from services.content_retrieval import ContentRetriever,ContentRetrievalUnavailable
 from services.pgvector_query import QueryBudget
 from services.retrieval_candidate import EngineeringCandidatePin,load_candidate
-from models.retrieval_policy_v3 import POLICY_SHA256
+from models.retrieval_policy_v4 import POLICY_SHA256
 from services.embedding_contract import validate_vector
 
 

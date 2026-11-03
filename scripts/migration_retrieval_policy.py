@@ -30,7 +30,7 @@ async def populated(capability):
                 return {'actual_pgvector_runtime':False,'populated_checks':'not_run_without_owned_vector'}
             _,content=await legacy_content(db);identifier=str(uuid4())
             await backend.stage_build(db,build_id=identifier,content_id=content['content_id'],image_digest='sha256:'+'a'*64,
-                implementation_revision='b'*40,dry_run=False)
+                implementation_revision='b'*40,policy_version='v3',dry_run=False)
             row=await backend._existing(db,'retrieval_backend_builds_v2',{'id':UUID(identifier)})
             assert row['policy']==POLICY and row['policy_artifact_sha256']==POLICY_SHA256
             await db.commit()

@@ -12,7 +12,7 @@ from uuid import UUID
 import sqlalchemy as sa
 
 from config import get_settings
-from models.retrieval_policy_v3 import POLICY,POLICY_SHA256
+from models.retrieval_policy_v4 import POLICY,POLICY_SHA256
 from services.index_generations import _pin as source_pin
 from services.pgvector_query import ProjectionSpec
 from services.retrieval_activation import RetrievalPinV2,assert_current_backend
@@ -101,7 +101,7 @@ async def load_candidate(db,*,build_id,validation_id,expected_database='sclib_re
             or any(validation[key]!=0 for key in ('missing_count','extra_count','mismatch_count'))
             or validation['content_manifest_intact'] is not True
             or any(validation[key]!=physical[key] for key in ('table_oid','index_oid'))):
-        raise CandidateUnavailable('Exact validated V3 candidate required')
+        raise CandidateUnavailable('Exact validated V4 candidate required')
     logical=content['logical_index']
     # This initial-migration rehearsal is subordinate to its actual v1 source.
     # It is never a second active pointer beside an activated v2 backend.

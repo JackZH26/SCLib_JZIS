@@ -119,8 +119,13 @@ async def test_interrupted_catalogue_fetch_closes_its_real_sql_cursor(db_session
         return Stream()
 
     monkeypatch.setattr(db_session, "stream_scalars", interrupted)
-    with pytest.raises(asyncio.CancelledError):
-        await routes._build_timeline_fallback(family=family, include_pending=False,
-            experimental_only=False, only_aps=False, max_points=None, offset=0, limit=1, db=db_session)
+    try:
+        with pytest.raises(asyncio.CancelledError):
+            await routes._build_timeline_fallback(family=family, include_pending=False,
+                experimental_only=False, only_aps=False, max_points=None, offset=0, limit=1, db=db_session)
+    finally:
+        # The shared fixture closes in its session loop. Return this test's
+        # checked-out connection in the function loop which opened its cursor.
+        await db_session.rollback()
     assert closed == [True]
     assert not routes._timeline_pages.entries

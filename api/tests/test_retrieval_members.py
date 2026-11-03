@@ -23,7 +23,7 @@ pytestmark = [pytest.mark.asyncio, pytest.mark.skipif(
     os.environ.get('SCLIB_PGVECTOR_RUNTIME_TEST') != '1', reason='Requires fresh owned vector runner')]
 
 
-async def active_content(db, tmp_path=None,*,policy_version='v3'):
+async def active_content(db, tmp_path=None,*,policy_version='v4'):
     first = await prepared_build(db,policy_version=policy_version)
     event = await activation_service.activate_backend(db, **activation(first, await accepted(db, first)), dry_run=False)
     if tmp_path is not None:

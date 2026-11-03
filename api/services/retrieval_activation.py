@@ -14,7 +14,7 @@ import sqlalchemy as sa
 
 from models.db import Base
 from models.retrieval_activation_v2 import GATES, TABLE_ORDER
-from models.retrieval_policy_v3 import SUPPORTED_POLICIES
+from models.retrieval_policy_v4 import SUPPORTED_POLICIES
 from services.pgvector_query import ProjectionSpec
 from services.retrieval_backend import RetrievalBackendError, _existing, _phase
 

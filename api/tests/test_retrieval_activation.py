@@ -22,7 +22,7 @@ pytestmark = [pytest.mark.asyncio, pytest.mark.skipif(
     os.environ.get('SCLIB_PGVECTOR_RUNTIME_TEST') != '1', reason='Requires fresh owned vector runner')]
 
 
-async def prepared_build(db, *, content_id=None, logical_index=None,policy_version='v3'):
+async def prepared_build(db, *, content_id=None, logical_index=None,policy_version='v4'):
     old = None
     if content_id is None:
         logical = logical_index or 'synthetic-' + uuid4().hex

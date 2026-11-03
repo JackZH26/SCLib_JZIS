@@ -301,6 +301,8 @@ async def test_projection_does_not_accept_sql_object_names():
     {"concurrency": True}, {"concurrency": 9}, {"statement_ms": 6000},
     {"total_seconds": float("inf")}, {"total_seconds": 1.0, "statement_ms": 2000},
     {"candidate_pool": True}, {"candidate_pool": 4097}, {"candidate_pool": 1000},
+    {"source_ef_search": True}, {"source_ef_search": 1001},
+    {"source_candidate_pool": 256}, {"source_candidate_pool": 4097},
 ])
 async def test_unbounded_resource_settings_are_rejected(budget):
     with pytest.raises(PgvectorQueryError):

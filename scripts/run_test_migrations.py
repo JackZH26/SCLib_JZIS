@@ -2983,6 +2983,8 @@ def main() -> None:
         print('BOUNDED_VALIDATION_SCHEMA_RECEIPT ' + bounded_validation_json(bounded_validation_empty(capability, engine, config), sort_keys=True))
         from migration_retrieval_publication_queue import empty_roundtrip as publication_queue_empty
         publication_queue_empty_receipt=publication_queue_empty(capability,engine,config)
+        from migration_retrieval_policy_v4 import empty_roundtrip as query_policy_v4_empty
+        query_policy_v4_empty_receipt=query_policy_v4_empty(capability,engine,config)
         from migration_retrieval_policy import empty_roundtrip as query_policy_empty
         query_policy_empty_receipt=query_policy_empty(capability,engine,config)
         from migration_discovery_calculations import empty_roundtrip as calculation_empty
@@ -3319,6 +3321,10 @@ def main() -> None:
         publication_queue_capture=asyncio.run(publication_queue_populated(capability))
         publication_queue_retention=publication_queue_retained(capability,engine,config,publication_queue_capture)
         print('PUBLICATION_QUEUE_SCHEMA_RECEIPT '+json.dumps({**publication_queue_empty_receipt,**publication_queue_capture,**publication_queue_retention},sort_keys=True))
+        from migration_retrieval_policy_v4 import populated as query_policy_v4_populated,retained as query_policy_v4_retained
+        query_policy_v4_capture=asyncio.run(query_policy_v4_populated(capability))
+        query_policy_v4_retention=query_policy_v4_retained(capability,engine,config,query_policy_v4_capture)
+        print('QUERY_POLICY_V4_SCHEMA_RECEIPT '+json.dumps({**query_policy_v4_empty_receipt,**query_policy_v4_capture,**query_policy_v4_retention},sort_keys=True))
         if recorder is not None:
             with engine.connect() as connection:
                 verify_postgres_identity(connection, capability)
