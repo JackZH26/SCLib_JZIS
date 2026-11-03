@@ -91,3 +91,18 @@ async def test_cancelled_caller_does_not_release_actual_running_worker_capacity(
     finally:
         release.set()
         await workers.close()
+
+
+def test_uncached_client_remains_alive_during_model_call(provider,monkeypatch):
+    state={'closed':False,'called':False}
+    class Models:
+        def embed_content(self,**kwargs):
+            assert not state['closed'], 'SDK owner was collected before its request'
+            state['called']=True
+            return provider[1]
+    class Client:
+        def __init__(self):self.models=Models()
+        def __del__(self):state['closed']=True
+    monkeypatch.setattr(service,'embedding_client',Client)
+    assert service.embed_query(PROFILE,'niobium superconductivity')==[1.0]+[0.0]*767
+    assert state['called'] and state['closed']
