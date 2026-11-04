@@ -1,5 +1,32 @@
 # Offline Similar graph reader
 
+The optional private compressed segment can use the QEMU build in
+`QemuExport.Dockerfile`. Its `sealed=on` FUSE option keeps data timestamps stable
+and retains cached pages across opens. This addresses the measured loss of clean
+pages when the ordinary export refreshes its synthetic modification time.
+The option rejects write, truncate and allocation requests while allowing the
+PostgreSQL scanner to open the index with `O_RDWR`.
+
+Build for `linux/amd64` with this directory as the context. The recipe verifies
+the Ubuntu source package against `qemu-source-sha256.txt` before applying
+`qemu-sealed-export.patch`. Extract `/qemu-storage-daemon` from the resulting
+image, verify its digest and runtime libraries on the target, and run
+`check-sealed-export.py` with the existing qualified `qemu-img` and signed
+PostgreSQL image. The check requires a private Linux tmpfs, FUSE mounting
+privileges and Docker. It uses 16 MiB of deterministic synthetic data and checks
+cache retention, direct readback, default write behavior, mutation rejection and
+the scanner UID's access. Run it inside the operator's resource limits.
+
+Use sealed mode only for the privately owned, immutable execution copy and the
+isolated scanner. The backing graph must have no other writer or control socket.
+The scanner reads through PostgreSQL buffers and never creates writable mappings
+of the segment. Capture and independently check the entire segment before use.
+Use direct I/O for that check so verification does not fill the decompressed
+cache. Bound the execution cache within the scratch container's memory limits
+and retain the host, backup, pressure and disk guards. Synthetic qualification
+must be followed by a bounded natural-source continuation from the last verified
+checkpoint before admitting this exporter for construction of the full artifact.
+
 The bounded builder accepts an optional `--carrier-socket DIRECTORY`. It walks a private copy of one sealed HNSW index using the pgvector access method. A repeatable-read transaction on the authoritative database resolves physical row IDs, applies the full revision exclusion list and computes the final distances. A missing physical row stops the slice. Every completed source uses the existing SQLite checkpoint transaction and resumes through the existing build cursor.
 
 ## Prepare a carrier
