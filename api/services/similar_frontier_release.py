@@ -7,6 +7,7 @@ import os
 import sqlite3
 import stat
 from contextlib import closing
+from importlib.resources import files
 from pathlib import Path
 from uuid import UUID
 
@@ -41,6 +42,17 @@ def _file_identity(st):
 
 class SimilarFrontiers:
     """The release admission supplies both digests outside the artifact directory."""
+
+    @classmethod
+    def from_release(cls):
+        # Admission changes ship in the same signed API wheel/image as the reader.
+        # Mounted candidate files and environment variables cannot choose their own digests.
+        admission = json.loads(
+            files("models").joinpath("similar_frontier_admission.json").read_bytes()
+        )
+        if admission["version"] != "sclib-similar-frontier-admission/1":
+            raise ValueError("Unknown Similar frontier admission version")
+        return cls(admission["builds"])
 
     def __init__(self, approved, directory=MOUNT):
         if len(approved) != 2 or len(set(approved.values())) != 2:

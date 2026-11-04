@@ -106,8 +106,8 @@ class Settings(BaseSettings):
     vertex_ai_deployed_index_id: str = ""
     retrieval_logical_index: str = Field(default="sclib-main", pattern=r"^[A-Za-z0-9][A-Za-z0-9._-]{0,127}$")
     retrieval_backend: Literal['google','pgvector'] = 'google'
-    # Release-admitted build UUID -> immutable file SHA-256 (primary and rollback).
-    retrieval_similar_frontiers: dict[str, str] = Field(default_factory=dict)
+    # The signed API image supplies both approved content-addressed file digests.
+    retrieval_use_similar_frontiers: bool = False
 
     # === AI models ===
     gemini_model: str = "gemini-3.5-flash"
