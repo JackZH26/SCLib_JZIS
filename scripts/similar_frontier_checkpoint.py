@@ -6,6 +6,7 @@ on the normal request path. A checkpoint is not a serving or coverage receipt.
 """
 from contextlib import closing
 import hashlib
+from itertools import groupby
 import json
 import math
 from pathlib import Path
@@ -123,3 +124,58 @@ def read(db, paper, source_sha, exclusion_sha, limit):
         binding = {k: hashes[i*32:(i+1)*32].hex() for i, k in enumerate(BINDINGS)}
         result.append(dict(vector_id=vid, paper_id=target, distance=distance, **binding))
     return result
+
+
+def verify_coverage(path, scope, members, *, sealed_member_count):
+    """Compare a checkpoint with an independent sealed member stream, in C paper/id order.
+
+    Each input row supplies paper_id, vector_id and the three digest bindings.
+    The caller must obtain it from the scope's sealed content in one snapshot.
+    Only the first 20 positions can be sources. All revisions remain exclusions,
+    and even members beyond position 20 may appear in the target dictionary.
+    """
+    if type(sealed_member_count) is not int or sealed_member_count <= 0:
+        raise ValueError('A nonempty sealed inventory is required')
+    papers = positions = total = origins = targets = 0
+    last_paper = ''
+    with closing(open_existing(path, scope)) as db:
+        db.execute('BEGIN')
+        for paper, group in groupby(members, key=lambda member: member['paper_id']):
+            if not isinstance(paper, str) or not last_paper < paper or len(paper) > 100:
+                raise ValueError('Invalid sealed paper order')
+            last_paper = paper
+            last_vector = ''
+            revisions = set()
+            sources = set()
+            for member in group:
+                vid = member['vector_id']
+                if not isinstance(vid, str) or not last_vector < vid:
+                    raise ValueError('Invalid sealed member order')
+                last_vector = vid
+                payload = b''.join(digest_bytes(member[k]) for k in BINDINGS)
+                revision = member['chunk_revision_sha256']
+                if revision in revisions or len(revisions) >= 20000:
+                    raise ValueError('Invalid sealed revision inventory')
+                if len(revisions) < 20:
+                    sources.add(member['vector_sha256'])
+                    positions += 1
+                revisions.add(revision)
+                target = db.execute('SELECT paper,bindings FROM targets WHERE vector_id=?', (vid,)).fetchone()
+                if target is not None:
+                    if target != (paper, payload):
+                        raise ValueError('Candidate binding differs from sealed member')
+                    targets += 1
+                total += 1
+            exclusion_sha = exclusions_digest(revisions)
+            for source in sources:
+                hits = read(db, paper, source, exclusion_sha, WIDTH)
+                if hits is None or any(hit['chunk_revision_sha256'] in revisions for hit in hits):
+                    raise ValueError('Required source absent or exclusion violated')
+                origins += 1
+            papers += 1
+        if (total != sealed_member_count
+                or origins != db.execute('SELECT count(*) FROM origins').fetchone()[0]
+                or targets != db.execute('SELECT count(*) FROM targets').fetchone()[0]):
+            raise ValueError('Incomplete coverage or unexpected checkpoint entries')
+    return dict(papers=papers, members=total, source_positions=positions,
+                distinct_origins=origins, bound_targets=targets)

@@ -58,5 +58,40 @@ class CheckpointTest(unittest.TestCase):
         with self.assertRaises(ValueError):
             store.open_existing(self.path, {**self.scope, 'build': 'standby'})
 
+    def test_coverage_uses_all_exclusions_and_checks_dictionary_beyond_first_20(self):
+        groups = {}
+        for paper in ('a', 'b'):
+            rows = [dict(vector_id=f'{paper}{i:02d}', paper_id=paper, distance=i / 71,
+                         **{k: digest(f'{paper}-{k}-{i}') for k in store.BINDINGS}) for i in range(56)]
+            rows[1]['vector_sha256'] = rows[0]['vector_sha256']
+            groups[paper] = rows
+        members = groups['a'] + groups['b']
+        def verify(inventory=members):
+            return store.verify_coverage(self.path, self.scope, iter(inventory), sealed_member_count=len(members))
+        with closing(store.open_existing(self.path, self.scope, writable=True)) as db:
+            for paper, other in [('a', 'b'), ('b', 'a')]:
+                revisions = store.exclusions_digest([m['chunk_revision_sha256'] for m in groups[paper]])
+                for source in groups[paper][:20]:
+                    store.save(db, paper, source['vector_sha256'], revisions, groups[other][:store.WIDTH])
+            self.assertEqual(verify(), dict(papers=2, members=112, source_positions=40,
+                                            distinct_origins=38, bound_targets=110))
+            changed = list(members)
+            changed[54] = dict(changed[54], content_sha256=digest('different'))
+            with self.assertRaisesRegex(ValueError, 'binding'):
+                verify(changed)
+            changed[54] = members[54]
+            changed[55] = dict(changed[55], chunk_revision_sha256=digest('different'))
+            with self.assertRaisesRegex(ValueError, 'source absent'):
+                verify(changed)
+            with self.assertRaisesRegex(ValueError, 'order'):
+                verify(members[::-1])
+            store.save(db, 'extra', self.source, self.excluded, groups['a'][:store.WIDTH])
+            with self.assertRaisesRegex(ValueError, 'unexpected'):
+                verify()
+            with db:
+                db.execute("DELETE FROM origins WHERE paper='a'")
+            with self.assertRaisesRegex(ValueError, 'source absent'):
+                verify()
+
 if __name__ == '__main__':
     unittest.main()
