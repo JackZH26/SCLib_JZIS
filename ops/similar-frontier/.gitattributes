@@ -1,0 +1,2 @@
+# Unified patches require a leading context marker on empty source lines.
+qemu-sealed-export.patch whitespace=-blank-at-eol

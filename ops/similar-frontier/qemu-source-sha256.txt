@@ -1,0 +1,3 @@
+7f1993808bbe15fee04c13aeb8ab5bc4f011b0b3b3a15d511c19d8956b34dc48  qemu_8.2.2+ds-0ubuntu1.18.debian.tar.xz
+0c7baad16818c5cd29d5031dc8c88cc632f4f8bdb864e80c5c7df9db53a365f2  qemu_8.2.2+ds-0ubuntu1.18.dsc
+5e692dd20950a819ff6550cd3974e00319a93f47c0a15f808c58df1a9e4d2478  qemu_8.2.2+ds.orig.tar.xz
