@@ -113,11 +113,18 @@ async def similar(reader,pin,paper_id,*,top_k):
             async with asyncio.timeout(3):members,sources,excluded=await reader._read(source)
             batches=();per_source=0
             if members:
-                vectors=[tuple(struct.unpack('!768f',member['vector_bytes'])) for member in members]
                 per_source=min(top_k+5,MAX_CANDIDATES//len(members))
-                stage='ann';stage_started=time.monotonic()
-                batches=await reader._transport.query_many(pin.projection,vectors,
-                    top_k=per_source,excluded_revisions=excluded)
+                if reader.similar_frontiers is None:
+                    stage='ann';stage_started=time.monotonic()
+                    vectors=[struct.unpack('!768f',member['vector_bytes']) for member in members]
+                    batches=await reader._transport.query_many(pin.projection,vectors,
+                        top_k=per_source,excluded_revisions=excluded)
+                else:
+                    stage='frontier';stage_started=time.monotonic()
+                    batches=await reader.similar_frontiers.candidates(
+                        reader._readiness.prepared_witness(pin),paper_id,
+                        [member['vector_sha256'] for member in members],excluded,per_source,
+                        timeout=reader._transport.budget.total_seconds)
                 if type(batches) is not tuple or len(batches)!=len(members):
                     raise ContentSimilarityUnavailable('Complete ordered Similar batches required')
             stage='verify_candidates';stage_started=time.monotonic()

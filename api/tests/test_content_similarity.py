@@ -98,7 +98,7 @@ async def test_explicit_preparation_cannot_be_skipped(reader,db_session):
 
 
 @pytest_asyncio.fixture(loop_scope='function')
-async def many_sources(db_session,tmp_path,monkeypatch):
+async def many_sources(db_session,tmp_path,monkeypatch,request):
     from tests import test_retrieval_activation,test_embedding_receipts
     from tests.test_index_generations import resource
     from tests.test_retrieval_members import active_content
@@ -119,7 +119,7 @@ async def many_sources(db_session,tmp_path,monkeypatch):
     monkeypatch.setattr(test_embedding_receipts,'seed',shared_seed)
     async def staged(db,**kwargs):
         items=[]
-        for _ in range(44):
+        for _ in range(getattr(request, "param", 44)):
             chunk,vector,receipt,_=await test_embedding_receipts.prepared(db)
             completed=await embedding_receipts.append_embedding_receipt(db,chunk_id=chunk,vector=vector,receipt=receipt,dry_run=False)
             items.append({'chunk_id':chunk,'receipt_id':completed['receipt_id'],'vector':vector,'parser_version':'synthetic/1'})

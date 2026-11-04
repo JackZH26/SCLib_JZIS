@@ -116,6 +116,17 @@ async def load_active_backend(db, *, logical_index='sclib-main'):
     Uses only SELECT. It performs no full corpus scan and grants no privileges.
     Reader provisioning must include the relevant private catalog visibility.
     """
+    return await _load_backend_record(db, logical_index=logical_index, event_id=None)
+
+
+async def load_accepted_build_for_frontier(db, *, logical_index, event_id):
+    """Offline builder only. Resolve a previously accepted graph without moving the active pointer."""
+    if type(event_id) is not UUID:
+        raise RetrievalActivationError('Exact historical activation event required')
+    return await _load_backend_record(db, logical_index=logical_index, event_id=event_id)
+
+
+async def _load_backend_record(db, *, logical_index, event_id):
     if type(logical_index) is not str or not re.fullmatch('[A-Za-z0-9._-]{1,160}', logical_index):
         raise RetrievalActivationError('Bounded logical index required')
     tables = {name: Base.metadata.tables[name] for name in (
@@ -124,6 +135,9 @@ async def load_active_backend(db, *, logical_index='sclib-main'):
     p, e, a = (tables[name] for name in (TABLE_ORDER[2], TABLE_ORDER[1], TABLE_ORDER[0]))
     b, v, c, s, physical = (tables[name] for name in ('retrieval_backend_builds_v2',
         'retrieval_backend_validations_v2', 'retrieval_contents_v2', 'retrieval_content_seals_v2', 'retrieval_projection_seals_v2'))
+    if event_id is not None:
+        p = sa.select(e.c.logical_index, e.c.id.label('activation_event_id'), e.c.content_id,
+                      e.c.build_id).where(e.c.id == event_id).subquery()
     # LEFT joins distinguish a genuinely absent pointer from corrupt authority.
     joined = p.outerjoin(e, e.c.id == p.c.activation_event_id).outerjoin(b, b.c.id == p.c.build_id).outerjoin(
         c, c.c.id == p.c.content_id).outerjoin(a, a.c.id == e.c.acceptance_id).outerjoin(
