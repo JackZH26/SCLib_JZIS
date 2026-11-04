@@ -168,6 +168,10 @@ async def test_rollback_uses_previously_active_local_build_fresh_validation_and_
     acceptance2 = await accepted(db_session, second)
     event2 = await service.activate_backend(db_session, **activation(second, acceptance2,
         predecessor=event1['activation_event_id'], old=False), dry_run=False)
+    historical = await service.load_accepted_build_for_frontier(
+        db_session, logical_index=first['logical_index'], event_id=UUID(event1['activation_event_id']))
+    assert historical == pin1
+    assert (await service.load_active_backend(db_session, logical_index=first['logical_index'])).build_id == str(second['build_id'])
     with pytest.raises(service.RetrievalActivationError, match='no longer current'):
         await service.assert_current_backend(db_session, pin1)
     invalid = await prepared_build(db_session, content_id=first['content_id'], logical_index=first['logical_index'])

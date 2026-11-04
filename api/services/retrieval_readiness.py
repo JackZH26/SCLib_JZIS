@@ -39,6 +39,26 @@ class ProjectionWitness:
     member_count: int
 
 
+async def physical_witness(db,pin):
+    """Measure the physical identity after the caller verifies its active or historical seal."""
+    row=(await db.execute(sa.text("""
+      SELECT pg_postmaster_start_time() AS started,t.oid AS table_oid,g.oid AS graph_oid,k.oid AS primary_key_oid,
+        pg_relation_filenode(t.oid) AS table_filenode,pg_relation_filenode(g.oid) AS graph_filenode,
+        pg_relation_filenode(k.oid) AS primary_key_filenode,pg_relation_size(t.oid) AS table_bytes,
+        pg_relation_size(g.oid) AS graph_bytes,pg_relation_size(k.oid) AS primary_key_bytes,
+        pg_size_bytes(current_setting('shared_buffers')) AS shared_buffer_bytes,
+        current_setting('block_size')::integer AS block_size,b.expected_member_count AS member_count
+      FROM pg_class t JOIN pg_index gi ON gi.indrelid=t.oid
+      JOIN pg_class g ON g.oid=gi.indexrelid JOIN pg_am am ON am.oid=g.relam AND am.amname='hnsw'
+      JOIN pg_index ki ON ki.indrelid=t.oid AND ki.indisprimary JOIN pg_class k ON k.oid=ki.indexrelid
+      JOIN retrieval_backend_builds_v2 b ON b.id=:build
+      WHERE t.oid=to_regclass(:table) AND gi.indisvalid AND gi.indisready
+    """),{'table':pin.projection.table,'build':UUID(pin.build_id)})).mappings().one()
+    values={key:int(value) for key,value in row.items() if key!='started'}
+    if any(value<=0 for value in values.values()):raise ProjectionNotReady('Nonempty exact physical projection required')
+    return ProjectionWitness(pin,row['started'].isoformat(),**values)
+
+
 class ProjectionReadiness:
     def __init__(self,session_factory):
         self._sessions=session_factory
@@ -48,22 +68,7 @@ class ProjectionReadiness:
     async def _witness(self,db,pin):
         if not is_read_pin(pin):raise ProjectionNotReady('An exact internal v2 pin is required')
         await current_read_pin(db,pin)
-        row=(await db.execute(sa.text("""
-          SELECT pg_postmaster_start_time() AS started,t.oid AS table_oid,g.oid AS graph_oid,k.oid AS primary_key_oid,
-            pg_relation_filenode(t.oid) AS table_filenode,pg_relation_filenode(g.oid) AS graph_filenode,
-            pg_relation_filenode(k.oid) AS primary_key_filenode,pg_relation_size(t.oid) AS table_bytes,
-            pg_relation_size(g.oid) AS graph_bytes,pg_relation_size(k.oid) AS primary_key_bytes,
-            pg_size_bytes(current_setting('shared_buffers')) AS shared_buffer_bytes,
-            current_setting('block_size')::integer AS block_size,b.expected_member_count AS member_count
-          FROM pg_class t JOIN pg_index gi ON gi.indrelid=t.oid
-          JOIN pg_class g ON g.oid=gi.indexrelid JOIN pg_am am ON am.oid=g.relam AND am.amname='hnsw'
-          JOIN pg_index ki ON ki.indrelid=t.oid AND ki.indisprimary JOIN pg_class k ON k.oid=ki.indexrelid
-          JOIN retrieval_backend_builds_v2 b ON b.id=:build
-          WHERE t.oid=to_regclass(:table) AND gi.indisvalid AND gi.indisready
-        """),{'table':pin.projection.table,'build':UUID(pin.build_id)})).mappings().one()
-        values={key:int(value) for key,value in row.items() if key!='started'}
-        if any(value<=0 for value in values.values()):raise ProjectionNotReady('Nonempty exact physical projection required')
-        return ProjectionWitness(pin,row['started'].isoformat(),**values)
+        return await physical_witness(db,pin)
 
     async def _read(self,operation,*,warming=False):
         async with self._sessions() as db:
@@ -72,6 +77,12 @@ class ProjectionReadiness:
                 "SET LOCAL statement_timeout='2000ms'"))
             await db.execute(sa.text("SET LOCAL lock_timeout='250ms'"))
             return await operation(db)
+
+    def prepared_witness(self,pin):
+        witness=self._prepared
+        if witness is None or witness.pin!=pin:
+            raise ProjectionNotReady('Prepared projection changed')
+        return witness
 
     async def ready(self,pin):
         prepared=self._prepared

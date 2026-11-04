@@ -44,6 +44,7 @@ class ContentRetriever:
             raise ContentRetrievalUnavailable('The frozen pgvector query budget is required')
         self._sessions=session_factory
         self._transport=transport
+        self.similar_frontiers=None
         self._embedding_workers=query_embedding.QueryEmbeddingWorkers()
         self._readiness=ProjectionReadiness(session_factory)
 
@@ -51,7 +52,10 @@ class ContentRetriever:
 
     async def prepare(self,pin):
         self._pin(pin)
-        return await self._readiness.prepare(pin)
+        ready=await self._readiness.prepare(pin)
+        if self.similar_frontiers is not None:
+            self.similar_frontiers.require_graph(self._readiness.prepared_witness(pin))
+        return ready
 
     async def similar(self,pin,paper_id,*,top_k=10):
         from services.content_similarity import similar

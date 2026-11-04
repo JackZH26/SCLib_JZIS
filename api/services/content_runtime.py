@@ -9,6 +9,7 @@ from config import get_settings
 from models.db import get_engine,get_session_factory
 from services.content_retrieval import ContentRetriever
 from services.pgvector_query import PgvectorQueries
+from services.similar_frontier_release import SimilarFrontiers
 
 
 def selected_reader(request):
@@ -36,6 +37,8 @@ async def managed_reader(*,source_engine=None,session_factory=None):
     instrument_sqlalchemy(ann)
     reader=ContentRetriever(session_factory or get_session_factory(),PgvectorQueries(ann))
     try:
+        if get_settings().retrieval_use_similar_frontiers:
+            reader.similar_frontiers=await asyncio.to_thread(SimilarFrontiers.from_release)
         pin=await reader.pin(logical_index=get_settings().retrieval_logical_index)
         await reader.prepare(pin)
         yield reader
