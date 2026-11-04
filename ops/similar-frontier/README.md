@@ -17,6 +17,16 @@ privileges and Docker. It uses 16 MiB of deterministic synthetic data and checks
 cache retention, direct readback, default write behavior, mutation rejection and
 the scanner UID's access. Run it inside the operator's resource limits.
 
+The `Private graph exporter` workflow builds and checks changes to this directory.
+Its archive includes the qualified executable, exact Ubuntu source archives,
+patch, recipe, file hashes and qualification result. A main-branch run signs that
+same archive only after the matching Test and Security workflows and the existing
+full API regression gate succeed. The workflow does not deploy the tool. Verify
+the Sigstore bundle against the main-branch identity of
+`.github/workflows/private-graph-export.yml`, then check the archive's revision
+and file hashes before admitting it to an isolated construction job. Keep the
+archive and bundle with the release receipts before Actions retention expires.
+
 Use sealed mode only for the privately owned, immutable execution copy and the
 isolated scanner. The backing graph must have no other writer or control socket.
 The scanner reads through PostgreSQL buffers and never creates writable mappings

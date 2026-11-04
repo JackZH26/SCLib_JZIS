@@ -26,4 +26,9 @@ RUN /source/qemu-8.2.2+ds/configure --target-list= --disable-system --disable-us
 
 FROM scratch
 COPY --from=compiler /build/storage-daemon/qemu-storage-daemon /qemu-storage-daemon
+COPY --from=compiler /source/qemu_8.2.2+ds-0ubuntu1.18.dsc /build-source/
+COPY --from=compiler /source/qemu_8.2.2+ds-0ubuntu1.18.debian.tar.xz /build-source/
+COPY --from=compiler /source/qemu_8.2.2+ds.orig.tar.xz /build-source/
+COPY --from=compiler /source/checksums /build-source/qemu-source-sha256.txt
+COPY --from=compiler /source/sealed.patch /build-source/qemu-sealed-export.patch
 USER 65532:65532
