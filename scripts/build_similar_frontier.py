@@ -10,7 +10,7 @@ import shutil
 import struct
 import sys
 import time
-from contextlib import asynccontextmanager, closing
+from contextlib import AsyncExitStack, asynccontextmanager, closing
 from dataclasses import asdict
 from pathlib import Path
 from uuid import UUID
@@ -125,6 +125,7 @@ async def build_slice(
     max_papers,
     interval,
     minimum_free_bytes,
+    carrier=None,
 ):
     if not (
         1 <= max_sources <= 256
@@ -170,22 +171,31 @@ async def build_slice(
                     if shutil.disk_usage(path.parent).free < minimum_free_bytes:
                         raise ValueError("Insufficient free space")
                     started = time.monotonic()
-                    batch = await transport._query(
-                        pin.projection,
-                        struct.unpack("!768f", raw),
-                        top_k=checkpoint.WIDTH,
-                        year_min=None,
-                        year_max=None,
-                        excluded_revisions=revisions,
-                        ef_search=transport.budget.source_ef_search,
-                        candidate_pool=transport.budget.source_candidate_pool,
-                    )
+                    vector = struct.unpack("!768f", raw)
+                    if carrier is None:
+                        batch = await transport._query(
+                            pin.projection,
+                            vector,
+                            top_k=checkpoint.WIDTH,
+                            year_min=None,
+                            year_max=None,
+                            excluded_revisions=revisions,
+                            ef_search=transport.budget.source_ef_search,
+                            candidate_pool=transport.budget.source_candidate_pool,
+                        )
+                        neighbors = batch.neighbors
+                    else:
+                        from similar_frontier_carrier import query
+
+                        neighbors = await query(
+                            transport, carrier, pin, scope, vector, revisions
+                        )
                     checkpoint.save(
                         db,
                         paper,
                         source,
                         exclusion_sha,
-                        [asdict(hit) for hit in batch.neighbors],
+                        [asdict(hit) for hit in neighbors],
                     )
                     written += 1
                     await asyncio.sleep(max(0, interval - (time.monotonic() - started)))
@@ -220,18 +230,31 @@ async def main():
     parser.add_argument("--max-sources", type=int, required=True)
     parser.add_argument("--max-papers", type=int, required=True)
     parser.add_argument("--interval", type=float, default=0.5)
+    parser.add_argument(
+        "--carrier-socket",
+        type=Path,
+        help="Verified offline graph carrier Unix socket directory",
+    )
     args = vars(parser.parse_args())
+    socket = args.pop("carrier_socket")
     path = args.pop("checkpoint")
     os.umask(0o077)
     engine = get_engine()
     try:
-        result = await build_slice(
-            get_session_factory(),
-            PgvectorQueries(engine),
-            path,
-            minimum_free_bytes=210 * 2**30,
-            **args,
-        )
+        async with AsyncExitStack() as stack:
+            carrier = None
+            if socket is not None:
+                from similar_frontier_carrier import connect
+
+                carrier = await stack.enter_async_context(connect(socket))
+            result = await build_slice(
+                get_session_factory(),
+                PgvectorQueries(engine),
+                path,
+                minimum_free_bytes=210 * 2**30,
+                carrier=carrier,
+                **args,
+            )
         print(json.dumps(result))
     finally:
         await engine.dispose()
