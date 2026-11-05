@@ -30,7 +30,9 @@ async def bounded_lexical_search(db,pin,query,*,limit,year_min=None,year_max=Non
     """Use semantic navigation for a broad lexical cohort, never a partial rank.
 
     Stop after cap+1 eligible rows without ranking or fetching their text. A
-    lateral primary-key membership lookup prevents a full content hash join.
+    lateral covering-index membership lookup prevents a full content hash join
+    and unnecessary member heap reads. The validated origin constraint makes
+    equality to a non-null generation imply legacy_v1 membership.
     The caller must still complete ANN and all current source checks; this is
     a query strategy, not a lexical fallback after a failed semantic request.
     """
@@ -45,7 +47,7 @@ async def bounded_lexical_search(db,pin,query,*,limit,year_min=None,year_max=Non
         (SELECT n.vector_id FROM index_generation_search n
           JOIN LATERAL (SELECT 1 FROM retrieval_content_members_v2 m
             WHERE m.content_id=:content AND m.vector_id=n.vector_id
-              AND m.origin_kind='legacy_v1' AND m.origin_generation_id=n.generation_id
+              AND m.origin_generation_id=n.generation_id
             LIMIT 1) member ON true
           JOIN papers p ON p.id=n.paper_id
           WHERE n.document @@ websearch_to_tsquery('english'::regconfig,:query)
