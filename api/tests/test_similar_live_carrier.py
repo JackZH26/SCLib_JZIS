@@ -46,6 +46,114 @@ def fixture():
 
 
 class LiveSourceBoundaries(IsolatedAsyncioTestCase):
+    async def test_semantic_candidates_keep_the_original_search_budget_and_authority_ranking(self):
+        reader, witness, authority, scratch = fixture()
+        rows = [dict(vector_id='v1', paper_id='p1', content_sha256='1'*64,
+            vector_sha256='2'*64, chunk_revision_sha256='3'*64, year=2005, distance=.25)]
+        selected = MagicMock()
+        selected.mappings.return_value.all.return_value = rows
+        authority.execute.return_value = selected
+        with ExitStack() as patches:
+            patches.enter_context(patch.object(live, 'current_read_pin', AsyncMock()))
+            patches.enter_context(patch.object(live, 'physical_witness', AsyncMock(return_value=witness)))
+            roots = patches.enter_context(patch.object(live, 'eligible_source_roots',
+                AsyncMock(return_value=[['(1,1)']])))
+            result = await reader.query(witness, [1.0]+[0.0]*767, top_k=1)
+        self.assertEqual(result.neighbors[0].vector_id, 'v1')
+        self.assertEqual(result.neighbors[0].distance, .25)
+        self.assertEqual(result.strategy, 'hnsw')
+        self.assertFalse(result.exhaustive)
+        reader._transport._configure.assert_awaited_once_with(authority, 1000)
+        self.assertEqual(roots.await_args.args[-1], 1024)
+        self.assertEqual(authority.execute.await_args.args[1]['roots'], ['(1,1)'])
+        self.assertIn('hnsw.ef_search=1000', str(scratch.execute.await_args.args[0]))
+        self.assertEqual(reader._transport._slots._value, 4)
+
+    async def test_semantic_rare_year_cohort_remains_exact_without_opening_carrier(self):
+        reader, witness, authority, _ = fixture()
+        authority.scalar.return_value = 0
+        selected = MagicMock()
+        selected.mappings.return_value.all.return_value = []
+        authority.execute.return_value = selected
+        with ExitStack() as patches:
+            patches.enter_context(patch.object(live, 'current_read_pin', AsyncMock()))
+            patches.enter_context(patch.object(live, 'physical_witness', AsyncMock(return_value=witness)))
+            result = await reader.query(witness, [1.0]+[0.0]*767, top_k=20,
+                year_min=2000, year_max=2005, excluded_revisions=['4'*64])
+        self.assertTrue(result.exhaustive)
+        self.assertEqual(result.neighbors, ())
+        reader._pool.assert_not_awaited()
+        self.assertEqual(authority.scalar.await_args.args[1]['cap'], 200001)
+        self.assertEqual(authority.execute.await_args.args[1]['year_min'], 2000)
+        self.assertEqual(authority.execute.await_args.args[1]['excluded'], ['4'*64])
+
+    async def test_year_filtered_frontier_refills_and_rejects_null_years(self):
+        scratch = AsyncMock()
+        scratch.fetch.side_effect = [[('(1,1)',), ('(1,2)',)], [('(1,3)',)]]
+        authority = AsyncMock()
+        first, second = MagicMock(), MagicMock()
+        first.all.return_value = [('(1,1)', False), ('(1,2)', True)]
+        second.all.return_value = [('(1,3)', True)]
+        authority.execute.side_effect = [first, second]
+        roots = await live.eligible_source_roots(scratch, authority, 'fixture', ['query'], [], 2,
+            year_min=2000, year_max=2005)
+        self.assertEqual(roots, [['(1,2)', '(1,3)']])
+        sql, params = authority.execute.await_args_list[0].args
+        self.assertIn('COALESCE', str(sql))
+        self.assertEqual((params['year_min'], params['year_max']), (2000, 2005))
+
+    async def test_semantic_cancellation_releases_native_and_authority_and_sql_slot(self):
+        reader, witness, authority, scratch = fixture()
+        entered = asyncio.Event()
+        async def waiting(*args):
+            entered.set()
+            await asyncio.Future()
+        scratch.fetch.side_effect = waiting
+        with ExitStack() as patches:
+            patches.enter_context(patch.object(live, 'current_read_pin', AsyncMock()))
+            patches.enter_context(patch.object(live, 'physical_witness', AsyncMock(return_value=witness)))
+            task = asyncio.create_task(reader.query(witness, [1.0]+[0.0]*767, top_k=20))
+            await asyncio.wait_for(entered.wait(), 1)
+            task.cancel()
+            with self.assertRaises(asyncio.CancelledError):
+                await task
+        self.assertEqual(reader._transport._slots._value, 4)
+        authority.begin.return_value.__aexit__.assert_awaited_once()
+        scratch.transaction.return_value.__aexit__.assert_awaited_once()
+
+    async def test_semantic_invalid_year_or_changed_graph_executes_no_sql(self):
+        reader, witness, authority, _ = fixture()
+        with self.assertRaises(PgvectorQueryError):
+            await reader.query(witness, [1.0]+[0.0]*767, top_k=20, year_min=2005, year_max=2000)
+        witness.graph_filenode += 1
+        with self.assertRaises(PgvectorQueryError):
+            await reader.query(witness, [1.0]+[0.0]*767, top_k=20)
+        authority.execute.assert_not_awaited()
+        reader._pool.assert_not_awaited()
+
+    async def test_search_and_ask_semantic_coordinator_uses_prepared_carrier(self):
+        from services import content_retrieval
+        carrier, witness, _, _ = fixture()
+        reader = content_retrieval.ContentRetriever(MagicMock(), carrier._transport)
+        reader._readiness = MagicMock()
+        reader._readiness.prepared_witness.return_value = witness
+        batch = object()
+        reader.similar_carrier = SimpleNamespace(query=AsyncMock(return_value=batch), close=AsyncMock())
+        reader._transport.query = AsyncMock()
+        vector = [1.0]+[0.0]*767
+        try:
+            settings = SimpleNamespace(provider_circuit_failure_threshold=3, provider_circuit_cooldown_seconds=20)
+            with patch.object(content_retrieval, 'get_settings', return_value=settings), \
+                    patch.object(content_retrieval.provider_resilience, 'run_blocking', AsyncMock(return_value=vector)):
+                result = await reader._semantic(witness.pin, 'superconductivity', top_k=60,
+                    year_min=2000, year_max=2005)
+            self.assertIs(result, batch)
+            reader.similar_carrier.query.assert_awaited_once_with(witness, vector,
+                top_k=60, year_min=2000, year_max=2005)
+            reader._transport.query.assert_not_awaited()
+        finally:
+            await reader.close()
+
     async def test_shutdown_cancellation_releases_both_graph_pools(self):
         reader, _, _, _ = fixture()
         entered = asyncio.Event()

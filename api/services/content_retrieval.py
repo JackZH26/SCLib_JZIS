@@ -96,6 +96,9 @@ class ContentRetriever:
                 timeout_seconds=5,failure_threshold=settings.provider_circuit_failure_threshold,
                 cooldown_seconds=settings.provider_circuit_cooldown_seconds,max_attempts=1,
                 async_executor=self._embedding_workers.run)
+        if self.similar_carrier is not None:
+            return await self.similar_carrier.query(self._readiness.prepared_witness(pin),vector,
+                top_k=top_k,year_min=year_min,year_max=year_max)
         return await self._transport.query(pin.projection,vector,top_k=top_k,year_min=year_min,year_max=year_max)
 
     async def hybrid(self,pin,query,interpretation,*,top_k,year_min=None,year_max=None,exclude_retracted=True,purpose='search'):

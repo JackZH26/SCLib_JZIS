@@ -1,8 +1,19 @@
-# Live Similar graph carrier
+# Live graph carrier
 
 `RETRIEVAL_USE_SIMILAR_CARRIER=true` selects live traversal of a private copy of
 the current sealed HNSW graph. The default remains false. It cannot be combined
 with `RETRIEVAL_USE_SIMILAR_FRONTIERS=true`.
+
+The same switch also selects the carrier for Search and Ask semantic candidates.
+Those readers retain their own `ef_search=1000` and 1024-candidate frontier;
+they do not inherit Similar's smaller budget. Year and revision filters are
+resolved against the authoritative heap before admitting each frontier prefix,
+and filtered roots trigger bounded continuation of the same graph cursor. Rare
+year cohorts keep the existing exact-scoring path and 200000-row ceiling. All
+traversal and final authoritative distance ranking share the original two-second
+statement budget inside the three-second queue/connection/query budget. The
+existing Search/Ask coordinator still applies rights, currentness, hydration,
+ranking and final response checks.
 
 This path does not require precomputed per-paper neighbors. Each request keeps
 all currently eligible source vectors, the full revision exclusions, the 257-row
