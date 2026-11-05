@@ -209,11 +209,13 @@ class LiveSimilarCarrier:
         params = pg._request(vector, top_k, year_min, year_max, excluded_revisions)
         transport = self._transport
         table = witness.pin.projection.table
-        predicate = EXCLUDED
-        if year_min is not None:
-            predicate += " AND year>=:year_min"
-        if year_max is not None:
-            predicate += " AND year<=:year_max"
+        # Match the transport's closed predicate shapes. An empty exclusion
+        # array must not turn a year-index-only cohort count into a heap read.
+        predicate = " AND ".join([
+            *(["year>=:year_min"] if year_min is not None else []),
+            *(["year<=:year_max"] if year_max is not None else []),
+            *([EXCLUDED] if params["excluded"] else []),
+        ]) or "true"
         filtered = year_min is not None or year_max is not None or bool(params["excluded"])
         ceiling = (transport.budget.year_exact_cohort_limit
                    if year_min is not None or year_max is not None else transport.budget.exact_cohort_limit)
@@ -251,8 +253,21 @@ class LiveSimilarCarrier:
                             params["roots"] = groups[0]
                             predicate = ROOTS + " AND " + predicate
                         distance = "embedding <=> CAST(:query AS vector(768))"
-                        statement = (f"SELECT {pg._COLUMNS},year,{distance} AS distance FROM {table} "
-                            f'WHERE {predicate} ORDER BY ({distance})+0,vector_id COLLATE "C" LIMIT :limit')
+                        if exhaustive:
+                            # Score the full cohort once and carry only the
+                            # physical root and tie key through the top-k sort.
+                            # +0 preserves the non-HNSW exact path. Hydrate the
+                            # bounded winners in this same authoritative snapshot.
+                            columns = ",".join("p." + column for column in pg._COLUMNS.split(","))
+                            statement = ("WITH nearest AS MATERIALIZED ("
+                                f"SELECT ctid AS root,vector_id,({distance})+0 AS distance FROM {table} "
+                                f'WHERE {predicate} ORDER BY distance,vector_id COLLATE "C" LIMIT :limit) '
+                                f"SELECT {columns},p.year,n.distance FROM nearest n "
+                                f"JOIN {table} p ON p.ctid=n.root "
+                                'ORDER BY n.distance,n.vector_id COLLATE "C"')
+                        else:
+                            statement = (f"SELECT {pg._COLUMNS},year,{distance} AS distance FROM {table} "
+                                f'WHERE {predicate} ORDER BY ({distance})+0,vector_id COLLATE "C" LIMIT :limit')
                         rows = (await authority.execute(sa.text(statement), params)).mappings().all()
                         neighbors = pg._neighbors(rows, top_k, year_min, year_max, set(params["excluded"]))
                         if cohort is not None and len(neighbors) < min(top_k, cohort):
