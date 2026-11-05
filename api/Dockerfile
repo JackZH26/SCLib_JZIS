@@ -16,13 +16,16 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
     PATH="/opt/venv/bin:$PATH"
 
 # System deps: build tools for psycopg2, curl for healthchecks, tini for PID 1
-# Refresh base PCRE2 and fail if mirrors lack the CVE-2026-103111 fix.
-RUN apt-get update && apt-get install -y --no-install-recommends \
+# Refresh APT and PCRE2; disable download retries while upgrading vulnerable APT.
+RUN apt-get -o Acquire::Retries=0 update && apt-get -o Acquire::Retries=0 install -y --no-install-recommends \
+        apt libapt-pkg7.0 \
         build-essential \
         libpcre2-8-0 \
         libpq-dev \
         curl \
         tini \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' apt)" ge '3.0.4' \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libapt-pkg7.0)" ge '3.0.4' \
     && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libpcre2-8-0)" ge '10.46-1~deb13u3' \
     && rm -rf /var/lib/apt/lists/*
 
