@@ -10,6 +10,7 @@ from models.db import get_engine,get_session_factory
 from services.content_retrieval import ContentRetriever
 from services.pgvector_query import PgvectorQueries
 from services.similar_frontier_release import SimilarFrontiers
+from services.similar_live_carrier import LiveSimilarCarrier
 
 
 def selected_reader(request):
@@ -26,6 +27,8 @@ async def check_ready(request):
         if reader is None:raise ValueError('Content backend was not selected')
         pin=await reader.pin(logical_index=get_settings().retrieval_logical_index)
         if not await reader._readiness.ready(pin):raise ValueError('Content projection is not prepared')
+        if reader.similar_carrier is not None:
+            await reader.similar_carrier.prepare(reader._readiness.prepared_witness(pin))
 
 
 @asynccontextmanager
@@ -37,8 +40,13 @@ async def managed_reader(*,source_engine=None,session_factory=None):
     instrument_sqlalchemy(ann)
     reader=ContentRetriever(session_factory or get_session_factory(),PgvectorQueries(ann))
     try:
-        if get_settings().retrieval_use_similar_frontiers:
+        settings=get_settings()
+        if settings.retrieval_use_similar_frontiers and settings.retrieval_use_similar_carrier:
+            raise ValueError('Only one Similar candidate transport may be selected')
+        if settings.retrieval_use_similar_frontiers:
             reader.similar_frontiers=await asyncio.to_thread(SimilarFrontiers.from_release)
+        if settings.retrieval_use_similar_carrier:
+            reader.similar_carrier=LiveSimilarCarrier.from_release(reader._transport)
         pin=await reader.pin(logical_index=get_settings().retrieval_logical_index)
         await reader.prepare(pin)
         yield reader
