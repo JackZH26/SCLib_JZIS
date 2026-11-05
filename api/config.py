@@ -108,6 +108,7 @@ class Settings(BaseSettings):
     retrieval_backend: Literal['google','pgvector'] = 'google'
     # The signed API image supplies both approved content-addressed file digests.
     retrieval_use_similar_frontiers: bool = False
+    retrieval_use_similar_carrier: bool = False
 
     # === AI models ===
     gemini_model: str = "gemini-3.5-flash"

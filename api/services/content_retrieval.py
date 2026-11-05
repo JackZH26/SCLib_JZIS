@@ -45,16 +45,22 @@ class ContentRetriever:
         self._sessions=session_factory
         self._transport=transport
         self.similar_frontiers=None
+        self.similar_carrier=None
         self._embedding_workers=query_embedding.QueryEmbeddingWorkers()
         self._readiness=ProjectionReadiness(session_factory)
 
-    async def close(self):await self._embedding_workers.close()
+    async def close(self):
+        try:
+            if self.similar_carrier is not None:await self.similar_carrier.close()
+        finally:await self._embedding_workers.close()
 
     async def prepare(self,pin):
         self._pin(pin)
         ready=await self._readiness.prepare(pin)
         if self.similar_frontiers is not None:
             self.similar_frontiers.require_graph(self._readiness.prepared_witness(pin))
+        if self.similar_carrier is not None:
+            await self.similar_carrier.prepare(self._readiness.prepared_witness(pin))
         return ready
 
     async def similar(self,pin,paper_id,*,top_k=10):

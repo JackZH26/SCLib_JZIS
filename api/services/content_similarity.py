@@ -117,8 +117,13 @@ async def similar(reader,pin,paper_id,*,top_k):
                 if reader.similar_frontiers is None:
                     stage='ann';stage_started=time.monotonic()
                     vectors=[struct.unpack('!768f',member['vector_bytes']) for member in members]
-                    batches=await reader._transport.query_many(pin.projection,vectors,
-                        top_k=per_source,excluded_revisions=excluded)
+                    if reader.similar_carrier is None:
+                        batches=await reader._transport.query_many(pin.projection,vectors,
+                            top_k=per_source,excluded_revisions=excluded)
+                    else:
+                        batches=await reader.similar_carrier.query_many(
+                            reader._readiness.prepared_witness(pin),vectors,
+                            top_k=per_source,excluded_revisions=excluded)
                 else:
                     stage='frontier';stage_started=time.monotonic()
                     batches=await reader.similar_frontiers.candidates(
