@@ -1,4 +1,4 @@
-"""Live Similar traversal over an admitted, private copy of the sealed HNSW graph.
+"""Live traversal over an admitted, private copy of the sealed HNSW graph.
 
 Only physical candidate discovery uses the carrier. The authoritative database
 resolves every row, applies exclusions, computes distances and retains the four
@@ -50,13 +50,25 @@ async def _check_connection(connection):
         raise pg.PgvectorQueryError("Unexpected private graph reader or engine")
 
 
-async def eligible_source_roots(scratch, authority, table, queries, excluded, pool_limit):
+async def eligible_source_roots(scratch, authority, table, queries, excluded, pool_limit,
+                                *, year_min=None, year_max=None):
     """Keep each native prefix while resolving a whole round in one heap read.
 
     No concurrent source tasks or per-source deadlines are created. The caller
     encloses all cursors, all refill rounds and final ranking in ONE 2s budget.
     Transaction rollback closes all cursors on any failure or cancellation.
     """
+    predicate = EXCLUDED
+    parameters = {"excluded": excluded}
+    if year_min is not None:
+        predicate += " AND year>=:year_min"
+        parameters["year_min"] = year_min
+    if year_max is not None:
+        predicate += " AND year<=:year_max"
+        parameters["year_max"] = year_max
+    if year_min is not None or year_max is not None:
+        # SQL WHERE rejects NULL years; the eligibility column must do so too.
+        predicate = f"COALESCE(({predicate}),false)"
     seen = [set() for _ in queries]
     eligible = [[] for _ in queries]
     active = set(range(len(queries)))
@@ -82,8 +94,8 @@ async def eligible_source_roots(scratch, authority, table, queries, excluded, po
         unique = sorted({root for roots in round_roots.values() for root in roots})
         if unique:
             resolved = (await authority.execute(sa.text(
-                f"SELECT ctid::text,{EXCLUDED} FROM {table} WHERE {ROOTS}"
-            ), {"roots": unique, "excluded": excluded})).all()
+                f"SELECT ctid::text,{predicate} FROM {table} WHERE {ROOTS}"
+            ), {"roots": unique, **parameters})).all()
             allowed = dict(resolved)
             # Missing roots may be HOT roots. Silently dropping them changes the
             # native frontier and is never a substitute for an admitted seal.
@@ -184,6 +196,73 @@ class LiveSimilarCarrier:
         finally:
             for pool in pools:
                 pool.terminate()
+
+    async def query(self, witness, vector, *, top_k, year_min=None, year_max=None,
+                    excluded_revisions=()):
+        """Search/Ask use their original 1000/1024 graph budget and exact path.
+
+        Only graph traversal moves to the admitted carrier. The authoritative
+        transaction still owns filtering, exact distances, ordering and the
+        shared SQL permit. The existing coordinator verifies live source use.
+        """
+        self.require_graph(witness)
+        params = pg._request(vector, top_k, year_min, year_max, excluded_revisions)
+        transport = self._transport
+        table = witness.pin.projection.table
+        predicate = EXCLUDED
+        if year_min is not None:
+            predicate += " AND year>=:year_min"
+        if year_max is not None:
+            predicate += " AND year<=:year_max"
+        filtered = year_min is not None or year_max is not None or bool(params["excluded"])
+        ceiling = (transport.budget.year_exact_cohort_limit
+                   if year_min is not None or year_max is not None else transport.budget.exact_cohort_limit)
+        try:
+            async with asyncio.timeout(transport.budget.total_seconds), transport._slots:
+                async with transport.engine.connect() as authority, authority.begin():
+                    await authority.execute(sa.text("SET TRANSACTION ISOLATION LEVEL REPEATABLE READ READ ONLY"))
+                    await transport._global_slot(authority)
+                    await transport._configure(authority, transport.budget.ef_search)
+                    await current_read_pin(authority, witness.pin)
+                    await authority.execute(sa.text(f"SELECT 1 FROM {table} WHERE false"))
+                    if await physical_witness(authority, witness.pin) != witness:
+                        raise pg.PgvectorQueryError("Authoritative projection changed")
+                    cohort = None
+                    if filtered:
+                        cohort = await authority.scalar(sa.text(
+                            f"SELECT count(*) FROM (SELECT 1 FROM {table} WHERE {predicate} LIMIT :cap) eligible"
+                        ), {**params, "cap": ceiling + 1})
+                    exhaustive = cohort is not None and cohort <= ceiling
+                    async with asyncio.timeout(transport.budget.statement_ms / 1000):
+                        if not exhaustive:
+                            pool = await self._pool(witness)
+                            async with pool.acquire() as scratch:
+                                async with scratch.transaction(readonly=True, isolation="repeatable_read"):
+                                    await self._binding(scratch, witness)
+                                    await scratch.execute("""
+                                        SET LOCAL work_mem='8MB'; SET LOCAL hnsw.ef_search=1000;
+                                        SET LOCAL hnsw.iterative_scan='relaxed_order';
+                                        SET LOCAL hnsw.max_scan_tuples=20000; SET LOCAL hnsw.scan_mem_multiplier=1;
+                                        SET LOCAL statement_timeout='2s'; SET LOCAL lock_timeout='250ms';
+                                    """)
+                                    groups = await eligible_source_roots(scratch, authority, table,
+                                        [params["query"]], params["excluded"], transport.budget.candidate_pool,
+                                        year_min=year_min, year_max=year_max)
+                            params["roots"] = groups[0]
+                            predicate = ROOTS + " AND " + predicate
+                        distance = "embedding <=> CAST(:query AS vector(768))"
+                        statement = (f"SELECT {pg._COLUMNS},year,{distance} AS distance FROM {table} "
+                            f'WHERE {predicate} ORDER BY ({distance})+0,vector_id COLLATE "C" LIMIT :limit')
+                        rows = (await authority.execute(sa.text(statement), params)).mappings().all()
+                        neighbors = pg._neighbors(rows, top_k, year_min, year_max, set(params["excluded"]))
+                        if cohort is not None and len(neighbors) < min(top_k, cohort):
+                            raise pg.PgvectorUnavailable("Filtered candidate budget exhausted")
+                        return pg.CandidateBatch(witness.pin.projection, neighbors,
+                            "exact_filtered" if exhaustive else "hnsw", exhaustive)
+        except (pg.PgvectorQueryError, pg.PgvectorUnavailable):
+            raise
+        except Exception:
+            raise pg.PgvectorUnavailable("Live semantic candidate query unavailable") from None
 
     async def query_many(self, witness, vectors, *, top_k, excluded_revisions):
         self.require_graph(witness)
