@@ -2185,9 +2185,10 @@ export interface SimilarResponse {
   results: SimilarPaper[];
 }
 
-export function getSimilar(id: string, top_k = 10) {
+export function getSimilar(id: string, top_k = 10, signal?: AbortSignal) {
   return request<SimilarResponse>(
     `/similar/${encodeURIComponent(id)}?top_k=${top_k}`,
+    { signal },
   );
 }
 

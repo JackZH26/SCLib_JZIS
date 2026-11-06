@@ -3,17 +3,17 @@
  *
  * Paper IDs look like `arxiv:2306.07275`. Next catches the colon in
  * a single dynamic segment, but we still decodeURIComponent to be
- * safe when the client encodes it. The "similar papers" section is
- * rendered as a child server fetch so it can cache independently.
+ * safe when the client encodes it. Similar recommendations load when their
+ * section becomes visible, independently of the bibliographic server render.
  */
 import type { Metadata } from "next";
 import Link from "@/components/AppLink";
 import { notFound } from "next/navigation";
 import { cache } from "react";
-import { ApiError, getPaper, getSimilar } from "@/lib/api";
+import { ApiError, getPaper } from "@/lib/api";
 import { absoluteUrl, serializeJsonLd } from "@/lib/seo";
 import { BookmarkButton } from "@/components/BookmarkButton";
-import { PaperCard } from "@/components/PaperCard";
+import { SimilarPapers } from "@/components/SimilarPapers";
 import { pressureLabel } from "@/lib/pressure-semantics";
 import { sourceHref } from "@/lib/property-evidence";
 import { MaterialVisibilityNotice, SourceVisibilityNotice } from "@/components/MaterialVisibilityNotice";
@@ -97,7 +97,6 @@ export default async function PaperDetailPage({ params }: PaperPageProps) {
     throw e;
   }
 
-  const similar = await getSimilar(id, 6).catch(() => null);
   const sourceActive = knownSourceVisibility(paper.source_visibility)?.source_status === "active";
   const canonical = absoluteUrl(`/paper/${encodeURIComponent(paper.id)}`);
   const publisherUrl = sourceHref({ doi: paper.doi });
@@ -244,27 +243,7 @@ export default async function PaperDetailPage({ params }: PaperPageProps) {
         </section>
       )}
 
-      {similar && similar.results.length > 0 && (
-        <section>
-          <h2 className="mb-3 text-sm font-semibold uppercase tracking-wide text-slate-500">
-            Similar papers
-          </h2>
-          <div className="grid gap-3 md:grid-cols-2">
-            {similar.results.map((s) => (
-              <PaperCard
-                key={s.paper_id}
-                paper_id={s.paper_id}
-                arxiv_id={s.arxiv_id}
-                title={s.title}
-                authors={s.authors}
-                year={s.year}
-                score={s.similarity}
-                scoreLabel="similarity"
-              />
-            ))}
-          </div>
-        </section>
-      )}
+      <SimilarPapers paperId={id} />
     </main>
   );
 }
