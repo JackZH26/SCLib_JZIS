@@ -10,6 +10,7 @@ import asyncio
 import hashlib
 import json
 import re
+from contextlib import AsyncExitStack, asynccontextmanager
 from importlib.resources import files
 from pathlib import Path
 from uuid import UUID
@@ -54,9 +55,10 @@ async def eligible_source_roots(scratch, authority, table, queries, excluded, po
                                 *, year_min=None, year_max=None):
     """Keep each native prefix while resolving a whole round in one heap read.
 
-    No concurrent source tasks or per-source deadlines are created. The caller
-    encloses all cursors, all refill rounds and final ranking in ONE 2s budget.
-    Transaction rollback closes all cursors on any failure or cancellation.
+    Similar may supply two native connections. Each owns a disjoint, ordered
+    source partition; the authority still resolves each complete round once.
+    All cursors, rounds and final ranking share the caller's ONE 2s budget.
+    Transaction rollback closes every cursor on any failure or cancellation.
     """
     predicate = EXCLUDED
     parameters = {"excluded": excluded}
@@ -72,25 +74,38 @@ async def eligible_source_roots(scratch, authority, table, queries, excluded, po
     seen = [set() for _ in queries]
     eligible = [[] for _ in queries]
     active = set(range(len(queries)))
+    connections = scratch if isinstance(scratch, tuple) else (scratch,)
+    if not 1 <= len(connections) <= 2:
+        raise pg.PgvectorQueryError("One or two native source connections required")
     for index, query in enumerate(queries):
-        await scratch.execute(
+        await connections[index % len(connections)].execute(
             f"DECLARE source_{index} NO SCROLL CURSOR FOR "
             "SELECT sclib_private_carrier.stream($1::text::public.vector(768))::text",
             query,
         )
     while active:
         round_roots = {}
-        for index in sorted(active):
-            needed = pool_limit - len(eligible[index])
-            rows = await scratch.fetch(f"FETCH FORWARD {needed} FROM source_{index}")
-            roots = [row[0] for row in rows]
-            if (len(roots) > needed or any(type(root) is not str or not ROOT.fullmatch(root) for root in roots)
-                    or len(set(roots)) != len(roots) or seen[index].intersection(roots)):
-                raise pg.PgvectorQueryError("Invalid native source candidate inventory")
-            seen[index].update(roots)
-            round_roots[index] = roots
-            if len(roots) < needed:
-                active.remove(index)
+        pending = sorted(active)
+        async def fetch_partition(partition):
+            for index in pending:
+                if index % len(connections) != partition:
+                    continue
+                needed = pool_limit - len(eligible[index])
+                rows = await connections[partition].fetch(f"FETCH FORWARD {needed} FROM source_{index}")
+                roots = [row[0] for row in rows]
+                if (len(roots) > needed or any(type(root) is not str or not ROOT.fullmatch(root) for root in roots)
+                        or len(set(roots)) != len(roots) or seen[index].intersection(roots)):
+                    raise pg.PgvectorQueryError("Invalid native source candidate inventory")
+                seen[index].update(roots)
+                round_roots[index] = roots
+                if len(roots) < needed:
+                    active.remove(index)
+        if len(connections) == 1:
+            await fetch_partition(0)
+        else:
+            async with asyncio.TaskGroup() as tasks:
+                for partition in range(len(connections)):
+                    tasks.create_task(fetch_partition(partition))
         unique = sorted({root for roots in round_roots.values() for root in roots})
         if unique:
             resolved = (await authority.execute(sa.text(
@@ -107,7 +122,7 @@ async def eligible_source_roots(scratch, authority, table, queries, excluded, po
                 if len(eligible[index]) == pool_limit:
                     active.discard(index)
     for index in range(len(queries)):
-        await scratch.execute(f"CLOSE source_{index}")
+        await connections[index % len(connections)].execute(f"CLOSE source_{index}")
     return eligible
 
 
@@ -151,6 +166,7 @@ class LiveSimilarCarrier:
             raise pg.PgvectorQueryError("Absolute private carrier directory required")
         self._pools = {}
         self._pool_lock = asyncio.Lock()
+        self._batch_checkout_lock = asyncio.Lock()
 
     def require_graph(self, witness):
         entry = self._approved.get(witness.pin.build_id)
@@ -196,6 +212,26 @@ class LiveSimilarCarrier:
         finally:
             for pool in pools:
                 pool.terminate()
+
+    @asynccontextmanager
+    async def _source_connections(self, witness, count):
+        pool = await self._pool(witness)
+        async with AsyncExitStack() as stack:
+            # Reserve the bounded pair together: two batches must never each
+            # hold one connection while waiting for the other's second one.
+            async with self._batch_checkout_lock:
+                connections = tuple([await stack.enter_async_context(pool.acquire())
+                                     for _ in range(min(count, 2))])
+            for connection in connections:
+                await stack.enter_async_context(connection.transaction(readonly=True, isolation="repeatable_read"))
+                await self._binding(connection, witness)
+                await connection.execute("""
+                    SET LOCAL work_mem='8MB'; SET LOCAL hnsw.ef_search=256;
+                    SET LOCAL hnsw.iterative_scan='relaxed_order';
+                    SET LOCAL hnsw.max_scan_tuples=20000; SET LOCAL hnsw.scan_mem_multiplier=1;
+                    SET LOCAL statement_timeout='2s'; SET LOCAL lock_timeout='250ms';
+                """)
+            yield connections
 
     async def query(self, witness, vector, *, top_k, year_min=None, year_max=None,
                     excluded_revisions=()):
@@ -309,18 +345,9 @@ class LiveSimilarCarrier:
                     params = {"queries": queries, "excluded": excluded, "limit": top_k}
                     async with asyncio.timeout(transport.budget.statement_ms / 1000):
                         if not exhaustive:
-                            pool = await self._pool(witness)
-                            async with pool.acquire() as scratch:
-                                async with scratch.transaction(readonly=True, isolation="repeatable_read"):
-                                    await self._binding(scratch, witness)
-                                    await scratch.execute("""
-                                        SET LOCAL work_mem='8MB'; SET LOCAL hnsw.ef_search=256;
-                                        SET LOCAL hnsw.iterative_scan='relaxed_order';
-                                        SET LOCAL hnsw.max_scan_tuples=20000; SET LOCAL hnsw.scan_mem_multiplier=1;
-                                        SET LOCAL statement_timeout='2s'; SET LOCAL lock_timeout='250ms';
-                                    """)
-                                    groups = await eligible_source_roots(scratch, authority, table, queries,
-                                        excluded, transport.budget.source_candidate_pool)
+                            async with self._source_connections(witness, len(queries)) as connections:
+                                groups = await eligible_source_roots(connections, authority, table, queries,
+                                    excluded, transport.budget.source_candidate_pool)
                             params["root_groups"] = json.dumps(groups)
                         distance = "embedding <=> inputs.query"
                         predicate = EXCLUDED if exhaustive else (
