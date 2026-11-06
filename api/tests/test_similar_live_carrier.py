@@ -231,13 +231,23 @@ class LiveSourceBoundaries(IsolatedAsyncioTestCase):
 
     async def test_twenty_sources_share_one_real_two_second_deadline(self):
         reader, witness, authority, scratch = fixture()
-        calls = 0
+        second = MagicMock()
+        second.execute = AsyncMock()
+        contexts = [MagicMock(), MagicMock()]
+        for context, connection in zip(contexts, (scratch, second)):
+            context.__aenter__.return_value = connection
+        pool = reader._pool.return_value
+        pool.acquire.side_effect = contexts
+        calls = completed = 0
         async def slow_fetch(*args):
-            nonlocal calls
+            nonlocal calls, completed
             calls += 1
-            await asyncio.sleep(.12)
-            return [(f"({calls},1)",)]
+            ordinal = calls
+            await asyncio.sleep(.22)
+            completed += 1
+            return [(f"({ordinal},1)",)]
         scratch.fetch.side_effect = slow_fetch
+        second.fetch = AsyncMock(side_effect=slow_fetch)
         with ExitStack() as patches:
             patches.enter_context(patch.object(live, "current_read_pin", AsyncMock()))
             patches.enter_context(patch.object(live, "physical_witness", AsyncMock(return_value=witness)))
@@ -246,12 +256,77 @@ class LiveSourceBoundaries(IsolatedAsyncioTestCase):
                 await reader.query_many(witness, [[1.0] + [0.0] * 767 for _ in range(20)],
                     top_k=15, excluded_revisions=[])
         self.assertLess(asyncio.get_running_loop().time() - started, 2.8)
-        self.assertLess(calls, 20)
+        # Both lanes can start their final fetch just before the deadline;
+        # they must not complete it or reach authoritative ranking.
+        self.assertLessEqual(calls, 20)
+        self.assertLess(completed, calls)
         self.assertEqual(reader._transport._slots._value, 4)
         authority.begin.return_value.__aexit__.assert_awaited_once()
         scratch.transaction.return_value.__aexit__.assert_awaited_once()
+        second.transaction.return_value.__aexit__.assert_awaited_once()
         self.assertFalse(any("CROSS JOIN LATERAL" in str(call.args[0])
             for call in authority.execute.await_args_list))
+
+    async def test_two_native_partitions_preserve_prefixes_and_resolve_each_round_once(self):
+        first, second = AsyncMock(), AsyncMock()
+        first.fetch.side_effect = [[("(1,1)",), ("(1,2)",)], [("(3,1)",), ("(3,2)",)], [("(1,3)",)]]
+        second.fetch.side_effect = [[("(1,2)",), ("(2,1)",)], [("(4,1)",)]]
+        authority = AsyncMock()
+        initial, refill = MagicMock(), MagicMock()
+        initial.all.return_value = [(root, root != "(1,1)") for root in
+            ["(4,1)", "(3,2)", "(3,1)", "(2,1)", "(1,2)", "(1,1)"]]
+        refill.all.return_value = [("(1,3)", True)]
+        authority.execute.side_effect = [initial, refill]
+        result = await live.eligible_source_roots((first, second), authority, "fixture",
+            ["a", "b", "c", "d"], [], 2)
+        self.assertEqual(result, [["(1,2)", "(1,3)"], ["(1,2)", "(2,1)"],
+            ["(3,1)", "(3,2)"], ["(4,1)"]])
+        self.assertEqual(authority.execute.await_count, 2)
+        self.assertEqual([call.args[0] for call in first.fetch.await_args_list],
+            ["FETCH FORWARD 2 FROM source_0", "FETCH FORWARD 2 FROM source_2", "FETCH FORWARD 1 FROM source_0"])
+        self.assertEqual([call.args[0] for call in second.fetch.await_args_list],
+            ["FETCH FORWARD 2 FROM source_1", "FETCH FORWARD 2 FROM source_3"])
+
+    async def test_partition_failure_cancels_sibling_before_authority_resolution(self):
+        first, second, authority = AsyncMock(), AsyncMock(), AsyncMock()
+        entered, cancelled = asyncio.Event(), asyncio.Event()
+        async def waiting(*args):
+            entered.set()
+            try:
+                await asyncio.Future()
+            finally:
+                cancelled.set()
+        async def broken(*args):
+            await entered.wait()
+            raise RuntimeError("native disconnected")
+        first.fetch.side_effect = waiting
+        second.fetch.side_effect = broken
+        with self.assertRaises(ExceptionGroup):
+            await live.eligible_source_roots((first, second), authority, "fixture", ["a", "b"], [], 257)
+        self.assertTrue(cancelled.is_set())
+        authority.execute.assert_not_awaited()
+
+    async def test_partial_pair_checkout_cancellation_returns_first_connection(self):
+        reader, witness, _, scratch = fixture()
+        entered = asyncio.Event()
+        first, second = MagicMock(), MagicMock()
+        first.__aenter__.return_value = scratch
+        async def waiting(*unused):
+            entered.set()
+            await asyncio.Future()
+        second.__aenter__.side_effect = waiting
+        reader._pool.return_value.acquire.side_effect = [first, second]
+        async def run():
+            async with reader._source_connections(witness, 20):
+                self.fail("partial pair admitted")
+        task = asyncio.create_task(run())
+        await asyncio.wait_for(entered.wait(), 1)
+        task.cancel()
+        with self.assertRaises(asyncio.CancelledError):
+            await task
+        first.__aexit__.assert_awaited_once()
+        self.assertFalse(reader._batch_checkout_lock.locked())
+        scratch.transaction.assert_not_called()
 
     async def test_cancellation_unwinds_native_and_authority_transactions_and_sql_permit(self):
         reader, witness, authority, scratch = fixture()

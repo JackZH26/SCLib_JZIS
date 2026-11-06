@@ -29,6 +29,17 @@ source deadlines or partial-result responses. Missing physical roots or a
 changed graph fail the entire request. Small eligible cohorts retain exact SQL
 scoring.
 
+Similar divides its source cursors between at most two native connections so
+that traversal can use the carrier's existing two CPUs. Each connection advances
+its own sources in order; a refill round joins both partitions before resolving
+the combined physical roots in the single authoritative snapshot. The same
+257 eligible candidates per source and final distance/tie ordering are retained.
+The existing four-connection native pool and four global SQL permits remain
+unchanged. Pair checkout is serialized to avoid batches holding one connection
+each while waiting for a second. Failure or cancellation cancels the sibling
+partition and rolls back both native transactions before releasing connections.
+Search and Ask retain their existing single-connection traversal.
+
 ## Release and provisioning
 
 1. Build and sign the API with `models/similar_carrier_admission.json`. Both the
