@@ -1,9 +1,12 @@
 """Real source and target governance around a private, fully covered fixture."""
 
+import asyncio
 import os
+import threading
 from contextlib import closing
 from dataclasses import replace
-from unittest.mock import AsyncMock
+from types import SimpleNamespace
+from unittest.mock import AsyncMock, MagicMock
 from uuid import UUID, uuid4
 
 import pytest
@@ -11,8 +14,8 @@ import sqlalchemy as sa
 from build_similar_frontier import build_slice
 from publish_similar_frontier import publish, sealed_members
 
-from models.db import Paper, get_session_factory
-from services import content_similarity
+from models.db import Paper, get_engine, get_session_factory
+from services import content_runtime, content_similarity, pgvector_query
 from services import similar_frontier_checkpoint as checkpoint
 from services.similar_frontier_release import SimilarFrontiers, graph_scope
 from tests.test_content_similarity import many_sources as many_sources
@@ -73,7 +76,8 @@ async def test_sealed_frontiers_preserve_live_results_rights_and_final_snapshot(
         path, tmp_path, other_scope, iter(members), sealed_member_count=witness.member_count
     )
     reader.similar_frontiers = SimilarFrontiers(
-        {pin.build_id: release["sha256"], standby.pin.build_id: other["sha256"]}, tmp_path
+        {pin.build_id: release["sha256"], standby.pin.build_id: other["sha256"]}, tmp_path,
+        transport=reader._transport,
     )
     reader.similar_frontiers.require_graph(standby)
     with pytest.raises(ValueError, match="mismatch"):
@@ -87,6 +91,8 @@ async def test_sealed_frontiers_preserve_live_results_rights_and_final_snapshot(
 
     live_ann = AsyncMock(side_effect=AssertionError("Checkpoint path issued online ANN"))
     monkeypatch.setattr(reader._transport, "query_many", live_ann)
+    reader.similar_carrier = AsyncMock()
+    reader.similar_carrier.query_many = live_ann
     assert await reader.similar(pin, paper, top_k=50) == expected
     target = expected.results[0].paper_id
     async with get_session_factory()() as session:
@@ -113,3 +119,79 @@ async def test_sealed_frontiers_preserve_live_results_rights_and_final_snapshot(
     with pytest.raises(content_similarity.ContentSimilarityUnavailable):
         await reader.similar(pin, paper, top_k=50)
     live_ann.assert_not_awaited()
+    published = tmp_path / (release["sha256"] + ".sqlite")
+    published.unlink()
+    with pytest.raises(FileNotFoundError):
+        reader.similar_frontiers.require_graph(witness)
+
+
+async def test_runtime_requires_both_sources_and_preserves_semantic_route(monkeypatch):
+    from services.retrieval_readiness import ProjectionReadiness
+    pin = SimpleNamespace(logical_index="sclib-main", profile_json="{}")
+    witness = object()
+    monkeypatch.setattr(content_runtime.ContentRetriever, "pin", AsyncMock(return_value=pin))
+    monkeypatch.setattr(content_runtime.ContentRetriever, "_pin", lambda self, actual: None)
+    monkeypatch.setattr(ProjectionReadiness, "prepare", AsyncMock(return_value=True))
+    monkeypatch.setattr(ProjectionReadiness, "ready", AsyncMock(return_value=True))
+    monkeypatch.setattr(ProjectionReadiness, "prepared_witness", lambda self, actual: witness)
+    frontiers = MagicMock()
+    frontiers.close = AsyncMock()
+    carrier = AsyncMock()
+    monkeypatch.setattr(content_runtime, "get_settings", lambda: SimpleNamespace(
+        retrieval_backend="pgvector", retrieval_logical_index=pin.logical_index,
+        retrieval_use_similar_frontiers=True, retrieval_use_similar_carrier=True,
+    ))
+    monkeypatch.setattr(content_runtime.SimilarFrontiers, "from_release", lambda transport: frontiers)
+    monkeypatch.setattr(content_runtime.LiveSimilarCarrier, "from_release", lambda transport: carrier)
+    from services import content_retrieval
+    vector = object()
+    monkeypatch.setattr(content_retrieval.provider_resilience, "run_blocking", AsyncMock(return_value=vector))
+    async with content_runtime.managed_reader() as reader:
+        request = SimpleNamespace(app=SimpleNamespace(state=SimpleNamespace(content_reader=reader)))
+        frontiers.require_graph.assert_called_once_with(witness)
+        carrier.prepare.assert_awaited_once_with(witness)
+        await content_runtime.check_ready(request)
+        assert frontiers.require_graph.call_count == carrier.prepare.await_count == 2
+        await reader._semantic(pin, "query", top_k=20, year_min=None, year_max=None)
+        carrier.query.assert_awaited_once_with(witness, vector, top_k=20, year_min=None, year_max=None)
+        frontiers.require_graph.side_effect = ValueError("Changed frontier")
+        with pytest.raises(ValueError, match="Changed frontier"):
+            await content_runtime.check_ready(request)
+    carrier.close.assert_awaited_once()
+    frontiers.close.assert_awaited_once()
+
+
+@pytest.mark.parametrize("disconnect", [True, False])
+async def test_interrupted_lookup_keeps_the_real_global_slot_until_file_read_ends(disconnect):
+    transport = pgvector_query.PgvectorQueries(get_engine())
+    # Exercise lifecycle and real advisory locks independently of the fixture's file format.
+    frontiers = object.__new__(SimilarFrontiers)
+    frontiers._transport = transport
+    frontiers._pending = set()
+    started, finish = threading.Event(), threading.Event()
+
+    def read(*_):
+        started.set()
+        if not finish.wait(timeout=8):
+            raise AssertionError("test did not release file read")
+
+    frontiers._read = read
+
+    async def available():
+        async with get_engine().connect() as conn, conn.begin():
+            rows = await conn.execute(sa.text("SELECT pg_try_advisory_xact_lock(k) "
+                "FROM unnest(CAST(:keys AS bigint[])) AS s(k)"), {"keys": list(pgvector_query._SQL_SLOT_KEYS)})
+            return sum(rows.scalars())
+
+    call = asyncio.create_task(frontiers.candidates(None, None, (), (), 1, timeout=3))
+    try:
+        assert await asyncio.to_thread(started.wait, 2)
+        if disconnect:
+            call.cancel()
+        with pytest.raises(asyncio.CancelledError if disconnect else TimeoutError):
+            await call
+        assert await available() == 3
+    finally:
+        finish.set()
+        await frontiers.close()
+    assert await available() == 4
