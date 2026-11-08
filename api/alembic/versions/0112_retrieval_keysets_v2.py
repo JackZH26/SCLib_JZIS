@@ -2,7 +2,7 @@
 import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import UUID
 from alembic import op
-from models.retrieval_keysets_v2 import INDEXES,register
+from migration_history.retrieval_keysets_v2 import INDEXES,register
 
 revision='0112_retrieval_keysets_v2'
 down_revision='0111_retrieval_navigation_v2'

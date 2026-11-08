@@ -38,7 +38,7 @@ def archive(files):
 @pytest.fixture
 def context(tmp_path, monkeypatch):
     root = tmp_path.resolve()
-    for project in ("api", "ingestion", "publisher"):
+    for project in ("api", "ingestion"):
         (root / project).mkdir()
         for name in ("uv.lock", "pyproject.toml", "Dockerfile"):
             (root / project / name).write_text("synthetic " + project + name)
@@ -81,8 +81,8 @@ def context(tmp_path, monkeypatch):
             "dockerfile_sha256": digest((root / project / "Dockerfile").read_bytes())}
         data.runtime = {"schema": SCHEMA, "python_minor": "3.11", "python_version": "3.11.14",
             "implementation": "CPython", "system": "Linux", "machine": "x86_64",
-            "project_name": gate.PROJECT_NAMES[project], "project_version": "0.1.0",
-            "packages": {gate.PROJECT_NAMES[project]: "0.1.0", "sqlalchemy": "2.0.49"},
+            "project_name": "sclib-" + project, "project_version": "0.1.0",
+            "packages": {"sclib-" + project: "0.1.0", "sqlalchemy": "2.0.49"},
             **{key: value for key, value in expected.items() if key != "dockerfile_sha256"}}
         data.details = [{"Id": data.image_id, "RepoDigests": [f"ghcr.io/jackzh26/sclib-{project}@{data.image_digest}"],
             "Os": "linux", "Architecture": "amd64", "Config": {"Labels": {
@@ -157,7 +157,7 @@ def context(tmp_path, monkeypatch):
     return data
 
 
-@pytest.mark.parametrize("project,count", [("api", 2), ("ingestion", 1), ("publisher", 1)])
+@pytest.mark.parametrize("project,count", [("api", 2), ("ingestion", 1)])
 def test_exact_final_digest_is_actually_compared_with_every_required_test_inventory(context, project, count):
     context.configure(project)
     report = gate.check(**context.arguments())
@@ -548,6 +548,6 @@ def test_release_gate_precedes_release_signing_attestation_and_deployment_artifa
     assert "TEST_RUN_ATTEMPT: ${{ github.event.workflow_run.run_attempt }}" in workflow
     assert workflow.count("github.event.workflow_run.head_repository.full_name == github.repository") == 2
     tests = (ROOT / ".github/workflows/test.yml").read_text()
-    for component in ("api", "migration", "ingestion", "publisher"):
+    for component in ("api", "migration", "ingestion"):
         assert f"name: {component}-test-runtime-inventory-attempt-${{{{ github.run_attempt }}}}" in tests
     assert "pnpm install --frozen-lockfile" in tests

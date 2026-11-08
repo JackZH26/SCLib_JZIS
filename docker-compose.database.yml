@@ -1,0 +1,14 @@
+# Production's shared PostgreSQL volume and its measured resource settings.
+services:
+  postgres:
+    image: ${POSTGRES_IMAGE:?set the signed PostgreSQL image digest}
+    cpus: ${POSTGRES_CPUS:?set the production PostgreSQL CPU limit}
+    shm_size: ${POSTGRES_SHM_SIZE:?set the PostgreSQL shared-memory budget}
+    mem_limit: ${POSTGRES_MEMORY_LIMIT:?set the PostgreSQL process memory limit}
+    memswap_limit: ${POSTGRES_MEMORY_LIMIT:?set the PostgreSQL process memory limit}
+    command:
+      - postgres
+      - -c
+      - shared_buffers=${POSTGRES_SHARED_BUFFERS:?set the PostgreSQL buffer budget}
+      - -c
+      - max_wal_size=1GB

@@ -61,8 +61,6 @@ from ingestion.index.indexer import (
 from ingestion.input_observation import new_input_observation, observe_chunks, observe_embeddings
 from ingestion.parse.aps_xml import UnsupportedApsFulltextError, parse_bagit_payload
 
-from ingestion.config import require_legacy_publication
-
 log = logging.getLogger("ingestion.aps_pipeline")
 
 
@@ -86,7 +84,6 @@ async def process_aps_paper(
     is always written (even on failure) unless ``dry_run`` is set, in
     which case the audit is logged but not persisted.
     """
-    require_legacy_publication()
     observation = new_input_observation()
     result: dict[str, Any] = {"doi": doi, "ok": False, "dry_run": dry_run,
                               "input_observation": observation}
@@ -234,7 +231,6 @@ async def process_aps_paper(
 # ---------------------------------------------------------------------------
 
 async def _run(dois: list[str], **kw: Any) -> list[dict[str, Any]]:
-    require_legacy_publication()
     results: list[dict[str, Any]] = []
     try:
         async with ApsClient() as client:

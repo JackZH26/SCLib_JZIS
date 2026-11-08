@@ -3,49 +3,26 @@ from contextlib import contextmanager
 
 
 def pre_materials_context_tables(connection, names):
-    """Older comparisons may omit only demonstrably empty later namespaces.
+    """Only pre-0096 comparisons may omit the three demonstrably empty tables.
 
     Never use this for current-head or refused-downgrade snapshots. No scientific
     row, hash or field is projected away; populated history fails immediately.
     """
     from sqlalchemy import text
-    native = {"retrieval_input_receipts_v2", "retrieval_native_revisions_v2",
-        "retrieval_publications_v2", "retrieval_publication_members_v2", "retrieval_publication_seals_v2",
-        "retrieval_contents_v2", "retrieval_content_changes_v2", "retrieval_content_members_v2",
-        "retrieval_content_partitions_v2", "retrieval_content_seals_v2",
-        "retrieval_backend_builds_v2", "retrieval_backend_fences_v2",
-        "retrieval_projection_seals_v2", "retrieval_backend_validations_v2",
-        "retrieval_acceptances_v2", "retrieval_activation_events_v2", "retrieval_active_pointer_v2",
-        "retrieval_native_navigation_v2", "content_answer_evidence_receipts_v2",
-        "retrieval_publication_jobs_v2", "retrieval_publication_job_fences_v2",
-        "retrieval_publication_claims_v2", "retrieval_publication_results_v2"}
-    for name in native.intersection(names):
-        assert not connection.execute(text(f"SELECT EXISTS(SELECT 1 FROM public.{name})")).scalar_one(), \
-            "Retained native retrieval cannot enter a pre-0107 comparison"
     added = {"sample_compositions", "research_protocols", "sample_relations"}
     for name in added.intersection(names):
         assert not connection.execute(text(f"SELECT EXISTS(SELECT 1 FROM public.{name})")).scalar_one(), \
             "Retained Materials context cannot enter a pre-0096 comparison"
-    return [name for name in names if name not in added | native]
+    return [name for name in names if name not in added]
 
 
 def pre_claim_review_rows(name, rows):
-    """Compare old rows across absent versus NULL additive marker columns.
+    """Compare legacy rows across 0095's *absent vs NULL* additive column.
 
     Use only for a historical boundary which predates claim review. Never
-    erase a populated claim target or content receipt marker, or relax any
-    legacy value/hash comparison. Later namespaces must independently be empty.
+    erase a populated claim target or relax any legacy value/hash comparison.
     Current-head and refused-downgrade full snapshots keep every column.
     """
-    if name == 'ask_history':
-        result=[]
-        for row in rows:
-            if 'content_evidence_receipt_version' in row:
-                assert row['content_evidence_receipt_version'] is None, 'Retained content history cannot enter a pre-0113 comparison'
-                row={key:value for key,value in row.items() if key!='content_evidence_receipt_version'}
-            result.append(row)
-        import json
-        return sorted(result,key=lambda row:json.dumps(row,sort_keys=True))
     if name not in {"scientific_result_subjects", "scientific_result_decisions"}:
         return rows
     result = []

@@ -65,6 +65,7 @@ only-include = [
     "routers",
     "services",
     "models",
+    "migration_history",
     "alembic",
 ]
 

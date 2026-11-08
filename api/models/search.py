@@ -13,14 +13,14 @@ from pydantic import BaseModel, ConfigDict, Field, field_validator, model_valida
 
 from models.evidence_packing import EvidencePackingSelection, EvidencePackingSummary
 from models.history_receipts import HistorySaveDisposition
-from models.index_read import IndexReadMetadata, RetrievalReadMetadata
+from models.index_read import IndexReadMetadata
 from models.rag_input_budget import RagInputBudgetReport
 from models.scientific_lookup import (
     LinkedScientificResult,
     ScientificLookupStatus,
     validate_scientific_response,
 )
-from models.scientific_mixed import ContentScientificMixedEvidence, ScientificMixedEvidence, validate_mixed_response
+from models.scientific_mixed import ScientificMixedEvidence, validate_mixed_response
 from models.scientific_query import ScientificQueryInterpretation
 from services.claim_support import SUPPORT_POLICY_VERSION
 from services.material_property_projection import project_material_properties
@@ -113,7 +113,7 @@ class SearchMatch(BaseModel):
 
 
 class SearchResponse(BaseModel):
-    retrieval_generation: RetrievalReadMetadata = Field(default_factory=IndexReadMetadata)
+    retrieval_generation: IndexReadMetadata = Field(default_factory=IndexReadMetadata)
     scientific_query: ScientificQueryInterpretation | None = None
     scientific_lookup: ScientificLookupStatus = Field(default_factory=ScientificLookupStatus)
     scientific_results: list[LinkedScientificResult] = Field(default_factory=list, max_length=20)
@@ -188,10 +188,10 @@ class ClaimSupportAssessment(BaseModel):
 
 class AskResponse(BaseModel):
     history: HistorySaveDisposition = Field(default_factory=HistorySaveDisposition)
-    scientific_mixed: ScientificMixedEvidence | ContentScientificMixedEvidence = Field(default_factory=ScientificMixedEvidence)
+    scientific_mixed: ScientificMixedEvidence = Field(default_factory=ScientificMixedEvidence)
     evidence_packing: EvidencePackingSummary = Field(default_factory=EvidencePackingSummary)
     input_budget: RagInputBudgetReport = Field(default_factory=RagInputBudgetReport)
-    retrieval_generation: RetrievalReadMetadata = Field(default_factory=IndexReadMetadata)
+    retrieval_generation: IndexReadMetadata = Field(default_factory=IndexReadMetadata)
     scientific_query: ScientificQueryInterpretation | None = None
     scientific_lookup: ScientificLookupStatus = Field(default_factory=ScientificLookupStatus)
     scientific_results: list[LinkedScientificResult] = Field(default_factory=list, max_length=20)
@@ -539,7 +539,7 @@ class SimilarPaper(BaseModel):
 
 
 class SimilarResponse(BaseModel):
-    retrieval_generation: RetrievalReadMetadata = Field(default_factory=IndexReadMetadata)
+    retrieval_generation: IndexReadMetadata = Field(default_factory=IndexReadMetadata)
     source_paper_id: str
     results: list[SimilarPaper]
 

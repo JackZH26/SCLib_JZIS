@@ -371,7 +371,7 @@ async def test_native_pending_is_not_approval_and_local_negative_event_holds_pro
 
 
 @pytest.mark.asyncio
-async def test_empty_migration_roundtrip_uses_actual_metadata_guards(db_session, monkeypatch):
+async def test_empty_migration_roundtrip_uses_actual_metadata_guards(db_session):
     # The repository fixture is session-wide. Never erase committed audit
     # history just to manufacture an empty downgrade; also run this case alone
     # against a fresh disposable harness to exercise the actual empty branch.
@@ -385,28 +385,24 @@ async def test_empty_migration_roundtrip_uses_actual_metadata_guards(db_session,
     assert revisions[-1].revision == "0087_discovery_designs"
     def roundtrip(connection):
         connection = connection.connection()
-        ops = Operations(MigrationContext.configure(connection))
-        for revision in revisions:
-            monkeypatch.setattr(revision.module, "op", ops)
-        # Base.metadata excludes the private proposal schema. Apply its actual
-        # migrations before replaying the complete current dependency chain.
-        private_revisions = {
-            "0092_materials_ner_proposals", "0100_materials_ner_relations",
-            "0103_materials_ner_amendments",
-        }
-        for revision in reversed(revisions):
-            if revision.revision in private_revisions:
+        with Operations.context(MigrationContext.configure(connection)):
+            private_revisions = {
+                "0092_materials_ner_proposals", "0100_materials_ner_relations",
+                "0103_materials_ner_amendments",
+            }
+            for revision in reversed(revisions):
+                if revision.revision in private_revisions:
+                    revision.module.upgrade()
+            foreign_keys = sa.text("SELECT conrelid::regclass::text, conname FROM pg_constraint "
+                                   "WHERE contype='f' AND connamespace='public'::regnamespace "
+                                   "ORDER BY 1, 2")
+            before = connection.execute(foreign_keys).all()
+            for revision in revisions:
+                revision.module.downgrade()
+            assert connection.execute(sa.text("SELECT to_regclass('public.discovery_design_revisions_v1')")).scalar_one() is None
+            for revision in reversed(revisions):
                 revision.module.upgrade()
-        foreign_keys = sa.text("SELECT conrelid::regclass::text, conname FROM pg_constraint "
-                               "WHERE contype='f' AND connamespace='public'::regnamespace "
-                               "ORDER BY 1, 2")
-        before = connection.execute(foreign_keys).all()
-        for revision in revisions:
-            revision.module.downgrade()
-        assert connection.execute(sa.text("SELECT to_regclass('public.discovery_design_revisions_v1')")).scalar_one() is None
-        for revision in reversed(revisions):
-            revision.module.upgrade()
-        assert connection.execute(sa.text("SELECT to_regclass('public.discovery_design_revisions_v1')")).scalar_one()
-        assert connection.execute(sa.text("SELECT count(*) FROM pg_trigger WHERE tgrelid='public.discovery_design_revisions_v1'::regclass AND NOT tgisinternal")).scalar_one() == 3
-        assert connection.execute(foreign_keys).all() == before
+            assert connection.execute(sa.text("SELECT to_regclass('public.discovery_design_revisions_v1')")).scalar_one()
+            assert connection.execute(sa.text("SELECT count(*) FROM pg_trigger WHERE tgrelid='public.discovery_design_revisions_v1'::regclass AND NOT tgisinternal")).scalar_one() == 3
+            assert connection.execute(foreign_keys).all() == before
     await db_session.run_sync(roundtrip)

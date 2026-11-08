@@ -3,7 +3,7 @@ from __future__ import annotations
 
 import asyncio
 import time
-from collections.abc import Awaitable, Callable
+from collections.abc import Callable
 from dataclasses import dataclass
 from typing import Literal, TypeVar
 
@@ -34,14 +34,11 @@ async def run_blocking(
     cooldown_seconds: float,
     max_attempts: int = 2,
     result_status: Callable[[T], Literal["success", "not_requested"]] | None = None,
-    async_executor: Callable[[Callable[[], T]], Awaitable[T]] | None = None,
 ) -> T:
     """Run a blocking provider call with timeout, retry, and circuit isolation.
 
     Immediate provider exceptions may be retried. A timed-out thread cannot be
     safely cancelled, so timeout failures are never duplicated.
-    An optional internal async executor can retain ownership of a bounded
-    worker after cancellation; its queue wait shares the provider timeout.
     """
     circuit = _circuits.setdefault(provider, _Circuit())
     started = time.monotonic()
@@ -55,7 +52,7 @@ async def run_blocking(
     for attempt in range(attempts):
         try:
             result = await asyncio.wait_for(
-                asyncio.to_thread(operation) if async_executor is None else async_executor(operation),
+                asyncio.to_thread(operation),
                 timeout=timeout_seconds,
             )
             status = result_status(result) if result_status is not None else "success"

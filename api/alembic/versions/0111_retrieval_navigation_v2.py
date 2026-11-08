@@ -2,7 +2,7 @@
 import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import UUID
 from alembic import op
-from models.retrieval_navigation_v2 import FUNCTION_SIGNATURES,INDEXES,PARENTS,TABLE,register
+from migration_history.retrieval_navigation_v2 import FUNCTION_SIGNATURES,INDEXES,PARENTS,TABLE,register
 
 revision='0111_retrieval_navigation_v2'
 down_revision='0110_retrieval_activation_v2'

@@ -4,7 +4,7 @@ from __future__ import annotations
 import asyncio
 from datetime import UTC, datetime
 
-from fastapi import APIRouter, Request
+from fastapi import APIRouter
 from fastapi.responses import JSONResponse
 
 from models.health import DataComponentHealth, DataHealth, DependencyHealth, LiveHealth
@@ -35,16 +35,8 @@ async def legacy_health() -> JSONResponse:
     return _model_response(LiveHealth())
 
 
-async def _dependency_response(request=None) -> JSONResponse:
-    from config import get_settings
-    if get_settings().retrieval_backend == 'pgvector':
-        from services.content_runtime import check_ready
-        from services.health import _timed_probe
-        health, retrieval = await asyncio.gather(collect_dependency_health(), _timed_probe(lambda: check_ready(request)))
-        health = health.model_copy(update={'dependencies':{**health.dependencies, 'retrieval':retrieval},
-            'status':'ok' if health.status=='ok' and retrieval.status=='ok' else 'unavailable'})
-    else:
-        health = await collect_dependency_health()
+async def _dependency_response() -> JSONResponse:
+    health = await collect_dependency_health()
     return _model_response(
         health,
         status_code=200 if health.status == "ok" else 503,
@@ -57,9 +49,9 @@ async def _dependency_response(request=None) -> JSONResponse:
     responses={503: {"description": "A required dependency is unavailable"}},
     include_in_schema=False,
 )
-async def readyz(request: Request = None) -> JSONResponse:
+async def readyz() -> JSONResponse:
     """Readiness gates traffic on bounded PostgreSQL and Redis probes."""
-    return await _dependency_response(request)
+    return await _dependency_response()
 
 
 @router.get(
@@ -67,8 +59,8 @@ async def readyz(request: Request = None) -> JSONResponse:
     response_model=DependencyHealth,
     responses={503: {"description": "A required dependency is unavailable"}},
 )
-async def dependency_health(request: Request = None) -> JSONResponse:
-    return await _dependency_response(request)
+async def dependency_health() -> JSONResponse:
+    return await _dependency_response()
 
 
 @router.get(

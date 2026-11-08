@@ -1,8 +1,8 @@
 """Retain native publication jobs, fenced leases and exact completion receipts."""
 import sqlalchemy as sa
 from alembic import op
-from models.db import Base
-from models.retrieval_publication_queue_v2 import TABLE_ORDER,statements,cleanup
+from sqlalchemy.dialects.postgresql import UUID
+from migration_history.retrieval_publication_queue_v2 import TABLE_ORDER,statements,cleanup,register
 
 revision='0116_publication_queue_v2'
 down_revision='0115_retrieval_policy_v3'
@@ -11,7 +11,13 @@ depends_on=None
 
 
 def upgrade():
-    for name in TABLE_ORDER:Base.metadata.tables[name].create(op.get_bind())
+    metadata = sa.MetaData()
+    sa.Table('papers', metadata, sa.Column('id', sa.String))
+    sa.Table('retrieval_publications_v2', metadata, sa.Column('id', UUID))
+    sa.Table('retrieval_activation_events_v2', metadata, sa.Column('id', UUID))
+    register(metadata)
+    for name in TABLE_ORDER:
+        metadata.tables[name].create(op.get_bind())
     for sql in statements():op.execute(sql)
 
 

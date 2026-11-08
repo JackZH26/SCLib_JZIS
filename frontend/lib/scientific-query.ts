@@ -1,9 +1,8 @@
 /** Closed display guards. Passing one never establishes scientific validity. */
 import type {
-  BoundScientificQueryResult, ScientificLookup,
+  BoundScientificQueryResult, RetrievalGeneration, ScientificLookup,
   ScientificQueryInterpretation, ScientificReportQuantity,
 } from "@/lib/api";
-import { knownRetrievalRead } from "@/lib/retrieval-read";
 
 type Row = Record<string, unknown>;
 const sha = /^[0-9a-f]{64}$/;
@@ -120,12 +119,20 @@ function result(input: unknown) {
     && keys(context, ["tc_criterion", "sample_label", "sample_form", "structure_phase", "measurement_method"])
     && Object.values(context).every(value => nullableString(value, 160));
 }
+function generation(input: unknown): input is RetrievalGeneration {
+  return keys(input, ["version", "mode", "generation_id", "activation_event_id", "manifest_sha256"])
+    && input.version === "index-read/1.0.0" && input.mode === "generation_snapshot"
+    && typeof input.generation_id === "string" && uuid.test(input.generation_id)
+    && typeof input.activation_event_id === "string" && uuid.test(input.activation_event_id)
+    && typeof input.manifest_sha256 === "string" && sha.test(input.manifest_sha256);
+}
+
 export function knownScientificLookup(input: unknown): ScientificLookup | null {
   return keys(input, ["status", "reason_codes", "returned_count", "has_more", "scope", "scientific_acceptance"])
     && choice(input.status, ["not_requested", "completed", "unavailable", "clarification_required"])
     && codes(input.reason_codes, 8) && new Set(input.reason_codes as unknown[]).size === (input.reason_codes as unknown[]).length
     && integer(input.returned_count, 20) && typeof input.has_more === "boolean"
-    && choice(input.scope, ["declared_generation_derived_extractions", "declared_content_derived_extractions"]) && input.scientific_acceptance === false
+    && input.scope === "declared_generation_derived_extractions" && input.scientific_acceptance === false
     && (input.status === "completed" || input.returned_count === 0 && input.has_more === false)
     && (input.has_more === false || (input.returned_count as number) > 0)
     ? input as unknown as ScientificLookup : null;
@@ -137,35 +144,19 @@ export function knownScientificResults(input: unknown, lookup: ScientificLookup,
   if (lookup.status === "clarification_required" && query.status !== "clarification_required"
     || lookup.status === "unavailable" && query.status !== "resolved") return null;
   if (lookup.status !== "completed") return input.length === 0 ? [] : null;
-  const read = knownRetrievalRead(pin);
-  if (query.status !== "resolved" || !read || read.mode === "legacy_lexical_only") return null;
-  const content = read.version === "index-read/2.0.0";
-  if (lookup.scope !== (content ? "declared_content_derived_extractions" : "declared_generation_derived_extractions")) return null;
-  const shared = ["paper_id", "vector_id", "activation_event_id", "manifest_sha256", "content_sha256",
-    "evidence_revision_id", "evidence_record_sha256", "parent_result_revision_id", "parent_result_sha256", "association_scope"];
+  if (query.status !== "resolved" || !generation(pin)) return null;
   const valid = input.every(item => {
     if (!keys(item, ["result", "binding"]) || !result(item.result)) return false;
     const binding = item.binding;
-    const fields = content ? [...shared, "version", "content_id", "build_id", "policy_artifact_sha256",
-      "content_member_record_sha256", "origin_kind", "origin_generation_id", "native_revision_id", "origin_record_sha256",
-      "chunk_revision_sha256", "vector_sha256"] : [...shared, "generation_id"];
-    if (!keys(binding, fields) || !string(binding.paper_id, 100) || typeof binding.vector_id !== "string"
-      || binding.activation_event_id !== read.activation_event_id || binding.manifest_sha256 !== read.manifest_sha256
-      || ![binding.content_sha256, binding.evidence_record_sha256, binding.parent_result_sha256].every(value => typeof value === "string" && sha.test(value))
-      || ![binding.evidence_revision_id, binding.parent_result_revision_id].every(value => typeof value === "string" && uuid.test(value))
-      || binding.association_scope !== "derived_extraction_not_original_support") return false;
-    if (read.version === "index-read/1.0.0") return binding.generation_id === read.generation_id
-      && new RegExp(`^ig62_${read.generation_id!.replaceAll("-", "") }_[0-9a-f]{64}$`).test(binding.vector_id);
-    if (binding.version !== "scientific-result-binding/2.0.0" || binding.content_id !== read.content_id
-      || binding.build_id !== read.build_id || binding.policy_artifact_sha256 !== read.policy_artifact_sha256
-      || ![binding.content_member_record_sha256, binding.origin_record_sha256, binding.chunk_revision_sha256, binding.vector_sha256]
-        .every(value => typeof value === "string" && sha.test(value))) return false;
-    if (binding.origin_kind === "legacy_v1") return typeof binding.origin_generation_id === "string" && uuid.test(binding.origin_generation_id)
-      && binding.native_revision_id === null
-      && binding.vector_id === `ig62_${binding.origin_generation_id.replaceAll("-", "")}_${binding.chunk_revision_sha256}`;
-    return binding.origin_kind === "native_v2" && binding.origin_generation_id === null
-      && typeof binding.native_revision_id === "string" && uuid.test(binding.native_revision_id)
-      && binding.vector_id === `rv2_${binding.chunk_revision_sha256}`;
+    return keys(binding, ["paper_id", "vector_id", "generation_id", "activation_event_id", "manifest_sha256", "content_sha256",
+      "evidence_revision_id", "evidence_record_sha256", "parent_result_revision_id", "parent_result_sha256", "association_scope"])
+      && string(binding.paper_id, 100) && typeof binding.vector_id === "string"
+      && new RegExp(`^ig62_${pin.generation_id!.replaceAll("-", "") }_[0-9a-f]{64}$`).test(binding.vector_id)
+      && binding.generation_id === pin.generation_id && binding.activation_event_id === pin.activation_event_id
+      && binding.manifest_sha256 === pin.manifest_sha256
+      && [binding.content_sha256, binding.evidence_record_sha256, binding.parent_result_sha256].every(value => typeof value === "string" && sha.test(value))
+      && [binding.evidence_revision_id, binding.parent_result_revision_id].every(value => typeof value === "string" && uuid.test(value))
+      && binding.association_scope === "derived_extraction_not_original_support";
   });
   if (!valid) return null;
   const rows = input as BoundScientificQueryResult[];

@@ -1,7 +1,7 @@
 """Admit a distinct stored-source batch budget without relabelling old builds."""
 import sqlalchemy as sa
 from alembic import op
-from models.retrieval_policy_v4 import FUNCTION, TABLE, TRIGGER, POLICY_SHA256, statements
+from migration_history.retrieval_policy_v4 import FUNCTION, TABLE, TRIGGER, POLICY_SHA256, statements
 
 revision = '0117_retrieval_policy_v4'
 down_revision = '0116_publication_queue_v2'

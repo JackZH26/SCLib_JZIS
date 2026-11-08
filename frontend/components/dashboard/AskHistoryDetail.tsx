@@ -73,22 +73,17 @@ export function HistoryReceiptContent({ detail }: { detail: HistoryDetail }) {
         : evidence.status === "legacy_unpinned" ? "No complete answer-time receipt was recorded. Missing generations, extraction rows, associations and checks are not reconstructed from current data."
           : "The saved receipt could not be checked. No structured records or version bindings are displayed."}</p>
       <p className="text-xs text-sage-muted">Saved: {new Date(entry.created_at).toLocaleString("en-US")} · {entry.latency_ms.toLocaleString("en-US")} ms · {entry.tokens_used === null ? "Token usage unknown" : `${entry.tokens_used.toLocaleString("en-US")} recorded tokens`}</p>
-      {receipt && <details className="break-all text-xs"><summary className="cursor-pointer font-medium">Recorded identity and retrieval pins</summary>
+      {receipt && <details className="break-all text-xs"><summary className="cursor-pointer font-medium">Recorded identity and generation pins</summary>
         <dl className="mt-2 space-y-2">
           <div><dt>History ID</dt><dd>{receipt.history_id}</dd></div>
           <div><dt>Receipt checksum (server-verified SQL serialization)</dt><dd>{receipt.record_sha256}</dd></div>
           <div><dt>Request / response / bindings checksums</dt><dd>{receipt.request_sha256}<br />{receipt.response_sha256}<br />{receipt.bindings_sha256}</dd></div>
           <div><dt>Binding scope</dt><dd>{evidence.binding_scope === "generation_members" ? "Exact retained generation members"
-            : evidence.binding_scope === "content_members" ? "Exact retained content members"
             : evidence.binding_scope === "legacy_snapshot" ? "Saved legacy snapshot only; no generation identity"
               : "No selected evidence; no missing input is invented"}</dd></div>
-          {receipt.version === "ask-answer-evidence/1.0.0" && receipt.bindings.generation_id !== null && <><div><dt>Recorded generation</dt><dd>{receipt.bindings.generation_id}</dd></div>
+          {receipt.bindings.generation_id !== null && <><div><dt>Recorded generation</dt><dd>{receipt.bindings.generation_id}</dd></div>
             <div><dt>Recorded activation event</dt><dd>{receipt.bindings.activation_event_id}</dd></div>
             <div><dt>Recorded manifest</dt><dd>{receipt.bindings.manifest_sha256}</dd></div></>}
-          {receipt.version === "ask-answer-evidence/2.0.0" && <><div><dt>Recorded content</dt><dd>{receipt.bindings.read.content_id}</dd></div>
-            <div><dt>Recorded build</dt><dd>{receipt.bindings.read.build_id}</dd></div>
-            <div><dt>Recorded activation event</dt><dd>{receipt.bindings.read.activation_event_id}</dd></div>
-            <div><dt>Recorded manifest</dt><dd>{receipt.bindings.read.manifest_sha256}</dd></div></>}
         </dl>
         <p className="mt-2">These are historical identifiers, not a claim that this generation is active today. Checksums are not independent evidence authentication.</p>
         {receipt.bindings.items.length > 0 && <ol className="mt-3 list-inside list-decimal space-y-2">{receipt.bindings.items.map(item => <li key={`${item.kind}:${item.position}`}>
