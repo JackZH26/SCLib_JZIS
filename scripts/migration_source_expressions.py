@@ -92,7 +92,7 @@ def assert_empty(connection):
 def public_objects(connection):
     from sqlalchemy import text
 
-    # pgvector adds public aggregates (avg/sum). pg_get_functiondef rejects
+    # PostgreSQL can contain extension aggregates. pg_get_functiondef rejects
     # aggregate OIDs; keep their full pg_proc/pg_aggregate catalog definitions
     # in the same inventory rather than silently excluding them from parity.
     functions = dict(connection.execute(text("""SELECT p.oid::regprocedure::text,

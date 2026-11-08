@@ -170,35 +170,17 @@ async def _bounded_materials(db, groups):
     return await resolve_explicit_materials(db, groups)
 
 
-async def _check_snapshot(db, pins, evidence_resolver, *, backend_pin=None):
+async def _check_snapshot(db, pins, evidence_resolver):
     snapshot_at = (await db.execute(select(func.transaction_timestamp()))).scalar_one().isoformat()
     identifiers = [pin.chunk_id for pin in pins]
     generation_hashes = {pin.generation_pin_sha256 for pin in pins}
-    if backend_pin is not None and generation_hashes == {None}:
-        raise CurrentnessUnavailable("v2 selection has no content/backend binding")
     if generation_hashes != {None}:
         if None in generation_hashes or len(generation_hashes) != 1:
             raise CurrentnessUnavailable("mixed generation inventory")
-        if backend_pin is None:
-            active = await index_retrieval.load_pin(db)
-            if active is None or index_retrieval.pin_sha256(active) not in generation_hashes:
-                return CurrentnessCheck("changed", "retrieval_generation_changed", snapshot_at)
-            chunks = list((await index_retrieval.hydrate(db, active, identifiers)).values())
-        else:
-            from services.retrieval_activation import RetrievalPinV2, load_active_backend
-            from services import retrieval_members
-            from services.retrieval_candidate import EngineeringCandidatePin,load_candidate,is_read_pin
-            if not is_read_pin(backend_pin):
-                raise CurrentnessUnavailable("an exact v2 backend pin is required")
-            # Resolve again in this NEW read-only snapshot. A private object
-            # from an earlier request phase cannot authorize its own currency.
-            active = (await load_candidate(db,build_id=backend_pin.build_id,validation_id=backend_pin.validation_id,
-                expected_database=backend_pin.database_name) if type(backend_pin) is EngineeringCandidatePin else
-                await load_active_backend(db, logical_index=backend_pin.logical_index))
-            if (active != backend_pin or active is None
-                    or index_retrieval.pin_sha256(active.metadata()) not in generation_hashes):
-                return CurrentnessCheck("changed", "retrieval_generation_changed", snapshot_at)
-            chunks = list((await retrieval_members.hydrate(db, active, identifiers)).values())
+        active = await index_retrieval.load_pin(db)
+        if active is None or index_retrieval.pin_sha256(active) not in generation_hashes:
+            return CurrentnessCheck("changed", "retrieval_generation_changed", snapshot_at)
+        chunks = list((await index_retrieval.hydrate(db, active, identifiers)).values())
         if {(chunk.id, chunk.paper_id) for chunk in chunks} != {(pin.chunk_id, pin.paper_id) for pin in pins}:
             return CurrentnessCheck("changed", "retrieval_source_changed", snapshot_at)
     else:
@@ -249,7 +231,7 @@ async def _check_snapshot(db, pins, evidence_resolver, *, backend_pin=None):
 
 
 async def check_selected_sources(pins, *, engine=None, evidence_resolver: EvidenceResolver | None = None,
-                                 snapshot_resolver: SnapshotResolver | None = None, backend_pin=None):
+                                 snapshot_resolver: SnapshotResolver | None = None):
     """Read in a NEW short transaction, never the pre-generation ORM session.
 
     Every selected source must still match. Failure yields no eligible subset
@@ -268,7 +250,7 @@ async def check_selected_sources(pins, *, engine=None, evidence_resolver: Eviden
                 async with db.begin():
                     await db.execute(text("SET TRANSACTION READ ONLY"))
                     await db.execute(text(f"SET LOCAL statement_timeout = '{STATEMENT_TIMEOUT_MS}ms'"))
-                    checked = await _check_snapshot(db, pins, evidence_resolver, backend_pin=backend_pin)
+                    checked = await _check_snapshot(db, pins, evidence_resolver)
                     if checked.status != "unchanged" or snapshot_resolver is None:
                         return checked
                     details = await snapshot_resolver(db)

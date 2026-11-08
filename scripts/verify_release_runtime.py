@@ -28,7 +28,7 @@ import zlib
 from datetime import datetime, timezone
 from pathlib import Path
 
-from run_runtime_parity import PROJECT_NAMES, RUN_LABEL, inventory_command
+from run_runtime_parity import RUN_LABEL, inventory_command
 from runtime_inventory import compare, digest, loads
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -38,8 +38,7 @@ WORKFLOW = ".github/workflows/test.yml"
 SCHEMA = "sclib-release-runtime-parity/1.0.0"
 SCOPE = "python_package_versions_not_os_libraries_or_application_execution"
 ARTIFACTS = {"api": ("api-test-runtime-inventory", "migration-test-runtime-inventory"),
-             "ingestion": ("ingestion-test-runtime-inventory",),
-             "publisher": ("publisher-test-runtime-inventory",)}
+             "ingestion": ("ingestion-test-runtime-inventory",)}
 ARCHIVE_FILES = frozenset({"test-runtime.json", "image-runtime.json", "parity-report.json"})
 MAX_JSON = 2 * 1024 * 1024
 MAX_ARCHIVE = 4 * 1024 * 1024
@@ -232,8 +231,6 @@ def _checkout(project, revision):
     require(command(["git", "rev-parse", "HEAD"]) == revision, "checkout_revision_mismatch")
     paths = [project, "scripts/runtime_inventory.py", "scripts/run_runtime_parity.py",
              "scripts/verify_release_runtime.py", ".github/workflows/release-images.yml", WORKFLOW]
-    if project == "publisher":
-        paths.extend(["api", "ingestion"])
     command(["git", "diff", "--quiet", "HEAD", "--", *paths])
     require(not command(["git", "ls-files", "--others", "--exclude-standard", "--", *paths]),
             "untracked_release_input")
@@ -305,7 +302,7 @@ def _archive(payload, metadata):
 def _inventories(files, project, expected):
     tests, candidate = loads(files["test-runtime.json"].decode()), loads(files["image-runtime.json"].decode())
     for value in (tests, candidate):
-        require(value["project_name"] == PROJECT_NAMES[project] and value["system"] == "Linux"
+        require(value["project_name"] == "sclib-" + project and value["system"] == "Linux"
                 and value["machine"] == "x86_64", "artifact_project_or_platform_mismatch")
         require(all(value[key] == expected[key] for key in
             ("source_revision", "lock_sha256", "pyproject_sha256", "collector_sha256")), "artifact_input_pin_mismatch")

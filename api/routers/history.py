@@ -25,8 +25,7 @@ from models.history_receipts import HistoryEvidenceDetail, HistoryReceiptSummary
 from models.personal import AskHistoryDetailResponse, AskHistoryEntry, AskHistoryListResponse
 from models.user import MessageResponse
 from routers.auth import current_user_from_jwt
-from services import answer_evidence, content_answer_history
-from models.content_answer_storage_v2 import TABLE as CONTENT_TABLE, VERSION as CONTENT_VERSION
+from services import answer_evidence
 from services.history_evidence import current_history_evidence
 
 router = APIRouter(prefix="/history", tags=["history"])
@@ -117,21 +116,13 @@ async def _receipt_summaries(db, rows):
     recorded = {row.history_id: row for row in (await db.execute(select(
         table.c.history_id, table.c.version, table.c.record_sha256)
         .where(table.c.history_id.in_([row.id for row in rows])))).all()}
-    content_table = Base.metadata.tables[CONTENT_TABLE]
-    content_recorded = {row.history_id: row for row in (await db.execute(select(
-        content_table.c.history_id, content_table.c.version, content_table.c.record_sha256)
-        .where(content_table.c.history_id.in_([row.id for row in rows])))).all()}
     summaries = {}
     for row in rows:
         receipt = recorded.get(row.id)
-        content_receipt = content_recorded.get(row.id)
-        content_version = row.content_evidence_receipt_version
-        if row.evidence_receipt_version is None and receipt is None and content_version is None and content_receipt is None:
+        if row.evidence_receipt_version is None and receipt is None:
             summaries[row.id] = HistoryReceiptSummary()
-        elif row.evidence_receipt_version == RECEIPT_VERSION and receipt is not None and receipt.version == RECEIPT_VERSION and content_version is None and content_receipt is None:
+        elif row.evidence_receipt_version == RECEIPT_VERSION and receipt is not None and receipt.version == RECEIPT_VERSION:
             summaries[row.id] = HistoryReceiptSummary(status="recorded", receipt_sha256=receipt.record_sha256)
-        elif content_version == CONTENT_VERSION and content_receipt is not None and content_receipt.version == CONTENT_VERSION and row.evidence_receipt_version is None and receipt is None:
-            summaries[row.id] = HistoryReceiptSummary(status="recorded", receipt_sha256=content_receipt.record_sha256)
         else:
             summaries[row.id] = HistoryReceiptSummary(status="unavailable")
     return summaries
@@ -153,8 +144,7 @@ async def get_history_entry(entry_id: UUID, response: Response,
     if summary.status == "legacy_unpinned":
         detail = HistoryEvidenceDetail(status="legacy_unpinned", reason_codes=["legacy_receipt_not_recorded"])
     else:
-        content = row.content_evidence_receipt_version == CONTENT_VERSION
-        table = Base.metadata.tables[CONTENT_TABLE if content else "answer_evidence_receipts"]
+        table = Base.metadata.tables["answer_evidence_receipts"]
         size = await db.scalar(select(func.octet_length(table.c.request_json)
             + func.octet_length(table.c.response_json) + func.octet_length(table.c.bindings_json))
             .where(table.c.history_id == row.id))
@@ -162,12 +152,11 @@ async def get_history_entry(entry_id: UUID, response: Response,
             if summary.status != "recorded" or type(size) is not int or not 1 <= size <= 1024 * 1024:
                 raise ValueError("Receipt unavailable")
             stored = (await db.execute(select(table).where(table.c.history_id == row.id))).mappings().one()
-            receipt = await (content_answer_history if content else answer_evidence).verify_historical(db, stored)
+            receipt = await answer_evidence.verify_historical(db, stored)
             if receipt["record_sha256"] != summary.receipt_sha256 or receipt["history_id"] != str(row.id):
                 raise ValueError("Receipt identity changed")
             detail = HistoryEvidenceDetail(status="verified", receipt=receipt,
-                binding_scope=("content_members" if receipt["bindings"]["items"] else "no_selected_evidence") if content
-                    else answer_evidence.binding_scope(receipt["bindings"]), historical_integrity_verified=True)
+                binding_scope=answer_evidence.binding_scope(receipt["bindings"]), historical_integrity_verified=True)
             numeric_sources = [{"paper_id": item["binding"]["paper_id"]}
                                for item in receipt["response"]["scientific_results"]]
             if numeric_sources:

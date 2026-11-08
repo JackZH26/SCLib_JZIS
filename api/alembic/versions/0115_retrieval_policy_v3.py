@@ -1,7 +1,7 @@
 """Admit a separately identified bounded exact-year query policy."""
 import sqlalchemy as sa
 from alembic import op
-from models.retrieval_policy_v3 import FUNCTION,TABLE,TRIGGER,POLICY_SHA256,statements
+from migration_history.retrieval_policy_v3 import FUNCTION,TABLE,TRIGGER,POLICY_SHA256,statements
 
 revision='0115_retrieval_policy_v3'
 down_revision='0114_bounded_validation_v3'

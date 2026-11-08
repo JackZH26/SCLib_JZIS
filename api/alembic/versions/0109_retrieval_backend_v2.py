@@ -3,7 +3,7 @@ import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import UUID
 
 from alembic import op
-from models.retrieval_backend_v2 import FUNCTION_SIGNATURES, TABLE_ORDER, register
+from migration_history.retrieval_backend_v2 import FUNCTION_SIGNATURES, TABLE_ORDER, register
 
 revision = "0109_retrieval_backend_v2"
 down_revision = "0108_retrieval_content_v2"

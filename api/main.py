@@ -321,25 +321,6 @@ async def _periodic_ask_history_prune(interval_sec: int, retention_days: int) ->
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
-    from services.content_runtime import managed_reader
-    if get_settings().retrieval_backend == 'pgvector':
-        from services.schema_lifecycle import check_application_schema
-        await check_application_schema(get_engine())
-        async with managed_reader() as reader:
-            app.state.content_reader = reader
-            try:
-                async with _application_lifespan(app):
-                    yield
-            finally:
-                app.state.content_reader = None
-    else:
-        app.state.content_reader = None
-        async with _application_lifespan(app):
-            yield
-
-
-@asynccontextmanager
-async def _application_lifespan(app: FastAPI):
     settings = get_settings()
     # Also covers direct ASGI/uvicorn starts that bypass the container entrypoint.
     # Complete read-only admission before spawning any background writer.

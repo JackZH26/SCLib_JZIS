@@ -55,11 +55,6 @@ PROVIDER_CALLS = Counter(
     "External provider calls by outcome.",
     ("provider", "outcome"),
 )
-CONTENT_NAVIGATION_STRATEGY = Counter(
-    "sclib_content_navigation_strategy_total",
-    "Content-pinned hybrid or broad-cohort semantic navigation decisions.",
-    ("strategy",),
-)
 PROVIDER_ATTEMPTS = Counter(
     "sclib_provider_attempts_total",
     "External provider attempts, including bounded retries.",

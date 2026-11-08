@@ -8,7 +8,6 @@ share variable names with the API so a single .env works for both.
 from __future__ import annotations
 
 from functools import lru_cache
-from typing import Literal
 
 from pydantic import Field, field_validator, model_validator
 from pydantic_settings import BaseSettings, SettingsConfigDict
@@ -23,10 +22,6 @@ class IngestionSettings(BaseSettings):
 
     # --- Database (shared with api) -----------------------------------------
     database_url: str = Field(..., description="SQLAlchemy URL")
-
-    # Explicit shared backend selection. Native publication has a separate
-    # adapter; legacy pipelines must fail before writes in pgvector mode.
-    retrieval_backend: Literal['google','pgvector'] = 'google'
 
     # --- GCP ----------------------------------------------------------------
     gcp_project: str = "jzis-sclib"
@@ -129,13 +124,3 @@ class IngestionSettings(BaseSettings):
 @lru_cache(maxsize=1)
 def get_settings() -> IngestionSettings:
     return IngestionSettings()  # type: ignore[call-arg]
-
-
-class NativePublicationRequired(RuntimeError):
-    """Legacy ingestion cannot publish while the native adapter is pending."""
-
-
-def require_legacy_publication():
-    if get_settings().retrieval_backend!='google':
-        raise NativePublicationRequired(
-            'Legacy ingestion is disabled for pgvector; configure and validate the native publication adapter before resuming.')

@@ -211,23 +211,9 @@ jobs:
               test -f "$materials_env" && test -s "$materials_env"
               materials_options+=(--env-file "$materials_env" -f docker-compose.materials-vnext.yml)
             fi
-            # Preserve the separately verified database image/resource model
-            # after its coordinated cutover; an app release cannot revert PG.
-            pgvector_options=()
-            pgvector_env=/etc/sclib/pgvector.env
-            if test -e "$pgvector_env"; then
-              test -f "$pgvector_env" && test -s "$pgvector_env"
-              pgvector_options+=(--env-file "$pgvector_env" -f docker-compose.pgvector.yml)
-            fi
-            pgvector_api_options=()
-            pgvector_api_services=()
-            pgvector_api_env=/etc/sclib/pgvector-api.env
-            if test -e "$pgvector_api_env"; then
-              test -f "$pgvector_api_env" && test -s "$pgvector_api_env"
-              test -s "$pgvector_env"
-              pgvector_api_options+=(--env-file "$pgvector_api_env"
-                -f docker-compose.pgvector-api.yml --profile pgvector-api)
-              pgvector_api_services=(api-pgvector-1 api-pgvector-2 api-pgvector-3 api-pgvector-4)
+            database_options=()
+            if test -f /etc/sclib/postgres.env; then
+              database_options+=(--env-file /etc/sclib/postgres.env -f docker-compose.database.yml)
             fi
             cleanup_preflight
             trap - EXIT
@@ -255,8 +241,7 @@ jobs:
 
             compose=(docker compose --env-file "$DEPLOY_PATH/.env" --profile observability \
               -f docker-compose.yml -f docker-compose.prod.yml \
-              "${alert_options[@]}" "${materials_options[@]}" "${pgvector_options[@]}" \
-              "${pgvector_api_options[@]}")
+              "${alert_options[@]}" "${materials_options[@]}" "${database_options[@]}")
             "${compose[@]}" config --quiet
             "${compose[@]}" up -d --no-build --wait --wait-timeout 60 \
               postgres redis
@@ -266,11 +251,6 @@ jobs:
             # Check using the new API image's own runtime credential as well.
             "${compose[@]}" run --rm --no-deps api \
               python -m services.schema_lifecycle check
-            # Prepare one process at a time instead of four concurrent cold
-            # corpus reads. Existing ordinary deployments never opt in.
-            for service in "${pgvector_api_services[@]}"; do
-              "${compose[@]}" up -d --no-deps --no-build --wait --wait-timeout 180 "$service"
-            done
             "${compose[@]}" up -d --no-build --wait --wait-timeout 180 \
               postgres redis api frontend prometheus alertmanager grafana
             "${compose[@]}" ps

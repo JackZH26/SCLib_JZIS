@@ -2,7 +2,7 @@
 import sqlalchemy as sa
 from sqlalchemy.dialects.postgresql import UUID
 from alembic import op
-from models.content_answer_storage_v2 import TABLE,PARENTS,FUNCTIONS,register
+from migration_history.content_answer_storage_v2 import TABLE,PARENTS,FUNCTIONS,register
 
 revision='0113_content_answer_receipts_v2'
 down_revision='0112_retrieval_keysets_v2'
