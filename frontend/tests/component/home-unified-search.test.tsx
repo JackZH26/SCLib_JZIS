@@ -3,11 +3,12 @@ import { afterEach, beforeEach, expect, it, vi } from "vitest";
 import HomeSearchResults from "@/components/HomeSearchResults";
 import LegacySearch from "@/app/search/page";
 import { search, ask } from "@/lib/api";
+import { evidenceProvenance } from "../fixtures/evidence-provenance";
+import { sourceVisibility } from "../fixtures/material-visibility";
 
 const nav = vi.hoisted(() => ({ query: "FeSe", redirect: vi.fn() }));
 vi.mock("next/navigation", () => ({ useSearchParams: () => new URLSearchParams({ q: nav.query }), redirect: nav.redirect }));
 vi.mock("@/lib/api", async original => ({ ...await original<typeof import("@/lib/api")>(), search: vi.fn(), ask: vi.fn() }));
-vi.mock("@/components/PaperCard", () => ({ PaperCard: ({ title }: {title:string}) => <article>{title}</article> }));
 const entry = (title: string, text = "FeSe", code = "C2") => ({ id: title, topicId: title, code, slug: title,
   title, summary: "Scoped evidence", aliases: [], evidenceTypes: ["experiment"], editorialStatus: "scoped-check",
   revision: "test", materialCases: [], dois: [], text });
@@ -20,10 +21,18 @@ beforeEach(() => {
 afterEach(() => vi.unstubAllGlobals());
 
 it("shows chunk results and full-body wiki matches in separate labelled collections", async () => {
-  vi.mocked(search).mockResolvedValue({ results:[{paper_id:"paper",title:"Original passage",authors:[],matched_chunk:"FeSe passage",relevance_score:1}],query_time_ms:1 } as never);
+  vi.mocked(search).mockResolvedValue({ results:[{paper_id:"paper",title:"Original passage",authors:["Research Author"],year:2011,
+    matched_chunk:"FeSe passage",relevance_score:1,source_visibility:sourceVisibility(),evidence_provenance:evidenceProvenance()}],query_time_ms:1 } as never);
   vi.stubGlobal("fetch", vi.fn().mockResolvedValue(index([entry("Body-only match"),entry("Research note match","FeSe","Research note")])));
   render(<HomeSearchResults />);
-  expect(await within(screen.getByRole("region",{name:"Literature"})).findByText("Original passage")).toBeVisible();
+  const literature = within(screen.getByRole("region", { name: "Literature" }));
+  const result = await literature.findByRole("link", { name: /Original passage/ });
+  expect(result).toHaveAttribute("href", "/paper/paper");
+  expect(result).toHaveTextContent("Research Author · 2011");
+  expect(result).toHaveTextContent("FeSe passage");
+  expect(result).toHaveTextContent("relevance 1.00");
+  expect(within(result).queryByLabelText("Bibliographic source visibility")).not.toBeInTheDocument();
+  expect(within(result).queryByLabelText("Evidence provenance")).not.toBeInTheDocument();
   const wiki=screen.getByRole("region",{name:"SCWiki"});
   expect(await within(wiki).findByRole("link",{name:"Body-only match"})).toHaveAttribute("href","/scwiki/Body-only match");
   expect(within(wiki).getByText("Research note",{exact:true})).toBeVisible();

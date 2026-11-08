@@ -224,8 +224,6 @@ function SearchInner({ q }: { q: string }) {
                 score={r.relevance_score}
                 scoreLabel="relevance"
                 matchingResults={r.matching_results}
-                sourceVisibility={r.source_visibility}
-                evidenceProvenance={r.evidence_provenance}
                 badges={[
                   ...(r.material_family ? [r.material_family] : []),
                   ...(r.has_equation ? ["equations"] : []),

@@ -3,6 +3,7 @@
 import { useEffect, useId, useRef, useState } from "react";
 import { getSimilar, type SimilarResponse } from "@/lib/api";
 import { PaperCard } from "@/components/PaperCard";
+import { SourceVisibilityNotice } from "@/components/MaterialVisibilityNotice";
 
 export function SimilarPapers({ paperId }: { paperId: string }) {
   return <VisibleSimilarPapers key={paperId} paperId={paperId} />;
@@ -60,7 +61,9 @@ function VisibleSimilarPapers({ paperId }: { paperId: string }) {
           {result.results.map((paper) => (
             <PaperCard key={paper.paper_id} paper_id={paper.paper_id}
               arxiv_id={paper.arxiv_id} title={paper.title} authors={paper.authors}
-              year={paper.year} score={paper.similarity} scoreLabel="similarity" />
+              year={paper.year} score={paper.similarity} scoreLabel="similarity">
+              <SourceVisibilityNotice visibility={null} compact />
+            </PaperCard>
           ))}
         </div>
       )}
