@@ -114,7 +114,10 @@ async def similar(reader,pin,paper_id,*,top_k):
             batches=();per_source=0
             if members:
                 per_source=min(top_k+5,MAX_CANDIDATES//len(members))
-                if reader.similar_frontiers is None:
+                use_frontier = reader.similar_frontiers is not None and reader.similar_frontiers.covers_paper(
+                    reader._readiness.prepared_witness(pin), paper_id
+                )
+                if not use_frontier:
                     stage='ann';stage_started=time.monotonic()
                     vectors=[struct.unpack('!768f',member['vector_bytes']) for member in members]
                     if reader.similar_carrier is None:

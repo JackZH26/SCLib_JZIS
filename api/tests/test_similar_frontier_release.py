@@ -1,6 +1,8 @@
 """Real source and target governance around a private, fully covered fixture."""
 
 import asyncio
+import hashlib
+import json
 import os
 import threading
 from contextlib import closing
@@ -159,6 +161,56 @@ async def test_runtime_requires_both_sources_and_preserves_semantic_route(monkey
             await content_runtime.check_ready(request)
     carrier.close.assert_awaited_once()
     frontiers.close.assert_awaited_once()
+
+
+async def test_signed_paper_subset_uses_native_once_on_miss_and_fails_closed_on_damage(
+    many_sources, tmp_path, monkeypatch
+):
+    reader, pin, paper = many_sources
+    witness = reader._readiness.prepared_witness(pin)
+    standby = replace(witness, pin=replace(pin, build_id=str(uuid4())))
+    approved = {}
+    source = "1" * 64
+    excluded = ["2" * 64]
+    coverage = {"mode": "paper_subset", "members": 1, "papers": 1}
+    hits = [
+        dict(vector_id=f"v{i}", paper_id=f"p{i}", distance=i / 100,
+             content_sha256="3" * 64, vector_sha256="4" * 64,
+             chunk_revision_sha256="5" * 64)
+        for i in range(checkpoint.WIDTH)
+    ]
+    for graph in (witness, standby):
+        scope = graph_scope(graph)
+        path = tmp_path / f"{graph.pin.build_id}.sqlite"
+        checkpoint.create(path, scope)
+        with closing(checkpoint.open_existing(path, scope, writable=True)) as db, db:
+            checkpoint.save(db, "covered", source, checkpoint.exclusions_digest(excluded), hits)
+            db.execute("CREATE TABLE publication(singleton INTEGER PRIMARY KEY,coverage TEXT)")
+            db.execute("INSERT INTO publication VALUES(1,?)", (json.dumps(coverage),))
+        digest = hashlib.sha256(path.read_bytes()).hexdigest()
+        path.rename(tmp_path / (digest + ".sqlite"))
+        approved[graph.pin.build_id] = digest
+    frontiers = SimilarFrontiers(approved, tmp_path, transport=reader._transport)
+    assert frontiers.needs_live_carrier and frontiers.covers_paper(witness, "covered")
+    assert not frontiers.covers_paper(witness, paper)
+    found = await frontiers.candidates(witness, "covered", [source], excluded, 6, timeout=3)
+    assert [hit.vector_id for hit in found[0].neighbors] == [f"v{i}" for i in range(6)]
+    with pytest.raises(ValueError, match="Complete live source"):
+        await frontiers.candidates(witness, "covered", [source], ["6" * 64], 6, timeout=3)
+    expected = await reader.similar(pin, paper, top_k=6)
+    async def native(graph, vectors, **options):
+        return await reader._transport.query_many(graph.pin.projection, vectors, **options)
+    carrier = AsyncMock()
+    carrier.query_many.side_effect = native
+    reader.similar_frontiers, reader.similar_carrier = frontiers, carrier
+    monkeypatch.setattr(frontiers, "candidates", AsyncMock(side_effect=AssertionError("uncovered paper")))
+    assert await reader.similar(pin, paper, top_k=6) == expected
+    carrier.query_many.assert_awaited_once()
+    frontiers.candidates.assert_not_awaited()
+    (tmp_path / (approved[pin.build_id] + ".sqlite")).unlink()
+    with pytest.raises(content_similarity.ContentSimilarityUnavailable):
+        await reader.similar(pin, paper, top_k=6)
+    carrier.query_many.assert_awaited_once()
 
 
 @pytest.mark.parametrize("disconnect", [True, False])

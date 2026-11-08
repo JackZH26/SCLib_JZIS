@@ -62,6 +62,7 @@ class SimilarFrontiers:
         if len(approved) != 2 or len(set(approved.values())) != 2:
             raise ValueError("Distinct primary and rollback artifacts required")
         self._files = {}
+        self._covered_papers = {}
         self._transport = transport
         self._pending = set()
         content = None
@@ -89,10 +90,22 @@ class SimilarFrontiers:
                     row[0] != checkpoint.identity(scope)
                     or scope["build"] != build
                     or scope["frontier_sql_contract"] != CONTRACT
-                    or coverage["members"] <= 0
-                    or coverage["members"] != scope["sealed_members"]
                 ):
                     raise ValueError("Incompatible Similar publication")
+                mode = coverage.get("mode", "complete")
+                if mode == "complete":
+                    if coverage["members"] != scope["sealed_members"] or coverage["members"] <= 0:
+                        raise ValueError("Incomplete Similar publication")
+                    self._covered_papers[build] = None
+                elif mode == "paper_subset":
+                    papers = frozenset(row[0] for row in db.execute("SELECT DISTINCT paper FROM origins"))
+                    if not papers or len(papers) != coverage["papers"] or not (
+                        len(papers) <= coverage["members"] <= scope["sealed_members"]
+                    ):
+                        raise ValueError("Invalid Similar paper coverage")
+                    self._covered_papers[build] = papers
+                else:
+                    raise ValueError("Unknown Similar publication coverage")
                 shared = tuple(
                     scope[k]
                     for k in (
@@ -112,6 +125,15 @@ class SimilarFrontiers:
             if _file_identity(path.lstat()) != identity:
                 raise ValueError("Similar artifact changed during verification")
             self._files[build] = (path, identity, scope)
+
+    @property
+    def needs_live_carrier(self):
+        return any(papers is not None for papers in self._covered_papers.values())
+
+    def covers_paper(self, witness, paper):
+        self.require_graph(witness)
+        papers = self._covered_papers[witness.pin.build_id]
+        return papers is None or paper in papers
 
     def require_graph(self, witness):
         entry = self._files.get(witness.pin.build_id)
