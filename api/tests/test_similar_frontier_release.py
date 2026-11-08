@@ -20,8 +20,50 @@ from models.db import Paper, get_engine, get_session_factory
 from services import content_runtime, content_similarity, pgvector_query
 from services import similar_frontier_checkpoint as checkpoint
 from services.similar_frontier_release import SimilarFrontiers, graph_scope
+from services.similar_live_carrier import ranked_native_batches
 from tests.test_content_similarity import many_sources as many_sources
 from tests.test_index_generations import db_session as db_session
+
+
+async def test_native_round_refills_exclusions_and_ranks_only_the_first_eligible_prefix(db_session):
+    # Real TIDs and pgvector distances, with a deterministic native scan order.
+    await db_session.execute(sa.text("CREATE EXTENSION IF NOT EXISTS vector"))
+    await db_session.execute(sa.text(
+        "CREATE TEMP TABLE similar_round_fixture (vector_id text, paper_id text, year int,"
+        " content_sha256 text, vector_sha256 text, chunk_revision_sha256 text, embedding vector(768))"
+    ))
+    def vector(a, b):
+        return "[" + ",".join(map(str, [a, b] + [0] * 766)) + "]"
+    shapes = [(0, 1)] * 36 + [(-1, 0), (0.5, 1), (1, 0)]
+    revisions = [hashlib.sha256(str(i).encode()).hexdigest() for i in range(len(shapes))]
+    roots = []
+    for i, (a, b) in enumerate(shapes):
+        root = await db_session.scalar(sa.text(
+            "INSERT INTO similar_round_fixture VALUES(:vid,:paper,2020,:sha,:sha,:sha,CAST(:v AS vector))"
+            " RETURNING ctid::text"
+        ), {"vid": f"v{i}", "paper": f"p{i}", "sha": revisions[i], "v": vector(a, b)})
+        roots.append(root)
+    projection = SimpleNamespace(table="pg_temp.similar_round_fixture")
+
+    async def rank(stream):
+        scratch = MagicMock()
+        scratch.execute = AsyncMock()
+        async def fetch(command):
+            count = int(command.split()[2])
+            part = stream[:count]
+            del stream[:count]
+            return [(root,) for root in part]
+        scratch.fetch = AsyncMock(side_effect=fetch)
+        result = await ranked_native_batches(scratch, db_session, projection, [vector(1, 0)],
+                                             revisions[:35], 3, 2, len(shapes) - 35)
+        return result, scratch.fetch.await_count
+
+    batches, calls = await rank(list(roots))
+    assert calls == 2
+    assert [n.vector_id for n in batches[0].neighbors] == ["v37", "v35"]
+    # The closest vector v38 lies beyond the three eligible candidates.
+    with pytest.raises(pgvector_query.PgvectorQueryError):
+        await rank([roots[0], "(999,1)"])
 
 pytestmark = [
     pytest.mark.asyncio,

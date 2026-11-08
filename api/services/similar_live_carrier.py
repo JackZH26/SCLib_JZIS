@@ -52,7 +52,7 @@ async def _check_connection(connection):
 
 
 async def eligible_source_roots(scratch, authority, table, queries, excluded, pool_limit,
-                                *, year_min=None, year_max=None):
+                                *, year_min=None, year_max=None, rank_round=None):
     """Keep each native prefix while resolving a whole round in one heap read.
 
     Similar may supply two native connections. Each owns a disjoint, ordered
@@ -91,14 +91,17 @@ async def eligible_source_roots(scratch, authority, table, queries, excluded, po
                 if index % len(connections) != partition:
                     continue
                 needed = pool_limit - len(eligible[index])
-                rows = await connections[partition].fetch(f"FETCH FORWARD {needed} FROM source_{index}")
+                # The ranking query uses at most the first 'needed' eligible TIDs.
+                # Read a bounded number of physical entries ahead to cover exclusions.
+                count = needed if rank_round is None else needed + min(len(excluded), 32)
+                rows = await connections[partition].fetch(f"FETCH FORWARD {count} FROM source_{index}")
                 roots = [row[0] for row in rows]
-                if (len(roots) > needed or any(type(root) is not str or not ROOT.fullmatch(root) for root in roots)
+                if (len(roots) > count or any(type(root) is not str or not ROOT.fullmatch(root) for root in roots)
                         or len(set(roots)) != len(roots) or seen[index].intersection(roots)):
                     raise pg.PgvectorQueryError("Invalid native source candidate inventory")
                 seen[index].update(roots)
                 round_roots[index] = roots
-                if len(roots) < needed:
+                if len(roots) < count:
                     active.remove(index)
         if len(connections) == 1:
             await fetch_partition(0)
@@ -106,6 +109,14 @@ async def eligible_source_roots(scratch, authority, table, queries, excluded, po
             async with asyncio.TaskGroup() as tasks:
                 for partition in range(len(connections)):
                     tasks.create_task(fetch_partition(partition))
+        if rank_round is not None:
+            needs = {index: pool_limit - len(eligible[index]) for index in pending}
+            prefixes = await rank_round(round_roots, needs)
+            for index in pending:
+                eligible[index].extend(prefixes[index])
+                if len(eligible[index]) == pool_limit:
+                    active.discard(index)
+            continue
         unique = sorted({root for roots in round_roots.values() for root in roots})
         if unique:
             resolved = (await authority.execute(sa.text(
@@ -124,6 +135,70 @@ async def eligible_source_roots(scratch, authority, table, queries, excluded, po
     for index in range(len(queries)):
         await connections[index % len(connections)].execute(f"CLOSE source_{index}")
     return eligible
+
+
+async def ranked_native_batches(scratch, authority, projection, queries, excluded, width, top_k, cohort):
+    """Resolve each raw HNSW round and rank its eligible prefix in one heap read."""
+    winners = [[] for _ in queries]
+    statement = sa.text(f"""
+        WITH inputs AS MATERIALIZED (
+            SELECT source, CAST(query AS vector(768)) AS vector, needed, roots
+            FROM jsonb_to_recordset(CAST(:inputs AS jsonb))
+                AS i(source integer, query text, needed integer, roots jsonb)
+        )
+        SELECT i.source, result.resolved, result.prefix, result.hits
+        FROM inputs i CROSS JOIN LATERAL (
+            WITH raw AS MATERIALIZED (
+                SELECT root::tid AS root, position FROM jsonb_array_elements_text(i.roots)
+                    WITH ORDINALITY AS t(root, position)
+            ), matched AS MATERIALIZED (
+                SELECT ctid AS root, {pg._COLUMNS}, year, embedding FROM {projection.table}
+                WHERE ctid=ANY(ARRAY(SELECT root FROM raw))
+            ), eligible AS MATERIALIZED (
+                SELECT m.*, r.position FROM raw r JOIN matched m USING(root)
+                WHERE {EXCLUDED} ORDER BY r.position LIMIT i.needed
+            ), best AS (
+                SELECT {pg._COLUMNS}, year, embedding <=> i.vector AS distance FROM eligible
+                ORDER BY distance, vector_id COLLATE "C" LIMIT :limit
+            )
+            SELECT (SELECT count(*) FROM matched) AS resolved,
+                ARRAY(SELECT root::text FROM eligible ORDER BY position) AS prefix,
+                (SELECT coalesce(jsonb_agg(to_jsonb(b) ORDER BY distance, vector_id COLLATE "C"), '[]')
+                    FROM best b)::text AS hits
+        ) result ORDER BY i.source
+    """)
+
+    async def rank_round(raw, needs):
+        inputs = [{"source": index, "query": queries[index], "needed": needs[index], "roots": roots}
+                  for index, roots in sorted(raw.items())]
+        rows = (await authority.execute(statement, {"inputs": json.dumps(inputs),
+                                                    "excluded": excluded, "limit": top_k})).all()
+        if [row[0] for row in rows] != sorted(raw):
+            raise pg.PgvectorQueryError("Missing native source round")
+        prefixes = {}
+        for index, resolved, prefix, hits in rows:
+            accepted = set(prefix)
+            if (resolved != len(raw[index]) or len(prefix) > needs[index] or len(accepted) != len(prefix)
+                    or prefix != [root for root in raw[index] if root in accepted]):
+                raise pg.PgvectorQueryError("Unresolved or unordered sealed native prefix")
+            scored = json.loads(hits)
+            if len(scored) != min(len(prefix), top_k):
+                raise pg.PgvectorQueryError("Incomplete ranked native prefix")
+            winners[index].extend(scored)
+            prefixes[index] = prefix
+        return prefixes
+
+    await eligible_source_roots(scratch, authority, projection.table, queries, excluded, width,
+                                rank_round=rank_round)
+    batches = []
+    excluded_set = set(excluded)
+    for rows in winners:
+        rows.sort(key=lambda row: (row["distance"], row["vector_id"]))
+        neighbors = pg._neighbors(rows[:top_k], top_k, None, None, excluded_set)
+        if len(neighbors) < min(top_k, cohort):
+            raise pg.PgvectorUnavailable("Incomplete live source frontier")
+        batches.append(pg.CandidateBatch(projection, neighbors, "hnsw", False))
+    return tuple(batches)
 
 
 class LiveSimilarCarrier:
@@ -346,6 +421,11 @@ class LiveSimilarCarrier:
                     async with asyncio.timeout(transport.budget.statement_ms / 1000):
                         if not exhaustive:
                             async with self._source_connections(witness, len(queries)) as connections:
+                                if len(queries) >= 4:
+                                    return await ranked_native_batches(
+                                        connections, authority, witness.pin.projection, queries, excluded,
+                                        transport.budget.source_candidate_pool, top_k, cohort,
+                                    )
                                 groups = await eligible_source_roots(connections, authority, table, queries,
                                     excluded, transport.budget.source_candidate_pool)
                             params["root_groups"] = json.dumps(groups)
