@@ -27,8 +27,7 @@ export function WikiSearchResults({ query }: { query: string }) {
       .finally(() => { if (current) setLoading(false); });
     return () => { current = false; controller.abort(); };
   }, [query, attempt]);
-  return <section aria-labelledby="wiki-results-heading" className="min-w-0 space-y-6 rounded-xl bg-sage-surface p-5 sm:p-6">
-    <h3 id="wiki-results-heading" className="text-xl font-semibold">SCWiki</h3>
+  return <>
     <p className="text-sm text-sage-muted">Concepts and research notes, with sources and review limits. Ranked separately from paper passages.</p>
     {loading && <p role="status">Searching SCWiki…</p>}
     {error && <p role="alert">SCWiki search is temporarily unavailable. <button className="underline" onClick={() => setAttempt(value => value + 1)}>Retry SCWiki</button></p>}
@@ -43,5 +42,5 @@ export function WikiSearchResults({ query }: { query: string }) {
       </li>)}</ol>
       {visible < results.length && <button className="site-text-link text-sm font-semibold" onClick={() => setVisible(count => count + 10)}>Show more SCWiki results</button>}
     </>}
-  </section>;
+  </>;
 }

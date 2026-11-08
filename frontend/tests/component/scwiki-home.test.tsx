@@ -1,5 +1,5 @@
-import {afterEach,describe,expect,it,vi} from "vitest";
-import {cleanup,fireEvent,render,screen,waitFor} from "@testing-library/react";
+import {afterEach,beforeEach,describe,expect,it,vi} from "vitest";
+import {act,cleanup,fireEvent,render,screen,waitFor,within} from "@testing-library/react";
 import {renderToStaticMarkup} from "react-dom/server";
 import SCWikiPage from "@/app/scwiki/page";
 import {SearchCatalogue} from "@/components/scwiki/SearchCatalogue";
@@ -7,6 +7,20 @@ import {articles,searchIndex} from "@/lib/scwiki/catalogue";
 import {topicGroups} from "@/lib/scwiki/home";
 import highlights from "@/content/scwiki/research-highlights.json";
 import {discoveryIndex,libraryNotes,librarySearchEntries} from "@/lib/scwiki/library";
+import { ask, search, type SearchResponse } from "@/lib/api";
+vi.mock("@/lib/api", async importOriginal => ({
+  ...await importOriginal<typeof import("@/lib/api")>(), search: vi.fn(), ask: vi.fn(),
+}));
+function papers(title: string): SearchResponse {
+  return { total: 1, results: [{ paper_id: "p1", arxiv_id: null, title, authors: [], year: null,
+    date_submitted: null, relevance_score: 1, matched_chunk: "A matching passage", matched_section: null,
+    materials: [], citation_count: 0, material_family: null, has_equation: false, has_table: false }],
+    query_time_ms: 10, guest_remaining: null, remaining: null };
+}
+beforeEach(() => {
+  vi.mocked(search).mockReset().mockResolvedValue(papers("A literature result"));
+  vi.mocked(ask).mockReset();
+});
 vi.mock("next/navigation",()=>({useRouter:()=>({replace:vi.fn()})}));
 const initial=articles().map(({id,code,slug,title,summary,evidenceTypes})=>({id,code,slug,title,summary,evidenceTypes}));
 afterEach(()=>{cleanup();vi.unstubAllGlobals();history.replaceState(null,"","/");});
@@ -79,4 +93,88 @@ describe("SCWiki home discovery and research provenance",()=>{
   fireEvent.click(screen.getByRole("button",{name:"Retry"}));
   await waitFor(()=>expect(screen.getByRole("link",{name:/Read article: The Meissner effect/})).toBeInTheDocument());
  });
+});
+
+describe("SCWiki literature and Wiki result columns", () => {
+  it("previews Wiki matches while typing and searches literature only on submission", async () => {
+    const fetchIndex = vi.fn().mockResolvedValue({ ok: true, json: async () => discoveryIndex(searchIndex()) });
+    vi.stubGlobal("fetch", fetchIndex);
+    render(<SearchCatalogue initial={initial}/>);
+    fireEvent.change(screen.getByRole("searchbox"), { target: { value: "Meissner" } });
+    const literature = within(screen.getByRole("region", { name: "Literature" }));
+    const wiki = within(screen.getByRole("region", { name: "SCWiki" }));
+    expect(await wiki.findByRole("link", { name: /Read article: The Meissner effect/ })).toBeVisible();
+    expect(search).not.toHaveBeenCalled();
+    fireEvent.click(screen.getByRole("button", { name: "Search", exact: true }));
+    expect(await literature.findByRole("link", { name: /A literature result/ })).toHaveAttribute("href", "/paper/p1");
+    expect(search).toHaveBeenCalledWith({ query: "Meissner", top_k: 20, filters: { exclude_retracted: true } }, { signal: expect.any(AbortSignal) });
+    fireEvent.click(screen.getByRole("button", { name: "Filters" }));
+    fireEvent.change(screen.getByLabelText("Pressure"), { target: { value: "high" } });
+    expect(location.search).toContain("pressure=high");
+    expect(literature.getByRole("link", { name: /A literature result/ })).toBeVisible();
+    expect(search).toHaveBeenCalledTimes(1);
+    expect(fetchIndex).toHaveBeenCalledTimes(1);
+    expect(ask).not.toHaveBeenCalled();
+  });
+
+  it("restores a shared query and discards stale papers after editing or browser navigation", async () => {
+    history.replaceState(null, "", "/scwiki?q=FeSe");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => searchIndex() }));
+    let finishOld!: (value: SearchResponse) => void;
+    vi.mocked(search).mockReturnValueOnce(new Promise(resolve => { finishOld = resolve; }))
+      .mockResolvedValueOnce(papers("Restored paper"));
+    render(<SearchCatalogue initial={initial}><h2>Latest research</h2></SearchCatalogue>);
+    await waitFor(() => expect(search).toHaveBeenCalledTimes(1));
+    const signal = vi.mocked(search).mock.calls[0][1]!.signal!;
+    fireEvent.change(screen.getByRole("searchbox"), { target: { value: "FeSe next" } });
+    expect(signal.aborted).toBe(true);
+    await act(async () => { finishOld(papers("Obsolete paper")); });
+    expect(screen.queryByText("Obsolete paper")).toBeNull();
+    act(() => {
+      history.pushState(null, "", "/scwiki?q=MgB2&evidence=theory");
+      window.dispatchEvent(new PopStateEvent("popstate"));
+    });
+    expect(await screen.findByRole("link", { name: /Restored paper/ })).toBeVisible();
+    expect(screen.getByLabelText("Evidence")).toHaveValue("theory");
+    fireEvent.keyDown(screen.getByRole("searchbox"), { key: "Escape" });
+    expect(screen.getByRole("heading", { name: "Latest research" })).toBeVisible();
+    expect(location.search).toBe("");
+    expect(search).toHaveBeenCalledTimes(2);
+  });
+
+  it("keeps Wiki matches available when literature fails and retries just literature", async () => {
+    history.replaceState(null, "", "/scwiki?q=Meissner");
+    const fetchIndex = vi.fn().mockResolvedValue({ ok: true, json: async () => searchIndex() });
+    vi.stubGlobal("fetch", fetchIndex);
+    vi.mocked(search).mockRejectedValueOnce(new Error("unavailable"));
+    render(<SearchCatalogue initial={initial}/>);
+    const wiki = within(screen.getByRole("region", { name: "SCWiki" }));
+    expect(await wiki.findByRole("link", { name: /Read article: The Meissner effect/ })).toBeVisible();
+    fireEvent.click(await screen.findByRole("button", { name: "Retry literature search" }));
+    expect(await screen.findByRole("link", { name: /A literature result/ })).toBeVisible();
+    expect(fetchIndex).toHaveBeenCalledTimes(1);
+  });
+
+  it("keeps papers available when the Wiki index fails and retries only the Wiki index", async () => {
+    history.replaceState(null, "", "/scwiki?q=Meissner");
+    vi.stubGlobal("fetch", vi.fn().mockRejectedValueOnce(new Error("offline"))
+      .mockResolvedValue({ ok: true, json: async () => searchIndex() }));
+    render(<SearchCatalogue initial={initial}/>);
+    expect(await screen.findByRole("link", { name: /A literature result/ })).toBeVisible();
+    const wiki = within(screen.getByRole("region", { name: "SCWiki" }));
+    fireEvent.click(await wiki.findByRole("button", { name: "Retry" }));
+    expect(await wiki.findByRole("link", { name: /Read article: The Meissner effect/ })).toBeVisible();
+    expect(search).toHaveBeenCalledTimes(1);
+  });
+
+  it("does not issue a paper search for a filter-only URL or a one-character query", async () => {
+    history.replaceState(null, "", "/scwiki?pressure=high");
+    vi.stubGlobal("fetch", vi.fn().mockResolvedValue({ ok: true, json: async () => searchIndex() }));
+    render(<SearchCatalogue initial={initial}/>);
+    await screen.findByRole("region", { name: "SCWiki" });
+    fireEvent.change(screen.getByRole("searchbox"), { target: { value: "H" } });
+    fireEvent.click(screen.getByRole("button", { name: "Search", exact: true }));
+    expect(screen.getByRole("region", { name: "Literature" })).toHaveTextContent("at least two characters");
+    expect(search).not.toHaveBeenCalled();
+  });
 });
