@@ -377,7 +377,7 @@ def test_independent_full_is_not_a_publication_trigger_and_gate_precedes_publish
     assert (
         "force_full: true" in full
         and "workflow_dispatch:" in full
-        and "schedule:" in full
+        and "schedule:" not in full
     )
     assert "workflows: [Test]" in release
     assert release.index("scripts.check_api_full_gate") < release.index("\n  publish:")

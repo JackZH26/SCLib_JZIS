@@ -82,5 +82,6 @@ class BackupManifestTests(unittest.TestCase):
             "docker rm --force --volumes",
         ):
             self.assertIn(required, restore)
-        self.assertIn("schedule:", workflow)
+        self.assertIn("workflow_dispatch:", workflow)
+        self.assertNotIn("schedule:", workflow)
         self.assertIn("restore_postgres_drill.sh", workflow)

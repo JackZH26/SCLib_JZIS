@@ -954,8 +954,10 @@ class SecurityWorkflowTests(unittest.TestCase):
         self.assertEqual(ingest.count('script: "true"'), 2)
         self.assertEqual(ingest.count("bash scripts/cron_daily_ingest.sh"), 1)
 
-    def test_dependabot_tracks_every_package_ecosystem(self) -> None:
-        dependabot = (ROOT / ".github" / "dependabot.yml").read_text()
+    def test_paused_dependabot_config_retains_package_ecosystems(self) -> None:
+        config_dir = ROOT / ".github"
+        self.assertFalse((config_dir / "dependabot.yml").exists())
+        dependabot = (config_dir / "dependabot.paused.yml").read_text()
         for ecosystem in ("github-actions", "pip", "npm", "docker-compose"):
             self.assertRegex(
                 dependabot,
