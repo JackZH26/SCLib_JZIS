@@ -52,7 +52,7 @@ async def _check_connection(connection):
 
 
 async def eligible_source_roots(scratch, authority, table, queries, excluded, pool_limit,
-                                *, year_min=None, year_max=None):
+                                *, year_min=None, year_max=None, during_first_fetch=None):
     """Keep each native prefix while resolving a whole round in one heap read.
 
     Similar may supply two native connections. Each owns a disjoint, ordered
@@ -100,12 +100,15 @@ async def eligible_source_roots(scratch, authority, table, queries, excluded, po
                 round_roots[index] = roots
                 if len(roots) < needed:
                     active.remove(index)
-        if len(connections) == 1:
+        if len(connections) == 1 and during_first_fetch is None:
             await fetch_partition(0)
         else:
             async with asyncio.TaskGroup() as tasks:
                 for partition in range(len(connections)):
                     tasks.create_task(fetch_partition(partition))
+                if during_first_fetch is not None:
+                    tasks.create_task(during_first_fetch())
+                    during_first_fetch = None
         unique = sorted({root for roots in round_roots.values() for root in roots})
         if unique:
             resolved = (await authority.execute(sa.text(
@@ -124,6 +127,50 @@ async def eligible_source_roots(scratch, authority, table, queries, excluded, po
     for index in range(len(queries)):
         await connections[index % len(connections)].execute(f"CLOSE source_{index}")
     return eligible
+
+
+async def similar_source_roots(scratch, authority, table, queries, excluded, pool_limit):
+    """Use the already-held authority connection while the two native scans run.
+
+    Both paths traverse the sealed pgvector graph. The canonical index scan applies
+    exclusions before LIMIT, just as the carrier keeps fetching until its eligible
+    prefix is full. The authority connection is idle during native FETCH and is
+    used by only one task at a time. All sources are ranked in the same snapshot.
+    """
+    if len(queries) < 4:
+        return await eligible_source_roots(scratch, authority, table, queries, excluded, pool_limit)
+    local_positions = list(range(3, len(queries), 4))
+    native_positions = [i for i in range(len(queries)) if i % 4 != 3]
+    groups = [None] * len(queries)
+
+    async def scan_authority():
+        rows = (await authority.execute(sa.text(f"""
+            SELECT inputs.ord, ARRAY(
+                SELECT ctid::text FROM {table} WHERE {EXCLUDED}
+                ORDER BY embedding <=> CAST(inputs.query AS vector(768)) LIMIT :pool_limit
+            ) AS roots
+            FROM unnest(CAST(:queries AS text[])) WITH ORDINALITY AS inputs(query, ord)
+            ORDER BY inputs.ord
+        """), {"queries": [queries[i] for i in local_positions],
+               "excluded": excluded, "pool_limit": pool_limit})).all()
+        if len(rows) != len(local_positions):
+            raise pg.PgvectorQueryError("Missing authoritative source group")
+        for ordinal, ((actual, roots), position) in enumerate(zip(rows, local_positions), start=1):
+            if (actual != ordinal or not isinstance(roots, (list, tuple)) or len(roots) > pool_limit
+                    or any(type(root) is not str or not ROOT.fullmatch(root) for root in roots)
+                    or len(set(roots)) != len(roots)):
+                raise pg.PgvectorQueryError("Invalid authoritative source prefix")
+            groups[position] = roots
+
+    native = await eligible_source_roots(
+        scratch, authority, table, [queries[i] for i in native_positions], excluded, pool_limit,
+        during_first_fetch=scan_authority,
+    )
+    for position, roots in zip(native_positions, native, strict=True):
+        groups[position] = roots
+    if any(group is None for group in groups):
+        raise pg.PgvectorQueryError("Missing source prefix")
+    return groups
 
 
 class LiveSimilarCarrier:
@@ -346,7 +393,7 @@ class LiveSimilarCarrier:
                     async with asyncio.timeout(transport.budget.statement_ms / 1000):
                         if not exhaustive:
                             async with self._source_connections(witness, len(queries)) as connections:
-                                groups = await eligible_source_roots(connections, authority, table, queries,
+                                groups = await similar_source_roots(connections, authority, table, queries,
                                     excluded, transport.budget.source_candidate_pool)
                             params["root_groups"] = json.dumps(groups)
                         distance = "embedding <=> inputs.query"

@@ -239,11 +239,18 @@ class LiveSourceBoundaries(IsolatedAsyncioTestCase):
         pool = reader._pool.return_value
         pool.acquire.side_effect = contexts
         calls = completed = 0
+        async def execute(statement, params=None):
+            # The same authority connection scans five source prefixes during
+            # the first native FETCH. Keep this operation in flight at deadline.
+            if "AS roots" in str(statement):
+                await asyncio.sleep(4)
+            return MagicMock()
+        authority.execute.side_effect = execute
         async def slow_fetch(*args):
             nonlocal calls, completed
             calls += 1
             ordinal = calls
-            await asyncio.sleep(.22)
+            await asyncio.sleep(.32)
             completed += 1
             return [(f"({ordinal},1)",)]
         scratch.fetch.side_effect = slow_fetch
@@ -256,8 +263,7 @@ class LiveSourceBoundaries(IsolatedAsyncioTestCase):
                 await reader.query_many(witness, [[1.0] + [0.0] * 767 for _ in range(20)],
                     top_k=15, excluded_revisions=[])
         self.assertLess(asyncio.get_running_loop().time() - started, 2.8)
-        # Both lanes can start their final fetch just before the deadline;
-        # they must not complete it or reach authoritative ranking.
+        # In-flight native and authority work must stop before ranking.
         self.assertLessEqual(calls, 20)
         self.assertLess(completed, calls)
         self.assertEqual(reader._transport._slots._value, 4)
@@ -266,6 +272,30 @@ class LiveSourceBoundaries(IsolatedAsyncioTestCase):
         second.transaction.return_value.__aexit__.assert_awaited_once()
         self.assertFalse(any("CROSS JOIN LATERAL" in str(call.args[0])
             for call in authority.execute.await_args_list))
+
+    async def test_authority_and_native_prefixes_are_reassembled_in_source_order(self):
+        authority = MagicMock()
+        authority.execute = AsyncMock(return_value=MagicMock())
+        authority.execute.return_value.all.return_value = [(1, ["(4,1)"]), (2, ["(8,1)"])]
+        queries = [str(i) for i in range(1, 9)]
+
+        async def native(scratch, connection, table, inputs, exclusions, limit, *, during_first_fetch):
+            self.assertIs(connection, authority)
+            self.assertEqual(inputs, ["1", "2", "3", "5", "6", "7"])
+            await during_first_fetch()
+            return [[f"({i},1)"] for i in inputs]
+
+        with patch.object(live, "eligible_source_roots", new=native):
+            groups = await live.similar_source_roots((), authority, "fixture", queries, ["x"], 257)
+        self.assertEqual(groups, [[f"({i},1)"] for i in queries])
+        sql, params = authority.execute.await_args.args
+        self.assertIn("ORDER BY embedding <=>", str(sql))
+        self.assertEqual(params, {"queries": ["4", "8"], "excluded": ["x"], "pool_limit": 257})
+
+        authority.execute.return_value.all.return_value = [(1, ["(4,1)"])]
+        with patch.object(live, "eligible_source_roots", new=native):
+            with self.assertRaises(PgvectorQueryError):
+                await live.similar_source_roots((), authority, "fixture", queries, ["x"], 257)
 
     async def test_two_native_partitions_preserve_prefixes_and_resolve_each_round_once(self):
         first, second = AsyncMock(), AsyncMock()
