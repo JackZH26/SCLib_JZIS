@@ -1,5 +1,6 @@
 """Retire derived local search indexes after moving readers back to Google."""
 import re
+from pathlib import Path
 
 from alembic import op
 from alembic.script import ScriptDirectory
@@ -76,7 +77,7 @@ def upgrade():
 def downgrade():
     # The old schema can be recreated for a historical software rollback. No
     # deleted ANN index, vector projection or search acceptance is synthesized.
-    scripts = ScriptDirectory.from_config(op.get_context().config)
+    scripts = ScriptDirectory(str(Path(__file__).resolve().parents[1]))
     revisions = list(scripts.iterate_revisions(down_revision, "0106_materials_source_notation"))
     for old in reversed(revisions):
         old.module.upgrade()
