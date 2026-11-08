@@ -51,17 +51,26 @@ class ContentRetriever:
 
     async def close(self):
         try:
-            if self.similar_carrier is not None:await self.similar_carrier.close()
+            try:
+                if self.similar_frontiers is not None:await self.similar_frontiers.close()
+            finally:
+                if self.similar_carrier is not None:await self.similar_carrier.close()
         finally:await self._embedding_workers.close()
 
     async def prepare(self,pin):
         self._pin(pin)
         ready=await self._readiness.prepare(pin)
-        if self.similar_frontiers is not None:
-            self.similar_frontiers.require_graph(self._readiness.prepared_witness(pin))
-        if self.similar_carrier is not None:
-            await self.similar_carrier.prepare(self._readiness.prepared_witness(pin))
+        await self.check_candidate_sources(pin)
         return ready
+
+    async def check_candidate_sources(self,pin):
+        if self.similar_frontiers is None and self.similar_carrier is None:
+            return
+        witness=self._readiness.prepared_witness(pin)
+        if self.similar_frontiers is not None:
+            self.similar_frontiers.require_graph(witness)
+        if self.similar_carrier is not None:
+            await self.similar_carrier.prepare(witness)
 
     async def similar(self,pin,paper_id,*,top_k=10):
         from services.content_similarity import similar

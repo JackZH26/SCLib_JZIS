@@ -6,13 +6,15 @@ import json
 import os
 import sqlite3
 import stat
-from contextlib import closing
+from contextlib import AsyncExitStack, closing
 from importlib.resources import files
 from pathlib import Path
 from uuid import UUID
 
+import sqlalchemy as sa
+
 from services import similar_frontier_checkpoint as checkpoint
-from services.pgvector_query import CandidateBatch, SqlNeighbor
+from services.pgvector_query import CandidateBatch, PgvectorQueries, QueryBudget, SqlNeighbor
 
 MOUNT = Path("/run/sclib/similar-frontiers")
 CONTRACT = "similar-source-55/scalar-v1"
@@ -44,7 +46,7 @@ class SimilarFrontiers:
     """The release admission supplies both digests outside the artifact directory."""
 
     @classmethod
-    def from_release(cls):
+    def from_release(cls, transport):
         # Admission changes ship in the same signed API wheel/image as the reader.
         # Mounted candidate files and environment variables cannot choose their own digests.
         admission = json.loads(
@@ -52,13 +54,16 @@ class SimilarFrontiers:
         )
         if admission["version"] != "sclib-similar-frontier-admission/1":
             raise ValueError("Unknown Similar frontier admission version")
-        return cls(admission["builds"])
+        return cls(admission["builds"], transport=transport)
 
-    def __init__(self, approved, directory=MOUNT):
+    def __init__(self, approved, directory=MOUNT, *, transport):
+        if type(transport) is not PgvectorQueries or transport.budget != QueryBudget():
+            raise ValueError("The frozen query budget and its global slots are required")
         if len(approved) != 2 or len(set(approved.values())) != 2:
             raise ValueError("Distinct primary and rollback artifacts required")
         self._files = {}
-        self._slots = asyncio.Semaphore(4)
+        self._transport = transport
+        self._pending = set()
         content = None
         for build, digest in approved.items():
             if str(UUID(build)) != build or not checkpoint.HASH.fullmatch(digest):
@@ -112,12 +117,12 @@ class SimilarFrontiers:
         entry = self._files.get(witness.pin.build_id)
         if entry is None or entry[2] != graph_scope(witness):
             raise ValueError("Similar graph, content or policy mismatch")
+        if _file_identity(entry[0].lstat()) != entry[1]:
+            raise ValueError("Verified Similar artifact changed")
         return entry
 
     def _read(self, witness, paper, sources, excluded, limit):
         path, identity, _ = self.require_graph(witness)
-        if _file_identity(path.lstat()) != identity:
-            raise ValueError("Verified Similar artifact changed")
         # immutable=1 ignores journals/WAL and takes no locks. The admitted
         # digest covers the entire standalone file on the read-only mount.
         uri = path.as_uri() + "?mode=ro&immutable=1"
@@ -140,23 +145,36 @@ class SimilarFrontiers:
             raise ValueError("Similar artifact changed during lookup")
         return tuple(batches)
 
+    def _finished(self, task):
+        self._pending.discard(task)
+        if not task.cancelled():
+            task.exception()
+
+    async def close(self):
+        if self._pending:
+            await asyncio.gather(*(asyncio.shield(task) for task in self._pending), return_exceptions=True)
+
+    async def _lookup(self, reservations, witness, paper, sources, excluded, limit):
+        # The file read owns both reservations until the OS thread actually finishes.
+        async with reservations:
+            return await asyncio.to_thread(self._read, witness, paper, sources, excluded, limit)
+
     async def candidates(self, witness, paper, sources, excluded, limit, *, timeout):
-        # Keep the permit until the real filesystem operation finishes, even
-        # if the request is cancelled while a cold page is being read.
-        async with asyncio.timeout(timeout):
-            await self._slots.acquire()
-            try:
-                future = asyncio.create_task(
-                    asyncio.to_thread(self._read, witness, paper, sources, excluded, limit)
-                )
-            except BaseException:
-                self._slots.release()
-                raise
-
-            def finished(task):
-                self._slots.release()
-                if not task.cancelled():
-                    task.exception()
-
-            future.add_done_callback(finished)
-            return await asyncio.shield(future)
+        transport = self._transport
+        async with asyncio.timeout(min(timeout, transport.budget.total_seconds)):
+            async with AsyncExitStack() as reservations:
+                await reservations.enter_async_context(transport._slots)
+                connection = await reservations.enter_async_context(transport.engine.connect())
+                await reservations.enter_async_context(connection.begin())
+                await connection.execute(sa.text("SET TRANSACTION READ ONLY"))
+                await transport._global_slot(connection)
+                owned = reservations.pop_all()
+                try:
+                    task = asyncio.create_task(self._lookup(owned, witness, paper, sources, excluded, limit))
+                except BaseException:
+                    await owned.aclose()
+                    raise
+                self._pending.add(task)
+                task.add_done_callback(self._finished)
+                async with asyncio.timeout(transport.budget.statement_ms / 1000):
+                    return await asyncio.shield(task)
