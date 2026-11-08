@@ -5,13 +5,11 @@
  * chunk/material data stays on the list page so this component
  * can be reused across routes.
  */
+import type { ReactNode } from "react";
 import Link from "@/components/AppLink";
 import { LatexText } from "@/components/LatexText";
 import { ScientificMatches } from "@/components/ScientificMatches";
-import type { MatchingScientificResult, SourceVisibility } from "@/lib/api";
-import { SourceVisibilityNotice } from "@/components/MaterialVisibilityNotice";
-import { EvidenceProvenanceNotice } from "@/components/EvidenceProvenanceNotice";
-import type { EvidenceProvenance } from "@/lib/api";
+import type { MatchingScientificResult } from "@/lib/api";
 
 export interface PaperCardInput {
   paper_id: string;
@@ -25,8 +23,7 @@ export interface PaperCardInput {
   scoreLabel?: string;
   badges?: string[];
   matchingResults?: MatchingScientificResult[];
-  sourceVisibility?: SourceVisibility;
-  evidenceProvenance?: EvidenceProvenance;
+  children?: ReactNode;
 }
 
 export function PaperCard(p: PaperCardInput) {
@@ -64,8 +61,7 @@ export function PaperCard(p: PaperCardInput) {
         </p>
       )}
       <ScientificMatches results={p.matchingResults} />
-      <SourceVisibilityNotice visibility={p.sourceVisibility} compact />
-      {p.evidenceProvenance && <EvidenceProvenanceNotice evidence={p.evidenceProvenance} />}
+      {p.children}
       {p.badges && p.badges.length > 0 && (
         <div className="mt-3 flex flex-wrap gap-1.5">
           {p.badges.map((b) => (
