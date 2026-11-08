@@ -338,3 +338,60 @@ test("magnetic-excitation note preserves the sample discrepancy in mobile view a
  await page.screenshot({path:"test-results/scwiki-source-links-390.png",fullPage:false});
 
 });
+
+test("SCWiki searches papers and Wiki pages in responsive, independent columns", async ({ page }) => {
+  const title = "Kinetic energy driven superconductivity, the origin of the Meissner effect, and the reductionist frontier";
+  const requests: string[] = [];
+  await page.route("https://api.jzis.org/sclib/v1/search", async route => {
+    const headers = {
+      "access-control-allow-origin": "http://localhost:3102",
+      "access-control-allow-credentials": "true",
+      "access-control-allow-methods": "POST, OPTIONS",
+      "access-control-allow-headers": "content-type",
+    };
+    if (route.request().method() === "OPTIONS") {
+      await route.fulfill({ status: 204, headers });
+      return;
+    }
+    expect(route.request().method()).toBe("POST");
+    const body = route.request().postDataJSON();
+    requests.push(body.query);
+    expect(body).toEqual({ query: "Meissner", top_k: 20, filters: { exclude_retracted: true } });
+    await route.fulfill({ headers, json: {
+      total: 1, query_time_ms: 12, guest_remaining: null, remaining: null,
+      results: [{ paper_id: "arxiv:1103.3912", arxiv_id: "1103.3912", title, authors: ["J. E. Hirsch"], year: 2011,
+        date_submitted: null, matched_chunk: "The kinetic energy of electrons in electronic energy bands.", matched_section: "Kinetic energy in electronic energy bands",
+        relevance_score: 1, materials: [], citation_count: 0, material_family: null, has_equation: false, has_table: false }],
+    } });
+  });
+  await page.setViewportSize({ width: 1440, height: 960 });
+  await page.goto("/scwiki");
+  await page.getByRole("button", { name: "Reject all", exact: true }).click();
+  const input = page.getByRole("searchbox", { name: "Search SCWiki" });
+  await input.fill("Meissner");
+  const papers = page.getByRole("region", { name: "Literature", exact: true });
+  const wiki = page.getByRole("region", { name: "SCWiki", exact: true });
+  await expect(wiki.getByRole("link", { name: /Read article: The Meissner effect/ })).toBeVisible();
+  expect(requests).toEqual([]);
+  await input.press("Enter");
+  await expect(papers.getByRole("link", { name: new RegExp(title) })).toHaveAttribute("href", "/paper/arxiv%3A1103.3912");
+  expect(requests).toEqual(["Meissner"]);
+  await expect(papers.getByLabel("Evidence provenance")).toHaveCount(0);
+  await expect(wiki.getByRole("link", { name: /Jump to:/ }).first()).toBeVisible();
+  const desktopLeft = (await papers.boundingBox())!, desktopRight = (await wiki.boundingBox())!;
+  expect(desktopLeft.x + desktopLeft.width).toBeLessThanOrEqual(desktopRight.x);
+  expect(Math.abs(desktopLeft.y - desktopRight.y)).toBeLessThan(2);
+  await page.locator("#search-results").scrollIntoViewIfNeeded();
+  await page.evaluate(() => document.querySelector("#search-results")!.scrollIntoView());
+  await page.screenshot({ path: "test-results/scwiki-search-columns-desktop.png" });
+
+  await page.setViewportSize({ width: 390, height: 844 });
+  const mobileFirst = (await papers.boundingBox())!, mobileSecond = (await wiki.boundingBox())!;
+  expect(mobileFirst.y + mobileFirst.height).toBeLessThanOrEqual(mobileSecond.y);
+  expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(390);
+  await page.evaluate(() => document.querySelector("#search-results")!.scrollIntoView());
+  await page.screenshot({ path: "test-results/scwiki-search-columns-mobile.png" });
+  await page.getByRole("button", { name: "Jump to SCWiki results" }).click();
+  await expect(wiki.getByRole("heading", { name: "SCWiki", exact: true })).toBeFocused();
+  expect(requests).toEqual(["Meissner"]);
+});

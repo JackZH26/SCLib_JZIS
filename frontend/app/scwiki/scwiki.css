@@ -85,7 +85,13 @@
 .scwiki-home-intro>p:last-child{font-size:1.04rem;line-height:1.8;color:var(--text-secondary)}
 .scwiki-home-search{margin:0 auto 2.8rem;max-width:880px}
 .scwiki-home-search:has(.scwiki-search-results){max-width:none}
-.scwiki-home-search .scwiki-search-panel{padding:0;border:0;background:transparent;border-radius:0}
+.scwiki-search-results{margin-top:1.5rem}
+.scwiki-search-results .scwiki-article-grid{grid-template-columns:minmax(0,1fr);gap:1rem}
+.scwiki-search-results .scwiki-result{padding:1.25rem;border:1px solid var(--border);border-radius:.5rem;background:var(--card)}
+.scwiki-search-results .scwiki-result h4{font-size:1.1rem;font-weight:650;line-height:1.45;margin:.35rem 0 .7rem}
+.scwiki-search-results .scwiki-result h4 a:hover{text-decoration:underline}
+.scwiki-search-results .scwiki-empty h4{font-weight:650;margin-bottom:.6rem}
+.scwiki-home-search .scwiki-search-panel{max-width:880px;margin-inline:auto;padding:0;border:0;background:transparent;border-radius:0}
 .scwiki-search-bar{display:flex;align-items:center;gap:1rem;background:var(--card);border:1px solid #a7bfad;border-radius:8px;padding:.45rem .5rem .45rem 1.1rem;box-shadow:0 3px 16px rgba(36,80,58,.04)}
 .scwiki-search-bar:focus-within{outline:2px solid var(--accent);outline-offset:3px}
 .scwiki-search-bar>svg{flex-shrink:0;color:var(--accent-deep)}
