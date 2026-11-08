@@ -6,9 +6,10 @@ ENV PYTHONDONTWRITEBYTECODE=1 PYTHONUNBUFFERED=1 UV_PROJECT_ENVIRONMENT=/opt/ven
     UV_PYTHON_DOWNLOADS=0 TIKTOKEN_CACHE_DIR=/opt/tiktoken-cache PATH="/opt/venv/bin:$PATH"
 # CVE-2026-109518: upgrade APT without its vulnerable download-retry path.
 RUN apt-get -o Acquire::Retries=0 update && apt-get -o Acquire::Retries=0 install -y --no-install-recommends \
-        apt libapt-pkg7.0 build-essential libpq-dev libpcre2-8-0 tini \
+        apt libapt-pkg7.0 zlib1g build-essential libpq-dev libpcre2-8-0 tini \
     && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' apt)" ge '3.0.4' \
     && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libapt-pkg7.0)" ge '3.0.4' \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' zlib1g)" ge '1:1.3.dfsg+really1.3.1-1+deb13u1' \
     && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libpcre2-8-0)" ge '10.46-1~deb13u3' \
     && rm -rf /var/lib/apt/lists/*
 COPY api /opt/packages/api

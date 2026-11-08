@@ -42,6 +42,8 @@ async def managed_reader(*,source_engine=None,session_factory=None):
         settings=get_settings()
         if settings.retrieval_use_similar_frontiers:
             reader.similar_frontiers=await asyncio.to_thread(SimilarFrontiers.from_release,reader._transport)
+            if reader.similar_frontiers.needs_live_carrier and not settings.retrieval_use_similar_carrier:
+                raise ValueError('A paper subset requires the signed live Similar carrier')
         if settings.retrieval_use_similar_carrier:
             reader.similar_carrier=LiveSimilarCarrier.from_release(reader._transport)
         pin=await reader.pin(logical_index=get_settings().retrieval_logical_index)

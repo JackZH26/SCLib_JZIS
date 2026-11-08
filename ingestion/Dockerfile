@@ -18,13 +18,14 @@ ENV PYTHONDONTWRITEBYTECODE=1 \
 
 # Refresh APT and PCRE2; disable download retries while upgrading vulnerable APT.
 RUN apt-get -o Acquire::Retries=0 update && apt-get -o Acquire::Retries=0 install -y --no-install-recommends \
-        apt libapt-pkg7.0 \
+        apt libapt-pkg7.0 zlib1g \
         build-essential \
         libpcre2-8-0 \
         libpq-dev \
         curl \
     && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' apt)" ge '3.0.4' \
     && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libapt-pkg7.0)" ge '3.0.4' \
+    && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' zlib1g)" ge '1:1.3.dfsg+really1.3.1-1+deb13u1' \
     && dpkg --compare-versions "$(dpkg-query -W -f='${Version}' libpcre2-8-0)" ge '10.46-1~deb13u3' \
     && rm -rf /var/lib/apt/lists/*
 
