@@ -1,6 +1,7 @@
 """Scalar ranking keeps the full evidence projector's scientific decisions."""
 from __future__ import annotations
 
+import json
 from copy import deepcopy
 
 import pytest
@@ -8,7 +9,7 @@ import pytest
 from services.material_scoped_properties import scoped_property_evidence, scoped_tc_selection
 from services.property_evidence import build_property_evidence
 from tests.test_material_source_scope_ordering import db_session as _owned_db_session
-from tests.test_material_source_scope_ordering import ordered_fixture
+from tests.test_material_source_scope_ordering import material_row, ordered_fixture
 
 db_session = _owned_db_session
 
@@ -105,3 +106,77 @@ async def test_real_sql_complete_pages_equal_original_projectors(client, db_sess
     for row in rows.values():
         await db_session.refresh(row)
         assert (row.records, row.updated_at) == original_rows[row.id]
+
+
+@pytest.mark.asyncio
+async def test_prepared_inventory_complete_finite_pages_equal_original_validation(client, db_session, monkeypatch):
+    """Initial scope construction, selection and projection all participate."""
+    import routers.materials as routes
+    from models.db import Paper
+    from services import material_source_scope as policy
+
+    family, rows = await ordered_fixture(db_session)
+    # Preserve occurrence positions, including an excluded unknown source and
+    # a repeated retained record. Computed and Observed stay separate predicates.
+    rows["a"].records = [*rows["a"].records,
+                         {**rows["a"].records[1], "paper_id": f"{family}:missing"}]
+    rows["b"].records = [*rows["b"].records, deepcopy(rows["b"].records[-1])]
+    rows["b"].records[-1]["knowledge_origin"] = "Computed"
+    rows["b"].records[-1]["measurement"] = "dft"
+    # One nested excluded sibling is enough to keep the whole inventory on the
+    # original full validation/deepcopy path.
+    rows["c"].records = [{**value, "source_locator": {"page": 2}}
+                         for value in rows["c"].records]
+    rows["f"] = await material_row(db_session, family=family, label="f", tc=50,
+                                    old_tc=50, source_count=1)
+    held_paper = await db_session.get(Paper, rows["f"].records[0]["paper_id"])
+    held_paper.status = "retracted"
+    rows["g"] = await material_row(db_session, family=family, label="g", tc=50,
+                                    old_tc=50, source_count=1)
+    rows["g"].parent_material_id = rows["f"].id
+    await db_session.commit()
+    for row in rows.values():
+        await db_session.refresh(row)
+    before = {row.id: (deepcopy(row.records), row.updated_at) for row in rows.values()}
+    capture = policy._flat_inventory
+    captures = {"prepared": 0, "fallback": 0}
+
+    def counted_capture(*args, **kwargs):
+        result = capture(*args, **kwargs)
+        captures["prepared" if result is not None else "fallback"] += 1
+        return result
+
+    queries = ({}, {"sort": "tc_ambient"}, {"sort": "total_papers"},
+               {"knowledge_origin": "Computed"},
+               {"knowledge_origin": "Observed", "tc_min": 25, "pressure_max": 1},
+               {"include_pending": True}, {"offset": 1, "limit": 2})
+
+    async def complete_pages():
+        bodies = []
+        for extra in queries:
+            # Both arms must create scopes afresh and exercise the full scan,
+            # candidate ordering and returned-page DTO construction.
+            monkeypatch.setattr(routes, "_material_pages", routes._MaterialPageCache())
+            monkeypatch.setattr(routes, "_material_rankings", routes._MaterialPageCache())
+            response = await client.get("/v1/materials", params={
+                "family": family, "limit": 100, **extra,
+            })
+            assert response.status_code == 200, response.text
+            bodies.append(response.content)
+        return bodies
+
+    monkeypatch.setattr(policy, "_flat_inventory", counted_capture)
+    prepared = await complete_pages()
+    assert captures["prepared"] > 0 and captures["fallback"] > 0
+    monkeypatch.setattr(policy, "_flat_inventory", lambda *args, **kwargs: None)
+    assert await complete_pages() == prepared
+    default = json.loads(prepared[0])
+    assert default["total"] == 5
+    assert [item["id"] for item in default["results"]] == [rows[key].id for key in "bcaed"]
+    assert json.loads(prepared[3])["total"] == 1
+    assert json.loads(prepared[4])["total"] == 3
+    assert json.loads(prepared[5])["total"] == 7
+    assert [item["id"] for item in json.loads(prepared[6])["results"]] == [rows[key].id for key in "ca"]
+    for row in rows.values():
+        await db_session.refresh(row)
+        assert (row.records, row.updated_at) == before[row.id]
