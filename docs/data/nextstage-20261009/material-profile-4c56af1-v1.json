@@ -1,0 +1,1053 @@
+{
+  "schema_version": "sclib-material-list-profile/1.0.0",
+  "started_at": "2026-10-09T12:36:30.617060+00:00",
+  "scientific_acceptance": false,
+  "slo_acceptance": null,
+  "database_transaction_snapshot": false,
+  "version_before": {
+    "site_version": "4c56af1",
+    "dataset_version": "v2026.09.03",
+    "api_version": "1"
+  },
+  "version_requests": [
+    {
+      "url": "https://api.jzis.org/sclib/v1/version",
+      "started_at": "2026-10-09T12:36:30.617238+00:00",
+      "status": 200,
+      "error": null,
+      "request_accept_encoding": "gzip",
+      "headers": {
+        "x-request-id": "1a0e783422274681b05b05c989fc2ae7",
+        "x-api-version": "1"
+      },
+      "wire_bytes": 76,
+      "content_encoding": null,
+      "bytes": 76,
+      "sha256": "cd20b1224b26a15b74e89c10c452c4e3791340e1b598862fd612b7340a2417e8",
+      "elapsed_seconds": 0.261623
+    },
+    {
+      "url": "https://api.jzis.org/sclib/v1/version",
+      "started_at": "2026-10-09T12:37:37.607483+00:00",
+      "status": 200,
+      "error": null,
+      "request_accept_encoding": "gzip",
+      "headers": {
+        "x-request-id": "1f971799be1a4559bffdd35dc8235fea",
+        "x-api-version": "1"
+      },
+      "wire_bytes": 76,
+      "content_encoding": null,
+      "bytes": 76,
+      "sha256": "cd20b1224b26a15b74e89c10c452c4e3791340e1b598862fd612b7340a2417e8",
+      "elapsed_seconds": 0.267302
+    }
+  ],
+  "profiles": {
+    "default": {
+      "path": "/materials?limit=25&offset=0",
+      "attempts": [
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T12:36:30.878901+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "MISS",
+            "server-timing": "materials_path;desc=\"scan\", revision;dur=7.234, lock_wait;dur=0.001, scan_fetch;dur=1353.496, scope;dur=10782.701, selection;dur=10292.836, scan_close;dur=1.747, projection;dur=114.125, ranking_publish;dur=12.021, serialization;dur=4.107, total;dur=22582.279",
+            "x-request-id": "128999db97c44a9c8732201a4ed1bb5d",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 23491,
+          "content_encoding": "gzip",
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 22.997775,
+          "total": 10507,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "scan",
+            "stage_ms": {
+              "revision": 7.234,
+              "lock_wait": 0.001,
+              "scan_fetch": 1353.496,
+              "scope": 10782.701,
+              "selection": 10292.836,
+              "scan_close": 1.747,
+              "projection": 114.125,
+              "ranking_publish": 12.021,
+              "serialization": 4.107,
+              "total": 22582.279
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T12:36:53.885597+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=4.450, total;dur=4.737",
+            "x-request-id": "f7762ebf776e47fc87bf83c66aee6ea4",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 23491,
+          "content_encoding": "gzip",
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 0.453579,
+          "total": 10507,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 4.45,
+              "total": 4.737
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T12:36:54.349613+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=3.474, total;dur=3.669",
+            "x-request-id": "91d800b4eb444540a44ef0f86a46fb18",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 23491,
+          "content_encoding": "gzip",
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 0.415411,
+          "total": 10507,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 3.474,
+              "total": 3.669
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T12:36:54.773237+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=3.290, total;dur=3.436",
+            "x-request-id": "19218b0d17a64c70a022fb67e967e7e6",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 23491,
+          "content_encoding": "gzip",
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 0.416461,
+          "total": 10507,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 3.29,
+              "total": 3.436
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?limit=25&offset=0",
+          "started_at": "2026-10-09T12:36:55.199583+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=1.926, total;dur=2.108",
+            "x-request-id": "34440df089034040a48322dca370a12c",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 23491,
+          "content_encoding": "gzip",
+          "bytes": 505619,
+          "sha256": "6bc1e6e69191b93afca1c1654946e6d7a66828db97e1073c0e831d3ecec80240",
+          "elapsed_seconds": 0.43376,
+          "total": 10507,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 1.926,
+              "total": 2.108
+            }
+          }
+        }
+      ],
+      "summary": {
+        "attempts": 5,
+        "successful": 5,
+        "failures": 0,
+        "median_seconds": 0.43376,
+        "p95_seconds": 22.997775,
+        "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+        "first_request_seconds": 22.997775,
+        "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+        "reported_application_cache_states": {
+          "MISS": 1,
+          "HIT": 4
+        },
+        "slo_acceptance": null,
+        "timing_status_counts": {
+          "available": 5,
+          "not_emitted": 0,
+          "invalid": 0
+        },
+        "by_server_path": {
+          "page_hit": {
+            "samples": 4,
+            "client_median_seconds": 0.4251105,
+            "stage_median_ms": {
+              "revision": 3.382,
+              "total": 3.5525
+            }
+          },
+          "scan": {
+            "samples": 1,
+            "client_median_seconds": 22.997775,
+            "stage_median_ms": {
+              "lock_wait": 0.001,
+              "projection": 114.125,
+              "ranking_publish": 12.021,
+              "revision": 7.234,
+              "scan_close": 1.747,
+              "scan_fetch": 1353.496,
+              "scope": 10782.701,
+              "selection": 10292.836,
+              "serialization": 4.107,
+              "total": 22582.279
+            }
+          }
+        }
+      }
+    },
+    "formula": {
+      "path": "/materials?q=MgB2&limit=25&offset=0",
+      "attempts": [
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T12:36:55.641589+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "MISS",
+            "server-timing": "materials_path;desc=\"scan\", revision;dur=5.724, lock_wait;dur=0.001, scan_fetch;dur=41.039, scope;dur=17.154, selection;dur=20.475, scan_close;dur=0.065, projection;dur=84.499, ranking_publish;dur=0.064, serialization;dur=1.831, total;dur=172.793",
+            "x-request-id": "af36f2801e3942d58aa1ea0c5aef1855",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 13539,
+          "content_encoding": "gzip",
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 0.592818,
+          "total": 41,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "scan",
+            "stage_ms": {
+              "revision": 5.724,
+              "lock_wait": 0.001,
+              "scan_fetch": 41.039,
+              "scope": 17.154,
+              "selection": 20.475,
+              "scan_close": 0.065,
+              "projection": 84.499,
+              "ranking_publish": 0.064,
+              "serialization": 1.831,
+              "total": 172.793
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T12:36:56.239643+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=2.399, total;dur=2.590",
+            "x-request-id": "2eca84fe8b3a4df699b92e6cd2c24b2d",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 13539,
+          "content_encoding": "gzip",
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 0.334479,
+          "total": 41,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 2.399,
+              "total": 2.59
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T12:36:56.578250+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=2.118, total;dur=2.339",
+            "x-request-id": "631f2e3d100b450db47a5940d9098e4f",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 13539,
+          "content_encoding": "gzip",
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 0.425425,
+          "total": 41,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 2.118,
+              "total": 2.339
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T12:36:57.007927+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=2.282, total;dur=2.461",
+            "x-request-id": "3e1c91e3515843d887000f0de7630c81",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 13539,
+          "content_encoding": "gzip",
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 0.372425,
+          "total": 41,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 2.282,
+              "total": 2.461
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?q=MgB2&limit=25&offset=0",
+          "started_at": "2026-10-09T12:36:57.384799+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=1.581, total;dur=1.766",
+            "x-request-id": "316eb5f168fd41dc815f6e042b242361",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 13539,
+          "content_encoding": "gzip",
+          "bytes": 336659,
+          "sha256": "1514a39969adc472b290427503f3f3e950cbfc42459b7f01a5f79f5090540653",
+          "elapsed_seconds": 0.425465,
+          "total": 41,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 1.581,
+              "total": 1.766
+            }
+          }
+        }
+      ],
+      "summary": {
+        "attempts": 5,
+        "successful": 5,
+        "failures": 0,
+        "median_seconds": 0.425425,
+        "p95_seconds": 0.592818,
+        "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+        "first_request_seconds": 0.592818,
+        "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+        "reported_application_cache_states": {
+          "MISS": 1,
+          "HIT": 4
+        },
+        "slo_acceptance": null,
+        "timing_status_counts": {
+          "available": 5,
+          "not_emitted": 0,
+          "invalid": 0
+        },
+        "by_server_path": {
+          "page_hit": {
+            "samples": 4,
+            "client_median_seconds": 0.398925,
+            "stage_median_ms": {
+              "revision": 2.2,
+              "total": 2.4
+            }
+          },
+          "scan": {
+            "samples": 1,
+            "client_median_seconds": 0.592818,
+            "stage_median_ms": {
+              "lock_wait": 0.001,
+              "projection": 84.499,
+              "ranking_publish": 0.064,
+              "revision": 5.724,
+              "scan_close": 0.065,
+              "scan_fetch": 41.039,
+              "scope": 17.154,
+              "selection": 20.475,
+              "serialization": 1.831,
+              "total": 172.793
+            }
+          }
+        }
+      }
+    },
+    "observed_cuprate": {
+      "path": "/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+      "attempts": [
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T12:36:57.815357+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "MISS",
+            "server-timing": "materials_path;desc=\"scan\", revision;dur=5.004, lock_wait;dur=0.001, scan_fetch;dur=328.135, scope;dur=4236.954, selection;dur=1245.264, scan_close;dur=0.400, projection;dur=50.743, ranking_publish;dur=0.031, serialization;dur=1.423, total;dur=5872.269",
+            "x-request-id": "60eac2ff57b04aa68f11a7ed88483e0f",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 15000,
+          "content_encoding": "gzip",
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 6.286382,
+          "total": 4,
+          "rows": 4,
+          "timing": {
+            "status": "available",
+            "path": "scan",
+            "stage_ms": {
+              "revision": 5.004,
+              "lock_wait": 0.001,
+              "scan_fetch": 328.135,
+              "scope": 4236.954,
+              "selection": 1245.264,
+              "scan_close": 0.4,
+              "projection": 50.743,
+              "ranking_publish": 0.031,
+              "serialization": 1.423,
+              "total": 5872.269
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T12:37:04.105980+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=1.599, total;dur=1.741",
+            "x-request-id": "6551296fa1d74f5cbda90cd5e3d21095",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 15000,
+          "content_encoding": "gzip",
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 0.434887,
+          "total": 4,
+          "rows": 4,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 1.599,
+              "total": 1.741
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T12:37:04.544740+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=2.271, total;dur=2.457",
+            "x-request-id": "f927599a48b74551b0777bd769d6b6cf",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 15000,
+          "content_encoding": "gzip",
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 0.367738,
+          "total": 4,
+          "rows": 4,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 2.271,
+              "total": 2.457
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T12:37:04.916538+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=1.726, total;dur=1.872",
+            "x-request-id": "5d342c4f138d4748bcca4fb9ea592dc1",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 15000,
+          "content_encoding": "gzip",
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 0.40199,
+          "total": 4,
+          "rows": 4,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 1.726,
+              "total": 1.872
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?family=cuprate&tc_min=30&pressure_max=1&knowledge_origin=Observed&limit=10&offset=0",
+          "started_at": "2026-10-09T12:37:05.322779+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=1.994, total;dur=2.159",
+            "x-request-id": "0f2598698e1c4d9ea726459d78a0eedc",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 15000,
+          "content_encoding": "gzip",
+          "bytes": 216930,
+          "sha256": "089bcea29dbe839049e56902965130a1690cb5137622f00216a92951933d8f16",
+          "elapsed_seconds": 0.439634,
+          "total": 4,
+          "rows": 4,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 1.994,
+              "total": 2.159
+            }
+          }
+        }
+      ],
+      "summary": {
+        "attempts": 5,
+        "successful": 5,
+        "failures": 0,
+        "median_seconds": 0.434887,
+        "p95_seconds": 6.286382,
+        "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+        "first_request_seconds": 6.286382,
+        "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+        "reported_application_cache_states": {
+          "MISS": 1,
+          "HIT": 4
+        },
+        "slo_acceptance": null,
+        "timing_status_counts": {
+          "available": 5,
+          "not_emitted": 0,
+          "invalid": 0
+        },
+        "by_server_path": {
+          "page_hit": {
+            "samples": 4,
+            "client_median_seconds": 0.41843850000000005,
+            "stage_median_ms": {
+              "revision": 1.8599999999999999,
+              "total": 2.0155
+            }
+          },
+          "scan": {
+            "samples": 1,
+            "client_median_seconds": 6.286382,
+            "stage_median_ms": {
+              "lock_wait": 0.001,
+              "projection": 50.743,
+              "ranking_publish": 0.031,
+              "revision": 5.004,
+              "scan_close": 0.4,
+              "scan_fetch": 328.135,
+              "scope": 4236.954,
+              "selection": 1245.264,
+              "serialization": 1.423,
+              "total": 5872.269
+            }
+          }
+        }
+      }
+    },
+    "source_count": {
+      "path": "/materials?sort=total_papers&limit=25&offset=0",
+      "attempts": [
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T12:37:05.766093+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "MISS",
+            "server-timing": "materials_path;desc=\"scan\", revision;dur=13.508, lock_wait;dur=0.001, scan_fetch;dur=1074.234, scope;dur=9668.046, selection;dur=87.285, scan_close;dur=1.123, projection;dur=1733.479, ranking_publish;dur=7.952, serialization;dur=27.870, total;dur=12628.739",
+            "x-request-id": "c3ee3da9592242a29f635a55c9de364c",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 185332,
+          "content_encoding": "gzip",
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 13.263867,
+          "total": 10507,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "scan",
+            "stage_ms": {
+              "revision": 13.508,
+              "lock_wait": 0.001,
+              "scan_fetch": 1074.234,
+              "scope": 9668.046,
+              "selection": 87.285,
+              "scan_close": 1.123,
+              "projection": 1733.479,
+              "ranking_publish": 7.952,
+              "serialization": 27.87,
+              "total": 12628.739
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T12:37:19.060952+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=1.694, total;dur=1.836",
+            "x-request-id": "6825687aa6a64258a5f181dc7cad1b55",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 185332,
+          "content_encoding": "gzip",
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 0.69013,
+          "total": 10507,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 1.694,
+              "total": 1.836
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T12:37:19.789796+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=83.708, total;dur=83.865",
+            "x-request-id": "18fb049a7ba649ceab9f010214340768",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 185332,
+          "content_encoding": "gzip",
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 0.725943,
+          "total": 10507,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 83.708,
+              "total": 83.865
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T12:37:20.547951+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=1.657, total;dur=1.819",
+            "x-request-id": "7c88757885274257adfd2987ac5e21f8",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 185332,
+          "content_encoding": "gzip",
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 0.611492,
+          "total": 10507,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 1.657,
+              "total": 1.819
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&limit=25&offset=0",
+          "started_at": "2026-10-09T12:37:21.191472+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=1.514, total;dur=1.714",
+            "x-request-id": "68c8fdf214aa4f91885d97a31ee7a499",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 185332,
+          "content_encoding": "gzip",
+          "bytes": 2557859,
+          "sha256": "2c1208817c2728d31b68fc90578c78e0c3f3c78c4f22f6fba2665df69e52139a",
+          "elapsed_seconds": 0.658735,
+          "total": 10507,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 1.514,
+              "total": 1.714
+            }
+          }
+        }
+      ],
+      "summary": {
+        "attempts": 5,
+        "successful": 5,
+        "failures": 0,
+        "median_seconds": 0.69013,
+        "p95_seconds": 13.263867,
+        "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+        "first_request_seconds": 13.263867,
+        "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+        "reported_application_cache_states": {
+          "MISS": 1,
+          "HIT": 4
+        },
+        "slo_acceptance": null,
+        "timing_status_counts": {
+          "available": 5,
+          "not_emitted": 0,
+          "invalid": 0
+        },
+        "by_server_path": {
+          "page_hit": {
+            "samples": 4,
+            "client_median_seconds": 0.6744325,
+            "stage_median_ms": {
+              "revision": 1.6755,
+              "total": 1.8275000000000001
+            }
+          },
+          "scan": {
+            "samples": 1,
+            "client_median_seconds": 13.263867,
+            "stage_median_ms": {
+              "lock_wait": 0.001,
+              "projection": 1733.479,
+              "ranking_publish": 7.952,
+              "revision": 13.508,
+              "scan_close": 1.123,
+              "scan_fetch": 1074.234,
+              "scope": 9668.046,
+              "selection": 87.285,
+              "serialization": 27.87,
+              "total": 12628.739
+            }
+          }
+        }
+      }
+    },
+    "source_count_min2": {
+      "path": "/materials?sort=total_papers&min_papers=2&limit=25&offset=0",
+      "attempts": [
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&min_papers=2&limit=25&offset=0",
+          "started_at": "2026-10-09T12:37:21.882629+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "MISS",
+            "server-timing": "materials_path;desc=\"scan\", revision;dur=13.996, lock_wait;dur=0.001, scan_fetch;dur=750.036, scope;dur=9825.121, selection;dur=49.872, scan_close;dur=0.973, projection;dur=1380.537, ranking_publish;dur=1.930, serialization;dur=17.250, total;dur=12054.327",
+            "x-request-id": "9726733d816c4960a533c888126eff61",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 185332,
+          "content_encoding": "gzip",
+          "bytes": 2557858,
+          "sha256": "1b3c2419e55720af0caaa6d3c3a5f4e5d17ce4c8e9d325ee6e3c980be7173cbe",
+          "elapsed_seconds": 12.707073,
+          "total": 2383,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "scan",
+            "stage_ms": {
+              "revision": 13.996,
+              "lock_wait": 0.001,
+              "scan_fetch": 750.036,
+              "scope": 9825.121,
+              "selection": 49.872,
+              "scan_close": 0.973,
+              "projection": 1380.537,
+              "ranking_publish": 1.93,
+              "serialization": 17.25,
+              "total": 12054.327
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&min_papers=2&limit=25&offset=0",
+          "started_at": "2026-10-09T12:37:34.628617+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=1.678, total;dur=1.855",
+            "x-request-id": "6c4a0eb9b188448385a591476664d92a",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 185332,
+          "content_encoding": "gzip",
+          "bytes": 2557858,
+          "sha256": "1b3c2419e55720af0caaa6d3c3a5f4e5d17ce4c8e9d325ee6e3c980be7173cbe",
+          "elapsed_seconds": 0.565313,
+          "total": 2383,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 1.678,
+              "total": 1.855
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&min_papers=2&limit=25&offset=0",
+          "started_at": "2026-10-09T12:37:35.225347+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=2.025, total;dur=2.227",
+            "x-request-id": "9c380027b36b41ab8391aeaac9277590",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 185332,
+          "content_encoding": "gzip",
+          "bytes": 2557858,
+          "sha256": "1b3c2419e55720af0caaa6d3c3a5f4e5d17ce4c8e9d325ee6e3c980be7173cbe",
+          "elapsed_seconds": 0.668131,
+          "total": 2383,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 2.025,
+              "total": 2.227
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&min_papers=2&limit=25&offset=0",
+          "started_at": "2026-10-09T12:37:35.924436+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=2.748, total;dur=2.916",
+            "x-request-id": "755e6da6441e4d948e3960932cecda20",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 185332,
+          "content_encoding": "gzip",
+          "bytes": 2557858,
+          "sha256": "1b3c2419e55720af0caaa6d3c3a5f4e5d17ce4c8e9d325ee6e3c980be7173cbe",
+          "elapsed_seconds": 0.68535,
+          "total": 2383,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 2.748,
+              "total": 2.916
+            }
+          }
+        },
+        {
+          "url": "https://api.jzis.org/sclib/v1/materials?sort=total_papers&min_papers=2&limit=25&offset=0",
+          "started_at": "2026-10-09T12:37:36.640694+00:00",
+          "status": 200,
+          "error": null,
+          "request_accept_encoding": "gzip",
+          "headers": {
+            "x-materials-cache": "HIT",
+            "server-timing": "materials_path;desc=\"page_hit\", revision;dur=4.982, total;dur=5.133",
+            "x-request-id": "7285c807534e4d19bb6485665440f448",
+            "x-api-version": "1"
+          },
+          "wire_bytes": 185332,
+          "content_encoding": "gzip",
+          "bytes": 2557858,
+          "sha256": "1b3c2419e55720af0caaa6d3c3a5f4e5d17ce4c8e9d325ee6e3c980be7173cbe",
+          "elapsed_seconds": 0.93452,
+          "total": 2383,
+          "rows": 25,
+          "timing": {
+            "status": "available",
+            "path": "page_hit",
+            "stage_ms": {
+              "revision": 4.982,
+              "total": 5.133
+            }
+          }
+        }
+      ],
+      "summary": {
+        "attempts": 5,
+        "successful": 5,
+        "failures": 0,
+        "median_seconds": 0.68535,
+        "p95_seconds": 12.707073,
+        "quantile_method": "nearest_rank_successes_only; failures_reported_separately",
+        "first_request_seconds": 12.707073,
+        "cache_state": "unknown; first_request_is_not_proven_cold; repeats_are_not_proven_warm",
+        "reported_application_cache_states": {
+          "MISS": 1,
+          "HIT": 4
+        },
+        "slo_acceptance": null,
+        "timing_status_counts": {
+          "available": 5,
+          "not_emitted": 0,
+          "invalid": 0
+        },
+        "by_server_path": {
+          "page_hit": {
+            "samples": 4,
+            "client_median_seconds": 0.6767405,
+            "stage_median_ms": {
+              "revision": 2.3865,
+              "total": 2.5715
+            }
+          },
+          "scan": {
+            "samples": 1,
+            "client_median_seconds": 12.707073,
+            "stage_median_ms": {
+              "lock_wait": 0.001,
+              "projection": 1380.537,
+              "ranking_publish": 1.93,
+              "revision": 13.996,
+              "scan_close": 0.973,
+              "scan_fetch": 750.036,
+              "scope": 9825.121,
+              "selection": 49.872,
+              "serialization": 17.25,
+              "total": 12054.327
+            }
+          }
+        }
+      }
+    }
+  },
+  "measurement_scope": "Sequential urllib GETs include TLS/transfer/decode; server total covers decorated route only. No SQL/root-cause or cold-database claim.",
+  "version_after": {
+    "site_version": "4c56af1",
+    "dataset_version": "v2026.09.03",
+    "api_version": "1"
+  },
+  "version_stable": true,
+  "http_capture_complete": true,
+  "server_profile_complete": true,
+  "finished_at": "2026-10-09T12:37:37.874945+00:00"
+}

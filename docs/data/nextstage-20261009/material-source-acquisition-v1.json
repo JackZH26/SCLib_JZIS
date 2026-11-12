@@ -1,0 +1,1048 @@
+{
+  "schema_version": "sclib-material-source-acquisition/1.0.0",
+  "recorded_at": "2026-10-09T10:17:04.782909+00:00",
+  "input_pins": [
+    {
+      "file": "source-acquisition-v1.json",
+      "bytes": 276589,
+      "sha256": "6c4813fafd6b16bcc378ec98d1bbbc386bf060ecf036b33bed3794982013c41b"
+    },
+    {
+      "file": "source-acquisition-v1.json",
+      "bytes": 115525,
+      "sha256": "9ef71eb56dece34dbd114add57e7ea7f0587b821e29ff68065950c2fb3ca97b0"
+    }
+  ],
+  "historical_queue": "material-source-acquisition-queue-v2.json",
+  "counts": {
+    "queue_materials_newly_retained": 5,
+    "selected_pointer_sources_retained": 5,
+    "additional_cited_root_candidates_retained": 1,
+    "full_pilot_inspections_added": 0,
+    "independent_human_reviews": 0,
+    "approved_materials": 0
+  },
+  "rows": [
+    {
+      "case_id": "material-source-003",
+      "material_id": "mat:mosr2eu1.5ce0.5cu2o10",
+      "formula": "MoSr2Eu1.5Ce0.5Cu2O10-δ",
+      "source_revision": "cond-mat/0304552v1",
+      "pdf_sha256": "c7a06872b99be9caf371222950ff976a8ec4700de4654c6c2c0c950ea789e98e",
+      "pdf_bytes": 271093,
+      "pdf_pages": 8,
+      "license_uris": [
+        "http://arxiv.org/licenses/assumed-1991-2003/"
+      ],
+      "current_metadata_receipt": {
+        "url": "https://arxiv.org/abs/cond-mat/0304552",
+        "captured_at": "2026-10-09T10:04:56.475422+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/cond-mat/0304552",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 42944,
+        "sha256": "57e8191e16f7c0c8d07e676761102880680045df79e02863afb83f74942ce327",
+        "elapsed_seconds": 0.643285125028342
+      },
+      "fixed_metadata_receipt": {
+        "url": "https://arxiv.org/abs/cond-mat/0304552v1",
+        "captured_at": "2026-10-09T10:05:00.139239+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/cond-mat/0304552v1",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 42936,
+        "sha256": "8a9324509838a48128d87e2acf3d1f32a6222dc4a525bc663d5525768abcf126",
+        "elapsed_seconds": 0.7520089590689167
+      },
+      "pdf_receipt": {
+        "url": "https://arxiv.org/pdf/cond-mat/0304552v1",
+        "captured_at": "2026-10-09T10:05:03.913684+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/pdf/cond-mat/0304552v1",
+        "content_type": "application/pdf",
+        "bytes": 271093,
+        "sha256": "c7a06872b99be9caf371222950ff976a8ec4700de4654c6c2c0c950ea789e98e",
+        "elapsed_seconds": 1.185457709012553
+      },
+      "current_arxiv_identity_matches": true,
+      "fixed_arxiv_identity_matches": true,
+      "metadata": {
+        "citation_title": "Competition of Superconductivity and Magnetism in MoSr2R1.5Ce0.5Cu2O10-d (R=Rare-earth, Mo-1222)",
+        "citation_author": "Galstyan, E.",
+        "citation_doi": "10.1103/PhysRevB.68.064507",
+        "citation_date": "2003/04/24",
+        "citation_online_date": "2003/04/24",
+        "citation_pdf_url": "https://arxiv.org/pdf/cond-mat/0304552",
+        "citation_arxiv_id": "cond-mat/0304552"
+      },
+      "all_page_text_pins": [
+        {
+          "page": 1,
+          "text_bytes": 1399,
+          "text_sha256": "df44cea59dbb7ac4e893093e82f290a99f9dbde7f6f3fb15a0e5a6146b77f078"
+        },
+        {
+          "page": 2,
+          "text_bytes": 2746,
+          "text_sha256": "af50fad7ada419d13f0afc8cfe6b1439905c21db8040e4218a8c8801708c68cf"
+        },
+        {
+          "page": 3,
+          "text_bytes": 2983,
+          "text_sha256": "f4d8130806e56a646aba7021888b5fc6d395a89cbe84e25a66561a3390c6b523"
+        },
+        {
+          "page": 4,
+          "text_bytes": 3047,
+          "text_sha256": "fc29264ec661f38188811b0a7fe9ff4002ce0bfe642e48ef97f79eac65451a32"
+        },
+        {
+          "page": 5,
+          "text_bytes": 2979,
+          "text_sha256": "5f01df9961096fe7c0853200ef840ae59719683376b00c0ace90794b6fde9bbb"
+        },
+        {
+          "page": 6,
+          "text_bytes": 1851,
+          "text_sha256": "747f2db1ee6f888c2145ef77e78349ea2e72209960b0be302a1b9bfe065dcc47"
+        },
+        {
+          "page": 7,
+          "text_bytes": 264,
+          "text_sha256": "9e7054818a41e0b78dd6d8b686e5e3cf888f1cd8decba1ed446f4ef918486cec"
+        },
+        {
+          "page": 8,
+          "text_bytes": 273,
+          "text_sha256": "407ee80300358b4c5ddaa158ff0645a58397335b7234e01f5ae5d50adb5d8f58"
+        }
+      ],
+      "fulltext_retained": true,
+      "acquisition_role": "historical_selected_paper_candidate",
+      "title_page_visual_check": "AI navigation/identity observation only",
+      "original_source_inspected_in_this_task": false,
+      "material_Result_association": null,
+      "accepted_Work_root_binding": null,
+      "source_role_decision": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "resolver": null,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "remaining_gates": [
+        "complete_source_context_and_sample_state_criterion",
+        "direct_versus_cited_source_root_association",
+        "intended_use_rights",
+        "independent_human_review"
+      ]
+    },
+    {
+      "case_id": "material-source-018",
+      "material_id": "mat:r8ni7oy",
+      "formula": "R8Ni7Oy",
+      "source_revision": "2603.22662v1",
+      "pdf_sha256": "21593f948a72e8d4bf02970bc7ac541394758a732f977a8b70e754a252779408",
+      "pdf_bytes": 1193548,
+      "pdf_pages": 43,
+      "license_uris": [
+        "http://creativecommons.org/licenses/by/4.0/"
+      ],
+      "current_metadata_receipt": {
+        "url": "https://arxiv.org/abs/2603.22662",
+        "captured_at": "2026-10-09T10:05:08.420603+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/2603.22662",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 40887,
+        "sha256": "43d6dd3fad4e339a5b3f1e35e4af416d81a11f2799d039d6f9ed8c5c392d1013",
+        "elapsed_seconds": 0.6776526670437306
+      },
+      "fixed_metadata_receipt": {
+        "url": "https://arxiv.org/abs/2603.22662v1",
+        "captured_at": "2026-10-09T10:05:12.118263+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/2603.22662v1",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 40899,
+        "sha256": "8315a5caf6f6e71ccec08a9ec8085a39bb0bb9ac19db159ee51850ac08e2d13f",
+        "elapsed_seconds": 0.652339666034095
+      },
+      "pdf_receipt": {
+        "url": "https://arxiv.org/pdf/2603.22662v1",
+        "captured_at": "2026-10-09T10:05:15.793354+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/pdf/2603.22662v1",
+        "content_type": "application/pdf",
+        "bytes": 1193548,
+        "sha256": "21593f948a72e8d4bf02970bc7ac541394758a732f977a8b70e754a252779408",
+        "elapsed_seconds": 0.744611750007607
+      },
+      "current_arxiv_identity_matches": true,
+      "fixed_arxiv_identity_matches": true,
+      "metadata": {
+        "citation_title": "A mechanism for nonmonotonic $T_{c,max}(n)$ in multilayer cuprates",
+        "citation_author": "Kornilovitch, Pavel",
+        "citation_date": "2026/03/24",
+        "citation_online_date": "2026/03/24",
+        "citation_pdf_url": "https://arxiv.org/pdf/2603.22662",
+        "citation_arxiv_id": "2603.22662"
+      },
+      "all_page_text_pins": [
+        {
+          "page": 1,
+          "text_bytes": 4606,
+          "text_sha256": "1ef99f52b84d90450b8266eb0e266b560da071260f33cd91a12e63282fd4544e"
+        },
+        {
+          "page": 2,
+          "text_bytes": 4448,
+          "text_sha256": "c0f22e1a916bd221c5d72c77f356b9b29cc66665c62c92e560b33dd88078416b"
+        },
+        {
+          "page": 3,
+          "text_bytes": 4662,
+          "text_sha256": "89348b23373c127e22c2671ba9230ad5e01c7840d187fd238df1fa3d38011138"
+        },
+        {
+          "page": 4,
+          "text_bytes": 4888,
+          "text_sha256": "92b1ffea60f67031ffa621f46396d92cc5ae3d11c6f947289382ae05adf127d0"
+        },
+        {
+          "page": 5,
+          "text_bytes": 6194,
+          "text_sha256": "632247164807230ac29c82c2425010eb46898e895335ca8ee842fa19b3c9b011"
+        },
+        {
+          "page": 6,
+          "text_bytes": 5008,
+          "text_sha256": "4787eeb475cb80a594f5b384e9fcd50038eeff6b928342bd7838c97e71e2acb3"
+        },
+        {
+          "page": 7,
+          "text_bytes": 4293,
+          "text_sha256": "e8f5929b873612416937024f26d0c056a5834eeb30a502d6083fec35223b6ced"
+        },
+        {
+          "page": 8,
+          "text_bytes": 5145,
+          "text_sha256": "de9af02c17f1de611995133048dc364a45347e7134a29f20143b34faaea3f845"
+        },
+        {
+          "page": 9,
+          "text_bytes": 3353,
+          "text_sha256": "3066ad35272ba31a8a718345a0b05f5bdee83dacee5976292d99830176927e55"
+        },
+        {
+          "page": 10,
+          "text_bytes": 3912,
+          "text_sha256": "9c5deb2377f6553d57f2a5205cbe16867eb0179f3fff3db12557c610b3fe9219"
+        },
+        {
+          "page": 11,
+          "text_bytes": 4309,
+          "text_sha256": "23ab12bca5e2a40ac91180b19974a56abba40031a095b53bb201a329ef36256b"
+        },
+        {
+          "page": 12,
+          "text_bytes": 3551,
+          "text_sha256": "b65b9654be826b782fc9876aae6b52f8d77fb1513b61543f698948c638145310"
+        },
+        {
+          "page": 13,
+          "text_bytes": 6227,
+          "text_sha256": "19b0af212cb34a616339fee4565be87804daab0cbc14b942576a108fe7fcfc65"
+        },
+        {
+          "page": 14,
+          "text_bytes": 5366,
+          "text_sha256": "c9e9856ae62b7feaf39ad91df2cbb2174df1eee835ea9e1ed2fb01e7267740f6"
+        },
+        {
+          "page": 15,
+          "text_bytes": 6134,
+          "text_sha256": "e6e00cc4f7a0b10c22becf8fb36ec2ae96007b75f60e9818a5b73d09ada05a3e"
+        },
+        {
+          "page": 16,
+          "text_bytes": 5920,
+          "text_sha256": "e1ce74c954519cec1b635ea6ba63763bfdf1870a1efd3fcbbf1dbf6aaaad93e3"
+        },
+        {
+          "page": 17,
+          "text_bytes": 6098,
+          "text_sha256": "9d1b071f1c3fcc50d560863cd9781c1bb8e008837d31165e669586a8e2b633fe"
+        },
+        {
+          "page": 18,
+          "text_bytes": 6018,
+          "text_sha256": "80c9816b209ac3b56df694063eb01673278ae4e87b8391347b6167b27ed90351"
+        },
+        {
+          "page": 19,
+          "text_bytes": 5687,
+          "text_sha256": "faa08d1057f20dd89733908bc679a8a5621b1ec4ebb9d139a1431bf8e957d157"
+        },
+        {
+          "page": 20,
+          "text_bytes": 3184,
+          "text_sha256": "e2f07a2a691cc4b2fd1cd3ac4746e77baa48c7166da65d4df70e9d9574d4763f"
+        },
+        {
+          "page": 21,
+          "text_bytes": 2630,
+          "text_sha256": "a2f08e31a38b951f0f725bf52a44d59701b748029199f86dfecb2225a3abb90c"
+        },
+        {
+          "page": 22,
+          "text_bytes": 4137,
+          "text_sha256": "079b73006e500fd755821cc2be5b965ca4c6f2bc0506bd0af64da4cf9a016b74"
+        },
+        {
+          "page": 23,
+          "text_bytes": 2106,
+          "text_sha256": "7017b568eca6d05147540358a2235a6ab7e7ad42ae90975a6d86995b8e4b6356"
+        },
+        {
+          "page": 24,
+          "text_bytes": 2314,
+          "text_sha256": "35f5f5cf655ce3012de7ffb507ac738a18f431096fbc1d8aa583bc7e60a42706"
+        },
+        {
+          "page": 25,
+          "text_bytes": 3424,
+          "text_sha256": "827aa27a288b1de5055f97b5569327e953102a305715cb4b4b6df66cd5cd7025"
+        },
+        {
+          "page": 26,
+          "text_bytes": 2824,
+          "text_sha256": "0ad24caa31ff2eb89dae5e9be39020f3faddb546c3826f5ff81a75bac4336e0b"
+        },
+        {
+          "page": 27,
+          "text_bytes": 3183,
+          "text_sha256": "4595f2b8507fc4749b169932c1d677980fa9f4d027568ba45a3689df6b9d2927"
+        },
+        {
+          "page": 28,
+          "text_bytes": 4470,
+          "text_sha256": "220fbd946c42c2e5e7819578bc604c29b1c9c42f6b6d2db1f3113fc2823b1045"
+        },
+        {
+          "page": 29,
+          "text_bytes": 1835,
+          "text_sha256": "72c1b5185555a526e1261309e4cdf36ddc7324e3c14d344595b4e3cac0eb36ae"
+        },
+        {
+          "page": 30,
+          "text_bytes": 2542,
+          "text_sha256": "a6c1a7826b090cc0848dd94748115a6d199ac81680cbc4fe9bc8750fe2e16597"
+        },
+        {
+          "page": 31,
+          "text_bytes": 2412,
+          "text_sha256": "dd4f131cf74b38a067765846a244747461b415963d5bb0ccefbebaccd64ec02a"
+        },
+        {
+          "page": 32,
+          "text_bytes": 2878,
+          "text_sha256": "2a376c2ec697f16b02459442280e9e13d648872bfd00008ae0ca81c763cb00ac"
+        },
+        {
+          "page": 33,
+          "text_bytes": 3118,
+          "text_sha256": "1780785b92c0f4426cd15422abcde5de857694f863d624810d40f5875cd9ab16"
+        },
+        {
+          "page": 34,
+          "text_bytes": 3166,
+          "text_sha256": "2330b94e1b91818102311142367c7f953915128a7034e70c162811e0114c72c7"
+        },
+        {
+          "page": 35,
+          "text_bytes": 4265,
+          "text_sha256": "ae2432534f44a6844cdc224aad372134f8483ef28cffa71ca903bc961053df36"
+        },
+        {
+          "page": 36,
+          "text_bytes": 2149,
+          "text_sha256": "43aeef69a548baed40dbc2668137384a9f9d6655d13711bb132134b28e8f4aee"
+        },
+        {
+          "page": 37,
+          "text_bytes": 4100,
+          "text_sha256": "f13b4d8ad456c036f40b9c4dfbe45431684a0f76b3a09c9a23a9825b9be33a0a"
+        },
+        {
+          "page": 38,
+          "text_bytes": 3781,
+          "text_sha256": "68ffe305e3d72f47d3272d81e1e2ff05cd5af1971312f65506550c53f25691f5"
+        },
+        {
+          "page": 39,
+          "text_bytes": 3271,
+          "text_sha256": "616b855f803123313bd4c702bd9540906dc5636e7e6befd08f72aca25c19676a"
+        },
+        {
+          "page": 40,
+          "text_bytes": 1598,
+          "text_sha256": "1072283d016e9a720b2b0c3b0fff3456c93c1a64b3863584bab3fc1a80a1ccd2"
+        },
+        {
+          "page": 41,
+          "text_bytes": 2081,
+          "text_sha256": "35e7741af4667956e1563dbefbbca82f303c812b7b8d8d5195b81920d8992925"
+        },
+        {
+          "page": 42,
+          "text_bytes": 1555,
+          "text_sha256": "2ddb8e88fd49627a024d8ab23b15e3658ae36930b57eb46881e7fd3f7a51fcc4"
+        },
+        {
+          "page": 43,
+          "text_bytes": 717,
+          "text_sha256": "5a539447f0daba5411c38668546cf67a58143ced3632cc6748a62232eb07b4cf"
+        }
+      ],
+      "fulltext_retained": true,
+      "acquisition_role": "historical_selected_paper_candidate",
+      "title_page_visual_check": "AI navigation/identity observation only",
+      "original_source_inspected_in_this_task": false,
+      "material_Result_association": null,
+      "accepted_Work_root_binding": null,
+      "source_role_decision": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "resolver": null,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "remaining_gates": [
+        "complete_source_context_and_sample_state_criterion",
+        "direct_versus_cited_source_root_association",
+        "intended_use_rights",
+        "independent_human_review"
+      ]
+    },
+    {
+      "case_id": "material-source-021",
+      "material_id": "mat:la0.4sm0.6o0.5f0.5bis2",
+      "formula": "La0.4Sm0.6O0.5F0.5BiS2",
+      "source_revision": "1507.03172v1",
+      "pdf_sha256": "e92845614dc28993c45c8fb486f12285729242f4a7d751ca6b1d9991c84fe484",
+      "pdf_bytes": 4144428,
+      "pdf_pages": 6,
+      "license_uris": [
+        "http://arxiv.org/licenses/nonexclusive-distrib/1.0/"
+      ],
+      "current_metadata_receipt": {
+        "url": "https://arxiv.org/abs/1507.03172",
+        "captured_at": "2026-10-09T10:05:24.550349+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/1507.03172",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 43260,
+        "sha256": "1d9102b2a70bcfe20fe34a951f8544a809da6f8a79ac11185ae215a704d60cd6",
+        "elapsed_seconds": 0.36113262502476573
+      },
+      "fixed_metadata_receipt": {
+        "url": "https://arxiv.org/abs/1507.03172v1",
+        "captured_at": "2026-10-09T10:05:27.934836+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/1507.03172v1",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 43272,
+        "sha256": "bcd40a7bc34a4d96e82abdb2092194fc26365ba9015c7f8dc39778495669dd6a",
+        "elapsed_seconds": 0.6476250409614295
+      },
+      "pdf_receipt": {
+        "url": "https://arxiv.org/pdf/1507.03172v1",
+        "captured_at": "2026-10-09T10:05:31.602716+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/pdf/1507.03172v1",
+        "content_type": "application/pdf",
+        "bytes": 4144428,
+        "sha256": "e92845614dc28993c45c8fb486f12285729242f4a7d751ca6b1d9991c84fe484",
+        "elapsed_seconds": 1.7094457499915734
+      },
+      "current_arxiv_identity_matches": true,
+      "fixed_arxiv_identity_matches": true,
+      "metadata": {
+        "citation_title": "Pressure-Induced Phase Transition in La$_{1-x}$Sm$_{x}$O$_{0.5}$F$_{0.5}$BiS$_2$",
+        "citation_author": "Maple, M. B.",
+        "citation_doi": "10.1103/PhysRevB.92.094507",
+        "citation_date": "2015/07/12",
+        "citation_online_date": "2015/07/12",
+        "citation_pdf_url": "https://arxiv.org/pdf/1507.03172",
+        "citation_arxiv_id": "1507.03172"
+      },
+      "all_page_text_pins": [
+        {
+          "page": 1,
+          "text_bytes": 5473,
+          "text_sha256": "5ca3605b17564b21230dcc91ddf6e1cd95c637a531e61c55232d41c0b70fc286"
+        },
+        {
+          "page": 2,
+          "text_bytes": 3809,
+          "text_sha256": "666f2acc9c9c2dc77c36c16e3fc1ba0baceb6ae2313e3bb6c3d0ce5e234fd4f4"
+        },
+        {
+          "page": 3,
+          "text_bytes": 5054,
+          "text_sha256": "f393ee9783f5e9add4924acc5cd8825e75263917e9e98d0f63d95d664b36a334"
+        },
+        {
+          "page": 4,
+          "text_bytes": 3877,
+          "text_sha256": "5e4c20861cec868560c1de2410d3ac63fe71d96f9b088687919f3493cb9d34e9"
+        },
+        {
+          "page": 5,
+          "text_bytes": 5790,
+          "text_sha256": "a0b836910c013ffc9a0532d16c408827a874cbb7f0c761ebabc6306e20870d59"
+        },
+        {
+          "page": 6,
+          "text_bytes": 3867,
+          "text_sha256": "aae4eb1afeab700a3a1c00ef05f3817ab734bd1aa3efd532baae788ce8ea2644"
+        }
+      ],
+      "fulltext_retained": true,
+      "acquisition_role": "historical_selected_paper_candidate",
+      "title_page_visual_check": "AI navigation/identity observation only",
+      "original_source_inspected_in_this_task": false,
+      "material_Result_association": null,
+      "accepted_Work_root_binding": null,
+      "source_role_decision": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "resolver": null,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "remaining_gates": [
+        "complete_source_context_and_sample_state_criterion",
+        "direct_versus_cited_source_root_association",
+        "intended_use_rights",
+        "independent_human_review"
+      ]
+    },
+    {
+      "case_id": "material-source-022",
+      "material_id": "mat:bapb0.72bi0.28o3",
+      "formula": "BaPb0.72Bi0.28O3",
+      "source_revision": "1706.06999v2",
+      "pdf_sha256": "995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+      "pdf_bytes": 2244818,
+      "pdf_pages": 19,
+      "license_uris": [
+        "http://arxiv.org/licenses/nonexclusive-distrib/1.0/"
+      ],
+      "current_metadata_receipt": {
+        "url": "https://arxiv.org/abs/1706.06999",
+        "captured_at": "2026-10-09T10:05:51.288977+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/1706.06999",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 46152,
+        "sha256": "8af0071ed61f77caec12e53cc13b1bd463b46fd9fb0e94c44bc716badae4c274",
+        "elapsed_seconds": 0.35650200000964105
+      },
+      "fixed_metadata_receipt": {
+        "url": "https://arxiv.org/abs/1706.06999v2",
+        "captured_at": "2026-10-09T10:05:54.668884+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/1706.06999v2",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 46162,
+        "sha256": "30cad2b0e0d6aa289b4aa4e0a455a382cde730c5bda1f5aff96bbcdcb541eb70",
+        "elapsed_seconds": 0.6856518749846146
+      },
+      "pdf_receipt": {
+        "url": "https://arxiv.org/pdf/1706.06999v2",
+        "captured_at": "2026-10-09T10:05:58.375725+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/pdf/1706.06999v2",
+        "content_type": "application/pdf",
+        "bytes": 2244818,
+        "sha256": "995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+        "elapsed_seconds": 1.065732500050217
+      },
+      "current_arxiv_identity_matches": true,
+      "fixed_arxiv_identity_matches": true,
+      "metadata": {
+        "citation_title": "Anomalous relaxation kinetics and charge density wave correlations in underdoped BaPb1-xBixO3",
+        "citation_author": "Cavalleri, A.",
+        "citation_doi": "10.1073/pnas.1707079114",
+        "citation_date": "2017/06/21",
+        "citation_online_date": "2017/08/10",
+        "citation_pdf_url": "https://arxiv.org/pdf/1706.06999",
+        "citation_arxiv_id": "1706.06999"
+      },
+      "all_page_text_pins": [
+        {
+          "page": 1,
+          "text_bytes": 2531,
+          "text_sha256": "3886f08fbb84da2a23262af2f6c85e4aa75c816f5e30637a316a38e108a5d274"
+        },
+        {
+          "page": 2,
+          "text_bytes": 1885,
+          "text_sha256": "00f4ef5b293d5103a010e7f491eaf95584c71f8483be630fde173d4d9da5fc66"
+        },
+        {
+          "page": 3,
+          "text_bytes": 2001,
+          "text_sha256": "bf7cad2272273fa699f00cf293ddc56808aaefbe83fa5b190b849e8806306838"
+        },
+        {
+          "page": 4,
+          "text_bytes": 1912,
+          "text_sha256": "1d4080591d13833ee0798739e0cc75104f6530d4e95ad0366e48ea889eb45f23"
+        },
+        {
+          "page": 5,
+          "text_bytes": 2028,
+          "text_sha256": "797626395eceee8d85d4469a362e67e181467d538e9d0407850fb42c32f04353"
+        },
+        {
+          "page": 6,
+          "text_bytes": 1116,
+          "text_sha256": "64ae08f611c6a469bc9de61fbb459829d6674e4e66deb9b48451f242e12849ea"
+        },
+        {
+          "page": 7,
+          "text_bytes": 1906,
+          "text_sha256": "3799d629f90cba016cfb885523525929ff2f46dc3ce4ba4edb31b2a8de4acf50"
+        },
+        {
+          "page": 8,
+          "text_bytes": 1616,
+          "text_sha256": "b85d00525d4ee3995257df4e69a986e851c4854fdadd5db225c9a276005d5151"
+        },
+        {
+          "page": 9,
+          "text_bytes": 1766,
+          "text_sha256": "f71f33161769a26f3e845460d04ce4f39e944b5a3e8d04983717365593be6da1"
+        },
+        {
+          "page": 10,
+          "text_bytes": 1311,
+          "text_sha256": "dc6a00836ecbee7e92ebe563643736a619988e6c66e1dd54e599ff0c28f0dd4c"
+        },
+        {
+          "page": 11,
+          "text_bytes": 1922,
+          "text_sha256": "42516d8ef735b09de6aacea9278547e9ee9756fb356fab9141028547d430002e"
+        },
+        {
+          "page": 12,
+          "text_bytes": 1460,
+          "text_sha256": "4ba4f9414f8be0cb65fe8eea785d4929e414f968fe595f7552fdee700a3fe4ab"
+        },
+        {
+          "page": 13,
+          "text_bytes": 2386,
+          "text_sha256": "67b76c18efd763d733a637e139102c0aa2c8603ebbe1f0fbbdf5b51bad87da98"
+        },
+        {
+          "page": 14,
+          "text_bytes": 1964,
+          "text_sha256": "efedb3df5862f14bd36250908f7445c80651077b2dd1f5c2c7f6e0124814d600"
+        },
+        {
+          "page": 15,
+          "text_bytes": 1462,
+          "text_sha256": "4c8c581e24d0a6e5d4217b622db4633a50bc2754fdeba8ba267f67e014ce7d77"
+        },
+        {
+          "page": 16,
+          "text_bytes": 2477,
+          "text_sha256": "258458672f35993d7b88610f5cb7a8028f8a0098e1a576164f6f44d27079efe0"
+        },
+        {
+          "page": 17,
+          "text_bytes": 2730,
+          "text_sha256": "063eae63c416074ff129689e01485574ca0f15924e70e9f86d649824cc40b0ac"
+        },
+        {
+          "page": 18,
+          "text_bytes": 2473,
+          "text_sha256": "715a8b93c93e51e19529e7f76d2f857722f3410443708fa30776cdb69494e866"
+        },
+        {
+          "page": 19,
+          "text_bytes": 1397,
+          "text_sha256": "1fe9ffddc507e3703950a5b0d09a9b62a949209088ff88ec849279f6cb2bd53a"
+        }
+      ],
+      "fulltext_retained": true,
+      "acquisition_role": "historical_selected_paper_candidate",
+      "title_page_visual_check": "AI navigation/identity observation only",
+      "original_source_inspected_in_this_task": false,
+      "material_Result_association": null,
+      "accepted_Work_root_binding": null,
+      "source_role_decision": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "resolver": null,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "remaining_gates": [
+        "complete_source_context_and_sample_state_criterion",
+        "direct_versus_cited_source_root_association",
+        "intended_use_rights",
+        "independent_human_review"
+      ]
+    },
+    {
+      "case_id": "material-source-023",
+      "material_id": "mat:bi2tei",
+      "formula": "Bi2TeI",
+      "source_revision": "2209.02688v1",
+      "pdf_sha256": "7f6470dcf95733ab4ff8ef750547724b8c227fb0478a5f8642deff83e32e9ed0",
+      "pdf_bytes": 1002916,
+      "pdf_pages": 9,
+      "license_uris": [
+        "http://arxiv.org/licenses/nonexclusive-distrib/1.0/"
+      ],
+      "current_metadata_receipt": {
+        "url": "https://arxiv.org/abs/2209.02688",
+        "captured_at": "2026-10-09T10:06:04.384533+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/2209.02688",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 43020,
+        "sha256": "03b9059f71f128003907e4cfff72ee9c12c73c9f0615358e92e3b9b991f93483",
+        "elapsed_seconds": 0.36728466709610075
+      },
+      "fixed_metadata_receipt": {
+        "url": "https://arxiv.org/abs/2209.02688v1",
+        "captured_at": "2026-10-09T10:06:07.771996+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/2209.02688v1",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 43032,
+        "sha256": "1a23b3364223f32dc39d71b71a347d2cd2f7569fc35ca8745a12db5894050f28",
+        "elapsed_seconds": 0.7068300420651212
+      },
+      "pdf_receipt": {
+        "url": "https://arxiv.org/pdf/2209.02688v1",
+        "captured_at": "2026-10-09T10:06:11.502093+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/pdf/2209.02688v1",
+        "content_type": "application/pdf",
+        "bytes": 1002916,
+        "sha256": "7f6470dcf95733ab4ff8ef750547724b8c227fb0478a5f8642deff83e32e9ed0",
+        "elapsed_seconds": 1.4004732080502436
+      },
+      "current_arxiv_identity_matches": true,
+      "fixed_arxiv_identity_matches": true,
+      "metadata": {
+        "citation_title": "Pressure-induced superconductivity in the weak topological insulator Bi2TeI and the topological metal Bi3TeI",
+        "citation_author": "Hamlin, J. J.",
+        "citation_date": "2022/09/06",
+        "citation_online_date": "2022/09/06",
+        "citation_pdf_url": "https://arxiv.org/pdf/2209.02688",
+        "citation_arxiv_id": "2209.02688"
+      },
+      "all_page_text_pins": [
+        {
+          "page": 1,
+          "text_bytes": 5300,
+          "text_sha256": "3f6cb1ae86ffd636f43c43e03ba82f16636b5f9ec84d6c2034687c07e6e5c1ec"
+        },
+        {
+          "page": 2,
+          "text_bytes": 5803,
+          "text_sha256": "2970649b567cbf2aa20fb7bec5832367f926b51cf1efe0f2ec38318edf7c1e64"
+        },
+        {
+          "page": 3,
+          "text_bytes": 4406,
+          "text_sha256": "de9999760fa6cb8d2dfd43ccbb5acd8420d40416a3f44ddef5dcafbbbbd01cb7"
+        },
+        {
+          "page": 4,
+          "text_bytes": 3133,
+          "text_sha256": "db1d568b4b40af7f35260b0282434522525b0293d28833b9c3b2c1b25b974c94"
+        },
+        {
+          "page": 5,
+          "text_bytes": 3378,
+          "text_sha256": "0139b95ab93c6bd284ea3b1a0c8c5bee298f3f8b1ae4e165b32361ea722acad5"
+        },
+        {
+          "page": 6,
+          "text_bytes": 3227,
+          "text_sha256": "946f683206c83b449fb92ce259103458658b0112638edd413ff266066b7408d2"
+        },
+        {
+          "page": 7,
+          "text_bytes": 3802,
+          "text_sha256": "b878a13c840b07d3c7f286b2ebd2c6666d784ff26f133ffd657ed878383d5b7d"
+        },
+        {
+          "page": 8,
+          "text_bytes": 5620,
+          "text_sha256": "ed9bd0c61d3a5a8dace0a34230b942ce5d164a72b371eb3ecf2bcc215ed63c8c"
+        },
+        {
+          "page": 9,
+          "text_bytes": 2496,
+          "text_sha256": "83902c29fbe9d351b92ceebc6894fee48a6c0d78933a680825deae1e9f66d33a"
+        }
+      ],
+      "fulltext_retained": true,
+      "acquisition_role": "historical_selected_paper_candidate",
+      "title_page_visual_check": "AI navigation/identity observation only",
+      "original_source_inspected_in_this_task": false,
+      "material_Result_association": null,
+      "accepted_Work_root_binding": null,
+      "source_role_decision": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "resolver": null,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "remaining_gates": [
+        "complete_source_context_and_sample_state_criterion",
+        "direct_versus_cited_source_root_association",
+        "intended_use_rights",
+        "independent_human_review"
+      ]
+    }
+  ],
+  "additional_cited_root_candidates": [
+    {
+      "case_id": "nickelate-cited-root-candidate",
+      "material_id": "mat:r8ni7oy",
+      "formula": "R8Ni7Oy",
+      "source_revision": "2602.19093v1",
+      "pdf_sha256": "1a17cf375391b58801ccf5f2bc195ad71ff21b4291d435b70773da09a24abc46",
+      "pdf_bytes": 16704666,
+      "pdf_pages": 18,
+      "license_uris": [
+        "http://arxiv.org/licenses/nonexclusive-distrib/1.0/"
+      ],
+      "current_metadata_receipt": {
+        "url": "https://arxiv.org/abs/2602.19093",
+        "captured_at": "2026-10-09T10:14:12.668728+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/2602.19093",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 47092,
+        "sha256": "aa843e21537703bbe3ee64825d14295ddbf6fe65de5c8b50721dcc2154dd6930",
+        "elapsed_seconds": 0.7402337921084836
+      },
+      "fixed_metadata_receipt": {
+        "url": "https://arxiv.org/abs/2602.19093v1",
+        "captured_at": "2026-10-09T10:14:16.421334+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/abs/2602.19093v1",
+        "content_type": "text/html; charset=utf-8",
+        "bytes": 47102,
+        "sha256": "49c6fa89edf3fd325b09ff6eca7ef42bc7721afb7dad9a51820d2052dc2fdf69",
+        "elapsed_seconds": 0.6559608340030536
+      },
+      "pdf_receipt": {
+        "url": "https://arxiv.org/pdf/2602.19093v1",
+        "captured_at": "2026-10-09T10:14:20.093475+00:00",
+        "status": 200,
+        "error": null,
+        "final_url": "https://arxiv.org/pdf/2602.19093v1",
+        "content_type": "application/pdf",
+        "bytes": 16704666,
+        "sha256": "1a17cf375391b58801ccf5f2bc195ad71ff21b4291d435b70773da09a24abc46",
+        "elapsed_seconds": 30.65898266597651
+      },
+      "current_arxiv_identity_matches": true,
+      "fixed_arxiv_identity_matches": true,
+      "metadata": {
+        "citation_title": "Superconducting phase diagram of multi-layer square-planar nickelates",
+        "citation_author": "Mundy, Julia A.",
+        "citation_doi": "10.1126/science.adp4440",
+        "citation_date": "2026/02/22",
+        "citation_online_date": "2026/02/22",
+        "citation_pdf_url": "https://arxiv.org/pdf/2602.19093",
+        "citation_arxiv_id": "2602.19093"
+      },
+      "all_page_text_pins": [
+        {
+          "page": 1,
+          "text_bytes": 2717,
+          "text_sha256": "c2b3ab566c801ce30d896531b30a5c5723e311f9dff8d3aaec9d18707c5e5727"
+        },
+        {
+          "page": 2,
+          "text_bytes": 4030,
+          "text_sha256": "60465a54371dbafa28577f7db180487ec07d1c43b67a711b91febaa0ca882158"
+        },
+        {
+          "page": 3,
+          "text_bytes": 3973,
+          "text_sha256": "7c6e88a604caad75e0c6f270c615d31d9203475f1537535cce1d10166dcde9a3"
+        },
+        {
+          "page": 4,
+          "text_bytes": 4002,
+          "text_sha256": "f1895aa407448fe5c43981e413b7d707fc21e46256583936458d2c242359dd9c"
+        },
+        {
+          "page": 5,
+          "text_bytes": 4059,
+          "text_sha256": "b7c24ec7a675b2c14fdf2103bd00eb1a8584abb78233a068eb92e40f4eda7adb"
+        },
+        {
+          "page": 6,
+          "text_bytes": 3694,
+          "text_sha256": "e8c0b4ac6d67554162f1f0c419a686611382aa6ab229745b586dcfa5d2219d03"
+        },
+        {
+          "page": 7,
+          "text_bytes": 3435,
+          "text_sha256": "f710b3bd812252481716ad0f8ab52708b9977046e4891cd25e430774830a89eb"
+        },
+        {
+          "page": 8,
+          "text_bytes": 3633,
+          "text_sha256": "f65bc483f9cc59d20bbdb514c7f0124c7a6605c70b7658fd4483a3477f519c7e"
+        },
+        {
+          "page": 9,
+          "text_bytes": 3590,
+          "text_sha256": "8b26c7ed27c7ea693fc59a9cfa9092a66211d32f24a051249ba32fd5191eec3f"
+        },
+        {
+          "page": 10,
+          "text_bytes": 3667,
+          "text_sha256": "e39131884ea65bba157b1bf57f1127af73c8ae0a00a29dd70c8fa4d2ec2b6911"
+        },
+        {
+          "page": 11,
+          "text_bytes": 3952,
+          "text_sha256": "4d1f9abe235dc054b602ca9e338a241d87395b220b974d600941d9a4255a9466"
+        },
+        {
+          "page": 12,
+          "text_bytes": 367,
+          "text_sha256": "59d70a724379b65c49ac4e06f6db0c25fc1dcbcfefaf5c721965fe15d2725aa9"
+        },
+        {
+          "page": 13,
+          "text_bytes": 3435,
+          "text_sha256": "57421b472a9ebe52d32adc460836467ce7639b5d17c23156d714e8646f0ab371"
+        },
+        {
+          "page": 14,
+          "text_bytes": 1124,
+          "text_sha256": "5484c4ba21105e180be279c242cf3bfaf4ec8c932c525a215ed0c54c16d2b71d"
+        },
+        {
+          "page": 15,
+          "text_bytes": 828,
+          "text_sha256": "beacd99ccc11154f4ca676ea407d6a173f7f4e5b96a6182c588a22f91650e3ec"
+        },
+        {
+          "page": 16,
+          "text_bytes": 1036,
+          "text_sha256": "3fefc2f139d5f4f53d58da8f0d1b6117d072b55fca1e441e80ba8bdd236a415d"
+        },
+        {
+          "page": 17,
+          "text_bytes": 989,
+          "text_sha256": "e8ceda3db8cacd0e76e1f76937ec07390854bdd208d242521bf4a3b678b0a477"
+        },
+        {
+          "page": 18,
+          "text_bytes": 1113,
+          "text_sha256": "45e866b710e0ca7fe8a069de9a102b2958c62b285b6a460c50a30e356cf19e03"
+        }
+      ],
+      "fulltext_retained": true,
+      "acquisition_role": "cited_original_experiment_candidate; association_pending",
+      "title_page_visual_check": "AI navigation/identity observation only",
+      "original_source_inspected_in_this_task": false,
+      "material_Result_association": null,
+      "accepted_Work_root_binding": null,
+      "source_role_decision": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "resolver": null,
+      "scientific_acceptance": false,
+      "ml_training_approved": false,
+      "remaining_gates": [
+        "complete_source_context_and_sample_state_criterion",
+        "direct_versus_cited_source_root_association",
+        "intended_use_rights",
+        "independent_human_review"
+      ]
+    }
+  ],
+  "source_role_review_flags": [
+    {
+      "material_id": "mat:r8ni7oy",
+      "status": "review_question_only",
+      "basis": "AI-assisted locator inspection; not an independent scientific decision",
+      "historical_paper_id": "arxiv:2603.22662",
+      "historical_result_id": "legacy-result:937b1353fea100afd9b2c565b99a111e06f1254de8100bdc841e6f88204ab148",
+      "historical_origin_and_source_role": "Unknown/unknown; not promoted",
+      "review_questions": [
+        "Does the inherited result correspond to a cited Table I value rather than a new experiment in this paper?",
+        "Which original sample, oxygen/composition state, transition criterion and locator support the inherited n=7 entry?",
+        "Does reference 31 establish the relevant experiment root, and how should generic R and specific Nd compositions be associated?",
+        "Are the inherited 9 K and original onset/other transition criteria commensurate? Do not resolve by value similarity alone."
+      ],
+      "historical_source_navigation": [
+        {
+          "page": 2,
+          "page_text_sha256": "c0f22e1a916bd221c5d72c77f356b9b29cc66665c62c92e560b33dd88078416b",
+          "char_start": 229,
+          "char_end": 756,
+          "span_text_sha256": "4a3b25cc9b3ccb03cd762c87138a35c33c8a9c69eb5e2b6397fcaca58de8904c",
+          "purpose": "table caption and literature-reference scope",
+          "scientific_entailment_reviewed": false
+        },
+        {
+          "page": 15,
+          "page_text_sha256": "e6e00cc4f7a0b10c22becf8fb36ec2ae96007b75f60e9818a5b73d09ada05a3e",
+          "char_start": 4888,
+          "char_end": 5852,
+          "span_text_sha256": "5956e5c01495e01f8654e097e6b059dc3480f9dbb335a29c2f58d87825e7a1e2",
+          "purpose": "reference 31 candidate identity",
+          "scientific_entailment_reviewed": false
+        }
+      ],
+      "cited_root_candidate": {
+        "source_revision": "2602.19093v1",
+        "pdf_sha256": "1a17cf375391b58801ccf5f2bc195ad71ff21b4291d435b70773da09a24abc46",
+        "pdf_pages": 18,
+        "material_Result_association": null,
+        "accepted_Work_root_binding": null
+      },
+      "source_role_decision": null,
+      "canonical_changes": 0,
+      "scientific_acceptance": false
+    }
+  ],
+  "scope": "Custody, byte/version/page pins and unresolved navigation questions only; full originals and passages remain private.",
+  "database_writes": 0,
+  "scientific_acceptance": false,
+  "ml_training_approved": false
+}
