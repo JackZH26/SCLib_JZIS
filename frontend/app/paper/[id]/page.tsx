@@ -14,6 +14,7 @@ import { ApiError, getPaper } from "@/lib/api";
 import { absoluteUrl, serializeJsonLd } from "@/lib/seo";
 import { BookmarkButton } from "@/components/BookmarkButton";
 import { SimilarPapers } from "@/components/SimilarPapers";
+import { LatexText } from "@/components/LatexText";
 import { pressureLabel } from "@/lib/pressure-semantics";
 import { sourceHref } from "@/lib/property-evidence";
 import { MaterialVisibilityNotice, SourceVisibilityNotice } from "@/components/MaterialVisibilityNotice";
@@ -143,7 +144,7 @@ export default async function PaperDetailPage({ params }: PaperPageProps) {
         </Link>
         <div className="mt-2 flex items-start justify-between gap-4">
           <h1 className="text-3xl font-bold leading-tight tracking-tight">
-            {paper.title}
+            <LatexText>{paper.title}</LatexText>
           </h1>
           <div className="shrink-0 pt-1">
             <BookmarkButton targetType="paper" targetId={paper.id} />
@@ -198,7 +199,7 @@ export default async function PaperDetailPage({ params }: PaperPageProps) {
           Abstract
         </h2>
         <p className="whitespace-pre-line rounded-lg border border-slate-200 bg-white p-5 text-sm leading-relaxed text-slate-800">
-          {paper.abstract}
+          <LatexText>{paper.abstract}</LatexText>
         </p>
       </section>
 
@@ -223,7 +224,7 @@ export default async function PaperDetailPage({ params }: PaperPageProps) {
                 {paper.materials_extracted.filter(m => !visibilityIsRestricted(m.visibility)).map((m, i) => (
                   <tr key={i} className="hover:bg-slate-50">
                     <td className="px-4 py-3 font-medium text-slate-900">
-                      {m.formula ?? "—"}
+                      <LatexText math>{m.formula ?? "—"}</LatexText>
                       <MaterialVisibilityNotice visibility={m.visibility} compact scope="source occurrence" />
                     </td>
                     <td className="px-4 py-3 text-right tabular-nums">
