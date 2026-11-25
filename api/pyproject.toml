@@ -84,4 +84,4 @@ testpaths = ["tests"]
 
 [tool.uv]
 # Retain patched transitive DNS, JOSE and ASN.1 parsers on re-resolution.
-constraint-dependencies = ["dnspython>=2.9.0", "joserfc>=1.7.6", "pyasn1>=0.6.5"]
+constraint-dependencies = ["dnspython>=2.9.2", "joserfc>=1.7.6", "pyasn1>=0.6.5"]

@@ -57,7 +57,7 @@ export function PaperCard(p: PaperCardInput) {
               {p.section}:
             </span>
           )}
-          {p.snippet}
+          <LatexText>{p.snippet}</LatexText>
         </p>
       )}
       <ScientificMatches results={p.matchingResults} />

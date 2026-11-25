@@ -90,7 +90,9 @@ export function LiteratureSearchResults({ query, fallbackRemaining, children }: 
                 title={r.title}
                 authors={r.authors}
                 year={r.year}
-                snippet={r.matched_chunk.slice(0, 400)}
+                // PaperCard clamps the rendered excerpt; slicing source TeX can
+                // cut through a delimiter, command or grouped subscript.
+                snippet={r.matched_chunk}
                 section={r.matched_section}
                 score={r.relevance_score}
                 scoreLabel="relevance"
