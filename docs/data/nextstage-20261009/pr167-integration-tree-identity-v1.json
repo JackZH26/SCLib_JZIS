@@ -1,0 +1,20 @@
+{
+  "schema_version": "sclib-pr167-integration-tree-identity/1.0.0",
+  "recorded_at": "2026-10-09T12:01:06.943072+00:00",
+  "local_integration_revision": "8a91067f254ee9c2f1cfaafb36d5011023aa74bb",
+  "observed_pr167_revision": "8dd638051f04bf31ab125fe150d47196b25b032b",
+  "observed_pr167_parent": "4c56af1693510d148a1642bc035910b064141819",
+  "identical_tracked_tree": "dd6111a090c8774ef029712e889706c9a5d6ef9a",
+  "tracked_tree_identity_verified": true,
+  "github_commit_object": {
+    "endpoint": "https://api.github.com/repos/JackZH26/SCLib_JZIS/commits/8dd638051f04bf31ab125fe150d47196b25b032b",
+    "sha256": "da02009a9b0b80823ab5916178a358f3b5f849ffb336e9153cf9be3668038790",
+    "bytes": 49229
+  },
+  "local_api_regression_execution_revision": "8a91067f254ee9c2f1cfaafb36d5011023aa74bb",
+  "linux_ci_for_observed_pr_revision": "in_progress_at_observation",
+  "scientific_acceptance": false,
+  "production_performance_acceptance": false,
+  "deployed": false,
+  "scope": "tracked-tree identity only; the local execution keeps its actual revision and Linux CI remains a separate requirement"
+}

@@ -1,0 +1,98 @@
+{
+  "schema_version": "sclib-retained-release-replay/1.0.0",
+  "recorded_at": "2026-10-09T12:14:10.960349+00:00",
+  "source_revision": "4c56af1693510d148a1642bc035910b064141819",
+  "release_run": 37927409318,
+  "test_run": 37917133614,
+  "deploy_run": 37927770900,
+  "release_run_url": "https://github.com/JackZH26/SCLib_JZIS/actions/runs/37927409318",
+  "release_conclusion": "success",
+  "components": [
+    {
+      "component": "frontend",
+      "source_revision": "4c56af1693510d148a1642bc035910b064141819",
+      "digest": "sha256:edcae4ec86c636df62ebaa1dc72b3f36a8762762fa5f45e1ad07f8f155d14e0c",
+      "source_sha_file": {
+        "file": "frontend.sha",
+        "bytes": 41,
+        "sha256": "70744f72bbd6c765034322659b66359de5038b7d30e0fa48abc25971cff54ce8"
+      },
+      "digest_file": {
+        "file": "frontend.digest",
+        "bytes": 72,
+        "sha256": "7446f2b31fe9dba8edd6b3accff97f66af0535c256364600379364e19072d3a1"
+      }
+    },
+    {
+      "component": "api",
+      "source_revision": "4c56af1693510d148a1642bc035910b064141819",
+      "digest": "sha256:992bf729b043a3e36bc74b156f5f20c64a4528dcfd8ff88ffba8e7075a072688",
+      "source_sha_file": {
+        "file": "api.sha",
+        "bytes": 41,
+        "sha256": "70744f72bbd6c765034322659b66359de5038b7d30e0fa48abc25971cff54ce8"
+      },
+      "digest_file": {
+        "file": "api.digest",
+        "bytes": 72,
+        "sha256": "73dfec0995d8520441255981bc07e16ee5d37fb5762635335874029e379908ab"
+      },
+      "parity_report_pin": {
+        "file": "release-parity-report.json",
+        "bytes": 2878,
+        "sha256": "9ad3340eb1e4757dd6a27f0a13fc1c0a0ccc63f5e648edc2355c5313fc20253b"
+      },
+      "runtime_inventory_sha256": "c419067175a1fa4e059a7a71a3a94f8aa1fdef742e4a2bb36d8c0f82180b7eb7",
+      "inventory_checks": [
+        {
+          "artifact": "api-test-runtime-inventory-attempt-1",
+          "artifact_id": 11613789985,
+          "test_inventory_sha256": "d0b14abb8ddf21c773bdd06961c1aad28a11634fe4f23c1bd7816d73ab7df5f7",
+          "matches": true
+        },
+        {
+          "artifact": "migration-test-runtime-inventory-attempt-1",
+          "artifact_id": 11610555964,
+          "test_inventory_sha256": "d0b14abb8ddf21c773bdd06961c1aad28a11634fe4f23c1bd7816d73ab7df5f7",
+          "matches": true
+        }
+      ],
+      "platform": "linux/amd64",
+      "scope": "python_package_versions_not_os_libraries_or_application_execution"
+    },
+    {
+      "component": "ingestion",
+      "source_revision": "4c56af1693510d148a1642bc035910b064141819",
+      "digest": "sha256:6629d570d70d08bbd6dce3f921522bc873220b9bab7fd8dd21acb31d9fbe70d6",
+      "source_sha_file": {
+        "file": "ingestion.sha",
+        "bytes": 41,
+        "sha256": "70744f72bbd6c765034322659b66359de5038b7d30e0fa48abc25971cff54ce8"
+      },
+      "digest_file": {
+        "file": "ingestion.digest",
+        "bytes": 72,
+        "sha256": "75b606ac1e93186abb25973b426fd05888401eafdf0aadf7b8b399e87cd2c33d"
+      },
+      "parity_report_pin": {
+        "file": "release-parity-report.json",
+        "bytes": 2152,
+        "sha256": "5d73de542c81af4594eced3ecfa7122a00cded2f7a2691eccd8ac5bfd44d6de6"
+      },
+      "runtime_inventory_sha256": "313b01445f8d36a4a78c8deb1a81de9af44269f1274d6e1f88c1c50f9658b24f",
+      "inventory_checks": [
+        {
+          "artifact": "ingestion-test-runtime-inventory-attempt-1",
+          "artifact_id": 11611225075,
+          "test_inventory_sha256": "252d09773852c52dd92bade600feffffa3face329e1aafb1ea395f2bec63f8d3",
+          "matches": true
+        }
+      ],
+      "platform": "linux/amd64",
+      "scope": "python_package_versions_not_os_libraries_or_application_execution"
+    }
+  ],
+  "scope": "Independent replay of retained image SHA files and locked Python package inventories. Not OS/ABI, live deployment, performance or scientific acceptance.",
+  "deployment_acceptance": false,
+  "scientific_acceptance": false
+}

@@ -1,0 +1,297 @@
+{
+  "schema_version": "sclib-material-review-entry-index/1.0.0",
+  "recorded_at": "2026-10-09T11:36:17.829610+00:00",
+  "input_pins": [
+    {
+      "file": "material-source-acquisition-v1.json",
+      "bytes": 38775,
+      "sha256": "f09c11d5d6a45a2b8fd3a673b50bff18af7d9b0c874d8c365da58036d8eec685"
+    },
+    {
+      "file": "material-source-acquisition-v2.json",
+      "bytes": 36193,
+      "sha256": "d0a599a5917d5fdf017186446383ef88235323aae3fd439a2cdb107d490790a6"
+    },
+    {
+      "file": "material-source-navigation-questions-v1.json",
+      "bytes": 35570,
+      "sha256": "159024f47d8187ee8dd8cd8d17a0d9ab36690e0a92dee7a6554364d12694e8ec"
+    },
+    {
+      "file": "pending-review-materials-v5-receipt.json",
+      "bytes": 451,
+      "sha256": "6fac663873bdba95294b2004b723dd7977a4ca76400313f9b795e3be9661ae66"
+    }
+  ],
+  "scope": "Navigation companion for the eight retained first-batch fulltext candidates and unchanged ZIP v5 blank forms; no source excerpts, accepted labels or duplicate retrieval questions.",
+  "archive_pin": {
+    "file": "pending-review-materials-v5.zip",
+    "bytes": 208875,
+    "sha256": "20844f615d71c3667803c3951811cd421fbfae72a2c619de1e97e8f9d5864760",
+    "file_count": 34,
+    "material_candidate_rows_per_role": 8,
+    "preserved_question_drafts": 72,
+    "full_first_batch_candidates": 8,
+    "first_batch_materials": 16,
+    "contains_original_fulltexts": false,
+    "contains_extracted_passages": false,
+    "human_reviewed": false,
+    "scientific_acceptance": false
+  },
+  "blank_form_member_pins": [
+    {
+      "zip_member": "material-batch1-A-blank.json",
+      "bytes": 5023,
+      "sha256": "2407e8927cc0be2228e882c6d12dfa77ab4396fe45a565c6ee210623e30ab1c5",
+      "role": "A"
+    },
+    {
+      "zip_member": "material-batch1-B-blank.json",
+      "bytes": 5023,
+      "sha256": "2f28033a3eb06347f068e7a85e0298d948f4504d1c8530c898beba8124ef8b6e",
+      "role": "B"
+    },
+    {
+      "zip_member": "material-batch1-resolver-blank.json",
+      "bytes": 5030,
+      "sha256": "db0ff6080ce5645382e4072029c0941e8db29b0910afbac6088ae8ee9c9787a0",
+      "role": "resolver"
+    }
+  ],
+  "counts": {
+    "retained_material_candidates": 8,
+    "material_review_questions": 30,
+    "navigation_locators": 30,
+    "blank_rows_per_role": 8,
+    "completed_human_reviews": 0
+  },
+  "rows": [
+    {
+      "material_id": "mat:mosr2eu1.5ce0.5cu2o10",
+      "source_revision": "cond-mat/0304552v1",
+      "source_pdf_sha256": "c7a06872b99be9caf371222950ff976a8ec4700de4654c6c2c0c950ea789e98e",
+      "review_questions": {
+        "file": "material-source-navigation-questions-v1.json",
+        "json_pointer": "/cases/0",
+        "question_count": 4,
+        "navigation_locator_count": 5,
+        "scope": "Read relevant retained extracted text and visually inspected listed pages to prepare navigation/questions; no complete-pilot inspection or accepted entailment credit."
+      },
+      "blank_review_form_members": [
+        "material-batch1-A-blank.json",
+        "material-batch1-B-blank.json",
+        "material-batch1-resolver-blank.json"
+      ],
+      "blank_form_row_key": "material_id",
+      "original_fulltext_access": "Exact-version source bytes held in private custody; obtain appropriate access and inspect complete context before review.",
+      "reviewer_A_identity": null,
+      "reviewer_B_identity": null,
+      "resolver_identity": null,
+      "accepted_Work_root_binding": null,
+      "material_Result_association": null,
+      "scientific_decision": null,
+      "intended_use_rights": null,
+      "scientific_acceptance": false
+    },
+    {
+      "material_id": "mat:r8ni7oy",
+      "source_revision": "2603.22662v1",
+      "source_pdf_sha256": "21593f948a72e8d4bf02970bc7ac541394758a732f977a8b70e754a252779408",
+      "review_questions": {
+        "file": "material-source-acquisition-v1.json",
+        "json_pointer": "/source_role_review_flags/0",
+        "question_count": 4,
+        "navigation_locator_count": 2,
+        "scope": "Partial AI navigation; review Table I and its cited original root independently."
+      },
+      "blank_review_form_members": [
+        "material-batch1-A-blank.json",
+        "material-batch1-B-blank.json",
+        "material-batch1-resolver-blank.json"
+      ],
+      "blank_form_row_key": "material_id",
+      "original_fulltext_access": "Exact-version source bytes held in private custody; obtain appropriate access and inspect complete context before review.",
+      "reviewer_A_identity": null,
+      "reviewer_B_identity": null,
+      "resolver_identity": null,
+      "accepted_Work_root_binding": null,
+      "material_Result_association": null,
+      "scientific_decision": null,
+      "intended_use_rights": null,
+      "scientific_acceptance": false
+    },
+    {
+      "material_id": "mat:la0.4sm0.6o0.5f0.5bis2",
+      "source_revision": "1507.03172v1",
+      "source_pdf_sha256": "e92845614dc28993c45c8fb486f12285729242f4a7d751ca6b1d9991c84fe484",
+      "review_questions": {
+        "file": "material-source-navigation-questions-v1.json",
+        "json_pointer": "/cases/1",
+        "question_count": 4,
+        "navigation_locator_count": 5,
+        "scope": "Read relevant retained extracted text and visually inspected listed pages to prepare navigation/questions; no complete-pilot inspection or accepted entailment credit."
+      },
+      "blank_review_form_members": [
+        "material-batch1-A-blank.json",
+        "material-batch1-B-blank.json",
+        "material-batch1-resolver-blank.json"
+      ],
+      "blank_form_row_key": "material_id",
+      "original_fulltext_access": "Exact-version source bytes held in private custody; obtain appropriate access and inspect complete context before review.",
+      "reviewer_A_identity": null,
+      "reviewer_B_identity": null,
+      "resolver_identity": null,
+      "accepted_Work_root_binding": null,
+      "material_Result_association": null,
+      "scientific_decision": null,
+      "intended_use_rights": null,
+      "scientific_acceptance": false
+    },
+    {
+      "material_id": "mat:bapb0.72bi0.28o3",
+      "source_revision": "1706.06999v2",
+      "source_pdf_sha256": "995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+      "review_questions": {
+        "file": "material-source-navigation-questions-v1.json",
+        "json_pointer": "/cases/3",
+        "question_count": 4,
+        "navigation_locator_count": 5,
+        "scope": "Read relevant retained extracted text and visually inspected listed pages to prepare navigation/questions; no complete-pilot inspection or accepted entailment credit."
+      },
+      "blank_review_form_members": [
+        "material-batch1-A-blank.json",
+        "material-batch1-B-blank.json",
+        "material-batch1-resolver-blank.json"
+      ],
+      "blank_form_row_key": "material_id",
+      "original_fulltext_access": "Exact-version source bytes held in private custody; obtain appropriate access and inspect complete context before review.",
+      "reviewer_A_identity": null,
+      "reviewer_B_identity": null,
+      "resolver_identity": null,
+      "accepted_Work_root_binding": null,
+      "material_Result_association": null,
+      "scientific_decision": null,
+      "intended_use_rights": null,
+      "scientific_acceptance": false
+    },
+    {
+      "material_id": "mat:bi2tei",
+      "source_revision": "2209.02688v1",
+      "source_pdf_sha256": "7f6470dcf95733ab4ff8ef750547724b8c227fb0478a5f8642deff83e32e9ed0",
+      "review_questions": {
+        "file": "material-source-navigation-questions-v1.json",
+        "json_pointer": "/cases/2",
+        "question_count": 4,
+        "navigation_locator_count": 5,
+        "scope": "Read relevant retained extracted text and visually inspected listed pages to prepare navigation/questions; no complete-pilot inspection or accepted entailment credit."
+      },
+      "blank_review_form_members": [
+        "material-batch1-A-blank.json",
+        "material-batch1-B-blank.json",
+        "material-batch1-resolver-blank.json"
+      ],
+      "blank_form_row_key": "material_id",
+      "original_fulltext_access": "Exact-version source bytes held in private custody; obtain appropriate access and inspect complete context before review.",
+      "reviewer_A_identity": null,
+      "reviewer_B_identity": null,
+      "resolver_identity": null,
+      "accepted_Work_root_binding": null,
+      "material_Result_association": null,
+      "scientific_decision": null,
+      "intended_use_rights": null,
+      "scientific_acceptance": false
+    },
+    {
+      "material_id": "mat:la4ni3o9.99",
+      "source_revision": "2309.09462v4",
+      "source_pdf_sha256": "4f45c314ec6617bd85507451f5936debfb1599abd1a41dd1330ca260198b93bb",
+      "review_questions": {
+        "file": "material-source-acquisition-v2.json",
+        "json_pointer": "/new_source_review_questions/0",
+        "question_count": 3,
+        "navigation_locator_count": 3,
+        "scope": "Partial AI text navigation; exact sample, state, criterion and intended-use rights require human review."
+      },
+      "blank_review_form_members": [
+        "material-batch1-A-blank.json",
+        "material-batch1-B-blank.json",
+        "material-batch1-resolver-blank.json"
+      ],
+      "blank_form_row_key": "material_id",
+      "original_fulltext_access": "Exact-version source bytes held in private custody; obtain appropriate access and inspect complete context before review.",
+      "reviewer_A_identity": null,
+      "reviewer_B_identity": null,
+      "resolver_identity": null,
+      "accepted_Work_root_binding": null,
+      "material_Result_association": null,
+      "scientific_decision": null,
+      "intended_use_rights": null,
+      "scientific_acceptance": false
+    },
+    {
+      "material_id": "mat:nb0.8b0.2",
+      "source_revision": "1708.08570v1",
+      "source_pdf_sha256": "fde840c950bef4282553ca6009d249a0edcff5e82f374184225f43b5dda5a445",
+      "review_questions": {
+        "file": "material-source-acquisition-v2.json",
+        "json_pointer": "/new_source_review_questions/1",
+        "question_count": 4,
+        "navigation_locator_count": 3,
+        "scope": "Partial AI text navigation; exact sample, state, criterion and intended-use rights require human review."
+      },
+      "blank_review_form_members": [
+        "material-batch1-A-blank.json",
+        "material-batch1-B-blank.json",
+        "material-batch1-resolver-blank.json"
+      ],
+      "blank_form_row_key": "material_id",
+      "original_fulltext_access": "Exact-version source bytes held in private custody; obtain appropriate access and inspect complete context before review.",
+      "reviewer_A_identity": null,
+      "reviewer_B_identity": null,
+      "resolver_identity": null,
+      "accepted_Work_root_binding": null,
+      "material_Result_association": null,
+      "scientific_decision": null,
+      "intended_use_rights": null,
+      "scientific_acceptance": false
+    },
+    {
+      "material_id": "mat:bswnt",
+      "source_revision": "author-copy:pdf-sha256:ce75e1bbd3e05a336f55f1ae7a2ce391c5030163f0bef550775d765cf7679a94",
+      "source_pdf_sha256": "ce75e1bbd3e05a336f55f1ae7a2ce391c5030163f0bef550775d765cf7679a94",
+      "review_questions": {
+        "file": "material-source-acquisition-v2.json",
+        "json_pointer": "/new_source_review_questions/2",
+        "question_count": 3,
+        "navigation_locator_count": 2,
+        "scope": "Partial AI text navigation; exact sample, state, criterion and intended-use rights require human review."
+      },
+      "blank_review_form_members": [
+        "material-batch1-A-blank.json",
+        "material-batch1-B-blank.json",
+        "material-batch1-resolver-blank.json"
+      ],
+      "blank_form_row_key": "material_id",
+      "original_fulltext_access": "Exact-version source bytes held in private custody; obtain appropriate access and inspect complete context before review.",
+      "reviewer_A_identity": null,
+      "reviewer_B_identity": null,
+      "resolver_identity": null,
+      "accepted_Work_root_binding": null,
+      "material_Result_association": null,
+      "scientific_decision": null,
+      "intended_use_rights": null,
+      "scientific_acceptance": false
+    }
+  ],
+  "unchanged_boundaries": {
+    "complete_pilot_inspected": 16,
+    "complete_pilot_pending": 184,
+    "retrieval_question_drafts": 72,
+    "retrieval_gold_questions": 0,
+    "validated_independent_experiments": 0,
+    "split_assignment": null
+  },
+  "database_writes": 0,
+  "scientific_acceptance": false,
+  "ml_training_approved": false
+}

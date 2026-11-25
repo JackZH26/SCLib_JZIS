@@ -1,0 +1,455 @@
+{
+  "schema_version": "sclib-publisher-pdf-access/1.0.0",
+  "recorded_at": "2026-10-09T11:28:37.003938+00:00",
+  "input_pins": [
+    {
+      "file": "material-source-acquisition-v2.json",
+      "bytes": 36193,
+      "sha256": "d0a599a5917d5fdf017186446383ef88235323aae3fd439a2cdb107d490790a6"
+    },
+    {
+      "file": "receipt.json",
+      "bytes": 10158,
+      "sha256": "53039c8466faccab94206e5fb79c9d836fcc0b6c688eb77d0aeaa432477a7c2d",
+      "archive_id": "material-open-repository-lookup-20261009T111600Z"
+    },
+    {
+      "file": "receipt.json",
+      "bytes": 7821,
+      "sha256": "25a3601f704f8542db0c383ec47e9c3e9386124f57c17f9670a83421c1d6ab9c",
+      "archive_id": "material-publisher-pdf-access-20261009T111550Z"
+    }
+  ],
+  "scope": "Eight remaining DOI candidates: one request to each publicly listed publisher PDF link and one exact DOI index lookup; no credentials or access bypass.",
+  "counts": {
+    "publisher_pdf_attempts": 8,
+    "publisher_pdf_HTTP_401": 8,
+    "original_PDFs_retained": 0,
+    "DOI_index_metadata_200": 8,
+    "indexed_open_fulltext_locations_observed": 0
+  },
+  "rows": [
+    {
+      "material_id": "mat:bi2sr2-xsmxcuo6",
+      "legacy_rank": 8,
+      "expected_doi": "10.1103/PhysRevB.43.12994",
+      "receipt": {
+        "url": "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.43.12994",
+        "captured_at": "2026-10-09T11:15:50.217150+00:00",
+        "status": 401,
+        "error": "http_error",
+        "bytes": 45001,
+        "sha256": "f4cde677fd1c4625b98b7d3624e4384b5c20794141aa1fad6f6452987af49fd8",
+        "link_observed_on_retained_publisher_page": true,
+        "final_url": "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.43.12994",
+        "content_type": "text/html;charset=utf-8",
+        "elapsed_seconds": 0.6334192919312045
+      },
+      "fulltext_retained": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "scientific_acceptance": false,
+      "authorization_required_text_observed": true,
+      "open_repository_discovery": {
+        "url": "https://api.openalex.org/works/https://doi.org/10.1103/PhysRevB.43.12994",
+        "captured_at": "2026-10-09T11:13:44.614503+00:00",
+        "status": 200,
+        "bytes": 17337,
+        "sha256": "0cc034ec23d8f4b71913e322f4fda7b0b63154c6c43bf73a8831150edf927477",
+        "declared_doi_matches": true,
+        "open_access": {
+          "is_oa": false,
+          "oa_status": "closed",
+          "oa_url": null,
+          "any_repository_has_fulltext": false
+        },
+        "locations": [
+          {
+            "landing_page_url": "https://doi.org/10.1103/physrevb.43.12994",
+            "pdf_url": null,
+            "is_oa": false,
+            "version": "publishedVersion",
+            "license": null
+          },
+          {
+            "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/9997118",
+            "pdf_url": null,
+            "is_oa": false,
+            "version": "publishedVersion",
+            "license": null
+          }
+        ]
+      },
+      "discovery_scope": "Secondary DOI index observation only; no independent original-source or rights acceptance. No indexed full-text location does not prove that no lawful copy exists.",
+      "next_action": "Obtain an authorized exact-version original through normal access, then inspect and review its sample/state/criterion and intended-use rights."
+    },
+    {
+      "material_id": "mat:c70kx",
+      "legacy_rank": 9,
+      "expected_doi": "10.1103/PhysRevB.48.16877",
+      "receipt": {
+        "url": "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.48.16877",
+        "captured_at": "2026-10-09T11:15:50.857396+00:00",
+        "status": 401,
+        "error": "http_error",
+        "bytes": 45068,
+        "sha256": "311b655228f9090a290375f0ce029ee7c1c6e131ecca7c9b122c120d4dd8dbd6",
+        "link_observed_on_retained_publisher_page": true,
+        "final_url": "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.48.16877",
+        "content_type": "text/html;charset=utf-8",
+        "elapsed_seconds": 0.6750951249850914
+      },
+      "fulltext_retained": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "scientific_acceptance": false,
+      "authorization_required_text_observed": true,
+      "open_repository_discovery": {
+        "url": "https://api.openalex.org/works/https://doi.org/10.1103/PhysRevB.48.16877",
+        "captured_at": "2026-10-09T11:13:46.036236+00:00",
+        "status": 200,
+        "bytes": 15043,
+        "sha256": "185b160ba96d7685565e5ae14c9e8f3f6dc3e93160535d1f666a0fa36fb347f4",
+        "declared_doi_matches": true,
+        "open_access": {
+          "is_oa": false,
+          "oa_status": "closed",
+          "oa_url": null,
+          "any_repository_has_fulltext": false
+        },
+        "locations": [
+          {
+            "landing_page_url": "https://doi.org/10.1103/physrevb.48.16877",
+            "pdf_url": null,
+            "is_oa": false,
+            "version": "publishedVersion",
+            "license": null
+          },
+          {
+            "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/10008287",
+            "pdf_url": null,
+            "is_oa": false,
+            "version": "publishedVersion",
+            "license": null
+          }
+        ]
+      },
+      "discovery_scope": "Secondary DOI index observation only; no independent original-source or rights acceptance. No indexed full-text location does not prove that no lawful copy exists.",
+      "next_action": "Obtain an authorized exact-version original through normal access, then inspect and review its sample/state/criterion and intended-use rights."
+    },
+    {
+      "material_id": "mat:nbbc",
+      "legacy_rank": 11,
+      "expected_doi": "10.1103/nx9x-nqyj",
+      "receipt": {
+        "url": "https://journals.aps.org/prb/pdf/10.1103/nx9x-nqyj",
+        "captured_at": "2026-10-09T11:15:51.540302+00:00",
+        "status": 401,
+        "error": "http_error",
+        "bytes": 44986,
+        "sha256": "94f4173f8d4558a63ac1ea98766bb02e8eb4a795c1169d543b15caadfa8f7ed2",
+        "link_observed_on_retained_publisher_page": true,
+        "final_url": "https://journals.aps.org/prb/pdf/10.1103/nx9x-nqyj",
+        "content_type": "text/html;charset=utf-8",
+        "elapsed_seconds": 1.3845795000670478
+      },
+      "fulltext_retained": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "scientific_acceptance": false,
+      "authorization_required_text_observed": true,
+      "open_repository_discovery": {
+        "url": "https://api.openalex.org/works/https://doi.org/10.1103/nx9x-nqyj",
+        "captured_at": "2026-10-09T11:13:47.354826+00:00",
+        "status": 200,
+        "bytes": 21540,
+        "sha256": "c02b1f24ec8621c9122630cc28f1443a82a4ba1419edd4fe83cf9a702911d159",
+        "declared_doi_matches": true,
+        "open_access": {
+          "is_oa": false,
+          "oa_status": "closed",
+          "oa_url": null,
+          "any_repository_has_fulltext": false
+        },
+        "locations": [
+          {
+            "landing_page_url": "https://doi.org/10.1103/nx9x-nqyj",
+            "pdf_url": null,
+            "is_oa": false,
+            "version": "publishedVersion",
+            "license": null
+          }
+        ]
+      },
+      "discovery_scope": "Secondary DOI index observation only; no independent original-source or rights acceptance. No indexed full-text location does not prove that no lawful copy exists.",
+      "next_action": "Obtain an authorized exact-version original through normal access, then inspect and review its sample/state/criterion and intended-use rights."
+    },
+    {
+      "material_id": "mat:y0.9tb0.1ni2b2c",
+      "legacy_rank": 12,
+      "expected_doi": "10.1103/PhysRevB.63.144528",
+      "receipt": {
+        "url": "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.63.144528",
+        "captured_at": "2026-10-09T11:15:52.931341+00:00",
+        "status": 401,
+        "error": "http_error",
+        "bytes": 45017,
+        "sha256": "472fc7f56070ba19181e753eb36d15de2543a5e9fdc96c236a7fd8e9e71a1b58",
+        "link_observed_on_retained_publisher_page": true,
+        "final_url": "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.63.144528",
+        "content_type": "text/html;charset=utf-8",
+        "elapsed_seconds": 0.621813082951121
+      },
+      "fulltext_retained": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "scientific_acceptance": false,
+      "authorization_required_text_observed": true,
+      "open_repository_discovery": {
+        "url": "https://api.openalex.org/works/https://doi.org/10.1103/PhysRevB.63.144528",
+        "captured_at": "2026-10-09T11:13:48.201746+00:00",
+        "status": 200,
+        "bytes": 14579,
+        "sha256": "5fa27aabb63f98355f372c5fb75823805e43e48faa40705b5fa853b0b854f5b0",
+        "declared_doi_matches": true,
+        "open_access": {
+          "is_oa": false,
+          "oa_status": "closed",
+          "oa_url": null,
+          "any_repository_has_fulltext": false
+        },
+        "locations": [
+          {
+            "landing_page_url": "https://doi.org/10.1103/physrevb.63.144528",
+            "pdf_url": null,
+            "is_oa": false,
+            "version": "publishedVersion",
+            "license": null
+          }
+        ]
+      },
+      "discovery_scope": "Secondary DOI index observation only; no independent original-source or rights acceptance. No indexed full-text location does not prove that no lawful copy exists.",
+      "next_action": "Obtain an authorized exact-version original through normal access, then inspect and review its sample/state/criterion and intended-use rights."
+    },
+    {
+      "material_id": "mat:nd1.85ce0.15cu1-xznxo4",
+      "legacy_rank": 15,
+      "expected_doi": "10.1103/PhysRevB.43.10489",
+      "receipt": {
+        "url": "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.43.10489",
+        "captured_at": "2026-10-09T11:15:53.559621+00:00",
+        "status": 401,
+        "error": "http_error",
+        "bytes": 45051,
+        "sha256": "248991306e689ca66505d31c5cf0b8b3c5e749f9ab7a8e9cdd4d0f87be69f6ee",
+        "link_observed_on_retained_publisher_page": true,
+        "final_url": "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.43.10489",
+        "content_type": "text/html;charset=utf-8",
+        "elapsed_seconds": 0.6587102089542896
+      },
+      "fulltext_retained": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "scientific_acceptance": false,
+      "authorization_required_text_observed": true,
+      "open_repository_discovery": {
+        "url": "https://api.openalex.org/works/https://doi.org/10.1103/PhysRevB.43.10489",
+        "captured_at": "2026-10-09T11:13:49.515306+00:00",
+        "status": 200,
+        "bytes": 18617,
+        "sha256": "9b618f6520d8a174598b9d9a18cbc9fa626ddf98cacd2e83650198817942e852",
+        "declared_doi_matches": true,
+        "open_access": {
+          "is_oa": false,
+          "oa_status": "closed",
+          "oa_url": null,
+          "any_repository_has_fulltext": false
+        },
+        "locations": [
+          {
+            "landing_page_url": "https://doi.org/10.1103/physrevb.43.10489",
+            "pdf_url": null,
+            "is_oa": false,
+            "version": "publishedVersion",
+            "license": null
+          },
+          {
+            "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/9996774",
+            "pdf_url": null,
+            "is_oa": false,
+            "version": "publishedVersion",
+            "license": null
+          }
+        ]
+      },
+      "discovery_scope": "Secondary DOI index observation only; no independent original-source or rights acceptance. No indexed full-text location does not prove that no lawful copy exists.",
+      "next_action": "Obtain an authorized exact-version original through normal access, then inspect and review its sample/state/criterion and intended-use rights."
+    },
+    {
+      "material_id": "mat:purhga5",
+      "legacy_rank": 16,
+      "expected_doi": "10.1103/PhysRevB.75.184501",
+      "receipt": {
+        "url": "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.75.184501",
+        "captured_at": "2026-10-09T11:15:54.225107+00:00",
+        "status": 401,
+        "error": "http_error",
+        "bytes": 45095,
+        "sha256": "365abde4bb6307767a5a93c1d46e7b1f81cf51fdb3cdced735a5c773c8a08b5e",
+        "link_observed_on_retained_publisher_page": true,
+        "final_url": "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.75.184501",
+        "content_type": "text/html;charset=utf-8",
+        "elapsed_seconds": 0.7271623329725116
+      },
+      "fulltext_retained": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "scientific_acceptance": false,
+      "authorization_required_text_observed": true,
+      "open_repository_discovery": {
+        "url": "https://api.openalex.org/works/https://doi.org/10.1103/PhysRevB.75.184501",
+        "captured_at": "2026-10-09T11:13:50.894259+00:00",
+        "status": 200,
+        "bytes": 29274,
+        "sha256": "fabe20de15a7d3ab6013efab63407cf106f4ec60a16d0ee2307a48854f8889c6",
+        "declared_doi_matches": true,
+        "open_access": {
+          "is_oa": false,
+          "oa_status": "closed",
+          "oa_url": null,
+          "any_repository_has_fulltext": false
+        },
+        "locations": [
+          {
+            "landing_page_url": "https://doi.org/10.1103/physrevb.75.184501",
+            "pdf_url": null,
+            "is_oa": false,
+            "version": "publishedVersion",
+            "license": null
+          }
+        ]
+      },
+      "discovery_scope": "Secondary DOI index observation only; no independent original-source or rights acceptance. No indexed full-text location does not prove that no lawful copy exists.",
+      "next_action": "Obtain an authorized exact-version original through normal access, then inspect and review its sample/state/criterion and intended-use rights."
+    },
+    {
+      "material_id": "mat:κ(bedtttf)2cu(ncs)2",
+      "legacy_rank": 19,
+      "expected_doi": "10.1103/PhysRevLett.66.655",
+      "receipt": {
+        "url": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.66.655",
+        "captured_at": "2026-10-09T11:15:54.958563+00:00",
+        "status": 401,
+        "error": "http_error",
+        "bytes": 45224,
+        "sha256": "96a45ce3b67b35fcdd3334722206a4b066f8ea8cd60c48df528d646f8cc3bae2",
+        "link_observed_on_retained_publisher_page": true,
+        "final_url": "https://journals.aps.org/prl/pdf/10.1103/PhysRevLett.66.655",
+        "content_type": "text/html;charset=utf-8",
+        "elapsed_seconds": 0.6150134160416201
+      },
+      "fulltext_retained": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "scientific_acceptance": false,
+      "authorization_required_text_observed": true,
+      "open_repository_discovery": {
+        "url": "https://api.openalex.org/works/https://doi.org/10.1103/PhysRevLett.66.655",
+        "captured_at": "2026-10-09T11:13:51.767029+00:00",
+        "status": 200,
+        "bytes": 16067,
+        "sha256": "c352c9703e1621ee20fc405653e03648822b748ce77b005041310f9034b0b87b",
+        "declared_doi_matches": true,
+        "open_access": {
+          "is_oa": false,
+          "oa_status": "closed",
+          "oa_url": null,
+          "any_repository_has_fulltext": false
+        },
+        "locations": [
+          {
+            "landing_page_url": "https://doi.org/10.1103/physrevlett.66.655",
+            "pdf_url": null,
+            "is_oa": false,
+            "version": "publishedVersion",
+            "license": null
+          },
+          {
+            "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/10043865",
+            "pdf_url": null,
+            "is_oa": false,
+            "version": "publishedVersion",
+            "license": null
+          }
+        ]
+      },
+      "discovery_scope": "Secondary DOI index observation only; no independent original-source or rights acceptance. No indexed full-text location does not prove that no lawful copy exists.",
+      "next_action": "Obtain an authorized exact-version original through normal access, then inspect and review its sample/state/criterion and intended-use rights."
+    },
+    {
+      "material_id": "mat:bi2+xsr2-ycuo6",
+      "legacy_rank": 25,
+      "expected_doi": "10.1103/PhysRevB.41.4805",
+      "receipt": {
+        "url": "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.41.4805",
+        "captured_at": "2026-10-09T11:15:55.580089+00:00",
+        "status": 401,
+        "error": "http_error",
+        "bytes": 45046,
+        "sha256": "d686f70a7cd0b89ef643a21b354089f5914d7cf7931a64e3a22a9559c96f1c89",
+        "link_observed_on_retained_publisher_page": true,
+        "final_url": "https://journals.aps.org/prb/pdf/10.1103/PhysRevB.41.4805",
+        "content_type": "text/html;charset=utf-8",
+        "elapsed_seconds": 0.6757969169411808
+      },
+      "fulltext_retained": false,
+      "accepted_Work_root_binding": null,
+      "task_specific_rights_decision": null,
+      "human_reviewers": [],
+      "scientific_acceptance": false,
+      "authorization_required_text_observed": true,
+      "open_repository_discovery": {
+        "url": "https://api.openalex.org/works/https://doi.org/10.1103/PhysRevB.41.4805",
+        "captured_at": "2026-10-09T11:13:53.052758+00:00",
+        "status": 200,
+        "bytes": 14752,
+        "sha256": "6b83c5f12189ac87e2c8a3e5b9f3045a79e15c9a6b736725aadd58ac8026c765",
+        "declared_doi_matches": true,
+        "open_access": {
+          "is_oa": false,
+          "oa_status": "closed",
+          "oa_url": null,
+          "any_repository_has_fulltext": false
+        },
+        "locations": [
+          {
+            "landing_page_url": "https://doi.org/10.1103/physrevb.41.4805",
+            "pdf_url": null,
+            "is_oa": false,
+            "version": "publishedVersion",
+            "license": null
+          },
+          {
+            "landing_page_url": "https://pubmed.ncbi.nlm.nih.gov/9994324",
+            "pdf_url": null,
+            "is_oa": false,
+            "version": "publishedVersion",
+            "license": null
+          }
+        ]
+      },
+      "discovery_scope": "Secondary DOI index observation only; no independent original-source or rights acceptance. No indexed full-text location does not prove that no lawful copy exists.",
+      "next_action": "Obtain an authorized exact-version original through normal access, then inspect and review its sample/state/criterion and intended-use rights."
+    }
+  ],
+  "scientific_acceptance": false,
+  "ml_training_approved": false,
+  "database_writes": 0
+}

@@ -1,0 +1,48 @@
+{
+  "schema_version": "sclib-deployment-public-acceptance/1.0.0",
+  "recorded_at": "2026-10-09T12:46:08.893536+00:00",
+  "source_revision": "4c56af1693510d148a1642bc035910b064141819",
+  "test_run": 37917133614,
+  "release_run": 37927409318,
+  "deploy_run": 37927770900,
+  "deploy_run_url": "https://github.com/JackZH26/SCLib_JZIS/actions/runs/37927770900",
+  "deploy_status": "completed",
+  "deploy_conclusion": "success",
+  "deploy_updated_at": "2026-10-09T12:34:25Z",
+  "release_id_binding_observed_in_completed_job_log": true,
+  "deployment_log_pin": {
+    "file": "deploy-4c56af1-37927770900.log",
+    "bytes": 79247,
+    "sha256": "33cc32776dda648a31d38e40d321f7342cb8a21cd9910df71d82f906523999bf"
+  },
+  "run_identity_pin": {
+    "file": "deploy-4c56af1-run-identity.json",
+    "bytes": 12421,
+    "sha256": "79aab4ea8c53f75494417d04c6830cfdbf8eb3d17683a12c0d5e7f872f21d0fd"
+  },
+  "public_acceptance_pin": {
+    "file": "public-after-4c56af1-v1.json",
+    "bytes": 178795,
+    "sha256": "c95828b9cf0bfc65e23b5a293a05093ae46b8186c21f84837279aa83d312d83f"
+  },
+  "public_version": {
+    "site_version": "4c56af1",
+    "dataset_version": "v2026.09.03",
+    "api_version": "1"
+  },
+  "public_acceptance_started_at": "2026-10-09T12:39:14.818030+00:00",
+  "public_acceptance_finished_at": "2026-10-09T12:39:54.277728+00:00",
+  "operational_acceptance": true,
+  "public_checks_passed": 20,
+  "public_request_count": 253,
+  "static_detail_checks_passed": 206,
+  "recovery_windows_matched": 16,
+  "public_materials": {
+    "total": 10507,
+    "sort_basis": "current_projected_catalogue",
+    "scientific_display_policy": "atomic_property_evidence"
+  },
+  "scientific_acceptance": false,
+  "ml_training_approved": false,
+  "scope": "Observed deployment and fixed public contract checks; performance targets and scientific admission are separate."
+}

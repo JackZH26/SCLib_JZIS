@@ -14,6 +14,8 @@ enablement, source permission, scientific acceptance or execution authority.
 - [Verified homepage coverage snapshot, 6 October 2026](README_SNAPSHOT_2026_10_06.md).
 - [Current homepage acceptance, 9 October 2026](README_SNAPSHOT_2026_10_09.md) and [next-stage execution/evidence](NEXTSTAGE_EXECUTION_2026_10_09.md).
 - [Materials-list performance baseline, request timings and capture protocol](MATERIAL_LIST_PERFORMANCE_2026_10_09.md).
+- [Continuation checkpoint: completed API regression, 200-material acquisition queue and 72-question coverage](NEXTSTAGE_CONTINUATION_2026_10_09.md).
+- [Further source and compute preparation: eight-candidate review index, original-source gaps, raw-output replay and finite budget proposal](NEXTSTAGE_SOURCE_AND_COMPUTE_PREPARATION_2026_10_09.md).
 
 ## Materials and independent sources
 

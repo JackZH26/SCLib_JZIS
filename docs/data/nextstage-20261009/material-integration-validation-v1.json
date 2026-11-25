@@ -1,0 +1,259 @@
+{
+  "schema_version": "sclib-material-integration-validation/1.0.0",
+  "recorded_at": "2026-10-09T12:12:06.396091+00:00",
+  "supersedes_full_regression_pending_scope_only": "material-integration-rehearsal-v1.json",
+  "integration_revision": "8a91067f254ee9c2f1cfaafb36d5011023aa74bb",
+  "integration_tree": "dd6111a090c8774ef029712e889706c9a5d6ef9a",
+  "input_pr_heads": {
+    "166": "1b54e0e41530e154bce19b32f1bfaffb9c875263",
+    "167": "d7c1bdb2d3e9146e7edc007416e1189b40bf2949"
+  },
+  "backend": "owned native PostgreSQL 16 / Redis",
+  "runtime": {
+    "python": "3.11.15",
+    "system": "Darwin",
+    "machine": "arm64"
+  },
+  "status": "completed",
+  "module_count": 269,
+  "duration_seconds": 3614.272,
+  "counts": {
+    "passed": 8543,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 9,
+    "test_cases": 8552
+  },
+  "full_module_coverage": true,
+  "junit_replay_exact": true,
+  "all_batch_runner_exit_codes_zero": true,
+  "owned_service_cleanup_completed": true,
+  "provenance": {
+    "head_revision": "8a91067f254ee9c2f1cfaafb36d5011023aa74bb",
+    "dirty_worktree": false,
+    "source_dirty": false,
+    "inputs_sha256": "ab73d841b2eb0d467bc8a5c84e6afa89d9366121d1c94eae3e7045145733104c",
+    "tracked_diff_sha256": "e3b0c44298fc1c149afbf4c8996fb92427ae41e4649b934ca495991b7852b855",
+    "unchanged_during_rehearsal": true
+  },
+  "source_inventory_file_count": 941,
+  "tracked_diff_scope": "api/scripts source inputs only; whole-worktree cleanliness also checked separately",
+  "batches": [
+    {
+      "batch": 1,
+      "runner_exit_code": 0,
+      "module_count": 34,
+      "counts": {
+        "passed": 1020,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "test_cases": 1020
+      },
+      "junit": {
+        "file": "batch-01.xml",
+        "bytes": 155613,
+        "sha256": "f908c4536d60ff8fab4243b3c0db78af127f80d01e111eec7b43160b16207253"
+      }
+    },
+    {
+      "batch": 2,
+      "runner_exit_code": 0,
+      "module_count": 34,
+      "counts": {
+        "passed": 1085,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 4,
+        "test_cases": 1089
+      },
+      "junit": {
+        "file": "batch-02.xml",
+        "bytes": 202790,
+        "sha256": "590723daa9ed8ebd78182bc3c78e276e2a3f743a550bc49b39fc06476eded5fb"
+      }
+    },
+    {
+      "batch": 3,
+      "runner_exit_code": 0,
+      "module_count": 34,
+      "counts": {
+        "passed": 1164,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "test_cases": 1164
+      },
+      "junit": {
+        "file": "batch-03.xml",
+        "bytes": 194437,
+        "sha256": "6eb6ba82ee3b795577b0de059bde1467fbe8bab91548c79cbf41b7f83a5e9f93"
+      }
+    },
+    {
+      "batch": 4,
+      "runner_exit_code": 0,
+      "module_count": 34,
+      "counts": {
+        "passed": 1393,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "test_cases": 1393
+      },
+      "junit": {
+        "file": "batch-04.xml",
+        "bytes": 230030,
+        "sha256": "76b761a311536647b8723e37c61d5055f75a732da5def39724edc0ef5013d92c"
+      }
+    },
+    {
+      "batch": 5,
+      "runner_exit_code": 0,
+      "module_count": 34,
+      "counts": {
+        "passed": 918,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "test_cases": 918
+      },
+      "junit": {
+        "file": "batch-05.xml",
+        "bytes": 165443,
+        "sha256": "c4df54181a0a5706e9e491d2bc67158514f853a89c143e124cf3bc93ad317891"
+      }
+    },
+    {
+      "batch": 6,
+      "runner_exit_code": 0,
+      "module_count": 33,
+      "counts": {
+        "passed": 979,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 2,
+        "test_cases": 981
+      },
+      "junit": {
+        "file": "batch-06.xml",
+        "bytes": 155603,
+        "sha256": "77b2842eac075973d09d43843db8465b6f6eb6d055663baa2befc3ad337f233c"
+      }
+    },
+    {
+      "batch": 7,
+      "runner_exit_code": 0,
+      "module_count": 33,
+      "counts": {
+        "passed": 928,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 3,
+        "test_cases": 931
+      },
+      "junit": {
+        "file": "batch-07.xml",
+        "bytes": 160385,
+        "sha256": "cefc86c304856a470e8ce5708b3e89a8322ef250eba1035ca36ddb3a79a2b69e"
+      }
+    },
+    {
+      "batch": 8,
+      "runner_exit_code": 0,
+      "module_count": 33,
+      "counts": {
+        "passed": 1056,
+        "failed": 0,
+        "errors": 0,
+        "skipped": 0,
+        "test_cases": 1056
+      },
+      "junit": {
+        "file": "batch-08.xml",
+        "bytes": 160453,
+        "sha256": "d3511158da181e34eb33ea7d6e19d09c37b734479d0cef528dc1f65e6c8efe39"
+      }
+    }
+  ],
+  "skipped_cases": [
+    {
+      "batch": 2,
+      "classname": "tests.test_discovery_designs",
+      "test": "test_empty_migration_roundtrip_uses_actual_metadata_guards",
+      "reason": "Empty migration roundtrip requires a fresh owned disposable database"
+    },
+    {
+      "batch": 2,
+      "classname": "tests.test_scientific_import_reference_canaries",
+      "test": "test_genuine_source_bytes_pending_import_and_exact_replay[al-example14]",
+      "reason": "Explicit pinned local reference paths not supplied; no download attempted"
+    },
+    {
+      "batch": 2,
+      "classname": "tests.test_scientific_import_reference_canaries",
+      "test": "test_genuine_source_bytes_pending_import_and_exact_replay[alas-grid-recover]",
+      "reason": "Explicit pinned local reference paths not supplied; no download attempted"
+    },
+    {
+      "batch": 2,
+      "classname": "tests.test_scientific_import_reference_canaries",
+      "test": "test_genuine_source_bytes_pending_import_and_exact_replay[bn-example17-2d]",
+      "reason": "Explicit pinned local reference paths not supplied; no download attempted"
+    },
+    {
+      "batch": 6,
+      "classname": "tests.test_material_field_cases",
+      "test": "test_actual_conference_four_expressions_are_historical_pending",
+      "reason": "Private inspected conference package is not available on this host"
+    },
+    {
+      "batch": 6,
+      "classname": "tests.test_material_field_cases",
+      "test": "test_actual_pt_onset_zero_and_crystallography_stay_separate_pending",
+      "reason": "Private inspected Pt fragments are not available on this host"
+    },
+    {
+      "batch": 7,
+      "classname": "tests.test_material_field_review",
+      "test": "test_pinned_genuine_packets_remain_refusal_or_clarification_not_real_native_acceptance[/private/tmp/sclib-field-cases-genuine-pt-packages-r2-20261002/pt_resistivity_onset_zero.json-4620f292957f04f6fbf7e7009f80205e2fdb707cc3ec548a20fae7954b3c1994-0-tc_criterion-1]",
+      "reason": "Pinned local source packet is unavailable; no genuine-source assertion made."
+    },
+    {
+      "batch": 7,
+      "classname": "tests.test_material_field_review",
+      "test": "test_pinned_genuine_packets_remain_refusal_or_clarification_not_real_native_acceptance[/private/tmp/sclib-scientific-completion-ranks97-166-199-20261002-r1/packages-r1/1603.02892.source-expression-v2.json-f503220bce5941786798573a6d3f6acbfdd858d4101a35ab367026484566cd28-1-tc_criterion-1]",
+      "reason": "Pinned local source packet is unavailable; no genuine-source assertion made."
+    },
+    {
+      "batch": 7,
+      "classname": "tests.test_material_field_review",
+      "test": "test_pinned_genuine_packets_remain_refusal_or_clarification_not_real_native_acceptance[/private/tmp/sclib-scientific-completion-ranks97-166-199-20261002-r1/packages-r2-caption-scope/1501.06203.source-expression-v2.json-34bb4c106b5d97c0f883b3bdda25046f031a513b6fbeb16d6688c6feab55bd82-0-pressure_gpa-0]",
+      "reason": "Pinned local source packet is unavailable; no genuine-source assertion made."
+    }
+  ],
+  "artifacts": [
+    {
+      "file": "plan.json",
+      "bytes": 190543,
+      "sha256": "5a28e556835146ed722f9411b4358f1be61ec5227a383694b8039b607b687ff9"
+    },
+    {
+      "file": "result.json",
+      "bytes": 17613,
+      "sha256": "6bc01d4548a8a71b436cfc3e755356b6f206353a01fd71c8029e8ec5bb9f3374"
+    },
+    {
+      "file": "material-integration-full-api-v1.log",
+      "bytes": 26619,
+      "sha256": "077449273064865a4661a1e146d97d212821c3a446464381481e2c463ae8e25c"
+    }
+  ],
+  "scope": "ordinary API regression on the exact local combined code revision",
+  "capacity_included": false,
+  "linux_image_parity": false,
+  "deployed": false,
+  "production_performance_acceptance": false,
+  "scientific_acceptance": false,
+  "new_scientific_jobs_started": false
+}

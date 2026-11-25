@@ -1,0 +1,119 @@
+{
+  "schema_version": "sclib-source-version-link-candidates/1.0.0",
+  "recorded_at": "2026-10-09T11:28:37.003938+00:00",
+  "input_pins": [
+    {
+      "file": "material-source-acquisition-v1.json",
+      "bytes": 38775,
+      "sha256": "f09c11d5d6a45a2b8fd3a673b50bff18af7d9b0c874d8c365da58036d8eec685"
+    },
+    {
+      "file": "material-source-acquisition-v2.json",
+      "bytes": 36193,
+      "sha256": "d0a599a5917d5fdf017186446383ef88235323aae3fd439a2cdb107d490790a6"
+    }
+  ],
+  "candidate_count": 5,
+  "rows": [
+    {
+      "candidate_id": "source-version-candidate:0ece8c62dcb2eda93124",
+      "material_id": "mat:mosr2eu1.5ce0.5cu2o10",
+      "left_source_revision": "cond-mat/0304552v1",
+      "historical_selected_paper_pointer": "arxiv:cond-mat/0304552",
+      "right_DOI_pointer": "doi:10.1103/physrevb.68.064507",
+      "pdf_sha256": "c7a06872b99be9caf371222950ff976a8ec4700de4654c6c2c0c950ea789e98e",
+      "basis": "declared_related_DOI_in_retained_arXiv_metadata",
+      "relation_proposed": "preprint_publication",
+      "relation_accepted": null,
+      "accepted_Work_root_binding": null,
+      "same_sample_Result_binding": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "citation_root_relation": null,
+      "intended_use_rights": null,
+      "scientific_acceptance": false
+    },
+    {
+      "candidate_id": "source-version-candidate:7ee981477d845a0ef1dc",
+      "material_id": "mat:la0.4sm0.6o0.5f0.5bis2",
+      "left_source_revision": "1507.03172v1",
+      "historical_selected_paper_pointer": "arxiv:1507.03172",
+      "right_DOI_pointer": "doi:10.1103/physrevb.92.094507",
+      "pdf_sha256": "e92845614dc28993c45c8fb486f12285729242f4a7d751ca6b1d9991c84fe484",
+      "basis": "declared_related_DOI_in_retained_arXiv_metadata",
+      "relation_proposed": "preprint_publication",
+      "relation_accepted": null,
+      "accepted_Work_root_binding": null,
+      "same_sample_Result_binding": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "citation_root_relation": null,
+      "intended_use_rights": null,
+      "scientific_acceptance": false
+    },
+    {
+      "candidate_id": "source-version-candidate:c99b744fd65aebe936f9",
+      "material_id": "mat:bapb0.72bi0.28o3",
+      "left_source_revision": "1706.06999v2",
+      "historical_selected_paper_pointer": "arxiv:1706.06999",
+      "right_DOI_pointer": "doi:10.1073/pnas.1707079114",
+      "pdf_sha256": "995f75d41a2eec43ea3916fe4d7e1f72e75368b148c1db2c71f98ca800175585",
+      "basis": "declared_related_DOI_in_retained_arXiv_metadata",
+      "relation_proposed": "preprint_publication",
+      "relation_accepted": null,
+      "accepted_Work_root_binding": null,
+      "same_sample_Result_binding": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "citation_root_relation": null,
+      "intended_use_rights": null,
+      "scientific_acceptance": false
+    },
+    {
+      "candidate_id": "source-version-candidate:ff32c20383c90002ec08",
+      "material_id": "mat:la4ni3o9.99",
+      "left_source_revision": "2309.09462v4",
+      "historical_selected_paper_pointer": "aps:10.1103/PhysRevB.109.144511",
+      "right_DOI_pointer": "doi:10.1103/physrevb.109.144511",
+      "pdf_sha256": "4f45c314ec6617bd85507451f5936debfb1599abd1a41dd1330ca260198b93bb",
+      "basis": "declared_related_DOI_in_retained_arXiv_metadata",
+      "relation_proposed": "preprint_publication",
+      "relation_accepted": null,
+      "accepted_Work_root_binding": null,
+      "same_sample_Result_binding": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "citation_root_relation": null,
+      "intended_use_rights": null,
+      "scientific_acceptance": false
+    },
+    {
+      "candidate_id": "source-version-candidate:0c3902ec60cc2a46a587",
+      "material_id": "mat:bswnt",
+      "left_source_revision": "author-copy:pdf-sha256:ce75e1bbd3e05a336f55f1ae7a2ce391c5030163f0bef550775d765cf7679a94",
+      "historical_selected_paper_pointer": "aps:10.1103/PhysRevLett.101.027002",
+      "right_DOI_pointer": "doi:10.1103/physrevlett.101.027002",
+      "pdf_sha256": "ce75e1bbd3e05a336f55f1ae7a2ce391c5030163f0bef550775d765cf7679a94",
+      "basis": "literal_publisher_DOI_observed_on_author_hosted_PDF_title_page",
+      "relation_proposed": "author_hosted_publication_copy",
+      "relation_accepted": null,
+      "accepted_Work_root_binding": null,
+      "same_sample_Result_binding": null,
+      "reviewer": null,
+      "reviewed_at": null,
+      "citation_root_relation": null,
+      "intended_use_rights": null,
+      "scientific_acceptance": false
+    }
+  ],
+  "scope": "Declared metadata identity links proposed for independent version/Work/root review. No accepted graph edges, scientific Result association or licence decision.",
+  "retrieval_baseline_unchanged": {
+    "draft_questions": 72,
+    "provisional_pointer_components": 26,
+    "validated_independent_experiments": 0,
+    "gold_questions": 0,
+    "split_frozen": false
+  },
+  "database_writes": 0,
+  "scientific_acceptance": false
+}

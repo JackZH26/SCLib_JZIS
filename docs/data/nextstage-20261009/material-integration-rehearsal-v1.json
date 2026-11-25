@@ -1,0 +1,46 @@
+{
+  "schema_version": "sclib-material-integration-rehearsal/1.0.0",
+  "recorded_at": "2026-10-09T09:50:44.574110+00:00",
+  "integration_revision": "8a91067f254ee9c2f1cfaafb36d5011023aa74bb",
+  "input_pr_heads": {
+    "166": "1b54e0e41530e154bce19b32f1bfaffb9c875263",
+    "167": "d7c1bdb2d3e9146e7edc007416e1189b40bf2949"
+  },
+  "merge_conflicts": false,
+  "backend": "owned native PostgreSQL 16 / Redis",
+  "runner_exit_code": 0,
+  "owned_cleanup_observed": true,
+  "source_clean": true,
+  "unchanged_during_rehearsal": true,
+  "source_inputs_sha256": "ab73d841b2eb0d467bc8a5c84e6afa89d9366121d1c94eae3e7045145733104c",
+  "test_modules": [
+    "tests/test_material_list_timing.py",
+    "tests/test_material_tc_selection.py",
+    "tests/test_material_lifecycle_memo.py",
+    "tests/test_material_formula_lookup.py"
+  ],
+  "counts": {
+    "passed": 73,
+    "failed": 0,
+    "errors": 0,
+    "skipped": 0,
+    "test_cases": 73,
+    "module_cases": {
+      "tests/test_material_list_timing.py": 8,
+      "tests/test_material_tc_selection.py": 43,
+      "tests/test_material_lifecycle_memo.py": 6,
+      "tests/test_material_formula_lookup.py": 16
+    }
+  },
+  "junit": {
+    "file": "material-integration-owned-api.xml",
+    "bytes": 11727,
+    "sha256": "56701f0e43cc62fee8923556489ea923b7ae1d53d2c1bef4f5bc2d32bf072825"
+  },
+  "api_ingestion_property_evidence_byte_identical": true,
+  "full_api_regression": false,
+  "linux_image_parity": false,
+  "deployed": false,
+  "production_performance_acceptance": false,
+  "scientific_acceptance": false
+}

@@ -1,0 +1,14 @@
+{
+  "file": "pending-review-materials-v5.zip",
+  "bytes": 208875,
+  "sha256": "20844f615d71c3667803c3951811cd421fbfae72a2c619de1e97e8f9d5864760",
+  "file_count": 34,
+  "material_candidate_rows_per_role": 8,
+  "preserved_question_drafts": 72,
+  "full_first_batch_candidates": 8,
+  "first_batch_materials": 16,
+  "contains_original_fulltexts": false,
+  "contains_extracted_passages": false,
+  "human_reviewed": false,
+  "scientific_acceptance": false
+}
