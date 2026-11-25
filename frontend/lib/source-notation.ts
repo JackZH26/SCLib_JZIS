@@ -48,7 +48,8 @@ function mathHtml(s: string): string {
   // KaTeX's explicit failure is caught by the caller; raw commands are never
   // used as a visually broken fallback. HTML and URL macros remain untrusted.
   if (/\\(?:href|url|html[A-Za-z]*|includegraphics|input|write|def|newcommand)(?![A-Za-z])/.test(s)) throw new Error("Unsupported source command");
-  const html = '<span class="reported-math">' + katex.renderToString(cleanMath(s), {
+  const tex = cleanMath(s);
+  const html = '<span class="reported-math">' + katex.renderToString(tex, {
     throwOnError: true, trust: false, strict: "ignore", output: "htmlAndMathml",
     maxExpand: 200, maxSize: 10,
   }) + "</span>";
@@ -58,7 +59,22 @@ function mathHtml(s: string): string {
 
 function prose(s: string, depth = 0): string {
   if (depth > 20) throw new Error("Nesting limit");
-  let html = "", p = 0;
+  let html = "", p = 0, tokenStart = 0, tokenHasScript = false;
+  const appendMath = (tex: string) => {
+    html += mathHtml(tex);
+    tokenHasScript ||= /^\s*\{*\s*[_^]/.test(cleanMath(tex));
+  };
+  const endToken = () => {
+    if (tokenHasScript) {
+      // A separately delimited subscript must wrap with its complete chemical
+      // token, rather than becoming an orphan on the next line.
+      html = html.slice(0, tokenStart) + '<span class="reported-token" style="white-space:nowrap">'
+        + html.slice(tokenStart) + "</span>";
+    }
+    tokenStart = html.length;
+    tokenHasScript = false;
+  };
+  const space = () => { endToken(); html += " "; tokenStart = html.length; };
   while (p < s.length) {
     let delimiter = "";
     if (s[p] === "$") delimiter = s[p+1] === "$" ? "$$" : "$";
@@ -76,10 +92,10 @@ function prose(s: string, depth = 0): string {
       if (end < 0 && delimiter === "$" && braces === 0) {
         // Extraction often clips one math delimiter. Reclose the same text;
         // no element, number, variable or sign is inserted or removed.
-        html += mathHtml(s.slice(start)); p=s.length;continue;
+        appendMath(s.slice(start)); p=s.length;continue;
       }
       if (end < 0) throw new Error("Unbalanced math delimiter");
-      html += mathHtml(s.slice(start, end)); p = end + closing.length; continue;
+      appendMath(s.slice(start, end)); p = end + closing.length; continue;
     }
     if (s[p] === "{") {
       const [body,end] = argument(s,p); html += prose(body,depth+1); p=end; continue;
@@ -89,16 +105,16 @@ function prose(s: string, depth = 0): string {
     if (command) {
       const name=command[1]; p+=command[0].length;
       if (SPACING.has(name) || name === "-") continue;
-      if (["si", "unit"].includes(name)) { const [body,end]=argument(s,p);p=end;html+=mathHtml(cleanMath(body));continue; }
-      if (name === "SI") { const [number,e]=argument(s,p);const [unit,end]=argument(s,e);p=end;html+=mathHtml(number+"\\,"+cleanMath(unit));continue; }
+      if (["si", "unit"].includes(name)) { const [body,end]=argument(s,p);p=end;appendMath(cleanMath(body));continue; }
+      if (name === "SI") { const [number,e]=argument(s,p);const [unit,end]=argument(s,e);p=end;appendMath(number+"\\,"+cleanMath(unit));continue; }
       if (name === "slash") { html+="/";continue; }
-      if (["micro", "ohm", "kelvin", "K", "minute", "per"].includes(name)) { html+=mathHtml(cleanMath(command[0]));continue; }
+      if (["micro", "ohm", "kelvin", "K", "minute", "per"].includes(name)) { appendMath(cleanMath(command[0]));continue; }
       if (name === "diameter") { html+="⌀";continue; }
       if (name === "scalebox") { const [,e]=argument(s,p); const [body,end]=argument(s,e);p=end;html+=prose(body,depth+1);continue; }
-      if (['"', "'", "`", "^", "~"].includes(name)) { const [body,end]=argument(s,p);p=end;html+=mathHtml("\\text{"+command[0]+"{"+body+"}}");continue; }
+      if (['"', "'", "`", "^", "~"].includes(name)) { const [body,end]=argument(s,p);p=end;appendMath("\\text{"+command[0]+"{"+body+"}}");continue; }
       if (name === "thinspace") { html += "&thinsp;"; continue; }
       if (["%", "#", "&", "_", "{", "}", "$"].includes(name)) { html+=escape(name);continue; }
-      if ([",", ";", "!", " ", "\\", "\n"].includes(name)) { html+=" ";continue; }
+      if ([",", ";", "!", " ", "\\", "\n"].includes(name)) { space();continue; }
       if (WRAPPERS.has(name) || name === "lowercase") {
         const [body,end] = argument(s,p); p=end;
         html += prose(name === "lowercase" ? body.toLowerCase() : body,depth+1); continue;
@@ -108,11 +124,11 @@ function prose(s: string, depth = 0): string {
         html += '<span class="source-reference-label">' + escape((name.includes("cite") ? "reference" : "source label") + " [" + body + "]") + "</span>"; continue;
       }
       if (name === "hspace" || name === "vspace") {
-        const [,end]=argument(s,p);p=end;html+=" ";continue;
+        const [,end]=argument(s,p);p=end;space();continue;
       }
       if (name === "ensuremath" || name === "textsubscript" || name === "textsuperscript") {
         const [body,end]=argument(s,p);p=end;
-        html+=mathHtml(name === "ensuremath" ? body : (name === "textsubscript" ? "_{" : "^{")+body+"}");continue;
+        appendMath(name === "ensuremath" ? body : (name === "textsubscript" ? "_{" : "^{")+body+"}");continue;
       }
       let expression = ALIASES[name] ?? command[0];
       for (let i=0; i<(ARGS[name] ?? 0); i++) {
@@ -121,18 +137,22 @@ function prose(s: string, depth = 0): string {
       while (s[p] === "_" || s[p] === "^") {
         const operator=s[p++];const [body,end]=argument(s,p);p=end;expression+=operator+"{"+body+"}";
       }
-      html+=mathHtml(expression); continue;
+      appendMath(expression); continue;
     }
     if (s[p] === "_" || s[p] === "^") {
       const operator=s[p++];let [body,end]=argument(s,p);p=end;
       if (/^\\(?:mathrm|text|textrm|rm)$/.test(body)) { const [value,next]=argument(s,p);p=next;body=body+"{"+value+"}"; }
-      html+=mathHtml(operator+"{"+body+"}");continue;
+      appendMath(operator+"{"+body+"}");continue;
     }
     if (s[p] === "\\" && p === s.length-1) { p++;continue; }
     if (s[p] === "\\") throw new Error("Incomplete command");
     if (s.startsWith("--",p)) { html+="–";p+=2;continue; }
+    if (/\s/.test(s[p])) {
+      endToken(); html += escape(s[p++]); tokenStart = html.length; continue;
+    }
     html += s[p] === "~" ? "&nbsp;" : escape(s[p]); p++;
   }
+  endToken();
   return html;
 }
 

@@ -3,6 +3,18 @@ import { expect, it } from "vitest";
 import { LatexText } from "@/components/LatexText";
 import { renderSourceNotation, sourceNotationLabel } from "@/lib/source-notation";
 
+it("keeps separately delimited chemical scripts in one wrapping token without changing labels", () => {
+  const rendered = renderSourceNotation("La$_3$Ni$_2$O$_{7}$");
+  expect(rendered.unresolved).toBe(false);
+  const { container } = render(<LatexText>{"La$_3$Ni$_2$O$_{7}$"}</LatexText>);
+  const token = container.querySelector(".reported-token")!;
+  expect(token).toHaveStyle({ whiteSpace: "nowrap" });
+  expect(token.querySelectorAll(".katex")).toHaveLength(3);
+  expect(sourceNotationLabel(token.innerHTML)).toBe("La3Ni2O7");
+  expect(sourceNotationLabel(rendered.html)).toBe("La3Ni2O7");
+  expect(renderSourceNotation("Ni $3d_{z^2}$ states").html).not.toContain("\u2060");
+});
+
 it.each([
   ["Pr$_{1.85}$Ce$_{0.15}$CuO$_4$\\xspace", "Pr1.85Ce0.15CuO4"],
   ["BaFe$\\ensuremath{_{\\rm 1.8}}$Co$\\ensuremath{_{\\rm 0.2}}$As$\\ensuremath{_{\\rm 2}}$", "BaFe1.8Co0.2As2"],
